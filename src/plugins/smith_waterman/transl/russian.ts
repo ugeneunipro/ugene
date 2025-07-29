@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>AlignmentAlgorithmsRegistry</name>
+    <message>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
+        <source>Smith-Waterman</source>
+        <translation type="unfinished">Поиск Смита-Ватермана</translation>
+    </message>
+</context>
+<context>
     <name>PairwiseAlignmentSmithWatermanOptionsPanelMainWidget</name>
     <message>
         <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="14"/>
@@ -45,14 +53,6 @@
         <location filename="../src/SmithWatermanAlgorithm.cpp" line="155"/>
         <source>Smith-Waterman algorithm trying to allocate more memory than it was limited (%1 Mb). Calculation stopped.</source>
         <translation>Smith-Waterman algorithm trying to allocate more memory than it was limited (%1 Mb). Calculation stopped.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::AlignmentAlgorithmsRegistry</name>
-    <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
-        <source>Smith-Waterman</source>
-        <translation>Поиск Смита-Ватермана</translation>
     </message>
 </context>
 <context>

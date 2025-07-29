@@ -91,17 +91,17 @@ p, li { white-space: pre-wrap; }
         <translation>Kısa okumaları hizalama seçeneklerini ayarlayın.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="171"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="233"/>
         <source>Use both the read and its reverse complement during aligning.</source>
         <translation>Hizalama sırasında hem okumayı hem de ters tamamlayıcısını kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="174"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="236"/>
         <source>Align reverse complement reads</source>
         <translation>Ters tamamlayıcı okumaları hizala</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="184"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="213"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -114,68 +114,63 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Yalnızca en iyi hizalamalar hakkında rapor verin (uyumsuzluklar açısından).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="191"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="220"/>
         <source>Use &quot;best&quot;-mode during the alignment</source>
         <translation>Hizalama sırasında &quot;en iyi&quot; modunu kullanın</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="249"/>
-        <source>Use GPU-optimization</source>
-        <translation>GPU optimizasyonunu kullanın</translation>
-    </message>
-    <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="275"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="265"/>
         <source>Advanced parameters</source>
         <translation>Gelişmiş parametreler</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="281"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="271"/>
         <source>Maximum memory for short reads</source>
         <translation>Kısa okumalar için maksimum bellek</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="331"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="321"/>
         <source>Total memory usage:</source>
         <translation>Toplam bellek kullanımı:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="374"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="364"/>
         <source>System memory size:</source>
         <translation>Sistem bellek boyutu:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="416"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="406"/>
         <source>Index parameters</source>
         <translation>Dizin parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="422"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="412"/>
         <source>Reference fragmentation</source>
         <translation>Referans parçalama</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="482"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="472"/>
         <source>Index memory usage size:</source>
         <translation>Dizin belleği kullanım boyutu:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="503"/>
         <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
         <translation>Hizalama sırasında oluşturulacak referans için indeks dosyalarını kaydetmek için geçici bir dizin seçebilirsiniz. Bu algoritmayı aynı referansla ve aynı referans parçalama parametresiyle bir kez daha çalıştırmanız gerekirse, geçici dizinde yer alacak olan bu önceden oluşturulmuş dizini kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="545"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="535"/>
         <source>Directory for index files:</source>
         <translation>Dizin dosyaları için dizin:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="201"/>
-        <location filename="../src/GenomeAlignerSettings.ui" line="227"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="168"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="194"/>
         <source>Omit reads with qualities lower than the specified value. Reads that have no qualities are not omited.</source>
         <translation>Belirtilen değerden daha düşük niteliklere sahip okumaları atla. Nitelikleri olmayan okumalar atlanmaz.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="289"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="279"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -190,7 +185,7 @@ p, li { white-space: pre-wrap; }
                  &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="430"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="420"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -207,12 +202,12 @@ p, li { white-space: pre-wrap; }
                  hizalama sırasında kullanılan bellek miktarı.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="535"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="525"/>
         <source>Specify an index to build during execution of the selected short reads aligning algorithm. If this option is selected, the value is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Seçilen kısa okuma hizalama algoritmasının yürütülmesi sırasında oluşturulacak bir dizin belirtin. Bu seçenek seçilirse, değer &lt;b&gt;gereklidir&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="528"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="518"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -222,7 +217,7 @@ p, li { white-space: pre-wrap; }
         <translation>Hizalama seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="204"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="171"/>
         <source>Omit reads with qualities lower than</source>
         <translation>Şundan daha düşük niteliklere sahip okumaları atla</translation>
     </message>
@@ -238,7 +233,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="48"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="49"/>
         <source>UGENE Genome Aligner</source>
         <translation>UGENE Genom Hizalayıcı</translation>
     </message>
@@ -246,32 +241,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::GenomeAlignerCMDLineTask</name>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="49"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="48"/>
         <source>Run genome aligner from command line</source>
         <translation>Komut satırından genom hizalayıcısını çalıştırın</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="115"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="111"/>
         <source>Finished parsing genome aligner options.</source>
         <translation>Genom hizalayıcı seçeneklerinin ayrıştırılması tamamlandı.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="124"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="120"/>
         <source>Path to reference sequence is not set.</source>
         <translation>Referans sırasına giden yol ayarlanmadı.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="130"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="126"/>
         <source>Short reads list is empty.</source>
         <translation>Kısa okuma listesi boş.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="134"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="130"/>
         <source>Reference (index or sequence) is not set.</source>
         <translation>Referans (dizin veya sıra) ayarlanmadı.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="175"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="170"/>
         <source>  --%1    Use this flag to only build index for reference sequence.
 
 </source>
@@ -280,7 +275,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="176"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="171"/>
         <source>  --%1    Path to reference genome sequence
 
 </source>
@@ -289,7 +284,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="177"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="172"/>
         <source>  --%1    Path to short-reads data in FASTA or FASTQ format
 
 </source>
@@ -298,7 +293,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="178"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="173"/>
         <source>  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary folder. If --build-index option is applied, index will be saved to specified path.
 
 </source>
@@ -307,7 +302,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="179"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="174"/>
         <source>  --%1    Path to output alignment in UGENEDB or SAM format (see --%2)
 
 </source>
@@ -316,7 +311,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="180"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="175"/>
         <source>  --%1    Memory size (in Mbs) reserved for short-reads. The bigger value the faster algorithm works. Default value depends on available system memory.
 
 </source>
@@ -325,7 +320,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="181"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="176"/>
         <source>  --%1    Index fragmentation size (in Mbs). Small fragments better fit into RAM, allowing to load more short reads. Default value is 10.
 
 </source>
@@ -334,7 +329,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="182"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="177"/>
         <source>  --%1    Absolute amount of allowed mismatches per every short-read (mutually exclusive with --%2). Default value is 0.
 
 </source>
@@ -343,7 +338,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="183"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="178"/>
         <source>  --%1    Percentage amount of allowed mismatches per every short-read (mutually exclusive with --%2). Default value is 0.
 
 </source>
@@ -352,7 +347,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="184"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="179"/>
         <source>  --%1    Use both the read and its reverse complement during the aligning.
 
 </source>
@@ -361,7 +356,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="185"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="180"/>
         <source>  --%1    Report only about best alignments (in terms of mismatches).
 
 </source>
@@ -370,7 +365,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="186"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="181"/>
         <source>  --%1    Omit reads with qualities lower than the specified value. Reads which have no qualities are not omitted. Default value is 0.
 
 </source>
@@ -379,7 +374,7 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="187"/>
+        <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="182"/>
         <source>  --%1    Output aligned reads in SAM format. Default value is false.
 
 </source>
@@ -391,13 +386,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::GenomeAlignerIndexTask</name>
     <message>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="92"/>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="138"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="90"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="136"/>
         <source>File %1 is not found. Try to create index another time.</source>
         <translation>%1 dosyası bulunamadı. Başka bir zaman dizin oluşturmayı deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="184"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="182"/>
         <source>Can not init short reads loader. %1</source>
         <translation>Kısa okuma yükleyici başlatılamıyor. %1</translation>
     </message>
@@ -462,13 +457,13 @@ ugene --genom-hizalayıcı --referans=/yol/to/ref --kısa-okuma=/yol/ /okur --so
 <context>
     <name>U2::GenomeAlignerSettingsWidget</name>
     <message>
-        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="114"/>
-        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="174"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="104"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="163"/>
         <source>This index file is corrupted. Please, load a valid index file.</source>
         <translation>Bu dizin dosyası bozuk. Lütfen geçerli bir dizin dosyası yükleyin.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="166"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="155"/>
         <source>The index folder has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn&apos;t equal to the parameter you have chosen (%2).
 
 Press &quot;Ok&quot; to delete this index file and create a new during the aligning.
@@ -479,7 +474,7 @@ Bu dizin dosyasını silmek ve hizalama sırasında yeni bir tane oluşturmak i�
 Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e basın.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="184"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="173"/>
         <source>Set index files folder</source>
         <translation>Dizin dosyaları klasörünü ayarla</translation>
     </message>
@@ -487,62 +482,62 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
 <context>
     <name>U2::GenomeAlignerTask</name>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="125"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="121"/>
         <source>Genome Aligner settings</source>
         <translation>Genom Hizalayıcı ayarları</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="126"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="122"/>
         <source>Index file name: %1</source>
         <translation>Dizin dosyası adı: %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="127"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="123"/>
         <source>Use prebuilt index: %2</source>
         <translation>Önceden oluşturulmuş dizini kullan: %2</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="203"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="196"/>
         <source>Can not init short reads loader.</source>
         <translation>Kısa okuma yükleyici başlatılamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="346"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="339"/>
         <source>The aligning is finished.</source>
         <translation>Hizalama bitti.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="347"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="340"/>
         <source>Whole working time = %1.</source>
         <translation>Tam çalışma süresi = %1.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="348"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="341"/>
         <source>%1% reads aligned.</source>
         <translation>%1% hizalanmış okuyor.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="350"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="343"/>
         <source>Short-reads loading time = %1</source>
         <translation>Kısa okumalar yükleme süresi = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="351"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="344"/>
         <source>Results writing time = %1</source>
         <translation>Sonuçların yazılma süresi = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="353"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="346"/>
         <source>Index loading time = %1</source>
         <translation>Dizin yükleme süresi = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="354"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="347"/>
         <source>Short-reads IO time = %1</source>
         <translation>Kısa okumalar GÇ süresi = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="358"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="351"/>
         <source>Number of reads processed: </source>
         <translation>İşlenen okuma sayısı: </translation>
     </message>
@@ -558,42 +553,42 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
 <context>
     <name>U2::LocalWorkflow::GenomeAlignerBuildWorker</name>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="68"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="67"/>
         <source>Reference</source>
         <translation>Referans</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="68"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="67"/>
         <source>Reference sequence url. The short reads will be aligned to this reference genome.</source>
         <translation>Referans dizisi url&apos;si. Kısa okumalar bu referans genom ile hizalanacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="69"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="68"/>
         <source>Genome aligner index builder</source>
         <translation>Genom hizalayıcı indeks oluşturucu</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="69"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="68"/>
         <source>GenomeAlignerBuild builds an index from a set of DNA sequences. GenomeAlignerBuild outputs a set of 3 files with suffixes .idx, .ref, .sarr. These files together constitute the index: they are all that is needed to align reads to that reference.</source>
         <translation>Genom Hizalayıcı Yapısı, bir dizi DNA dizisinden bir dizin oluşturur. Genom Hizalayıcı Yapısı .idx, .ref, .sarr sonekleriyle 3 dosyadan oluşan bir set çıkarır. Bu dosyalar birlikte dizini oluşturur: okumaları bu referansa hizalamak için gereken tek şey onlardır.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="70"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="69"/>
         <source>Index</source>
         <translation>Dizin</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="70"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="69"/>
         <source>Output index url.</source>
         <translation>Çıktı dizini url&apos;si.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="71"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="70"/>
         <source>Reference fragmentation</source>
         <translation>Referans parçalama</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="71"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="70"/>
         <source>Reference fragmentation size</source>
         <translation>Referans parçalanma boyutu</translation>
     </message>
@@ -616,7 +611,7 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
 <context>
     <name>U2::LocalWorkflow::GenomeAlignerIndexReaderPrompter</name>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="222"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="223"/>
         <source>Read genome aligner index from %1 and send it url to output.</source>
         <translation>%1&apos;den genom hizalayıcı dizinini okuyun ve url&apos;yi çıktıya gönderin.</translation>
     </message>
@@ -654,12 +649,12 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
         <translation>.İdx uzantılı bir dizin dosyası seçin</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="195"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="196"/>
         <source>Index URL is empty</source>
         <translation>Dizin URL&apos;si boş</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="208"/>
+        <location filename="../src/GenomeAlignerIndexWorker.cpp" line="209"/>
         <source>Reading genome aligner index finished. Result name is %1</source>
         <translation>Genom hizalayıcı indeksinin okunması tamamlandı. Sonuç adı %1</translation>
     </message>
@@ -667,22 +662,22 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
 <context>
     <name>U2::LocalWorkflow::GenomeAlignerPrompter</name>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="217"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="205"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="220"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="208"/>
         <source>Maps input reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation>Haritalar girişi &lt;u&gt;%1&lt;/u&gt; kaynağından okuyor </translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="225"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="213"/>
         <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; dizini ile referans dizisine.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="228"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="216"/>
         <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; dizisine başvurmak için.</translation>
     </message>
@@ -690,212 +685,207 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
 <context>
     <name>U2::LocalWorkflow::GenomeAlignerWorker</name>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="344"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="330"/>
         <source>Is absolute mismatches values?</source>
         <translation>Mutlak uyumsuzluk değerleri mi?</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="271"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="257"/>
         <source>Bowtie2 cannot recognize read pairs from the same file. Please, perform demultiplexing first.</source>
         <translation>Bowtie2, aynı dosyadaki okuma çiftlerini tanıyamıyor. Lütfen önce çoğullama çözmeyi gerçekleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="246"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="232"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation>Yuva boş olmamalıdır: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="284"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="270"/>
         <source>URL of a file with reads</source>
         <translation>Okumaları olan bir dosyanın URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="285"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="271"/>
         <source>Input reads to be aligned.</source>
         <translation>Giriş, hizalanacak okur.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="287"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="273"/>
         <source>URL of a file with mate reads</source>
         <translation>Montaj ilişkisi okumalarına sahip bir dosyanın URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="288"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="274"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Giriş montaj ilişkisi, hizalanacak okur.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="294"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="280"/>
         <source>Genome aligner data</source>
         <translation>Genom hizalayıcı verileri</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="295"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="281"/>
         <source>Input reads to be aligned with Bowtie2.</source>
         <translation>Giriş, Bowtie2 ile hizalanacak şekilde okur.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="302"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="288"/>
         <source>Assembly URL</source>
         <translation>Montaj URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="303"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="289"/>
         <source>Output assembly URL.</source>
         <translation>Çıktı derleme URL&apos;si.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="306"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="292"/>
         <source>Genome aligner output data</source>
         <translation>Genom hizalayıcı çıktı verileri</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="307"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="293"/>
         <source>Output assembly files.</source>
         <translation>Çıktı montaj dosyaları.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="317"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="303"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="318"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="304"/>
         <source>Folder to save UGENE genome aligner output files.</source>
         <translation>UGENE genom hizalayıcı çıktı dosyalarını kaydetmek için klasör.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="321"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="307"/>
         <source>Output file name</source>
         <translation>Çıktı dosyası adı</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="322"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="308"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Çıktı dosyasının temel adı. Varsayılan olarak &apos;out.sam&apos;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="325"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="311"/>
         <source>Reference input type</source>
         <translation>Referans giriş tipi</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="326"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="312"/>
         <source>Select &quot;Sequence&quot; to input a reference genome as a sequence file. &lt;br/&gt;Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). &lt;br/&gt;The index will be generated automatically in this case. &lt;br/&gt;Select &quot;Index&quot; to input already generated index files, specific for the tool.</source>
         <translation>Sıra dosyası olarak bir referans genomu girmek için &quot;Sıra&quot; yı seçin. &lt;br/&gt;UGENE tarafından desteklenen herhangi bir sıra dosyası biçimine izin verildiğini unutmayın (FASTA, GenBank, vb.). &lt;br/&gt;Bu durumda dizin otomatik olarak oluşturulacaktır. &lt;br/&gt;Araca özel halihazırda oluşturulmuş dizin dosyalarını girmek için &quot;Dizin&quot; i seçin.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="332"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="318"/>
         <source>Reference genome</source>
         <translation>Referans genom</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="333"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="319"/>
         <source>Path to indexed reference genome.</source>
         <translation>Dizine alınmış referans genomun yolu.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="336"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="322"/>
         <source>Genome Aligner index folder</source>
         <translation>Genom Hizalayıcı dizin klasörü</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="337"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="323"/>
         <source>The folder with the index for the reference sequence.</source>
         <translation>Referans dizinin indeksini içeren klasör.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="340"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="326"/>
         <source>Genome Aligner index basename</source>
         <translation>Genom Hizalayıcı dizini temel adı</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="341"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="327"/>
         <source>The basename of the index for the reference sequence.</source>
         <translation>Referans dizisi için dizinin temel adı.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="345"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="331"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;true&lt;/b&gt; - absolute mismatches mode is used&lt;/p&gt;&lt;p&gt;&lt;b&gt;false&lt;/b&gt; - percentage mismatches mode is used&lt;/p&gt;                                    You can choose absolute or percentage mismatches values mode.&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;doğru&lt;/b&gt; - mutlak uyumsuzluk modu kullanılır&lt;/p&gt;&lt;p&gt;&lt;b&gt;yanlış&lt;/b&gt; - yüzde uyuşmazlıkları modu kullanılır&lt;/p&gt;                                    mutlak veya yüzde uyuşmazlıkları değerleri modunu seçin.&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="348"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="334"/>
         <source>Absolute mismatches</source>
         <translation>Mutlak uyumsuzluklar</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="349"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="335"/>
         <source>&lt;html&gt;&lt;body&gt;Number of mismatches allowed while aligning reads.&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Okumaları hizalarken izin verilen uyumsuzluk sayısı.&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="351"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="337"/>
         <source>Percentage mismatches</source>
         <translation>Yüzde uyuşmazlıkları</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="352"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="338"/>
         <source>&lt;html&gt;&lt;body&gt;Percentage of mismatches allowed while aligning reads.&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Okumaları hizalarken izin verilen uyumsuzluk yüzdesi.&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="354"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="340"/>
         <source>Align reverse complement reads</source>
         <translation>Ters tamamlayıcı okumaları hizala</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="355"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="341"/>
         <source>&lt;html&gt;&lt;body&gt;Set this option to align both direct and reverse complement reads.&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Hem doğrudan hem de ters tamamlayıcı okumaları hizalamak için bu seçeneği ayarlayın.&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="357"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="343"/>
         <source>Use &quot;best&quot;-mode</source>
         <translation>&quot;En iyi&quot; modunu kullan</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="358"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="344"/>
         <source>&lt;html&gt;&lt;body&gt;Report only the best alignment for each read (in terms of mismatches).&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Her okuma için yalnızca en iyi hizalamayı bildirin (uyumsuzluklar açısından).&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="360"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="346"/>
         <source>Omit reads with qualities lower than</source>
         <translation>Şundan daha düşük niteliklere sahip okumaları atla</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="361"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="347"/>
         <source>&lt;html&gt;&lt;body&gt;Omit reads with qualities lower than the specified value. Reads that have no qualities are not omited.                                    &lt;p&gt;Set &lt;b&gt;&quot;0&quot;&lt;/b&gt; to switch off this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Belirtilen değerden daha düşük niteliklere sahip okumaları atlayın. Nitelikleri olmayan okumalar atlanmaz.                                    &lt;p&gt;Bu seçeneği kapatmak için &lt;b&gt;&quot;0&quot;&lt;/b&gt; ayarlayın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="398"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="375"/>
         <source>Map Reads with UGENE Genome Aligner</source>
         <translation>UGENE Genom Hizalayıcı ile Harita Okumaları</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="398"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="375"/>
         <source>Genome Aligner is a program for mapping short DNA sequence reads to a long reference sequence, developed by the UGENE team.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation>Genom Aligner, UGENE ekibi tarafından geliştirilen, kısa DNA dizisi okumalarını uzun bir referans dizisine eşlemek için kullanılan bir programdır.&lt;br/&gt;&lt;br/&gt;NGS&apos;nin girdiye okumaları ile FAŞTA veya FASTQ dosyalarına URL (ler) sağlayın elemanın portu, parametrelerde referans sırasını ayarlayın. Sonuç, belirtilen SAM dosyasına kaydedilir, dosyanın URL&apos;si çıktı bağlantı noktasına iletilir.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="410"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="387"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="411"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="388"/>
         <source>Index</source>
         <translation>Dizin</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="368"/>
-        <source>Use GPU-optimization</source>
-        <translation>GPU optimizasyonunu kullanın</translation>
-    </message>
-    <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="99"/>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="91"/>
         <source>Short reads list is empty.</source>
         <translation>Kısa okuma listesi boş.</translation>
     </message>
@@ -903,7 +893,7 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
 <context>
     <name>U2::ShortReadAlignerCPU</name>
     <message>
-        <location filename="../src/GenomeAlignerFindTask.cpp" line="215"/>
+        <location filename="../src/GenomeAlignerFindTask.cpp" line="203"/>
         <source>[%1] Index size for part %2/%3 is zero, skipping it.</source>
         <translation>[%1] %2/%3 parçasının dizin boyutu sıfır, atlanır.</translation>
     </message>

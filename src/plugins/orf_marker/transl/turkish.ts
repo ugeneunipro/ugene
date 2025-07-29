@@ -181,8 +181,8 @@ Arama bölgesinin ötesine geçen sınır ORF&apos;lerini göz ardı edin
         <translation>ORF&apos;leri bulun ve ek açıklamalara kaydedin</translation>
     </message>
     <message>
-        <source>Annotation table object is NULL!</source>
-        <translation>Ek açıklama tablosu nesnesi BOŞ!</translation>
+        <source>Object with annotations was removed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -387,10 +387,6 @@ Arama bölgesinin ötesine geçen sınır ORF&apos;lerini göz ardı edin
     <message>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
-    </message>
-    <message>
-        <source>Sequence object is NULL</source>
-        <translation>Sıra nesnesi BOŞ</translation>
     </message>
     <message>
         <source>OK</source>

@@ -76,14 +76,14 @@
 <context>
     <name>U2::NeighborJoinWidget</name>
     <message>
-        <location filename="../src/NeighborJoinWidget.cpp" line="154"/>
+        <location filename="../src/NeighborJoinWidget.cpp" line="156"/>
         <source>Probably, for that alignment there is no enough memory to run PHYLIP dnadist module.The module will require more than %1 MB in the estimation.
 It could cause an error. Do you want to continue?</source>
         <translation>Возможно, для этого выравнивания недостаточно памяти для запуска модуля PHYLIP.Это, по предварительной оценке, потребует больше, чем%1 Мб памяти.
 Это может привести к ошибке. Вы хотите продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.cpp" line="166"/>
+        <location filename="../src/NeighborJoinWidget.cpp" line="168"/>
         <source>Seed must be odd</source>
         <translation>Затравка должна быть нечетной</translation>
     </message>

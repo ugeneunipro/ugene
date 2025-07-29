@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru">
 <context>
+    <name>AlignmentAlgorithmsRegistry</name>
+    <message>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="222"/>
+        <source>Align sequences to alignment with UGENE…</source>
+        <translation type="unfinished">Добавить последовательности к выравниванию с UGENE...</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../src/util_msa_consensus/MsaConsensusUtils.cpp" line="118"/>
@@ -39,14 +47,6 @@
         <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="104"/>
         <source>AlignInAminoFormTask: Input alignment is empty!</source>
         <translation>AlignInAminoFormTask: Входное выравнивание пустое!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::AlignmentAlgorithmsRegistry</name>
-    <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="222"/>
-        <source>Align sequences to alignment with UGENE…</source>
-        <translation>Добавить последовательности к выравниванию с UGENE...</translation>
     </message>
 </context>
 <context>
@@ -177,106 +177,7 @@
     </message>
 </context>
 <context>
-    <name>U2::MSAConsensusAlgorithmFactoryClustal</name>
-    <message>
-        <source>Emulates ClustalW program and file format behavior.</source>
-        <translation type="vanished">Эмулирует программу ClustalW и её интерпретацию формата файла.</translation>
-    </message>
-    <message>
-        <source>ClustalW</source>
-        <translation type="vanished">Схема ClustalW</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSAConsensusAlgorithmFactoryDefault</name>
-    <message>
-        <source>Based on JalView algorithm. Returns &apos;+&apos; if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.</source>
-        <translation type="vanished">В основе лежит алгоритм JalView. Возвращает &apos;+&apos;ˇ, если имеется 2 символа с высокой частотой. Возвращает символ в нижнем регистре, если символ содержится в ряду меньшее число раз, чем это указано в пороге.</translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation type="vanished">Схема по умолчанию</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSAConsensusAlgorithmFactoryLevitsky</name>
-    <message>
-        <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
-Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
-For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
-        <translation type="vanished">Алгоритм представлен Виктором Левицким для работы с выравниваниями ДНК.
-В первую очередь алгоритм вычисляет глобальную частоту появления каждого символа в выравнивании с использованием расширенного (15-символьного) алфавита ДНК.
-Для каждого столбца выбирается наиболее редко встречаемый символ во всём выравнивании, такой что процентное соотношение его появления в столбце больше либо равно значению порога.</translation>
-    </message>
-    <message>
-        <source>Levitsky</source>
-        <translation type="vanished">Схема Левицкого</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSAConsensusAlgorithmFactoryStrict</name>
-    <message>
-        <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
-        <translation type="vanished">Алгоритм возвращает символ пробела (&apos;-&apos;), если частота появления символа в столбце меньше, чем величина, заданная в пороге.</translation>
-    </message>
-    <message>
-        <source>Strict</source>
-        <translation type="vanished">Строгий</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSADistanceAlgorithm</name>
-    <message>
-        <source>MSA distance algorithm &quot;%1&quot; task</source>
-        <translation type="vanished">Задача вычисления алгоритма дистанций в MSA &quot;%1&quot;</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSADistanceAlgorithmFactoryHamming</name>
-    <message>
-        <source>Based on Hamming distance between two sequences</source>
-        <translation type="vanished">На основании расстояния Хэмминга между двумя последовательностями</translation>
-    </message>
-    <message>
-        <source>Hamming dissimilarity</source>
-        <translation type="vanished">Расхождение Хэмминга</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSADistanceAlgorithmFactoryHammingRevCompl</name>
-    <message>
-        <source>Based on Hamming distance between two sequences</source>
-        <translation type="vanished">На основании расстояния Хэмминга между двумя последовательностями</translation>
-    </message>
-    <message>
-        <source>Hamming reverse-complement</source>
-        <translation type="vanished">Значение Хэмминга для обратно-комплементарной</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSADistanceAlgorithmFactorySimilarity</name>
-    <message>
-        <source>Based on similarity distance between two sequences</source>
-        <translation type="vanished">На основании расстояния сходства между двумя последовательностями</translation>
-    </message>
-    <message>
-        <source>Similarity</source>
-        <translation type="vanished">Простое сходство</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSADistanceAlgorithmHammingRevCompl</name>
-    <message>
-        <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
-        <translation type="vanished">Произошла ошибка во время запуска обратно-комплементарного алгоритма Хэмминга.</translation>
-    </message>
-</context>
-<context>
     <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
-    <message>
-        <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
-        <translation type="vanished">Алгоритм выбирает лучший символ из расширенного ДНК алфавита. Учитываются только символы с частотой, превышающей пороговое значение.</translation>
-    </message>
     <message>
         <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="193"/>
         <source>Simple extended</source>
@@ -299,80 +200,80 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MsaColorSchemeRegistry</name>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="564"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="566"/>
         <source>No colors</source>
         <translation>Без цвета</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="572"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="574"/>
         <source>UGENE Sanger</source>
         <translatorcomment>UGENE Sanger</translatorcomment>
         <translation>UGENE Sanger</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="576"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>
         <source>Jalview</source>
         <translation>Jalview</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="619"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="580"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="621"/>
         <source>Percentage identity</source>
         <translation>Процентное соотношение</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="579"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="581"/>
         <source>Percentage identity (colored)</source>
         <translation>Процентное соотношение (цветное)</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="580"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="620"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="582"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="622"/>
         <source>Percentage identity (gray)</source>
         <translation>Процентное соотношение (серый)</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="582"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="584"/>
         <source>Weak similarities</source>
         <translation>Слабая гомология</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="593"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="595"/>
         <source>Zappo</source>
         <translation>Zappo</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="597"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="599"/>
         <source>Tailor</source>
         <translation>Tailor</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="601"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="603"/>
         <source>Hydrophobicity</source>
         <translation>Гидрофобность</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="605"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="607"/>
         <source>Helix propensity</source>
         <translation>Склонность к спиральности</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="609"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="611"/>
         <source>Strand propensity</source>
         <translation>Склонность к линейности</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="613"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="615"/>
         <source>Turn propensity</source>
         <translation>Склонность к сворачиванию</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="617"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="619"/>
         <source>Buried index</source>
         <translation>Индекс</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="622"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="624"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
     </message>

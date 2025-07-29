@@ -343,7 +343,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="69"/>
+        <location filename="../src/HMMIOWorker.cpp" line="70"/>
         <source>HMM Profile</source>
         <translation>Профайл HMM</translation>
     </message>
@@ -976,32 +976,32 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMSearchTask</name>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="46"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="44"/>
         <source>HMM Search</source>
         <translation>Поиск HMM</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="259"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="257"/>
         <source>Invalid HMM alphabet!</source>
         <translation>Неправильный алфавит HMM профайла!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="263"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="261"/>
         <source>Invalid sequence alphabet!</source>
         <translation>Неправильный алфавит последовательности!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="291"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="289"/>
         <source>Amino translation is not available for the sequence alphabet!</source>
         <translation>Не найдена таблица аминокислотной трансляции для выбранной последовательности!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="324"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="322"/>
         <source>Parallel HMM search</source>
         <translation>Параллельный поиск HMM сигналов</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="39"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="37"/>
         <source>HMM search with &apos;%1&apos;</source>
         <translation>Поиск с HMM профайлом &apos;%1&apos;</translation>
     </message>
@@ -1216,58 +1216,58 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::LocalWorkflow::HMMLib</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="72"/>
+        <location filename="../src/HMMIOWorker.cpp" line="73"/>
         <source>HMMER2 Tools</source>
         <translation>Инструменты HMMER2 (скрытые марковские модели)</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="62"/>
+        <location filename="../src/HMMIOWorker.cpp" line="63"/>
         <source>HMM Profile</source>
         <translation>Профайл HMM</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="132"/>
-        <location filename="../src/HMMIOWorker.cpp" line="150"/>
+        <location filename="../src/HMMIOWorker.cpp" line="133"/>
+        <location filename="../src/HMMIOWorker.cpp" line="151"/>
         <source>HMM profile</source>
         <translation>Профайл HMM</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="133"/>
+        <location filename="../src/HMMIOWorker.cpp" line="134"/>
         <source>Location</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="158"/>
+        <location filename="../src/HMMIOWorker.cpp" line="159"/>
         <source>Read HMM2 Profile</source>
         <translation>Чтение профиля HMM2</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="144"/>
+        <location filename="../src/HMMIOWorker.cpp" line="145"/>
         <source>Write HMM2 Profile</source>
         <translation>Запись профиля HMM2</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="132"/>
+        <location filename="../src/HMMIOWorker.cpp" line="133"/>
         <source>Input HMM profile</source>
         <translation>Входной профайл HMM</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="133"/>
+        <location filename="../src/HMMIOWorker.cpp" line="134"/>
         <source>Location hint for the target file.</source>
         <translation>Адрес файла для записи.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="144"/>
+        <location filename="../src/HMMIOWorker.cpp" line="145"/>
         <source>Saves all input HMM profiles to specified location.</source>
         <translation>Сохраняет все входящие профайлы HMM в указанный файл.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="158"/>
+        <location filename="../src/HMMIOWorker.cpp" line="159"/>
         <source>Reads HMM profiles from file(s). The files can be local or Internet URLs.</source>
         <translation>Считывает профайлы HMM из одного или нескольких файлов. Файлы могут быть локальными или адресами Интернет.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="150"/>
+        <location filename="../src/HMMIOWorker.cpp" line="151"/>
         <source>Loaded HMM profile</source>
         <translation>Загруженный профайл HMM</translation>
     </message>
@@ -1275,7 +1275,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::LocalWorkflow::HMMReadPrompter</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="170"/>
+        <location filename="../src/HMMIOWorker.cpp" line="171"/>
         <source>Read HMM profile(s) from %1.</source>
         <translation>Загрузить HMM профайл(ы) из %1.</translation>
     </message>
@@ -1283,7 +1283,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::LocalWorkflow::HMMReader</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="239"/>
+        <location filename="../src/HMMIOWorker.cpp" line="240"/>
         <source>Loaded HMM profile from %1</source>
         <translation>Загружен HMM профайл из %1</translation>
     </message>
@@ -1412,12 +1412,12 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::LocalWorkflow::HMMWritePrompter</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="176"/>
+        <location filename="../src/HMMIOWorker.cpp" line="177"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="180"/>
+        <location filename="../src/HMMIOWorker.cpp" line="181"/>
         <source>Save HMM profile(s) from &lt;u&gt;%1&lt;/u&gt; to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>Сохранить HMM профайл(ы) из &lt;u&gt;%1&lt;/u&gt; в &lt;u&gt;%2&lt;/u&gt;.</translation>
     </message>
@@ -1425,17 +1425,17 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::LocalWorkflow::HMMWriter</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="263"/>
+        <location filename="../src/HMMIOWorker.cpp" line="264"/>
         <source>Empty HMM passed for writing to %1</source>
         <translation>Пустой HMM профайл для записи в %1</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="263"/>
+        <location filename="../src/HMMIOWorker.cpp" line="264"/>
         <source>Unspecified URL for writing HMM</source>
         <translation>Некорректный путь для записи HMM</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="274"/>
+        <location filename="../src/HMMIOWorker.cpp" line="275"/>
         <source>Writing HMM profile to %1</source>
         <translation>Запись HMM профайла &apos;%1&apos;</translation>
     </message>

@@ -388,14 +388,6 @@
         <translation>Экспортировать ферменты</translation>
     </message>
     <message>
-        <source>Load selection</source>
-        <translation>Загрузить выделенное</translation>
-    </message>
-    <message>
-        <source>Save selection</source>
-        <translation>Сохранить выделенное</translation>
-    </message>
-    <message>
         <source>Enzyme table filter</source>
         <translation>Фильтр таблицы ферментов</translation>
     </message>
@@ -496,14 +488,6 @@
         <translation>Очистить выборку</translation>
     </message>
     <message>
-        <source>Select enzymes by length of recognition sequence</source>
-        <translation>Выбрать ферменты по длине выбранной последовательности</translation>
-    </message>
-    <message>
-        <source>Select by length</source>
-        <translation>Выбрать по длине</translation>
-    </message>
-    <message>
         <source>Invert current selection</source>
         <translation>Инвертировать текущее выделение</translation>
     </message>
@@ -512,8 +496,12 @@
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <source>REBASE Info</source>
-        <translation>REBASE Инфо</translation>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -958,14 +946,6 @@ To start ligation create a project or open an existing.</source>
         <translation>Выбор базы ферментов рестрикции</translation>
     </message>
     <message>
-        <source>Minimum length</source>
-        <translation>Минимальная длина</translation>
-    </message>
-    <message>
-        <source>Enter minimum length of recognition sites</source>
-        <translation>Введите минимальную длину сайта распознавания</translation>
-    </message>
-    <message>
         <source>Save selection</source>
         <translation>Сохранить выделение</translation>
     </message>
@@ -980,18 +960,6 @@ To start ligation create a project or open an existing.</source>
     <message>
         <source>Failed to open %1 for writing</source>
         <translation>Невозможно открыть %1 для записи</translation>
-    </message>
-    <message>
-        <source>Error!</source>
-        <translation>Проблема!</translation>
-    </message>
-    <message>
-        <source>No enzyme selected!</source>
-        <translation>Фермент не выбран!</translation>
-    </message>
-    <message>
-        <source>Selected enzyme has no ID!</source>
-        <translation>Выбранный фермент не имеет идентификатора!</translation>
     </message>
     <message>
         <source>Load selection</source>

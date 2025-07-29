@@ -352,7 +352,7 @@
 <context>
     <name>U2::LocalWorkflow::SiteconReadPrompter</name>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="189"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="190"/>
         <source>Read model(s) from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>Загрузить профайлы SITECON из &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -360,7 +360,7 @@
 <context>
     <name>U2::LocalWorkflow::SiteconReader</name>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="232"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="233"/>
         <source>Loaded SITECON model from %1</source>
         <translation>Загружен профайл SITECON из %1</translation>
     </message>
@@ -524,7 +524,7 @@
 <context>
     <name>U2::LocalWorkflow::SiteconWritePrompter</name>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="198"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="199"/>
         <source>Save the profile(s) from &lt;u&gt;%1&lt;/u&gt; to %2.</source>
         <translation>Сохранить все профайлы из &lt;u&gt;%1&lt;/u&gt; в %2.</translation>
     </message>
@@ -532,12 +532,12 @@
 <context>
     <name>U2::LocalWorkflow::SiteconWriter</name>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="257"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="258"/>
         <source>Unspecified URL for writing Sitecon</source>
         <translation>Не укзазан адрес для записи модели SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="273"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="274"/>
         <source>Writing SITECON model to %1</source>
         <translation>Запись профайла SITECON в %1</translation>
     </message>
@@ -825,155 +825,155 @@
 <context>
     <name>U2::SiteconIO</name>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="110"/>
+        <location filename="../src/SiteconIO.cpp" line="107"/>
         <source>Not a sitecon model</source>
         <translation>Not a sitecon model</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="151"/>
+        <location filename="../src/SiteconIO.cpp" line="148"/>
         <source>Error parsing settings, line %1</source>
         <translation>Error parsing settings, line %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="162"/>
+        <location filename="../src/SiteconIO.cpp" line="159"/>
         <source>Error parsing window size: %1</source>
         <translation>Error parsing window size: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="175"/>
+        <location filename="../src/SiteconIO.cpp" line="172"/>
         <source>Error parsing calibration len: %1</source>
         <translation>Error parsing calibration len: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="181"/>
+        <location filename="../src/SiteconIO.cpp" line="178"/>
         <source>Error parsing RSEED: %1</source>
         <translation>Error parsing RSEED: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="187"/>
+        <location filename="../src/SiteconIO.cpp" line="184"/>
         <source>Error parsing number of sequence in original alignment: %1</source>
         <translation>Error parsing number of sequence in original alignment: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="193"/>
+        <location filename="../src/SiteconIO.cpp" line="190"/>
         <source>Error parsing in alignment %1</source>
         <translation>Error parsing in alignment %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="260"/>
+        <location filename="../src/SiteconIO.cpp" line="257"/>
         <source>Error parsing %1 in line %2</source>
         <translation>Error parsing %1 in line %2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="276"/>
+        <location filename="../src/SiteconIO.cpp" line="273"/>
         <source>Error parsing in line %1</source>
         <translation>Error parsing in line %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="286"/>
-        <location filename="../src/SiteconIO.cpp" line="291"/>
+        <location filename="../src/SiteconIO.cpp" line="283"/>
+        <location filename="../src/SiteconIO.cpp" line="288"/>
         <source>Error parsing %1</source>
         <translation>Error parsing %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="295"/>
+        <location filename="../src/SiteconIO.cpp" line="292"/>
         <source>Illegal error %1</source>
         <translation>Illegal error %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="305"/>
+        <location filename="../src/SiteconIO.cpp" line="302"/>
         <source>Error parsing file in line %1</source>
         <translation>Error parsing file in line %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="314"/>
+        <location filename="../src/SiteconIO.cpp" line="311"/>
         <source>Number of &apos;average&apos; and  &apos;sdev&apos; properties not matches</source>
         <translation>Number of &apos;average&apos; and  &apos;sdev&apos; properties not matches</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="319"/>
+        <location filename="../src/SiteconIO.cpp" line="316"/>
         <source>Number of &apos;average&apos; and &apos;weight&apos; properties not matches</source>
         <translation>Number of &apos;average&apos; and &apos;weight&apos; properties not matches</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="324"/>
+        <location filename="../src/SiteconIO.cpp" line="321"/>
         <source>Property in file %1 is not the same as built-in: %2</source>
         <translation>Property in file %1 is not the same as built-in: %2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="351"/>
+        <location filename="../src/SiteconIO.cpp" line="348"/>
         <source>Error info in file is not complete</source>
         <translation>Error info in file is not complete</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="358"/>
+        <location filename="../src/SiteconIO.cpp" line="355"/>
         <source>Model verification error</source>
         <translation>Model verification error</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="201"/>
+        <location filename="../src/SiteconIO.cpp" line="198"/>
         <source>Illegal weight algorithm: %1</source>
         <translation>Illegal weight algorithm: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="211"/>
+        <location filename="../src/SiteconIO.cpp" line="208"/>
         <source>Model size not matched: %1, expected: %2</source>
         <translation>Model size not matched: %1, expected: %2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="234"/>
+        <location filename="../src/SiteconIO.cpp" line="231"/>
         <source>Duplicate property: %1</source>
         <translation>Duplicate property: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="244"/>
+        <location filename="../src/SiteconIO.cpp" line="241"/>
         <source>Property not recognized: %1</source>
         <translation>Property not recognized: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="65"/>
-        <location filename="../src/SiteconIOWorkers.cpp" line="141"/>
-        <location filename="../src/SiteconIOWorkers.cpp" line="151"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="66"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="142"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="152"/>
         <source>Sitecon model</source>
         <translation>Профайл SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="74"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="75"/>
         <source>SITECON</source>
         <translation>SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="48"/>
+        <location filename="../src/SiteconIO.cpp" line="45"/>
         <source>Sitecon models</source>
         <translation>Профайлы SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="141"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="142"/>
         <source>Input Sitecon model</source>
         <translation>Входящий профайл SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="143"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="144"/>
         <source>Saves all input SITECON profiles to specified location.</source>
         <translation>Сохраняет все входящие профайлы SITECON в указанный файл.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="143"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="144"/>
         <source>Write SITECON Model</source>
         <translation>Сохранение модели SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="151"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="152"/>
         <source>Loaded SITECON profile data.</source>
         <translation>Загруженный профайл SITECON.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="157"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="158"/>
         <source>Reads SITECON profiles from file(s). The files can be local or Internet URLs.</source>
         <translation>Считывает профайл(ы) SITECON из указанных файлов. Файлы могут быть локальными либо адресами Интернет.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="157"/>
+        <location filename="../src/SiteconIOWorkers.cpp" line="158"/>
         <source>Read SITECON Model</source>
         <translation>Загрузка модели SITECON</translation>
     </message>

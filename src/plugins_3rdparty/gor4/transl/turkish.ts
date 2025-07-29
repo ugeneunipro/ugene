@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr">
 <context>
+    <name>SecStructPredictTask</name>
+    <message>
+        <location filename="../src/GorIVAlgTask.cpp" line="49"/>
+        <source>seq database not found</source>
+        <translation type="unfinished">seq veritabanı bulunamadı</translation>
+    </message>
+    <message>
+        <location filename="../src/GorIVAlgTask.cpp" line="55"/>
+        <source>observed structures database not found</source>
+        <translation type="unfinished">gözlemlenen yapılar veritabanı bulunamadı</translation>
+    </message>
+    <message>
+        <location filename="../src/GorIVAlgTask.cpp" line="62"/>
+        <source>sequence is too long, max seq size is 10000</source>
+        <translation type="unfinished">sıra çok uzun, maksimum sıra boyutu 10000</translation>
+    </message>
+</context>
+<context>
     <name>U2::GorIVAlgTask</name>
     <message>
         <location filename="../src/gor.cpp" line="151"/>
@@ -29,32 +47,14 @@ Geçersiz amino asit türü veya ikincil yapı durumu : ==&gt;%3&lt;==</translat
 <context>
     <name>U2::SecStructPredictPlugin</name>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="51"/>
+        <location filename="../src/GorIVPlugin.cpp" line="56"/>
         <source>GORIV</source>
         <translation>GORIV</translation>
     </message>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="51"/>
+        <location filename="../src/GorIVPlugin.cpp" line="56"/>
         <source>GORIV protein secondary structure prediction</source>
         <translation>GORIV protein ikincil yapı tahmini</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SecStructPredictTask</name>
-    <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="50"/>
-        <source>seq database not found</source>
-        <translation>seq veritabanı bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="56"/>
-        <source>observed structures database not found</source>
-        <translation>gözlemlenen yapılar veritabanı bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="63"/>
-        <source>sequence is too long, max seq size is 10000</source>
-        <translation>sıra çok uzun, maksimum sıra boyutu 10000</translation>
     </message>
 </context>
 </TS>

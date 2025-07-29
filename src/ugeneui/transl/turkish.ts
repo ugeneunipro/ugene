@@ -67,14 +67,6 @@
         <source>...</source>
         <translation>...</translation>
     </message>
-    <message>
-        <source>Project folder</source>
-        <translation type="vanished">Proje klasörü</translation>
-    </message>
-    <message>
-        <source>Project file</source>
-        <translation type="vanished">Proje dosyası</translation>
-    </message>
 </context>
 <context>
     <name>DirectoriesSettingsWidget</name>
@@ -176,10 +168,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/project_support/ExportProjectDialog.ui" line="34"/>
         <source>Project file name</source>
         <translation>Proje dosyası adı</translation>
-    </message>
-    <message>
-        <source>Destination folder</source>
-        <translation type="vanished">Hedef klasör</translation>
     </message>
 </context>
 <context>
@@ -472,10 +460,6 @@ p, li { white-space: pre-wrap; }
         <source>Close windows</source>
         <translation>Pencereleri kapat</translation>
     </message>
-    <message>
-        <source>UGENE distribution: %1</source>
-        <translation type="vanished">UGENE dağılımı: %1</translation>
-    </message>
 </context>
 <context>
     <name>ResourceSettingsWidget</name>
@@ -706,20 +690,9 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No active project found!</source>
-        <translation type="vanished">Etkin proje bulunamadı!</translation>
-    </message>
-    <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1113"/>
         <source>Load document and add to project: %1</source>
         <translation>Belgeyi yükleyin ve projeye ekleyin: %1</translation>
-    </message>
-</context>
-<context>
-    <name>U2::AppContextImpl</name>
-    <message>
-        <source>Style not available %1</source>
-        <translation type="vanished">Stil mevcut değil %1</translation>
     </message>
 </context>
 <context>
@@ -1136,10 +1109,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentUpdater</name>
     <message>
-        <source>Project contains NULL document</source>
-        <translation type="vanished">Proje BOŞ belge içeriyor</translation>
-    </message>
-    <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="201"/>
         <source>The document &apos;%1&apos; was removed from its original folder. Do you wish to save it? Otherwise, it will be removed from the current project.</source>
         <translation>&apos;%1&apos; belgesi orijinal klasöründen kaldırıldı. Kurtarmak ister misin? Aksi takdirde mevcut projeden kaldırılacaktır.</translation>
@@ -1222,10 +1191,6 @@ Yeniden yüklemenin belgedeki nesnelerle ilişkili bazı görünümlerin kapatı
         <location filename="../src/project_support/ExportProjectDialogController.cpp" line="94"/>
         <source>Project files</source>
         <translation>Proje dosyaları</translation>
-    </message>
-    <message>
-        <source>Choose Folder</source>
-        <translation type="vanished">Klasör Seç</translation>
     </message>
 </context>
 <context>
@@ -1601,32 +1566,6 @@ Now you can type ugene in command line to start UGENE.</source>
 
 Şimdi UGENE&apos;yi başlatmak için komut satırına ugene yazabilirsiniz.</translation>
     </message>
-    <message>
-        <source>Open UGENE User Manual</source>
-        <translation type="vanished">UGENE Kullanım Kılavuzunu Açın</translation>
-    </message>
-    <message>
-        <source>Can not open %1 file. </source>
-        <translation type="vanished">%1 dosyası açılamıyor. </translation>
-    </message>
-    <message>
-        <source>You can try open it manualy from here: %1 
-or view online documentation.
-
-Do you want view online documentation?</source>
-        <translation type="vanished">Buradan manuel olarak açmayı deneyebilirsiniz: %1
-veya çevrimiçi belgeleri görüntüleyin.
-Çevrimiçi belgeleri görüntülemek ister misiniz?</translation>
-    </message>
-    <message>
-        <source>You can try open it manualy from here: %1
-or view online documentation.
-
-Do you want view online documentation?</source>
-        <translation type="vanished">Buradan manuel olarak açmayı deneyebilirsiniz: %1
-veya çevrimiçi belgeleri görüntüleyin.
-Çevrimiçi belgeleri görüntülemek ister misiniz?</translation>
-    </message>
 </context>
 <context>
     <name>U2::MultipleDocumentsReadingModeDialog</name>
@@ -1798,10 +1737,6 @@ veya çevrimiçi belgeleri görüntüleyin.
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Project file already exists.&lt;br&gt;Are you sure you want to overwrite it?&lt;body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Proje dosyası zaten var.&lt;br&gt;Üzerine yazmak istediğinizden emin misiniz?&lt;body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-        <source>Choose folder</source>
-        <translation type="vanished">Klasör seç</translation>
-    </message>
 </context>
 <context>
     <name>U2::ProjectImpl</name>
@@ -1818,25 +1753,9 @@ veya çevrimiçi belgeleri görüntüleyin.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Project contains NULL document</source>
-        <translation type="vanished">Proje BOŞ belge içeriyor</translation>
-    </message>
-    <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="123"/>
         <source>Adding document to the project: %1</source>
         <translation>Projeye belge ekleniyor: %1</translation>
-    </message>
-    <message>
-        <source>Find document failed during resource locking</source>
-        <translation type="vanished">Kaynak kilitleme sırasında belge bulma başarısız oldu</translation>
-    </message>
-    <message>
-        <source>Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</source>
-        <translation type="vanished">Belge yüklemek için yeterli kaynak yok, kaynak adı: &apos;%1&apos; kullanılabilir: %2%3 talep edildilen: %4%3</translation>
-    </message>
-    <message>
-        <source>No document provided for removeDocument</source>
-        <translation type="vanished">Belgeyi kaldırmak için belge sağlanmadı</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="162"/>
@@ -1964,10 +1883,6 @@ veya çevrimiçi belgeleri görüntüleyin.
         <translation>Panodan aç...</translation>
     </message>
     <message>
-        <source>Connect to UGENE shared database...</source>
-        <translation type="vanished">UGENE paylaşılan veritabanına bağlanın...</translation>
-    </message>
-    <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="884"/>
         <source>Save project as</source>
         <translation>Projeyi farklı kaydet</translation>
@@ -2006,10 +1921,6 @@ veya çevrimiçi belgeleri görüntüleyin.
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="141"/>
         <source>Recent files</source>
         <translation>Son dosyalar</translation>
-    </message>
-    <message>
-        <source>project</source>
-        <translation type="vanished">proje</translation>
     </message>
 </context>
 <context>
@@ -2133,10 +2044,6 @@ veya çevrimiçi belgeleri görüntüleyin.
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="943"/>
         <source>Open In</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open view</source>
-        <translation type="vanished">Açık görünümü</translation>
     </message>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="944"/>
@@ -2312,10 +2219,6 @@ veya çevrimiçi belgeleri görüntüleyin.
 <context>
     <name>U2::StatisticalReportController</name>
     <message>
-        <source>&lt;b&gt;Optional:&lt;/b&gt; Help make UGENE better by automatically sending anonymous usage statistics.</source>
-        <translation type="vanished">&lt;b&gt;İsteğe bağlı:&lt;/b&gt; Anonim kullanım istatistiklerini otomatik olarak göndererek UGENE&apos;yi iyileştirmeye yardımcı olun.</translation>
-    </message>
-    <message>
         <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="38"/>
         <source>Welcome to UGENE %1.%2</source>
         <translation>UGENE %1.%2&apos;ye hoş geldiniz</translation>
@@ -2435,10 +2338,6 @@ veya çevrimiçi belgeleri görüntüleyin.
         <location filename="../src/task_view/TaskStatusBar.cpp" line="274"/>
         <source>%1 notification(s)</source>
         <translation>%1 bildirim</translation>
-    </message>
-    <message>
-        <source>Wrong signal sender!</source>
-        <translation type="vanished">Yanlış sinyal gönderen!</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskStatusBar.cpp" line="187"/>
@@ -2597,13 +2496,6 @@ Would you like to download and install it?</source>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="170"/>
         <source>Select translation file</source>
         <translation>Çeviri dosyasını seçin</translation>
-    </message>
-</context>
-<context>
-    <name>U2::UserAppsSettings</name>
-    <message>
-        <source>UGENE initialization started</source>
-        <translation type="vanished">UGENE başlatma başladı</translation>
     </message>
 </context>
 <context>
@@ -2825,30 +2717,14 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <translation>Dil</translation>
     </message>
     <message>
-        <source>Updates</source>
-        <translation type="vanished">Güncellemeler</translation>
-    </message>
-    <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="112"/>
         <source>Check for updates when UGENE starts</source>
         <translation>UGENE başladığında güncellemeleri kontrol edin</translation>
     </message>
     <message>
-        <source>Default settings</source>
-        <translation type="vanished">Öntanımlı ayarlar</translation>
-    </message>
-    <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="142"/>
         <source>Reset settings to default on the next run</source>
         <translation>Bir sonraki çalıştırmada ayarları varsayılana sıfırlayın</translation>
-    </message>
-    <message>
-        <source>Statistical reports</source>
-        <translation type="vanished">İstatistiksel raporlar</translation>
-    </message>
-    <message>
-        <source>Enable statistical reports collecting</source>
-        <translation type="vanished">İstatistiksel rapor toplamayı etkinleştirin</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="51"/>

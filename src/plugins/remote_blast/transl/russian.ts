@@ -471,17 +471,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::CheckNCBISequenceCircularityTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="536"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="533"/>
         <source>Check NCBI sequence circularity</source>
         <translation>Проверка циркулярности NCBI последовательности</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="567"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="564"/>
         <source>Can not check if sequence is circular! Sequence is considered to be linear.</source>
         <translation>Невозможно проверить циркулярность последовательности! Последовательность считается линейной.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="571"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="568"/>
         <source>Can not remove temporary file.</source>
         <translation>Невозможно удалить временный файл.</translation>
     </message>
@@ -489,7 +489,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::CreateAnnotationsFromHttpBlastResultTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="235"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="232"/>
         <source>Create annotations from BLAST results</source>
         <translation>Создать аннотации из результатов BLAST</translation>
     </message>
@@ -817,7 +817,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="112"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="109"/>
         <source>RemoteBLASTTask</source>
         <translation>RemoteBLASTTask</translation>
     </message>
@@ -825,19 +825,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBLASTToAnnotationsTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="47"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="44"/>
         <source>RemoteBLASTTask</source>
         <translation>RemoteBLASTTask</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="67"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="64"/>
         <source>The object was removed
 </source>
         <translation>Объект был удален
 </translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="94"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="91"/>
         <source>File %1 already exists</source>
         <translation>Файл %1 уже существует</translation>
     </message>
@@ -868,12 +868,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
 <context>
     <name>U2::RemoteBlastHttpRequestTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="154"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="151"/>
         <source>Http Blast requests task</source>
         <translation>Http Blast requests task</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="165"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="162"/>
         <source>Incorrect database</source>
         <translation>Неверно задана база данных</translation>
     </message>
