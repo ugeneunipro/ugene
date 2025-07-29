@@ -33,6 +33,8 @@
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
@@ -116,7 +118,8 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->setSpacing(0);
 
-    prevAnnotationButton = new QPushButton(QIcon(":core/images/backward.png"), "");
+    prevAnnotationButton = new QPushButton("");
+    GUIUtils::setIcon(prevAnnotationButton, IconRef("core", "backward.png"));
     prevAnnotationButton->setFixedSize(32, 32);
     prevAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Previous annotation"));
     prevAnnotationButton->setDisabled(true);
@@ -124,7 +127,8 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->addWidget(prevAnnotationButton);
     buttonsLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    nextAnnotationButton = new QPushButton(QIcon(":core/images/forward.png"), "");
+    nextAnnotationButton = new QPushButton("");
+    GUIUtils::setIcon(prevAnnotationButton, IconRef("nextAnnotationButton", "forward.png"));
     nextAnnotationButton->setFixedSize(32, 32);
     nextAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Next annotation"));
     nextAnnotationButton->setObjectName("nextAnnotationButton");

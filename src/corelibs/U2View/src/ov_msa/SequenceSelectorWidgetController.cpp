@@ -24,6 +24,8 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "MaEditorSelection.h"
 
 const int CURSOR_START_POSITION = 0;
@@ -34,6 +36,9 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MsaEditor* _m
     : msa(_msa), defaultSeqName(""), seqId(U2MsaRow::INVALID_ROW_ID) {
     setupUi(this);
     filler = new MSACompletionFiller();
+
+    GUIUtils::setIcon(addSeq, IconRef("core", "navi_right.png"));
+    GUIUtils::setIcon(deleteSeq, IconRef("core", "close_small.png"));
 
     seqLineEdit->setText(msa->getReferenceRowName());
     seqLineEdit->setCursorPosition(CURSOR_START_POSITION);

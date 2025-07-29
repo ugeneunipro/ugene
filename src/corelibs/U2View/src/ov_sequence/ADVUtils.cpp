@@ -30,9 +30,9 @@
 namespace U2 {
 
 ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const IconRef& _iconRef, const QString& text, int ps, const ADVGlobalActionFlags& fl)
-    : GObjectViewAction(v, v, text), pos(ps), flags(fl), iconRef(_iconRef) {
-    if (!iconRef.isEmpty()) {
-        setIcon(GUIUtils::getIconResource(iconRef));
+    : GObjectViewAction(v, v, text), pos(ps), flags(fl) {
+    if (!_iconRef.isEmpty()) {
+        GUIUtils::setIcon(this, _iconRef);
     }
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
     connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVGlobalAction::sl_colorThemeSwitched);
@@ -60,9 +60,6 @@ void ADVGlobalAction::updateState() {
         enabled = alphabetFilter.contains(t);
     }
     setEnabled(enabled);
-    if (!iconRef.isEmpty()) {
-        setIcon(GUIUtils::getIconResource(iconRef));
-    }
 }
 
 }  // namespace U2

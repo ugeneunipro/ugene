@@ -27,6 +27,7 @@
 #include <QMenuBar>
 
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
 
 class QMdiArea;
@@ -121,6 +122,15 @@ protected:
 private:
     void createActions();
     void prepareGUI();
+
+    template<typename T>
+    bool trySetIcon(QWidget* widget, const IconRef& iconRef) {
+        if (auto target = qobject_cast<T*>(widget)) {
+            target->setIcon(GUIUtils::getIconResource(iconRef));
+            return true;
+        }
+        return false;
+    }
 
     QMainWindow* mw = nullptr;
     FixedMdiArea* mdi = nullptr;

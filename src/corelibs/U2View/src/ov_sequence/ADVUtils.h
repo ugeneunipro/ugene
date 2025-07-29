@@ -76,7 +76,6 @@ private:
     QSet<DNAAlphabetType> alphabetFilter;
     int pos;
     ADVGlobalActionFlags flags;
-    IconRef iconRef;
 };
 
 }  // namespace U2

@@ -44,7 +44,7 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
 
 GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const IconRef& _iconRef)
     : groupId(_groupId), iconRef(_iconRef) {
-    setPixmap(GUIUtils::getIconResource(iconRef).pixmap(ICON_SIZE, ICON_SIZE));
+    GUIUtils::setIcon(this, iconRef);
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
@@ -54,17 +54,12 @@ GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const Ic
     setHeaderDeselected();
 
     this->setObjectName(groupId);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &GroupHeaderImageWidget::sl_colorThemeSwitched);
 }
 
 void GroupHeaderImageWidget::mousePressEvent(QMouseEvent* /*event*/) {
     SAFE_POINT(groupId != nullptr, "Internal error: group header with NULL group ID was pressed.", );
 
     emit si_groupHeaderPressed(groupId);
-}
-
-void GroupHeaderImageWidget::sl_colorThemeSwitched() {
-    setPixmap(GUIUtils::getIconResource(iconRef).pixmap(ICON_SIZE, ICON_SIZE));
 }
 
 void GroupHeaderImageWidget::setHeaderSelected() {

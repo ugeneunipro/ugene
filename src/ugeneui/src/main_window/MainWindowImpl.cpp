@@ -30,6 +30,7 @@
 #include <QAction>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QMovie>
 #include <QPainter>
 #include <QPixmap>
 #include <QToolBar>
@@ -589,6 +590,47 @@ void MainWindowImpl::sl_crashUgene() {
 
 void MainWindowImpl::sl_colorThemeSwitched() {
     dockManager->colorThemeSwitched();
+    const auto& allWidgets = QApplication::allWidgets();
+    for (auto widget : qAsConst(allWidgets)) {
+        auto actions = widget->actions();
+        for (auto action : qAsConst(actions)) {
+            auto actionIconRefVariant = action->property(ICON_REF_PROPERTY_NAME);
+            CHECK_CONTINUE(actionIconRefVariant.canConvert<IconRef>());
+
+            action->setIcon(GUIUtils::getIconResource(actionIconRefVariant.value<IconRef>()));
+        }
+        auto wgtIconRefVariant = widget->property(ICON_REF_PROPERTY_NAME);
+        auto windowIconRefVariant = widget->property(WINDOWS_ICON_REF_PROPERTY_NAME);
+        auto movieRefVariant = widget->property(MOVIE_REF_PROPERTY_NAME);
+        if (wgtIconRefVariant.canConvert<IconRef>()) {
+            auto iconRef = wgtIconRefVariant.value<IconRef>();
+            if (auto target = qobject_cast<QAbstractButton*>(widget)) {
+                target->setIcon(GUIUtils::getIconResource(iconRef));
+                continue;
+            } else if (auto menu = qobject_cast<QMenu*>(widget)) {
+                menu->setIcon(GUIUtils::getIconResource(iconRef));
+                continue;
+            } else if (auto target = qobject_cast<QLabel*>(widget)) {
+                target->setPixmap(GUIUtils::getIconResource(iconRef).pixmap(PIXMAP_SIZE, PIXMAP_SIZE));
+                continue;
+            }
+
+            FAIL_CONTINUE(QString("Cannot set icon for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
+        } else if (windowIconRefVariant.canConvert<IconRef>()) {
+            auto windowIconRef = windowIconRefVariant.value<IconRef>();
+            widget->setWindowIcon(GUIUtils::getIconResource(windowIconRef));
+        } else if (movieRefVariant.canConvert<IconRef>()) {
+            auto movieRef = movieRefVariant.value<IconRef>();
+            if (auto target = qobject_cast<QLabel*>(widget)) {
+                auto tmpProgressMovie = target->movie();
+                auto progressMovie = new QMovie(GUIUtils::getResourceName(movieRef), QByteArray(), target);
+                target->setMovie(progressMovie);
+                delete tmpProgressMovie;
+                continue;
+            }
+            FAIL_CONTINUE(QString("Cannot set movie for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
+        }
+    }
 }
 
 void MainWindowImpl::registerStartupChecks(const QList<Task*>& tasks) {

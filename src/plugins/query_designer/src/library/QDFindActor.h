@@ -51,8 +51,8 @@ public:
     virtual QDActor* createInstance() const {
         return new QDFindActor(this);
     }
-    virtual QIcon getIcon() const {
-        return QIcon(":core/images/find_dialog.png");
+    IconRef getIconRef() const override {
+        return IconRef("core", "orf_mfind_dialogarker.png");
     }
 };
 

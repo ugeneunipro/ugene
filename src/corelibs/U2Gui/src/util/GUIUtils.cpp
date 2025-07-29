@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QMovie>
 #include <QPainter>
 #include <QPainterPath>
 #include <QProcess>
@@ -231,19 +232,45 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
 }
 
-QString GUIUtils::getResourceName(const QString& module, const QString& iconName, const QString& innerDirName) {
-    QString inner;
-    if (!innerDirName.isEmpty()) {
-        inner = innerDirName + "/";
+void GUIUtils::setIcon(QObject* object, const IconRef& iconRef) {
+    if (auto action = qobject_cast<QAction*>(object)) {
+        action->setIcon(GUIUtils::getIconResource(iconRef));
+    } else if (auto button = qobject_cast<QAbstractButton*>(object)) {
+        button->setIcon(GUIUtils::getIconResource(iconRef));
+    } else if (auto menu = qobject_cast<QMenu*>(object)) {
+        menu->setIcon(GUIUtils::getIconResource(iconRef));
+    } else if (auto label = qobject_cast<QLabel*>(object)) {
+        label->setPixmap(GUIUtils::getIconResource(iconRef).pixmap(MainWindow::PIXMAP_SIZE, MainWindow::PIXMAP_SIZE));
+    } else {
+        FAIL(QString("Cannot set icon for object %1 of type %2").arg(object->objectName(), object->metaObject()->className()));
     }
-    QString resourceName = QString(":%1/images/%2%3").arg(module).arg(inner).arg(iconName);
+    object->setProperty(MainWindow::ICON_REF_PROPERTY_NAME, QVariant::fromValue(iconRef));
+}
+
+void GUIUtils::setMovie(QLabel* label, const IconRef& iconRef) {
+    auto movie = new QMovie(GUIUtils::getResourceName(iconRef), QByteArray(), label);
+    label->setMovie(movie);
+    movie->setProperty(MainWindow::MOVIE_REF_PROPERTY_NAME, iconRef.toVariant());
+}
+
+void GUIUtils::setWindowIcon(QWidget* widget, const IconRef& iconRef) {
+    widget->setWindowIcon(GUIUtils::getIconResource(iconRef));
+    widget->setProperty(MainWindow::WINDOWS_ICON_REF_PROPERTY_NAME, iconRef.toVariant());
+}
+
+QString GUIUtils::getResourceName(const IconRef& iconRef) {
+    QString inner;
+    if (!iconRef.innerDirName.isEmpty()) {
+        inner = iconRef.innerDirName + "/";
+    }
+    QString resourceName = QString(":%1/images/%2%3").arg(iconRef.iconModule).arg(inner).arg(iconRef.iconName);
     return resourceName;
 }
 
 QIcon GUIUtils::getIconResource(const IconRef& iconRef) {
     CHECK((!iconRef.iconModule.isEmpty() && !iconRef.iconName.isEmpty()), QIcon());
 
-    QString resourceName = GUIUtils::getResourceName(iconRef.iconModule, iconRef.iconName);
+    QString resourceName = GUIUtils::getResourceName(iconRef);
     QPixmap pixmap = QPixmap(resourceName);
     SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(iconRef.iconModule).arg(iconRef.iconName), QIcon());
 

@@ -136,6 +136,11 @@ public:
 
     virtual void registerAction(QAction* action) = 0;
 
+    static constexpr char* ICON_REF_PROPERTY_NAME = "icon-ref";
+    static constexpr char* MOVIE_REF_PROPERTY_NAME = "icon-ref-movie";
+    static constexpr char* WINDOWS_ICON_REF_PROPERTY_NAME = "icon-ref-movie";
+    static constexpr int PIXMAP_SIZE = 16;
+
 signals:
     void si_colorThemeSwitched();
 };

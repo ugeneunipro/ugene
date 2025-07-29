@@ -70,8 +70,8 @@ private:
 class SWQDActorFactory : public QDActorPrototype {
 public:
     SWQDActorFactory();
-    QIcon getIcon() const {
-        return QIcon(":core/images/sw.png");
+    IconRef getIconRef() const override {
+        return IconRef("core", "sw.png");
     }
     virtual QDActor* createInstance() const {
         return new QDSWActor(this);

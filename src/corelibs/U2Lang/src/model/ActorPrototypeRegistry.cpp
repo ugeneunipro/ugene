@@ -71,9 +71,19 @@ ActorPrototype* ActorPrototypeRegistry::getProto(const QString& id) const {
 }
 
 ActorPrototypeRegistry::~ActorPrototypeRegistry() {
-    foreach (QList<ActorPrototype*> l, groups) {
-        qDeleteAll(l);
+    auto gv = groups.values();
+    int gvs = gv.size();
+    for (int i = 0; i < gvs; i++) {
+        auto group = gv[i];
+        auto gs = group.size();
+        for (int j = 0; j < gs; j++){
+            auto g = group[j];
+            delete g;
+        }
     }
+    /*foreach (QList<ActorPrototype*> l, groups) {
+        qDeleteAll(l);
+    }*/
     groups.clear();
 }
 }  // namespace Workflow

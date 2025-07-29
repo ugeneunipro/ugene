@@ -23,12 +23,16 @@
 
 namespace U2 {
 
-IconRef::IconRef(const QString& _iconModule, const QString& _iconName)
-    : iconModule(_iconModule), iconName(_iconName) {
+IconRef::IconRef(const QString& _iconModule, const QString& _iconName, const QString& _innerDirName)
+    : iconModule(_iconModule), iconName(_iconName), innerDirName(_innerDirName) {
 }
 
 bool IconRef::isEmpty() const {
     return iconModule.isEmpty() || iconName.isEmpty();
+}
+
+QVariant IconRef::toVariant() const {
+    return QVariant::fromValue(*this);
 }
 
 }  // namespace U2

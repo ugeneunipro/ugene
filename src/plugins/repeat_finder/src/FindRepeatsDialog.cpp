@@ -35,6 +35,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
 
@@ -158,7 +159,7 @@ void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStri
     }
     tb->setMenu(m);
     tb->setPopupMode(QToolButton::InstantPopup);
-    tb->setIcon(QIcon(":/core/images/predefined_annotation_groups.png"));
+    GUIUtils::setIcon(tb, IconRef("core", "predefined_annotation_groups.png"));
 }
 
 QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {

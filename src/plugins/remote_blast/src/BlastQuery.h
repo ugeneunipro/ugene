@@ -57,8 +57,8 @@ public:
     QDActor* createInstance() const override {
         return new QDCDDActor(this);
     }
-    QIcon getIcon() const override {
-        return QIcon(":remote_blast/images/remote_db_request.png");
+    IconRef getIconRef() const override {
+        return IconRef("remote_blast", "remote_db_request.png");
     }
 };
 

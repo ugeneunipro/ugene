@@ -254,7 +254,8 @@ void MaEditorWgt::initActions() {
     copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
     addAction(copySelectionAction);
 
-    copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy (custom format)"), this);
+    copyFormattedSelectionAction = new QAction(tr("Copy (custom format)"), this);
+    GUIUtils::setIcon(copyFormattedSelectionAction, IconRef("core", "copy_sequence.png"));
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);

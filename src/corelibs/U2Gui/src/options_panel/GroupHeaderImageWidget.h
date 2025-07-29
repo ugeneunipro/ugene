@@ -54,15 +54,11 @@ signals:
 protected:
     void mousePressEvent(QMouseEvent*) override;
 
-private slots:
-    void sl_colorThemeSwitched();
-
 private:
     QString groupId;
     IconRef iconRef;
 
     static const QString HEADER_COMMON_STYLE;
-    static constexpr int ICON_SIZE = 16;
 };
 
 }  // namespace U2

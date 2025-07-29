@@ -248,7 +248,6 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
     delete textPattern;
     textPattern = findPatternTextEdit;
 
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
@@ -256,7 +255,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
                                                    << editEnd->objectName());
 
     ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
-    progressLabel->setMovie(progressMovie);
+    GUIUtils::setMovie(progressLabel, IconRef("core", "progress.gif"));
     if (activeContext != nullptr) {
         // Initializing the annotation model
         CreateAnnotationModel annotModel;
@@ -303,7 +302,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
 }
 
 void FindPatternWidget::showCurrentResultAndStopProgress() const {
-    progressMovie->stop();
+    progressLabel->movie()->stop();
     progressLabel->hide();
     resultLabel->show();
     updateResultLabelText();
@@ -1481,7 +1480,7 @@ int FindPatternWidget::getTargetSequenceLength() const {
 void FindPatternWidget::startProgressAnimation() {
     resultLabel->setText(tr("Results:"));
     progressLabel->show();
-    progressMovie->start();
+    progressLabel->movie()->start();
 }
 
 void FindPatternWidget::startTrackingFocusedSequenceSelection() {

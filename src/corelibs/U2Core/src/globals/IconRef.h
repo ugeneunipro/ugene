@@ -28,7 +28,11 @@ namespace U2 {
 struct U2CORE_EXPORT IconRef {
     IconRef() = default;
     IconRef(const QString& _iconModule,
-               const QString& _iconName);
+               const QString& _iconName,
+               const QString& _innerDirName = QString());
+
+    // Convert IconRef to QVariant
+    QVariant toVariant() const;
 
     // True if nothing is set
     bool isEmpty() const;
@@ -37,6 +41,8 @@ struct U2CORE_EXPORT IconRef {
     QString iconModule;
     // Icon name
     QString iconName;
+    // Inner directory name - if image is in some inner directory (e.g. welcome_page in ugeneui)
+    QString innerDirName;
 };
 
 }  // namespace U2

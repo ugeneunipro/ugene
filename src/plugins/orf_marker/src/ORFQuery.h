@@ -51,8 +51,8 @@ private:
 class QDORFActorPrototype : public QDActorPrototype {
 public:
     QDORFActorPrototype();
-    QIcon getIcon() const {
-        return QIcon(":orf_marker/images/orf_marker.png");
+    IconRef getIconRef() const override {
+        return IconRef("orf_marker", "orf_marker.png");
     }
     virtual QDActor* createInstance() const {
         return new QDORFActor(this);

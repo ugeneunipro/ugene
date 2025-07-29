@@ -410,12 +410,12 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setToolTip(item->getDocumentation());
     a->setCheckable(true);
-    const auto& ip = item->getIconRef();
-    if (ip.iconName.isEmpty()) {
+    const auto& iconRef = item->getIconRef();
+    if (iconRef.isEmpty()) {
         item->setIconRef(IconRef("workflow_designer", "green_circle.png"));
     }
     protoActionsName.insert(item, a);
-    a->setIcon(GUIUtils::getIconResource(ip));
+    GUIUtils::setIcon(a, item->getIconRef());
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));
