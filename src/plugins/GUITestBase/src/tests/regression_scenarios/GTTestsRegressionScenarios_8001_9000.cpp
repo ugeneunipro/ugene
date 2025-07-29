@@ -89,6 +89,8 @@
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -1555,6 +1557,21 @@ GUI_TEST_CLASS_DEFINITION(test_8170) {
     GTUtilsDialog::waitForDialog(new PopupChecker({"Restriction Sites"}, PopupChecker::CheckOptions(PopupChecker::CheckOption::IsUnchecked)));
     GTWidget::click(GTWidget::findWidget("AutoAnnotationUpdateAction", parent));
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8174) {
+    GTFile::copy(dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "/human_T1.fa");
+    GTUtilsDialog::waitForDialog(new DotPlotFiller());
+    GTUtilsDialog::waitForDialog(
+        new BuildDotPlotFiller(
+            sandBoxDir + "/human_T1.fa",
+            "", false, true));
+    GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
+    //GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
+
+    QFile::remove(sandBoxDir + "/human_T1.fa");
+    GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
+    GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
 }
 
 }  // namespace GUITest_regression_scenarios
