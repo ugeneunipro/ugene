@@ -220,7 +220,7 @@
         <translation>Durum</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="185"/>
+        <location filename="../src/WMQuery.cpp" line="190"/>
         <location filename="../src/WeightMatrixSearchWorker.cpp" line="80"/>
         <source>Minimum score to detect transcription factor binding site</source>
         <translation>Transkripsiyon faktörü bağlama bölgesini tespit etmek için minimum puan</translation>
@@ -229,37 +229,37 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/WMQuery.cpp" line="183"/>
+        <location filename="../src/WMQuery.cpp" line="188"/>
         <source>Searches the sequence for transcription factor binding sites significantly similar to the specified weight matrix.</source>
         <translation>Belirtilen ağırlık matrisine önemli ölçüde benzer transkripsiyon faktörü bağlanma bölgeleri için diziyi arar.</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="182"/>
+        <location filename="../src/WMQuery.cpp" line="187"/>
         <source>Weight Matrix</source>
         <translation>Ağırlık Matrisi</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="185"/>
+        <location filename="../src/WMQuery.cpp" line="190"/>
         <source>Min score</source>
         <translation>Minimum puan</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="186"/>
+        <location filename="../src/WMQuery.cpp" line="191"/>
         <source>Matrix</source>
         <translation>Matris</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="186"/>
+        <location filename="../src/WMQuery.cpp" line="191"/>
         <source>Path to profile</source>
         <translation>Profil yolu</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="77"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="76"/>
         <source>Weight matrix</source>
         <translation>Ağırlık matrisi</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="299"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="298"/>
         <source>Frequency matrix</source>
         <translation>Frekans matrisi</translation>
     </message>
@@ -420,7 +420,7 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixReadPrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="418"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="417"/>
         <source>Read model(s) from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den modelleri okuyun.</translation>
     </message>
@@ -428,7 +428,7 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixReader</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="458"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="457"/>
         <source>Loaded frequency matrix from %1</source>
         <translation>%1&apos;den yüklenen frekans matrisi</translation>
     </message>
@@ -436,7 +436,7 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixWritePrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="427"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="426"/>
         <source>Save the profile(s) from &lt;u&gt;%1&lt;/u&gt; to %2.</source>
         <translation>Profilleri &lt;u&gt;%1&lt;/u&gt; &apos;den %2&apos;ye kaydedin.</translation>
     </message>
@@ -444,12 +444,12 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixWriter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="483"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="482"/>
         <source>Unspecified URL for writing frequency matrix</source>
         <translation>Frekans matrisi yazmak için belirtilmemiş URL</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="499"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="498"/>
         <source>Writing frequency matrix to %1</source>
         <translation>Frekans matrisi %1&apos;e yazılıyor</translation>
     </message>
@@ -533,7 +533,7 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixReadPrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="196"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="195"/>
         <source>Read model(s) from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den modelleri okuyun.</translation>
     </message>
@@ -541,7 +541,7 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixReader</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="236"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="235"/>
         <source>Loaded weight matrix from %1</source>
         <translation>%1&apos;den yüklü ağırlık matrisi</translation>
     </message>
@@ -660,7 +660,7 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixWritePrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="205"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="204"/>
         <source>Save the profile(s) from &lt;u&gt;%1&lt;/u&gt; to %2.</source>
         <translation>Profilleri &lt;u&gt;%1&lt;/u&gt; &apos;den %2&apos;ye kaydedin.</translation>
     </message>
@@ -668,12 +668,12 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixWriter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="261"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="260"/>
         <source>Unspecified URL for writing weight matrix</source>
         <translation>Ağırlık matrisi yazmak için belirtilmemiş URL</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="277"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="276"/>
         <source>Writing weight matrix to %1</source>
         <translation>Ağırlık matrisi %1&apos;e yazılıyor</translation>
     </message>
@@ -690,27 +690,27 @@
 <context>
     <name>U2::PFMatrixBuildTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="325"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="328"/>
         <source>Build Frequency Matrix</source>
         <translation>Frekans Matrisi Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="332"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="335"/>
         <source>Sequences in alignment have various lengths</source>
         <translation>Hizalamadaki dizilerin çeşitli uzunlukları vardır</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="336"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="339"/>
         <source>Alignment is empty</source>
         <translation>Hizalama boş</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="340"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="343"/>
         <source>Alignment is not nucleic</source>
         <translation>Hizalama nükleik değildir</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="343"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="346"/>
         <source>Calculating frequencies of nucleotids</source>
         <translation>Nükleotidlerin frekanslarının hesaplanması</translation>
     </message>
@@ -718,27 +718,27 @@
 <context>
     <name>U2::PFMatrixBuildToFileTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="353"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="360"/>
         <source>Build Weight Matrix</source>
         <translation>Ağırlık Matrisi Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="363"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="370"/>
         <source>Input format error</source>
         <translation>Giriş biçimi hatası</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="388"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="395"/>
         <source>Loading alignment</source>
         <translation>Hizalama yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="419"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="426"/>
         <source>Wrong sequence alphabet</source>
         <translation>Yanlış sıralama alfabesi</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="428"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="435"/>
         <source>No alignments or sequences found</source>
         <translation>Hizalama veya sıra bulunamadı</translation>
     </message>
@@ -746,22 +746,22 @@
 <context>
     <name>U2::PFMatrixFormat</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="47"/>
+        <location filename="../src/PMatrixFormat.cpp" line="49"/>
         <source>Position frequency matrix</source>
         <translation>Konum frekans matrisi</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="49"/>
+        <location filename="../src/PMatrixFormat.cpp" line="51"/>
         <source>Position frequency matrix file.</source>
         <translation>Konum frekans matrisi dosyası.</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="83"/>
+        <location filename="../src/PMatrixFormat.cpp" line="93"/>
         <source>The file format is not PFM</source>
         <translation>Dosya biçimi PFM değil</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="84"/>
+        <location filename="../src/PMatrixFormat.cpp" line="96"/>
         <source>Zero length or corrupted model
 Maybe model data are not enough for selected algorithm</source>
         <translation>Sıfır uzunlukta veya bozuk model
@@ -771,7 +771,7 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PFMatrixReadTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="69"/>
+        <location filename="../src/WeightMatrixIO.h" line="60"/>
         <source>Read Frequency Matrix</source>
         <translation>Frekans Matrisini Okuyun</translation>
     </message>
@@ -779,7 +779,7 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PFMatrixViewFactory</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="111"/>
+        <location filename="../src/PMatrixFormat.cpp" line="126"/>
         <source>Open multiple views</source>
         <translation>Birden çok görünüm açın</translation>
     </message>
@@ -792,7 +792,7 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PFMatrixWriteTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="107"/>
+        <location filename="../src/WeightMatrixIO.h" line="98"/>
         <source>Save position frequency matrix</source>
         <translation>Pozisyon frekans matrisini kaydedin</translation>
     </message>
@@ -800,101 +800,101 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PWMBuildDialogController</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="82"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="88"/>
         <source>Select file with alignment</source>
         <translation>Hizalamalı dosyayı seçin</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="141"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="144"/>
         <source>Wrong sequence alphabet</source>
         <translation>Yanlış sıralama alfabesi</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="281"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="284"/>
         <source>Select file to save frequency matrix to...</source>
         <translation>Frekans matrisinin kaydedileceği dosyayı seçin...</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="284"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="302"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="287"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="305"/>
         <source>Frequency matrices</source>
         <translation>Frekans matrisleri</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="285"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="303"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="288"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="306"/>
         <source>Weight matrices</source>
         <translation>Ağırlık matrisleri</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="299"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="302"/>
         <source>Select file to save weight matrix to...</source>
         <translation>Ağırlık matrisinin kaydedileceği dosyayı seçin...</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="202"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="205"/>
         <source>Illegal input file name</source>
         <translation>Geçersiz girdi dosyası adı</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="209"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="212"/>
         <source>Illegal output file name</source>
         <translation>Geçersiz çıktı dosyası adı</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="239"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="242"/>
         <source>Counting frequency statistics</source>
         <translation>Sıklık istatistiklerini sayma</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="242"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="245"/>
         <source>Hide</source>
         <translation>Gizle</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="63"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="243"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="70"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="246"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="115"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="118"/>
         <source>Could not detect the format of the file. Files must be in supported multiple alignment or sequence formats.</source>
         <translation>Dosyanın biçimi tespit edilemedi. Dosyalar, desteklenen çoklu hizalama veya sıra formatlarında olmalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="133"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="136"/>
         <source>There are no sequences in the file.</source>
         <translation>Dosyada hiç sekans yok.</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="255"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="258"/>
         <source>Build finished with errors: %1</source>
         <translation>Derleme hatalarla tamamlandı: %1</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="258"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="261"/>
         <source>Build canceled</source>
         <translation>Derleme iptal edildi</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="261"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="264"/>
         <source>Build finished successfully</source>
         <translation>Derleme başarıyla tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="62"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="264"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="69"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="267"/>
         <source>Start</source>
         <translation>Başla</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="265"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="268"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="271"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="274"/>
         <source>Running state %1 progress %2%</source>
         <translation>%1 ilerleme durumu %2%</translation>
     </message>
@@ -936,54 +936,54 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
         <translation>Bulunan sonuçlar: %1.</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="217"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="214"/>
         <source>Select file with frequency or weight matrix</source>
         <translation>Frekans veya ağırlık matrisli dosyayı seçin</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="290"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="287"/>
         <source>Same model with same parameters already in the search queue</source>
         <translation>Arama kuyruğunda zaten bulunan aynı parametrelere sahip aynı model</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="359"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="473"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="356"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="470"/>
         <source>Model not selected</source>
         <translation>Model seçilmedi</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="365"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="362"/>
         <source>Load file with list of matrices</source>
         <translation>Dosyayı matris listesi ile yükle</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="365"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="407"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="362"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="404"/>
         <source>CSV files (*.csv)</source>
         <translation>CSV dosyaları (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="407"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="404"/>
         <source>Save file with list of matrices</source>
         <translation>Dosyayı matris listesiyle kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="434"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="431"/>
         <source>Select folder with frequency or weight matrices</source>
         <translation>Frekans veya ağırlık matrisleri içeren klasörü seçin</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="582"/>
         <source>Reverse complement strand</source>
         <translation>Ters tamamlayıcı iplik</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="582"/>
         <source>Direct strand</source>
         <translation>Direkt dize</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="275"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="272"/>
         <source>Zero length or corrupted model</source>
         <translation>Sıfır uzunlukta veya bozuk model</translation>
     </message>
@@ -998,15 +998,15 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
         <translation>Ara</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="331"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="565"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="328"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="562"/>
         <source>Zero length or corrupted model
 Maybe model data are not enough for selected algorithm</source>
         <translation>Sıfır uzunlukta veya bozuk model
 Model verileri seçilen algoritma için yeterli olmayabilir</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="483"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="480"/>
         <source>Range is too small</source>
         <translation>Menzil çok küçük</translation>
     </message>
@@ -1014,28 +1014,28 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PWMatrixBuildTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="440"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="446"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="447"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="453"/>
         <source>Build Weight Matrix</source>
         <translation>Ağırlık Matrisi Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="454"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="461"/>
         <source>Can&apos;t convert mononucleotide matrix to dinucleotide one</source>
         <translation>Mononükleotid matrisi bir dinükleotid matrisine dönüştürülemez</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="466"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="473"/>
         <source>Sequences in alignment have various lengths</source>
         <translation>Hizalamadaki dizilerin çeşitli uzunlukları vardır</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="470"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="477"/>
         <source>Alignment is empty</source>
         <translation>Hizalama boş</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="474"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="481"/>
         <source>Alignment is not nucleic</source>
         <translation>Hizalama nükleik değildir</translation>
     </message>
@@ -1043,27 +1043,27 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PWMatrixBuildToFileTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="497"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="504"/>
         <source>Build Weight Matrix</source>
         <translation>Ağırlık Matrisi Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="507"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="514"/>
         <source>Input format error</source>
         <translation>Giriş biçimi hatası</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="515"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="522"/>
         <source>Loading alignment</source>
         <translation>Hizalama yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="546"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="553"/>
         <source>Wrong sequence alphabet</source>
         <translation>Yanlış sıralama alfabesi</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="556"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="563"/>
         <source>No alignments or sequences found</source>
         <translation>Hizalama veya sıra bulunamadı</translation>
     </message>
@@ -1071,32 +1071,32 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PWMatrixFormat</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="155"/>
+        <location filename="../src/PMatrixFormat.cpp" line="170"/>
         <source>Position weight matrix</source>
         <translation>Konum ağırlık matrisi</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="157"/>
+        <location filename="../src/PMatrixFormat.cpp" line="172"/>
         <source>Position weight matrix file.</source>
         <translation>Konum ağırlık matrisi dosyası.</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="198"/>
+        <location filename="../src/PMatrixFormat.cpp" line="221"/>
         <source>The file format is not PWM</source>
         <translation>Dosya biçimi PWM değil</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="199"/>
-        <source>Zero length or corrupted model
+        <location filename="../src/PMatrixFormat.cpp" line="224"/>
+        <source>Zero length or corrupted model.
 Maybe model data are not enough for selected algorithm</source>
-        <translation type="unfinished">Sıfır uzunlukta veya bozuk model
+        <translation>Sıfır uzunluk veya bozuk model.
 Model verileri seçilen algoritma için yeterli olmayabilir</translation>
     </message>
 </context>
 <context>
     <name>U2::PWMatrixReadTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="88"/>
+        <location filename="../src/WeightMatrixIO.h" line="79"/>
         <source>Read Weight Matrix</source>
         <translation>Ağırlık Matrisini Okuyun</translation>
     </message>
@@ -1104,7 +1104,7 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PWMatrixViewFactory</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="226"/>
+        <location filename="../src/PMatrixFormat.cpp" line="254"/>
         <source>Open multiple views</source>
         <translation>Birden çok görünüm açın</translation>
     </message>
@@ -1117,7 +1117,7 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::PWMatrixWriteTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="121"/>
+        <location filename="../src/WeightMatrixIO.h" line="112"/>
         <source>Save weight matrix</source>
         <translation>Ağırlık matrisini kaydedin</translation>
     </message>
@@ -1125,27 +1125,27 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::QDWMActor</name>
     <message>
-        <location filename="../src/WMQuery.cpp" line="105"/>
+        <location filename="../src/WMQuery.cpp" line="110"/>
         <source>both strands</source>
         <translation>her iki dize</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="108"/>
+        <location filename="../src/WMQuery.cpp" line="113"/>
         <source>direct strand</source>
         <translation>direkt dize</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="111"/>
+        <location filename="../src/WMQuery.cpp" line="116"/>
         <source>complement strand</source>
         <translation>tamamlayıcı dize</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="123"/>
+        <location filename="../src/WMQuery.cpp" line="128"/>
         <source>Searches TFBS with all profiles from &lt;u&gt;%1&lt;/u&gt; &lt;br&gt; Recognizes sites with &lt;u&gt;similarity %2&lt;/u&gt;, processes &lt;u&gt;%3&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den tüm profillerle TFBS&apos;yi arar &lt;br&gt;&lt;u&gt; %2&lt;/u&gt; benzerliği olan siteleri tanır, &lt;u&gt;%3&lt;/u&gt; işlemini işler.</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="152"/>
+        <location filename="../src/WMQuery.cpp" line="157"/>
         <source>%1: sequence should be nucleic.</source>
         <translation>%1: dizi nükleik olmalıdır.</translation>
     </message>
@@ -1162,7 +1162,7 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::WMQDTask</name>
     <message>
-        <location filename="../src/WMQuery.cpp" line="45"/>
+        <location filename="../src/WMQuery.cpp" line="50"/>
         <source>Weight matrix query</source>
         <translation>Ağırlık matrisi sorgusu</translation>
     </message>
@@ -1178,124 +1178,124 @@ Model verileri seçilen algoritma için yeterli olmayabilir</translation>
 <context>
     <name>U2::WeightMatrixIO</name>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="48"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="52"/>
         <source>Frequency and weight matrices</source>
         <translation>Frekans ve ağırlık matrisleri</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="55"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="56"/>
         <source>Frequency matrices</source>
         <translation>Frekans matrisleri</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="62"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="60"/>
         <source>Weight matrices</source>
         <translation>Ağırlık matrisleri</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="99"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="189"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="112"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="220"/>
         <source>Error parsing settings line %1</source>
         <translation>Ayarlar satırı %1 ayrıştırılırken hata oluştu</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="107"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="198"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="120"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="229"/>
         <source>Error parsing value %1</source>
         <translation>%1 değeri ayrıştırılırken hata oluştu</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="111"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="124"/>
         <source>Unexpected negative frequency value %1</source>
         <translation>Beklenmeyen negatif frekans değeri %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="122"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="208"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="138"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="242"/>
         <source>Incorrect size of weight matrix: %1</source>
         <translation>Yanlış ağırlık matrisi boyutu: %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="71"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="80"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="148"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="158"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="302"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="70"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="79"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="147"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="157"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="301"/>
         <source>Weight matrix</source>
         <translation>Ağırlık matrisi</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="141"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="363"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="140"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="362"/>
         <source>Location</source>
         <translation>Konum</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="141"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="363"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="140"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="362"/>
         <source>Location hint for the target file.</source>
         <translation>Hedef dosya için konum ipucu.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="148"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="147"/>
         <source>Input weight matrix</source>
         <translation>Giriş ağırlık matrisi</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="150"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="149"/>
         <source>Write Weight Matrix</source>
         <translation>Ağırlık Matrisi Yaz</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="150"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="149"/>
         <source>Saves all input weight matrices to specified location.</source>
         <translation>Tüm giriş ağırlık matrislerini belirtilen konuma kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="158"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="380"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="157"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="379"/>
         <source>Loaded weight matrices data.</source>
         <translation>Yüklü ağırlık matrisleri verileri.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="164"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="163"/>
         <source>Read Weight Matrix</source>
         <translation>Ağırlık Matrisini Okuyun</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="164"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="163"/>
         <source>Reads weight matrices from file(s). The files can be local or Internet URLs.</source>
         <translation>Dosya (lar) dan ağırlık matrislerini okur. Dosyalar yerel veya İnternet URL&apos;leri olabilir.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="293"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="370"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="380"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="292"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="369"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="379"/>
         <source>Frequency matrix</source>
         <translation>Frekans matrisi</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="370"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="369"/>
         <source>Input frequency matrix</source>
         <translation>Giriş frekansı matrisi</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="372"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="371"/>
         <source>Write Frequency Matrix</source>
         <translation>Frekans Matrisi Yaz</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="372"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="371"/>
         <source>Saves all input frequency matrices to specified location.</source>
         <translation>Tüm giriş frekansı matrislerini belirtilen konuma kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="386"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="385"/>
         <source>Read Frequency Matrix</source>
         <translation>Frekans Matrisini Okuyun</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="386"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="385"/>
         <source>Reads frequency matrices from file(s). The files can be local or Internet URLs.</source>
         <translation>Dosyalardan frekans matrislerini okur. Dosyalar yerel veya İnternet URL&apos;leri olabilir.</translation>
     </message>

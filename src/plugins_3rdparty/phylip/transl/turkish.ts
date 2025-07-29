@@ -65,25 +65,16 @@
     </message>
 </context>
 <context>
-    <name>U2::NeighborJoinCalculateTreeTask</name>
-    <message>
-        <location filename="../src/NeighborJoinAdapter.cpp" line="159"/>
-        <location filename="../src/NeighborJoinAdapter.cpp" line="243"/>
-        <source>Failed to compute distance matrix: %1. Try to update run parameters.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::NeighborJoinWidget</name>
     <message>
-        <location filename="../src/NeighborJoinWidget.cpp" line="156"/>
+        <location filename="../src/NeighborJoinWidget.cpp" line="147"/>
         <source>Probably, for that alignment there is no enough memory to run PHYLIP dnadist module.The module will require more than %1 MB in the estimation.
 It could cause an error. Do you want to continue?</source>
         <translation>Возможно, для этого выравнивания недостаточно памяти для запуска модуля PHYLIP.Это, по предварительной оценке, потребует больше, чем%1 Мб памяти.
 Это может привести к ошибке. Вы хотите продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.cpp" line="168"/>
+        <location filename="../src/NeighborJoinWidget.cpp" line="158"/>
         <source>Seed must be odd</source>
         <translation>Затравка должна быть нечетной</translation>
     </message>
@@ -91,12 +82,12 @@ It could cause an error. Do you want to continue?</source>
 <context>
     <name>U2::PhylipCmdlineTask</name>
     <message>
-        <location filename="../src/PhylipCmdlineTask.cpp" line="53"/>
+        <location filename="../src/PhylipCmdlineTask.cpp" line="54"/>
         <source>PHYLIP command line wrapper task</source>
         <translation>PHYLIP command line wrapper task</translation>
     </message>
     <message>
-        <location filename="../src/PhylipCmdlineTask.cpp" line="75"/>
+        <location filename="../src/PhylipCmdlineTask.cpp" line="76"/>
         <source>No tree objects found.</source>
         <translation>No tree objects found.</translation>
     </message>
@@ -113,26 +104,11 @@ It could cause an error. Do you want to continue?</source>
         <source>PHYLIP (the PHYLogeny Inference Package) is a package of programs for inferring phylogenies (evolutionary trees). Original version at: http://evolution.genetics.washington.edu/phylip.html</source>
         <translation>PHYLIP (the PHYLogeny Inference Package) - пакет программ для построения филогенетических деревьев. Оригинальная версия находится по адресу: http://evolution.genetics.washington.edu/phylip.html</translation>
     </message>
-    <message>
-        <location filename="../src/DistanceMatrix.cpp" line="685"/>
-        <source>invalid distance matrix size: %1x%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/DistanceMatrix.cpp" line="690"/>
-        <source>distance matrix contains infinite values</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/DistanceMatrix.cpp" line="700"/>
-        <source>distance matrix contains only zeros</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>U2::PhylipTask</name>
     <message>
-        <location filename="../src/PhylipTask.cpp" line="34"/>
+        <location filename="../src/PhylipTask.cpp" line="33"/>
         <source>PHYLIP task</source>
         <translation>PHYLIP task</translation>
     </message>

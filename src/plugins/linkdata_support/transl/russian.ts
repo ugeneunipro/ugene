@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru" sourcelanguage="en">
+<TS version="2.0" language="ru" sourcelanguage="en">
 <context>
     <name>QObject</name>
     <message>
@@ -26,7 +26,7 @@
 <context>
     <name>U2::LinkDataSupportPlugin</name>
     <message>
-        <location filename="../src/LinkDataSupportPlugin.cpp" line="36"/>
+        <location filename="../src/LinkDataSupportPlugin.cpp" line="35"/>
         <source>LinkData Support</source>
         <translation>LinkData Support</translation>
     </message>

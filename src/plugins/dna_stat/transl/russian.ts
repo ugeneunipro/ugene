@@ -286,27 +286,27 @@
 <context>
     <name>U2::DistanceMatrixMSAProfileDialog</name>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="58"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="61"/>
         <source>Generate</source>
         <translation>Создать отчет</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="59"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="62"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="94"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="97"/>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="125"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="128"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="125"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="128"/>
         <source>File URL is empty</source>
         <translation>Не указан файл для сохранения отчета</translation>
     </message>
@@ -314,74 +314,74 @@
 <context>
     <name>U2::DistanceMatrixMSAProfileTask</name>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="150"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="153"/>
         <source>Generate distance matrix</source>
         <translation>Рассчитать матрицу расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="177"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="180"/>
         <source>No output file name specified</source>
         <translation>Не указано имя файла для сохранения отчета</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="200"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="203"/>
         <source>Multiple Sequence Alignment Distance Matrix</source>
         <translation>Матрица расстояний множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="203"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="206"/>
         <source>Alignment file:</source>
         <translation>Файл:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="204"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="207"/>
         <source>Table content:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="214"/>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="247"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="217"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="250"/>
         <source>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</source>
         <translation>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="221"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="224"/>
         <source>Group statistics of multiple alignment</source>
         <translation>Групповая статистика множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="254"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="257"/>
         <source>Legend:</source>
         <translation>Легенда:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="185"/>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="274"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="188"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="277"/>
         <source>Can&apos;t open file for write: %1</source>
         <translation>Не могу открыть файл для записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="315"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="318"/>
         <source>There is not enough groups to create distance matrix!</source>
         <translation>Недостаточно групп для того, чтобы создать матрицу расстояний!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="367"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="370"/>
         <source>Task was finished with an error: %1</source>
         <translation>Task was finished with an error: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="371"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="374"/>
         <source>Distanse matrix for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation>Distanse matrix for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="384"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="387"/>
         <source>Distance matrix</source>
         <translation>Матрица расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="384"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="387"/>
         <source>Distance matrix for %1</source>
         <translation>Матрица расстояний для %1</translation>
     </message>

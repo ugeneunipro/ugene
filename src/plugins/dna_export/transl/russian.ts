@@ -287,95 +287,6 @@
         <source>Include reference sequence</source>
         <translation>Добавить референсную последовательность в файл</translation>
     </message>
-    <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="41"/>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="42"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="71"/>
-        <source>Export Alignment</source>
-        <translation type="unfinished">Экспорт выравнивания</translation>
-    </message>
-</context>
-<context>
-    <name>GTest</name>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="116"/>
-        <source>Unable to create temporary file</source>
-        <translation type="unfinished">Unable to create temporary file</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="135"/>
-        <source>Invalid translation table num: %1</source>
-        <translation type="unfinished">Invalid translation table num: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="151"/>
-        <location filename="../src/DNAExportPluginTests.cpp" line="157"/>
-        <source>Invalid base : %1</source>
-        <translation type="unfinished">Invalid base : %1</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="178"/>
-        <source>Invalid translation frame : %1</source>
-        <translation type="unfinished">Некорректная рамка: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="191"/>
-        <source> context not found %1</source>
-        <translation type="unfinished"> context not found %1</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="197"/>
-        <source> container of object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished"> container of object with type &quot;%1&quot; is empty</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="243"/>
-        <source>context  not found %1</source>
-        <translation type="unfinished">context  not found %1</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="249"/>
-        <source>container  of object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished">container  of object with type &quot;%1&quot; is empty</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="266"/>
-        <source>context not  found %1</source>
-        <translation type="unfinished">context not  found %1</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="272"/>
-        <source>container of  object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished">container of  object with type &quot;%1&quot; is empty</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="279"/>
-        <source>Unexpected alignment length %1, expected %2</source>
-        <translation type="unfinished">Unexpected alignment length %1, expected %2</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="284"/>
-        <source>Unexpected alignment size %1, expected %2</source>
-        <translation type="unfinished">Unexpected alignment size %1, expected %2</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="293"/>
-        <source>Invalid name for row %1: %2, expected %3</source>
-        <translation type="unfinished">Invalid name for row %1: %2, expected %3</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="298"/>
-        <source>Invalid char at row %1 column %2: %3, expected %4</source>
-        <translation type="unfinished">Invalid char at row %1 column %2: %3, expected %4</translation>
-    </message>
 </context>
 <context>
     <name>ImportAnnotationsFromCSVDialog</name>
@@ -792,7 +703,7 @@
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="174"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="200"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="199"/>
         <source>Base content</source>
         <translation>Состав</translation>
     </message>
@@ -802,7 +713,7 @@
         <translation>Суммарный состав должен быть 100%</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="200"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="199"/>
         <source>Incorrect GC Skew value</source>
         <translation>Некорректное значение GC смещения</translation>
     </message>
@@ -1089,6 +1000,24 @@
         <location filename="../src/ExportMSA2SequencesDialog.cpp" line="65"/>
         <source>File name is empty!</source>
         <translation>Не указано имя файла!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportMca2MsaDialog</name>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="41"/>
+        <source>Export</source>
+        <translation>Экспорт</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="42"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="71"/>
+        <source>Export Alignment</source>
+        <translation>Экспорт выравнивания</translation>
     </message>
 </context>
 <context>
@@ -1478,6 +1407,80 @@
         <location filename="../src/ExportUtils.cpp" line="100"/>
         <source>A problem occurred during export MCA to MSA. The MCA is no more available.</source>
         <translation>A problem occurred during export MCA to MSA. The MCA is no more available.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest</name>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="116"/>
+        <source>Unable to create temporary file</source>
+        <translation>Unable to create temporary file</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="135"/>
+        <source>Invalid translation table num: %1</source>
+        <translation>Invalid translation table num: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="151"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="157"/>
+        <source>Invalid base : %1</source>
+        <translation>Invalid base : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="178"/>
+        <source>Invalid translation frame : %1</source>
+        <translation>Некорректная рамка: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="191"/>
+        <source> context not found %1</source>
+        <translation> context not found %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="197"/>
+        <source> container of object with type &quot;%1&quot; is empty</source>
+        <translation> container of object with type &quot;%1&quot; is empty</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="243"/>
+        <source>context  not found %1</source>
+        <translation>context  not found %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="249"/>
+        <source>container  of object with type &quot;%1&quot; is empty</source>
+        <translation>container  of object with type &quot;%1&quot; is empty</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="266"/>
+        <source>context not  found %1</source>
+        <translation>context not  found %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="272"/>
+        <source>container of  object with type &quot;%1&quot; is empty</source>
+        <translation>container of  object with type &quot;%1&quot; is empty</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="279"/>
+        <source>Unexpected alignment length %1, expected %2</source>
+        <translation>Unexpected alignment length %1, expected %2</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="284"/>
+        <source>Unexpected alignment size %1, expected %2</source>
+        <translation>Unexpected alignment size %1, expected %2</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="293"/>
+        <source>Invalid name for row %1: %2, expected %3</source>
+        <translation>Invalid name for row %1: %2, expected %3</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="298"/>
+        <source>Invalid char at row %1 column %2: %3, expected %4</source>
+        <translation>Invalid char at row %1 column %2: %3, expected %4</translation>
     </message>
 </context>
 <context>
@@ -1894,12 +1897,12 @@ Please assign a column role by clicking on a column header in &apos;Results prev
         <translation>Не указан путь до референса.</translation>
     </message>
     <message>
-        <location filename="../src/GenerateDNAWorker.cpp" line="258"/>
+        <location filename="../src/GenerateDNAWorker.cpp" line="256"/>
         <source>Base content must be between 0 and 100</source>
         <translation>Базовый состав должен быть между 0 и 100</translation>
     </message>
     <message>
-        <location filename="../src/GenerateDNAWorker.cpp" line="263"/>
+        <location filename="../src/GenerateDNAWorker.cpp" line="261"/>
         <source>Total content percentage is more than 100</source>
         <translation>Суммарный процентный состав больше 100</translation>
     </message>
@@ -1995,17 +1998,17 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>U2::MSAExportContext</name>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="78"/>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="80"/>
         <source>Export amino acid translated alignment...</source>
         <translation>Экспорт выровненной последовательности, переведенной в аминокислоты...</translation>
     </message>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="82"/>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="84"/>
         <source>Export whole alignment to a sequence file format...</source>
         <translation>Экспорт всего выравнивания в формат файла последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="86"/>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="88"/>
         <source>Export selected rows to separate sequence files...</source>
         <translation>Экспорт выбранных строк в отдельные файлы последовательности...</translation>
     </message>

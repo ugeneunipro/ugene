@@ -26,7 +26,7 @@
 <context>
     <name>U2::LinkDataSupportPlugin</name>
     <message>
-        <location filename="../src/LinkDataSupportPlugin.cpp" line="36"/>
+        <location filename="../src/LinkDataSupportPlugin.cpp" line="35"/>
         <source>LinkData Support</source>
         <translation>LinkData Desteği</translation>
     </message>

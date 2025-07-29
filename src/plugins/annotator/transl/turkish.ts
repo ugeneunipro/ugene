@@ -20,8 +20,8 @@
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="33"/>
-        <source>Two-hybrid gene</source>
-        <translation type="unfinished"></translation>
+        <source>Origin</source>
+        <translation>Orijin</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="40"/>
@@ -30,63 +30,23 @@
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="47"/>
-        <source>Localization sequence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="54"/>
-        <source>Regulatory sequence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="61"/>
-        <source>Affinity tag</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="68"/>
-        <source>Replication origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="82"/>
-        <source>Selectable marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="89"/>
         <source>Primer</source>
         <translation>Astar</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="96"/>
-        <source>Reporter gene</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="103"/>
-        <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="115"/>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="122"/>
-        <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="129"/>
-        <source>Invert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="75"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="54"/>
         <source>Gene</source>
         <translation>Gen</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="61"/>
+        <source>Other features</source>
+        <translation>Diğer özellikler</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="68"/>
+        <source>Regulatory</source>
+        <translation>Düzenleyici</translation>
     </message>
 </context>
 <context>
@@ -150,12 +110,12 @@
 <context>
     <name>U2::AnnotatorPlugin</name>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="55"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="54"/>
         <source>DNA Annotator</source>
         <translation>DNA Açıklayıcısı</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="55"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="54"/>
         <source>This plugin contains routines to manipulate and search DNA sequence annotations</source>
         <translation>Bu eklenti, DNA dizisi açıklamalarını değiştirmek ve aramak için rutinler içerir</translation>
     </message>
@@ -163,22 +123,22 @@
 <context>
     <name>U2::AnnotatorViewContext</name>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="93"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="92"/>
         <source>Find annotated regions...</source>
         <translation>Açıklamalı bölgeleri bulun...</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="97"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="96"/>
         <source>Annotate plasmid...</source>
         <translation>Plazmid ek açıklama...</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="118"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="116"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="118"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="116"/>
         <source>No annotations found</source>
         <translation>Ek açıklama bulunamadı</translation>
     </message>
@@ -186,8 +146,8 @@
 <context>
     <name>U2::CollocationSearchTask</name>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="316"/>
-        <location filename="../src/CollocationsDialogController.cpp" line="345"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="315"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="343"/>
         <source>Search for annotated regions</source>
         <translation>Açıklamalı bölgeleri arayın</translation>
     </message>
@@ -195,48 +155,48 @@
 <context>
     <name>U2::CollocationsDialogController</name>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="53"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="52"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="54"/>
-        <location filename="../src/CollocationsDialogController.cpp" line="96"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="53"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="95"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="57"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="56"/>
         <source>&lt;&lt;click &apos;+&apos; button to add new annotation&gt;&gt;</source>
         <translation>&lt;&lt;yeni açıklama eklemek için &apos;+&apos; düğmesini tıklayın&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="96"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="95"/>
         <source>Stop</source>
         <translation>Durdur</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="102"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="101"/>
         <source>Searching... found %1 regions. Progress: %2%</source>
         <translation>Aranıyor...%1 bölge bulundu. İlerleme: %2%</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="104"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="103"/>
         <source>Found %1 regions</source>
         <translation>%1 bölge bulundu</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="106"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="105"/>
         <source>Ready</source>
         <translation>Hazır</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="106"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="105"/>
         <source>Select annotation names to search</source>
         <translation>Aranacak ek açıklama adlarını seçin</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="126"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="125"/>
         <source>No annotations left</source>
         <translation>Ek açıklama kalmadı</translation>
     </message>
@@ -252,20 +212,15 @@
 <context>
     <name>U2::CustomPatternAnnotationTask</name>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="65"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="52"/>
         <source>Custom pattern annotation</source>
         <translation>Özel desen açıklaması</translation>
-    </message>
-    <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="125"/>
-        <source>Object with annotations was removed</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::CustomPatternAutoAnnotationUpdater</name>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="236"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="219"/>
         <source>Plasmid features</source>
         <translation>Plazmid özellikleri</translation>
     </message>

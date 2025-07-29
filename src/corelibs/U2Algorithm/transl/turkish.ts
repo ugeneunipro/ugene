@@ -2,33 +2,11 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr">
 <context>
-    <name>AlignmentAlgorithmsRegistry</name>
-    <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="222"/>
-        <source>Align sequences to alignment with UGENE…</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../src/util_msa_consensus/MsaConsensusUtils.cpp" line="118"/>
         <source>Gaps:</source>
         <translation>Boşluklar:</translation>
-    </message>
-    <message>
-        <location filename="../src/misc/FindAlgorithm.cpp" line="160"/>
-        <location filename="../src/misc/FindAlgorithm.cpp" line="836"/>
-        <source>The search pattern is too long.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RoughTmCalculatorCmdFactory</name>
-    <message>
-        <location filename="../src/temperature/rough/RoughTmCalculatorCmdFactory.cpp" line="28"/>
-        <source>Rough</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -39,6 +17,11 @@
         <translation>Amino formunda hizala</translation>
     </message>
     <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="102"/>
+        <source>Invalid MSA object detected</source>
+        <translation>Geçersiz MSA nesnesi algılandı</translation>
+    </message>
+    <message>
         <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="103"/>
         <source>AlignInAminoFormTask: Input alphabet is not nucleic!</source>
         <translation>AlignIn Amino Form Görev: Giriş alfabesi nükleik değildir!</translation>
@@ -47,6 +30,31 @@
         <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="104"/>
         <source>AlignInAminoFormTask: Input alignment is empty!</source>
         <translation>AlignIn Amino Form Görevi: Giriş hizalaması boş!</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="111"/>
+        <source>Invalid applications settings detected</source>
+        <translation>Geçersiz uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="114"/>
+        <source>Invalid users applications settings detected</source>
+        <translation>Geçersiz kullanıcı uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="121"/>
+        <source>Invalid MSA document detected</source>
+        <translation>Geçersiz MSA belgesi algılandı</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="141"/>
+        <source>NULL clonedObj in AlignInAminoFormTask::prepare!</source>
+        <translation>Amino Form Görevinde Hizalamada BOŞ klon dObj::hazırlayın!</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="150"/>
+        <source>Can not find row %1 in original alignment.</source>
+        <translation>Orijinal hizalamada %1 satırı bulunamadı.</translation>
     </message>
 </context>
 <context>
@@ -101,12 +109,12 @@
 <context>
     <name>U2::CreateSubalignmentTask</name>
     <message>
-        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="58"/>
+        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="49"/>
         <source>Create sub-alignment: %1</source>
         <translation>Alt hizalama oluştur: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="103"/>
+        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="80"/>
         <source>Document is locked: %1</source>
         <translation>Belge kilitli: %1</translation>
     </message>
@@ -114,7 +122,7 @@
 <context>
     <name>U2::DnaAssemblyMultiTask</name>
     <message>
-        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="78"/>
+        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="80"/>
         <source>The short reads can&apos;t be mapped to the reference sequence!</source>
         <translation>Kısa okumalar referans sırasına eşlenemez!</translation>
     </message>
@@ -166,27 +174,138 @@
 <context>
     <name>U2::LoadPatternsFileTask</name>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="104"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="106"/>
         <source>Load pattern from file</source>
         <translation>Dosyadan desen yükle</translation>
     </message>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="113"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="115"/>
         <source>Detecting format error for file %1</source>
         <translation>%1 dosyası için biçim hatası tespit ediliyor</translation>
     </message>
 </context>
 <context>
-    <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
+    <name>U2::MSAConsensusAlgorithmFactoryClustal</name>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="193"/>
-        <source>Simple extended</source>
-        <translation>Basit genişletilmiş</translation>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="30"/>
+        <source>Emulates ClustalW program and file format behavior.</source>
+        <translation>ClustalW programını ve dosya biçimi davranışını taklit eder.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="194"/>
-        <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequencies which are greater than a threshold value are taken into account.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="34"/>
+        <source>ClustalW</source>
+        <translation>ClustalW</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAConsensusAlgorithmFactoryDefault</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="35"/>
+        <source>Based on JalView algorithm. Returns &apos;+&apos; if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.</source>
+        <translation>JalView algoritmasına dayanmaktadır. Yüksek frekanslı 2 karakter varsa &apos;+&apos; döndürür. Bir satırdaki sembol içeriği belirtilen eşikten düşükse sembolü küçük harflerle döndürür.</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="39"/>
+        <source>Default</source>
+        <translation>Varsayılan</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAConsensusAlgorithmFactoryLevitsky</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="35"/>
+        <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
+Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
+For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
+        <translation>Victor Levitsky&apos;nin DNA hizalamalarıyla çalışması için önerdiği algoritma.
+Önce genişletilmiş (15 sembol) DNA alfabesini kullanarak her sembol için genel hizalama sıklığını toplar.
+Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu değere eşit olacak şekilde, tüm hizalamadaki en nadir sembolü seçer.</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="42"/>
+        <source>Levitsky</source>
+        <translation>Levitsky</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAConsensusAlgorithmFactoryStrict</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="37"/>
+        <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
+        <translation>Bir sütundaki sembol frekansı belirtilen eşikten düşükse algoritma boşluk karakteri (&apos;-&apos;) döndürür.</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="41"/>
+        <source>Strict</source>
+        <translation>Katı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithm</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithm.cpp" line="59"/>
+        <source>MSA distance algorithm &quot;%1&quot; task</source>
+        <translation>MSA mesafe algoritması &quot;%1&quot; görevi</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmFactoryHamming</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="33"/>
+        <source>Based on Hamming distance between two sequences</source>
+        <translation>İki sekans arasındaki Hamming mesafesine göre</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="37"/>
+        <source>Hamming dissimilarity</source>
+        <translation>Hamming farklılığı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmFactoryHammingRevCompl</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="38"/>
+        <source>Based on Hamming distance between two sequences</source>
+        <translation>İki sekans arasındaki Hamming mesafesine göre</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="42"/>
+        <source>Hamming reverse-complement</source>
+        <translation>Hamming ters tamamlayıcı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmFactorySimilarity</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="33"/>
+        <source>Based on similarity distance between two sequences</source>
+        <translation>İki sekans arasındaki benzerlik mesafesine göre</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="37"/>
+        <source>Similarity</source>
+        <translation>Benzerlik</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmHammingRevCompl</name>
+    <message>
+        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="72"/>
+        <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
+        <translation>Hamming ters tamamlama algoritması çalıştırılırken beklenmeyen bir hata oluştu.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="200"/>
+        <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
+        <translation>Algoritma, genişletilmiş DNA alfabesinden en iyi karakteri seçer. Yalnızca bir eşik değerden daha büyük frekanslara sahip bazlar dikkate alınır.</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="205"/>
+        <source>Simple extended</source>
+        <translation>Basit genişletilmiş</translation>
     </message>
 </context>
 <context>
@@ -200,194 +319,83 @@
 <context>
     <name>U2::MsaColorSchemeRegistry</name>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="566"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="564"/>
         <source>No colors</source>
         <translation>Renksiz</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="574"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="572"/>
         <source>UGENE Sanger</source>
         <translatorcomment>UGENE Sanger
 </translatorcomment>
         <translation>UGENE Sanger</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="576"/>
         <source>Jalview</source>
         <translation>Jalview</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="580"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="621"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="619"/>
         <source>Percentage identity</source>
         <translation>Yüzde kimliği</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="581"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="579"/>
         <source>Percentage identity (colored)</source>
         <translation>Yüzde kimliği (renkli)</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="582"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="622"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="580"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="620"/>
         <source>Percentage identity (gray)</source>
         <translation>Yüzde kimliği (gri)</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="584"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="582"/>
         <source>Weak similarities</source>
         <translation>Zayıf benzerlikler</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="595"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="593"/>
         <source>Zappo</source>
         <translation>Zappo</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="599"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="597"/>
         <source>Tailor</source>
         <translation>Tailor</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="603"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="601"/>
         <source>Hydrophobicity</source>
         <translation>Hidrofobiklik</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="607"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="605"/>
         <source>Helix propensity</source>
         <translation>Helis eğilimi</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="611"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="609"/>
         <source>Strand propensity</source>
         <translation>Şerit eğilimi</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="615"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="613"/>
         <source>Turn propensity</source>
         <translation>Eğilimi çevir</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="619"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="617"/>
         <source>Buried index</source>
         <translation>Gömülü dizin</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="624"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="622"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaConsensusAlgorithmFactoryClustal</name>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="32"/>
-        <source>ClustalW</source>
-        <translation type="unfinished">ClustalW</translation>
-    </message>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmClustal.cpp" line="33"/>
-        <source>Emulates ClustalW program and file format behavior.</source>
-        <translation type="unfinished">ClustalW programını ve dosya biçimi davranışını taklit eder.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaConsensusAlgorithmFactoryDefault</name>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="33"/>
-        <source>Default</source>
-        <translation type="unfinished">Varsayılan</translation>
-    </message>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmDefault.cpp" line="34"/>
-        <source>Based on JalView algorithm. Returns &apos;+&apos; if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.</source>
-        <translation type="unfinished">JalView algoritmasına dayanmaktadır. Yüksek frekanslı 2 karakter varsa &apos;+&apos; döndürür. Bir satırdaki sembol içeriği belirtilen eşikten düşükse sembolü küçük harflerle döndürür.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaConsensusAlgorithmFactoryLevitsky</name>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="32"/>
-        <source>Levitsky</source>
-        <translation type="unfinished">Levitsky</translation>
-    </message>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmLevitsky.cpp" line="33"/>
-        <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
-Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
-For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
-        <translation type="unfinished">Victor Levitsky&apos;nin DNA hizalamalarıyla çalışması için önerdiği algoritma.
-Önce genişletilmiş (15 sembol) DNA alfabesini kullanarak her sembol için genel hizalama sıklığını toplar.
-Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu değere eşit olacak şekilde, tüm hizalamadaki en nadir sembolü seçer.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaConsensusAlgorithmFactoryStrict</name>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="35"/>
-        <source>Strict</source>
-        <translation type="unfinished">Katı</translation>
-    </message>
-    <message>
-        <location filename="../src/util_msa_consensus/MsaConsensusAlgorithmStrict.cpp" line="36"/>
-        <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
-        <translation type="unfinished">Bir sütundaki sembol frekansı belirtilen eşikten düşükse algoritma boşluk karakteri (&apos;-&apos;) döndürür.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaDistanceAlgorithm</name>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithm.cpp" line="59"/>
-        <source>MSA distance algorithm &quot;%1&quot; task</source>
-        <translation type="unfinished">MSA mesafe algoritması &quot;%1&quot; görevi</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaDistanceAlgorithmFactoryHamming</name>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="33"/>
-        <source>Based on Hamming distance between two sequences</source>
-        <translation type="unfinished">İki sekans arasındaki Hamming mesafesine göre</translation>
-    </message>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHamming.cpp" line="37"/>
-        <source>Hamming dissimilarity</source>
-        <translation type="unfinished">Hamming farklılığı</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaDistanceAlgorithmFactoryHammingRevCompl</name>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="38"/>
-        <source>Based on Hamming distance between two sequences</source>
-        <translation type="unfinished">İki sekans arasındaki Hamming mesafesine göre</translation>
-    </message>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="42"/>
-        <source>Hamming reverse-complement</source>
-        <translation type="unfinished">Hamming ters tamamlayıcı</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaDistanceAlgorithmFactorySimilarity</name>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="33"/>
-        <source>Based on similarity distance between two sequences</source>
-        <translation type="unfinished">İki sekans arasındaki benzerlik mesafesine göre</translation>
-    </message>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmSimilarity.cpp" line="37"/>
-        <source>Similarity</source>
-        <translation type="unfinished">Benzerlik</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaDistanceAlgorithmHammingRevCompl</name>
-    <message>
-        <location filename="../src/util_msa_distance/MsaDistanceAlgorithmHammingRevCompl.cpp" line="72"/>
-        <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
-        <translation type="unfinished">Hamming ters tamamlama algoritması çalıştırılırken beklenmeyen bir hata oluştu.</translation>
     </message>
 </context>
 <context>
@@ -486,7 +494,7 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
 <context>
     <name>U2::PairwiseAlignmentTask</name>
     <message>
-        <location filename="../src/pairwise_alignment/PairwiseAlignmentTask.cpp" line="45"/>
+        <location filename="../src/pairwise_alignment/PairwiseAlignmentTask.cpp" line="48"/>
         <source>Pairwise alignment task</source>
         <translation>İkili hizalama görevi</translation>
     </message>
@@ -494,19 +502,14 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
 <context>
     <name>U2::PhyTreeGeneratorLauncherTask</name>
     <message>
-        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="46"/>
+        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="45"/>
         <source>Calculating Phylogenetic Tree</source>
         <translation>Filogenetik Ağacın Hesaplanması</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="56"/>
-        <source>Tree algorithm %1 is not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="81"/>
-        <source>Failed to map row name: %1</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="53"/>
+        <source>Tree construction algorithm %1 not found</source>
+        <translation>Ağaç oluşturma algoritması %1 bulunamadı</translation>
     </message>
 </context>
 <context>
@@ -537,8 +540,8 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
     <name>U2::SimpleAddToAlignmentTask</name>
     <message>
         <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="51"/>
-        <source>Align sequences to alignment with UGENE started</source>
-        <translation type="unfinished"></translation>
+        <source>Align sequences to an existing alignment by UGENE started</source>
+        <translation>UGENE tarafından başlatılan dizileri mevcut bir hizalamaya hizalayın</translation>
     </message>
     <message>
         <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="136"/>
@@ -584,13 +587,13 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="261"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="335"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="338"/>
         <source>Smith-Waterman pairwise alignment: no results</source>
         <translation>Smith-Waterman ikili hizalama: sonuç yok</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="268"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="340"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="343"/>
         <source>Sequences aren&apos;t stored in the source msa dbi</source>
         <translation>Diziler kaynak msa dbi&apos;de depolanmaz</translation>
     </message>
@@ -602,27 +605,27 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="290"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="292"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="349"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="351"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="352"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="354"/>
         <source>Failed to get the sequence object.</source>
         <translation>Sıra nesnesi alınamadı.</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="306"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="308"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="365"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="369"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="368"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="372"/>
         <source>Failed to get the sequence data.</source>
         <translation>Sıra verileri alınamadı.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="378"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="381"/>
         <source>Failed to get msa from dbi</source>
         <translation>Dbi&apos;den msa alınamadı</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="401"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="403"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="405"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="407"/>
         <source>Failed to update row gap model</source>
         <translation>Satır aralığı modeli güncellenemedi</translation>
     </message>
@@ -631,8 +634,8 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
     <name>U2::SplicedAlignmentTask</name>
     <message>
         <location filename="../src/registry/SplicedAlignmentTask.cpp" line="27"/>
-        <source>Partial Alignment Task</source>
-        <translation type="unfinished"></translation>
+        <source>SplicedAlignmentTask</source>
+        <translation>Eklenmiş Hizalama Görevi</translation>
     </message>
 </context>
 <context>
@@ -707,15 +710,32 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
 <context>
     <name>U2::TranslateMsa2AminoTask</name>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="46"/>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="58"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="47"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="59"/>
         <source>Translate nucleic alignment to amino</source>
         <translation>Nükleik hizalamayı aminoya çevirin</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="52"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="48"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="60"/>
+        <source>Invalid MSA object detected</source>
+        <translation>Geçersiz MSA nesnesi algılandı</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="49"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="61"/>
+        <source>Multiple alignment already has amino-acid alphabet</source>
+        <translation>Çoklu hizalamada zaten amino asit alfabesi var</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="53"/>
         <source>Unable to find suitable translation for %1</source>
         <translation>%1 için uygun çeviri bulunamadı</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="67"/>
+        <source>Invalid translation object</source>
+        <translation>Geçersiz çeviri nesnesi</translation>
     </message>
 </context>
 </TS>

@@ -98,9 +98,9 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="191"/>
-        <location filename="../src/MuscleWorker.cpp" line="196"/>
-        <location filename="../src/MuscleWorker.cpp" line="202"/>
+        <location filename="../src/MuscleWorker.cpp" line="192"/>
+        <location filename="../src/MuscleWorker.cpp" line="197"/>
+        <location filename="../src/MuscleWorker.cpp" line="203"/>
         <source>Region should be set as &apos;start..end&apos;, start should be less than end, e.g. &apos;1..100&apos;</source>
         <translation>Bölge, &quot;başlangıç..bitiş&quot; olarak ayarlanmalıdır, başlangıç, bitiş&apos;den küçük olmalıdır, ör. &quot;1..100&quot;</translation>
     </message>
@@ -108,12 +108,12 @@
 <context>
     <name>U2::LocalWorkflow::MusclePrompter</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="116"/>
+        <location filename="../src/MuscleWorker.cpp" line="117"/>
         <source> from %1</source>
         <translation> %1&apos;den</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="130"/>
+        <location filename="../src/MuscleWorker.cpp" line="131"/>
         <source>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with MUSCLE using &quot;&lt;u&gt;%2&lt;/u&gt;&quot; mode.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; ile sağlanan her MSA&apos;yı &quot;&lt;u&gt;%2&lt;/u&gt;&quot; modunu kullanarak KAS ile hizalar.</translation>
     </message>
@@ -121,87 +121,87 @@
 <context>
     <name>U2::LocalWorkflow::MuscleWorker</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="60"/>
+        <location filename="../src/MuscleWorker.cpp" line="61"/>
         <source>Input MSA</source>
         <translation>MSA&apos;yı girin</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="61"/>
+        <location filename="../src/MuscleWorker.cpp" line="62"/>
         <source>Multiple sequence alignment</source>
         <translation>Çoklu dizi hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="70"/>
+        <location filename="../src/MuscleWorker.cpp" line="71"/>
         <source>Mode</source>
         <translation>Mod</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="72"/>
+        <location filename="../src/MuscleWorker.cpp" line="73"/>
         <source>Stable order</source>
         <translation>Kararlı düzen</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="60"/>
+        <location filename="../src/MuscleWorker.cpp" line="61"/>
         <source>Multiple sequence alignment to be processed.</source>
         <translation>Çoklu dizi hizalaması işlenecek.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="61"/>
+        <location filename="../src/MuscleWorker.cpp" line="62"/>
         <source>Result of alignment.</source>
         <translation>Hizalamanın sonucu.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="75"/>
+        <location filename="../src/MuscleWorker.cpp" line="76"/>
         <source>Max iterations</source>
         <translation>Azami yineleme</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="75"/>
+        <location filename="../src/MuscleWorker.cpp" line="76"/>
         <source>Maximum number of iterations.</source>
         <translation>Azami yineleme sayısı.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="181"/>
+        <location filename="../src/MuscleWorker.cpp" line="182"/>
         <source>An empty MSA &apos;%1&apos; has been supplied to MUSCLE.</source>
         <translation>KAS&apos;a boş bir &apos;%1&apos; MSA sağlandı.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="76"/>
+        <location filename="../src/MuscleWorker.cpp" line="77"/>
         <source>Region to align</source>
         <translation>Hizalanacak bölge</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="76"/>
+        <location filename="../src/MuscleWorker.cpp" line="77"/>
         <source>Whole alignment or column range e.g. &lt;b&gt;1..100&lt;/b&gt;.</source>
         <translation>Tam hizalama veya sütun aralığı, ör. &lt;b&gt;1..100&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="83"/>
+        <location filename="../src/MuscleWorker.cpp" line="84"/>
         <source>Align with MUSCLE</source>
         <translation>KAS ile hizala</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="83"/>
+        <location filename="../src/MuscleWorker.cpp" line="84"/>
         <source>MUSCLE is public domain multiple alignment software for protein and nucleotide sequences.&lt;p&gt;&lt;dfn&gt;MUSCLE stands for MUltiple Sequence Comparison by Log-Expectation.&lt;/dfn&gt;&lt;/p&gt;</source>
         <translation>KAS, protein ve nükleotid dizileri için kamuya açık çoklu hizalama yazılımıdır. &lt;p&gt;&lt;dfn&gt;KAS, Log-Expectation ile Çoklu Dizi Karşılaştırması anlamına gelir.&lt;/dfn&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="205"/>
+        <location filename="../src/MuscleWorker.cpp" line="206"/>
         <source>Region end position should be greater than start position</source>
         <translation>Bölge bitiş konumu, başlangıç konumundan büyük olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="239"/>
+        <location filename="../src/MuscleWorker.cpp" line="240"/>
         <source>Aligned %1 with MUSCLE</source>
         <translation>%1 KAS ile hizalandı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="70"/>
+        <location filename="../src/MuscleWorker.cpp" line="71"/>
         <source>Selector of preset configurations, that give you the choice of optimizing accuracy, speed, or some compromise between the two. The default favors accuracy.</source>
         <translation>Size doğruluğu, hızı veya ikisi arasında bir miktar uzlaşmayı optimize etme seçeneği sunan önceden ayarlanmış konfigürasyon seçicisi. Varsayılan, doğruluğu tercih eder.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="72"/>
+        <location filename="../src/MuscleWorker.cpp" line="73"/>
         <source>Do not rearrange aligned sequences (-stable switch of MUSCLE). &lt;p&gt;Otherwise, MUSCLE re-arranges sequences so that similar sequences are adjacent in the output file. This makes the alignment easier to evaluate by eye. </source>
         <translation>Hizalanmış dizileri yeniden düzenlemeyin (-KAS&apos;ın kararlı anahtarı). &lt;p&gt;Aksi takdirde, KAS, benzer dizilerin çıktı dosyasında bitişik olması için dizileri yeniden düzenler. Bu, hizalamanın gözle değerlendirilmesini kolaylaştırır. </translation>
     </message>
@@ -222,32 +222,32 @@
         <translation>Profil, KAS ile profile hizalandı</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="206"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="207"/>
         <source>Master profile</source>
         <translation>Ana profil</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="207"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="208"/>
         <source>The main alignment which will be aligned on.</source>
         <translation>Hizalanacak ana hizalama.</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="209"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="210"/>
         <source>Second profile</source>
         <translation>İkinci profil</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="210"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="211"/>
         <source>Alignment which will be aligned to the master alignment.</source>
         <translation>Ana hizalamaya hizalanacak hizalama.</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="223"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="224"/>
         <source>Align Profile to Profile With MUSCLE</source>
         <translation>Profili KAS ile Profile Hizala</translation>
     </message>
     <message>
-        <location filename="../src/ProfileToProfileWorker.cpp" line="224"/>
+        <location filename="../src/ProfileToProfileWorker.cpp" line="225"/>
         <source>Aligns second profile to master profile with MUSCLE aligner.</source>
         <translation>İkinci profili KAS hizalayıcı ile ana profile hizalar.</translation>
     </message>
@@ -255,92 +255,104 @@
 <context>
     <name>U2::MuscleAdapter</name>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="79"/>
+        <location filename="../src/MuscleAdapter.cpp" line="78"/>
         <source>No sequences in input file</source>
         <translation>Giriş dosyasında sıra yok</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="51"/>
-        <location filename="../src/MuscleAdapter.cpp" line="202"/>
-        <location filename="../src/MuscleAdapter.cpp" line="293"/>
-        <location filename="../src/MuscleAdapter.cpp" line="484"/>
+        <location filename="../src/MuscleAdapter.cpp" line="50"/>
+        <location filename="../src/MuscleAdapter.cpp" line="201"/>
+        <location filename="../src/MuscleAdapter.cpp" line="292"/>
+        <location filename="../src/MuscleAdapter.cpp" line="483"/>
         <source>Internal MUSCLE error: %1</source>
         <translation>Dahili KAS hatası: %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="57"/>
-        <location filename="../src/MuscleAdapter.cpp" line="208"/>
-        <location filename="../src/MuscleAdapter.cpp" line="299"/>
-        <location filename="../src/MuscleAdapter.cpp" line="490"/>
+        <location filename="../src/MuscleAdapter.cpp" line="56"/>
+        <location filename="../src/MuscleAdapter.cpp" line="207"/>
+        <location filename="../src/MuscleAdapter.cpp" line="298"/>
+        <location filename="../src/MuscleAdapter.cpp" line="489"/>
         <source>Undefined internal MUSCLE error</source>
         <translation>Tanımsız dahili KAS hatası</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="286"/>
+        <location filename="../src/MuscleAdapter.cpp" line="285"/>
         <source>Invalid input alignment</source>
         <translation>Geçersiz giriş hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="307"/>
-        <location filename="../src/MuscleAdapter.cpp" line="497"/>
+        <location filename="../src/MuscleAdapter.cpp" line="306"/>
+        <location filename="../src/MuscleAdapter.cpp" line="496"/>
         <source>Incompatible alphabets</source>
         <translation>Uyumsuz alfabeler</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="336"/>
+        <location filename="../src/MuscleAdapter.cpp" line="335"/>
         <source>Aligning profiles</source>
         <translation>Profilleri hizalama</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="339"/>
+        <location filename="../src/MuscleAdapter.cpp" line="338"/>
         <source>Building output</source>
         <translation>Yapı çıktısı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="522"/>
+        <location filename="../src/MuscleAdapter.cpp" line="521"/>
         <source>Aligning sequence %1 of %2</source>
         <translation>%1 /%2 hizalama sırası</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAdapter.cpp" line="557"/>
+        <location filename="../src/MuscleAdapter.cpp" line="556"/>
         <source>Merging results: %1 of %2</source>
         <translation>Birleştirme sonuçları: %1 /%2</translation>
     </message>
     <message>
-        <location filename="../src/MuscleUtils.cpp" line="88"/>
+        <location filename="../src/MuscleUtils.cpp" line="91"/>
         <source>Unsupported alphabet: %1</source>
         <translation>Desteklenmeyen alfabe: %1</translation>
+    </message>
+    <message>
+        <source>Alignment is empty</source>
+        <translation type="vanished">Hizalama boş</translation>
+    </message>
+    <message>
+        <source>Not enough memory to do this alignment. You can try the 64-bit version of UGENE. In this case, more available memory will be used for aligning.</source>
+        <translation type="vanished">Bu hizalamayı yapmak için yeterli bellek yok. UGENE&apos;nin 64 bit sürümünü deneyebilirsiniz. Bu durumda, hizalama için daha fazla kullanılabilir bellek kullanılacaktır.</translation>
+    </message>
+    <message>
+        <source>Not enough memory to do this alignment.</source>
+        <translation type="vanished">Bu hizalamayı yapmak için yeterli bellek yok.</translation>
     </message>
 </context>
 <context>
     <name>U2::MuscleAddSequencesToProfileTask</name>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="311"/>
+        <location filename="../src/MuscleTask.cpp" line="313"/>
         <source>MUSCLE align profiles &apos;%1&apos; vs &apos;%2&apos;</source>
         <translation>KAS hizalama profilleri &apos;%1&apos; - &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="313"/>
+        <location filename="../src/MuscleTask.cpp" line="315"/>
         <source>MUSCLE align &apos;%2&apos; by profile &apos;%1&apos;</source>
         <translation>KAS &apos;%2&apos;yi&apos; %1 &apos;profiline göre hizaladı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="322"/>
+        <location filename="../src/MuscleTask.cpp" line="324"/>
         <source>A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.</source>
         <translation>Profili KAS ile profile hizalarken bir sorun oluştu. Orijinal hizalama artık mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="355"/>
+        <location filename="../src/MuscleTask.cpp" line="357"/>
         <source>Sequences in file have different alphabets %1</source>
         <translation>Dosyadaki diziler farklı alfabelere sahip %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="375"/>
+        <location filename="../src/MuscleTask.cpp" line="377"/>
         <source>No sequences found in file %1</source>
         <translation>%1 dosyasında hiçbir sıra bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="377"/>
+        <location filename="../src/MuscleTask.cpp" line="379"/>
         <source>No alignment found in file %1</source>
         <translation>%1 dosyasında hizalama bulunamadı</translation>
     </message>
@@ -416,7 +428,7 @@
 <context>
     <name>U2::MuscleAlignOwnSequencesToSelfAction</name>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="646"/>
+        <location filename="../src/MuscleTask.cpp" line="649"/>
         <source>MUSCLE align rows to alignment &apos;%1&apos;</source>
         <translation>KAS, satırları &apos;%1&apos; hizalamasına hizala</translation>
     </message>
@@ -455,14 +467,14 @@
     </message>
     <message>
         <location filename="../src/MuscleAlignDialogController.cpp" line="224"/>
-        <source>Input file is not set!</source>
-        <translation>Girdi dosyası ayarlanmadı!</translation>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="226"/>
+        <source>Align with Kalign</source>
+        <translation>Kalign ile Hizala</translation>
     </message>
     <message>
         <location filename="../src/MuscleAlignDialogController.cpp" line="224"/>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="226"/>
-        <source>Align with Muscle</source>
-        <translation type="unfinished"></translation>
+        <source>Input file is not set!</source>
+        <translation>Girdi dosyası ayarlanmadı!</translation>
     </message>
     <message>
         <location filename="../src/MuscleAlignDialogController.cpp" line="226"/>
@@ -473,17 +485,17 @@
 <context>
     <name>U2::MuscleGObjectRunFromSchemaTask</name>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="621"/>
+        <location filename="../src/MuscleTask.cpp" line="624"/>
         <source>Workflow wrapper &apos;%1&apos;</source>
         <translation>İş akışı sarmalayıcı &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="634"/>
+        <location filename="../src/MuscleTask.cpp" line="637"/>
         <source>MUSCLE align &apos;%1&apos;</source>
         <translation>KAS &apos;%1&apos; hizala</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="637"/>
+        <location filename="../src/MuscleTask.cpp" line="640"/>
         <source>MUSCLE refine &apos;%1&apos;</source>
         <translation>KAS rafine &apos;%1&apos;</translation>
     </message>
@@ -491,37 +503,37 @@
 <context>
     <name>U2::MuscleGObjectTask</name>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="406"/>
+        <location filename="../src/MuscleTask.cpp" line="408"/>
         <source>MUSCLE align &apos;%1&apos;</source>
         <translation>KAS &apos;%1&apos; hizala</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="409"/>
+        <location filename="../src/MuscleTask.cpp" line="411"/>
         <source>MUSCLE refine &apos;%1&apos;</source>
         <translation>KAS rafine &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="412"/>
+        <location filename="../src/MuscleTask.cpp" line="414"/>
         <source>MUSCLE add to profile &apos;%1&apos;</source>
         <translation>KAS &apos;%1&apos; profiline ekle</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="415"/>
+        <location filename="../src/MuscleTask.cpp" line="417"/>
         <source>MUSCLE align profiles</source>
         <translation>KAS hizalama profilleri</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="418"/>
+        <location filename="../src/MuscleTask.cpp" line="420"/>
         <source>MUSCLE align rows to alignment: %1</source>
         <translation>KAS, satırları hizalanacak şekilde hizala: %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="465"/>
-        <source>MsaObject has been changed</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/MuscleTask.cpp" line="467"/>
+        <source>MultipleAlignment object has been changed</source>
+        <translation>Çoklu Sıra Hizalama nesnesi değiştirildi</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="502"/>
+        <location filename="../src/MuscleTask.cpp" line="505"/>
         <source>Illegal number of sequences in the MUSCLE alignment result</source>
         <translation>KAS hizalama sonucunda geçersiz dizi sayısı</translation>
     </message>
@@ -554,20 +566,28 @@
         <translation>Sıralı dosya seçin</translation>
     </message>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="231"/>
+        <location filename="../src/MusclePlugin.cpp" line="233"/>
         <source>Select file with alignment</source>
         <translation>Hizalamalı dosyayı seçin</translation>
+    </message>
+    <message>
+        <source>Align with MUSCLE...</source>
+        <translation type="vanished">MUSCLE ile hizalayın...</translation>
+    </message>
+    <message>
+        <source>Align profile to profile with MUSCLE...</source>
+        <translation type="vanished">MUSCLE ile profili profile hizalayın...</translation>
     </message>
 </context>
 <context>
     <name>U2::MuscleParallelTask</name>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="41"/>
+        <location filename="../src/MuscleParallel.cpp" line="46"/>
         <source>MuscleParallelTask</source>
         <translation>Kas Paralel Görevi</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="51"/>
+        <location filename="../src/MuscleParallel.cpp" line="56"/>
         <source>There is not enough memory to align these sequences with MUSCLE. Required memory size: %1 Mb</source>
         <translation>Bu dizileri KAS ile hizalamak için yeterli bellek yok. Gerekli bellek boyutu: %1 Mb</translation>
     </message>
@@ -589,95 +609,96 @@
         <source>Align with MUSCLE…</source>
         <translation>KAS ile hizala…</translation>
     </message>
+    <message>
+        <source>Align with MUSCLE...</source>
+        <translation type="vanished">MUSCLE ile hizalayın...</translation>
+    </message>
 </context>
 <context>
     <name>U2::MusclePrepareTask</name>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="101"/>
+        <location filename="../src/MuscleParallel.cpp" line="106"/>
         <source>Preparing MUSCLE alignment...</source>
         <translation>KAS hizalaması hazırlanıyor...</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="108"/>
+        <location filename="../src/MuscleParallel.cpp" line="113"/>
         <source>Internal parallel MUSCLE error: %1</source>
         <translation>Dahili paralel KAS hatası: %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="116"/>
+        <location filename="../src/MuscleParallel.cpp" line="121"/>
         <source>MUSCLE prepared successfully</source>
         <translation>KAS başarıyla hazırlandı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="149"/>
+        <location filename="../src/MuscleParallel.cpp" line="157"/>
         <source>No sequences in input file</source>
         <translation>Giriş dosyasında sıra yok</translation>
+    </message>
+    <message>
+        <location filename="../src/MuscleParallel.cpp" line="186"/>
+        <source>Alignment is empty</source>
+        <translation>Hizalama boş</translation>
     </message>
 </context>
 <context>
     <name>U2::MuscleTask</name>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="70"/>
+        <location filename="../src/MuscleTask.cpp" line="72"/>
         <source>MUSCLE alignment</source>
         <translation>KAS hizalama</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="79"/>
+        <location filename="../src/MuscleTask.cpp" line="81"/>
         <source>MUSCLE alignment started</source>
         <translation>KAS hizalaması başladı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="100"/>
+        <location filename="../src/MuscleTask.cpp" line="102"/>
         <source>Incorrect region to align</source>
         <translation>Hizalanacak yanlış bölge</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="102"/>
-        <source>Stopping MUSCLE task, because of error in Msa::mid function</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/MuscleTask.cpp" line="104"/>
+        <source>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</source>
+        <translation>Çoklu Sıra Hizalamasındaki hata nedeniyle KAS görevini durdurma::orta işlev</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="121"/>
+        <location filename="../src/MuscleTask.cpp" line="123"/>
         <source>Performing MUSCLE alignment...</source>
         <translation>KAS hizalaması yapılıyor...</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="147"/>
+        <location filename="../src/MuscleTask.cpp" line="149"/>
         <source>MUSCLE alignment successfully finished</source>
         <translation>KAS hizalaması başarıyla tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="200"/>
+        <location filename="../src/MuscleTask.cpp" line="202"/>
         <source>Unexpected number of rows in the result multiple alignment!</source>
         <translation>Sonuçta beklenmeyen sayıda satır birden çok hizalama!</translation>
     </message>
     <message>
-        <location filename="../src/MuscleTask.cpp" line="259"/>
+        <location filename="../src/MuscleTask.cpp" line="261"/>
         <source>Failed to align rows with MUSCLE. Result number of rows does not match</source>
         <translation>KAS ile satırlar hizalanamadı. Sonuç satır sayısı eşleşmiyor</translation>
     </message>
 </context>
 <context>
-    <name>U2::MuscleWithExtFileSpecifySupportTask</name>
-    <message>
-        <location filename="../src/MuscleTask.cpp" line="520"/>
-        <source>Run Muscle alignment task</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::ProgressiveAlignTask</name>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="283"/>
+        <location filename="../src/MuscleParallel.cpp" line="296"/>
         <source>ProgressiveAlignTask</source>
         <translation>Aşamalı Hizalama Görevi</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="303"/>
+        <location filename="../src/MuscleParallel.cpp" line="316"/>
         <source>Internal parallel MUSCLE error: %1</source>
         <translation>Dahili paralel KAS hatası: %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="312"/>
+        <location filename="../src/MuscleParallel.cpp" line="325"/>
         <source>alignment &quot;%1&quot; Parallel MUSCLE Iter 1 accomplished. Time elapsed %2 ms</source>
         <translation>hizalama &quot;%1&quot; Paralel KAS Iter 1 tamamlandı. Geçen süre %2 ms</translation>
     </message>
@@ -685,12 +706,12 @@
 <context>
     <name>U2::ProgressiveAlignWorker</name>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="363"/>
+        <location filename="../src/MuscleParallel.cpp" line="376"/>
         <source>ProgressiveAlignWorker</source>
         <translation>Aşamalı Hizalama İşçisi</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="375"/>
+        <location filename="../src/MuscleParallel.cpp" line="388"/>
         <source>Internal parallel MUSCLE error: %1</source>
         <translation>Dahili paralel KAS hatası: %1</translation>
     </message>
@@ -698,17 +719,17 @@
 <context>
     <name>U2::RefineTask</name>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="526"/>
+        <location filename="../src/MuscleParallel.cpp" line="539"/>
         <source>RefineTask</source>
         <translation>Görevi İyileştir</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="547"/>
+        <location filename="../src/MuscleParallel.cpp" line="560"/>
         <source>Internal parallel MUSCLE error: %1</source>
         <translation>Dahili paralel KAS hatası: %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="553"/>
+        <location filename="../src/MuscleParallel.cpp" line="566"/>
         <source>Can&apos;t allocate enough memory to perform aligning, try to use 64bit UGENE version</source>
         <translation>Hizalama yapmak için yeterli bellek ayrılamıyor, 64 bit UGENE sürümünü kullanmayı deneyin</translation>
     </message>
@@ -716,12 +737,12 @@
 <context>
     <name>U2::RefineTreeTask</name>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="479"/>
+        <location filename="../src/MuscleParallel.cpp" line="492"/>
         <source>RefineTreeTask</source>
         <translation>Ağaç Görevini İyileştir</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="489"/>
+        <location filename="../src/MuscleParallel.cpp" line="502"/>
         <source>Internal parallel MUSCLE error: %1</source>
         <translation>Dahili paralel KAS hatası: %1</translation>
     </message>
@@ -729,12 +750,12 @@
 <context>
     <name>U2::RefineWorker</name>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="602"/>
+        <location filename="../src/MuscleParallel.cpp" line="615"/>
         <source>Internal parallel MUSCLE error: %1</source>
         <translation>Dahili paralel KAS hatası: %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleParallel.cpp" line="607"/>
+        <location filename="../src/MuscleParallel.cpp" line="620"/>
         <source>Can&apos;t allocate enough memory to perform aligning, try to use 64bit UGENE version</source>
         <translation>Hizalama yapmak için yeterli bellek ayrılamıyor, 64 bit UGENE sürümünü kullanmayı deneyin</translation>
     </message>

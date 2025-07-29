@@ -42,9 +42,26 @@
         <translation>Sorgulu dosya</translation>
     </message>
     <message>
-        <location filename="../src/QDDialog.ui" line="32"/>
+        <location filename="../src/QDDialog.ui" line="36"/>
         <source>...</source>
         <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../src/QDDialog.ui" line="54"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Hint: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Queries can be created using the Query Designer tool. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;To launch the Query Designer select the&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;&amp;quot;Tools &amp;gt; Query Designer&amp;quot;  &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;item.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;İpucu: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Sorgular, Sorgu Tasarımcısı aracı kullanılarak oluşturulabilir &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Sorgu Tasarımcısını başlatmak için,&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;&amp;quot;Araçlar &amp;gt; Sorgu Tasarımcısı&amp;quot;  &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;öğe.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -70,24 +87,24 @@
         <translation>Başlangıç-Başlangıç</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="383"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="384"/>
         <source>Can not find %1.</source>
         <translation>%1 bulunamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="397"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="398"/>
         <source>Error loading file.</source>
         <translation>Dosya yüklenirken hata oluştu.</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="514"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="515"/>
         <source>Error loading schema. Schema does not contain group %1.</source>
         <translation>Şema yüklenirken hata oluştu. Şema, %1 grubunu içermiyor.</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="116"/>
-        <location filename="../src/QDGroupsEditor.cpp" line="120"/>
-        <location filename="../src/QDGroupsEditor.cpp" line="159"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="114"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="118"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="157"/>
         <source>Query Designer</source>
         <translation>Sorgu Tasarımcısı</translation>
     </message>
@@ -187,7 +204,7 @@
 <context>
     <name>U2::CompareAnnotationGroupsTask</name>
     <message>
-        <location filename="../src/QDTests.h" line="66"/>
+        <location filename="../src/QDTests.h" line="67"/>
         <source>Compare annotation tables task</source>
         <translation>Ek açıklama tablolarını karşılaştırma görevi</translation>
     </message>
@@ -195,7 +212,7 @@
 <context>
     <name>U2::FindGcRegionsTask</name>
     <message>
-        <location filename="../src/library/QDGcContentActor.h" line="50"/>
+        <location filename="../src/library/QDGcContentActor.h" line="51"/>
         <source>Find base content task</source>
         <translation>Temel içerik görevini bulun</translation>
     </message>
@@ -203,7 +220,7 @@
 <context>
     <name>U2::FindPolyRegionsTask</name>
     <message>
-        <location filename="../src/library/QDFindPolyRegionsActor.h" line="50"/>
+        <location filename="../src/library/QDFindPolyRegionsActor.h" line="51"/>
         <source>Find base content task</source>
         <translation>Temel içerik görevini bulun</translation>
     </message>
@@ -229,17 +246,17 @@
 <context>
     <name>U2::LocalWorkflow::QDPrompter</name>
     <message>
-        <location filename="../src/QDWorker.cpp" line="135"/>
+        <location filename="../src/QDWorker.cpp" line="136"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="136"/>
+        <location filename="../src/QDWorker.cpp" line="137"/>
         <source>from %1</source>
         <translation>%1&apos;den</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="139"/>
+        <location filename="../src/QDWorker.cpp" line="140"/>
         <source>Analyze each nucleotide sequence &lt;u&gt;%1&lt;/u&gt; with &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>Her bir nükleotid dizisini &lt;u&gt;%1&lt;/u&gt; &lt;u&gt;%2&lt;/u&gt; ile analiz edin.</translation>
     </message>
@@ -247,95 +264,75 @@
 <context>
     <name>U2::LocalWorkflow::QDWorker</name>
     <message>
-        <location filename="../src/QDWorker.cpp" line="75"/>
+        <location filename="../src/QDWorker.cpp" line="76"/>
         <source>Input sequences</source>
         <translation>Giriş dizileri</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="76"/>
+        <location filename="../src/QDWorker.cpp" line="77"/>
         <source>A nucleotide sequence to analyze.</source>
         <translation>Analiz edilecek bir nükleotid dizisi.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="79"/>
+        <location filename="../src/QDWorker.cpp" line="80"/>
         <source>Result annotations</source>
         <translation>Sonuç ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="80"/>
+        <location filename="../src/QDWorker.cpp" line="81"/>
         <source>A set of annotations marking found results.</source>
         <translation>Bulunan sonuçları işaretleyen bir dizi ek açıklama.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="91"/>
+        <location filename="../src/QDWorker.cpp" line="92"/>
         <source>Schema</source>
         <translation>Şema</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="91"/>
+        <location filename="../src/QDWorker.cpp" line="92"/>
         <source>Schema file.</source>
         <translation>Şema dosyası.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="92"/>
+        <location filename="../src/QDWorker.cpp" line="93"/>
         <source>Offset</source>
         <translation>Ofset</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="92"/>
+        <location filename="../src/QDWorker.cpp" line="93"/>
         <source>Specifies left and right offsets for merged annotation (if &apos;Merge&apos; parameter is set to true).</source>
         <translation>Birleştirilmiş detaylandırma için sol ve sağ ofsetleri belirtir (&apos;Birleştirme&apos; parametresi doğru olarak ayarlanmışsa).</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="93"/>
+        <location filename="../src/QDWorker.cpp" line="94"/>
         <source>Merge</source>
         <translation>Birleştir</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="93"/>
+        <location filename="../src/QDWorker.cpp" line="94"/>
         <source>Merges regions of each result into single annotation if true.</source>
         <translation>Doğruysa, her sonucun bölgelerini tek ek açıklamada birleştirir.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="100"/>
+        <location filename="../src/QDWorker.cpp" line="101"/>
         <source>Annotate with UQL</source>
         <translation>UQL ile açıklama ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="100"/>
+        <location filename="../src/QDWorker.cpp" line="101"/>
         <source>Analyzes a nucleotide sequence using different algorithms(Repeat finder, ORF finder, etc.) imposing constraints on the positional relationship of the results.</source>
         <translation>Sonuçların konumsal ilişkisine kısıtlamalar getiren farklı algoritmalar (Tekrar bulucu, ORF bulucu, vb.) Kullanarak bir nükleotid dizisini analiz eder.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="108"/>
+        <location filename="../src/QDWorker.cpp" line="109"/>
         <source>Query schemes</source>
         <translation>Sorgu şemaları</translation>
-    </message>
-    <message>
-        <location filename="../src/QDWorker.cpp" line="191"/>
-        <source>Failed to parse QueryDesigner schema from %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/QDWorker.cpp" line="197"/>
-        <source>Failed to convert QueryDesigner documents from %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/QDWorker.cpp" line="198"/>
-        <source>QueryDesigner is empty: %1</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::QDDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="292"/>
-        <source>Query Designer preview area.&lt;br&gt;&lt;br&gt;&lt;b&gt;Hint:&lt;/b&gt;&lt;br&gt;Queries can be created by Query Designer tool.&lt;br&gt;To launch Query Designer use &quot;Tools/Query Designer&quot; menu.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/QDRunDialog.cpp" line="295"/>
+        <location filename="../src/QDRunDialog.cpp" line="296"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
@@ -350,29 +347,29 @@
         <translation>Sorgu seçin</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="354"/>
-        <location filename="../src/QDRunDialog.cpp" line="358"/>
+        <location filename="../src/QDRunDialog.cpp" line="353"/>
+        <location filename="../src/QDRunDialog.cpp" line="360"/>
         <source>Can not load %1</source>
         <translation>%1 yüklenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="385"/>
+        <location filename="../src/QDRunDialog.cpp" line="390"/>
         <source>File with query is not selected!</source>
         <translation>Sorgulu dosya seçilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="390"/>
+        <location filename="../src/QDRunDialog.cpp" line="395"/>
         <source>Error in schema!</source>
         <translation>Şemada hata!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="396"/>
-        <location filename="../src/QDRunDialog.cpp" line="408"/>
+        <location filename="../src/QDRunDialog.cpp" line="401"/>
+        <location filename="../src/QDRunDialog.cpp" line="413"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="408"/>
+        <location filename="../src/QDRunDialog.cpp" line="413"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
     </message>
@@ -380,19 +377,19 @@
 <context>
     <name>U2::QDDocFormat</name>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="54"/>
-        <location filename="../src/QDDocumentFormat.cpp" line="62"/>
-        <location filename="../src/QDDocumentFormat.cpp" line="86"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="53"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="61"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="85"/>
         <source>Query Schema</source>
         <translation>Sorgu Şeması</translation>
     </message>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="55"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="54"/>
         <source>QDDoc is a format used for creating/editing/storing/retrievingquery schema with the text file</source>
         <translation>QDDoc, metin dosyasıyla sorgu şeması oluşturmak/düzenlemek/depolamak/almak için kullanılan bir formattır</translation>
     </message>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="79"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="78"/>
         <source>Invalid header. %1 expected</source>
         <translation>Geçersiz başlık. %1 bekleniyor</translation>
     </message>
@@ -400,37 +397,37 @@
 <context>
     <name>U2::QDElement</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="357"/>
+        <location filename="../src/QueryViewItems.cpp" line="359"/>
         <source>Set order</source>
         <translation>Sırayı ayarla</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="375"/>
+        <location filename="../src/QueryViewItems.cpp" line="377"/>
         <source>Remove from group</source>
         <translation>Gruptan çıkar</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="377"/>
+        <location filename="../src/QueryViewItems.cpp" line="379"/>
         <source>Add to group</source>
         <translation>Gruba ekle</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="383"/>
+        <location filename="../src/QueryViewItems.cpp" line="385"/>
         <source>Up</source>
         <translation>Yukarı</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="384"/>
+        <location filename="../src/QueryViewItems.cpp" line="386"/>
         <source>Down</source>
         <translation>Aşağı</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="395"/>
+        <location filename="../src/QueryViewItems.cpp" line="397"/>
         <source>Add &apos;%1&apos; to group</source>
         <translation>Gruba &apos;%1&apos; ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="396"/>
+        <location filename="../src/QueryViewItems.cpp" line="398"/>
         <source>Group:</source>
         <translation>Gurup:</translation>
     </message>
@@ -635,72 +632,72 @@
 <context>
     <name>U2::QDGroupsEditor</name>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="53"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="50"/>
         <source>Add Group</source>
         <translation>Grup Ekle</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="56"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="53"/>
         <source>Remove Group</source>
         <translation>Grubu Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="59"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="56"/>
         <source>Add Element</source>
         <translation>Öğe Ekle</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="62"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="59"/>
         <source>Remove Element</source>
         <translation>Öğeyi Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="65"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="62"/>
         <source>Set Required Number</source>
         <translation>Gerekli Numarayı Ayarlayın</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="113"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="109"/>
         <source>Create element group</source>
         <translation>Eleman grubu oluştur</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="113"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="109"/>
         <source>Group name</source>
         <translation>Grup ismi</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="116"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="114"/>
         <source>Group &apos;%1&apos; already exists!</source>
         <translation>&apos;%1&apos; grubu zaten var!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="120"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="118"/>
         <source>Invalid group name!</source>
         <translation>Geçersiz grup adı!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="150"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="148"/>
         <source>Add Element To Group &apos;%1&apos;</source>
         <translation>Öğeyi &apos;%1&apos; Grubuna Ekle</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="150"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="148"/>
         <source>Element:</source>
         <translation>Öğe:</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="159"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="157"/>
         <source>Actor is already in group!</source>
         <translation>Oyuncu zaten grupta!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="182"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="180"/>
         <source>Set required number for &apos;%1&apos;</source>
         <translation>&apos;%1&apos; için gerekli sayıyı ayarlayın</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="183"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="181"/>
         <source>Number:</source>
         <translation>Numara:</translation>
     </message>
@@ -708,17 +705,17 @@
 <context>
     <name>U2::QDLoadDocumentTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="131"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="132"/>
         <source>Loading document from %1</source>
         <translation>%1 kaynağından belge yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="135"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="136"/>
         <source>Loading scheme from file: %1</source>
         <translation>Dosyadan şema yükleniyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="148"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="149"/>
         <source>Invalid content: %1</source>
         <translation>Geçersiz içerik: %1</translation>
     </message>
@@ -734,7 +731,7 @@
 <context>
     <name>U2::QDLoadSceneTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="68"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="69"/>
         <source>Load query scheme</source>
         <translation>Sorgu şemasını yükle</translation>
     </message>
@@ -742,7 +739,7 @@
 <context>
     <name>U2::QDLoadSchemeTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="101"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="102"/>
         <source>Load query task</source>
         <translation>Sorgu görevini yükle</translation>
     </message>
@@ -750,7 +747,7 @@
 <context>
     <name>U2::QDRulerItem</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="1210"/>
+        <location filename="../src/QueryViewItems.cpp" line="1214"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -758,32 +755,32 @@
 <context>
     <name>U2::QDRunDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="126"/>
+        <location filename="../src/QDRunDialog.cpp" line="130"/>
         <source>Select output file</source>
         <translation>Çıktı dosyasını seçin</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="102"/>
+        <location filename="../src/QDRunDialog.cpp" line="106"/>
         <source>Select input file</source>
         <translation>Giriş dosyasını seçin</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="79"/>
+        <location filename="../src/QDRunDialog.cpp" line="83"/>
         <source>Run</source>
         <translation>Çalıştır</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="80"/>
+        <location filename="../src/QDRunDialog.cpp" line="84"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="138"/>
+        <location filename="../src/QDRunDialog.cpp" line="142"/>
         <source>The sequence is not specified!</source>
         <translation>Sıra belirtilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="142"/>
+        <location filename="../src/QDRunDialog.cpp" line="146"/>
         <source>The output file is not selected!</source>
         <translation>Çıktı dosyası seçilmedi!</translation>
     </message>
@@ -791,17 +788,17 @@
 <context>
     <name>U2::QDRunDialogTask</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="156"/>
+        <location filename="../src/QDRunDialog.cpp" line="160"/>
         <source>Query Designer</source>
         <translation>Sorgu Tasarımcısı</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="206"/>
+        <location filename="../src/QDRunDialog.cpp" line="210"/>
         <source>Sequence not found!</source>
         <translation>Sıra bulunamadı!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="215"/>
+        <location filename="../src/QDRunDialog.cpp" line="219"/>
         <source>Sequence not found, document: %1</source>
         <translation>Sıra bulunamadı, belge: %1</translation>
     </message>
@@ -809,12 +806,12 @@
 <context>
     <name>U2::QDSaveSceneTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="41"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="42"/>
         <source>Save query scheme</source>
         <translation>Sorgu şemasını kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="52"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="53"/>
         <source>Saving scheme to file: %1</source>
         <translation>Şema dosyaya kaydediliyor: %1</translation>
     </message>
@@ -822,7 +819,7 @@
 <context>
     <name>U2::QDViewFactory</name>
     <message>
-        <location filename="../src/QDDocumentFormat.cpp" line="134"/>
+        <location filename="../src/QDDocumentFormat.cpp" line="133"/>
         <source>Open multiple views</source>
         <translation>Birden çok görünüm açın</translation>
     </message>
@@ -830,13 +827,13 @@
 <context>
     <name>U2::QueryDesignerPlugin</name>
     <message>
-        <location filename="../src/QDDocumentFormat.h" line="83"/>
-        <location filename="../src/QueryDesignerPlugin.cpp" line="58"/>
+        <location filename="../src/QDDocumentFormat.h" line="84"/>
+        <location filename="../src/QueryDesignerPlugin.cpp" line="57"/>
         <source>Query Designer</source>
         <translation>Sorgu Tasarımcısı</translation>
     </message>
     <message>
-        <location filename="../src/QueryDesignerPlugin.cpp" line="59"/>
+        <location filename="../src/QueryDesignerPlugin.cpp" line="58"/>
         <source>Analyzes a nucleotide sequence using different algorithms (Repeat finder, ORF finder, etc.) imposing constraints on the positional relationship of the results.</source>
         <translation>Sonuçların konumsal ilişkisine kısıtlamalar getiren farklı algoritmalar (Tekrar bulucu, ORF bulucu, vb.) Kullanarak bir nükleotid dizisini analiz eder.</translation>
     </message>
@@ -927,12 +924,12 @@
 <context>
     <name>U2::QueryPalette</name>
     <message>
-        <location filename="../src/QueryPalette.cpp" line="159"/>
+        <location filename="../src/QueryPalette.cpp" line="156"/>
         <source>Algorithms</source>
         <translation>Algoritmalar</translation>
     </message>
     <message>
-        <location filename="../src/QueryPalette.cpp" line="174"/>
+        <location filename="../src/QueryPalette.cpp" line="171"/>
         <source>Constraints</source>
         <translation>Kısıtlamalar</translation>
     </message>
@@ -940,12 +937,12 @@
 <context>
     <name>U2::QueryProcCfgModel</name>
     <message>
-        <location filename="../src/QueryProcCfgModel.h" line="96"/>
+        <location filename="../src/QueryProcCfgModel.h" line="97"/>
         <source>Name</source>
         <translation>Ad</translation>
     </message>
     <message>
-        <location filename="../src/QueryProcCfgModel.h" line="98"/>
+        <location filename="../src/QueryProcCfgModel.h" line="99"/>
         <source>Value</source>
         <translation>Değer</translation>
     </message>

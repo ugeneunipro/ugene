@@ -90,17 +90,17 @@ bu birleştirme sırası yuvası:</translation>
         <translation>Dizin ekle</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="94"/>
+        <location filename="../src/DatasetWidget.ui" line="116"/>
         <source>Up url(s)</source>
         <translation>Yukarı url&apos;ler</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="119"/>
+        <location filename="../src/DatasetWidget.ui" line="141"/>
         <source>Down url(s)</source>
         <translation>Aşağı URL&apos;ler</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="144"/>
+        <location filename="../src/DatasetWidget.ui" line="166"/>
         <source>Delete urls(s)</source>
         <translation>URL&apos;leri silin</translation>
     </message>
@@ -200,17 +200,24 @@ bu birleştirme sırası yuvası:</translation>
         <translation>Aralık:</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="42"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="26"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="67"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="97"/>
+        <source>radioButtonsGroup</source>
+        <translation>radyo Düğme Grubu</translation>
+    </message>
+    <message>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="45"/>
         <source>..</source>
         <translation>..</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="61"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="64"/>
         <source>Less than:</source>
         <translation>Küçüktür:</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="88"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="94"/>
         <source>Greater than:</source>
         <translation>Büyüktür:</translation>
     </message>
@@ -289,17 +296,25 @@ bu birleştirme sırası yuvası:</translation>
         <translation>İle başlar</translation>
     </message>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="33"/>
+        <location filename="../src/EditStringMarkerWidget.ui" line="26"/>
+        <location filename="../src/EditStringMarkerWidget.ui" line="39"/>
+        <location filename="../src/EditStringMarkerWidget.ui" line="52"/>
+        <location filename="../src/EditStringMarkerWidget.ui" line="65"/>
+        <source>buttonGroup</source>
+        <translation>buttonGroup</translation>
+    </message>
+    <message>
+        <location filename="../src/EditStringMarkerWidget.ui" line="36"/>
         <source>Ends with</source>
         <translation>İle biter</translation>
     </message>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="43"/>
+        <location filename="../src/EditStringMarkerWidget.ui" line="49"/>
         <source>Contains</source>
         <translation>İçerir</translation>
     </message>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="53"/>
+        <location filename="../src/EditStringMarkerWidget.ui" line="62"/>
         <source>Regular expression</source>
         <translation>Düzenli ifade</translation>
     </message>
@@ -456,27 +471,27 @@ bu birleştirme sırası yuvası:</translation>
         <translation>Başlamak için bir örnek seçin</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowGUIUtils.cpp" line="155"/>
+        <location filename="../src/WorkflowGUIUtils.cpp" line="156"/>
         <source>Double click to load the sample</source>
         <translation>Örneği yüklemek için çift tıklayın</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="451"/>
+        <location filename="../src/DatasetsController.cpp" line="459"/>
         <source>Paired reads</source>
         <translation>Eşleştirilmiş okumalar</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="453"/>
+        <location filename="../src/DatasetsController.cpp" line="461"/>
         <source>file</source>
         <translation>dosya</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="453"/>
+        <location filename="../src/DatasetsController.cpp" line="461"/>
         <source>folder</source>
         <translation>klasör</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="454"/>
+        <location filename="../src/DatasetsController.cpp" line="462"/>
         <source>UGENE has found &quot;%1&quot; on the file system. Do you want to add it as a second %2 with paired reads?</source>
         <translation>UGENE, dosya sisteminde &quot;%1&quot; buldu. Eşleştirilmiş okumalarla ikinci %2 olarak eklemek ister misiniz?</translation>
     </message>
@@ -501,13 +516,14 @@ bu birleştirme sırası yuvası:</translation>
         <translation>İş akışı çalıştırmasının yaklaşık tahmin süresi </translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="167"/>
-        <location filename="../src/OutputFileDialog.cpp" line="213"/>
+        <location filename="../src/OutputFileDialog.cpp" line="168"/>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
         <source>Workflow-run output</source>
         <translation>İş akışı çalıştırma çıktısı</translation>
     </message>
     <message>
         <location filename="../src/wizard/SelectorActors.cpp" line="42"/>
+        <location filename="../src/wizard/WizardController.cpp" line="436"/>
         <source>Unknown actor id: %1</source>
         <translation>Bilinmeyen oyuncu kimliği: %1</translation>
     </message>
@@ -519,6 +535,21 @@ bu birleştirme sırası yuvası:</translation>
         <location filename="../src/wizard/WizardController.cpp" line="470"/>
         <source>Undefined variable: %1</source>
         <translation>Tanımsız değişken: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/wizard/WizardController.cpp" line="423"/>
+        <source>Actors selector is already defined: %1</source>
+        <translation>Aktör seçici zaten tanımlanmış: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/wizard/WizardController.cpp" line="433"/>
+        <source>Unknown actors selector: %1</source>
+        <translation>Bilinmeyen aktörler seçici: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/wizard/WizardController.cpp" line="438"/>
+        <source>Unknown actors selector value id: %1</source>
+        <translation>Bilinmeyen aktörler seçici değer kimliği: %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/WizardPageController.cpp" line="83"/>
@@ -539,27 +570,33 @@ bu birleştirme sırası yuvası:</translation>
         <translation>Tek bir dizide birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="59"/>
+        <location filename="../src/SequenceActionDialog.ui" line="46"/>
+        <location filename="../src/SequenceActionDialog.ui" line="102"/>
+        <source>buttonGroup</source>
+        <translation>buttonGroup</translation>
+    </message>
+    <message>
+        <location filename="../src/SequenceActionDialog.ui" line="62"/>
         <source>Merged sequence name</source>
         <translation>Birleştirilmiş sıra adı</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="69"/>
+        <location filename="../src/SequenceActionDialog.ui" line="72"/>
         <source>Gap size</source>
         <translation>Boşluk boyutu</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="96"/>
+        <location filename="../src/SequenceActionDialog.ui" line="99"/>
         <source>Merge into alignment</source>
         <translation>Uyum içinde birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="112"/>
+        <location filename="../src/SequenceActionDialog.ui" line="118"/>
         <source>Alignment name</source>
         <translation>Hizalama adı</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="122"/>
+        <location filename="../src/SequenceActionDialog.ui" line="128"/>
         <source>Filter duplicated sequences</source>
         <translation>Yinelenen dizileri filtrele</translation>
     </message>
@@ -585,17 +622,17 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>U2::AnnsActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="107"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="106"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="108"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="107"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="110"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="109"/>
         <source>Don&apos;t shift</source>
         <translation>Kayma</translation>
     </message>
@@ -611,14 +648,14 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>U2::BowtieWidgetController</name>
     <message>
-        <location filename="../src/wizard/BowtieWidgetController.cpp" line="70"/>
+        <location filename="../src/wizard/BowtieWidgetController.cpp" line="68"/>
         <source>Select
 bowtie index file</source>
         <translation>Seçiniz
 papyon indeks dosyası</translation>
     </message>
     <message>
-        <location filename="../src/wizard/BowtieWidgetController.cpp" line="81"/>
+        <location filename="../src/wizard/BowtieWidgetController.cpp" line="79"/>
         <source>Select one of Bowtie index files</source>
         <translation>Bowtie dizin dosyalarından birini seçin</translation>
     </message>
@@ -644,25 +681,33 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::ComboBoxWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="238"/>
+        <location filename="../src/PropertyWidget.cpp" line="217"/>
         <source>False</source>
         <translation>Yanlış</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="239"/>
+        <location filename="../src/PropertyWidget.cpp" line="218"/>
         <source>True</source>
         <translation>Doğru</translation>
     </message>
 </context>
 <context>
+    <name>U2::ComboBoxWithDbUrlWidget</name>
+    <message>
+        <location filename="../src/PropertyWidget.cpp" line="366"/>
+        <source>Add New Connection</source>
+        <translation>Yeni Bağlantı Ekle</translation>
+    </message>
+</context>
+<context>
     <name>U2::ComboBoxWithUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="364"/>
+        <location filename="../src/PropertyWidget.cpp" line="343"/>
         <source>Select a folder</source>
         <translation>Bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="369"/>
+        <location filename="../src/PropertyWidget.cpp" line="348"/>
         <source>Select a file</source>
         <translation>Bir dosya seçin</translation>
     </message>
@@ -670,12 +715,12 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::CreateDirectoryDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="209"/>
+        <location filename="../src/OutputFileDialog.cpp" line="210"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="210"/>
+        <location filename="../src/OutputFileDialog.cpp" line="211"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
@@ -729,22 +774,22 @@ papyon indeks dosyası</translation>
         <translation>Parametreler</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="326"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="322"/>
         <source>Can not create a folder: </source>
         <translation>Klasör oluşturulamıyor: </translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="332"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="328"/>
         <source>Failed to open Dashboard.html</source>
         <translation>Dashboard.html açılamadı</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="483"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="479"/>
         <source>Error reading dashboard file: %1</source>
         <translation>Gösterge tablosu dosyası okunurken hata oluştu: %1</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="495"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="491"/>
         <source>Error parsing dashboard file: &apos;%1&apos;, file: %2</source>
         <translation>Kontrol paneli dosyası ayrıştırılırken hata oluştu: &apos;%1&apos;, dosya: %2</translation>
     </message>
@@ -775,7 +820,7 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::DashboardInfoRegistry</name>
     <message>
-        <location filename="../src/dashboard/DashboardInfoRegistry.cpp" line="140"/>
+        <location filename="../src/dashboard/DashboardInfoRegistry.cpp" line="139"/>
         <source>Can&apos;t register a dashboard info: &apos;%1&apos;</source>
         <translation>Gösterge tablosu bilgisi kaydedilemiyor: &apos;%1&apos;</translation>
     </message>
@@ -791,17 +836,17 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::DatasetsController</name>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="166"/>
+        <location filename="../src/DatasetsController.cpp" line="169"/>
         <source>Dataset name is empty</source>
         <translation>Veri kümesi adı boş</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="170"/>
+        <location filename="../src/DatasetsController.cpp" line="173"/>
         <source>Dataset name can not contain &apos;:&apos; and &apos;;&apos; symbols</source>
         <translation>Veri kümesi adı &apos;:&apos; ve &apos;;&apos; semboller içeremez</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="175"/>
+        <location filename="../src/DatasetsController.cpp" line="178"/>
         <source>This dataset name already exists</source>
         <translation>Bu veri kümesi adı zaten var</translation>
     </message>
@@ -809,7 +854,7 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::DatasetsListWidget</name>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="55"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="54"/>
         <source>Add dataset</source>
         <translation>Veri kümesi ekleyin</translation>
     </message>
@@ -819,24 +864,24 @@ papyon indeks dosyası</translation>
         <translation>Veri Kümesi Adını Girin</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="98"/>
-        <location filename="../src/DatasetsListWidget.cpp" line="124"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="99"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="132"/>
         <source>New dataset name:</source>
         <translation>Yeni veri kümesi adı:</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="104"/>
-        <location filename="../src/DatasetsListWidget.cpp" line="129"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="110"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="142"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="124"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="131"/>
         <source>Rename Dataset</source>
         <translation>Veri Kümesini Yeniden Adlandırın</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="139"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="152"/>
         <source>Rename dataset</source>
         <translation>Veri kümesini yeniden adlandırın</translation>
     </message>
@@ -896,8 +941,8 @@ papyon indeks dosyası</translation>
         <translation>İşaretçi Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="451"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="456"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="450"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="455"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -933,30 +978,30 @@ papyon indeks dosyası</translation>
         <translation>Gerekli &quot;dinlenme&quot; işaretini kaldıramazsınız</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="210"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="209"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="211"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="209"/>
         <source>Do you really want to change marker&apos;s type? Some data can be lost!</source>
         <translation>İşaretçinin türünü gerçekten değiştirmek istiyor musunuz? Bazı veriler kaybolabilir!</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="240"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="264"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="241"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="265"/>
         <source>Marker&apos;s name contains a comma symbol: &quot;%1&quot;. It is not permitted for marker names</source>
         <translation>İşaretçinin adı virgül simgesi içeriyor: &quot;%1&quot;. İşaret isimleri için izin verilmez</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="246"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="269"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="247"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="270"/>
         <source>Duplicate marker&apos;s value: %1</source>
         <translation>Yinelenen işaretleyicinin değeri: %1</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="253"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="274"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="254"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="275"/>
         <source>Duplicate marker&apos;s name: %1</source>
         <translation>Yinelenen işaretçinin adı: %1</translation>
     </message>
@@ -969,22 +1014,22 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::GroupBox</name>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="910"/>
+        <location filename="../src/wizard/WizardController.cpp" line="911"/>
         <source>Show</source>
         <translation>Göster</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="915"/>
+        <location filename="../src/wizard/WizardController.cpp" line="916"/>
         <source>Hide</source>
         <translation>Gizle</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="935"/>
+        <location filename="../src/wizard/WizardController.cpp" line="936"/>
         <source>additional</source>
         <translation>ek</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="939"/>
+        <location filename="../src/wizard/WizardController.cpp" line="940"/>
         <source> settings</source>
         <translation> ayarlar</translation>
     </message>
@@ -1028,13 +1073,13 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::MarkerEditorWidget</name>
     <message>
-        <location filename="../src/MarkerEditorWidget.cpp" line="127"/>
-        <location filename="../src/MarkerEditorWidget.cpp" line="143"/>
+        <location filename="../src/MarkerEditorWidget.cpp" line="123"/>
+        <location filename="../src/MarkerEditorWidget.cpp" line="138"/>
         <source>Duplicate marker&apos;s name: %1</source>
         <translation>Yinelenen işaretçinin adı: %1</translation>
     </message>
     <message>
-        <location filename="../src/MarkerEditorWidget.cpp" line="150"/>
+        <location filename="../src/MarkerEditorWidget.cpp" line="145"/>
         <source>Marker&apos;s name contains spaces: %1</source>
         <translation>İşaretçinin adı boşluklar içeriyor: %1</translation>
     </message>
@@ -1055,12 +1100,12 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::MsaActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="217"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="216"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="218"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="217"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
@@ -1081,32 +1126,32 @@ papyon indeks dosyası</translation>
 <context>
     <name>U2::NewGrouperSlotDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="40"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="39"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="41"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="40"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="54"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="53"/>
         <source>Empty output slot name.</source>
         <translation>Boş çıktı yuvası adı.</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="56"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="55"/>
         <source>Invalid symbols in the output slot name. Use letters and digits only.</source>
         <translation>Çıktı yuvası adında geçersiz simgeler. Yalnızca harf ve rakam kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="58"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="57"/>
         <source>This output out slot already exists.</source>
         <translation>Bu çıkış yuvası zaten var.</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="64"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="63"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -1115,19 +1160,19 @@ papyon indeks dosyası</translation>
     <name>U2::NotificationsDashboardWidget</name>
     <message>
         <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
-        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="128"/>
         <source>Type</source>
         <translation>Tür</translation>
     </message>
     <message>
         <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
-        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="128"/>
         <source>Element</source>
         <translation>Öğe</translation>
     </message>
     <message>
         <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
-        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="128"/>
         <source>Message</source>
         <translation>İleti</translation>
     </message>
@@ -1152,22 +1197,22 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::OutputFileDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="49"/>
+        <location filename="../src/OutputFileDialog.cpp" line="50"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="50"/>
+        <location filename="../src/OutputFileDialog.cpp" line="51"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="54"/>
+        <location filename="../src/OutputFileDialog.cpp" line="55"/>
         <source>Save a folder</source>
         <translation>Klasöre kaydet</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="56"/>
+        <location filename="../src/OutputFileDialog.cpp" line="57"/>
         <source>Save a file</source>
         <translation>Dosyaya kaydet</translation>
     </message>
@@ -1175,14 +1220,14 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::OutputFilesDashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="78"/>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="153"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="76"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="151"/>
         <source>File</source>
         <translation>Dosya</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="78"/>
-        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="153"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="76"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="151"/>
         <source>Producer</source>
         <translation>Üretici</translation>
     </message>
@@ -1190,14 +1235,14 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::ParametersDashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="225"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="291"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="217"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="283"/>
         <source>Parameter</source>
         <translation>Parametre</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="225"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="291"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="217"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="283"/>
         <source>Value</source>
         <translation>Değer</translation>
     </message>
@@ -1205,7 +1250,7 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::QDCreateAnnotationsTask</name>
     <message>
-        <location filename="../src/QDScheduler.h" line="195"/>
+        <location filename="../src/QDScheduler.h" line="196"/>
         <source>Prepare annotations task</source>
         <translation>Ek açıklamalar görevi hazırlayın</translation>
     </message>
@@ -1213,7 +1258,7 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::QDFindLocationTask</name>
     <message>
-        <location filename="../src/QDScheduler.h" line="137"/>
+        <location filename="../src/QDScheduler.h" line="138"/>
         <source>Find resultLocation</source>
         <translation>Sonuç bul</translation>
     </message>
@@ -1221,7 +1266,7 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::QDLinkResultsTask</name>
     <message>
-        <location filename="../src/QDScheduler.h" line="162"/>
+        <location filename="../src/QDScheduler.h" line="163"/>
         <source>Link results</source>
         <translation>Sonuçları bağla</translation>
     </message>
@@ -1229,27 +1274,37 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::QDScheduler</name>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="46"/>
+        <location filename="../src/QDScheduler.cpp" line="47"/>
         <source>QDScheduler</source>
         <translation>QDScheduler</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="76"/>
+        <location filename="../src/QDScheduler.cpp" line="70"/>
         <source>Can&apos;t find annotation object: %1 in document: %2</source>
         <translation>Ek açıklama nesnesi bulunamıyor: %1, dokümanda: %2</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="109"/>
+        <location filename="../src/QDScheduler.cpp" line="103"/>
         <source>Annotation object is not available</source>
         <translation>Ek açıklama nesnesi mevcut değil</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="368"/>
+        <location filename="../src/QDScheduler.cpp" line="152"/>
+        <source>Invalid applications settings detected</source>
+        <translation>Geçersiz uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <location filename="../src/QDScheduler.cpp" line="155"/>
+        <source>Invalid users applications settings detected</source>
+        <translation>Geçersiz kullanıcı uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <location filename="../src/QDScheduler.cpp" line="361"/>
         <source>No results have been found for this scheme</source>
         <translation>Bu şema için sonuç bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="485"/>
+        <location filename="../src/QDScheduler.cpp" line="478"/>
         <source>Too many results have been found for this scheme. Try to set stricter search conditions.</source>
         <translation>Bu şema için çok fazla sonuç bulundu. Daha katı arama koşulları oluşturmaya çalışın.</translation>
     </message>
@@ -1257,7 +1312,7 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::QDTask</name>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="759"/>
+        <location filename="../src/QDScheduler.cpp" line="749"/>
         <source>Query task: %1</source>
         <translation>Sorgu görevi: %1
 1</translation>
@@ -1282,12 +1337,12 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="601"/>
+        <location filename="../src/DelegateEditors.cpp" line="596"/>
         <source>This computer</source>
         <translation>Bu bilgisayar</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="602"/>
+        <location filename="../src/DelegateEditors.cpp" line="597"/>
         <source>Remote computer</source>
         <translation>Uzak bilgisayar</translation>
     </message>
@@ -1295,12 +1350,12 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::SequeceActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="153"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="152"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="154"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="153"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
@@ -1368,12 +1423,12 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::StringActionDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="250"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="249"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.cpp" line="251"/>
+        <location filename="../src/NewGrouperSlotDialog.cpp" line="250"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
@@ -1381,17 +1436,17 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="732"/>
+        <location filename="../src/DelegateEditors.cpp" line="722"/>
         <source>Enter items</source>
         <translation>Öğeleri girin</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="734"/>
+        <location filename="../src/DelegateEditors.cpp" line="724"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="736"/>
+        <location filename="../src/DelegateEditors.cpp" line="726"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
@@ -1430,35 +1485,19 @@ Klasörü ayarlayın:</translation>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="196"/>
-        <source>Directory &apos;%1&apos; unable to read.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="203"/>
-        <source>Given path &apos;%1&apos; not a file nor a directory.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="233"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="185"/>
         <source>Select a folder</source>
         <translation>Bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="254"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="257"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="203"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="208"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="211"/>
         <source>Select a file</source>
         <translation>Bir dosya seçin</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="273"/>
-        <source>File path/name contains &apos;;&apos; symbol.<byte value="xd"/>
-That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
-Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="236"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="188"/>
         <source>Select file(s)</source>
         <translation>Dosyaları seçin</translation>
     </message>
@@ -1466,7 +1505,7 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
 <context>
     <name>U2::URLListController</name>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="756"/>
+        <location filename="../src/DatasetsController.cpp" line="767"/>
         <source>This file or folder does not exist: %1</source>
         <translation>Bu dosya veya klasör mevcut değil: %1</translation>
     </message>
@@ -1474,18 +1513,18 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
 <context>
     <name>U2::URLListWidget</name>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="108"/>
-        <location filename="../src/DatasetWidget.cpp" line="110"/>
+        <location filename="../src/DatasetWidget.cpp" line="117"/>
+        <location filename="../src/DatasetWidget.cpp" line="119"/>
         <source>Select file</source>
         <translation>Dosya seçin</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="120"/>
+        <location filename="../src/DatasetWidget.cpp" line="129"/>
         <source>Select a folder</source>
         <translation>Bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="131"/>
+        <location filename="../src/DatasetWidget.cpp" line="197"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -1493,7 +1532,7 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
 <context>
     <name>U2::URLWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="505"/>
+        <location filename="../src/PropertyWidget.cpp" line="521"/>
         <source>add</source>
         <translation>ekle</translation>
     </message>
@@ -1535,49 +1574,37 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
     </message>
 </context>
 <context>
-    <name>U2::Workflow::PrompterBaseImpl</name>
-    <message>
-        <location filename="../src/PrompterBase.cpp" line="67"/>
-        <location filename="../src/PrompterBase.cpp" line="90"/>
-        <location filename="../src/PrompterBase.cpp" line="126"/>
-        <source>unset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/PrompterBase.cpp" line="73"/>
-        <source>the list of files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/PrompterBase.cpp" line="105"/>
-        <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="589"/>
+        <location filename="../src/DelegateEditors.cpp" line="584"/>
         <source>Overwrite</source>
         <translation>Üzerine Yaz</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="590"/>
+        <location filename="../src/DelegateEditors.cpp" line="585"/>
         <source>Rename</source>
         <translation>Yeniden adlandır</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="592"/>
+        <location filename="../src/DelegateEditors.cpp" line="587"/>
         <source>Append</source>
         <translation>Ekle</translation>
     </message>
+    <message>
+        <location filename="../src/DesignerUtils.cpp" line="36"/>
+        <source>UGENE workflow documents</source>
+        <translation>UGENE iş akışı belgeleri</translation>
+    </message>
 </context>
 <context>
-    <name>WorkflowUtils</name>
+    <name>U2::DashboardJsAgent</name>
     <message>
-        <location filename="../src/DesignerUtils.cpp" line="33"/>
-        <source>UGENE workflow documents</source>
-        <translation type="unfinished">UGENE iş akışı belgeleri</translation>
+        <source>Error</source>
+        <translation>Hata</translation>
+    </message>
+    <message>
+        <source>The file does not exist</source>
+        <translation>Dosya mevcut değil</translation>
     </message>
 </context>
 </TS>

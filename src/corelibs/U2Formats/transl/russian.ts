@@ -2,213 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru">
 <context>
-    <name>ConvertAceToSqliteTask</name>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="47"/>
-        <source>Convert ACE to UGENE database (%1)</source>
-        <translation type="unfinished">Преобразование ACE в UGENE database формат(%1)</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="58"/>
-        <source>Converting assembly from %1 to %2 started</source>
-        <translation type="unfinished">Конвертация сборки из %1 в %2 начата</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="70"/>
-        <source>Can&apos;t open file &apos;%1&apos;</source>
-        <translation type="unfinished">Невозможно открыть файл &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="88"/>
-        <source>Importing</source>
-        <translation type="unfinished">Импорт</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="142"/>
-        <source>There is no assemblies in input file</source>
-        <translation type="unfinished">В файле нет сборок</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="156"/>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="199"/>
-        <source>Invalid source file</source>
-        <translation type="unfinished">Входной файл невалиден</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="220"/>
-        <source>Packing reads for assembly &apos;%1&apos; (%2 of %3)</source>
-        <translation type="unfinished">Упаковка ридов для сборки &apos;%1&apos; (%2 от %3)</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="275"/>
-        <source>Warning: incorrect maxProw == %1, probably packing was not done! Attribute was not set</source>
-        <translation type="unfinished">Warning: incorrect maxProw == %1, probably packing was not done! Attribute was not set</translation>
-    </message>
-</context>
-<context>
-    <name>Document</name>
-    <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="264"/>
-        <location filename="../src/FastaFormat.cpp" line="277"/>
-        <location filename="../src/FastqFormat.cpp" line="402"/>
-        <location filename="../src/PDWFormat.cpp" line="152"/>
-        <source>Document is empty.</source>
-        <translation type="unfinished">Документ не содержит данных.</translation>
-    </message>
-</context>
-<context>
-    <name>DocumentFormatUtils</name>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="156"/>
-        <source>First line is not an ace header</source>
-        <translation type="unfinished">Первая строка не является заголовком ACE</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="173"/>
-        <source>There are not enough assemblies</source>
-        <translation type="unfinished">Недостаточно сборок</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="193"/>
-        <source>Expected %1 reads, but only %2 AF tags found</source>
-        <translation type="unfinished">Ожидается %1 прочтений, но только %2 тэгов AF было найдено</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="232"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="482"/>
-        <source>Unexpected end of file</source>
-        <translation type="unfinished">Неожиданный конец файла</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="236"/>
-        <source>Line is too long</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="245"/>
-        <source>No contig count tag in the header line</source>
-        <translation type="unfinished">Отсутствует тег числа контигов в строке заголовка</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="257"/>
-        <source>Not enough parameters in current line</source>
-        <translation type="unfinished">Недостаточно параметров в текущей строке</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="268"/>
-        <source>Parameter is not a digit</source>
-        <translation type="unfinished">Параметр не является цифрой</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="276"/>
-        <source>There is no note about reads count</source>
-        <translation type="unfinished">Отсуствтует информация о числе считываний</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="291"/>
-        <source>No consensus</source>
-        <translation type="unfinished">Отсутствует консенсус</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="301"/>
-        <source>BQ keyword hasn&apos;t been found</source>
-        <translation type="unfinished">Не найдено ключевое слово BQ</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="304"/>
-        <source>Unexpected symbols in consensus data</source>
-        <translation type="unfinished">Неоижданные символы в консенсусе</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="315"/>
-        <source>Can&apos;t find a sequence name in current line</source>
-        <translation type="unfinished">Невозможно найти имя последовательности в текущей строке</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="325"/>
-        <source>An empty sequence name</source>
-        <translation type="unfinished">Не указано имя последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="395"/>
-        <source>Not all reads were found</source>
-        <translation type="unfinished">Не все риды были найдены</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="404"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="408"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="440"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="452"/>
-        <source>Bad AF note</source>
-        <translation type="unfinished">Плохое примечание AF</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="478"/>
-        <source>There is no read note</source>
-        <translation type="unfinished">Отсутствует</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="491"/>
-        <source>Invalid RD part</source>
-        <translation type="unfinished">Неверная часть RD</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="495"/>
-        <source>A name is not match with AF names</source>
-        <translation type="unfinished">Имя не совпадает с именами AF</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="503"/>
-        <source>QA keyword hasn&apos;t been found</source>
-        <translation type="unfinished">Ключевое слово QA не было найдено</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
-        <source>QA error bad range</source>
-        <translation type="unfinished">Ошибка QA: плохой регион</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="515"/>
-        <source>Unexpected symbols in sequence data</source>
-        <translation type="unfinished">Неоижданные символы в последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="521"/>
-        <source>Can&apos;t find clear range start in current line</source>
-        <translation type="unfinished">Невозможно найти начало диапазона в текущей строке</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="522"/>
-        <source>Clear range start is invalid</source>
-        <translation type="unfinished">Неверное начало диапазона</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="529"/>
-        <source>Can&apos;t find clear range end in current line</source>
-        <translation type="unfinished">Невозможно найти конец диапазона в текущей строке</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="530"/>
-        <source>Clear range end is invalid</source>
-        <translation type="unfinished">Неверный конец диапазона</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="554"/>
-        <source>There is no next element</source>
-        <translation type="unfinished">Отсутствует следующий элемент</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/ConvertFileTask.cpp" line="56"/>
-        <source>Conversion file from %1 to %2</source>
-        <translation type="unfinished">Преобразование файла %1 в %2</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/MergeBamTask.cpp" line="45"/>
-        <source>Merge BAM files with SAMTools merge</source>
-        <translation type="unfinished">Слияние BAM файлов с SAMTools</translation>
-    </message>
-</context>
-<context>
     <name>EMBLGenbankAbstractDocument</name>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="57"/>
@@ -247,27 +40,27 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="90"/>
+        <location filename="../src/BAMUtils.cpp" line="89"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="94"/>
+        <location filename="../src/BAMUtils.cpp" line="93"/>
         <source>Fail to read the header from the file, probably, not an assembly format: &quot;%1&quot;</source>
         <translation>Не удалось считать заголовок из файла, вероятно, это не формат сборки: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="98"/>
+        <location filename="../src/BAMUtils.cpp" line="97"/>
         <source>Fail to write the header to the file: &quot;%1&quot;</source>
         <translation>Не удалось записать заголовок в файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="102"/>
+        <location filename="../src/BAMUtils.cpp" line="101"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="707"/>
+        <location filename="../src/BAMUtils.cpp" line="699"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Не удается открыть файл по указанному URL: %1.</translation>
     </message>
@@ -594,52 +387,52 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="170"/>
+        <location filename="../src/BAMUtils.cpp" line="169"/>
         <source>Wrong line in a SAM file: &quot;%1&quot;. Skipped</source>
         <translation>Неверная строка в SAM файле: &quot;%1&quot;. Пропущена</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="177"/>
+        <location filename="../src/BAMUtils.cpp" line="176"/>
         <source>Wrong left base position format: &quot;%1&quot;. Line has been skipped.</source>
         <translation>Неверный формат позиции левого символа: &quot;%1&quot;. Строка была пропущена.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="240"/>
+        <location filename="../src/BAMUtils.cpp" line="239"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="244"/>
+        <location filename="../src/BAMUtils.cpp" line="243"/>
         <source>No reference data in the file: %1</source>
         <translation>Файл не содержит референсных данныз: %1</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="378"/>
+        <location filename="../src/BAMUtils.cpp" line="377"/>
         <source>Sorting &quot;%1&quot; and saving the result to &quot;%2&quot;</source>
         <translation>Сортировка &quot;%1&quot; и сохранение результата в &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="382"/>
+        <location filename="../src/BAMUtils.cpp" line="381"/>
         <source>Cannot sort &quot;%1&quot;, abort</source>
         <translation>Невозможно провести сортировку &quot;%1&quot;, отмена</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="388"/>
+        <location filename="../src/BAMUtils.cpp" line="387"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="401"/>
+        <location filename="../src/BAMUtils.cpp" line="400"/>
         <source>Failed to merge BAM files: %1 into %2</source>
         <translation>Не удалось объединить файлы BAM: %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="437"/>
+        <location filename="../src/BAMUtils.cpp" line="436"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="439"/>
+        <location filename="../src/BAMUtils.cpp" line="438"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
     </message>
@@ -885,6 +678,50 @@
     </message>
 </context>
 <context>
+    <name>U2::ConvertAceToSqliteTask</name>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="47"/>
+        <source>Convert ACE to UGENE database (%1)</source>
+        <translation>Преобразование ACE в UGENE database формат(%1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="58"/>
+        <source>Converting assembly from %1 to %2 started</source>
+        <translation>Конвертация сборки из %1 в %2 начата</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="70"/>
+        <source>Can&apos;t open file &apos;%1&apos;</source>
+        <translation>Невозможно открыть файл &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="88"/>
+        <source>Importing</source>
+        <translation>Импорт</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="142"/>
+        <source>There is no assemblies in input file</source>
+        <translation>В файле нет сборок</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="156"/>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="199"/>
+        <source>Invalid source file</source>
+        <translation>Invalid source file</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="220"/>
+        <source>Packing reads for assembly &apos;%1&apos; (%2 of %3)</source>
+        <translation>Упаковка ридов для сборки &apos;%1&apos; (%2 от %3)</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="275"/>
+        <source>Warning: incorrect maxProw == %1, probably packing was not done! Attribute was not set</source>
+        <translation>Warning: incorrect maxProw == %1, probably packing was not done! Attribute was not set</translation>
+    </message>
+</context>
+<context>
     <name>U2::ConvertAssemblyToSamTask</name>
     <message>
         <location filename="../src/tasks/ConvertAssemblyToSamTask.cpp" line="89"/>
@@ -970,6 +807,169 @@
         <location filename="../src/DifferentialFormat.cpp" line="261"/>
         <source>Required column is missed: %1</source>
         <translation>Пропущен необходимый столбец: %1</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Document</name>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="264"/>
+        <location filename="../src/FastaFormat.cpp" line="277"/>
+        <location filename="../src/FastqFormat.cpp" line="402"/>
+        <location filename="../src/PDWFormat.cpp" line="152"/>
+        <source>Document is empty.</source>
+        <translation>Документ не содержит данных.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::DocumentFormatUtils</name>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="156"/>
+        <source>First line is not an ace header</source>
+        <translation>Первая строка не является заголовком ACE</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="173"/>
+        <source>There are not enough assemblies</source>
+        <translation>Недостаточно сборок</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="193"/>
+        <source>Expected %1 reads, but only %2 AF tags found</source>
+        <translation>Ожидается %1 прочтений, но только %2 тэгов AF было найдено</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="232"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="482"/>
+        <source>Unexpected end of file</source>
+        <translation>Неожиданный конец файла</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="236"/>
+        <source>Line is too long</source>
+        <translation>Строка слишком длинная</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="245"/>
+        <source>No contig count tag in the header line</source>
+        <translation>Отсутствует тег числа контигов в строке заголовка</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="257"/>
+        <source>Not enough parameters in current line</source>
+        <translation>Недостаточно параметров в текущей строке</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="268"/>
+        <source>Parameter is not a digit</source>
+        <translation>Параметр не является цифрой</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="276"/>
+        <source>There is no note about reads count</source>
+        <translation>Отсуствтует информация о числе считываний</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="291"/>
+        <source>No consensus</source>
+        <translation>Отсутствует консенсус</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="301"/>
+        <source>BQ keyword hasn&apos;t been found</source>
+        <translation>Не найдено ключевое слово BQ</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="304"/>
+        <source>Unexpected symbols in consensus data</source>
+        <translation>Неоижданные символы в консенсусе</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="315"/>
+        <source>Can&apos;t find a sequence name in current line</source>
+        <translation>Невозможно найти имя последовательности в текущей строке</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="325"/>
+        <source>An empty sequence name</source>
+        <translation>Не указано имя последовательности</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="395"/>
+        <source>Not all reads were found</source>
+        <translation>Не все риды были найдены</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="404"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="408"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="440"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="452"/>
+        <source>Bad AF note</source>
+        <translation>Плохое примечание AF</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="478"/>
+        <source>There is no read note</source>
+        <translation>Отсутствует</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="491"/>
+        <source>Invalid RD part</source>
+        <translation>Неверная часть RD</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="503"/>
+        <source>QA keyword hasn&apos;t been found</source>
+        <translation>Ключевое слово QA не было найдено</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
+        <source>QA error bad range</source>
+        <translation>Ошибка QA: плохой регион</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="515"/>
+        <source>Unexpected symbols in sequence data</source>
+        <translation>Неоижданные символы в последовательности</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="495"/>
+        <source>A name is not match with AF names</source>
+        <translation>Имя не совпадает с именами AF</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="521"/>
+        <source>Can&apos;t find clear range start in current line</source>
+        <translation>Невозможно найти начало диапазона в текущей строке</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="522"/>
+        <source>Clear range start is invalid</source>
+        <translation>Неверное начало диапазона</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="529"/>
+        <source>Can&apos;t find clear range end in current line</source>
+        <translation>Невозможно найти конец диапазона в текущей строке</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="530"/>
+        <source>Clear range end is invalid</source>
+        <translation>Неверный конец диапазона</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="554"/>
+        <source>There is no next element</source>
+        <translation>Отсутствует следующий элемент</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConvertFileTask.cpp" line="56"/>
+        <source>Conversion file from %1 to %2</source>
+        <translation>Преобразование файла %1 в %2</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/MergeBamTask.cpp" line="45"/>
+        <source>Merge BAM files with SAMTools merge</source>
+        <translation>Слияние BAM файлов с SAMTools</translation>
     </message>
 </context>
 <context>
@@ -1096,12 +1096,12 @@
 <context>
     <name>U2::ExportAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="48"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="52"/>
         <source>Export alignment to %1</source>
         <translation>Экспортировать выравнивание в %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="52"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="56"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
@@ -1109,7 +1109,7 @@
 <context>
     <name>U2::ExportDNAChromatogramTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="200"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="204"/>
         <source>Export chromatogram to SCF</source>
         <translation>Экспортировать хроматограмму а SCF</translation>
     </message>
@@ -1117,12 +1117,12 @@
 <context>
     <name>U2::ExportMSA2MSATask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="133"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="137"/>
         <source>Export alignment as alignment to %1</source>
         <translation>Экспортировать выравнивание в выравнивание в %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="139"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="143"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
@@ -1130,7 +1130,7 @@
 <context>
     <name>U2::ExportMSA2SequencesTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="83"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="87"/>
         <source>Export alignment as sequence to %1</source>
         <translation>Экспортировать выравнивание в последовательность в %1</translation>
     </message>
@@ -1665,110 +1665,6 @@
         <location filename="../src/util/SnpeffInfoParser.cpp" line="131"/>
         <source>Too many values in the entry &apos;%1&apos;, extra entries are ignored</source>
         <translation>Too many values in the entry &apos;%1&apos;, extra entries are ignored</translation>
-    </message>
-</context>
-<context>
-    <name>U2::KrakenResultsPlainTextFormat</name>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="57"/>
-        <source>Kraken results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="58"/>
-        <source>Kraken classification results text format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="116"/>
-        <source>Error on line %1, line contains paired results opposite of previous lines in file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="120"/>
-        <source>Error on line %1, line contains single results opposite of previous lines in file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="126"/>
-        <source>Error on line %1, 1st word should be &quot;C&quot; or &quot;U&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="133"/>
-        <source>Error on line %1, 3rd word should be number.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="135"/>
-        <source>Error on line %1, 3rd word should be number greater or equal zero.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="142"/>
-        <source>Error on line %1, 4th word should be number.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="144"/>
-        <source>Error on line %1, 4th word should be number greater than zero.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="151"/>
-        <source>Error on line %1, 4th word not match format &quot;&lt;number&gt;|&lt;number&gt;&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="154"/>
-        <source>Error on line %1, 4th word, first element of the pair should be a number.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="156"/>
-        <source>Error on line %1, 4th, first element of the pair should be number greater than zero.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="160"/>
-        <source>Error on line %1, 4th word, second element of the pair should be a number.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="162"/>
-        <source>Error on line %1, 4th, second element of the pair should be number greater than zero.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="182"/>
-        <source>Error on line %1, %2th word not match format &quot;&lt;string_or_number&gt;:&lt;number&gt;&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="185"/>
-        <source>Error on line %1, %2th word second element of the pair is not a number.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="186"/>
-        <source>Error on line %1, %2th word second element of the pair should be number greater than zero.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="202"/>
-        <source>Summary fragment length %1 should be less or equal sequence length %2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="221"/>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="225"/>
-        <source>Sequence %1 skipped, because no classified result found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="239"/>
-        <source>Two or more classification results with same sequence name &quot;%1&quot; were found.They will be merged in one annotation table</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2385,6 +2281,224 @@
     </message>
 </context>
 <context>
+    <name>U2::U2DbiL10n</name>
+    <message>
+        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="125"/>
+        <source>Failed to detect assembly storage format: %1</source>
+        <translation>Не удалось определить формат хранения сборки: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="149"/>
+        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="153"/>
+        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="158"/>
+        <source>Failed to parse packed row range info %1</source>
+        <translation>Failed to parse packed row range info %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="80"/>
+        <source>There is no assembly object with the specified id.</source>
+        <translation>Нет объекта сборки с указанным идентификатором.</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="93"/>
+        <source>Unsupported reads storage type: %1</source>
+        <translation>Unsupported reads storage type: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="359"/>
+        <source>Packing method is not supported: %1</source>
+        <translation>Packing method is not supported: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="443"/>
+        <source>Packed data are empty!</source>
+        <translation>Packed data are empty!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="450"/>
+        <source>Packing method prefix is not supported: %1</source>
+        <translation>Префикс метода упаковки не поддерживается: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="458"/>
+        <source>Data are corrupted, no name end marker found: %1</source>
+        <translation>Данные повреждены, маркер окончания имени не найден: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="467"/>
+        <source>Data are corrupted, no sequence end marker found: %1</source>
+        <translation>Данные повреждены, маркер конца последовательности не найден: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="476"/>
+        <source>Data are corrupted, no CIGAR end marker found: %1</source>
+        <translation>Данные повреждены, маркер конца CIGAR не найден: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="495"/>
+        <source>Data are corrupted, no rnext end marker found: %1</source>
+        <translation>Данные повреждены, маркер rnext не найден: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="510"/>
+        <source>Can not convert pnext to a number: %1</source>
+        <translation>Невозможно конвертировать pnext в число: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="227"/>
+        <source>Error checking SQLite database: %1!</source>
+        <translation>Ошибка в базе данных SQLite: %1!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="240"/>
+        <source>Error creating table: %1, error: %2</source>
+        <translation>Error creating table: %1, error: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="278"/>
+        <source>Not a %1 SQLite database: %2</source>
+        <translation>Not a %1 SQLite database: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="343"/>
+        <source>Database is already opened!</source>
+        <translation>База данных уже открыта!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="347"/>
+        <source>Illegal database state: %1</source>
+        <translation>Недопустимое состояние базы данных: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="353"/>
+        <source>URL is not specified</source>
+        <translation>Не задан путь</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="284"/>
+        <source>The file was created with a newer version of UGENE. Current version: %1, minimum version required by database: %2. File: %3.</source>
+        <translation>Файл был создан с более новой версией UGENE. Текущая версия: %1, минимальная версия, требуемая базой данных: %2. Файл: %3.</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="367"/>
+        <source>Error opening SQLite database: &apos;%1&apos;. Error: %2</source>
+        <translation>Ошибка при открытии базы данных SQLite: &apos;%1&apos;. Ошибка: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="421"/>
+        <source>Database is already closed!</source>
+        <translation>База данных уже закрыта!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="425"/>
+        <source>Illegal database state %1!</source>
+        <translation>Illegal database state %1!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
+        <source>Can&apos;t synchronize database state</source>
+        <translation>Не удается синхронизировать состояние базы данных</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="450"/>
+        <source>Failed to close database: %1, err: %2</source>
+        <translation>Failed to close database: %1, err: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteFeatureDbi.cpp" line="146"/>
+        <source>Annotation table object not found.</source>
+        <translation>Annotation table object not found.</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteModDbi.cpp" line="147"/>
+        <source>An object single modification step not found!</source>
+        <translation>An object single modification step not found!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="391"/>
+        <source>Msa object not found</source>
+        <translation>Объект MSA не найден</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="526"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="541"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="710"/>
+        <source>Msa object not found!</source>
+        <translation>Msa object not found!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="616"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="764"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="801"/>
+        <source>Msa row not found!</source>
+        <translation>Msa row not found!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1251"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1261"/>
+        <source>An error occurred during updating an msa length</source>
+        <translation>Произошла ошибка при обновлении длины msa</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="279"/>
+        <source>Not an object! Id: %1, type: %2</source>
+        <translation>Not an object! Id: %1, type: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="303"/>
+        <source>Unknown object type! Id: %1, type: %2</source>
+        <translation>Неизвестный тип объекта! Идентификатор: %1, тип: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="617"/>
+        <source>Can&apos;t undo an operation for the object!</source>
+        <translation>Can&apos;t undo an operation for the object!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="700"/>
+        <source>Can&apos;t redo an operation for the object!</source>
+        <translation>Can&apos;t redo an operation for the object!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="870"/>
+        <source>Object not found!</source>
+        <translation>Object not found!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="932"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="945"/>
+        <source>Object not found.</source>
+        <translation>Object not found.</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="982"/>
+        <source>Folder not found: %1</source>
+        <translation>Folder not found: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteSequenceDbi.cpp" line="74"/>
+        <source>Sequence object not found.</source>
+        <translation>Sequence object not found.</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="103"/>
+        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="136"/>
+        <source>Sequence name is not set!</source>
+        <translation>Sequence name is not set!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>
+        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="67"/>
+        <source>An error occurred during updating UDR</source>
+        <translation>An error occurred during updating UDR</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
+        <source>Unsupported attribute type: %1</source>
+        <translation>Неподдерживаемый тип атрибута: %1</translation>
+    </message>
+</context>
+<context>
     <name>U2::VectorNtiSequenceFormat</name>
     <message>
         <location filename="../src/VectorNtiSequenceFormat.cpp" line="44"/>
@@ -2404,224 +2518,6 @@
         <location filename="../src/VectorNtiSequenceFormat.cpp" line="325"/>
         <source>Error writing document</source>
         <translation>Ошибка записи</translation>
-    </message>
-</context>
-<context>
-    <name>U2DbiL10n</name>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="80"/>
-        <source>There is no assembly object with the specified id.</source>
-        <translation type="unfinished">Нет объекта сборки с указанным идентификатором.</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="93"/>
-        <source>Unsupported reads storage type: %1</source>
-        <translation type="unfinished">Unsupported reads storage type: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="359"/>
-        <source>Packing method is not supported: %1</source>
-        <translation type="unfinished">Packing method is not supported: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="443"/>
-        <source>Packed data are empty!</source>
-        <translation type="unfinished">Packed data are empty!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="450"/>
-        <source>Packing method prefix is not supported: %1</source>
-        <translation type="unfinished">Префикс метода упаковки не поддерживается: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="458"/>
-        <source>Data are corrupted, no name end marker found: %1</source>
-        <translation type="unfinished">Данные повреждены, маркер окончания имени не найден: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="467"/>
-        <source>Data are corrupted, no sequence end marker found: %1</source>
-        <translation type="unfinished">Данные повреждены, маркер конца последовательности не найден: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="476"/>
-        <source>Data are corrupted, no CIGAR end marker found: %1</source>
-        <translation type="unfinished">Данные повреждены, маркер конца CIGAR не найден: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="495"/>
-        <source>Data are corrupted, no rnext end marker found: %1</source>
-        <translation type="unfinished">Данные повреждены, маркер rnext не найден: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="510"/>
-        <source>Can not convert pnext to a number: %1</source>
-        <translation type="unfinished">Невозможно конвертировать pnext в число: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
-        <source>Unsupported attribute type: %1</source>
-        <translation type="unfinished">Неподдерживаемый тип атрибута: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="227"/>
-        <source>Error checking SQLite database: %1!</source>
-        <translation type="unfinished">Ошибка в базе данных SQLite: %1!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="240"/>
-        <source>Error creating table: %1, error: %2</source>
-        <translation type="unfinished">Error creating table: %1, error: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="278"/>
-        <source>Not a %1 SQLite database: %2</source>
-        <translation type="unfinished">Not a %1 SQLite database: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="284"/>
-        <source>The file was created with a newer version of UGENE. Current version: %1, minimum version required by database: %2. File: %3.</source>
-        <translation type="unfinished">Файл был создан с более новой версией UGENE. Текущая версия: %1, минимальная версия, требуемая базой данных: %2. Файл: %3.</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="343"/>
-        <source>Database is already opened!</source>
-        <translation type="unfinished">База данных уже открыта!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="347"/>
-        <source>Illegal database state: %1</source>
-        <translation type="unfinished">Недопустимое состояние базы данных: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="353"/>
-        <source>URL is not specified</source>
-        <translation type="unfinished">Не задан путь</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="367"/>
-        <source>Error opening SQLite database: &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished">Ошибка при открытии базы данных SQLite: &apos;%1&apos;. Ошибка: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="421"/>
-        <source>Database is already closed!</source>
-        <translation type="unfinished">База данных уже закрыта!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="425"/>
-        <source>Illegal database state %1!</source>
-        <translation type="unfinished">Illegal database state %1!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
-        <source>Can&apos;t synchronize database state</source>
-        <translation type="unfinished">Не удается синхронизировать состояние базы данных</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="450"/>
-        <source>Failed to close database: %1, err: %2</source>
-        <translation type="unfinished">Failed to close database: %1, err: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteFeatureDbi.cpp" line="146"/>
-        <source>Annotation table object not found.</source>
-        <translation type="unfinished">Annotation table object not found.</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteModDbi.cpp" line="147"/>
-        <source>An object single modification step not found!</source>
-        <translation type="unfinished">An object single modification step not found!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="391"/>
-        <source>Msa object not found</source>
-        <translation type="unfinished">Объект MSA не найден</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="526"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="541"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="710"/>
-        <source>Msa object not found!</source>
-        <translation type="unfinished">Msa object not found!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="616"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="764"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="801"/>
-        <source>Msa row not found!</source>
-        <translation type="unfinished">Msa row not found!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1251"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1261"/>
-        <source>An error occurred during updating an msa length</source>
-        <translation type="unfinished">Произошла ошибка при обновлении длины msa</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="279"/>
-        <source>Not an object! Id: %1, type: %2</source>
-        <translation type="unfinished">Not an object! Id: %1, type: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="303"/>
-        <source>Unknown object type! Id: %1, type: %2</source>
-        <translation type="unfinished">Неизвестный тип объекта! Идентификатор: %1, тип: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="617"/>
-        <source>Can&apos;t undo an operation for the object!</source>
-        <translation type="unfinished">Can&apos;t undo an operation for the object!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="700"/>
-        <source>Can&apos;t redo an operation for the object!</source>
-        <translation type="unfinished">Can&apos;t redo an operation for the object!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="870"/>
-        <source>Object not found!</source>
-        <translation type="unfinished">Object not found!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="932"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="945"/>
-        <source>Object not found.</source>
-        <translation type="unfinished">Object not found.</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="982"/>
-        <source>Folder not found: %1</source>
-        <translation type="unfinished">Folder not found: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteSequenceDbi.cpp" line="74"/>
-        <source>Sequence object not found.</source>
-        <translation type="unfinished">Sequence object not found.</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>
-        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="67"/>
-        <source>An error occurred during updating UDR</source>
-        <translation type="unfinished">An error occurred during updating UDR</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="103"/>
-        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="136"/>
-        <source>Sequence name is not set!</source>
-        <translation type="unfinished">Sequence name is not set!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="125"/>
-        <source>Failed to detect assembly storage format: %1</source>
-        <translation type="unfinished">Не удалось определить формат хранения сборки: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="149"/>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="153"/>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="158"/>
-        <source>Failed to parse packed row range info %1</source>
-        <translation type="unfinished">Failed to parse packed row range info %1</translation>
     </message>
 </context>
 </TS>

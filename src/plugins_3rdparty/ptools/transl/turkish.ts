@@ -4,12 +4,12 @@
 <context>
     <name>U2::PToolsPlugin</name>
     <message>
-        <location filename="../src/PToolsPlugin.cpp" line="49"/>
+        <location filename="../src/PToolsPlugin.cpp" line="45"/>
         <source>PTools</source>
         <translation>PAraçları</translation>
     </message>
     <message>
-        <location filename="../src/PToolsPlugin.cpp" line="49"/>
+        <location filename="../src/PToolsPlugin.cpp" line="45"/>
         <source>Structural alignment algorithm (Sippl MJ, Stegbuchner H) from PTools library</source>
         <translation>PAraçlar kütüphanesinden yapısal hizalama algoritması (Sippl MJ, Stegbuchner H)</translation>
     </message>

@@ -501,8 +501,8 @@ this merge sequence slot:</source>
         <translation>Примерная оценка длительности выполнения схемы </translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="167"/>
-        <location filename="../src/OutputFileDialog.cpp" line="213"/>
+        <location filename="../src/OutputFileDialog.cpp" line="168"/>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
         <source>Workflow-run output</source>
         <translation>Выходная папка схемы</translation>
     </message>
@@ -670,12 +670,12 @@ bowtie index file</source>
 <context>
     <name>U2::CreateDirectoryDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="209"/>
+        <location filename="../src/OutputFileDialog.cpp" line="210"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="210"/>
+        <location filename="../src/OutputFileDialog.cpp" line="211"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -775,7 +775,7 @@ bowtie index file</source>
 <context>
     <name>U2::DashboardInfoRegistry</name>
     <message>
-        <location filename="../src/dashboard/DashboardInfoRegistry.cpp" line="140"/>
+        <location filename="../src/dashboard/DashboardInfoRegistry.cpp" line="139"/>
         <source>Can&apos;t register a dashboard info: &apos;%1&apos;</source>
         <translation>Не удается зарегистрировать информацию: &quot;%1&quot;</translation>
     </message>
@@ -809,7 +809,7 @@ bowtie index file</source>
 <context>
     <name>U2::DatasetsListWidget</name>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="55"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="54"/>
         <source>Add dataset</source>
         <translation>Добавить набор данных</translation>
     </message>
@@ -819,24 +819,24 @@ bowtie index file</source>
         <translation>Ввести имя набора данных</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="98"/>
-        <location filename="../src/DatasetsListWidget.cpp" line="124"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="99"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="132"/>
         <source>New dataset name:</source>
         <translation>Имя нового набора данных:</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="104"/>
-        <location filename="../src/DatasetsListWidget.cpp" line="129"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="110"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="142"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="124"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="131"/>
         <source>Rename Dataset</source>
         <translation>Переименовать набор данных</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsListWidget.cpp" line="139"/>
+        <location filename="../src/DatasetsListWidget.cpp" line="152"/>
         <source>Rename dataset</source>
         <translation>Переименовать набор данных</translation>
     </message>
@@ -1152,22 +1152,22 @@ Set up the folder:</source>
 <context>
     <name>U2::OutputFileDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="49"/>
+        <location filename="../src/OutputFileDialog.cpp" line="50"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="50"/>
+        <location filename="../src/OutputFileDialog.cpp" line="51"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="54"/>
+        <location filename="../src/OutputFileDialog.cpp" line="55"/>
         <source>Save a folder</source>
         <translation>Сохранить папку</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="56"/>
+        <location filename="../src/OutputFileDialog.cpp" line="57"/>
         <source>Save a file</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -1229,27 +1229,27 @@ Set up the folder:</source>
 <context>
     <name>U2::QDScheduler</name>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="46"/>
+        <location filename="../src/QDScheduler.cpp" line="47"/>
         <source>QDScheduler</source>
         <translation>QDScheduler</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="76"/>
+        <location filename="../src/QDScheduler.cpp" line="77"/>
         <source>Can&apos;t find annotation object: %1 in document: %2</source>
         <translation>Невозможно найти объект аннотация: %1 в документе: %2</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="109"/>
+        <location filename="../src/QDScheduler.cpp" line="110"/>
         <source>Annotation object is not available</source>
         <translation>Объект аннотация недоступен</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="368"/>
+        <location filename="../src/QDScheduler.cpp" line="369"/>
         <source>No results have been found for this scheme</source>
         <translation>Для этой схемы результатов не найдено</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="485"/>
+        <location filename="../src/QDScheduler.cpp" line="486"/>
         <source>Too many results have been found for this scheme. Try to set stricter search conditions.</source>
         <translation>Было найдено очень много результатов для этой схемы. Попробуйте изменить условия поиска.</translation>
     </message>
@@ -1257,7 +1257,7 @@ Set up the folder:</source>
 <context>
     <name>U2::QDTask</name>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="759"/>
+        <location filename="../src/QDScheduler.cpp" line="760"/>
         <source>Query task: %1</source>
         <translation>Запрос: %1</translation>
     </message>
@@ -1449,6 +1449,14 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
 Переименуйте файл или переместите его в каталог, который не содержит символ &apos;;&apos; в пути.</translation>
     </message>
     <message>
+        <source>File path or name contains &apos;;&apos; symbol.<byte value="xd"/>
+That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
+Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
+        <translation type="vanished">Путь/имя файла содержит символ &apos;;&apos;.
+Такой путь/имя файла не могут быть корректно обработаны этим элементом.
+Пожалуйста, переименуйте/переместите файл в папку путь до которой не содержит &apos;;&apos;.</translation>
+    </message>
+    <message>
         <location filename="../src/support/URLLineEdit.cpp" line="236"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
@@ -1536,26 +1544,6 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
     </message>
 </context>
 <context>
-    <name>U2::Workflow::PrompterBaseImpl</name>
-    <message>
-        <location filename="../src/PrompterBase.cpp" line="67"/>
-        <location filename="../src/PrompterBase.cpp" line="90"/>
-        <location filename="../src/PrompterBase.cpp" line="126"/>
-        <source>unset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/PrompterBase.cpp" line="73"/>
-        <source>the list of files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/PrompterBase.cpp" line="105"/>
-        <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::WorkflowUtils</name>
     <message>
         <location filename="../src/DelegateEditors.cpp" line="589"/>
@@ -1572,13 +1560,10 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
         <source>Append</source>
         <translation>Дописать</translation>
     </message>
-</context>
-<context>
-    <name>WorkflowUtils</name>
     <message>
         <location filename="../src/DesignerUtils.cpp" line="33"/>
         <source>UGENE workflow documents</source>
-        <translation type="unfinished">Вычислительные схемы UGENE</translation>
+        <translation>Вычислительные схемы UGENE</translation>
     </message>
 </context>
 </TS>

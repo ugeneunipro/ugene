@@ -64,6 +64,14 @@
         <source>Can&apos;t load suite %1, errors: %2</source>
         <translation>%1 paketi yüklenemiyor, hatalar: %2</translation>
     </message>
+    <message>
+        <source>test_runner_plug_name</source>
+        <translation type="vanished">test_çalıştırıcısı_eklenti_adı</translation>
+    </message>
+    <message>
+        <source>test_runner_desc</source>
+        <translation type="vanished">test_çalıştırıcısı_azalan</translation>
+    </message>
 </context>
 <context>
     <name>U2::TestRunnerService</name>
@@ -83,7 +91,7 @@
         <translation>XML Test Çalıştırıcısı</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="289"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="287"/>
         <source>Error reading test suite from %1. Error: %2</source>
         <translation>%1 kaynağından test paketi okunurken hata oluştu. Hata: %2</translation>
     </message>
@@ -93,113 +101,118 @@
     <message>
         <location filename="../src/TestViewController.cpp" line="432"/>
         <location filename="../src/TestViewController.cpp" line="471"/>
-        <location filename="../src/TestViewController.cpp" line="778"/>
-        <location filename="../src/TestViewController.cpp" line="796"/>
+        <location filename="../src/TestViewController.cpp" line="774"/>
+        <location filename="../src/TestViewController.cpp" line="793"/>
         <source>error</source>
         <translation>hata</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="918"/>
+        <location filename="../src/TestViewController.cpp" line="925"/>
         <source>info</source>
         <translation>bilgi</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1141"/>
+        <location filename="../src/TestViewController.cpp" line="932"/>
+        <source>env_mb_title</source>
+        <translation>env_mb_başlığı</translation>
+    </message>
+    <message>
+        <location filename="../src/TestViewController.cpp" line="1137"/>
         <source>passed</source>
         <translation>geçti</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1144"/>
+        <location filename="../src/TestViewController.cpp" line="1140"/>
         <source>failed</source>
         <translation>başarısız</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1146"/>
+        <location filename="../src/TestViewController.cpp" line="1142"/>
         <source>not_run</source>
         <translation>çalıştır_ma</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1179"/>
+        <location filename="../src/TestViewController.cpp" line="1175"/>
         <source>state: </source>
         <translation>durum: </translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1181"/>
+        <location filename="../src/TestViewController.cpp" line="1177"/>
         <source>fail_desc: </source>
         <translation>başarısız_azalma: </translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1184"/>
+        <location filename="../src/TestViewController.cpp" line="1180"/>
         <source>source_file:</source>
         <translation>kaynak_dosyası:</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="71"/>
+        <location filename="../src/TestViewController.cpp" line="72"/>
         <source>Test runner</source>
         <translation>Test çalıştırıcısı</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="82"/>
+        <location filename="../src/TestViewController.cpp" line="83"/>
         <source>Add suite</source>
         <translation>Paket ekle</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="86"/>
+        <location filename="../src/TestViewController.cpp" line="87"/>
         <source>Remove suite</source>
         <translation>Paketi kaldır</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="90"/>
+        <location filename="../src/TestViewController.cpp" line="91"/>
         <source>Run all tests</source>
         <translation>Tüm testleri çalıştırın</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="94"/>
+        <location filename="../src/TestViewController.cpp" line="95"/>
         <source>Run selected</source>
         <translation>Seçileni çalıştır</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="100"/>
+        <location filename="../src/TestViewController.cpp" line="101"/>
         <source>Stop</source>
         <translation>Durdur</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="104"/>
+        <location filename="../src/TestViewController.cpp" line="105"/>
         <source>Set environment</source>
         <translation>Ortamı ayarla</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="108"/>
+        <location filename="../src/TestViewController.cpp" line="109"/>
         <source>Generate report</source>
         <translation>Rapor oluştur</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="112"/>
+        <location filename="../src/TestViewController.cpp" line="113"/>
         <source>Reload suites</source>
         <translation>Paketleri yeniden yükle</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="117"/>
+        <location filename="../src/TestViewController.cpp" line="118"/>
         <source>Select All</source>
         <translation>Tümünü Seç</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="123"/>
+        <location filename="../src/TestViewController.cpp" line="124"/>
         <source>Set Tests Enabled</source>
         <translation>Etkinleştirilen Testleri Ayarla</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="129"/>
+        <location filename="../src/TestViewController.cpp" line="130"/>
         <source>Set Tests Disabled</source>
         <translation>Testleri Devre Dışı Bırak</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="135"/>
+        <location filename="../src/TestViewController.cpp" line="136"/>
         <source>Change Tests Excluded State</source>
         <translation>Testlerin Hariç Tutulma Durumunu Değiştirin</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="139"/>
+        <location filename="../src/TestViewController.cpp" line="140"/>
         <source>Save Selected Suites</source>
         <translation>Seçili Paketleri Kaydet</translation>
     </message>
@@ -223,20 +236,15 @@
         <translation>Test paketi okunurken hata oluştu: %1</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="778"/>
-        <location filename="../src/TestViewController.cpp" line="796"/>
+        <location filename="../src/TestViewController.cpp" line="774"/>
+        <location filename="../src/TestViewController.cpp" line="793"/>
         <source>Not all environment variables set</source>
         <translation>Tüm ortam değişkenleri ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="918"/>
+        <location filename="../src/TestViewController.cpp" line="925"/>
         <source>No environment variables found</source>
         <translation>Ortam değişkeni bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/TestViewController.cpp" line="925"/>
-        <source>Set Environment</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

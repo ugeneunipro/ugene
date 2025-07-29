@@ -208,6 +208,8 @@ foreach (TS_FILE IN LISTS ALL_TS_FILES)
                 ${SUBPROJECT_SOURCES}
                 -ts ${TS_FILE}
                 -no-obsolete
+                -locations relative
+                -no-ui-lines
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 COMMENT "Updating ${TS_FILE}..."
         )

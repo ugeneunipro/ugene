@@ -2,14 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr">
 <context>
-    <name>AlignmentAlgorithmsRegistry</name>
-    <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
-        <source>Smith-Waterman</source>
-        <translation type="unfinished">Smith-Waterman</translation>
-    </message>
-</context>
-<context>
     <name>PairwiseAlignmentSmithWatermanOptionsPanelMainWidget</name>
     <message>
         <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="14"/>
@@ -17,32 +9,27 @@
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="20"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="29"/>
         <source>Algorithm version:</source>
         <translation>Algoritma sürümü:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="30"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="39"/>
         <source>Scoring matrix:</source>
         <translation>Puanlama matrisi:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="55"/>
-        <source>View...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="62"/>
         <source>Gap penalty</source>
         <translation>Boşluk cezası</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="92"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
         <source>Open:</source>
         <translation>Aç:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="99"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="84"/>
         <source>Extension:</source>
         <translation>Uzantı:</translation>
     </message>
@@ -56,19 +43,27 @@
     </message>
 </context>
 <context>
+    <name>U2::AlignmentAlgorithmsRegistry</name>
+    <message>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="171"/>
+        <source>Smith-Waterman</source>
+        <translation>Smith-Waterman</translation>
+    </message>
+</context>
+<context>
     <name>U2::GTest_SmithWatermnan</name>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="217"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="216"/>
         <source>**</source>
         <translation>**</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="220"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="219"/>
         <source>,</source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="227"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="226"/>
         <source>..</source>
         <translation>..</translation>
     </message>
@@ -132,11 +127,6 @@
         <location filename="../src/SWWorker.cpp" line="132"/>
         <source>Minimal percent similarity between a sequence and a pattern.</source>
         <translation>Bir dizi ve bir model arasında asgari benzerlik yüzdesi.</translation>
-    </message>
-    <message>
-        <location filename="../src/SWWorker.cpp" line="136"/>
-        <source>Version of the Smith-Waterman algorithm. You can use the optimized versions of the algorithm (SSE) if your hardware supports these capabilities.</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/SWWorker.cpp" line="141"/>
@@ -343,24 +333,26 @@
     </message>
 </context>
 <context>
-    <name>U2::PairwiseAlignmentSmithWatermanMainWidget</name>
-    <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanGUIExtension.cpp" line="119"/>
-        <source>Matrix not found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::PairwiseAlignmentSmithWatermanTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="595"/>
-        <source>Not enough memory to run the task. Required: %1 MB, limit %2 MB.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/SWAlgorithmTask.cpp" line="549"/>
+        <source>Substitution matrix is empty</source>
+        <translation>İkame matrisi boş</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="601"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="759"/>
+        <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
+        <translation>Bu görev için gereken bellek miktarı %1 MB&apos;dir, ancak %2 MB ile sınırlıdır.</translation>
+    </message>
+    <message>
+        <location filename="../src/SWAlgorithmTask.cpp" line="762"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
+    </message>
+    <message>
+        <location filename="../src/SWAlgorithmTask.cpp" line="854"/>
+        <source>%1 results found</source>
+        <translation>%1 sonuç bulundu</translation>
     </message>
 </context>
 <context>
@@ -524,7 +516,7 @@
 <context>
     <name>U2::SWAlgorithmADVContext</name>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="123"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
         <source>Find pattern [Smith-Waterman]...</source>
         <translation>Desen bul [Smith-Waterman]...</translation>
     </message>
@@ -532,12 +524,12 @@
 <context>
     <name>U2::SWAlgorithmPlugin</name>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="64"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="68"/>
         <source>Optimized Smith-Waterman </source>
         <translation>Optimize edilmiş Smith-Waterman </translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="64"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="68"/>
         <source>Various implementations of Smith-Waterman algorithm</source>
         <translation>Smith-Waterman algoritmasının çeşitli uygulamaları</translation>
     </message>
@@ -545,17 +537,17 @@
 <context>
     <name>U2::SWAlgorithmTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="167"/>
-        <source>Not enough memory to run the task. Required: %1 MB, limit %2 MB.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/SWAlgorithmTask.cpp" line="195"/>
+        <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
+        <translation>Bu görev için gereken bellek miktarı %1 MB&apos;dir, ancak %2 MB ile sınırlıdır.</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="173"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="198"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="307"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="413"/>
         <source>%1 results found</source>
         <translation>%1 sonuç bulundu</translation>
     </message>

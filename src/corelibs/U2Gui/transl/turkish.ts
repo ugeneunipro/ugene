@@ -533,6 +533,15 @@
         <source>Sequence name</source>
         <translation>Sıra adı</translation>
     </message>
+    <message>
+        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="65"/>
+        <source>Save file immediately</source>
+        <translation>Dosyayı hemen kaydedin</translation>
+    </message>
+    <message>
+        <source>Document format:</source>
+        <translation>Belge biçimi:</translation>
+    </message>
 </context>
 <context>
     <name>CreateObjectRelationDialog</name>
@@ -565,37 +574,32 @@
         <translation>Veritabanı:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="97"/>
-        <source>Open database page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="124"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
         <source>Save to directory:</source>
         <translation>Dizine kaydet:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="149"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="104"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="158"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="123"/>
         <source>Output format:</source>
         <translation>Çıkış biçimi:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="170"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="135"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="180"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="145"/>
         <source>Some entries in the NCBI databases contain features without a sequence. You can download both sequence and features by checking this parameter. Note that some sequences are rather big.</source>
         <translation>NCBI veritabanlarındaki bazı girişler, sıra içermeyen özellikler içerir. Bu parametreyi kontrol ederek hem sıralamayı hem de özellikleri indirebilirsiniz. Bazı dizilerin oldukça büyük olduğuna dikkat edin.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="183"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="148"/>
         <source>Force download the appropriate sequence</source>
         <translation>Uygun diziyi indirmeye zorla</translation>
     </message>
@@ -699,77 +703,77 @@
         <translation>Eklenecek konum</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="134"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="82"/>
         <source>Press to insert before the start of the sequence</source>
         <translation>Sıranın başlangıcından önce eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="137"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="85"/>
         <source>start</source>
         <translation>başlangıç</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="82"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="99"/>
         <source>Press to insert to the end of the sequence</source>
         <translation>Sıranın sonuna eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="85"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="102"/>
         <source>end</source>
         <translation>bitiş</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="95"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="122"/>
         <source>Selection</source>
         <translation>Seçim</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="101"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="128"/>
         <source>Press to insert before the selection</source>
         <translation>Seçimden önce eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="104"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="131"/>
         <source>before</source>
         <translation>öncesinde</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="111"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="138"/>
         <source>Press to insert after the selection</source>
         <translation>Seçimden sonra eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="114"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="141"/>
         <source>after</source>
         <translation>sonrasında</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="121"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="148"/>
         <source>To change the regsion select it on a sequence</source>
         <translation>Bölgeyi değiştirmek için bir sırayla seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="165"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="169"/>
         <source>Save to new file</source>
         <translation>Yeni dosyaya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="179"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="183"/>
         <source>Document location:</source>
         <translation>Belge konumu:</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="189"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="193"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="196"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="200"/>
         <source>Document format:</source>
         <translation>Belge biçimi:</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="208"/>
+        <location filename="../src/util/EditSequenceDialog.ui" line="212"/>
         <source>Merge annotations to this file</source>
         <translation>Ek açıklamaları bu dosyayla birleştir</translation>
     </message>
@@ -838,6 +842,19 @@
         <location filename="../src/util/ExportDocumentDialog.ui" line="52"/>
         <source>Compress file</source>
         <translation>Dosyayı Sıkıştır</translation>
+    </message>
+</context>
+<context>
+    <name>FolderNameDialog</name>
+    <message>
+        <location filename="../src/util/project/FolderNameDialog.ui" line="20"/>
+        <source>Dialog</source>
+        <translation>İletişim</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/FolderNameDialog.ui" line="26"/>
+        <source>Enter the folder name:</source>
+        <translation>Klasör adını girin:</translation>
     </message>
 </context>
 <context>
@@ -978,29 +995,37 @@
         <translation>Uyumlulaştırmaya katılın</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="189"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="194"/>
         <source>Import ACE files as</source>
         <translation>ACE dosyalarını farklı içe aktarın</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="195"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="200"/>
         <source>Multiple sequence alignment</source>
         <translation>Çoklu dizi hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="208"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="213"/>
         <source>Short reads assembly</source>
         <translation>Kısa okuma montajı</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="240"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="245"/>
         <source>Documents and objects options</source>
         <translation>Belgeler ve nesneler seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="246"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="251"/>
         <source>Create a subfolder for each document</source>
         <translation>Her belge için bir alt klasör oluşturun</translation>
+    </message>
+    <message>
+        <source> bases</source>
+        <translation> üsler</translation>
+    </message>
+    <message>
+        <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
+        <translation>Parçalar arasında bilinmeyen sembollerin sayısı (nükleik için N - veya amino için X -):</translation>
     </message>
 </context>
 <context>
@@ -1083,14 +1108,6 @@
     </message>
 </context>
 <context>
-    <name>PasteFactory</name>
-    <message>
-        <location filename="../src/PasteController.cpp" line="119"/>
-        <source>Data in clipboard is too large.</source>
-        <translation type="unfinished">Panodaki veriler çok büyük.</translation>
-    </message>
-</context>
-<context>
     <name>ProjectTreeItemSelectorDialogBase</name>
     <message>
         <location filename="../src/util/ProjectTreeItemSelectorDialogBase.ui" line="14"/>
@@ -1117,26 +1134,60 @@
         <translation>Seçili nesnenin ek açıklaması yok</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="128"/>
-        <source>Can&apos;t export document to its own file. Please select another file.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="129"/>
+        <source>Error</source>
+        <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="136"/>
-        <source>Document %1 is already added to the project, it will be overwritten.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="129"/>
+        <source>Document with the same URL is added to the project.
+Remove it from the project first.</source>
+        <translation>Aynı URL&apos;ye sahip belge projeye eklenir.
+Önce onu projeden çıkarın.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="146"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="181"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="139"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="174"/>
         <source>Unable to create I/O factory for </source>
         <translation>İçin I/O fabrikası oluşturulamıyor </translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="151"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="185"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="144"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="178"/>
         <source>Unknown document format I/O factory: </source>
         <translation>Bilinmeyen belge biçimi I/O fabrikası: </translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ConnectionHelper.cpp" line="34"/>
+        <source>Error! No DBI</source>
+        <translation>Hata! DBI yok</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ConnectionHelper.cpp" line="37"/>
+        <source>Error! No object DBI</source>
+        <translation>Hata! Nesne DBI yok</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1091"/>
+        <source>Confirm Deletion</source>
+        <translation>Silmeyi Onayla</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1092"/>
+        <source>Are you sure you want to delete items in Recycle Bin?
+The items cannot be recovered once deleted.</source>
+        <translation>Geri Dönüşüm Kutusu&apos;ndaki öğeleri silmek istediğinizden emin misiniz?
+Öğeler silindikten sonra kurtarılamaz.</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1107"/>
+        <source>Unable to Remove</source>
+        <translation>Kaldırılamıyor</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1107"/>
+        <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
+        <translation>Seçilen nesnelerin bazıları veritabanının diğer kullanıcıları tarafından kullanılıyor. Daha sonra çıkarmayı deneyin.</translation>
     </message>
 </context>
 <context>
@@ -1188,21 +1239,84 @@
     </message>
 </context>
 <context>
+    <name>RegionSelector</name>
+    <message>
+        <location filename="../src/util/RegionSelector.cpp" line="50"/>
+        <source>Whole sequence</source>
+        <translation>Tüm dizi</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelector.cpp" line="51"/>
+        <source>Selected region</source>
+        <translation>Seçili bölge</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelector.cpp" line="52"/>
+        <source>Custom region</source>
+        <translation>Özel bölge</translation>
+    </message>
+</context>
+<context>
     <name>RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="207"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="34"/>
+        <source>Whole sequence</source>
+        <translation>Tüm dizi</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="35"/>
+        <source>Selected region</source>
+        <translation>Seçili bölge</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="36"/>
+        <source>Custom region</source>
+        <translation>Özel bölge</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="174"/>
         <source>Invalid Start position of region</source>
         <translation>Bölgenin geçersiz Başlangıç konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="208"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="175"/>
         <source>Invalid End position of region</source>
         <translation>Geçersiz Bölgenin son konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="209"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="176"/>
         <source>Start position is greater than End position</source>
         <translation>Başlangıç konumu, Bitiş konumundan daha büyük</translation>
+    </message>
+</context>
+<context>
+    <name>RegionSelectorWithExcludedRegion</name>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="27"/>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="73"/>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="34"/>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="80"/>
+        <source>-</source>
+        <translation>-</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="112"/>
+        <source>Exclude</source>
+        <translation>Hariç tut</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="129"/>
+        <source>Region</source>
+        <translation>Bölge</translation>
     </message>
 </context>
 <context>
@@ -1403,24 +1517,24 @@
 <context>
     <name>U2::AddDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="333"/>
-        <location filename="../src/OpenViewTask.cpp" line="346"/>
+        <location filename="../src/OpenViewTask.cpp" line="348"/>
+        <location filename="../src/OpenViewTask.cpp" line="361"/>
         <source>Opening view for document: &apos;NONAME&apos;</source>
         <translation>Belge için açılış görünümü: &quot;NONAME&quot;</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="336"/>
-        <location filename="../src/OpenViewTask.cpp" line="348"/>
+        <location filename="../src/OpenViewTask.cpp" line="351"/>
+        <location filename="../src/OpenViewTask.cpp" line="363"/>
         <source>Opening view for document: %1</source>
         <translation>Belge için açılış görünümü: %1</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="338"/>
+        <location filename="../src/OpenViewTask.cpp" line="353"/>
         <source>Provided document is NULL</source>
         <translation>Sağlanan belge BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="350"/>
+        <location filename="../src/OpenViewTask.cpp" line="365"/>
         <source>Document provider is NULL</source>
         <translation>Belge sağlayıcı BOŞ</translation>
     </message>
@@ -1428,32 +1542,32 @@
 <context>
     <name>U2::AddNewDocumentDialogImpl</name>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="60"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="61"/>
         <source>Create</source>
         <translation>Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="61"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="62"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="70"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="71"/>
         <source>Save File</source>
         <translation>Dosyayı Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="81"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="82"/>
         <source>Invalid Document Location</source>
         <translation>Geçersiz Belge Konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="81"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="82"/>
         <source>Document location is empty</source>
         <translation>Belge konumu boş</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="95"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="96"/>
         <source>Project is locked</source>
         <translation>Proje kilitlendi</translation>
     </message>
@@ -1461,22 +1575,22 @@
 <context>
     <name>U2::AddToViewTask</name>
     <message>
-        <location filename="../src/ObjectViewTasks.cpp" line="129"/>
+        <location filename="../src/ObjectViewTasks.cpp" line="143"/>
         <source>Add object to view %1</source>
         <translation>%1 görüntülemek için nesne ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewTasks.cpp" line="142"/>
+        <location filename="../src/ObjectViewTasks.cpp" line="156"/>
         <source>Document was removed %1</source>
         <translation>Doküman %1 kaldırıldı</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewTasks.cpp" line="147"/>
+        <location filename="../src/ObjectViewTasks.cpp" line="161"/>
         <source>Object not found %1</source>
         <translation>Nesne bulunamadı %1</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewTasks.cpp" line="151"/>
+        <location filename="../src/ObjectViewTasks.cpp" line="165"/>
         <source>View was closed %1</source>
         <translation>Görünüm kapatıldı %1</translation>
     </message>
@@ -1505,19 +1619,6 @@
         <location filename="../src/util/BreakpointConditionEditDialog.cpp" line="43"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ComboBoxWithCheckBoxes</name>
-    <message>
-        <location filename="../src/ComboBoxWithCheckBoxes.cpp" line="40"/>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ComboBoxWithCheckBoxes.cpp" line="42"/>
-        <source>%1 items</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1573,38 +1674,38 @@
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="83"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="106"/>
         <source>&lt;auto&gt;</source>
         <translation>&lt;otomatik&gt;</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="220"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
         <source>Select annotation saving parameters</source>
         <translation>Ek açıklama kaydetme parametrelerini seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="223"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Belge projeye zaten eklendi: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="228"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
         <source>Illegal folder: %1</source>
         <translation>Yasadışı klasör: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="233"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
         <source>Illegal annotation name! </source>
         <translation>Yasadışı ek açıklama adı! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="238"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
         <source>Illegal group name</source>
         <translation>Yasadışı grup adı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="248"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="271"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1617,12 +1718,7 @@ katıl (1..10,15..45)
 tamamlayıcı (5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="252"/>
-        <source>The &apos;complement&apos; keyword cannot be present in the location of an amino acid sequence annotation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="338"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="358"/>
         <source>Save File</source>
         <translation>Dosyayı Kaydet</translation>
     </message>
@@ -1630,37 +1726,32 @@ tamamlayıcı (5..15)</translation>
 <context>
     <name>U2::CreateDocumentFromTextDialogController</name>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="146"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="128"/>
         <source>Select file to save...</source>
         <translation>Kaydedilecek dosyayı seçin...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="57"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="56"/>
         <source>Create</source>
         <translation>Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="58"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="57"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="82"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="81"/>
         <source>No path specified</source>
         <translation>Yol belirtilmedi</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="100"/>
-        <source>A sequence, associated with the specified path, is already opened. Do you want to remove it from the project and replace with the current sequence? Data may be lost.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="112"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="94"/>
         <source>Sequence name is empty</source>
         <translation>Sıra adı boş</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="77"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="76"/>
         <source>Filename is empty</source>
         <translation>Dosya adı boş</translation>
     </message>
@@ -1668,22 +1759,22 @@ tamamlayıcı (5..15)</translation>
 <context>
     <name>U2::CreateObjectRelationDialogController</name>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="52"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="51"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="53"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="52"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="76"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="73"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="76"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="73"/>
         <source>Found annotations that are out of the sequence range, continue?</source>
         <translation>Sıra aralığının dışında kalan ek açıklamalar bulundu, devam edilsin mi?</translation>
     </message>
@@ -1696,78 +1787,91 @@ tamamlayıcı (5..15)</translation>
         <translation>Ham verilerden sıra oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateSequenceFromTextAndOpenViewTask.cpp" line="55"/>
+        <location filename="../src/util/CreateSequenceFromTextAndOpenViewTask.cpp" line="56"/>
         <source>Can&apos;t create a project</source>
         <translation>Proje oluşturamıyorum</translation>
     </message>
 </context>
 <context>
+    <name>U2::DialogUtils</name>
+    <message>
+        <location filename="../src/util/DialogUtils.cpp" line="42"/>
+        <source>Error</source>
+        <translation>Hata</translation>
+    </message>
+    <message>
+        <location filename="../src/util/DialogUtils.cpp" line="42"/>
+        <source>Project is locked</source>
+        <translation>Proje kilitlendi</translation>
+    </message>
+</context>
+<context>
     <name>U2::DownloadRemoteFileDialog</name>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="58"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="60"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="59"/>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="61"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="196"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="128"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="122"/>
         <source>Select folder to save</source>
         <translation>Kaydedilecek klasörü seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="165"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="160"/>
         <source>Resource id is empty!</source>
         <translation>Kaynak kimliği boş!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="171"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="166"/>
         <source>No folder selected for saving file!</source>
         <translation>Dosyayı kaydetmek için klasör seçilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="199"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="195"/>
         <source>There are more than 100 files found for download.
 Are you sure you want to open all of them?</source>
         <translation>İndirilecek 100&apos;den fazla dosya bulundu.
 Hepsini açmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="196"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="196"/>
         <source>Open anyway</source>
         <translation>Yine de aç</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="196"/>
         <source>Don&apos;t open</source>
         <translation>Açma</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="220"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="218"/>
         <source>Download remote documents</source>
         <translation>Uzak belgeleri indirin</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="261"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="259"/>
         <source>Hint: </source>
         <translation>İpucu: </translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="262"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="260"/>
         <source>Use database unique identifier.</source>
         <translation>Veritabanına özgü tanımlayıcı kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="263"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="261"/>
         <source>You can download multiple items by separating IDs with space or semicolon.</source>
         <translation>Kimlikleri boşluk veya noktalı virgülle ayırarak birden çok öğe indirebilirsiniz.</translation>
     </message>
@@ -1826,51 +1930,46 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     </message>
 </context>
 <context>
-    <name>U2::EditSequenceDialogVirtualController</name>
+    <name>U2::EditSequenceDialogController</name>
     <message>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="72"/>
         <source>OK</source>
-        <translation type="unfinished">TAMAM</translation>
+        <translation>TAMAM</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="73"/>
         <source>Cancel</source>
-        <translation type="unfinished">Vazgeç</translation>
+        <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="94"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="97"/>
         <source>Insert Sequence</source>
-        <translation type="unfinished">Sıra Ekle</translation>
+        <translation>Sıra Ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="100"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="103"/>
         <source>Replace sequence</source>
-        <translation type="unfinished">Sırayı değiştir</translation>
+        <translation>Sırayı değiştir</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="119"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="139"/>
         <source>Folder to save is not exists</source>
-        <translation type="unfinished">Kaydedilecek klasör mevcut değil</translation>
+        <translation>Kaydedilecek klasör mevcut değil</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="123"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="143"/>
         <source>Entered path is empty</source>
-        <translation type="unfinished">Girilen yol boş</translation>
+        <translation>Girilen yol boş</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="127"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="147"/>
         <source>Filename is empty</source>
-        <translation type="unfinished">Dosya adı boş</translation>
+        <translation>Dosya adı boş</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="136"/>
-        <source>Incorrect position to insert, should be from 1 to %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/util/EditSequenceDialogController.cpp" line="215"/>
+        <location filename="../src/util/EditSequenceDialogController.cpp" line="229"/>
         <source>Select file to save...</source>
-        <translation type="unfinished">Kaydedilecek dosyayı seçin...</translation>
+        <translation>Kaydedilecek dosyayı seçin...</translation>
     </message>
 </context>
 <context>
@@ -1944,17 +2043,17 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="128"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="127"/>
         <source>yes</source>
         <translation>evet</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="128"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="127"/>
         <source>no</source>
         <translation>hayır</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="174"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="173"/>
         <source>Attaching a sequence to an annotation was ignored. The annotation is on the complementary strand. Can not generate a complementary sequence for a non-nucleic alphabet.</source>
         <translation>Ek açıklamaya bir sıra eklemek göz ardı edildi. Ek açıklama tamamlayıcı şerit üzerindedir. Nükleik olmayan bir alfabe için tamamlayıcı bir dizi üretilemez.</translation>
     </message>
@@ -1997,17 +2096,17 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <translation>Sıra adlarını kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="45"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="48"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="46"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="49"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="66"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="69"/>
         <source>Select file to save annotations</source>
         <translation>Ek açıklamaları kaydetmek için dosyayı seçin</translation>
     </message>
@@ -2015,14 +2114,14 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ExportDocumentDialogController</name>
     <message>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="45"/>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="62"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="48"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="65"/>
         <source>Export</source>
         <translation>Dışarı aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="46"/>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="63"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="49"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="66"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
@@ -2030,41 +2129,54 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ExportImageDialog</name>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="97"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="71"/>
+        <source>Image export task factory is NULL</source>
+        <translation>Görüntü dışa aktarma görevi fabrikası BOŞ</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ExportImageDialog.cpp" line="98"/>
         <source>The image file path is empty.</source>
         <translation>Görüntü dosyası yolu boş.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="104"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="105"/>
         <source>The image file cannot be created. No write permissions.</source>
         <translation>Görüntü dosyası oluşturulamaz. Yazma izni yok.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="112"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="113"/>
         <source>Saving image to &apos;%1&apos;...</source>
         <translation>Görüntü &apos;%1&apos; olarak kaydediliyor...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="147"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="148"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="232"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="230"/>
         <source>Save Image As</source>
         <translation>Görüntüyü Farklı Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="146"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="147"/>
         <source>Export</source>
         <translation>Dışarı aktar</translation>
     </message>
 </context>
 <context>
+    <name>U2::FeatureKeyFilterTask</name>
+    <message>
+        <location filename="../src/util/project/filter_tasks/FeatureKeyFilterTask.cpp" line="57"/>
+        <source>DbiRef is invalid</source>
+        <translation>DbiRef geçersiz</translation>
+    </message>
+</context>
+<context>
     <name>U2::FileLineEdit</name>
     <message>
-        <location filename="../src/util/DialogUtils.cpp" line="63"/>
-        <location filename="../src/util/DialogUtils.cpp" line="69"/>
+        <location filename="../src/util/DialogUtils.cpp" line="89"/>
+        <location filename="../src/util/DialogUtils.cpp" line="95"/>
         <source>Select file(s)</source>
         <translation>Dosyaları seçin</translation>
     </message>
@@ -2078,21 +2190,34 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     </message>
 </context>
 <context>
-    <name>U2::GObjectViewController</name>
+    <name>U2::FolderNameDialog</name>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="174"/>
+        <location filename="../src/util/project/FolderNameDialog.cpp" line="34"/>
+        <source>Add Folder</source>
+        <translation>Klasör Ekle</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/FolderNameDialog.cpp" line="34"/>
+        <source>Rename Folder</source>
+        <translation>Klasörü Yeniden Adlandır</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GObjectView</name>
+    <message>
+        <location filename="../src/ObjectViewModel.cpp" line="126"/>
         <source>Can&apos;t add object: %1 to the closing view</source>
-        <translation type="unfinished">Nesne eklenemiyor: %1 kapanış görünümüne</translation>
+        <translation>Nesne eklenemiyor: %1 kapanış görünümüne</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="177"/>
+        <location filename="../src/ObjectViewModel.cpp" line="129"/>
         <source>Object is already added to view %1!</source>
-        <translation type="unfinished">Nesne zaten %1 görünümüne eklendi!</translation>
+        <translation>Nesne zaten %1 görünümüne eklendi!</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="191"/>
+        <location filename="../src/ObjectViewModel.cpp" line="143"/>
         <source>Can&apos;t add object: %1</source>
-        <translation type="unfinished">Nesne eklenemiyor: %1</translation>
+        <translation>Nesne eklenemiyor: %1</translation>
     </message>
 </context>
 <context>
@@ -2100,7 +2225,7 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/util/GUIUtils.cpp" line="154"/>
         <location filename="../src/util/GUIUtils.cpp" line="164"/>
-        <location filename="../src/util/GUIUtils.cpp" line="180"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Error!</source>
         <translation>Hata!</translation>
     </message>
@@ -2115,7 +2240,7 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <translation>Varsayılan web tarayıcısı başlatılamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="180"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Please specify the browser executable</source>
         <translation>Lütfen tarayıcının yürütülebilir dosyasını belirtin</translation>
     </message>
@@ -2131,28 +2256,40 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::Header</name>
     <message>
-        <location filename="../src/NotificationWidget.cpp" line="49"/>
+        <location filename="../src/NotificationWidget.cpp" line="47"/>
         <source>close</source>
         <translation>kapat</translation>
     </message>
     <message>
-        <location filename="../src/NotificationWidget.cpp" line="50"/>
+        <location filename="../src/NotificationWidget.cpp" line="48"/>
         <source>Always on top</source>
         <translation>Her zaman üstte</translation>
-    </message>
-    <message>
-        <location filename="../src/NotificationWidget.cpp" line="56"/>
-        <location filename="../src/NotificationWidget.cpp" line="57"/>
-        <source>Notifications</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::HelpButton</name>
     <message>
-        <location filename="../src/util/HelpButton.cpp" line="33"/>
+        <location filename="../src/util/HelpButton.cpp" line="35"/>
         <source>Help</source>
         <translation>Yardım</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ImageExportController</name>
+    <message>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="76"/>
+        <source>SVG format is not supported</source>
+        <translation>SVG formatı desteklenmiyor</translation>
+    </message>
+    <message>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="80"/>
+        <source>PS/PDF format is not supported</source>
+        <translation>PS / PDF formatı desteklenmiyor</translation>
+    </message>
+    <message>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="83"/>
+        <source>Raster formats are disabled</source>
+        <translation>Raster formatları devre dışı bırakıldı</translation>
     </message>
 </context>
 <context>
@@ -2189,42 +2326,42 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ImportToDatabaseDialog</name>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="62"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="61"/>
         <source>Files and folders</source>
         <translation>Dosyalar ve Klasörler</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="63"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="62"/>
         <source>Documents and objects</source>
         <translation>Belgeler ve nesneler</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="99"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="98"/>
         <source>Override options</source>
         <translation>Seçenekleri geçersiz kılma</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="103"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="102"/>
         <source>Reset to general options</source>
         <translation>Genel seçeneklere sıfırla</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="206"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="205"/>
         <source>Import</source>
         <translation>İçe Aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="292"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="291"/>
         <source>Select files to import</source>
         <translation>İçe aktarılacak dosyaları seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="315"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="314"/>
         <source>Select a folder to import</source>
         <translation>İçe aktarmak için bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="550"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="549"/>
         <source>This file will be imported with its own options.
 
 </source>
@@ -2233,59 +2370,59 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="553"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="552"/>
         <source>File:
 </source>
         <translation>Dosya:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="556"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="595"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="641"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="658"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="555"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="594"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="640"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="657"/>
         <source>Import to: </source>
         <translation>Şuraya aktar: </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="560"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="559"/>
         <source>A folder for file objects will be created</source>
         <translation>Dosya nesneleri için bir klasör oluşturulacak</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="564"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="608"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="563"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="607"/>
         <source>If file is not recognized, it will be imported as binary data</source>
         <translation>Dosya tanınmazsa, ikili veri olarak içe aktarılacaktır</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="569"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="613"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="568"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="612"/>
         <source>If file contains more than one sequence, they will imported as separate objects</source>
         <translation>Dosya birden fazla sekans içeriyorsa, bunlar ayrı nesneler olarak içe aktarılır</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="572"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="616"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="571"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="615"/>
         <source>If file contains more than one sequence, they will imported as single sequence with several &apos;Unknown&apos; bases as separator</source>
         <translation>Dosya birden fazla sekans içeriyorsa, bunlar ayırıcı olarak birkaç &apos;Bilinmeyen&apos; baz ile tek sıra olarak içe aktarılacaktır</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="573"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="617"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="572"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="616"/>
         <source>Size of separator: %1</source>
         <translation>Ayırıcının boyutu: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="576"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="620"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="575"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="619"/>
         <source>If file contains more than one sequence, they will be joined into the multiple alignment</source>
         <translation>Dosya birden fazla sekans içeriyorsa, bunlar çoklu hizalamaya birleştirilecektir</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="589"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="633"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="652"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="588"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="632"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="651"/>
         <source>This folder will be imported with its own options.
 
 </source>
@@ -2294,34 +2431,34 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="592"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="591"/>
         <source>Folder:
 </source>
         <translation>Klasör:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="600"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="599"/>
         <source>The folder will be processed recursively</source>
         <translation>Klasör yinelemeli olarak işlenecek</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="604"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="603"/>
         <source>A folder for each file will be created</source>
         <translation>Her dosya için bir klasör oluşturulacak</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="636"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
         <source>The </source>
         <translation>The </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="636"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
         <source> from document </source>
         <translation> belgeden </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="655"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="654"/>
         <source>Document:
 </source>
         <translation>Belge:
@@ -2331,21 +2468,37 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::LoadRemoteDocumentAndAddToProjectTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="217"/>
-        <location filename="../src/OpenViewTask.cpp" line="227"/>
+        <location filename="../src/OpenViewTask.cpp" line="221"/>
+        <location filename="../src/OpenViewTask.cpp" line="228"/>
+        <location filename="../src/OpenViewTask.cpp" line="234"/>
         <source>Load remote document and add to project</source>
         <translation>Uzak belgeyi yükleyin ve projeye ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="279"/>
+        <location filename="../src/OpenViewTask.cpp" line="239"/>
+        <source>Load remote document</source>
+        <translation>Uzak belgeyi yükle</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="284"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>%2 veritabanında %1 bulunamıyor</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="334"/>
+        <source>Failed to download %1 from %2. Error: %3</source>
+        <translation>%2&apos;den %1 indirilemedi. Hata: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="340"/>
+        <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</source>
+        <translation>Belge başarıyla indirildi: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
     <name>U2::LoadUnloadedDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="66"/>
+        <location filename="../src/OpenViewTask.cpp" line="64"/>
         <source>Load document: &apos;%1&apos;</source>
         <translation>Belgeyi yükle: &apos;%1&apos;</translation>
     </message>
@@ -2353,42 +2506,42 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::LogViewWidget</name>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="66"/>
+        <location filename="../src/util/logview/LogView.cpp" line="68"/>
         <source>Log</source>
         <translation>Günlük</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="73"/>
+        <location filename="../src/util/logview/LogView.cpp" line="75"/>
         <source>Settings...</source>
         <translation>Ayarlar...</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="77"/>
+        <location filename="../src/util/logview/LogView.cpp" line="79"/>
         <source>Dump performance counters</source>
         <translation>Döküm performans sayaçları</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="80"/>
+        <location filename="../src/util/logview/LogView.cpp" line="82"/>
         <source>Append separator</source>
         <translation>Ayırıcı Ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="82"/>
+        <location filename="../src/util/logview/LogView.cpp" line="84"/>
         <source>Clear log</source>
         <translation>Günlük kayıtlarını temizle</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="118"/>
+        <location filename="../src/util/logview/LogView.cpp" line="129"/>
         <source>Copy</source>
         <translation>Kopyası</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="181"/>
+        <location filename="../src/util/logview/LogView.cpp" line="194"/>
         <source>logview_set_case</source>
         <translation>günlük görünümü_ayar_durumu</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="184"/>
+        <location filename="../src/util/logview/LogView.cpp" line="197"/>
         <source>logview_use_regexp</source>
         <translation>günlük görünümü_normal ifade_kullan</translation>
     </message>
@@ -2407,21 +2560,21 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     </message>
 </context>
 <context>
-    <name>U2::NotificationStack</name>
+    <name>U2::Notification</name>
     <message>
-        <location filename="../src/Notification.cpp" line="382"/>
+        <location filename="../src/Notification.cpp" line="168"/>
         <source>OK</source>
-        <translation type="unfinished">TAMAM</translation>
+        <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="383"/>
+        <location filename="../src/Notification.cpp" line="169"/>
         <source>Remove notification after closing</source>
-        <translation type="unfinished">Kapattıktan sonra bildirimi kaldır</translation>
+        <translation>Kapattıktan sonra bildirimi kaldır</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="399"/>
+        <location filename="../src/Notification.cpp" line="185"/>
         <source>Detailed message</source>
-        <translation type="unfinished">Ayrıntılı mesaj</translation>
+        <translation>Ayrıntılı mesaj</translation>
     </message>
 </context>
 <context>
@@ -2456,23 +2609,47 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <location filename="../src/util/ObjectViewTreeController.cpp" line="66"/>
-        <source>Update bookmark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="70"/>
         <source>Remove bookmark</source>
         <translation>Yer imlerini temizle</translation>
     </message>
     <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="77"/>
+        <location filename="../src/util/ObjectViewTreeController.cpp" line="73"/>
         <source>Rename bookmark</source>
         <translation>Yer İşaretini Yeniden Adlandır</translation>
     </message>
     <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="393"/>
+        <location filename="../src/util/ObjectViewTreeController.cpp" line="386"/>
         <source>New bookmark</source>
         <translation>Yeni yerimi</translation>
+    </message>
+</context>
+<context>
+    <name>U2::OpenViewTask</name>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="141"/>
+        <source>State is NULL</source>
+        <translation>Durum BOŞ</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="143"/>
+        <source>GObject factory is NULL</source>
+        <translation>GObject fabrikası BOŞ</translation>
+    </message>
+</context>
+<context>
+    <name>U2::PasteFactory</name>
+    <message>
+        <location filename="../src/PasteController.cpp" line="119"/>
+        <source>Data in clipboard is too large.</source>
+        <translation>Panodaki veriler çok büyük.</translation>
+    </message>
+    <message>
+        <source>Unable to handle so huge data in clipboard.</source>
+        <translation>Panodaki çok büyük veriler işlenemiyor.</translation>
+    </message>
+    <message>
+        <source>UGENE can not recognize current clipboard content as one of supported formats.</source>
+        <translation>UGENE, mevcut pano içeriğini desteklenen biçimlerden biri olarak tanıyamaz.</translation>
     </message>
 </context>
 <context>
@@ -2494,6 +2671,10 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/PasteController.cpp" line="169"/>
         <source>Failed to create tmp file for clipboard content: %1.</source>
         <translation>Pano içeriği için tmp dosyası oluşturulamadı: %1.</translation>
+    </message>
+    <message>
+        <source>Cannot detect file format</source>
+        <translation>Dosya formatı algılanamıyor</translation>
     </message>
 </context>
 <context>
@@ -2541,17 +2722,17 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ProjectFileUtils</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="257"/>
+        <location filename="../src/ProjectParsing.cpp" line="258"/>
         <source>Project version is not a double value</source>
         <translation>Proje sürümü çift değer değil</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="262"/>
+        <location filename="../src/ProjectParsing.cpp" line="263"/>
         <source>Project file was created by a newer version of UGENE. Please update UGENE.</source>
         <translation>Proje dosyası, UGENE&apos;nin daha yeni bir sürümü tarafından oluşturuldu. Lütfen UGENE&apos;yi güncelleyin.</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="268"/>
+        <location filename="../src/ProjectParsing.cpp" line="269"/>
         <source>Not a valid UGENE project file %1</source>
         <translation>%1 geçerli bir UGENE proje dosyası değil</translation>
     </message>
@@ -2559,17 +2740,22 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ProjectParser10</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="339"/>
+        <location filename="../src/ProjectParsing.cpp" line="351"/>
         <source>Can&apos;t find project file: %1, ignoring</source>
         <translation>Proje dosyası bulunamıyor: %1, yok sayılıyor</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="343"/>
+        <location filename="../src/ProjectParsing.cpp" line="355"/>
         <source>Duplicate document found: %1, ignoring</source>
         <translation>Yinelenen belge bulundu: %1, yok sayılıyor</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="391"/>
+        <location filename="../src/ProjectParsing.cpp" line="362"/>
+        <source>Database document: %1, ignoring</source>
+        <translation>Veritabanı belgesi: %1, yok sayılıyor</translation>
+    </message>
+    <message>
+        <location filename="../src/ProjectParsing.cpp" line="408"/>
         <source>The last loaded state was locked by format</source>
         <translation>Son yüklenen durum format tarafından kilitlendi</translation>
     </message>
@@ -2577,67 +2763,103 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ProjectTreeController</name>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="468"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="549"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="271"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="321"/>
         <source>Import to the database...</source>
         <translation>Veritabanına Aktar...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="271"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="321"/>
         <source>Import to the folder...</source>
         <translation>Klasöre aktar...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="697"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="731"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="765"/>
+        <source>Unable to Restore</source>
+        <translation>Geri yüklenemiyor</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="731"/>
+        <source>UGENE is unable to restore some object from Recycle Bin because its original location does not exist. You can still restore the objects by dragging them with mouse from Recycle Bin.</source>
+        <translation>UGENE, orijinal konumu olmadığı için Geri Dönüşüm Kutusu&apos;ndan bazı nesneleri geri yükleyemiyor. Yine de nesneleri Geri Dönüşüm Kutusu&apos;ndan fare ile sürükleyerek geri yükleyebilirsiniz.</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="765"/>
+        <source>UGENE is unable to restore some folder from Recycle Bin because its original location does not exist. You can still restore the folders by dragging them with mouse from Recycle Bin.</source>
+        <translation>UGENE, orijinal konumu olmadığı için Geri Dönüşüm Kutusu&apos;ndan bazı klasörleri geri yükleyemiyor. Klasörleri yine de Fare ile Geri Dönüşüm Kutusu&apos;ndan sürükleyerek geri yükleyebilirsiniz.</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="832"/>
+        <source>Select a database to import anything</source>
+        <translation>Herhangi bir şeyi içe aktarmak için bir veritabanı seçin</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="873"/>
+        <source>No object to add to view</source>
+        <translation>Görünüme eklenecek nesne yok</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="879"/>
+        <source>No object to remove from view</source>
+        <translation>Görünümden kaldırılacak nesne yok</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="942"/>
         <source>Add object to document...</source>
         <translation>Belgeye nesne ekle...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="702"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="947"/>
         <source>Import...</source>
         <translation>İçe aktar...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="707"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="952"/>
         <source>Load selected document(s)</source>
         <translation>Seçili belgeleri yükle</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="714"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="959"/>
         <source>Unload selected document(s)</source>
         <translation>Seçili belgeleri kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="733"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="978"/>
         <source>Remove selected items</source>
         <translation>Seçili öğeleri kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="825"/>
-        <source>Unable to Remove</source>
-        <translation type="unfinished">Kaldırılamıyor</translation>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="984"/>
+        <source>Add folder...</source>
+        <translation>Klasör Ekle...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="826"/>
-        <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
-        <translation type="unfinished">Seçilen nesnelerin bazıları veritabanının diğer kullanıcıları tarafından kullanılıyor. Daha sonra çıkarmayı deneyin.</translation>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="989"/>
+        <source>Restore selected items</source>
+        <translation>Seçili öğeleri geri yükle</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="726"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="993"/>
+        <source>Empty recycle bin</source>
+        <translation>Boş geri dönüşüm kutusu</translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="971"/>
         <source>Rename...</source>
         <translation>Yeniden adlandır...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="718"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="963"/>
         <source>Lock document for editing</source>
         <translation>Düzenlemek için belgeyi kilitle</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="722"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="967"/>
         <source>Unlock document for editing</source>
         <translation>Düzenlemek için belgenin kilidini açın</translation>
     </message>
@@ -2658,47 +2880,42 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ProjectViewModel</name>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="901"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1104"/>
         <source>[unloaded] </source>
         <translation>[yüklenmedi] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="904"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="995"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1107"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1216"/>
         <source>[loading] </source>
         <translation>[yükleniyor] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="906"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="997"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1109"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1218"/>
         <source>[loading %1%] </source>
         <translation>[%1% yükleniyor] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="927"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1142"/>
         <source>Locks:</source>
         <translation>Kilitler:</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="930"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1145"/>
         <source>Project is locked</source>
         <translation>Proje kilitlendi</translation>
-    </message>
-    <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1123"/>
-        <source>The object has been renamed, but as far as the &quot;%1&quot; format could not store this information, name will not be saved to the corresponding file</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::QueryBlockWidget</name>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="217"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="227"/>
         <source>Term:</source>
         <translation>Term:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="228"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="238"/>
         <source>All fields</source>
         <translation>Tüm alanlar</translation>
     </message>
@@ -2739,29 +2956,29 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::RegionSelector</name>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="126"/>
+        <location filename="../src/util/RegionSelector.cpp" line="110"/>
         <source>Set minimum</source>
         <translation>Minimum ayarla</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="131"/>
+        <location filename="../src/util/RegionSelector.cpp" line="115"/>
         <source>Set maximum</source>
         <translation>Maksimum ayarla</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="138"/>
-        <location filename="../src/util/RegionSelector.cpp" line="163"/>
+        <location filename="../src/util/RegionSelector.cpp" line="122"/>
+        <location filename="../src/util/RegionSelector.cpp" line="144"/>
         <source>Region</source>
         <translation>Bölge</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="146"/>
-        <location filename="../src/util/RegionSelector.cpp" line="171"/>
+        <location filename="../src/util/RegionSelector.cpp" line="130"/>
+        <location filename="../src/util/RegionSelector.cpp" line="150"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="93"/>
+        <location filename="../src/util/RegionSelector.cpp" line="98"/>
         <source>Invalid sequence region!</source>
         <translation>Geçersiz sıra bölgesi!</translation>
     </message>
@@ -2769,24 +2986,36 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="74"/>
-        <source>Whole sequence</source>
-        <translation type="unfinished">Tüm dizi</translation>
+        <location filename="../src/util/RegionSelectorController.cpp" line="125"/>
+        <source>Region is not in sequence range</source>
+        <translation>Bölge sıra aralığında değil</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="78"/>
-        <source>Selected region</source>
-        <translation type="unfinished">Seçili bölge</translation>
+        <location filename="../src/util/RegionSelectorController.cpp" line="143"/>
+        <source>Cannot get preset name, ComboBox is NULL</source>
+        <translation>Ön ayar adı alınamıyor, Açılır Kutu BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="82"/>
-        <source>Custom region</source>
-        <translation type="unfinished">Özel bölge</translation>
+        <location filename="../src/util/RegionSelectorController.cpp" line="148"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="165"/>
+        <source>Cannot set preset, ComboBox is NULL</source>
+        <translation>Ön ayar yapılamıyor, Açılır Kutu BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
-        <source>Location</source>
-        <translation type="unfinished">Konum</translation>
+        <location filename="../src/util/RegionSelectorController.cpp" line="223"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="270"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="284"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="319"/>
+        <source>Region lineEdit is NULL</source>
+        <translation>Bölge satırı Düzenleme BOŞ</translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegionSelectorWithExludedRegion</name>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.cpp" line="94"/>
+        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
+        <translation>&apos;Hariç tut&apos; bölgesi, &apos;Arama Yeri&apos; bölgesini içerir. Arama bölgesi boş.</translation>
     </message>
 </context>
 <context>
@@ -2815,47 +3044,39 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::RemovePartFromSequenceDialogController</name>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="56"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="60"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="57"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="61"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="73"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="77"/>
         <source>There must be only one region to delete</source>
         <translation>Silinecek yalnızca bir bölge olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="77"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="81"/>
         <source>Unable to parse region to delete</source>
         <translation>Silinecek bölge ayrıştırılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="83"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="87"/>
         <source>Cannot remove the whole sequence</source>
         <translation>Tüm diziyi kaldıramaz</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="88"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="92"/>
         <source>Region to delete is out of sequence bounds</source>
         <translation>Silinecek bölge sıra sınırlarının dışında</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="134"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="138"/>
         <source>Select file to save...</source>
         <translation>Kaydedilecek dosyayı seçin...</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SaveDocumentController</name>
-    <message>
-        <location filename="../src/util/SaveDocumentController.cpp" line="148"/>
-        <source>Output file name is empty</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2930,7 +3151,7 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::SearchBox</name>
     <message>
-        <location filename="../src/util/SearchBox.cpp" line="60"/>
+        <location filename="../src/util/SearchBox.cpp" line="55"/>
         <source>Search...</source>
         <translation>Ara...</translation>
     </message>
@@ -2938,17 +3159,22 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::SearchGenbankSequenceDialogController</name>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="50"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="49"/>
         <source>Download</source>
         <translation>İndir</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="51"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="50"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="174"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="144"/>
+        <source>an unexpected subtask</source>
+        <translation>beklenmedik bir alt görev</translation>
+    </message>
+    <message>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="178"/>
         <source>No results found corresponding to the query</source>
         <translation>Sorguya karşılık gelen sonuç bulunamadı</translation>
     </message>
@@ -2995,6 +3221,11 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::SequenceTextEdit</name>
     <message>
+        <location filename="../src/util/SequenceTextEdit.cpp" line="39"/>
+        <source>Invalid mimedata</source>
+        <translation>Geçersiz mime verisi</translation>
+    </message>
+    <message>
         <location filename="../src/util/SequenceTextEdit.cpp" line="42"/>
         <source>Pasting large data</source>
         <translation>Büyük verileri yapıştır</translation>
@@ -3024,42 +3255,42 @@ Metin düzenleme temizlendi.</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="107"/>
+        <location filename="../src/ToolsMenu.cpp" line="108"/>
         <source>Sanger data analysis</source>
         <translation>Sanger veri analizi</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="117"/>
+        <location filename="../src/ToolsMenu.cpp" line="118"/>
         <source>NGS data analysis</source>
         <translation>NGS veri analizi</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="145"/>
+        <location filename="../src/ToolsMenu.cpp" line="148"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="159"/>
+        <location filename="../src/ToolsMenu.cpp" line="162"/>
         <source>Multiple sequence alignment</source>
         <translation>Çoklu dizi hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="170"/>
+        <location filename="../src/ToolsMenu.cpp" line="174"/>
         <source>Cloning</source>
         <translation>Klonlama</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="178"/>
+        <location filename="../src/ToolsMenu.cpp" line="182"/>
         <source>Primer</source>
         <translation>Astar</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="185"/>
+        <location filename="../src/ToolsMenu.cpp" line="188"/>
         <source>Search for TFBS</source>
         <translation>TFBS ara</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="194"/>
+        <location filename="../src/ToolsMenu.cpp" line="197"/>
         <source>HMMER tools</source>
         <translation>HMMER araçları</translation>
     </message>
@@ -3087,38 +3318,38 @@ Metin düzenleme temizlendi.</translation>
         <translation>beklenmeyen hata</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="112"/>
-        <location filename="../src/UnloadDocumentTask.cpp" line="135"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="113"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="136"/>
         <source>Question?</source>
         <translation>Soru?</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="113"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="114"/>
         <source>Close views for document: %1</source>
         <translation>Belge için yakın görünümler: %1</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="135"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="136"/>
         <source>Save document: %1</source>
         <translation>Belgeyi kaydet: %1</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="153"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="154"/>
         <source>Failed to unload document</source>
         <translation>Belge kaldırılamadı</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="157"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="158"/>
         <source>Failed to unload document: %1, error: %2</source>
         <translation>Belge kaldırılamadı: %1, hata: %2</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="179"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="180"/>
         <source>The document is locked by some algorithm.</source>
         <translation>Belge bazı algoritmalarla kilitlendi.</translation>
     </message>
     <message>
-        <location filename="../src/UnloadDocumentTask.cpp" line="159"/>
+        <location filename="../src/UnloadDocumentTask.cpp" line="160"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
@@ -3140,7 +3371,7 @@ Metin düzenleme temizlendi.</translation>
 <context>
     <name>U2::WidgetScreenshotImageExportController</name>
     <message>
-        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="111"/>
+        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="108"/>
         <source>Screenshot</source>
         <translation>Ekran Görüntüsü</translation>
     </message>
@@ -3151,6 +3382,13 @@ Metin düzenleme temizlendi.</translation>
         <location filename="../src/UnloadDocumentTask.cpp" line="50"/>
         <source>There is an active view with the document content.</source>
         <translation>Belge içeriğiyle aktif bir görünüm var.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::WebViewControllerPrivate</name>
+    <message>
+        <source>Can not open a file for writing: </source>
+        <translation>Dosya yazmak için açılamıyor: </translation>
     </message>
 </context>
 </TS>

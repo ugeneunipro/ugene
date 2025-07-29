@@ -271,6 +271,10 @@
         <source>Structural Alignment</source>
         <translation>Структурное выравнивание</translation>
     </message>
+    <message>
+        <source>Molecular surface calculation task for %1</source>
+        <translation type="vanished">Задача расчета модекулярной поверхности для %1</translation>
+    </message>
 </context>
 <context>
     <name>U2::BioStruct3DSettingsDialog</name>
