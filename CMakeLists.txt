@@ -205,11 +205,12 @@ foreach (TS_FILE IN LISTS ALL_TS_FILES)
                 TARGET update_all_translations
                 PRE_BUILD
                 COMMAND ${Qt5_LUPDATE_EXECUTABLE}
+                -locations absolute
+                -no-obsolete
+                -I ${CMAKE_SOURCE_DIR}/src/include
+                -I ${SUBPROJECT_DIR}/src
                 ${SUBPROJECT_SOURCES}
                 -ts ${TS_FILE}
-                -no-obsolete
-                -locations relative
-                -no-ui-lines
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 COMMENT "Updating ${TS_FILE}..."
         )

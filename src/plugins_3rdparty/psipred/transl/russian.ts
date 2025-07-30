@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/PsipredAlgTask.cpp" line="55"/>
         <source>psipred: sequence is too long, max seq size is 10000</source>
-        <translation>Sequence is too long: maximum allowed length is 10000</translation>
+        <translation type="unfinished">Sequence is too long: maximum allowed length is 10000</translation>
     </message>
     <message>
         <location filename="../src/PsipredAlgTask.cpp" line="60"/>
         <source>psipred: sequence is too short, min seq size is 5</source>
-        <translation>Sequence is too short: minimum allowed length is 5</translation>
+        <translation type="unfinished">Sequence is too short: minimum allowed length is 5</translation>
     </message>
 </context>
 </TS>

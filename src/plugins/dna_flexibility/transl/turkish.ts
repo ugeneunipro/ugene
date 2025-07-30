@@ -99,7 +99,7 @@
 <context>
     <name>U2::DNAFlexGraphFactory</name>
     <message>
-        <location filename="../src/DNAFlexGraph.cpp" line="42"/>
+        <location filename="../src/DNAFlexGraph.cpp" line="40"/>
         <source>DNA Flexibility</source>
         <translation>DNA Esnekliği</translation>
     </message>
@@ -115,21 +115,6 @@
         <location filename="../src/DNAFlexPlugin.cpp" line="49"/>
         <source>Searches a DNA sequence for regions of high DNA helix flexibility.</source>
         <translation>Yüksek DNA sarmal esnekliğine sahip bölgeler için bir DNA dizisi arar.</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="68"/>
-        <source>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</source>
-        <translation>DNA esnekliği hesaplaması sırasında UGENE&apos;nin belleği doldu. 32 bit UGENE sürümünün bellek tüketiminde bir kısıtlaması vardır. Bunun yerine 64 bit sürümü kullanmayı deneyin.</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="71"/>
-        <source>Out of memory during the DNA flexibility calculating.</source>
-        <translation>DNA esnekliği hesaplanırken bellek yetersiz.</translation>
-    </message>
-    <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="74"/>
-        <source>Internal error occurred during the DNA flexibility calculating.</source>
-        <translation>DNA esnekliği hesaplaması sırasında dahili hata oluştu.</translation>
     </message>
 </context>
 <context>

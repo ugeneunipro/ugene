@@ -254,12 +254,12 @@
         <translation>Путь до матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="76"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="77"/>
         <source>Weight matrix</source>
         <translation>Весовая матрица</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="298"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="299"/>
         <source>Frequency matrix</source>
         <translation>Частотная матрица</translation>
     </message>
@@ -420,7 +420,7 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixReadPrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="417"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="418"/>
         <source>Read model(s) from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>Чтение матриц из &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -428,7 +428,7 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixReader</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="457"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="458"/>
         <source>Loaded frequency matrix from %1</source>
         <translation>Загружена частотная матрица из %1</translation>
     </message>
@@ -436,7 +436,7 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixWritePrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="426"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="427"/>
         <source>Save the profile(s) from &lt;u&gt;%1&lt;/u&gt; to %2.</source>
         <translation>Сохранить матрицы из &lt;u&gt;%1&lt;/u&gt; в %2.</translation>
     </message>
@@ -444,12 +444,12 @@
 <context>
     <name>U2::LocalWorkflow::PFMatrixWriter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="482"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="483"/>
         <source>Unspecified URL for writing frequency matrix</source>
         <translation>Не указан адрес для записи частотной матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="498"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="499"/>
         <source>Writing frequency matrix to %1</source>
         <translation>Запись частотной матрицы в %1</translation>
     </message>
@@ -533,7 +533,7 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixReadPrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="195"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="196"/>
         <source>Read model(s) from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>Чтение матриц из &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -541,7 +541,7 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixReader</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="235"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="236"/>
         <source>Loaded weight matrix from %1</source>
         <translation>Загружена весовая матрица из %1</translation>
     </message>
@@ -660,7 +660,7 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixWritePrompter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="204"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="205"/>
         <source>Save the profile(s) from &lt;u&gt;%1&lt;/u&gt; to %2.</source>
         <translation>Сохранить матрицы из &lt;u&gt;%1&lt;/u&gt; в %2.</translation>
     </message>
@@ -668,12 +668,12 @@
 <context>
     <name>U2::LocalWorkflow::PWMatrixWriter</name>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="260"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="261"/>
         <source>Unspecified URL for writing weight matrix</source>
         <translation>Не указан адрес для записи весовой матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="276"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="277"/>
         <source>Writing weight matrix to %1</source>
         <translation>Запись весовой матрицы в %1</translation>
     </message>
@@ -1216,86 +1216,86 @@ Maybe model data are not enough for selected algorithm</source>
         <translation>Неправильный размер весовой матрицы: %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="70"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="79"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="147"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="157"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="301"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="71"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="80"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="148"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="158"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="302"/>
         <source>Weight matrix</source>
         <translation>Весовые матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="140"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="362"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="141"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="363"/>
         <source>Location</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="140"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="362"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="141"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="363"/>
         <source>Location hint for the target file.</source>
         <translation>Место для сохранения целевого файла.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="147"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="148"/>
         <source>Input weight matrix</source>
         <translation>Входная весовая матрица</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="149"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="150"/>
         <source>Write Weight Matrix</source>
         <translation>Сохранение весовой матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="149"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="150"/>
         <source>Saves all input weight matrices to specified location.</source>
         <translation>Сохраняет все входные весовые матрицы в указанное место.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="157"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="379"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="158"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="380"/>
         <source>Loaded weight matrices data.</source>
         <translation>Загруженные весовые матрицы.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="163"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="164"/>
         <source>Read Weight Matrix</source>
         <translation>Чтение весовой матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="163"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="164"/>
         <source>Reads weight matrices from file(s). The files can be local or Internet URLs.</source>
         <translation>Читает весовые матрицы из файла(ов). Файлы могут быть как локальными, так и в Интернете.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="292"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="369"/>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="379"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="293"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="370"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="380"/>
         <source>Frequency matrix</source>
         <translation>Частотная матрица</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="369"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="370"/>
         <source>Input frequency matrix</source>
         <translation>Входные частотные матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="371"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="372"/>
         <source>Write Frequency Matrix</source>
         <translation>Сохранение частотной матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="371"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="372"/>
         <source>Saves all input frequency matrices to specified location.</source>
         <translation>Сохраняет все входные частотные матрицы в указанное место.</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="385"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="386"/>
         <source>Read Frequency Matrix</source>
         <translation>Чтение частотной матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIOWorkers.cpp" line="385"/>
+        <location filename="../src/WeightMatrixIOWorkers.cpp" line="386"/>
         <source>Reads frequency matrices from file(s). The files can be local or Internet URLs.</source>
         <translation>Читает частотные матрицы из файла(ов). Файлы могут быть как локальными, так и в Интернете.</translation>
     </message>

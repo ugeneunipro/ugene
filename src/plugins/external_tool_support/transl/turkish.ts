@@ -144,7 +144,7 @@
 <context>
     <name>BlastLocalSearchDialog</name>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="20"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="14"/>
         <source>Search using local BLAST database</source>
         <translation>Yerel BLAST veritabanını kullanarak arama yapın</translation>
     </message>
@@ -154,277 +154,277 @@
         <translation>Genel seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="62"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="59"/>
         <source>Select search:</source>
         <translation>Aramayı seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="98"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="95"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Kısa, neredeyse tam eşleşmeleri arayın</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="105"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="102"/>
         <source>Expectation value </source>
         <translation>Beklenti değeri </translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="112"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="109"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="119"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="116"/>
         <source>Max hits:</source>
         <translation>Azami isabet:</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="129"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="126"/>
         <source>Off</source>
         <translation>Kapalı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="166"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="163"/>
         <source>Both strands</source>
         <translation>Her iki dize</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="176"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="173"/>
         <source>Direct</source>
         <translation>Doğrudan</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="183"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="180"/>
         <source>Complement</source>
         <translation>Tamamlayıcı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="269"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="266"/>
         <source>Number of threads</source>
         <translation>Konu sayısı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="313"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="310"/>
         <source>Advanced options</source>
         <translation>Gelişmiş seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="328"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="325"/>
         <source>D or d: default (equivalent to 2 )</source>
         <translation>D veya d: varsayılan (2&apos;ye eşdeğer)</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="333"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="330"/>
         <source>0 or F or f: No composition-based statistics</source>
         <translation>0 veya F veya f: Bileşime dayalı istatistik yok</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="338"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="335"/>
         <source>1: Composition-based statistics as in NAR 29:2994-3005, 2001</source>
         <translation>1: NAR 29: 2994-3005, 2001&apos;de olduğu gibi kompozisyona dayalı istatistikler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="343"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="340"/>
         <source>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</source>
         <translation>2 veya T veya t: Bioinformatics 21: 902-911, 2005&apos;te olduğu gibi kompozisyona dayalı skor ayarlaması, sekans özelliklerine göre şartlandırılmış</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="348"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="345"/>
         <source>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</source>
         <translation>3: Biyoinformatik 21: 902-911, 2005&apos;teki gibi kompozisyona dayalı puan ayarlaması, koşulsuz olarak</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="363"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="360"/>
         <source>plain</source>
         <translation>sade</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="368"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="365"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="373"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="370"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="400"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="397"/>
         <source>Service</source>
         <translation>Hizmet</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="413"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="410"/>
         <source>Match scores</source>
         <translation>Eşleşme skorları</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="421"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="418"/>
         <source>BLOSUM62</source>
         <translation>BLOSUM62</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="426"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="423"/>
         <source>BLOSUM45</source>
         <translation>BLOSUM45</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="431"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="428"/>
         <source>BLOSUM80</source>
         <translation>BLOSUM80</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="436"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="433"/>
         <source>PAM30</source>
         <translation>PAM30</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="441"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="438"/>
         <source>PAM70</source>
         <translation>PAM70</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="455"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="452"/>
         <source>Matrix</source>
         <translation>Matris</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="472"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="469"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="477"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="474"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="482"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="479"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="487"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="484"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="492"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="489"/>
         <source>2 -7</source>
         <translation>2 -7</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="497"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="494"/>
         <source>2 -5</source>
         <translation>2 -5</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="502"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="499"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="507"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="504"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="512"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="509"/>
         <source>5 -4</source>
         <translation>5 -4</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="523"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="520"/>
         <source>PHI pattern</source>
         <translation>PHI kalıbı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="536"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="533"/>
         <source>Word size</source>
         <translation>Kelime boyutu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="592"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="589"/>
         <source>Threshold for extending hits</source>
         <translation>İsabetleri genişletme eşiği</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="595"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="592"/>
         <source>Threshold</source>
         <translation>Eşik</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="608"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="605"/>
         <source>Gap costs</source>
         <translation>Boşluk maliyetleri</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="615"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="612"/>
         <source>Composition-based statistics</source>
         <translation>Bileşime dayalı istatistikler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="629"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="626"/>
         <source>Filters</source>
         <translation>Süzgeçler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="638"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="635"/>
         <source>Low complexity filter</source>
         <translation>Düşük karmaşıklık filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="645"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="642"/>
         <source>Human repeats filter</source>
         <translation>İnsan tekrarları filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="655"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="652"/>
         <source>Masks</source>
         <translation>Maskeler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="664"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="661"/>
         <source>Mask for lookup table only</source>
         <translation>Yalnızca arama tablosu için maske</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="674"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="671"/>
         <source>Mask lower case letters</source>
         <translation>Küçük harfleri maskele</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="709"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="706"/>
         <source>Extension options</source>
         <translation>Uzantı seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="723"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="720"/>
         <source>X dropoff value (in bits)</source>
         <translation>X düşüş değeri (bit cinsinden)</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="732"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="729"/>
         <source>For gapped alignment</source>
         <translation>Aralıklı hizalama için</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="746"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="743"/>
         <source>For ungapped extensions</source>
         <translation>Açılmamış uzantılar için</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="753"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="750"/>
         <source>For final gapped alignment</source>
         <translation>Son boşluklu hizalama için</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="780"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="777"/>
         <source>Multiple Hits window size</source>
         <translation>Çoklu İsabet pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="792"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="789"/>
         <source>Perform gapped alignment</source>
         <translation>Aralıklı hizalama gerçekleştirin</translation>
     </message>
@@ -596,11 +596,6 @@
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
-    <message>
-        <location filename="../src/bowtie/BowtieBuildSettings.ui" line="29"/>
-        <source>Colorspace</source>
-        <translation>Renk boşluğu</translation>
-    </message>
 </context>
 <context>
     <name>BowtieSettings</name>
@@ -764,42 +759,37 @@ p, li { white-space: pre-wrap; }
         <translation>İşaretler</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="312"/>
-        <source>Colorspace (--color)</source>
-        <translation>Renk alanı (--renk)</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="329"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="322"/>
         <source>No Maq rounding (--nomaqround)</source>
         <translation>Maq yuvarlama yok (--nomaqround)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="339"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="332"/>
         <source>No forward orientation (--nofw)</source>
         <translation>İleri yönlendirme yok (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="349"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="342"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Ters tamamlayıcı yönelimi yok (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="369"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="362"/>
         <source>Try as hard (--tryhard)</source>
         <translation>Çok dene (--tryhard)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="383"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="376"/>
         <source>Best alignments (--best)</source>
         <translation>En iyi hizalamalar (--best)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="393"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="386"/>
         <source>All alignments (--all)</source>
         <translation>Tüm hizalamalar (--all)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="319"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="312"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -818,17 +808,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Varsayılan olarak papyon da bu şekilde yuvarlanır. --nomaqround papyondaki bu yuvarlamayı önler.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="336"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="329"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>Eğer --nofw belirtilirse, papyon ileri referans şeridiyle hizalamaya çalışmaz.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="346"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="339"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>Eğer --norc belirtilirse, papyon ters tamamlayıcı referans dizgisine göre hizalamaya çalışmaz.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="356"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="349"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -853,7 +843,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;yada (c) birçok okumanın geçerli hizalamaları yoktur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="376"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="369"/>
         <source>Make Bowtie guarantee that reported singleton alignments are &quot;best&quot; in terms of stratum
 (i.e. number of mismatches, or mismatches in the seed in the case of -n mode)
 and in terms of the quality values at the mismatched position(s).
@@ -866,7 +856,7 @@ ve uyumsuz pozisyon (lar) daki kalite değerleri açısından.
            </translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="390"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="383"/>
         <source>Report all valid alignments per read or pair.</source>
         <translation>Okuma veya çift başına tüm geçerli hizalamaları rapor edin.</translation>
     </message>
@@ -2258,21 +2248,9 @@ p, li { white-space: pre-wrap; }
         <translation>Tohum uyuşmazlıkları</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="110"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="120"/>
-        <source>A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.</source>
-        <translation>Basit hizalama modu için bir eşik. 7 ile 15 arasındaki değerler önerilir. 12 temel dizinin mükemmel bir eşleşmesi, 7&apos;den biraz fazla puan alırken, 15 puan için 25 baz gerekir.</translation>
-    </message>
-    <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="113"/>
         <source>Palindrome clip threshold</source>
         <translation>Palindrom klip eşiği</translation>
-    </message>
-    <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="139"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="149"/>
-        <source>A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.</source>
-        <translation>Palindrom hizalama modu için bir eşik. Palindromik eşleşmeler için daha uzun bir hizalama mümkündür. Bu nedenle, eşik 30 aralığında olabilir. Bu eşik çok yüksek olmasına rağmen (neredeyse 50 bazlık bir eşleşme gerektirir) Trimmomatic hala çok, çok kısa adaptör parçalarını belirleyebilmektedir.</translation>
     </message>
     <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="142"/>
@@ -2283,6 +2261,18 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="191"/>
         <source>Optional...</source>
         <translation>İsteğe bağlı...</translation>
+    </message>
+    <message>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="110"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="120"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="139"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="149"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2301,6 +2291,96 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/custom_tools/ImportExternalToolDialog.ui" line="40"/>
         <source>...</source>
         <translation>...</translation>
+    </message>
+</context>
+<context>
+    <name>KalignPairwiseAlignmentOptionsWidget</name>
+    <message>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Biçim</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="37"/>
+        <source>Gap open penalty</source>
+        <translation type="unfinished">Boşluk açma cezası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="61"/>
+        <source>Gap extension penalty</source>
+        <translation type="unfinished">Boşluk uzatma cezası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="85"/>
+        <source>Terminal gap extension penalty</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KalignSupportRunDialog</name>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="32"/>
+        <source>Align with Kalign</source>
+        <translation type="unfinished">Kalign ile Hizala</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="46"/>
+        <source>Input and output</source>
+        <translation type="unfinished">Girdi ve çıktı</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="52"/>
+        <source>Input file</source>
+        <translation type="unfinished">Girdi dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="62"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="79"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="69"/>
+        <source>Output file</source>
+        <translation type="unfinished">Çıktı dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="95"/>
+        <source>Advanced options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="104"/>
+        <source>Gap open penalty</source>
+        <translation type="unfinished">Boşluk açma cezası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="149"/>
+        <source>Gap extension penalty</source>
+        <translation type="unfinished">Boşluk uzatma cezası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="194"/>
+        <source>Terminal gap extension penalty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="236"/>
+        <source>Number of threads</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Kraken2ClassifyValidator</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyValidator.cpp" line="45"/>
+        <source>The database folder &quot;%1&quot; doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyValidator.cpp" line="59"/>
+        <source>The mandatory database file &quot;%1&quot; doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2483,6 +2563,141 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="61"/>
         <source>Strictness</source>
         <translation>Sıkılık</translation>
+    </message>
+</context>
+<context>
+    <name>MfoldDialog</name>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="30"/>
+        <source>mfold settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="36"/>
+        <source>Algorithm settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="42"/>
+        <source>Folding temperature (between 0 and 100 °C).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="60"/>
+        <source>Temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="89"/>
+        <source>The concentrations of Sodium and Magnesium ions. DNA only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="107"/>
+        <source>Ionic conditions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="116"/>
+        <location filename="../src/mfold/MfoldDialog.ui" line="158"/>
+        <source> M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="179"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter controls the value of the free energy increment, &lt;span style=&quot; font-style:italic;&quot;&gt;δδG&lt;/span&gt;. If this number is set to &lt;span style=&quot; font-style:italic;&quot;&gt;p&lt;/span&gt;, then only foldings within &lt;span style=&quot; font-style:italic;&quot;&gt;p%&lt;/span&gt; from the minimum free energy will be computed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="197"/>
+        <source>Percent suboptimality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="226"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of foldings to be computed. The folding algorithm automatically computes a selection of secondary structures within the prescribed energy increment and stops when no more &lt;span style=&quot; font-style:italic;&quot;&gt;sufficiently different&lt;/span&gt; foldings can be found.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="244"/>
+        <source>Max num of foldings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="270"/>
+        <source>The window parameter controls the number of foldings that are calculated and how different they will be from each other. It can be considered as a distance parameter. A smaller value for this parameter will usually result in a larger number of foldings being calculated, which may be very similar to each other. The default value is calculated based on the length of the sequence region.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="288"/>
+        <source>Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="298"/>
+        <location filename="../src/mfold/MfoldDialog.ui" line="407"/>
+        <source>default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="317"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the parameter &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp&lt;/span&gt; of the maximum distance between paired bases is specified, then any base pair &lt;span style=&quot; font-style:italic;&quot;&gt;{r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;i&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;, r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;j&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;}&lt;/span&gt; in a folding of a linear molecule must satisfy the condition &lt;span style=&quot; font-style:italic;&quot;&gt;j-i≤maxbp&lt;/span&gt;. In a circular molecule, the condition becomes &lt;span style=&quot; font-style:italic;&quot;&gt;min{j-i, N+i-j}≤maxbp&lt;/span&gt;, where &lt;span style=&quot; font-style:italic;&quot;&gt;N&lt;/span&gt; is the length of the region. Thus, small maxbp values ensure that only short range base pairs are predicted. By default there are no restrictions, i.e. &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp=∞&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="335"/>
+        <source>Max base pair distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="345"/>
+        <source>default (∞)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="361"/>
+        <source>Display settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="379"/>
+        <source>The frequency at which the bases in the image will be numbered. The default value is calculated based on the length of the sequence region.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="397"/>
+        <source>Base numbering frequency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="426"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of rotation of the constructed structures. The default value means that the angle is chosen automatically by the structure drawing program. Otherwise, the structure is rotated by the modulo number of degrees specified, counterclockwise if the number is positive, or clockwise if the number is negative.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="444"/>
+        <source>Rotation angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="490"/>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="505"/>
+        <source>Output settings</source>
+        <translation type="unfinished">Çıktı ayarları</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="524"/>
+        <source>Save output to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.ui" line="572"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dots per inch (DPI) is a measure of spatial printing, in particular the number of individual dots that can be placed in a line within the span of 1 inch (2.54 cm). The more dots per inch an image has, the more detail you&apos;ll see when saved.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2864,62 +3079,62 @@ p, li { white-space: pre-wrap; }
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="173"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="176"/>
         <source>Genome sequence slot is not binded : &apos;%1&apos;</source>
         <translation>Genom dizisi yuvası bağlı değil: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="176"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="179"/>
         <source>Transcripts slot is not binded : &apos;%1&apos;</source>
         <translation>Transkript yuvası bağlı değil: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="189"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="192"/>
         <source>Input transcripts</source>
         <translation>Giriş transkriptleri</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="190"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="193"/>
         <source>Genomic sequence url</source>
         <translation>Genomik dizi url&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="190"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="193"/>
         <source>Genomic sequence url [FASTA]</source>
         <translation>Genomik dizi url&apos;si [FASTA]</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="191"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="194"/>
         <source>Transcripts url</source>
         <translation>Transkript url&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="191"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="194"/>
         <source>Transcripts url [GTF]</source>
         <translation>Transkript url&apos;si [GTF]</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="197"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="200"/>
         <source>Extracted sequences url</source>
         <translation>Çıkarılan dizilerin url&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="205"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="208"/>
         <source>Output sequences</source>
         <translation>Çıkış dizileri</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="205"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="208"/>
         <source>The url to the output file with the extracted sequences.</source>
         <translation>Ayıklanan dizilerin bulunduğu çıktı dosyasının url&apos;si.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="215"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="218"/>
         <source>Extract Transcript Sequences with gffread</source>
         <translation>Transkript Dizilerini gffread ile ayıklayın</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="216"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="219"/>
         <source>Extract transcript sequences from the genomic sequence(s) with gffread.</source>
         <translation>Gffread ile genomik dizilerden transkript dizilerini çıkarın.</translation>
     </message>
@@ -2944,47 +3159,39 @@ p, li { white-space: pre-wrap; }
         <translation>Kitaplık türünün beklenmeyen değeri &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="799"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="800"/>
         <source>At least two samples are required</source>
         <translation>En az iki numune gereklidir</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="806"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="807"/>
         <source>Duplicate sample name: </source>
         <translation>Yinelenen örnek adı: </translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="811"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="812"/>
         <source>No datasets in the sample: </source>
         <translation>Örnekte veri kümesi yok: </translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="57"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="60"/>
         <source>Sequence name from file</source>
         <translation>Dosyadan sıra adı</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="58"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="61"/>
         <source>File name</source>
         <translation>Dosya adı</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="159"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="156"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Click the &quot;Add new step&quot; button and select a step. The following options are available:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.&lt;/li&gt;&lt;li&gt;SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.&lt;/li&gt;&lt;li&gt;LEADING: Cut bases off the start of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;TRAILING: Cut bases off the end of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;CROP: Cut the read to a specified length.&lt;/li&gt;&lt;li&gt;HEADCROP: Cut the specified number of bases from the start of the read.&lt;/li&gt;&lt;li&gt;MINLEN: Drop the read if it is below a specified length.&lt;/li&gt;&lt;li&gt;AVGQUAL: Drop the read if the average quality is below the specified level.&lt;/li&gt;&lt;li&gt;TOPHRED33: Convert quality scores to Phred-33.&lt;/li&gt;&lt;li&gt;TOPHRED64: Convert quality scores to Phred-64.&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;&quot;Yeni adım ekle&quot; düğmesini tıklayın ve bir adım seçin. Aşağıdaki seçenekler mevcuttur:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;ILLUMINACLIP: Okumadan adaptör ve diğer aydınlığa özel sekansları kesin.&lt;/li&gt;&lt;li&gt;SLIDINGWINDOW: Ortalama kalitede bir kez keserek kayan bir pencere kırpın pencere içinde bir eşiğin altına düşerse.&lt;/li&gt;&lt;li&gt;LİDER: Bir eşik kalitesinin altındaysa, okumanın başlangıcından tabanları kesin.&lt;/li&gt;&lt;li&gt;TRAILING: Bir okumanın sonundaki tabanları kesin, Bir eşik kalitesinin altındaysa.&lt;/li&gt;&lt;li&gt;CROP: Okumayı belirli bir uzunlukta kesin.&lt;/li&gt;&lt;li&gt;HEADCROP: Okumanın başlangıcından itibaren belirtilen sayıda tabanı kesin.&lt;/li&gt;&lt;li&gt;MINLEN: Belirtilen bir uzunluğun altındaysa okumayı bırakın.&lt;/li&gt;&lt;li&gt;AVGQUAL: Ortalama kalite belirtilen seviyenin altındaysa okumayı bırakın.&lt;/li&gt;&lt;li&gt;TOPHRED33: Kalite puanlarını şuna dönüştürün: Phred-33.&lt;/li&gt;&lt;li&gt;TOPHRED64: Kalite puanlarını Phred-64&apos;e dönüştürün.&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="174"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="171"/>
         <source>Add a step.</source>
         <translation>Bir adım ekleyin.</translation>
-    </message>
-    <message>
-        <source>%1 tool&apos;s version is undefined, this may cause some compatibility issues</source>
-        <translation type="vanished">%1 aracının sürümü tanımsız, bu bazı uyumluluk sorunlarına neden olabilir</translation>
-    </message>
-    <message>
-        <source>Bowtie and TopHat tools have incompatible versions. Your TopHat&apos;s version is %1, Bowtie&apos;s one is %2. The following are considered to be compatible: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</source>
-        <translation type="vanished">Papyon ve TopHat araçlarının uyumsuz sürümleri vardır. TopHat&apos;inizin sürümü %1, Bowtie&apos;nin sürümü %2. Aşağıdakilerin uyumlu olduğu kabul edilir: Papyon &lt;&quot;0.12.9&quot; ve TopHat &lt;= &quot;2.0.8&quot; veya Papyon&gt; = &quot;0.12.9&quot; ve TopHat&gt; = &quot;2.0.8.b&quot;</translation>
     </message>
 </context>
 <context>
@@ -3046,7 +3253,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SpadesDelegate</name>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="44"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="45"/>
         <source>Configure input type</source>
         <translation>Giriş türünü yapılandırın</translation>
     </message>
@@ -3178,17 +3385,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SpadesPropertyDialog</name>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="153"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="151"/>
         <source>At least one of the required input ports should be set in the &quot;Input data&quot; parameter.</source>
         <translation>Gerekli giriş bağlantı noktalarından en az biri &quot;Giriş verileri&quot; parametresinde ayarlanmalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="169"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="177"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="199"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="229"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="305"/>
-        <location filename="../src/spades/SpadesDelegate.cpp" line="309"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="167"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="175"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="197"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="227"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="303"/>
+        <location filename="../src/spades/SpadesDelegate.cpp" line="307"/>
         <source>Incorrect parameters, can&apos;t parse</source>
         <translation>Yanlış parametreler, ayrıştırılamıyor</translation>
     </message>
@@ -3603,94 +3810,104 @@ p, li { white-space: pre-wrap; }
         <translation>yanlış referans formatı</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="158"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="162"/>
         <source>&lt;u&gt;Filtered by quality (%1):&lt;/u&gt;</source>
         <translation>&lt;u&gt;Kaliteye göre filtrelendi (%1):&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="185"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="189"/>
         <source>Failed to create output folder: %1.</source>
         <translation>Çıktı klasörü oluşturulamadı: %1.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="213"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="216"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="217"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="220"/>
         <source>wrong output format</source>
         <translation>yanlış çıktı biçimi</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="232"/>
+        <source>Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="239"/>
+        <source>Error log: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="245"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="257"/>
         <source>Map</source>
         <translation>Harita</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="246"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="258"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="252"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="264"/>
         <source>File name</source>
         <translation>Dosya adı</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="253"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="265"/>
         <source>Sequence name from file</source>
         <translation>Dosyadan sıra adı</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="271"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="283"/>
         <source>Select Output File...</source>
         <translation>Çıktı Dosyasını Seç...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="284"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="290"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="308"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="327"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="302"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="320"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="339"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="284"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
         <source>Reference sequence is not set.</source>
         <translation>Referans sırası belirlenmemiş.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="290"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="302"/>
         <source>No reads provided.</source>
         <translation>Okuma sağlanmadı.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="308"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="320"/>
         <source>Output file is not set.</source>
         <translation>Çıktı dosyası ayarlanmadı.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="319"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="331"/>
         <source>Overwrite the file?</source>
         <translation>Dosyanın üzerine yazılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="320"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="332"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>Sonuç dosyası zaten var. Üzerine yazmak ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="327"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="339"/>
         <source>Unable to delete the file.</source>
         <translation>Dosya silinemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="339"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="351"/>
         <source>Open Reference Sequence</source>
         <translation>Açık Referans Sırası</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="350"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="362"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Okunan Dosyaları Seçin</translation>
     </message>
@@ -3698,41 +3915,41 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AlignmentAlgorithmsRegistry</name>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="327"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="326"/>
         <source>Align sequences to alignment with MAFFT…</source>
-        <translation>Sıraları MAFFT ile hizalamak için hizalayın…</translation>
+        <translation type="unfinished">Sıraları MAFFT ile hizalamak için hizalayın…</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="328"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="327"/>
         <source>Align selected sequences to alignment with MAFFT…</source>
-        <translation>Seçilen dizileri MAFFT ile hizalanacak şekilde hizalayın…</translation>
+        <translation type="unfinished">Seçilen dizileri MAFFT ile hizalanacak şekilde hizalayın…</translation>
     </message>
 </context>
 <context>
     <name>U2::BedtoolsIntersectAnnotationsByEntityTask</name>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="118"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="120"/>
         <source>Intersect annotations task</source>
         <translation>Ek açıklamaları kesiştir görevi</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="175"/>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="198"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="177"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="200"/>
         <source>Failed to get IOAdapterFactory</source>
         <translation>IOAdapterFactory alınamadı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="182"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="184"/>
         <source>Result document is NULL</source>
         <translation>Sonuç belgesi BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="184"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="186"/>
         <source>No annotation tables resultDoc</source>
         <translation>Ek açıklama tablosu yok resultDoc</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="195"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="197"/>
         <source>Failed to get BED format</source>
         <translation>BED biçimi alınamadı</translation>
     </message>
@@ -3740,22 +3957,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BedtoolsIntersectTask</name>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="67"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="68"/>
         <source>BedtoolsIntersect task</source>
         <translation>Bedtools Intersect görevi</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="72"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="74"/>
         <source>No input A URL</source>
         <translation>URL girişi yok</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="73"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="75"/>
         <source>No input B URL(s)</source>
         <translation>Giriş B URL&apos;si yok</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="74"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="76"/>
         <source>Output URL is not set</source>
         <translation>Çıktı URL&apos;si ayarlanmadı</translation>
     </message>
@@ -3763,7 +3980,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BedtoolsSupport</name>
     <message>
-        <location filename="../src/bedtools/BedtoolsSupport.cpp" line="51"/>
+        <location filename="../src/bedtools/BedtoolsSupport.cpp" line="52"/>
         <source>&lt;i&gt;Bedtools&lt;/i&gt;: flexible tools for genome arithmetic and DNA sequence analysis.</source>
         <translation>&lt;i&gt;Bedtools&lt;/i&gt;: genom aritmetiği ve DNA dizisi analizi için esnek araçlar.</translation>
     </message>
@@ -3774,10 +3991,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/bigWigTools/BigWigSupport.cpp" line="51"/>
         <source>&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: convert a bedGraph file to bigWig format.</source>
         <translation>&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: bir bedGraph dosyasını bigWig formatına dönüştürün.</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: converts bedGrapth to bigWig.</source>
-        <translation type="vanished">&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: bedGrapth&apos;i bigWig&apos;e dönüştürür.</translation>
     </message>
 </context>
 <context>
@@ -3901,11 +4114,6 @@ p, li { white-space: pre-wrap; }
         <translation>Çıktı dosyası okunamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastCommonTask.cpp" line="471"/>
-        <source>Unknown strand source setting</source>
-        <translation>Bilinmeyen iplik kaynağı ayarı</translation>
-    </message>
-    <message>
         <location filename="../src/blast/BlastCommonTask.cpp" line="476"/>
         <source>Can&apos;t get location. %1[%2]</source>
         <translation>Konum alınamıyor. %1 [%2]</translation>
@@ -3932,22 +4140,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastDBSelectorWidgetController</name>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="44"/>
-        <source>Database path contains space characters.</source>
-        <translation>Veritabanı yolu boşluk karakterleri içerir.</translation>
+        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="57"/>
+        <source>Database path contains spaces or/and non-Latin characters.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="49"/>
-        <source>Database name contains space characters.</source>
-        <translation>Veritabanı adı boşluk karakterleri içeriyor.</translation>
+        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="58"/>
+        <source>Database name contains spaces or/and non-Latin characters.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="76"/>
+        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="87"/>
         <source>Select a database file</source>
         <translation>Bir veritabanı dosyası seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="129"/>
+        <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="140"/>
         <source>No alias or index file found for selected database.</source>
         <translation>Seçili veritabanı için takma ad veya dizin dosyası bulunamadı.</translation>
     </message>
@@ -3973,73 +4181,57 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastRunCommonDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="49"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="55"/>
         <source>Restore to default</source>
         <translation>Varsayılana sıfırla</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="50"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="56"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="51"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="57"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="265"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="271"/>
         <source>Direct nucleotide alignment</source>
         <translation>Doğrudan nükleotid hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="268"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="274"/>
         <source>Direct protein alignment</source>
         <translation>Doğrudan protein hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="271"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="277"/>
         <source>Protein alignment, input nucleotide is translated input protein before the search</source>
         <translation>Protein hizalaması, giriş nükleotidi, aramadan önce giriş proteinine çevrilir</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="274"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="280"/>
         <source>Protein alignment, nucleotide database is translated input protein before the search</source>
         <translation>Protein hizalaması, nükleotid veritabanı, aramadan önce giriş proteinine çevrilir</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="277"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="283"/>
         <source>Protein alignment, both input query and database are translated before the search</source>
         <translation>Protein hizalaması, hem girdi sorgusu hem de veritabanı aramadan önce çevrilir</translation>
-    </message>
-    <message>
-        <source>Direct protein alignment (on GPU)</source>
-        <translation type="vanished">Doğrudan protein hizalaması (GPU&apos;da)</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="102"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="91"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Ek açıklamalar oluşturmak için yanlış parametreler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="115"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="104"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
-    </message>
-    <message>
-        <source>Do you want to select it now?</source>
-        <translation type="vanished">Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-    <message>
-        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
-        <translation type="vanished">&lt;i&gt;BLAST %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">Hata</translation>
     </message>
 </context>
 <context>
@@ -4080,12 +4272,12 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;i&gt;makeblastdb&lt;/i&gt;, protein veya nükleotid kaynak veritabanlarını, bu veri tabanları diğer BLAST araçları tarafından aranmadan önce biçimlendirir.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="138"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="145"/>
         <source>Path for BLAST tools is not selected.</source>
         <translation>BLAST araçları için yol seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="139"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="146"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
@@ -4093,84 +4285,59 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastSupportContext</name>
     <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="238"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="245"/>
         <source>Fetch sequences by &apos;id&apos;</source>
         <translation>Dizileri &quot;id&quot; ile getir</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="246"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="253"/>
         <source>Query with local BLAST...</source>
         <translation>Yerel BLAST ile sorgulama...</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="286"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="293"/>
         <source>Fetch sequences from local BLAST database</source>
         <translation>Yerel BLAST veritabanından sekansları getir</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="284"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="291"/>
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Dizileri %1 &quot;kimlik&quot; ile getir</translation>
-    </message>
-    <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="315"/>
-        <source>Sequence object is NULL</source>
-        <translation>Sıra nesnesi BOŞ</translation>
-    </message>
-    <message>
-        <source>Path for BLAST tools not selected.</source>
-        <translation type="vanished">BLAST araçları için yol seçilmedi.</translation>
-    </message>
-    <message>
-        <source>Do you want to select it now?</source>
-        <translation type="vanished">Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation type="vanished">BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastWithExtFileRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="155"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="145"/>
         <source>Select input file</source>
         <translation>Giriş dosyasını seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="203"/>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="249"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="192"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="238"/>
         <source>Wrong input file</source>
         <translation>Yanlış girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="203"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="192"/>
         <source>This file has the incompatible format for the BLAST search.</source>
         <translation>Bu dosya, BLAST + araması için uyumsuz biçime sahip.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="249"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="238"/>
         <source>This file does not contain sequences.</source>
         <translation>Bu dosya sekans içermiyor.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="301"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="294"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Ek açıklamalar oluşturmak için yanlış parametreler</translation>
-    </message>
-    <message>
-        <source>Do you want to select it now?</source>
-        <translation type="vanished">Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-    <message>
-        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
-        <translation type="vanished">&lt;i&gt;BLAST %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
     <name>U2::Bowtie2AlignTask</name>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Task.cpp" line="152"/>
+        <location filename="../src/bowtie2/Bowtie2Task.cpp" line="155"/>
         <source>Unknown short reads format %1</source>
         <translation>Bilinmeyen kısa okuma biçimi %1</translation>
     </message>
@@ -4178,7 +4345,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Bowtie2BuildIndexTask</name>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Task.cpp" line="47"/>
+        <location filename="../src/bowtie2/Bowtie2Task.cpp" line="49"/>
         <source>Reference file &quot;%1&quot; does not exist</source>
         <translation>&quot;%1&quot; referans dosyası mevcut değil</translation>
     </message>
@@ -4186,35 +4353,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Bowtie2Support</name>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="55"/>
+        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="56"/>
         <source>&lt;i&gt;Bowtie 2 aligner&lt;/i&gt; takes a Bowtie 2 index and a set of sequencing read files and outputs a set of alignments.</source>
         <translation>&lt;i&gt;Bowtie 2 hizalayıcı&lt;/i&gt;, bir Bowtie 2 dizinini ve bir dizi sıralama okuma dosyasını alır ve bir dizi hizalama çıkarır.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="64"/>
+        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="65"/>
         <source>&lt;i&gt;Bowtie 2 build indexer&lt;/i&gt;  builds a Bowtie index from a set of DNA sequences. It outputs a set of 6 files with suffixes .1.bt2, .2.bt2, .3.bt2, .4.bt2, .rev.1.bt2, and .rev.2.bt2. These files together constitute the index: they are all that is needed to align reads to that reference. The original sequence files are no longer used by &lt;i&gt;Bowtie 2&lt;/i&gt; once the index is built.</source>
         <translation>&lt;i&gt;Bowtie 2 yapı indeksleyici&lt;/i&gt;,  bir dizi DNA dizisinden bir Papyon indeksi oluşturur. .1.bt2, .2.bt2, .3.bt2, .4.bt2, .rev.1.bt2 ve .rev.2.bt2 sonekleriyle 6 dosyalık bir set çıktılar. Bu dosyalar birlikte dizini oluşturur: okumaları bu referansa hizalamak için gereken tek şey onlardır. Orijinal sıra dosyaları, dizin oluşturulduktan sonra artık&lt;i&gt;Bowtie 2&lt;/i&gt; tarafından kullanılmamaktadır.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="78"/>
+        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="79"/>
         <source>&lt;i&gt;Bowtie 2 index inspector&lt;/i&gt; extracts information from a Bowtie index about what kind of index it is and what reference sequence were used to build it.</source>
         <translation>&lt;i&gt;Bowtie 2 indeks denetçisi&lt;/i&gt;, bir Bowtie indeksinden ne tür bir indeks olduğu ve onu oluşturmak için hangi referans sırasının kullanıldığı hakkında bilgi alır.</translation>
     </message>
 </context>
 <context>
+    <name>U2::Bowtie2Task</name>
+    <message>
+        <location filename="../src/bowtie2/Bowtie2Task.cpp" line="291"/>
+        <source>Index file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::BowtieAlignTask</name>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="156"/>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="159"/>
         <source>Reference index file &quot;%1&quot; does not exist</source>
         <translation>Referans dizin dosyası &quot;%1&quot; mevcut değil</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="233"/>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="236"/>
         <source>Unknown short reads format %1</source>
         <translation>Bilinmeyen kısa okuma biçimi %1</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="312"/>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="315"/>
         <source>There is not enough memory on the computer!</source>
         <translation>Bilgisayarda yeterli bellek yok!</translation>
     </message>
@@ -4222,7 +4397,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BowtieBuildTask</name>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="47"/>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="49"/>
         <source>Reference file &quot;%1&quot; does not exist</source>
         <translation>&quot;%1&quot; referans dosyası mevcut değil</translation>
     </message>
@@ -4230,7 +4405,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BowtieSupport</name>
     <message>
-        <location filename="../src/bowtie/BowtieSupport.cpp" line="58"/>
+        <location filename="../src/bowtie/BowtieSupport.cpp" line="59"/>
         <source>&lt;i&gt;Bowtie&lt;/i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end).</source>
         <translation>&lt;i&gt;Papyon&lt;/i&gt;, ultra hızlı, hafıza açısından verimli bir kısa okuma hizalayıcıdır. Kısa DNA dizilerini (okur) insan genomuna saatte 25 milyondan fazla 35 bp okuma hızında hizalar. Papyon, bellek ayak izini küçük tutmak için genomu bir Burrows-Wheeler indeksi ile indeksler: tipik olarak insan genomu için yaklaşık 2,2 GB (çift uç için 2,9 GB).</translation>
     </message>
@@ -4238,50 +4413,50 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="107"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="103"/>
         <source>Short reads are not provided</source>
         <translation>Kısa okumalar sağlanmamaktadır</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="125"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="121"/>
         <source>Please, provide same number of files with downstream and upstream reads.</source>
         <translation>Lütfen aşağı ve yukarı okumalara sahip aynı sayıda dosya sağlayın.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="197"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="192"/>
+        <source>Index file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="204"/>
         <source>Align reads with BWA Multitask</source>
         <translation>Okumaları BWA Çoklu Görev ile hizalayın</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="238"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="245"/>
         <source>Saming reads with BWA Multitask</source>
         <translation>Saming, BWA Multitask ile okur</translation>
-    </message>
-    <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="290"/>
-        <source>Log is incomplete</source>
-        <translation>Günlük eksik</translation>
-    </message>
-    <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="293"/>
-        <source>Log is incorrect</source>
-        <translation>Günlük yanlış</translation>
     </message>
 </context>
 <context>
     <name>U2::BwaMemAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="316"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="322"/>
         <source>Short reads are not provided</source>
         <translation>Kısa okumalar sağlanmamaktadır</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="335"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="341"/>
         <source>Please, provide same number of files with downstream and upstream reads.</source>
         <translation>Lütfen aşağı ve yukarı okumalara sahip aynı sayıda dosya sağlayın.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="427"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="403"/>
+        <source>Index file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="443"/>
         <source>Align reads with BWA-MEM Multitask</source>
         <translation>Okumaları BWA-MEM Çoklu Görev ile hizalayın</translation>
     </message>
@@ -4297,7 +4472,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaSupport</name>
     <message>
-        <location filename="../src/bwa/BwaSupport.cpp" line="46"/>
+        <location filename="../src/bwa/BwaSupport.cpp" line="47"/>
         <source>&lt;i&gt;Burrows-Wheeler Aligner (BWA)&lt;/i&gt; is an efficient program that aligns relatively short nucleotide sequences against a long reference sequence such as the human genome.</source>
         <translation>&lt;i&gt;Burrows-Wheeler Aligner (BWA)&lt;/i&gt;, nispeten kısa nükleotid dizilerini insan genomu gibi uzun bir referans dizisine göre hizalayan etkili bir programdır.</translation>
     </message>
@@ -4305,12 +4480,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaSwAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="477"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="492"/>
         <source>Short reads are not provided</source>
         <translation>Kısa okumalar sağlanmamaktadır</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="486"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="501"/>
         <source>BWA SW can not align paired reads</source>
         <translation>BWA SW, eşleştirilmiş okumaları hizalayamıyor</translation>
     </message>
@@ -4326,12 +4501,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="629"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="644"/>
         <source>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</source>
         <translation>Çoklu okuma dosyaları bwa-sw tarafından desteklenmez. Lütfen okumalarınızı tek bir FAŞTA dosyasında birleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="636"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="651"/>
         <source>Please, provide same number of files with downstream and upstream reads.</source>
         <translation>Lütfen aşağı ve yukarı okumalara sahip aynı sayıda dosya sağlayın.</translation>
     </message>
@@ -4443,12 +4618,12 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <translation>&lt;i&gt;Clustal Omega&lt;/i&gt;, proteinler için ücretsiz bir dizi hizalama yazılımıdır.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="74"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="77"/>
         <source>Path for %1 tool not selected.</source>
         <translation>%1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="75"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="78"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
@@ -4456,43 +4631,39 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ClustalOSupportContext</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="125"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="128"/>
         <source>Align with ClustalO...</source>
         <translation>ClustalO ile hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="131"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="134"/>
         <source>Align alignment to alignment with ClustalO…</source>
         <translation>Hizalamayı ClustalO ile hizalamaya hizalayın…</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="186"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="189"/>
         <source>Select file with another alignment</source>
         <translation>Başka bir hizalama ile dosya seçin</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="203"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="206"/>
         <source>Path for ClustalO tool is not selected.</source>
         <translation>ClustalO aracı için yol seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="204"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="207"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="208"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="211"/>
         <source>Can&apos;t validate ClustalO external tool</source>
         <translation>ClustalO harici aracı doğrulanamıyor</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="215"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="218"/>
         <source>ClustalO external tool is not set up</source>
         <translation>ClustalO harici aracı ayarlanmadı</translation>
-    </message>
-    <message>
-        <source>Path for %1 tool not selected.</source>
-        <translation type="vanished">%1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
@@ -4511,62 +4682,62 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ClustalOSupportTask</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="88"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="86"/>
         <source>ClustalO alignment started</source>
         <translation>ClustalO hizalaması başladı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="109"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="107"/>
         <source>Saving data to temporary file &apos;%1&apos;</source>
         <translation>Veriler &apos;%1&apos; geçici dosyasına kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="55"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="54"/>
         <source>ClustalO alignment task</source>
         <translation>ClustalO hizalama görevi</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="70"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="69"/>
         <source>ClustalO add sequences to alignment task</source>
         <translation>ClustalO, hizalama görevine diziler ekler</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="118"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="116"/>
         <source>Folder for temporary files exists. Can not remove the folder: %1.</source>
         <translation>Geçici dosyalar için klasör var. %1 klasörü kaldırılamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="123"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="121"/>
         <source>Can not create folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör oluşturulamaz.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="181"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="179"/>
         <source>Output file %1 not found</source>
         <translation>%1 çıktı dosyası bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="183"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="181"/>
         <source>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>%3 çıktı dosyası bulunamadı. %1 takım yolu &apos;%2&apos; geçerli değil mi?</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="190"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="188"/>
         <source>Loading output file &apos;%1&apos;</source>
         <translation>&apos;%1&apos; çıktı dosyası yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="280"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="278"/>
         <source>Failed to apply the result of ClustalO: alignment object is not available!</source>
         <translation>ClustalO&apos;nun sonucu uygulanamadı: hizalama nesnesi mevcut değil!</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="285"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="283"/>
         <source>ClustalO alignment successfully finished</source>
         <translation>ClustalO hizalaması başarıyla tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="300"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="298"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör kaldırılamaz.</translation>
     </message>
@@ -4594,15 +4765,19 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <translation>Birden çok hizalama dosyasını kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="132"/>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="134"/>
-        <source>Align with Kalign</source>
-        <translation>Kalign ile Hizala</translation>
+        <source>Align with ClistalO</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="132"/>
         <source>Input file is not set!</source>
         <translation>Girdi dosyası ayarlanmadı!</translation>
+    </message>
+    <message>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="132"/>
+        <source>Align with ClustalO</source>
+        <translation type="unfinished">ClustalO ile hizalayın</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="134"/>
@@ -4613,7 +4788,7 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ClustalOWithExtFileSpecifySupportTask</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="344"/>
+        <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="342"/>
         <source>Unrecognized input alignment file format</source>
         <translation>Tanınmayan girdi hizalama dosyası biçimi</translation>
     </message>
@@ -4626,12 +4801,12 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <translation>&lt;i&gt;ClustalW&lt;/i&gt;, DNA veya proteinler için ücretsiz bir dizi hizalama yazılımıdır.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="76"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="79"/>
         <source>Path for %1 tool not selected.</source>
         <translation>%1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="77"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="80"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
@@ -4639,23 +4814,19 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ClustalWSupportContext</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="126"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="129"/>
         <source>Align with ClustalW...</source>
         <translation>ClustalW ile hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="138"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="141"/>
         <source>Path for ClustalW tool is not selected.</source>
         <translation>ClustalW aracı için yol seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="139"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="142"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-    <message>
-        <source>Path for %1 tool not selected.</source>
-        <translation type="vanished">%1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
@@ -4743,14 +4914,14 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="196"/>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="198"/>
-        <source>Kalign with Align</source>
-        <translation>Kalign ile Hizala</translation>
+        <source>Input file is not set!</source>
+        <translation>Girdi dosyası ayarlanmadı!</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="196"/>
-        <source>Input file is not set!</source>
-        <translation>Girdi dosyası ayarlanmadı!</translation>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="198"/>
+        <source>Align with ClustalW</source>
+        <translation type="unfinished">ClustalW ile hizala</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="198"/>
@@ -4800,17 +4971,12 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::CuffdiffSupportTask</name>
     <message>
-        <location filename="../src/cufflinks/CuffdiffSupportTask.cpp" line="43"/>
+        <location filename="../src/cufflinks/CuffdiffSupportTask.cpp" line="44"/>
         <source>Running Cuffdiff task</source>
         <translation>Cuffdiff görevini çalıştırma</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffSupportTask.cpp" line="46"/>
-        <source>Workflow data storage is NULL</source>
-        <translation>İş akışı veri depolaması BOŞ</translation>
-    </message>
-    <message>
-        <location filename="../src/cufflinks/CuffdiffSupportTask.cpp" line="83"/>
+        <location filename="../src/cufflinks/CuffdiffSupportTask.cpp" line="85"/>
         <source>At least 2 sets of assemblies are required for Cuffdiff</source>
         <translation>Cuffdiff için en az 2 takım montaj gereklidir</translation>
     </message>
@@ -4855,46 +5021,23 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <source>Unable to get an assembly object.</source>
         <translation>Bir montaj nesnesi alınamıyor.</translation>
     </message>
-    <message>
-        <location filename="../src/cufflinks/CufflinksSupportTask.cpp" line="232"/>
-        <source>An internal error occurred during getting annotations from a %1 output file!</source>
-        <translation>%1 çıktı dosyasından ek açıklamalar alınırken dahili bir hata oluştu!</translation>
-    </message>
 </context>
 <context>
     <name>U2::CuffmergeSupportTask</name>
     <message>
-        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="49"/>
+        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="50"/>
         <source>Running Cuffmerge task</source>
         <translation>Cuffmerge görevini çalıştırma</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="53"/>
-        <source>Workflow data storage is NULL</source>
-        <translation>İş akışı veri depolaması BOŞ</translation>
-    </message>
-    <message>
-        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="54"/>
+        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="55"/>
         <source>There are no annotations to process</source>
         <translation>İşlenecek ek açıklama yok</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="141"/>
+        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="143"/>
         <source>Can not create a file: %1</source>
         <translation>Dosya oluşturulamıyor: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="193"/>
-        <source>An internal error occurred during getting annotations from a %1 output file!</source>
-        <translation>%1 çıktı dosyasından ek açıklamalar alınırken dahili bir hata oluştu!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::CutadaptSupport</name>
-    <message>
-        <location filename="../src/cutadapt/CutadaptSupport.cpp" line="47"/>
-        <source>&lt;i&gt;cutadapt&lt;/i&gt; removes adapter sequences from high-throughput sequencing data. This is necessary when the reads are longer than the molecule that is sequenced, such as in microRNA data.</source>
-        <translation>&lt;i&gt;cutadapt&lt;/i&gt;, adaptör dizilerini yüksek verimli sıralama verilerinden kaldırır. Bu, mikroRNA verilerinde olduğu gibi, okumalar dizilenen molekülden daha uzun olduğunda gereklidir.</translation>
     </message>
 </context>
 <context>
@@ -4905,39 +5048,17 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <translation>BLAST yap DB...</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsController.cpp" line="73"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="67"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
-    </message>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation type="vanished">BLAST %1 aracının yolu seçilmedi.</translation>
-    </message>
-    <message>
-        <source>Do you want to select it now?</source>
-        <translation type="vanished">Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-    <message>
-        <source>FormatDB...</source>
-        <translation type="vanished">FormatDB...</translation>
     </message>
 </context>
 <context>
     <name>U2::ExternalToolJustValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="57"/>
-        <source>Tool&apos;s path is empty</source>
-        <translation>Aracın yolu boş</translation>
-    </message>
-    <message>
         <location filename="../src/utils/ExternalToolValidateTask.cpp" line="64"/>
         <source>External tool is not found: %1</source>
         <translation>Harici araç bulunamadı: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="91"/>
-        <source>Scripting tool registry is NULL</source>
-        <translation>Komut dosyası aracı kayıt defteri BOŞ</translation>
     </message>
     <message>
         <location filename="../src/utils/ExternalToolValidateTask.cpp" line="93"/>
@@ -4950,19 +5071,15 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <translation>Araç başlamıyor. &lt;br&gt;%2 aracı için belirtilen &lt;i&gt;%1&lt;/i&gt; yürütülebilir dosyası geçersiz olabilir. Global tercihlerdeki harici araç ayarlarında yürütülebilir dosyanın yolunu değiştirebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="174"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="173"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Beklenen mesaj bulunamıyor. &lt;br&gt;%2 aracı için belirtilen &lt;i&gt;%1&lt;/i&gt; yürütülebilir dosyasının geçersiz olması mümkündür. Global tercihlerdeki harici araç ayarlarında yürütülebilir dosyanın yolunu değiştirebilirsiniz.</translation>
-    </message>
-    <message>
-        <source>Tool&apos;s executable isn&apos;t exists</source>
-        <translation type="vanished">Aracın yürütülebilir dosyası mevcut değil</translation>
     </message>
 </context>
 <context>
     <name>U2::ExternalToolManagerImpl</name>
     <message>
-        <location filename="../src/ExternalToolManager.cpp" line="249"/>
+        <location filename="../src/ExternalToolManager.cpp" line="248"/>
         <source>A dependency tool isn&apos;t represented in the general tool list. Skip dependency &quot;%1&quot;</source>
         <translation>Genel araç listesinde bir bağımlılık aracı gösterilmez. &quot;%1&quot; bağımlılığını atla</translation>
     </message>
@@ -4970,7 +5087,7 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="392"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="389"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Beklenen mesaj bulunamıyor. &lt;br&gt;%2 aracı için belirtilen &lt;i&gt;%1&lt;/i&gt; yürütülebilir dosyasının geçersiz olması mümkündür. Global tercihlerdeki harici araç ayarlarında yürütülebilir dosyanın yolunu değiştirebilirsiniz.</translation>
     </message>
@@ -4983,29 +5100,9 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <translation>&apos;%1&apos; harici araç arama görevi</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="137"/>
-        <source>An external tool &apos;%1&apos; isn&apos;t found in the registry</source>
-        <translation>Kayıt defterinde &apos;%1&apos; harici bir araç bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="125"/>
-        <source>Tool pointer is NULL</source>
-        <translation>Araç işaretçisi BOŞ</translation>
-    </message>
-    <message>
         <location filename="../src/utils/ExternalToolSearchTask.cpp" line="49"/>
         <source>External tool &apos;%1&apos; is not registered</source>
         <translation>Harici araç &apos;%1&apos; kayıtlı değil</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="133"/>
-        <source>External tool module hasn&apos;t any dependencies: it hasn&apos;t master tool</source>
-        <translation>Harici araç modülünün herhangi bir bağımlılığı yoktur: ana aracı yoktur</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="135"/>
-        <source>External tool registry is NULL</source>
-        <translation>Harici araç kaydı BOŞ</translation>
     </message>
     <message>
         <location filename="../src/utils/ExternalToolSearchTask.cpp" line="141"/>
@@ -5016,107 +5113,100 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ExternalToolSupportPlugin</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="132"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="135"/>
         <source>External tool support</source>
         <translation>Harici araç desteği</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="132"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="135"/>
         <source>Runs other external tools</source>
         <translation>Diğer harici araçları çalıştırır</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="180"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="186"/>
         <source>Align with ClustalW...</source>
         <translation>ClustalW ile hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="188"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="194"/>
         <source>Align with ClustalO...</source>
         <translation>ClustalO ile hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="196"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="202"/>
         <source>Align with MAFFT...</source>
         <translation>MAFFT ile hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="306"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="210"/>
+        <source>Align with Kalign...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="315"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation>&lt;i&gt;Bowtie&lt;i&gt;, ultra hızlı, hafıza açısından verimli bir kısa okuma hizalayıcıdır. Kısa DNA dizilerini (okur) insan genomuna saatte 25 milyondan fazla 35 bp okuma hızında hizalar. Papyon, bellek ayak izini küçük tutmak için genomu bir Burrows-Wheeler indeksi ile indeksler: tipik olarak insan genomu için yaklaşık 2,2 GB (çift uç için 2,9 GB). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt; Bağlantı metni&lt;/a&gt; </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="313"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="322"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation>&lt;i&gt;Kol Düğmeleri&lt;/i&gt;, transkriptleri bir araya getirir, bolluklarını tahmin eder ve RNA-Seq örneklerinde farklı ifade ve düzenleme için testler yapar. Hizalanmış RNA-Seq okumalarını kabul eder ve hizalamaları sıkı bir transkript seti halinde birleştirir. Ayrıca, kütüphane hazırlama protokollerindeki önyargıları hesaba katarak, her birini kaç tane okumanın desteklediğine bağlı olarak bu transkriptlerin nispi bolluğunu tahmin eder. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="320"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="329"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation>&lt;i&gt;Bowtie 2&lt;/i&gt;, sıralı okumaları uzun referans dizilerine hizalamak için ultra hızlı ve bellek açısından verimli bir araçtır. Yaklaşık 50 ila 100 veya 1000 karakterlik okumaları hizalamada özellikle iyidir ve nispeten uzun (örneğin memeli) genomlara hizalanmada özellikle iyidir. &lt;br/&gt;&lt;br/&gt; Bellek ayak izini küçük tutmak için genomu bir FM indeksi ile indeksler: insan genomu için hafıza ayak izi tipik olarak 3,2 Gb civarındadır. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt;, aralıklı, yerel ve çift uçlu hizalama modlarını destekler.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="328"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="337"/>
         <source>BLAST make database...</source>
         <translation>BLAST veritabanı yap...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="332"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="341"/>
         <source>Map reads to reference...</source>
         <translation>Harita referansa okur...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="360"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="369"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>De novo derlemesini okur (%1 ile)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="340"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="349"/>
         <source>BLAST search...</source>
         <translation>BLAST arama...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="303"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="312"/>
         <source>&lt;i&gt;BLAST&lt;/i&gt; finds regions of similarity between biological sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance.</source>
         <translation>&lt;i&gt;BLAST&lt;/i&gt; biyolojik diziler arasındaki benzerlik bölgelerini bulur. Program, nükleotid veya protein dizilerini dizi veri tabanlarıyla karşılaştırır ve istatistiksel önemi hesaplar.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="351"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="360"/>
         <source>BLAST query database...</source>
         <translation>BLAST + sorgu veritabanı...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportL10N.h" line="35"/>
+        <location filename="../src/ExternalToolSupportL10N.h" line="34"/>
         <source>The subfolder for temporary files &apos;%1&apos; already exists. Can not remove this folder!</source>
         <translation>&apos;%1&apos; geçici dosyalar için alt klasör zaten var. Bu klasörü kaldıramazsınız!</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportL10N.h" line="41"/>
+        <location filename="../src/ExternalToolSupportL10N.h" line="40"/>
         <source>Can not create a subfolder for temporary files &apos;%1&apos;!</source>
         <translation>&apos;%1&apos; geçici dosyalar için bir alt klasör oluşturulamıyor!</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;BLAST&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
-        <translation type="vanished">&lt;i&gt;BLAST&lt;/i&gt;, NCBI&apos;den BLAST paketinin yeni bir sürümüdür.</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Cistrome&lt;/i&gt; is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysisThis pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology.</source>
-        <translation type="vanished">&lt;i&gt;Cistrome&lt;/i&gt;, Cistrome ardışık düzeninin bir UGENE sürümüdür ve ayrıca ChIP-seq analizi için yararlı bazı araçlar içerir Bu ardışık düzen, aşağıdaki analiz adımlarını sağlamayı amaçlamaktadır: tepe arama ve açıklama, motif arama ve gen ontolojisi.</translation>
-    </message>
-    <message>
-        <source>Search tools in PATH</source>
-        <translation type="vanished">YOL içindeki arama araçları</translation>
     </message>
 </context>
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="460"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="471"/>
         <source>External tools support</source>
         <translation>Harici araçlar desteği</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="460"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="471"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>UGENE&apos;den harici araçları çalıştırmak için destek sağlar</translation>
     </message>
@@ -5236,12 +5326,12 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="454"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="451"/>
         <source>Installing external tools</source>
         <translation>Harici araçların kurulması</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="459"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="456"/>
         <source> failed: </source>
         <translation> başarısız oldu: </translation>
     </message>
@@ -5263,13 +5353,13 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::ExternalToolsValidationMasterTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="409"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="406"/>
         <source>Validate external tools</source>
         <translation>Harici araçları doğrulayın</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="431"/>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="433"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="428"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="430"/>
         <source> failed: </source>
         <translation> başarısız oldu: </translation>
     </message>
@@ -5290,7 +5380,7 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::FastQCSupport</name>
     <message>
-        <location filename="../src/fastqc/FastqcSupport.cpp" line="53"/>
+        <location filename="../src/fastqc/FastqcSupport.cpp" line="54"/>
         <source>&lt;i&gt;FastQC&lt;/i&gt;: A quality control tool for high throughput sequence data.</source>
         <translation>&lt;i&gt;FastQC&lt;/i&gt;: Yüksek verimli sıra verileri için bir kalite kontrol aracı.</translation>
     </message>
@@ -5298,34 +5388,109 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::FastQCTask</name>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="122"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="123"/>
         <source>No input URL</source>
         <translation>Giriş URL&apos;si yok</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="127"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="128"/>
         <source>The input file &apos;%1&apos; is empty.</source>
         <translation>Girdi dosyası &apos;%1&apos; boş.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="133"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="134"/>
         <source>Folder does not exist: %1</source>
         <translation>Klasör mevcut değil: %1</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="150"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="151"/>
         <source>Result file does not exist: %1. See the log for details.</source>
         <translation>Sonuç dosyası mevcut değil: %1. Ayrıntılar için günlüğe bakın.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="162"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="163"/>
         <source>Unable to move result file from temporary directory to desired location: %1.</source>
         <translation>Sonuç dosyası geçici dizinden istenen konuma taşınamıyor: %1.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="202"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="203"/>
         <source>Java external tool is not found</source>
         <translation>Java harici aracı bulunamadı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::FastTreeSupport</name>
+    <message>
+        <location filename="../src/fasttree/FastTreeSupport.cpp" line="44"/>
+        <source>&lt;i&gt;FastTree&lt;/i&gt; builds phylogenetic trees from alignments of nucleotide or protein sequences.&lt;br&gt;FastTree can handle alignments with up to a million of sequences.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::FastTreeTask</name>
+    <message>
+        <location filename="../src/fasttree/FastTreeTask.cpp" line="53"/>
+        <source>FastTree tree calculation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::FastTreeWidget</name>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="63"/>
+        <source>Command line options for FastTree:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="64"/>
+        <source>Example: -fastest -pseudo
+ Use double-quotes (&quot;) for values with spaces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="69"/>
+        <source>View all options</source>
+        <translation type="unfinished">Tüm seçenekleri görüntüle</translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="70"/>
+        <source>Open official guide for FastTree in browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="79"/>
+        <source>Use one parameter per one line</source>
+        <translation type="unfinished">Her satır için bir parametre kullanın</translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="93"/>
+        <source>Speed up the neighbor joining phase (&gt;50,000 sequences)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="98"/>
+        <source>Use pseudo-counts (recommended for highly gapped sequences)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="104"/>
+        <source>FastTree options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="110"/>
+        <source>Display Options</source>
+        <translation type="unfinished">Görüntü Seçenekleri</translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="138"/>
+        <source>Parameter can&apos;t be used with nucleotide alignment: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fasttree/FastTreeWidget.cpp" line="139"/>
+        <source>Parameter can&apos;t be used with amino acid alignment: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5354,22 +5519,6 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="447"/>
         <source>Files parts not equal:&apos;%1&apos; and &apos;%2&apos;</source>
         <translation>Dosya parçaları eşit değil: &apos;%1&apos; ve &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>Error creating ioadapter for first file</source>
-        <translation type="vanished">İlk dosya için ioadapter oluşturulurken hata meydana geldi</translation>
-    </message>
-    <message>
-        <source>Error opening 1 file</source>
-        <translation type="vanished">1 dosya açılırken hata oluştu</translation>
-    </message>
-    <message>
-        <source>Error creating ioadapter for second file</source>
-        <translation type="vanished">İkinci dosya için ioadapter oluşturulurken hata meydana geldi</translation>
-    </message>
-    <message>
-        <source>Error opening second file</source>
-        <translation type="vanished">İkinci dosya açılırken hata oluştu</translation>
     </message>
 </context>
 <context>
@@ -5401,17 +5550,17 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::GffreadSupportTask</name>
     <message>
-        <location filename="../src/cufflinks/GffreadSupportTask.cpp" line="34"/>
+        <location filename="../src/cufflinks/GffreadSupportTask.cpp" line="35"/>
         <source>Running Gffread task</source>
         <translation>Gffread görevini çalıştırma</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadSupportTask.cpp" line="57"/>
+        <location filename="../src/cufflinks/GffreadSupportTask.cpp" line="59"/>
         <source>Unknown file format: %1</source>
         <translation>Bilinmeyen dosya biçimi: %1</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/GffreadSupportTask.cpp" line="66"/>
+        <location filename="../src/cufflinks/GffreadSupportTask.cpp" line="68"/>
         <source>The file format is not [%1]: %2</source>
         <translation>Dosya biçimi [%1] değil: %2</translation>
     </message>
@@ -5432,10 +5581,6 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <location filename="../src/hmmer/HmmerSupport.cpp" line="339"/>
         <source>No sequence in focus found</source>
         <translation>Odakta hiçbir sıra bulunamadı</translation>
-    </message>
-    <message>
-        <source>Sequences larger 2Gb are not supported on 32-bit architecture.</source>
-        <translation type="vanished">2Gb büyük diziler 32 bit mimaride desteklenmez.</translation>
     </message>
 </context>
 <context>
@@ -5479,30 +5624,20 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::HmmerBuildFromFileTask</name>
     <message>
-        <location filename="../src/hmmer/HmmerBuildFromFileTask.cpp" line="34"/>
+        <location filename="../src/hmmer/HmmerBuildFromFileTask.cpp" line="35"/>
         <source>Build HMMER profile from file</source>
         <translation>Dosyadan HMMER profili oluşturun</translation>
-    </message>
-    <message>
-        <location filename="../src/hmmer/HmmerBuildFromFileTask.cpp" line="39"/>
-        <source>Msa URL is empty</source>
-        <translation>Msa URL&apos;si boş</translation>
     </message>
 </context>
 <context>
     <name>U2::HmmerBuildFromMsaTask</name>
     <message>
-        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="40"/>
+        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="41"/>
         <source>Build HMMER profile from msa</source>
         <translation>MSA&apos;dan HMMER profili oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="46"/>
-        <source>HMM profile URL is empty</source>
-        <translation>HMM profil URL&apos;si boş</translation>
-    </message>
-    <message>
-        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="105"/>
+        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="107"/>
         <source>Cannot create a folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör oluşturulamaz.</translation>
     </message>
@@ -5677,47 +5812,47 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <translation>HMMER araması</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="104"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="105"/>
         <source>HMM profile used: </source>
         <translation>Kullanılan HMM profili: </translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="107"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="108"/>
         <source>Task was not finished</source>
         <translation>Görev tamamlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="113"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="114"/>
         <source>Result annotation table: </source>
         <translation>Sonuç ek açıklama tablosu: </translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="115"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="116"/>
         <source>Result annotation group: </source>
         <translation>Sonuç ek açıklama grubu: </translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="116"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="117"/>
         <source>Result annotation name: </source>
         <translation>Sonuç ek açıklama adı: </translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="118"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="119"/>
         <source>Results count: </source>
         <translation>Sonuç sayısı: </translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="145"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="146"/>
         <source>Cannot create a folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör oluşturulamaz.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="193"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="194"/>
         <source>Unknown option controlling model-specific thresholding</source>
         <translation>Modele özgü eşiği kontrol eden bilinmeyen seçenek</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="243"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="244"/>
         <source>Warning: it is not recommended to use HMMER2 models with HMMER3</source>
         <translation>Uyarı: HMMER3 ile HMMER2 modellerinin kullanılması önerilmez</translation>
     </message>
@@ -5780,7 +5915,7 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::IQTreeSupport</name>
     <message>
-        <location filename="../src/iqtree/IQTreeSupport.cpp" line="49"/>
+        <location filename="../src/iqtree/IQTreeSupport.cpp" line="50"/>
         <source>&lt;i&gt;IQ-TREE&lt;/i&gt;  Efficient software for phylogenomic inference</source>
         <translation>&lt;i&gt;IQ-TREE&lt;/i&gt; Filogenomik çıkarım için verimli yazılım</translation>
     </message>
@@ -5796,65 +5931,61 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::IQTreeWidget</name>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="62"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="63"/>
         <source>Command line options for IQ-TREE:</source>
         <translation>IQ-TREE için komut satırı seçenekleri:</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="63"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="64"/>
         <source>Example: -lmap 2000 -n 0 -m
  Use double-quotes (&quot;) for values with spaces.</source>
         <translation>Örnek: -lmap 2000 -n 0 -m
  Boşluklu değerler için çift tırnak (&quot;) kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="68"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="69"/>
         <source>View all options</source>
         <translation>Tüm seçenekleri görüntüle</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="69"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="70"/>
         <source>Open official &apos;Command reference&apos; guide for IQ-TREE in browser</source>
         <translation>IQ-TREE için resmi &apos;Komut referansı&apos; kılavuzunu tarayıcıda açın</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="78"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="79"/>
         <source>Use one parameter per one line</source>
         <translation>Her satır için bir parametre kullanın</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="92"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="93"/>
         <source>Subst. model</source>
         <translation>Alt. model</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="100"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="101"/>
         <source>Ultrafast bootstrap</source>
         <translation>Ultra hızlı önyükleme</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="108"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="109"/>
         <source>alrt</source>
         <translation>alrt</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="116"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="117"/>
         <source>Ancestral reconstruction</source>
         <translation>Ataların yeniden inşası</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="123"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="124"/>
         <source>IQ-TREE options</source>
         <translation>IQ-TREE seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/iqtree/IQTreeWidget.cpp" line="127"/>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="128"/>
         <source>Display Options</source>
         <translation>Görüntü Seçenekleri</translation>
-    </message>
-    <message>
-        <source>Extra command line options for IQ-TREE (1 per line):</source>
-        <translation>IQ-TREE için ek komut satırı seçenekleri (satır başına 1):</translation>
     </message>
 </context>
 <context>
@@ -5887,6 +6018,210 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
 </context>
 <context>
+    <name>U2::Kalign3DialogWithFileInput</name>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="77"/>
+        <source>Align</source>
+        <translation type="unfinished">Hizala</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="78"/>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal Et</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="87"/>
+        <source>Open an alignment file</source>
+        <translation type="unfinished">Bir hizalama dosyası açın</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="98"/>
+        <source>Save an multiple alignment file</source>
+        <translation type="unfinished">Birden çok hizalama dosyasını kaydedin</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="108"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="112"/>
+        <source>Align with Kalign</source>
+        <translation type="unfinished">Kalign ile Hizala</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="108"/>
+        <source>Input file is not set!</source>
+        <translation type="unfinished">Girdi dosyası ayarlanmadı!</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="112"/>
+        <source>Output file is not set!</source>
+        <translation type="unfinished">Çıktı dosyası ayarlanmadı!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kalign3DialogWithMsaInput</name>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="43"/>
+        <source>Align</source>
+        <translation type="unfinished">Hizala</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportRunDialog.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal Et</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kalign3Support</name>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="61"/>
+        <source>&lt;i&gt;Kalign&lt;/i&gt; is a fast multiple sequence alignment program for biological sequences.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="77"/>
+        <source>Path for %1 tool not selected.</source>
+        <translation type="unfinished">%1 aracının yolu seçilmedi.</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="78"/>
+        <source>Do you want to select it now?</source>
+        <translation type="unfinished">Şimdi seçmek istiyor musunuz?</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kalign3SupportContext</name>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="110"/>
+        <source>Align with Kalign...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="122"/>
+        <source>Path for Kalign tool is not selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="123"/>
+        <source>Do you want to select it now?</source>
+        <translation type="unfinished">Şimdi seçmek istiyor musunuz?</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="148"/>
+        <source>Unable to align with Kalign</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupport.cpp" line="149"/>
+        <source>Unable to align this Multiple alignment with Kalign.<byte value="xd"/>
+Please, convert alignment from %1 alphabet to DNA, RNA or Amino and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kalign3SupportTask</name>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="124"/>
+        <source>Unsupported alphabet: %1</source>
+        <translation type="unfinished">Desteklenmeyen alfabe: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="128"/>
+        <source>Kalign alignment started</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="149"/>
+        <source>Saving data to temporary file &apos;%1&apos;</source>
+        <translation type="unfinished">Veriler &apos;%1&apos; geçici dosyasına kaydediliyor</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="158"/>
+        <source>Subdir for temporary files exists. Can not remove this folder.</source>
+        <translation type="unfinished">Geçici dosyalar için alt dizin mevcuttur. Bu klasörü kaldıramazsınız.</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="163"/>
+        <source>Can not create folder for temporary files.</source>
+        <translation type="unfinished">Geçici dosyalar için klasör oluşturulamaz.</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="205"/>
+        <source>Illegal MSA alphabet: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="232"/>
+        <source>Output file %1 not found</source>
+        <translation type="unfinished">%1 çıktı dosyası bulunamadı</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="234"/>
+        <source>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</source>
+        <translation type="unfinished">%3 çıktı dosyası bulunamadı. %1 takım yolu &apos;%2&apos; geçerli değil mi?</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="242"/>
+        <source>Loading output file &apos;%1&apos;</source>
+        <translation type="unfinished">&apos;%1&apos; çıktı dosyası yükleniyor</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="268"/>
+        <source>Failed to apply the result of Kalign: alignment object is not available!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="299"/>
+        <source>Document &apos;%1&apos; is locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="322"/>
+        <source>KAlign alignment successfully finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="335"/>
+        <source>Can not remove folder for temporary files.</source>
+        <translation type="unfinished">Geçici dosyalar için klasör kaldırılamaz.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kalign3WithExternalFileSupportTask</name>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="346"/>
+        <source>Kalign external tool task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignSupportTask.cpp" line="365"/>
+        <source>Unrecognized input alignment file format</source>
+        <translation type="unfinished">Tanınmayan girdi hizalama dosyası biçimi</translation>
+    </message>
+</context>
+<context>
+    <name>U2::KalignPairwiseAlignmentGUIExtensionFactory</name>
+    <message>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentGUIExtensionFactory.cpp" line="18"/>
+        <source>Kalign3</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kraken2ClassifyTask</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyTask.cpp" line="40"/>
+        <source>Classify reads with Kraken 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Kraken2Support</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2Support.cpp" line="44"/>
+        <source>The tool is used to classify a set of sequences. It does this by examining the k-mers within a read and querying a database with those k-mers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::LoadCustomExternalToolsTask</name>
     <message>
         <location filename="../src/custom_tools/LoadCustomExternalToolsTask.cpp" line="38"/>
@@ -5897,82 +6232,82 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastPrompter</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="84"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="87"/>
         <source>Input sequence</source>
         <translation>Giriş sırası</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="84"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="87"/>
         <source>Input sequence.</source>
         <translation>Giriş sırası.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="85"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="88"/>
         <source>Aligned data</source>
         <translation>Hizalanmış veriler</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="85"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="88"/>
         <source>Aligned data.</source>
         <translation>Hizalanmış veriler.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="94"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="97"/>
         <source>Multiple Chromatogram Alignment URL</source>
         <translation>Çoklu Kromatogram Hizalama URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="95"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="98"/>
         <source>Location of a result file with a Multiple Chromatogram Alignment.</source>
         <translation>Çoklu Kromatogram Hizalamalı bir sonuç dosyasının konumu.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="102"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="105"/>
         <source>Reference URL</source>
         <translation>Referans URL</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="102"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="105"/>
         <source>A URL to the file with a reference sequence.</source>
         <translation>Bir referans sırasına sahip dosyanın URL&apos;si.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="105"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="108"/>
         <source>Result alignment URL</source>
         <translation>Sonuç hizalama URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="105"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="108"/>
         <source>An URL to write the result alignment.</source>
         <translation>Sonuç hizalamasını yazmak için bir URL.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="108"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="111"/>
         <source>Mapping min similarity</source>
         <translation>Minimum benzerliği eşleme</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="108"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="111"/>
         <source>Reads, whose similarity with the reference is less than the stated value, will be ignored.</source>
         <translation>Referansla benzerliği belirtilen değerden küçük olan okumalar dikkate alınmayacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="111"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="114"/>
         <source>Read name in result alignment</source>
         <translation>Sonuç hizalamasında adı oku</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="111"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="114"/>
         <source>Reads in the result alignment can be named either by names of the sequences in the input files or by the input files names. For example, if the sequences have the same name, set this value to &quot;File name&quot; to be able to distinguish the reads in the result alignment.</source>
         <translation>Sonuç hizalamasındaki okumalar, giriş dosyalarındaki dizilerin adlarıyla veya giriş dosyası adlarıyla adlandırılabilir. Örneğin, diziler aynı ada sahipse, sonuç hizalamasında okumaları ayırt edebilmek için bu değeri &quot;Dosya adı&quot; olarak ayarlayın.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="155"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="158"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="158"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="161"/>
         <source>Aligns each sequence from &lt;u&gt;%1&lt;/u&gt; to the reference sequence from &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den her diziyi &lt;u&gt;%2&lt;/u&gt; referans dizisine hizalar.</translation>
     </message>
@@ -5980,33 +6315,33 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastTask</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="260"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="263"/>
         <source>Map to reference</source>
         <translation>Referans için harita</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="333"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="336"/>
         <source>Details</source>
         <translation>Detaylar</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="334"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="337"/>
         <source>Reference sequence:</source>
         <translation>Referans sırası:</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="335"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="338"/>
         <source>Mapped reads (%1):</source>
         <translation>Eşlenen okumalar (%1):</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="340"/>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="346"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="343"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="349"/>
         <source>similarity</source>
         <translation>benzerlik</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="344"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="347"/>
         <source>Filtered by low similarity (%1):</source>
         <translation>Düşük benzerliğe göre filtrelendi (%1):</translation>
     </message>
@@ -6014,17 +6349,17 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastWorker</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="132"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="135"/>
         <source>Map to Reference</source>
         <translation>Referans Haritası</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="132"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="135"/>
         <source>Align input sequences (e.g. Sanger reads) to the reference sequence.</source>
         <translation>Giriş sıralarını (ör. Sanger okumaları) referans sırayla hizalayın.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="227"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="230"/>
         <source>The result file was not produced</source>
         <translation>Sonuç dosyası üretilmedi</translation>
     </message>
@@ -6045,148 +6380,148 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::BaseShortReadsAlignerWorker</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="250"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="252"/>
         <source>Not enough upstream reads datasets</source>
         <translation>Yeterli yukarı akış veri kümelerini okumaz</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="253"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="255"/>
         <source>Not enough downstream reads datasets</source>
         <translation>Yeterli aşağı akış veri kümelerini okumaz</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="315"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="317"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="316"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="318"/>
         <source>Folder to save output files.</source>
         <translation>Çıktı dosyalarını kaydetmek için klasör.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="299"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="301"/>
         <source>Reference genome</source>
         <translation>Referans genom</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="300"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="302"/>
         <source>Path to indexed reference genome.</source>
         <translation>Dizine alınmış referans genomun yolu.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="319"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="321"/>
         <source>Library</source>
         <translation>Kütüphane</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="320"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="322"/>
         <source>Is this library mate-paired?</source>
         <translation>Bu kitaplık eş eşli mi?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="323"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="325"/>
         <source>Filter unpaired reads</source>
         <translation>Eşlenmemiş okumaları filtrele</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="324"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="326"/>
         <source>Should the reads be checked for incomplete pairs?</source>
         <translation>Okumalar eksik çiftler için kontrol edilmeli mi?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="311"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="313"/>
         <source>Output file name</source>
         <translation>Çıktı dosyası adı</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="294"/>
         <source>Reference input type</source>
         <translation>Referans giriş tipi</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="293"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
         <source>Select &quot;Sequence&quot; to input a reference genome as a sequence file. &lt;br/&gt;Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). &lt;br/&gt;The index will be generated automatically in this case. &lt;br/&gt;Select &quot;Index&quot; to input already generated index files, specific for the tool.</source>
         <translation>Sıra dosyası olarak bir referans genomu girmek için &quot;Sıra&quot; yı seçin. &lt;br/&gt;UGENE tarafından desteklenen herhangi bir sıra dosyası biçimine izin verildiğini unutmayın (FASTA, GenBank, vb.). &lt;br/&gt;Bu durumda dizin otomatik olarak oluşturulacaktır. &lt;br/&gt;Araca özel halihazırda oluşturulmuş dizin dosyalarını girmek için &quot;Dizin&quot; i seçin.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="304"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="306"/>
         <source>The folder with the index for the reference sequence.</source>
         <translation>Referans dizinin indeksini içeren klasör.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="308"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="310"/>
         <source>The basename of the index for the reference sequence.</source>
         <translation>Referans dizisi için dizinin temel adı.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="312"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="314"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Çıktı dosyasının temel adı. Varsayılan olarak &apos;out.sam&apos;</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="354"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="355"/>
         <source>Index</source>
         <translation>Dizin</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="378"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="380"/>
         <source>URL of a file with reads</source>
         <translation>Okumaları olan bir dosyanın URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="379"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="389"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="381"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="391"/>
         <source>Input reads to be aligned.</source>
         <translation>Giriş, hizalanacak okur.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="381"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="383"/>
         <source>URL of a file with mate reads</source>
         <translation>Montaj ilişkisi okumalarına sahip bir dosyanın URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="382"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="384"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Giriş montaj ilişkisi, hizalanacak okur.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="388"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="390"/>
         <source>Input data</source>
         <translation>Giriş verileri</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="392"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="394"/>
         <source>Reverse FASTQ file</source>
         <translation>FASTQ dosyasını ters çevir</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="393"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="395"/>
         <source>Reverse paired reads to be aligned.</source>
         <translation>Hizalanacak ters eşleştirilmiş okumalar.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="405"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="407"/>
         <source>Assembly URL</source>
         <translation>Montaj URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="406"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="408"/>
         <source>Output assembly URL.</source>
         <translation>Çıktı derleme URL&apos;si.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="409"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="411"/>
         <source>Output data</source>
         <translation>Çıkış verileri</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="410"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="412"/>
         <source>Output assembly files.</source>
         <translation>Çıktı montaj dosyaları.</translation>
     </message>
@@ -6325,7 +6660,7 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::BedtoolsIntersectPrompter</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="969"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="972"/>
         <source>Intersect annotations from &lt;u&gt;%1&lt;/u&gt; (&lt;b&gt;set A&lt;/b&gt;) with annotations from &lt;u&gt;%2&lt;/u&gt; (&lt;b&gt;set B&lt;/b&gt;). Report </source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den (&lt;b&gt;A ayarla&lt;/b&gt;) ek açıklamaları &lt;u&gt;%2&lt;/u&gt;&apos; den (&lt;b&gt;B ayarla&lt;/b&gt;) ek açıklamalarla kesiştir. Bildiri </translation>
     </message>
@@ -6333,68 +6668,68 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::BedtoolsIntersectWorker</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="859"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="862"/>
         <source>Data not found by %1 id</source>
         <translation>%1 id tarafından veri bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="863"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="866"/>
         <source>Can not get annotation table object</source>
         <translation>Ek açıklama tablosu nesnesi alınamıyor</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="877"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="880"/>
         <source>Annotations A</source>
         <translation>Ek açıklamalar A</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="882"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="885"/>
         <source>Annotations B</source>
         <translation>Ek açıklamalar B</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="887"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="890"/>
         <source>Annotations</source>
         <translation>Açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="887"/>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="903"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="890"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="906"/>
         <source>Result annotations</source>
         <translation>Sonuç ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="896"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="899"/>
         <source>Minimum overlap</source>
         <translation>Minimum çakışma</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="897"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="900"/>
         <source>Minimum overlap required as a fraction of an annotation from set A.&lt;br/&gt;By default, even 1 bp overlap between annotations from set A and set B is taken into account. Yet sometimes you may want to restrict reported overlaps to cases where the annotations in B overlaps at least X% (e.g. 50%) of the A annotation. </source>
         <translation>A kümesinden bir ek açıklamanın bir kesri olarak gerekli minimum örtüşme.&lt;br/&gt;Varsayılan olarak, A kümesinden ve B kümesinden gelen ek açıklamalar arasında 1 bp örtüşme bile hesaba katılır. Yine de bazen, bildirilen çakışmaları, B&apos;deki ek açıklamaların A ek açıklamasının en az % X&apos;iyle (ör.% 50) çakıştığı durumlarla sınırlandırmak isteyebilirsiniz. </translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="904"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="907"/>
         <source>Select one of the following:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Shared interval&lt;/i&gt; to report intervals shared between overlapped annotations from set A and set B.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Overlapped annotations from A&lt;/i&gt; to report annotations from set A that have an overlap with annotations from set B.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Non-overlapped annotations from A&lt;/i&gt; to report annotations from set A that have NO overlap with annotations from set B.&lt;/li&gt;&lt;/ul&gt;</source>
         <translation>Aşağıdakilerden birini seçin:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Paylaşılan aralık&lt;/i&gt;, A kümesinden ve B kümesinden çakışan ek açıklamalar arasında paylaşılan aralıkları bildirmek için &lt;/li&gt; &lt;li&gt; &lt;i&gt; A &lt; / i&gt;, A kümesinden B kümesindeki ek açıklamalarla örtüşen ek açıklamaları rapor etmek için&lt;/li&gt;&lt;li&gt;&lt;i&gt; A kümesindeki örtüşmeyen ek açıklamaları raporlamak için &lt;/i&gt; B kümesinden ek açıklamalar. &lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="916"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="919"/>
         <source>Unique overlaps</source>
         <translation>Benzersiz örtüşmeler</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="917"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="920"/>
         <source>If the parameter value is &quot;True&quot;, write original A entry once if any overlaps found in B. In other words, just report the fact at least one overlap was found in B.&lt;br/&gt;The minimum overlap number is ignored in this case.&lt;br/&gt;&lt;br/&gt;If the parameter value is &quot;False&quot;, the A annotation is reported for every overlap found.</source>
         <translation>Parametre değeri &quot;True&quot; ise, B&apos;de herhangi bir çakışma varsa orijinal A girişini bir kez yazın. Diğer bir deyişle, yalnızca B&apos;de en az bir çakışma bulunduğunu bildirin. &lt;br/&gt;Bu durumda minimum çakışma sayısı yok sayılır. &lt;br/&gt;&lt;br/&gt; Parametre değeri &quot;Yanlış&quot; ise, bulunan her çakışma için A ek açıklaması raporlanır.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="953"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="956"/>
         <source>Intersect Annotations</source>
         <translation>Kesişim Ek Açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="954"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="957"/>
         <source>Intersects two sets of annotations denoted as A and B.</source>
         <translation>A ve B olarak belirtilen iki ek açıklama kümesini kesiştirir.</translation>
     </message>
@@ -6402,17 +6737,17 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::BlastPrompter</name>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="246"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="247"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="247"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="248"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="248"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="249"/>
         <source>For sequence &lt;u&gt;%1&lt;/u&gt; find annotations in database &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; dizisi için &lt;u&gt;%2&lt;/u&gt; veritabanında ek açıklamalar bulun.</translation>
     </message>
@@ -6420,219 +6755,215 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::BlastWorker</name>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="87"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="88"/>
         <source>Input sequence</source>
         <translation>Giriş sırası</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="87"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="88"/>
         <source>Sequence for which annotations is searched.</source>
         <translation>Ek açıklamaların arandığı sıra.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="88"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="89"/>
         <source>Annotations</source>
         <translation>Açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="88"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="89"/>
         <source>Found annotations.</source>
         <translation>Ek açıklamalar bulundu.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="97"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="98"/>
         <source>Search type</source>
         <translation>Arama türü</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="98"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="99"/>
         <source>Database Path</source>
         <translation>Veritabanı Yolu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="99"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="100"/>
         <source>Database Name</source>
         <translation>Veri tabanı ismi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="100"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="101"/>
         <source>Expected value</source>
         <translation>Beklenen değer</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="100"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="101"/>
         <source>This setting specifies the statistical significance threshold for reporting matches against database sequences.</source>
         <translation>Bu ayar, veritabanı dizilerine göre eşleşmeleri raporlamak için istatistiksel anlamlılık eşiğini belirtir.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="103"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="104"/>
         <source>Annotate as</source>
         <translation>Olarak ek açıklama</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="104"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="105"/>
         <source>Tool Path</source>
         <translation>Araç Yolu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="105"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="106"/>
         <source>Temporary folder</source>
         <translation>Geçici dosya</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="106"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="107"/>
         <source>BLAST output</source>
         <translation>BLAST çıktısı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="106"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="107"/>
         <source>Location of BLAST output file.</source>
         <translation>BLAST çıktı dosyasının konumu.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="107"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="108"/>
         <source>BLAST output type</source>
         <translation>BLAST çıktı türü</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="107"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="108"/>
         <source>Type of BLAST output file.</source>
         <translation>BLAST çıktı dosyasının türü.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="108"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="109"/>
         <source>Gapped alignment</source>
         <translation>Aralıklı hizalama</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="97"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="98"/>
         <source>Select type of BLAST searches.</source>
         <translation>BLAST aramalarının türünü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="60"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="61"/>
         <source>Culling limit</source>
         <translation>İtlaf sınırı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="64"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="65"/>
         <source>If the query range of a hit is enveloped by that of at least this many higher-scoring hits, delete the hit</source>
         <translation>Bir isabetin sorgu aralığı, en azından bu kadar yüksek puanlı isabetle çevrelenmişse, isabeti silin</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="98"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="99"/>
         <source>Path with database files.</source>
         <translation>Veritabanı dosyalarının bulunduğu yol.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="99"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="100"/>
         <source>Base name for BLAST DB files.</source>
         <translation>BLAST DB dosyaları için temel ad.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="101"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="102"/>
         <source>Composition-based statistics</source>
         <translation>Bileşime dayalı istatistikler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="101"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="102"/>
         <source>Composition-based statistics.</source>
         <translation>Bileşime dayalı istatistikler.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="103"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="104"/>
         <source>Name for annotations.</source>
         <translation>Ek açıklamalar için ad.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="104"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="105"/>
         <source>External tool path.</source>
         <translation>Harici araç yolu.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="105"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="106"/>
         <source>Folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="108"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="109"/>
         <source>Perform gapped alignment.</source>
         <translation>Aralıklı hizalama gerçekleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="110"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="111"/>
         <source>Gap costs</source>
         <translation>Boşluk maliyetleri</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="110"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="111"/>
         <source>Cost to create and extend a gap in an alignment.</source>
         <translation>Bir hizalamada boşluk yaratma ve genişletme maliyeti.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="111"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="112"/>
         <source>Match scores</source>
         <translation>Eşleşme skorları</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="111"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="112"/>
         <source>Reward and penalty for matching and mismatching bases.</source>
         <translation>Eşleşen ve uyuşmayan üsler için ödül ve ceza.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="148"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="149"/>
         <source>Local BLAST Search</source>
         <translation>Yerel BLAST Arama</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="148"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="149"/>
         <source>Finds annotations for DNA sequence in local database.</source>
         <translation>Yerel veri tabanında DNA dizisi için ek açıklamalar bulur.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="312"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="313"/>
         <source>Empty sequence supplied to BLAST</source>
         <translation>BLAST&apos;a verilen boş sıra</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="322"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="323"/>
         <source>Selected BLAST search with nucleotide input sequence</source>
         <translation>Nükleotid giriş dizisi ile seçilmiş BLAST araması</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="326"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="327"/>
         <source>Selected BLAST search with amino acid input sequence</source>
         <translation>Amino asit giriş dizisi ile seçilmiş BLAST araması</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastWorker.cpp" line="333"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="334"/>
         <source>No selected BLAST output file</source>
         <translation>Seçili BLAST çıktı dosyası yok</translation>
-    </message>
-    <message>
-        <source>Not selected BLAST output file</source>
-        <translation type="vanished">BLAST çıktı dosyası seçilmedi</translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::Bowtie2Worker</name>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="110"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="112"/>
         <source>Bowtie index folder</source>
         <translation>Papyon indeks klasörü</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="110"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="112"/>
         <source>Bowtie index basename</source>
         <translation>Papyon indeksi temel adı</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="113"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="115"/>
         <source>Mode</source>
         <translation>Mod</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="114"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="116"/>
         <source>When the -n option is specified (which is the default), bowtie determines which alignments                               
 are valid according to the following policy, which is similar to Maq&apos;s default policy.                               
 In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               
@@ -6643,76 +6974,76 @@ Maq&apos;ın varsayılan politikasına benzer olan aşağıdaki politikaya göre
 -v seçeneğini kullanarak 3 set üzerinden. Kalite değerleri göz ardı edilir. -V seçeneği, -n seçeneğiyle birbirini dışlar.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="120"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="122"/>
         <source>Number of mismatches</source>
         <translation>Uyumsuzlukların sayısı</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="121"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="123"/>
         <source>Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.                               
 Setting this higher makes alignment slower (often much slower) but increases sensitivity.</source>
         <translation>Bir çekirdek hizalamasında izin verilen uyuşmazlıkların sayısını ayarlar. 0 veya 1 olarak ayarlanabilir.                               
 Bunu daha yükseğe ayarlamak, hizalamayı yavaşlatır (genellikle çok daha yavaş) ancak hassasiyeti artırır.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="125"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="127"/>
         <source>Seed length (--L)</source>
         <translation>Tohum uzunluğu (--L)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="126"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="128"/>
         <source>Sets the length of the seed substrings to align. Smaller values make alignment slower but more senstive.</source>
         <translation>Hizalanacak tohum alt dizelerinin uzunluğunu ayarlar. Daha küçük değerler, hizalamayı daha yavaş ama daha hassas hale getirir.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="129"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="131"/>
         <source>Add columns to allow gaps (--dpad)</source>
         <translation>Boşluklara izin vermek için sütunlar ekleyin (--dpad)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="130"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="132"/>
         <source>&quot;Pads&quot; dynamic programming problems by specified number of columns on either side to allow gaps.</source>
         <translation>Boşluklara izin vermek için her iki tarafta belirtilen sütun sayısına göre &quot;pedler&quot; dinamik programlama problemleri.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="133"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="135"/>
         <source>Disallow gaps (--gbar)</source>
         <translation>Boşluklara izin verme (--gbar)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="134"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="136"/>
         <source>Disallow gaps within specified number of positions of the beginning or end of the read.</source>
         <translation>Okumanın başlangıcında veya sonundaki belirtilen sayıda konumdaki boşluklara izin verme.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="137"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="139"/>
         <source>Seed (--seed)</source>
         <translation>Tohum (--tohum)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="138"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="140"/>
         <source>Use specified value as the seed for pseudo-random number generator.</source>
         <translation>Sözde rasgele sayı üreteci için çekirdek olarak belirtilen değeri kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="141"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="143"/>
         <source>Threads</source>
         <translation>İş Parçacığı</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="142"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="144"/>
         <source>Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize                               
 when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.</source>
         <translation>Belirtilen sayıda paralel arama dizisini başlatın. İş parçacıkları ayrı işlemcilerde / çekirdeklerde çalışacak ve senkronize edilecek                               
 okumaları ayrıştırırken ve hizalamaların çıktısını alırken. Hizalamaları aramak son derece paraleldir ve hızlanma doğrusala yakındır.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="146"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="148"/>
         <source>No unpaired alignments (--no-mixed)</source>
         <translation>Eşlenmemiş hizalama yok (--karışmasız)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="147"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="149"/>
         <source>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments                               
 for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little                               
 faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.</source>
@@ -6721,68 +7052,68 @@ kurucu arkadaşları için. Buna &quot;karma mod&quot; denir. Karışık modu de
 karma modda daha hızlıdır, ancak tek tek montaj ilişkilerini değil, yalnızca çiftlerin hizalama durumunu dikkate alır.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="152"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="154"/>
         <source>No discordant alignments (--no-discordant)</source>
         <translation>Uyumsuz hizalama yok (--uyumsuz yok)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="153"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="155"/>
         <source>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment                               
 is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.</source>
         <translation>Varsayılan olarak, Bowtie2 herhangi bir uyumlu hizalama bulamazsa uyumsuz hizalamaları arar. Uyumsuz bir hizalama                               
 her iki montaj ilişkisinin benzersiz bir şekilde hizalandığı, ancak bu eşleştirilmiş uç kısıtlamalarını karşılamayan bir hizalamadır. Bu seçenek, bu davranışı devre dışı bırakır.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="157"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="159"/>
         <source>No forward orientation (--nofw)</source>
         <translation>İleri yönlendirme yok (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="158"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="160"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>Eğer --nofw belirtilirse, papyon ileri referans şeridiyle hizalamaya çalışmaz.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="161"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="163"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Ters tamamlayıcı yönelimi yok (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="162"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="164"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>Eğer --norc belirtilirse, papyon ters tamamlayıcı referans dizgisine göre hizalamaya çalışmaz.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="165"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="167"/>
         <source>No overlapping mates (--no-overlap)</source>
         <translation>Örtüşen montaj ilişkisi yok (--örtüşme yok)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="166"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="168"/>
         <source>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in                                 
 a concordant alignment.</source>
         <translation>Bir montaj ilişkisi hizalaması diğeriyle örtüşüyorsa, bunun uyumlu olmadığını düşünün. Varsayılan: montaj ilişkileri üst üste gelebilir                                 
 uyumlu bir hizalama.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="170"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="172"/>
         <source>No mates containing one another (--no-contain)</source>
         <translation>Birbirini içeren montaj ilişkisi yok (--no-include)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="171"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="173"/>
         <source>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the                                
 other in a concordant alignment.</source>
         <translation>Bir montaj ilişkisi hizalaması diğerini içeriyorsa, bunun uyumlu olmadığını düşünün. Varsayılan: bir montaj ilişkisi,                                
 diğeri uyumlu bir hizalamada.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="221"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="223"/>
         <source>Map Reads with Bowtie2</source>
         <translation>Bowtie2 ile Harita Okumaları</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="222"/>
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="224"/>
         <source>Bowtie2  is a program for mapping short DNA sequence reads to a long reference sequence. In addition to to the Burrows-Wheeler transform, Bowtie2 uses an FM-index (similar to a suffix array) to keep its memory footprint small.&lt;br/&gt;&lt;br/&gt;Bowtie2 is more suited to finding longer, gapped alignments than the first version Bowtie, it supports ambiguous characters in the reference (e.g. &apos;N&apos;), etc.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation>Bowtie2, kısa DNA dizisi okumalarını uzun bir referans dizisine eşleyen bir programdır. Burrows-Wheeler dönüşümüne ek olarak Bowtie2, bellek ayak izini küçük tutmak için bir FM indeksi (bir son ek dizisine benzer) kullanır.&lt;br/&gt;&lt;br/&gt;Bowtie2, daha uzun, boşluklu hizalamalar bulmak için daha uygundur. Bowtie&apos;nin ilk sürümü, referanstaki belirsiz karakterleri destekler (ör. &apos;N&apos;), vb.&lt;br/&gt;&lt;br/&gt;FAŞTA&apos;ya veya FASTQ dosyalarına, NGS&apos;nin giriş portuna okumalarıyla URL (ler) sağlayın. öğesi, parametrelerde referans sırasını ayarlayın. Sonuç, belirtilen SAM dosyasına kaydedilir, dosyanın URL&apos;si çıktı bağlantı noktasına iletilir.</translation>
     </message>
@@ -6790,12 +7121,12 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::BowtieWorker</name>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="116"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="117"/>
         <source>Bowtie index folder</source>
         <translation>Papyon indeks klasörü</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="116"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="117"/>
         <source>Bowtie index basename</source>
         <translation>Papyon indeksi temel adı</translation>
     </message>
@@ -6926,22 +7257,12 @@ diğeri uyumlu bir hizalamada.</translation>
         <translation>Okuma veya çift başına tüm geçerli hizalamaları rapor edin.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="212"/>
-        <source>Colorspace</source>
-        <translation>Renk boşluğu</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="213"/>
-        <source>When -C is specified, read sequences are treated as colors. Colors may be encoded either as numbers                               (0=blue, 1=green, 2=orange, 3=red) or as characters A/C/G/T (A=blue, C=green, G=orange, T=red).</source>
-        <translation>-C belirtildiğinde, okuma dizileri renk olarak değerlendirilir. Renkler sayı olarak (0=mavi, 1=yeşil, 2=turuncu, 3=kırmızı) veya A/C/G/T karakterleri (A=mavi, C=yeşil, G=turuncu, T=kırmızı) olarak kodlanabilir ).</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="252"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="246"/>
         <source>Map Reads with Bowtie</source>
         <translation>Papyon ile Harita Okumaları</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="253"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="247"/>
         <source>Bowtie is a program for mapping short DNA sequence reads to a long reference sequence. It uses Burrows-Wheeler techniques extended with quality-aware backtracking algorithm that permits mismatches.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation>Papyon, kısa DNA dizisi okumalarını uzun bir referans dizisine eşleyen bir programdır. Uyumsuzluklara izin veren, kaliteye duyarlı geri izleme algoritmasıyla genişletilmiş Burrows-Wheeler tekniklerini kullanır. &lt;br/&gt;&lt;br/&gt;FAŞTA veya FASTQ dosyalarına, NGS&apos;nin öğenin giriş bağlantı noktasını okumasıyla birlikte URL (ler) sağlayın, ayarlayın parametrelerde referans sırasını yükseltin. Sonuç, belirtilen SAM dosyasına kaydedilir, dosyanın URL&apos;si çıktı bağlantı noktasına iletilir.</translation>
     </message>
@@ -6949,202 +7270,202 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::BwaMemWorker</name>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="154"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="155"/>
         <source>Number of threads</source>
         <translation>Konu sayısı</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="155"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="156"/>
         <source>Number of threads (-t).</source>
         <translation>Konu sayısı (-t).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="158"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="159"/>
         <source>Min seed length</source>
         <translation>Minimum tohum uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="159"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="160"/>
         <source>Path to indexed reference genome (-k).</source>
         <translation>Dizine alınmış referans genomun yolu (-k).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="162"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="163"/>
         <source>Index algorithm</source>
         <translation>Dizin algoritması</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="163"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="164"/>
         <source>Index algorithm (-a).</source>
         <translation>Dizin algoritması (-a).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="166"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="167"/>
         <source>Band width</source>
         <translation>Bant genişliği</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="167"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="168"/>
         <source>Band width for banded alignment (-w).</source>
         <translation>Bantlı hizalama için bant genişliği (-w).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="170"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="171"/>
         <source>Dropoff</source>
         <translation>Bırakmak</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="171"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="172"/>
         <source>Off-diagonal X-dropoff (-d).</source>
         <translation>Çapraz dışı X-bırakma (-d).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="174"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="175"/>
         <source>Internal seed length</source>
         <translation>İç tohum uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="175"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="176"/>
         <source>Look for internal seeds inside a seed longer than {-k} (-r).</source>
         <translation>{-K} (-r) &apos;den daha uzun bir tohumun içinde iç tohumlar arayın.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="178"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="179"/>
         <source>Skip seed threshold</source>
         <translation>Tohum eşiğini atla</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="179"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="180"/>
         <source>Skip seeds with more than INT occurrences (-c).</source>
         <translation>INT oluşumundan daha fazlasını içeren tohumları atlayın (-c).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="182"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="183"/>
         <source>Drop chain threshold</source>
         <translation>Düşürme zinciri eşiği</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="183"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="184"/>
         <source>Drop chains shorter than FLOAT fraction of the longest overlapping chain (-D).</source>
         <translation>En uzun üst üste binen zincirin (-D) FLOAT fraksiyonundan daha kısa düşen zincirler.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="186"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="187"/>
         <source>Rounds of mate rescues</source>
         <translation>Arkadaş kurtarma turları</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="187"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="188"/>
         <source>Perform at most INT rounds of mate rescues for each read (-m).</source>
         <translation>Her okuma (-m) için en fazla INT montaj arkadaşı kurtarma turu gerçekleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="190"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="191"/>
         <source>Skip mate rescue</source>
         <translation>Eş kurtarmayı atla</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="191"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="192"/>
         <source>Skip mate rescue (-S).</source>
         <translation>Arkadaş kurtarmayı atla (-S).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="194"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="195"/>
         <source>Skip pairing</source>
         <translation>Eşleştirmeyi atla</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="195"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="196"/>
         <source>Skip pairing; mate rescue performed unless -S also in use (-P).</source>
         <translation>Eşleştirmeyi atla; -S aynı zamanda kullanımda değilse (-P) dost kurtarma gerçekleştirilir.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="198"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="199"/>
         <source>Matching score</source>
         <translation>Eşleşen skor</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="202"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="203"/>
         <source>Mismatch penalty</source>
         <translation>Uyumsuzluk cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="273"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="274"/>
         <source>Map Reads with BWA-MEM</source>
         <translation>BWA-MEM ile Harita Okumaları</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="274"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="275"/>
         <source>Burrows-Wheeler Alignment (BWA) is a program for mapping short DNA sequence reads to a long reference sequence. This element runs &quot;BWA-MEM&quot; algorithm of the program. The algorithm is designed for sequence reads from 70bp to 1Mbp.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation>Burrows-Wheeler Hizalama (BWA), kısa DNA dizisi okumalarını uzun bir referans dizisine eşlemek için kullanılan bir programdır. Bu eleman, programın &quot;BWA-MEM&quot; algoritmasını çalıştırır. Algoritma, 70bp&apos;den 1Mbp&apos;ye dizi okumaları için tasarlanmıştır.&lt;br/&gt;&lt;br/&gt;Öğenin giriş portuna NGS okumaları ile FAŞTA&apos;ya veya FASTQ dosyalarına URL (ler) sağlayın, referans dizisini ayarlayın parametreler. Sonuç, belirtilen SAM dosyasına kaydedilir, dosyanın URL&apos;si çıktı bağlantı noktasına iletilir.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="199"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="200"/>
         <source>Score for a sequence match (-A).</source>
         <translation>Bir sıra eşleşmesi için puan (-A).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="151"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="152"/>
         <source>BWA index folder</source>
         <translation>BWA dizin klasörü</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="151"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="152"/>
         <source>BWA index basename</source>
         <translation>BWA dizin temel adı</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="203"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="204"/>
         <source>Penalty for a mismatch (-B).</source>
         <translation>Uyumsuzluk cezası (-B).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="206"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="207"/>
         <source>Gap open penalty</source>
         <translation>Boşluk açma cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="207"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="208"/>
         <source>Gap open penalty (-O).</source>
         <translation>Boşluk açma cezası (-O).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="210"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="211"/>
         <source>Gap extension penalty</source>
         <translation>Boşluk uzatma cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="211"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="212"/>
         <source>Gap extension penalty; a gap of size k cost {-O} (-E).</source>
         <translation>Boşluk uzatma cezası; k boyutunda bir boşluk maliyet {-O} (-E).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="214"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="215"/>
         <source>Penalty for clipping</source>
         <translation>Kırpma cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="215"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="216"/>
         <source>Penalty for clipping (-L).</source>
         <translation>Kırpma cezası (-L).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="218"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="219"/>
         <source>Penalty unpaired</source>
         <translation>Penaltı eşleşmedi</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="219"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="220"/>
         <source>Penalty for an unpaired read pair (-U).</source>
         <translation>Eşlenmemiş okuma çifti (-U) için ceza.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="222"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="223"/>
         <source>Score threshold</source>
         <translation>Puan eşiği</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemWorker.cpp" line="223"/>
+        <location filename="../src/bwa/BwaMemWorker.cpp" line="224"/>
         <source>Minimum score to output (-T).</source>
         <translation>Çıktıya minimum puan (-T).</translation>
     </message>
@@ -7152,228 +7473,228 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::BwaWorker</name>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="129"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="131"/>
         <source>BWA index folder</source>
         <translation>BWA dizin klasörü</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="129"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="131"/>
         <source>BWA index basename</source>
         <translation>BWA dizin temel adı</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="132"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="134"/>
         <source>Use missing prob</source>
         <translation>Eksik prob kullan</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="133"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="135"/>
         <source>Use missing prob instead maximum edit distance.</source>
         <translation>Maksimum düzenleme mesafesi yerine eksik prob kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="136"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="138"/>
         <source>Max #diff</source>
         <translation>Azm #fark</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="137"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="139"/>
         <source>Max #diff (-n)</source>
         <translation>Azm #fark (-n)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="140"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="142"/>
         <source>Missing prob</source>
         <translation>Eksik araştırma</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="141"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="143"/>
         <source>Missing prob (-n)</source>
         <translation>Eksik prob (-n)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="144"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="146"/>
         <source>Seed length</source>
         <translation>Tohum uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="145"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="147"/>
         <source>Seed length (-l).</source>
         <translation>Tohum uzunluğu (-l).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="148"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="150"/>
         <source>Max gap opens</source>
         <translation>Azami boşluk açılır</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="149"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="151"/>
         <source>Max gap opens (-o).</source>
         <translation>Azami boşluk açılır (-o).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="152"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="154"/>
         <source>Index algorithm</source>
         <translation>Dizin algoritması</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="153"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="155"/>
         <source>Index algorithm (-a).</source>
         <translation>Dizin algoritması (-a).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="156"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="158"/>
         <source>Best hits</source>
         <translation>En iyi vuruşlar</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="157"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="159"/>
         <source>Best hits (-R).</source>
         <translation>En iyi hitler (-R).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="160"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="162"/>
         <source>Long-scaled gap penalty for long deletions</source>
         <translation>Uzun silme işlemleri için uzun ölçekli boşluk cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="161"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="163"/>
         <source>Long-scaled gap penalty for long deletions (-L)</source>
         <translation>Uzun silme işlemleri için uzun ölçekli boşluk cezası (-L)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="164"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="166"/>
         <source>Non iterative mode</source>
         <translation>Yinelemesiz mod</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="165"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="167"/>
         <source>Non iterative mode (-N).</source>
         <translation>Yinelemesiz mod (-N).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="168"/>
-        <location filename="../src/bwa/BwaWorker.cpp" line="169"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="170"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="171"/>
         <source>Enable long gaps</source>
         <translation>Uzun boşlukları etkinleştirin</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="172"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="174"/>
         <source>Max gap extensions</source>
         <translation>Azami boşluk uzantıları</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="173"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="175"/>
         <source>Max gap extensions (-e)</source>
         <translation>Azami boşluk uzantıları (-e)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="176"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="178"/>
         <source>Indel offset</source>
         <translation>Indel ofset</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="177"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="179"/>
         <source>Indel offset (-i)</source>
         <translation>Indel ofset (-i)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="180"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="182"/>
         <source>Max long deletions extensions</source>
         <translation>Azami uzun silme uzantıları</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="181"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="183"/>
         <source>Max long deletions extensions(-d)</source>
         <translation>Azami uzun silme uzantıları (-d)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="184"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="186"/>
         <source>Max queue entries</source>
         <translation>Azami sıra girişi</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="185"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="187"/>
         <source>Max queue entries (-m)</source>
         <translation>Azami sıra girişi (-m)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="188"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="190"/>
         <source>Barcode length</source>
         <translation>Barkod uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="189"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="191"/>
         <source>Barcode length (-B)</source>
         <translation>Barkod uzunluğu (-B)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="192"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="194"/>
         <source>Threads</source>
         <translation>İş Parçacığı</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="193"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="195"/>
         <source>Threads (-t)</source>
         <translation>Konular (-t)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="196"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="198"/>
         <source>Max seed differencies</source>
         <translation>Azami tohum farklılıkları</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="197"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="199"/>
         <source>Max seed differencies (-k)</source>
         <translation>Azami çekirdek farklılıkları (-k)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="200"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="202"/>
         <source>Mismatch penalty</source>
         <translation>Uyumsuzluk cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="201"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="203"/>
         <source>Mismatch penalty (-M)</source>
         <translation>Uyumsuzluk cezası (-M)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="204"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="206"/>
         <source>Gap open penalty</source>
         <translation>Boşluk açma cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="205"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="207"/>
         <source>Gap open penalty (-O).</source>
         <translation>Boşluk açma cezası (-O).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="208"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="210"/>
         <source>Gap extension penalty</source>
         <translation>Boşluk uzatma cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="209"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="211"/>
         <source>Gap extension penalty; a gap of size k cost (-E).</source>
         <translation>Boşluk uzatma cezası; k boyutunda bir boşluk maliyet (-E).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="212"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="214"/>
         <source>Quolity threshold</source>
         <translation>Kalite eşiği</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="213"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="215"/>
         <source>Quolity threshold (-q).</source>
         <translation>Kalite eşiği (-q).</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="281"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="283"/>
         <source>Map Reads with BWA</source>
         <translation>BWA ile Harita Okumaları</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaWorker.cpp" line="282"/>
+        <location filename="../src/bwa/BwaWorker.cpp" line="284"/>
         <source>Burrows-Wheeler Alignment (BWA) is a program for mapping short DNA sequence reads to a long reference sequence. This element runs &quot;BWA-backtrack&quot; algorithm of the program. The algorithm is designed for Illumina sequence reads up to 100bp.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation>Burrows-Wheeler Hizalama (BWA), kısa DNA dizisi okumalarını uzun bir referans dizisine eşlemek için kullanılan bir programdır. Bu eleman, programın &quot;BWA-backtrack&quot; algoritmasını çalıştırır. Algoritma, Illumina dizisi 100bp&apos;ye kadar okumalar için tasarlanmıştır.&lt;br/&gt;&lt;br/&gt;FAŞTA veya FASTQ dosyalarına, öğenin giriş portuna NGS okumaları ile URL (ler) sağlayın, referans dizisini ayarlayın parametreler. Sonuç, belirtilen SAM dosyasına kaydedilir, dosyanın URL&apos;si çıktı bağlantı noktasına iletilir.</translation>
     </message>
@@ -7887,197 +8208,197 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::CuffdiffWorker</name>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="92"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="90"/>
         <source>Test for Diff. Expression with Cuffdiff</source>
         <translation>Diff için Test Edin. Cuffdiff ile İfade</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="93"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="91"/>
         <source>Cuffdiff takes a transcript file as input, along with two or more fragment alignments (e.g. in SAM format) for two or more samples. It produces a number of output files that contain test results for changes in expression at the level of transcripts, primary transcripts, and genes. It also tracks changes in the relative abundance of transcripts sharing a common transcription start site, and in the relative abundances of the primary transcripts of each gene. Tracking the former allows one to see changes in splicing, and the latter lets one see changes in relative promoter use within a gene.</source>
         <translation>Cuffdiff, iki veya daha fazla örnek için iki veya daha fazla parça hizalaması (örneğin, SAM formatında) ile birlikte girdi olarak bir transkript dosyası alır. Transkriptler, birincil transkriptler ve genler düzeyinde ifadedeki değişiklikler için test sonuçlarını içeren bir dizi çıktı dosyası üretir. Aynı zamanda, ortak bir transkripsiyon başlangıç bölgesini paylaşan transkriptlerin göreceli bolluğundaki ve her bir genin birincil transkriptlerinin nispi bolluğundaki değişiklikleri de izler. Birincisinin izlenmesi, bir kişinin eklemedeki değişiklikleri görmesine izin verir ve ikincisi, bir gen içinde göreceli promoter kullanımındaki değişiklikleri görmeye izin verir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="106"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="104"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="107"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="105"/>
         <source>The base name of output folder. It could be modified with a suffix.</source>
         <translation>Çıktı klasörünün temel adı. Bir sonek ile değiştirilebilir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="110"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="108"/>
         <source>Time series analysis</source>
         <translation>Zaman serisi analizi</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="111"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="109"/>
         <source>If set to &lt;i&gt;True&lt;/i&gt;, instructs Cuffdiff to analyze the provided samples as a time series, rather than testing for differences between all pairs of samples. Samples should be provided in increasing time order.</source>
         <translation>&lt;i&gt;Doğru&lt;/i&gt; olarak ayarlanırsa, Cuffdiff&apos;e, tüm örnek çiftleri arasındaki farklılıkları test etmek yerine, sağlanan örnekleri bir zaman serisi olarak analiz etmesi talimatını verir. Numuneler, artan zaman sırasına göre sağlanmalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="117"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="115"/>
         <source>Upper quartile norm</source>
         <translation>Üst çeyrek normu</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="118"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="116"/>
         <source>If set to &lt;i&gt;True&lt;/i&gt;, normalizes by the upper quartile of the number of fragments mapping to individual loci instead of the total number of sequenced fragments. This can improve robustness of differential expression calls for less abundant genes and transcripts.</source>
         <translation>&lt;i&gt;Doğru&lt;/i&gt; olarak ayarlanırsa, dizilen parçaların toplam sayısı yerine tek tek lokuslara eşlenen parçaların sayısının üst çeyreğine göre normalleştirir. Bu, daha az bol gen ve transkript gerektiren farklı ifadelerin sağlamlığını artırabilir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="124"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="122"/>
         <source>Hits norm</source>
         <translation>Hits norm</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="125"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="123"/>
         <source>Instructs how to count all fragments. &lt;i&gt;Total&lt;/i&gt; specifies to count all fragments, including those not compatible with any reference transcript, towards the number of mapped fragments used in the FPKM denominator. &lt;i&gt;Compatible&lt;/i&gt; specifies to use only compatible fragments. Selecting &lt;i&gt;Compatible&lt;/i&gt; is generally recommended in Cuffdiff to reduce certain types of bias caused by differential amounts of ribosomal reads which can create the impression of falsely differentially expressed genes.</source>
         <translation>Tüm parçaların nasıl sayılacağını anlatır. &lt;i&gt;Toplam&lt;/i&gt;, herhangi bir referans transkript ile uyumlu olmayanlar da dahil olmak üzere tüm fragmanların FPKM paydasında kullanılan eşlenmiş fragmanların sayısına doğru sayılmasını belirtir. &lt;i&gt;Uyumlu&lt;/i&gt;, yalnızca uyumlu parçaların kullanılacağını belirtir. Yanlışlıkla farklı şekilde ifade edilen genler izlenimi yaratabilecek farklı miktarlarda ribozomal okumaların neden olduğu belirli sapma türlerini azaltmak için Cuffdiff&apos;te genellikle &lt;i&gt;Uyumlu&lt;/i&gt; seçeneğinin seçilmesi önerilir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="134"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="132"/>
         <source>Frag bias correct</source>
         <translation>Frag sapması doğru</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="135"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="133"/>
         <source>Providing the sequences your reads were mapped to instructs Cuffdiff to run bias detection and correction algorithm which can significantly improve accuracy of transcript abundance estimates.</source>
         <translation>Okumalarınızın eşleştirildiği sıraları sağlamak, Cuffdiff&apos;e, transkript bolluğu tahminlerinin doğruluğunu önemli ölçüde artırabilen önyargı tespiti ve düzeltme algoritmasını çalıştırma talimatı verir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="140"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="138"/>
         <source>Multi read correct</source>
         <translation>Çoklu okuma doğru</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="141"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="139"/>
         <source>Do an initial estimation procedure to more accurately weight reads mapping to multiple locations in the genome.</source>
         <translation>Genomdaki birden çok yere eşleştirmeyi daha doğru bir şekilde okumak için bir başlangıç tahmin prosedürü yapın.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="145"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="143"/>
         <source>Library type</source>
         <translation>Kitaplık türü</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="146"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="144"/>
         <source>Specifies RNA-Seq protocol.</source>
         <translation>RNA-Seq protokolünü belirtir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="149"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="147"/>
         <source>Mask file</source>
         <translation>Maske dosyası</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="150"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="148"/>
         <source>Ignore all reads that could have come from transcripts in this file. It is recommended to include any annotated rRNA, mitochondrial transcripts or other abundant transcripts you wish to ignore in your analysis in this file. Due to variable efficiency of mRNA enrichment methods and rRNA depletion kits, masking these transcripts often improves the overall robustness of transcript abundance estimates.</source>
         <translation>Bu dosyadaki transkriptlerden gelmiş olabilecek tüm okumaları göz ardı edin. Bu dosyadaki analizinize göz ardı etmek istediğiniz herhangi bir açıklamalı rRNA, mitokondriyal transkript veya diğer bol miktarda transkript eklemeniz önerilir. MRNA zenginleştirme yöntemlerinin ve rRNA tüketme kitlerinin değişken etkinliği nedeniyle, bu transkriptlerin maskelenmesi, genellikle transkript bolluk tahminlerinin genel sağlamlığını geliştirir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="158"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="156"/>
         <source>Min alignment count</source>
         <translation>Min hizalama sayısı</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="159"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="157"/>
         <source>The minimum number of alignments in a locus for needed to conduct significance testing on changes in that locus observed between samples. If no testing is performed, changes in the locus are deemed not significant, and the locus&apos; observed changes don&apos;t contribute to correction for multiple testing.</source>
         <translation>Örnekler arasında gözlemlenen o lokustaki değişiklikler üzerinde anlamlılık testi yapmak için gerekli olan bir lokustaki minimum hizalama sayısı. Test yapılmazsa, lokustaki değişiklikler önemli sayılmaz ve lokusun gözlemlenen değişiklikleri çoklu testler için düzeltmeye katkıda bulunmaz.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="166"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="164"/>
         <source>FDR</source>
         <translation>FDR</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="167"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="165"/>
         <source>The allowed false discovery rate used in testing.</source>
         <translation>Testte kullanılan izin verilen yanlış keşif oranı.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="170"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="168"/>
         <source>Max MLE iterations</source>
         <translation>Maksimum MLE yinelemesi</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="171"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="169"/>
         <source>Sets the number of iterations allowed during maximum likelihood estimation of abundances.</source>
         <translation>Bollukların maksimum olasılık tahmini sırasında izin verilen yineleme sayısını ayarlar.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="175"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="173"/>
         <source>Emit count tables</source>
         <translation>Sayım tablolarını yayınla</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="176"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="174"/>
         <source>Include information about the fragment counts, fragment count variances, and fitted variance model into the report.</source>
         <translation>Rapora parça sayıları, parça sayısı varyansları ve uydurulmuş varyans modeli hakkındaki bilgileri ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="180"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="178"/>
         <source>Cuffdiff tool path</source>
         <translation>Cuffdiff aracı yolu</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="181"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="179"/>
         <source>The path to the Cuffdiff external tool in UGENE.</source>
         <translation>UGENE&apos;deki Cuffdiff harici aracına giden yol.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="184"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="182"/>
         <source>Temporary folder</source>
         <translation>Geçici dosya</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="185"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="183"/>
         <source>The folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="205"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="203"/>
         <source>Assembly</source>
         <translation>Montaj</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="206"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="204"/>
         <source>RNA-Seq reads assemblies</source>
         <translation>RNA-Seq meclisleri okur</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="208"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="206"/>
         <source>Annotations</source>
         <translation>Açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="209"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="207"/>
         <source>Transcript annotations</source>
         <translation>Transkript ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="211"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="209"/>
         <source>Sample</source>
         <translation>Örnek</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="212"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="210"/>
         <source>Sample name of assembly file</source>
         <translation>Montaj dosyasının örnek adı</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="237"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="235"/>
         <source>Total</source>
         <translation>Toplam</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="238"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="236"/>
         <source>Compatible</source>
         <translation>Uyumlu</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="294"/>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="292"/>
         <source>Searches for significant changes in transcript expression, splicing and promoter use.</source>
         <translation>Transkript ifadesi, ekleme ve promoter kullanımında önemli değişiklikleri arar.</translation>
     </message>
@@ -8243,244 +8564,105 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::CuffmergeWorker</name>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="60"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="61"/>
         <source>Merge Assemblies with Cuffmerge</source>
         <translation>Montajları Cuffmerge ile Birleştirme</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="61"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="62"/>
         <source>Cuffmerge merges together several assemblies. It also handles running Cuffcompare for you, and automatically filters a number of transfrags that are probably artifacts. If you have a reference file available, you can provide it to Cuffmerge in order to gracefully merge input (e.g. novel) isoforms and known isoforms and maximize overall assembly quality.</source>
         <translation>Cuffmerge, birkaç derlemeyi birleştirir. Ayrıca sizin için Cuffcompare çalıştırmayı yönetir ve muhtemelen yapay olan bir dizi aktarımı otomatik olarak filtreler. Mevcut bir referans dosyanız varsa, girdileri (örneğin yeni) izoformları ve bilinen izoformları incelikle birleştirmek ve genel montaj kalitesini en üst düzeye çıkarmak için Cuffmerge&apos;a sağlayabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="71"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="72"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="72"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="73"/>
         <source>The base name of output folder. It could be modified with a suffix.</source>
         <translation>Çıktı klasörünün temel adı. Bir sonek ile değiştirilebilir.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="75"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="76"/>
         <source>Reference annotation</source>
         <translation>Referans açıklama</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="76"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="77"/>
         <source>Merge the input assemblies together with this reference annotation.</source>
         <translation>Giriş montajlarını bu referans detaylandırmasıyla birleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="80"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="81"/>
         <source>Reference sequence</source>
         <translation>Referans sırası</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="81"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="82"/>
         <source>The genomic DNA sequences for the reference. It is used to assist in classifying transfrags and excluding artifacts (e.g. repeats). For example, transcripts consisting mostly of lower-case bases are classified as repeats.</source>
         <translation>Referans için genomik DNA dizileri. Aktarımların sınıflandırılmasına ve artefaktların (örn. Tekrarlar) hariç tutulmasına yardımcı olmak için kullanılır. Örneğin, çoğunlukla küçük harf bazlarından oluşan transkriptler tekrarlar olarak sınıflandırılır.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="87"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="88"/>
         <source>Minimum isoform fraction</source>
         <translation>Minimum izoform fraksiyonu</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="88"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="89"/>
         <source>Discard isoforms with abundance below this.</source>
         <translation>Bunun altında bol miktarda izoformları atın.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="91"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="92"/>
         <source>Cuffcompare tool path</source>
         <translation>Manşet karşılaştırma aracı yolu</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="92"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="93"/>
         <source>The path to the Cuffcompare external tool in UGENE.</source>
         <translation>UGENE&apos;deki Cuffcompare harici aracına giden yol.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="95"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="96"/>
         <source>Cuffmerge tool path</source>
         <translation>Cuffmerge aracı yolu</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="96"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="97"/>
         <source>The path to the Cuffmerge external tool in UGENE.</source>
         <translation>UGENE&apos;deki Cuffmerge harici aracına giden yol.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="99"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="100"/>
         <source>Temporary folder</source>
         <translation>Geçici dosya</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="100"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="101"/>
         <source>The folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="114"/>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="117"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="115"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="118"/>
         <source>Set of annotations</source>
         <translation>Ek açıklamalar kümesi</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="115"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="116"/>
         <source>Annotations for merging</source>
         <translation>Birleştirme için ek açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="118"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="119"/>
         <source>Merged annotations</source>
         <translation>Birleştirilmiş ek açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="178"/>
+        <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="179"/>
         <source>Merges together supplied assemblies.</source>
         <translation>Sağlanan montajları bir araya getirir.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::CutAdaptFastqPrompter</name>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="75"/>
-        <source>unset</source>
-        <translation>ayarlanmadı</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="76"/>
-        <source> from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="78"/>
-        <source>Removes adapter sequences %1.</source>
-        <translation>%1 bağdaştırıcı dizilerini kaldırır.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::CutAdaptFastqTask</name>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="230"/>
-        <source>Can not copy the result file to: %1</source>
-        <translation>Sonuç dosyası şu konuma kopyalanamıyor: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="265"/>
-        <source>Unknown file format: </source>
-        <translation>Bilinmeyen dosya formatı: </translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::CutAdaptFastqWorker</name>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="96"/>
-        <source>Cut Adapter</source>
-        <translation>Kesme Adaptörü</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="96"/>
-        <source>Removes adapter sequences</source>
-        <translation>Adaptör dizilerini kaldırır</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="100"/>
-        <source>Input File</source>
-        <translation>Giriş dosyası</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="100"/>
-        <source>Set of FASTQ reads files</source>
-        <translation>FASTQ kümesi dosyaları okur</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="101"/>
-        <source>Output File</source>
-        <translation>Çıktı Dosyası</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="101"/>
-        <source>Output FASTQ file(s)</source>
-        <translation>FASTQ dosya (ları) çıktısı</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="114"/>
-        <source>Output folder</source>
-        <translation>Çıktı klasörü</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="114"/>
-        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
-        <translation>Bir çıktı klasörü seçin. &lt;b&gt;Özel&lt;/b&gt; - &apos;Özel klasör&apos; parametresinde çıktı klasörünü belirtin. &lt;b&gt;İş akışı&lt;/b&gt; - dahili iş akışı klasörü. &lt;b&gt;Girdi dosyası&lt;/b&gt; - girdi dosyasının klasörü.</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="118"/>
-        <source>Custom folder</source>
-        <translation>Özel klasör</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="118"/>
-        <source>Select the custom output folder.</source>
-        <translation>Özel çıktı klasörünü seçin.</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="120"/>
-        <source>Output file name</source>
-        <translation>Çıktı dosyası adı</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="120"/>
-        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
-        <translation>Bir çıktı dosyasının adı. Varsayılan olarak boş değer sağlanırsa, çıktı adı ek uzantıya sahip ilk dosyanın adıdır.</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
-        <source>FASTA file with 3&apos; adapters</source>
-        <translation>3 &apos;adaptörlü FASTA dosyası</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
-        <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$&apos; character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
-        <translation>3 &apos;ucuna bağlanmış bir veya daha fazla adaptör dizisine sahip bir FAŞTA dosyası. Adaptörün kendisi ve sonraki her şey kırpılır. Bağdaştırıcı dizisi &apos;$&apos; karakteriyle bitiyorsa, bağdaştırıcı okumanın sonuna sabitlenir ve yalnızca okunan metnin son eki ise bulunur.</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="128"/>
-        <source>FASTA file with 5&apos; adapters</source>
-        <translation>5 &apos;adaptörlü FASTA dosyası</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="128"/>
-        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end. If the adapter sequence starts with the character &apos;^&apos;, the adapter is &apos;anchored&apos;. An anchored adapter must appear in its entirety at the 5&apos; end of the read (it is a prefix of the read). A non-anchored adapter may appear partially at the 5&apos; end, or it may occur within the read. If it is found within a read, the sequence preceding the adapter is also trimmed. In all cases, the adapter itself is trimmed.</source>
-        <translation>5 &apos;ucuna bağlanmış bir veya daha fazla adaptör dizisine sahip bir FAŞTA dosyası. Bağdaştırıcı dizisi &apos;^&apos; karakteriyle başlıyorsa bağdaştırıcı &apos;bağlantılı&apos; olur. Bağlantılı bir adaptör, okumanın 5 &apos;ucunda bütünüyle görünmelidir (bu, okumanın bir önekidir). Sabitlenmemiş bir adaptör kısmen 5 &apos;ucunda görünebilir veya okuma içinde oluşabilir. Bir okuma içinde bulunursa, adaptörden önceki sıra da kırpılır. Her durumda, adaptörün kendisi kırpılır.</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="138"/>
-        <source>FASTA file with 5&apos; and 3&apos; adapters</source>
-        <translation>5 &apos;ve 3&apos; adaptörlü FASTA dosyası</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="138"/>
-        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end or 3&apos; end.</source>
-        <translation>5 &apos;ucuna veya 3&apos; ucuna bağlanan bir veya daha fazla adaptör dizisine sahip bir FAŞTA dosyası.</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="166"/>
-        <source>Input file</source>
-        <translation>Girdi dosyası</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="167"/>
-        <source>Workflow</source>
-        <translation>İş akışı</translation>
-    </message>
-    <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="168"/>
-        <source>Custom</source>
-        <translation>Özel</translation>
     </message>
 </context>
 <context>
@@ -8597,17 +8779,17 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::GenomecovPrompter</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="440"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="441"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="441"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="442"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="444"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="445"/>
         <source>%1 from %2 with bedtool genomecov.</source>
         <translation>Bedtool genomcov ile %2&apos;den %1.</translation>
     </message>
@@ -8615,7 +8797,7 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::GenomecovTask</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="681"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="683"/>
         <source>Unknown file format: </source>
         <translation>Bilinmeyen dosya formatı: </translation>
     </message>
@@ -8623,82 +8805,82 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::GenomecovWorker</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="461"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="462"/>
         <source>Genome Coverage</source>
         <translation>Genom Kapsamı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="461"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="462"/>
         <source>Calculates genome coverage using bedtools genomecov.</source>
         <translation>Bedtools genomecov kullanarak genom kapsamını hesaplar.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="465"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="466"/>
         <source>Input File</source>
         <translation>Giriş dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="465"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="466"/>
         <source>Set of files to NGS slop</source>
         <translation>Dosya kümesi NGS slop&apos;a</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="466"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="467"/>
         <source>Output File</source>
         <translation>Çıktı Dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="466"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="467"/>
         <source>Output file</source>
         <translation>Çıktı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="479"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="480"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="479"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="480"/>
         <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
         <translation>Bir çıktı klasörü seçin. &lt;b&gt;Özel&lt;/b&gt; - &apos;Özel klasör&apos; parametresinde çıktı klasörünü belirtin. &lt;b&gt;İş akışı&lt;/b&gt; - dahili iş akışı klasörü. &lt;b&gt;Girdi dosyası&lt;/b&gt; - girdi dosyasının klasörü.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="483"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="484"/>
         <source>Custom folder</source>
         <translation>Özel klasör</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="483"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="484"/>
         <source>Select the custom output folder.</source>
         <translation>Özel çıktı klasörünü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="485"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="486"/>
         <source>Output file name</source>
         <translation>Çıktı dosyası adı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="485"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="486"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Bir çıktı dosyasının adı. Varsayılan olarak boş değer sağlanırsa, çıktı adı ek uzantıya sahip ilk dosyanın adıdır.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="487"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="488"/>
         <source>Genome</source>
         <translation>Genom</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="487"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="488"/>
         <source>In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt;. (-g)</source>
         <translation>Aralıkların kromozom sınırlarının ötesine uzamasını önlemek için bedtools slop, her bir kromozomun veya contigin uzunluğunu tanımlayan bir genom dosyası gerektirir. Dosyanın biçimi şöyledir: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt;. (-g)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="489"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="490"/>
         <source>Report mode</source>
         <translation>Rapor modu</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="489"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="490"/>
         <source>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3 
 &lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
 &lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
@@ -8713,97 +8895,97 @@ diğeri uyumlu bir hizalamada.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="510"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="511"/>
         <source>Split</source>
         <translation>Bölünmüş</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="512"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="513"/>
         <source>Strand</source>
         <translation>Şerit</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="512"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="513"/>
         <source>Calculate coverage of intervals from a specific strand. With BED files, requires at least 6 columns (strand is column 6). (-strand)</source>
         <translation>Belirli bir iplikçikteki aralıkların kapsamını hesaplayın. BED dosyalarında en az 6 sütun gerektirir (iplikçik sütun 6&apos;dır). (-iplik)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="514"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="515"/>
         <source>5 prime</source>
         <translation>5 asal</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="516"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="517"/>
         <source>3 prime</source>
         <translation>3 asal</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="518"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="519"/>
         <source>Max</source>
         <translation>En Yüksek</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="518"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="519"/>
         <source>Combine all positions with a depth &gt;= max into a single bin in the histogram. (-max)</source>
         <translation>Derinlik &gt;= maks olan tüm konumları histogramda tek bir bölmede birleştirin. (-maks)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="520"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="521"/>
         <source>Scale</source>
         <translation>Ölçek</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="520"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="521"/>
         <source>Scale the coverage by a constant factor.Each coverage value is multiplied by this factor before being reported. Useful for normalizing coverage by, e.g., reads per million (RPM). Default is 1.0; i.e., unscaled. (-scale)</source>
         <translation>Kapsamı sabit bir faktör ile ölçeklendirin. Her bir kapsam değeri, rapor edilmeden önce bu faktör ile çarpılır. Kapsamı örneğin milyonda okuma (RPM) ile normalleştirmek için kullanışlıdır. Varsayılan 1.0&apos;dır; yani ölçeklenmemiş. (-ölçek)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="522"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="523"/>
         <source>Trackline</source>
         <translation>Trackline</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="522"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="523"/>
         <source>Adds a UCSC/Genome-Browser track line definition in the first line of the output. (-trackline)</source>
         <translation>Çıktının ilk satırına bir UCSC/Genom-Tarayıcı iz hattı tanımı ekler. (-trackline)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="524"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="525"/>
         <source>Trackopts</source>
         <translation>Trackopts</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="524"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="525"/>
         <source>Writes additional track line definition parameters in the first line. (-trackopts)</source>
         <translation>İlk satıra ek izleme hattı tanımlama parametrelerini yazar. (-trackopts)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="561"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="563"/>
         <source>Custom</source>
         <translation>Özel</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="559"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="561"/>
         <source>Input file</source>
         <translation>Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="510"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="511"/>
         <source>Treat “split” BAM or BED12 entries as distinct BED intervals when computing coverage. For BAM files, this uses the CIGAR “N” and “D” operations to infer the blocks for computing coverage. For BED12 files, this uses the BlockCount, BlockStarts, and BlockEnds fields (i.e., columns 10,11,12). (-split)</source>
         <translation>Kapsamı hesaplarken &quot;bölünmüş&quot; BAM veya BED12 girişlerini farklı YATAK aralıkları olarak ele alın. BAM dosyaları için bu, hesaplama kapsamı için blokları çıkarmak üzere CIGAR &quot;N&quot; ve &quot;D&quot; işlemlerini kullanır. BED12 dosyaları için bu, BlockCount, BlockStarts ve BlockEnds alanlarını kullanır (yani, sütun 10,11,12). (-Bölünmüş)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="514"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="515"/>
         <source>Calculate coverage of 5’ positions (instead of entire interval). (-5)</source>
         <translation>5 ’konumlarının kapsamını hesaplayın (tüm aralık yerine). (-5)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="516"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="517"/>
         <source>Calculate coverage of 3’ positions (instead of entire interval). (-3)</source>
         <translation>3 ’konumlarının kapsamını hesaplayın (tüm aralık yerine). (-3)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="560"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="562"/>
         <source>Workflow</source>
         <translation>İş akışı</translation>
     </message>
@@ -8811,7 +8993,7 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::GffreadPrompter</name>
     <message>
-        <location filename="../src/cufflinks/GffreadWorker.cpp" line="242"/>
+        <location filename="../src/cufflinks/GffreadWorker.cpp" line="245"/>
         <source>Extract transcript sequences from the genomic sequence from &lt;u&gt;%1&lt;/u&gt; using transcripts from &lt;u&gt;%2&lt;/u&gt; and save them to the file %3.</source>
         <translation>&lt;u&gt;%2&lt;/u&gt; &apos;deki transkriptleri kullanarak &lt;u&gt;%1&lt;/u&gt;&apos; den genomik diziden transkript dizilerini çıkarın ve %3 dosyasına kaydedin.</translation>
     </message>
@@ -8832,12 +9014,12 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::HmmerBuildPrompter</name>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="128"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="130"/>
         <source>For each MSA from &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; kaynaklı her MSA için,</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="130"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="132"/>
         <source>%1 builds a HMMER profile.</source>
         <translation>%1 bir HMMER profili oluşturuyor.</translation>
     </message>
@@ -8845,52 +9027,52 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::HmmerBuildWorker</name>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="60"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="62"/>
         <source>Input MSA</source>
         <translation>MSA&apos;yı girin</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="60"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="62"/>
         <source>Input multiple sequence alignment for building statistical model.</source>
         <translation>İstatistiksel model oluşturmak için çoklu dizi hizalamasını girin.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="61"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="63"/>
         <source>HMM3 profile</source>
         <translation>HMM3 profili</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="61"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="63"/>
         <source>Produced HMM3 profile URL</source>
         <translation>Üretilen HMM3 profil URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="71"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="73"/>
         <source>Random seed</source>
         <translation>Rastgele parçacık</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="71"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="73"/>
         <source>Random generator seed. 0 - means that one-time arbitrary seed will be used.</source>
         <translation>Rastgele üretici tohumu. 0 - bir kerelik keyfi tohumun kullanılacağı anlamına gelir.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="81"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="83"/>
         <source>HMM3 Build</source>
         <translation>HMM3 Yapısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="82"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="84"/>
         <source>Builds a HMM3 profile from a multiple sequence alignment.&lt;p&gt;The HMM3 profile is a statistical model which captures position-specific information about how conserved each column of the alignment is, and which residues are likely.</source>
         <translation>Çoklu dizi hizalamasından bir HMM3 profili oluşturur. &lt;p&gt;HMM3 profili, hizalamanın her bir sütununun ne kadar korunduğu ve hangi kalıntıların muhtemel olduğu hakkında konuma özgü bilgileri yakalayan istatistiksel bir modeldir.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="97"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="99"/>
         <source>HMMER3 Tools</source>
         <translation>HMMER3 Araçları</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="198"/>
+        <location filename="../src/hmmer/HmmerBuildWorker.cpp" line="200"/>
         <source>Built HMMER profile</source>
         <translation>Dahili HMMER profili</translation>
     </message>
@@ -9034,17 +9216,17 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::IlluminaClipAdditionalSettingsDialog</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="268"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="270"/>
         <source>Apply</source>
         <translation>Uygula</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="270"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="272"/>
         <source>True</source>
         <translation>Doğru</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="271"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="273"/>
         <source>False</source>
         <translation>Yanlış</translation>
     </message>
@@ -9052,7 +9234,7 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::IlluminaClipSettingsWidget</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="242"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="244"/>
         <source>Open FASTA with adapters</source>
         <translation>FAŞTA&apos;yı adaptörlerle açın</translation>
     </message>
@@ -9060,9 +9242,243 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::IlluminaClipStep</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="47"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipStep.cpp" line="48"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h4&gt;ILLUMINACLIP&lt;/h4&gt;&lt;p&gt;This step is used to find and remove Illumina adapters.&lt;/p&gt;&lt;p&gt;Trimmomatic first compares short sections of an adapter and a read. If they match enough, the entire alignment between the read and adapter is scored. For paired-end reads, the &quot;palindrome&quot; approach is also used to improve the result. See Trimmomatic manual for details.&lt;/p&gt;&lt;p&gt;Input the following values:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Adapter sequences&lt;/b&gt;: a FASTA file with the adapter sequences. Files for TruSeq2 (GAII machines), TruSeq3 (HiSeq and MiSeq machines) and Nextera kits for SE and PE reads are now available by default. The naming of the various sequences within the specified file determines how they are used.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Seed mismatches&lt;/b&gt;: the maximum mismatch count in short sections which will still allow a full match to be performed.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Simple clip threshold&lt;/b&gt;: a threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Palindrome clip threshold&lt;/b&gt;: a threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;There are also two optional parameters for palindrome mode: &lt;b&gt;Min adapter length&lt;/b&gt; and &lt;b&gt;Keep both reads&lt;/b&gt;.&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h4&gt;ILLUMINACLIP&lt;/h4&gt;&lt;p&gt; Bu adım, Illumina adaptörlerini bulmak ve çıkarmak için kullanılır. &lt;/p&gt;&lt;p&gt;Trimmomatic ilk olarak bir adaptörün kısa bölümlerini karşılaştırır ve bir okuma. Yeterince eşleşirlerse, okuma ve adaptör arasındaki tüm hizalama puanlanır. Çift uçlu okumalar için, sonucu iyileştirmek için &quot;palindrom&quot; yaklaşımı da kullanılır. Ayrıntılar için Trimmomatic kılavuzuna bakın.&lt;/p&gt;&lt;p&gt; Aşağıdaki değerleri girin: &lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt; Bağdaştırıcı dizileri &lt;/b&gt;: bağdaştırıcı dizilerini içeren bir FAŞTA dosyası. TruSeq2 (GAII makineleri), TruSeq3 (HiSeq ve MiSeq makineleri) için dosyalar ve SE ve PE okumaları için Nextera kitleri artık varsayılan olarak mevcuttur. Belirtilen dosyadaki çeşitli dizilerin adlandırılması, bunların nasıl kullanılacağını belirler. &lt;/li&gt; &lt;li&gt; &lt;b&gt; Çekirdek uyuşmazlıkları &lt;/b&gt;: kısa bölümlerdeki maksimum uyumsuzluk sayısı, yine de tam bir eşleşmenin gerçekleştirilmesine izin verir . &lt;/li&gt;&lt;li&gt;&lt;b&gt; Basit klip eşiği &lt;/b&gt;: basit hizalama modu için bir eşik. 7 ile 15 arası değerler önerilir. 12 temel dizinin mükemmel bir eşleşmesi 7&apos;den biraz fazla puan alırken, 15 puan almak için 25 baz gerekir. &lt;/li&gt;&lt;li&gt;&lt;b&gt; Palindrome klip eşiği &lt;/b&gt;: palindrom hizalama modu için bir eşik. Palindromik eşleşmeler için daha uzun bir hizalama mümkündür. Bu nedenle, eşik 30 aralığında olabilir. Bu eşik çok yüksek olmasına rağmen (neredeyse 50 bazlık bir eşleşme gerektirir) Trimmomatic hala çok, çok kısa adaptör parçalarını belirleyebilmektedir. &lt;/li&gt;&lt;/ul&gt;&lt;p&gt; Ayrıca, palindrome modu için iki isteğe bağlı parametre vardır: &lt;b&gt; Minimum adaptör uzunluğu &lt;/b&gt; ve &lt;b&gt; Her iki okumayı da sakla &lt;/b&gt;.&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Kalign3Prompter</name>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="132"/>
+        <source> from %1</source>
+        <translation type="unfinished"> %1&apos;den</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="133"/>
+        <source>Aligns each input MSA &lt;u&gt;%1&lt;/u&gt; with &quot;&lt;u&gt;Kalign&lt;/u&gt;&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Kalign3Worker</name>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="58"/>
+        <source>Input MSA</source>
+        <translation type="unfinished">MSA&apos;yı girin</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="58"/>
+        <source>Input MSA to process.</source>
+        <translation type="unfinished">İşlemek için MSA&apos;yı girin.</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="59"/>
+        <source>Kalign result MSA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="59"/>
+        <source>The result of Kalign alignment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="69"/>
+        <source>Gap open penalty</source>
+        <translation type="unfinished">Boşluk açma cezası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="69"/>
+        <source>The penalty for opening/closing a gap. Kalign parameter &apos;--gpo&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="70"/>
+        <source>Gap extension penalty</source>
+        <translation type="unfinished">Boşluk uzatma cezası</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="70"/>
+        <source>The penalty for extending a gap. Kalign parameter &apos;--gpe&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="71"/>
+        <source>Terminal gap penalty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="71"/>
+        <source>The penalty to extend gaps from the N/C terminal of protein or 5&apos;/3&apos; terminal of nucleotide sequences. Kalign parameter &apos;--tgpe&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="72"/>
+        <source>Number of threads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="72"/>
+        <source>Number of threads to use by the kalign algorithm. Kalign parameter &apos;--nthreads&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="80"/>
+        <source>Align with Kalign</source>
+        <translation type="unfinished">Kalign ile Hizala</translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="81"/>
+        <source>Aligns multiple sequence alignments (MSAs) with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;https://github.com/TimoLassmann/kalign&quot;&gt;https://github.com/TimoLassmann/kalign&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="86"/>
+        <source>auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="179"/>
+        <source>An empty MSA &apos;%1&apos; has been supplied to Kalign.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kalign/KalignWorker.cpp" line="203"/>
+        <source>Aligned %1 with Kalign</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Kraken2ClassifyPrompter</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyPrompter.cpp" line="41"/>
+        <source>Classify sequences from &lt;u&gt;%1&lt;/u&gt; with Kraken 2, use %2 database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyPrompter.cpp" line="44"/>
+        <source>Classify paired-end reads from &lt;u&gt;%1&lt;/u&gt; and &lt;u&gt;%2&lt;/u&gt; with Kraken 2, use %3 database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="85"/>
+        <source>Input URL 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="86"/>
+        <source>Input URL 1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="88"/>
+        <source>Input URL 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="89"/>
+        <source>Input URL 2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="95"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="102"/>
+        <source>Input sequences</source>
+        <translation type="unfinished">Giriş dizileri</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="96"/>
+        <source>URL(s) to FASTQ or FASTA file(s) should be provided.
+
+In case of SE reads or contigs use the &quot;Input URL 1&quot;
+
+In case of PE reads input &quot;left&quot; reads to &quot;Input URL 1&quot;, &quot;right&quot; reads to &quot;Input URL 2&quot;.
+
+See also the &quot;Input data&quot; parameter of the element.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="103"/>
+        <source>URL(s) to FASTQ or FASTA file(s) should be provided.
+
+In case of PE reads input &quot;left&quot; reads to &quot;Input URL 1&quot;, &quot;right&quot; reads to &quot;Input URL 2&quot;.
+
+See also the &quot;Input data&quot; parameter of the element.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="114"/>
+        <source>Input data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="114"/>
+        <source>To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to &quot;SE reads or contigs&quot;.&lt;br&gt;&lt;br&gt;To classify paired-end (PE) reads, set the value to &quot;PE reads&quot;.&lt;br&gt;&lt;br&gt;One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.&lt;br&gt;&lt;br&gt;The input files should be in FASTA or FASTQ formats.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="119"/>
+        <source>Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="119"/>
+        <source>A path to the folder with the Kraken 2 database files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="121"/>
+        <source>Output file</source>
+        <translation type="unfinished">Çıktı dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="121"/>
+        <source>Specify the output file name.</source>
+        <translation type="unfinished">Çıktı dosyası adını belirtin.</translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="123"/>
+        <source>Quick operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="123"/>
+        <source>Stop classification of an input read after the certain number of hits.&lt;br&gt;&lt;br&gt;The value can be specified in the &quot;Minimum number of hits&quot; parameter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="126"/>
+        <source>Number of threads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="126"/>
+        <source>Use multiple threads (--threads).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="164"/>
+        <source>Classify Sequences with Kraken 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="164"/>
+        <source>Kraken 2 is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads. It does this by examining the k-mers within a read and querying a database with those.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorkerFactory.cpp" line="171"/>
+        <source>NGS: Metagenomics Classification</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Kraken2ClassifyWorker</name>
+    <message>
+        <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="138"/>
+        <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="145"/>
+        <source>File &quot;%1&quot; not exists or empty.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9214,29 +9630,168 @@ diğeri uyumlu bir hizalamada.</translation>
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::Primer3ModuleCutadaptPrompter</name>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="75"/>
+        <source>unset</source>
+        <translation type="unfinished">ayarlanmadı</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="76"/>
+        <source> from &lt;u&gt;%1&lt;/u&gt;</source>
+        <translation type="unfinished"> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="78"/>
+        <source>Removes adapter sequences %1.</source>
+        <translation type="unfinished">%1 bağdaştırıcı dizilerini kaldırır.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Primer3ModuleCutadaptTask</name>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="241"/>
+        <source>Can not copy the result file to: %1</source>
+        <translation type="unfinished">Sonuç dosyası şu konuma kopyalanamıyor: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="278"/>
+        <source>Unknown file format: </source>
+        <translation type="unfinished">Bilinmeyen dosya formatı: </translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::Primer3ModuleCutadaptWorker</name>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="122"/>
+        <source>Cut Adapter</source>
+        <translation type="unfinished">Kesme Adaptörü</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="122"/>
+        <source>Removes adapter sequences</source>
+        <translation type="unfinished">Adaptör dizilerini kaldırır</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="126"/>
+        <source>Input File</source>
+        <translation type="unfinished">Giriş dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="126"/>
+        <source>Set of FASTQ reads files</source>
+        <translation type="unfinished">FASTQ kümesi dosyaları okur</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="127"/>
+        <source>Output File</source>
+        <translation type="unfinished">Çıktı Dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="127"/>
+        <source>Output FASTQ file(s)</source>
+        <translation type="unfinished">FASTQ dosya (ları) çıktısı</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="141"/>
+        <source>Output folder</source>
+        <translation type="unfinished">Çıktı klasörü</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="142"/>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation type="unfinished">Bir çıktı klasörü seçin. &lt;b&gt;Özel&lt;/b&gt; - &apos;Özel klasör&apos; parametresinde çıktı klasörünü belirtin. &lt;b&gt;İş akışı&lt;/b&gt; - dahili iş akışı klasörü. &lt;b&gt;Girdi dosyası&lt;/b&gt; - girdi dosyasının klasörü.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="146"/>
+        <source>Custom folder</source>
+        <translation type="unfinished">Özel klasör</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="146"/>
+        <source>Select the custom output folder.</source>
+        <translation type="unfinished">Özel çıktı klasörünü seçin.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="149"/>
+        <source>Output file name</source>
+        <translation type="unfinished">Çıktı dosyası adı</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="150"/>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
+        <translation type="unfinished">Bir çıktı dosyasının adı. Varsayılan olarak boş değer sağlanırsa, çıktı adı ek uzantıya sahip ilk dosyanın adıdır.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="153"/>
+        <source>FASTA file with 3&apos; adapters</source>
+        <translation type="unfinished">3 &apos;adaptörlü FASTA dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="154"/>
+        <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$&apos; character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
+        <translation type="unfinished">3 &apos;ucuna bağlanmış bir veya daha fazla adaptör dizisine sahip bir FAŞTA dosyası. Adaptörün kendisi ve sonraki her şey kırpılır. Bağdaştırıcı dizisi &apos;$&apos; karakteriyle bitiyorsa, bağdaştırıcı okumanın sonuna sabitlenir ve yalnızca okunan metnin son eki ise bulunur.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="161"/>
+        <source>FASTA file with 5&apos; adapters</source>
+        <translation type="unfinished">5 &apos;adaptörlü FASTA dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="162"/>
+        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end. If the adapter sequence starts with the character &apos;^&apos;, the adapter is &apos;anchored&apos;. An anchored adapter must appear in its entirety at the 5&apos; end of the read (it is a prefix of the read). A non-anchored adapter may appear partially at the 5&apos; end, or it may occur within the read. If it is found within a read, the sequence preceding the adapter is also trimmed. In all cases, the adapter itself is trimmed.</source>
+        <translation type="unfinished">5 &apos;ucuna bağlanmış bir veya daha fazla adaptör dizisine sahip bir FAŞTA dosyası. Bağdaştırıcı dizisi &apos;^&apos; karakteriyle başlıyorsa bağdaştırıcı &apos;bağlantılı&apos; olur. Bağlantılı bir adaptör, okumanın 5 &apos;ucunda bütünüyle görünmelidir (bu, okumanın bir önekidir). Sabitlenmemiş bir adaptör kısmen 5 &apos;ucunda görünebilir veya okuma içinde oluşabilir. Bir okuma içinde bulunursa, adaptörden önceki sıra da kırpılır. Her durumda, adaptörün kendisi kırpılır.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="173"/>
+        <source>FASTA file with 5&apos; and 3&apos; adapters</source>
+        <translation type="unfinished">5 &apos;ve 3&apos; adaptörlü FASTA dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="174"/>
+        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end or 3&apos; end.</source>
+        <translation type="unfinished">5 &apos;ucuna veya 3&apos; ucuna bağlanan bir veya daha fazla adaptör dizisine sahip bir FAŞTA dosyası.</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="202"/>
+        <source>Input file</source>
+        <translation type="unfinished">Girdi dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="203"/>
+        <source>Workflow</source>
+        <translation type="unfinished">İş akışı</translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptWorker.cpp" line="204"/>
+        <source>Custom</source>
+        <translation type="unfinished">Özel</translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::ShortReadsAlignerPrompter</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="426"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="428"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="432"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="434"/>
         <source>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den yukarı akış yönelimli okumaları ve &lt;u&gt;%2&lt;/u&gt;&apos; den aşağı akış yönelimli okumaları hizalar </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="434"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="436"/>
         <source>Maps input reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation>Haritalar girişi &lt;u&gt;%1&lt;/u&gt; kaynağından okuyor </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="440"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="442"/>
         <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; dizini ile referans dizisine.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="443"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="445"/>
         <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; dizisine başvurmak için.</translation>
     </message>
@@ -9252,17 +9807,17 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::SlopbedPrompter</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="73"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="72"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="74"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="73"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="76"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="75"/>
         <source>Increases the size of each feature in files from %1 with bedtool slop.</source>
         <translation>Bedtool slop ile dosyalardaki her bir özelliğin boyutunu %1&apos;den artırır.</translation>
     </message>
@@ -9270,137 +9825,137 @@ diğeri uyumlu bir hizalamada.</translation>
 <context>
     <name>U2::LocalWorkflow::SlopbedWorker</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="93"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="92"/>
         <source>slopBed</source>
         <translation>slopBed</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="93"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="92"/>
         <source>Increases the size of each feature in files using bedtools slop.</source>
         <translation>Bedtools slo kullanan dosyalardaki her bir özelliğin boyutunu artırır.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="97"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="96"/>
         <source>Input File</source>
         <translation>Giriş dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="97"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="96"/>
         <source>Set of files to bedtools slop</source>
         <translation>Dosya seti, yatak takımlarına slop</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="98"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="97"/>
         <source>Output File</source>
         <translation>Çıktı Dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="98"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="97"/>
         <source>Output file</source>
         <translation>Çıktı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="111"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="110"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="111"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="110"/>
         <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
         <translation>Bir çıktı klasörü seçin. &lt;b&gt;Özel&lt;/b&gt; - &apos;Özel klasör&apos; parametresinde çıktı klasörünü belirtin. &lt;b&gt;İş akışı&lt;/b&gt; - dahili iş akışı klasörü. &lt;b&gt;Girdi dosyası&lt;/b&gt; - girdi dosyasının klasörü.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="115"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="114"/>
         <source>Custom folder</source>
         <translation>Özel klasör</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="115"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="114"/>
         <source>Select the custom output folder.</source>
         <translation>Özel çıktı klasörünü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="117"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="116"/>
         <source>Output file name</source>
         <translation>Çıktı dosyası adı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="117"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="116"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
         <translation>Bir çıktı dosyasının adı. Varsayılan olarak boş değer sağlanırsa, çıktı adı ek uzantıya sahip ilk dosyanın adıdır.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="119"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="118"/>
         <source>Genome</source>
         <translation>Genom</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="119"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="118"/>
         <source>In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt; (-g).</source>
         <translation>Aralıkların kromozom sınırlarının ötesine uzamasını önlemek için bedtools slop, her bir kromozomun veya contigin uzunluğunu tanımlayan bir genom dosyası gerektirir. Dosyanın biçimi şöyledir: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt; (-g).</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="121"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="120"/>
         <source>Each direction increase</source>
         <translation>Her yön artar</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="121"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="120"/>
         <source>Increase the BED/GFF/VCF entry by the same number base pairs in each direction. If this parameter is used -l and -l are ignored. Enter 0 to disable. (-b)</source>
         <translation>BED/GFF/VCF girişini her yönde aynı sayı baz çifti kadar artırın. Bu parametre kullanılırsa -l ve -l yok sayılır. Devre dışı bırakmak için 0 girin. (-b)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="123"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="122"/>
         <source>Subtract from start</source>
         <translation>Baştan çıkar</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="123"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="122"/>
         <source>The number of base pairs to subtract from the start coordinate. Enter 0 to disable. (-l)</source>
         <translation>Başlangıç koordinatından çıkarılacak baz çifti sayısı. Devre dışı bırakmak için 0 girin. (-l)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="125"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="124"/>
         <source>Add to end</source>
         <translation>Sonuna ekle</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="125"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="124"/>
         <source>The number of base pairs to add to the end coordinate. Enter 0 to disable. (-r)</source>
         <translation>Bitiş koordinatına eklenecek baz çifti sayısı. Devre dışı bırakmak için 0 girin. (-r)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="127"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="126"/>
         <source>Strand-based</source>
         <translation>Strand bazlı</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="127"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="126"/>
         <source>Define -l and -r based on strand. For example. if used, -l 500 for a negative-stranded feature, it will add 500 bp to the end coordinate. (-s)</source>
         <translation>İpliğe göre -l ve -r tanımlayın. Örneğin. negatif sarmallı bir özellik için -l 500 kullanılırsa, uç koordinata 500 bp ekleyecektir. (-s)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="129"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="128"/>
         <source>As fraction</source>
         <translation>Kesir olarak</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="131"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="130"/>
         <source>Print header</source>
         <translation>Başlığı yazdır</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="131"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="130"/>
         <source>Print the header from the input file prior to results. (-header)</source>
         <translation>Sonuçlardan önce giriş dosyasından başlığı yazdırın. (-başlık)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="133"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="132"/>
         <source>Filter start&gt;end fields</source>
         <translation>Başlangıç&gt; bitiş alanlarını filtrele</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="133"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="132"/>
         <source>Remove lines with start position greater than end position</source>
         <translation>Başlangıç konumu bitiş konumundan daha büyük olan satırları kaldır</translation>
     </message>
@@ -9415,7 +9970,7 @@ diğeri uyumlu bir hizalamada.</translation>
         <translation>Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="129"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="128"/>
         <source>Define -l and -r as a fraction of the feature’s length. E.g. if used on a 1000bp feature, -l 0.50, will add 500 bp “upstream”. (-pct)</source>
         <translation>-L ve -r&apos;yi özelliğin uzunluğunun bir kesri olarak tanımlayın. Örneğin. 1000bp özellikte kullanılırsa, -l 0.50, 500 bp &quot;yukarı akış&quot; ekleyecektir. (-pct)</translation>
     </message>
@@ -9461,14 +10016,6 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
         <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="125"/>
         <source>Do you want to do it now?</source>
         <translation>Şimdi yapmak istiyor musun?</translation>
-    </message>
-    <message>
-        <source>The list of genomes is not available.
-Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</source>
-        <oldsource>The list of genomes is not available.<byte value="xd"/>
-Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</oldsource>
-        <translation type="obsolete">Genom listesi mevcut değil.
-%1 ve %2 araçlarının UGENE Uygulama Ayarlarında ayarlandığından ve doğrulanabildiğinden emin olun.</translation>
     </message>
 </context>
 <context>
@@ -9831,322 +10378,322 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
 <context>
     <name>U2::LocalWorkflow::StringTieWorker</name>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="227"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="228"/>
         <source>Uses a BAM file with RNA-Seq read mappings to assemble transcripts.</source>
         <translation>Transkriptleri birleştirmek için RNA-Seq okuma eşlemelerine sahip bir BAM dosyası kullanır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="239"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="240"/>
         <source>Input URL</source>
         <translation>URL girin</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="240"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="241"/>
         <source>URL(s) of input file(s) in FASTA format with DNA sequences that need to be assembled</source>
         <translation>Birleştirilmesi gereken DNA dizilerine sahip FAŞTA formatındaki girdi dosyalarının URL&apos;leri</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="245"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="246"/>
         <source>Output URL Transcripts</source>
         <translation>Çıktı URL Transkriptleri</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="246"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="247"/>
         <source>Output URL Transcripts.</source>
         <translation>Çıktı URL Transkriptleri.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="248"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="249"/>
         <source>Output URL Gene Abundance</source>
         <translation>Çıktı URL Gen Bolluğu</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="249"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="250"/>
         <source>Output URL Gene Abundance.</source>
         <translation>Çıktı URL Gen Bolluğu.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="254"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="255"/>
         <source>Input BAM file(s)</source>
         <translation>BAM dosyalarını girin</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="255"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="256"/>
         <source>URL(s) to sorted BAM file(s) with RNA-Seq read mappings. Note that every spliced read alignment (i.e. an alignment across at least one junction) in the input file must contain the tag XS to indicate the genomic strand that produced the RNA from which the read was sequenced. Alignments produced by TopHat and HISAT2 (when run with --dta option) already include this tag, but if you use a different read mapper you should check that this XS tag is included for spliced alignments.</source>
         <translation>RNA-Seq okuma eşlemeleriyle sıralanmış BAM dosyalarının URL&apos;leri. Giriş dosyasındaki her birleştirilmiş okuma hizalamasının (yani, en az bir bağlantı noktasında bir hizalama), okumanın sıralandığı RNA&apos;yı üreten genomik ipliği belirtmek için XS etiketini içermesi gerektiğine dikkat edin. TopHat ve HISAT2 tarafından üretilen hizalamalar (--dta seçeneğiyle çalıştırıldığında) zaten bu etiketi içerir, ancak farklı bir okuma eşleştiricisi kullanıyorsanız, bu XS etiketinin eklemeli hizalamalar için dahil edildiğini kontrol etmelisiniz.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="262"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="263"/>
         <source>StringTie output data</source>
         <translation>StringTie çıktı verileri</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="262"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="263"/>
         <source>For each input BAM file the port outputs an URL to a GTF file with assembled transcripts, produced by StringTie. If &quot;Report gene abundance&quot; is &quot;True&quot;, the port also output an URL to a text file with gene abundances (in a tab-delimited format).</source>
         <translation>Her bir girdi BAM dosyası için, bağlantı noktası StringTie tarafından üretilen birleştirilmiş transkriptlere sahip bir GTF dosyasına bir URL çıkarır. &quot;Gen bolluğunu bildir&quot;, &quot;Doğru&quot; ise, bağlantı noktası ayrıca gen bolluğuna sahip bir metin dosyasına (sekmeyle ayrılmış bir biçimde) bir URL çıkarır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="276"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="277"/>
         <source>Reference annotations</source>
         <translation>Referans ek açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="277"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="278"/>
         <source>Use the reference annotation file (in GTF or GFF3 format) to guide the assembly process (-G). The output will include expressed reference transcripts as well as any novel transcripts that are assembled.</source>
         <translation>Montaj sürecini (-G) yönlendirmek için referans açıklama dosyasını (GTF veya GFF3 formatında) kullanın. Çıktı, ifade edilen referans transkriptleri ve bir araya getirilen yeni transkriptleri içerecektir.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="281"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="282"/>
         <source>Reads orientation</source>
         <translation>Yönü okur</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="282"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="283"/>
         <source>Select the NGS libraries type: unstranded, stranded fr-secondstrand (--fr), or stranded fr-firststand (--rf).</source>
         <translation>NGS kitaplıkları türünü seçin: ipliksiz, iplikli fr-saniye ipliği (--fr) veya iplikli fr-firststand (--rf).</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="285"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="286"/>
         <source>Label</source>
         <translation>Etiket</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="286"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="287"/>
         <source>Use the specified string as the prefix for the name of the output transcripts (-l).</source>
         <translation>Çıktı transkriptlerinin (-l) adı için önek olarak belirtilen dizeyi kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="289"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="290"/>
         <source>Min isoform fraction</source>
         <translation>Asg izoform fraksiyonu</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="290"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="291"/>
         <source>Specify the minimum isoform abundance of the predicted transcripts as a fraction of the most abundant transcript assembled at a given locus (-f). Lower abundance transcripts are often artifacts of incompletely spliced precursors of processed transcripts.</source>
         <translation>Tahmin edilen transkriptlerin asgari izoform bolluğunu, belirli bir lokusta (-f) birleştirilmiş en bol transkriptin bir parçası olarak belirtin. Düşük bolluk transkriptleri, genellikle işlenmiş transkriptlerin tam olarak eklenmemiş öncülerinden oluşan yapaydır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="295"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="296"/>
         <source>Min assembled transcript length</source>
         <translation>Asgari birleştirilmiş transkript uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="296"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="297"/>
         <source>Specify the minimum length for the predicted transcripts (-m).</source>
         <translation>Öngörülen transkriptler için asgari uzunluğu (-m) belirtin.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="299"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="300"/>
         <source>Min anchor length for junctions</source>
         <translation>Bağlantılar için asgari ankraj uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="300"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="301"/>
         <source>Junctions that don&apos;t have spliced reads that align across them with at least this amount of bases on both sides are filtered out (-a).</source>
         <translation>Her iki tarafta da en azından bu miktarda bazla hizalanan eklenmiş okumalara sahip olmayan kavşaklar filtrelenir (-a).</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="304"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="305"/>
         <source>Min junction coverage</source>
         <translation>Asg bağlantı kapsamı</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="305"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="306"/>
         <source>There should be at least this many spliced reads that align across a junction (-j). This number can be fractional, since some reads align in more than one place. A read that aligns in n places will contribute 1/n to the junction coverage.</source>
         <translation>Bir bağlantı (-j) boyunca hizalanan en azından bu kadar çok eklenmiş okuma olmalıdır. Bazı okumalar birden fazla yerde hizalandığı için bu sayı kesirli olabilir. N yerde hizalanan bir okuma, bağlantı kapsamına 1/n katkıda bulunacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="310"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="311"/>
         <source>Trim transcripts based on coverage</source>
         <translation>Transkriptleri kapsama göre kırpın</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="311"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="312"/>
         <source>By default StringTie adjusts the predicted transcript&apos;s start and/or stop coordinates based on sudden drops in coverage of the assembled transcript. Set this parameter to &quot;False&quot; to disable the trimming at the ends of the assembled transcripts (-t).</source>
         <translation>Varsayılan olarak StringTie, birleştirilmiş transkriptin kapsamındaki ani düşüşlere göre tahmin edilen transkriptin başlangıç ve / veya bitiş koordinatlarını ayarlar. Birleştirilmiş transkriptlerin (-t) uçlarındaki kırpmayı devre dışı bırakmak için bu parametreyi &quot;False&quot; olarak ayarlayın.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="316"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="317"/>
         <source>Min coverage for assembled transcripts</source>
         <translation>Birleştirilmiş transkriptler için minimum kapsam</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="317"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="318"/>
         <source>Specify the minimum read coverage allowed for the predicted transcripts (-c). A transcript with a lower coverage than this value is not shown in the output. This number can be fractional, since some reads align in more than one place. A read that aligns in n places will contribute 1/n to the coverage.</source>
         <translation>Öngörülen transkriptler (-c) için izin verilen asgari okuma kapsamını belirtin. Bu değerden daha düşük kapsama alanına sahip bir transkript çıktıda gösterilmez. Bazı okumalar birden fazla yerde hizalandığı için bu sayı kesirli olabilir. N yerde hizalanan bir okuma, kapsama 1/n katkıda bulunacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="323"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="324"/>
         <source>Min locus gap separation</source>
         <translation>Asg yer boşluğu ayrımı</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="324"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="325"/>
         <source>Reads that are mapped closer than this distance are merged together in the same processing bundle (-g).</source>
         <translation>Bu mesafeden daha yakın eşlenen okumalar, aynı işlem paketinde (-g) birleştirilir.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="327"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="328"/>
         <source>Fraction covered by multi-hit reads</source>
         <translation>Çok isabetli okumaların kapsadığı kısım</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="328"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="329"/>
         <source>Specify the maximum fraction of muliple-location-mapped reads that are allowed to be present at a given locus (-M). A read that aligns in n places will contribute 1/n to the coverage.</source>
         <translation>Belirli bir lokusta (-M) bulunmasına izin verilen çoklu konum eşlemeli okumaların maksimum fraksiyonunu belirtin. N yerde hizalanan bir okuma, kapsama 1/n katkıda bulunacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="332"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="333"/>
         <source>Skip assembling for sequences</source>
         <translation>Sıralar için birleştirmeyi atla</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="333"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="334"/>
         <source>Ignore all read alignments (and thus do not attempt to perform transcript assembly) on the specified reference sequences (-x). The value can be a single reference sequence name (e.g. &quot;chrM&quot;) or a comma-delimited list of sequence names (e.g. &quot;chrM,chrX,chrY&quot;). This can speed up StringTie especially in the case of excluding the mitochondrial genome, whose genes may have very high coverage in some cases, even though they may be of no interest for a particular RNA-Seq analysis. The reference sequence names are case sensitive, they must match identically the names of chromosomes/contigs of the target genome against which the RNA-Seq reads were aligned in the first place.</source>
         <translation>Belirtilen referans dizilerinde (-x) tüm okuma hizalamalarını göz ardı edin (ve bu nedenle transkript montajını gerçekleştirmeye çalışmayın). Değer, tek bir referans sıra adı (ör. &quot;ChrM&quot;) veya virgülle ayrılmış dizi adları listesi (ör. &quot;ChrM, chrX, chrY&quot;) olabilir. Bu, özellikle belirli bir RNA-Seq analizi için ilgi çekici olmasalar da genleri bazı durumlarda çok yüksek kapsama sahip olabilecek mitokondriyal genomun dışlanması durumunda StringTie&apos;yi hızlandırabilir. Referans dizi adları büyük / küçük harfe duyarlıdır, RNA-Seq&apos;in okuduğu hedef genomun kromozom / kontig adlarıyla aynı şekilde eşleşmelidirler.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="342"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="343"/>
         <source>Abundance for reference transcripts only</source>
         <translation>Sadece referans transkriptler için bolluk</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="343"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="344"/>
         <source>Limits the processing of read alignments to only estimate and output the assembled transcripts matching the reference transcripts (-e). With this option, read bundles with no reference transcripts will be entirely skipped, which may provide a considerable speed boost when the given set of reference transcripts is limited to a set of target genes, for example. The parameter is only available if the &quot;Reference annotations&quot; file is specified. It is recommended to use it when Ballgown table files are produced.</source>
         <translation>Okuma hizalamalarının işlenmesini yalnızca referans transkriptlerle (-e) eşleşen birleştirilmiş transkriptleri tahmin etmek ve çıktı olarak sınırlandırır. Bu seçenek ile, referans transkript içermeyen okuma demetleri tamamen atlanacaktır ve bu, verilen referans transkript seti, örneğin bir dizi hedef gen ile sınırlı olduğunda önemli bir hız artışı sağlayabilir. Parametre yalnızca &quot;Referans ek açıklamalar&quot; dosyası belirtilmişse kullanılabilir. Ballgown masa dosyaları üretilirken kullanılması tavsiye edilir.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="350"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="351"/>
         <source>Multi-mapping correction</source>
         <translation>Çoklu eşleme düzeltmesi</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="351"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="352"/>
         <source>Enables or disables (-u) multi-mapping correction.</source>
         <translation>(-u) çoklu eşleme düzeltmesini etkinleştirir veya devre dışı bırakır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="354"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="355"/>
         <source>Verbose log</source>
         <translation>Ayrıntılı günlük</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="355"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="356"/>
         <source>Enable detailed logging, if required (-v). The messages will be written to the UGENE log (enabling of &quot;DETAILS&quot; and &quot;TRACE&quot; logging may be required) and to the dashboard.</source>
         <translation>Gerekirse ayrıntılı günlük kaydını etkinleştirin (-v). Mesajlar UGENE günlüğüne (&quot;DETAILS&quot; ve &quot;TRACE&quot; günlüğünün etkinleştirilmesi gerekebilir) ve kontrol paneline yazılacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="360"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="361"/>
         <source>Number of threads</source>
         <translation>Konu sayısı</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="361"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="362"/>
         <source>Specify the number of processing threads (CPUs) to use for transcript assembly (-p).</source>
         <translation>Transkript derleme (-p) için kullanılacak işleme iş parçacığı (CPU) sayısını belirtin.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="364"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="365"/>
         <source>Output transcripts file</source>
         <translation>Çıktı transkript dosyası</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="365"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="366"/>
         <source>StringTie&apos;s primary output GTF file with assembled transcripts.</source>
         <translation>StringTie&apos;nin birleştirilmiş transkriptleri içeren birincil çıktı GTF dosyası.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="368"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="369"/>
         <source>Enable gene abundance output</source>
         <translation>Gen bolluğu çıktısını etkinleştirin</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="369"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="370"/>
         <source>Select &quot;True&quot; to generate gene abundances output (-A). The output is written to a tab-delimited text file. Also, the file URL is passed to an output slot of the workflow element.</source>
         <translation>Gen bolluğu çıktısı (-A) oluşturmak için &quot;True&quot; seçeneğini seçin. Çıktı, sekmeyle ayrılmış bir metin dosyasına yazılır. Ayrıca, dosya URL&apos;si iş akışı öğesinin bir çıktı yuvasına iletilir.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="374"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="375"/>
         <source>Output gene abundances file</source>
         <translation>Çıktı gen bollukları dosyası</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="375"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="376"/>
         <source>Specify the name of the output file with gene abundances (-A).</source>
         <translation>Çıktı dosyasının adını gen bolluğu (-A) ile belirtin.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="378"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="379"/>
         <source>Enable covered reference transcripts output</source>
         <translation>Kapsanan referans transkript çıktısını etkinleştir</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="379"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="380"/>
         <source>Select &quot;True&quot; to generate a file with reference transcripts that are fully covered by reads (-C). Thus, the parameter is only available if the &quot;Reference annotations&quot; file is specified.</source>
         <translation>Okumalarla (-C) tamamen kapsanan referans transkriptlerine sahip bir dosya oluşturmak için &quot;True&quot; öğesini seçin. Bu nedenle, parametre yalnızca &quot;Referans ek açıklamalar&quot; dosyası belirtilmişse kullanılabilir.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="383"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="384"/>
         <source>Output covered reference transcripts file</source>
         <translation>Çıktı kaplı referans transkript dosyası</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="384"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="385"/>
         <source>Specify the name of the output file with reference transcripts that are fully covered by reads (-C).</source>
         <translation>Okumalar (-C) tarafından tamamen kapsanan referans transkriptleri ile çıktı dosyasının adını belirtin.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="387"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="388"/>
         <source>Enable output for Ballgown</source>
         <translation>Ballgown için çıktıyı etkinleştir</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="388"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="389"/>
         <source>Select &quot;True&quot; to generate table files (*.ctab) that can be used as input to Ballgown (-b). The files contain coverage data for the reference transcripts. The parameter is only available if the &quot;Reference annotations&quot; file is specified. It is also recommended to set &quot;Abundance for reference transcripts only&quot; to &quot;True&quot;.</source>
         <translation>Ballgown&apos;a (-b) girdi olarak kullanılabilecek tablo dosyaları (* .ctab) oluşturmak için &quot;True&quot; seçeneğini seçin. Dosyalar, referans transkriptleri için kapsam verilerini içerir. Parametre yalnızca &quot;Referans ek açıklamalar&quot; dosyası belirtilmişse kullanılabilir. Ayrıca, &quot;Yalnızca referans transkriptler için bolluk&quot; ayarının &quot;Doğru&quot; olarak ayarlanması önerilir.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="394"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="395"/>
         <source>Output folder for Ballgown</source>
         <translation>Ballgown için çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="395"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="396"/>
         <source>Specify a folder for table files (*.ctab) that can be used as input to Ballgown.</source>
         <translation>Ballgown&apos;a girdi olarak kullanılabilecek tablo dosyaları (*.ctab) için bir klasör belirtin.</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="452"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="453"/>
         <source>Unstranded</source>
         <translation>Telsiz</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="453"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="454"/>
         <source>Forward (FR)</source>
         <translation>İleri (FR)</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="454"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="455"/>
         <source>Reverse (RF)</source>
         <translation>Ters (RF)</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="514"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="515"/>
         <source>Enabled</source>
         <translation>Etkinleştirildi</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="515"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="516"/>
         <source>Disabled</source>
         <translation>Devredışı</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="543"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="544"/>
         <source>Assemble Transcripts with StringTie</source>
         <translation>StringTie ile Transkriptleri Birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/stringtie/StringTieWorker.cpp" line="543"/>
+        <location filename="../src/stringtie/StringTieWorker.cpp" line="544"/>
         <source>StringTie is a fast and highly efficient assembler of RNA-Seq alignments into potential transcripts. It uses a novel network flow algorithm as well as an optional de novo assembly step to assemble and quantitate full-length transcripts representing multiple splice variants for each gene locus.</source>
         <translation>StringTie, RNA-Seq hizalamalarının potansiyel transkriptlere hızlı ve oldukça verimli bir şekilde birleştiricisidir. Her gen lokusu için birden fazla ekleme varyantını temsil eden tam uzunluktaki transkriptleri birleştirmek ve nicelendirmek için yeni bir ağ akış algoritmasının yanı sıra isteğe bağlı bir de novo montaj adımı kullanır.</translation>
     </message>
@@ -10234,12 +10781,12 @@ Hata:</translation>
 <context>
     <name>U2::LocalWorkflow::TopHatPrompter</name>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="536"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="537"/>
         <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; dizini ile referans dizisine.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="539"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="540"/>
         <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; dizisine başvurmak için.</translation>
     </message>
@@ -10247,440 +10794,440 @@ Hata:</translation>
 <context>
     <name>U2::LocalWorkflow::TopHatWorker</name>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="111"/>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="122"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="112"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="123"/>
         <source>Input reads</source>
         <translation>Giriş okur</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="112"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="113"/>
         <source>Input RNA-Seq reads</source>
         <translation>Giriş RNA-Seq okur</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="116"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="117"/>
         <source>TopHat output</source>
         <translation>TopHat çıkışı</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="117"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="118"/>
         <source>Accepted hits, junctions, insertions and deletions</source>
         <translation>Kabul edilen isabetler, kavşaklar, eklemeler ve silmeler</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="123"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="124"/>
         <source>TopHat input reads. Set this slot empty if you want to align reads directly from a file and specify the &quot;Input reads url&quot; slot. When running TopHat with paired-end reads, this should be the *_1 (&quot;left&quot;) set of reads.</source>
         <translation>TopHat girişi okur. Okumaları doğrudan bir dosyadan hizalamak ve &quot;Girdi url okur&quot; yuvasını belirtmek istiyorsanız bu yuvayı boş olarak ayarlayın. TopHat&apos;i çift uçlu okumalarla çalıştırırken, bu *_1 (&quot;sol&quot;) okuma kümesi olmalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="128"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="129"/>
         <source>Input reads url</source>
         <translation>Giriş url&apos;yi okur</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="129"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="130"/>
         <source>TopHat input reads url. When running TopHat with paired-end reads, this should be the *_1 (&quot;left&quot;) set of reads.</source>
         <translation>TopHat girişi url&apos;yi okur. TopHat&apos;i çift uçlu okumalarla çalıştırırken, bu *_1 (&quot;sol&quot;) okuma kümesi olmalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="133"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="134"/>
         <source>Input paired reads</source>
         <translation>Giriş eşleştirilmiş okumalar</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="134"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="135"/>
         <source> Set this slot empty if you want to align reads directly from a file and specify the &quot;Input reads url&quot; slot. Only used when running TopHat with paired end reads, and contains the *_2 (&quot;right&quot;) set of reads. Reads MUST appear in the same order as the *_1 reads.</source>
         <translation> Okumaları doğrudan bir dosyadan hizalamak ve &quot;Girdi url okur&quot; yuvasını belirtmek istiyorsanız bu yuvayı boş olarak ayarlayın. Yalnızca eşleştirilmiş uç okumalarla TopHat çalıştırılırken kullanılır ve *_2 (&quot;sağ&quot;) okuma setini içerir. Okumalar, *_1 okunduğu sırada yer almalıdır ZORUNLU.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="141"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="142"/>
         <source>Input paired reads url</source>
         <translation>Eşleştirilmiş giriş url&apos;yi okur</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="142"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="143"/>
         <source>Only used when running TopHat with paired end reads, and contains the *_2 (&quot;right&quot;) set of reads.</source>
         <translation>Yalnızca eşleştirilmiş uç okumalarla TopHat çalıştırılırken kullanılır ve *_2 (&quot;sağ&quot;) okuma setini içerir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="147"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="148"/>
         <source>Dataset name</source>
         <translation>Veri kümesi adı</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="148"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="149"/>
         <source>Use it only when sequences slot(or slots) is specified. Group input reads into chunks for several Tophat runs.
 Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Yalnızca sekans aralığı (veya yuvalar) belirtildiğinde kullanın. Grup girişi, birkaç Tophat çalışması için parçalar halinde okur.
 Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız, boş olarak ayarlayın</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="167"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="168"/>
         <source>Accepted hits</source>
         <translation>Kabul edilen isabetler</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="168"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="169"/>
         <source>Accepted hits found by TopHat</source>
         <translation>TopHat tarafından bulunan kabul edilmiş isabetler</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="170"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="171"/>
         <source>Sample name</source>
         <translation>Örnek adı</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="171"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="172"/>
         <source>Sample name for running Cuffdiff</source>
         <translation>Cuffdiff çalıştırmak için örnek isim</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="173"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="174"/>
         <source>Accepted hits url</source>
         <translation>Kabul edilen isabetler url&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="174"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="175"/>
         <source>The url to the assembly file with the accepted hits</source>
         <translation>Kabul edilen isabetlerle derleme dosyasının url&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="185"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="186"/>
         <source>Map RNA-Seq Reads with TopHat</source>
         <translation>TopHat ile Harita RNA-Seq Okumaları</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="186"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="187"/>
         <source>TopHat is a program for mapping RNA-Seq reads to a long reference sequence. It uses Bowtie or Bowtie2 to map the reads and then analyzes the mapping results to identify splice junctions between exons.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS RNA-Seq reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified BAM file, URL to the file is passed to the output port. Several UCSC BED tracks are also produced: junctions, insertions, and deletions.</source>
         <translation>TopHat, RNA-Seq okumalarını uzun bir referans dizisine eşleyen bir programdır. Okumaları eşlemek için Bowtie veya Bowtie2 kullanır ve daha sonra eksonlar arasındaki ekleme bağlantılarını belirlemek için eşleme sonuçlarını analiz eder. &lt;br/&gt;&lt;br/&gt;NGS RNA-Seq&apos;in okuduğu FASTA veya FASTQ dosyalarına URL (ler) sağlayın. elemanın giriş portu, parametrelerde referans sırasını ayarlar. Sonuç, belirtilen BAM dosyasına kaydedilir, dosyanın URL&apos;si çıktı bağlantı noktasına iletilir. Birkaç UCSC BED izi de üretilir: kavşaklar, eklemeler ve silmeler.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="197"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="198"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="198"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="199"/>
         <source>The base name of output folder. It could be modified with a suffix.</source>
         <translation>Çıktı klasörünün temel adı. Bir sonek ile değiştirilebilir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="201"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="202"/>
         <source>Samples map</source>
         <translation>Örnekler haritası</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="202"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="203"/>
         <source>The map which divide all input datasets into samples. Every sample has the unique name.</source>
         <translation>Tüm girdi veri kümelerini örneklere bölen harita. Her numunenin benzersiz adı vardır.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="205"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="206"/>
         <source>Reference input type</source>
         <translation>Referans giriş tipi</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="206"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="207"/>
         <source>Select &quot;Sequence&quot; to input a reference genome as a sequence file. &lt;br/&gt;Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). &lt;br/&gt;The index will be generated automatically in this case. &lt;br/&gt;Select &quot;Index&quot; to input already generated index files, specific for the tool.</source>
         <translation>Sıra dosyası olarak bir referans genomu girmek için &quot;Sıra&quot; yı seçin. &lt;br/&gt;UGENE tarafından desteklenen herhangi bir sıra dosyası biçimine izin verildiğini unutmayın (FASTA, GenBank, vb.). &lt;br/&gt;Bu durumda dizin otomatik olarak oluşturulacaktır. &lt;br/&gt;Araca özel halihazırda oluşturulmuş dizin dosyalarını girmek için &quot;Dizin&quot; i seçin.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="212"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="213"/>
         <source>Reference genome</source>
         <translation>Referans genom</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="213"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="214"/>
         <source>Path to indexed reference genome.</source>
         <translation>Dizine alınmış referans genomun yolu.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="216"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="217"/>
         <source>Bowtie index folder</source>
         <translation>Papyon indeks klasörü</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="217"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="218"/>
         <source>The folder with the Bowtie index for the reference sequence.</source>
         <translation>Referans sekans için Papyon indeksinin bulunduğu klasör.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="225"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="226"/>
         <source>Bowtie index basename</source>
         <translation>Papyon indeksi temel adı</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="226"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="227"/>
         <source>The basename of the Bowtie index for the reference sequence.</source>
         <translation>Referans sekans için Papyon indeksinin temel adı.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="239"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="240"/>
         <source>Mate inner distance</source>
         <translation>Montaj İlişkisi iç mesafesi</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="240"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="241"/>
         <source>The expected (mean) inner distance between mate pairs.</source>
         <translation>Montaj ilişkisi çiftleri arasındaki beklenen (ortalama) iç mesafe.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="243"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="244"/>
         <source>Mate standard deviation</source>
         <translation>Montaj İlişkisi standart sapması</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="244"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="245"/>
         <source>The standard deviation for the distribution on inner distances between mate pairs.</source>
         <translation>Montaj ilişkisi çiftleri arasındaki iç mesafelerdeki dağılımın standart sapması.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="247"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="248"/>
         <source>Library type</source>
         <translation>Kitaplık türü</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="248"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="249"/>
         <source>Specifies RNA-Seq protocol.</source>
         <translation>RNA-Seq protokolünü belirtir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="251"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="252"/>
         <source>No novel junctions</source>
         <translation>Yeni kavşak yok</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="252"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="253"/>
         <source>Only look for reads across junctions indicated in the supplied GFF or junctions file. This parameter is ignored if &lt;i&gt;Raw junctions&lt;/i&gt; or &lt;i&gt;Known transcript file&lt;/i&gt; is not set.</source>
         <translation>Yalnızca sağlanan GFF veya kavşaklar dosyasında belirtilen kavşaklardaki okumaları arayın. &lt;i&gt;Ham bağlantılar&lt;/i&gt; veya &lt;i&gt;Bilinen transkript dosyası&lt;/i&gt; ayarlanmamışsa bu parametre yok sayılır.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="257"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="258"/>
         <source>Raw junctions</source>
         <translation>Ham kavşaklar</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="258"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="259"/>
         <source>The list of raw junctions.</source>
         <translation>Ham kavşakların listesi.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="261"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="262"/>
         <source>Known transcript file</source>
         <translation>Bilinen konuşma metni dosyası</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="262"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="263"/>
         <source>A set of gene model annotations and/or known transcripts.</source>
         <translation>Bir dizi gen modeli açıklamaları ve / veya bilinen transkriptler.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="265"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="266"/>
         <source>Max multihits</source>
         <translation>Maksimum çoklu sayılar</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="266"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="267"/>
         <source>Instructs TopHat to allow up to this many alignments to the reference for a given read, and suppresses all alignments for reads with more than this many alignments.</source>
         <translation>TopHat&apos;a, belirli bir okuma için referansla bu kadar çok hizalamaya izin vermesini söyler ve bu birçok hizalamadan daha fazla okuma için tüm hizalamaları bastırır.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="271"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="272"/>
         <source>Segment length</source>
         <translation>Segment uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="272"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="273"/>
         <source>Each read is cut up into segments, each at least this long. These segments are mapped independently.</source>
         <translation>Her okuma, her biri en azından bu uzunlukta bölümlere ayrılır. Bu segmentler bağımsız olarak eşleştirilir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="276"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="277"/>
         <source>Fusion search</source>
         <translation>Füzyon araması</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="277"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="278"/>
         <source>Turn on fusion mapping.</source>
         <translation>Füzyon eşlemeyi açın.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="280"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="281"/>
         <source>Transcriptome only</source>
         <translation>Sadece transkriptom</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="281"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="282"/>
         <source>Only align the reads to the transcriptome and report only those mappings as genomic mappings.</source>
         <translation>Okumaları yalnızca transkriptom ile hizalayın ve yalnızca bu eşlemeleri genomik eşlemeler olarak bildirin.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="285"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="286"/>
         <source>Transcriptome max hits</source>
         <translation>Transcriptome maks. İsabet sayısı</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="286"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="287"/>
         <source>Maximum number of mappings allowed for a read, when aligned to the transcriptome (any reads found with more than this number of mappings will be discarded).</source>
         <translation>Transkriptom ile hizalandığında bir okuma için izin verilen maksimum eşleme sayısı (bu sayıdan daha fazla eşleme ile bulunan okumalar atılacaktır).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="291"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="292"/>
         <source>Prefilter multihits</source>
         <translation>Ön filtre multihit&apos;leri</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="292"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="293"/>
         <source>When mapping reads on the transcriptome, some repetitive or low complexity reads that would be discarded in the context of the genome may appear to align to the transcript sequences and thus may end up reported as mapped to those genes only. This option directs TopHat to first align the reads to the whole genome in order to determine and exclude such multi-mapped reads (according to the value of the &lt;i&gt;Max multihits&lt;/i&gt; option).</source>
         <translation>Haritalama, transkriptom üzerinde okurken, genom bağlamında atılacak bazı tekrarlayan veya düşük karmaşıklıktaki okumalar, transkript dizilerine hizalı görünebilir ve bu nedenle, yalnızca bu genlere eşlenmiş olarak raporlanabilir. Bu seçenek, TopHat&apos;ı, bu tür çok eşlemeli okumaları belirlemek ve hariç tutmak için önce okumaları tüm genoma hizalamaya yönlendirir (&lt;i&gt;Max multihits&lt;/i&gt; seçeneğinin değerine göre).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="301"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="302"/>
         <source>Min anchor length</source>
         <translation>Asgari ankraj uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="302"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="303"/>
         <source>The &lt;i&gt;anchor length&lt;/i&gt;. TopHat will report junctions spanned by reads with at least this many bases on each side of the junction. Note that individual spliced alignments may span a junction with fewer than this many bases on one side. However, every junction involved in spliced alignments is supported by at least one read with this many bases on each side.</source>
         <translation>&lt;i&gt;çapa uzunluğu&lt;/i&gt;. TopHat, bağlantının her iki tarafında en azından bu kadar tabana sahip okumalarla yayılan kavşakları bildirecektir. Ayrı ayrı eklenmiş hizalamaların, bir tarafta bu kadar çok sayıda tabandan daha az olan bir bağlantı noktasına yayılabileceğini unutmayın. Bununla birlikte, eklenmiş hizalamalarda yer alan her bir bağlantı, her bir tarafta bu kadar çok baz ile en az bir okuma tarafından desteklenir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="310"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="311"/>
         <source>Splice mismatches</source>
         <translation>Ekleme uyuşmazlıkları</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="311"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="312"/>
         <source>The maximum number of mismatches that may appear in the &lt;i&gt;anchor&lt;/i&gt; region of a spliced alignment.</source>
         <translation>Eklenen bir hizalamanın &lt;i&gt;çapa&lt;/i&gt; bölgesinde görünebilecek maksimum uyumsuzluk sayısı.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="315"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="316"/>
         <source>Read mismatches</source>
         <translation>Uyumsuzlukları oku</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="316"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="317"/>
         <source>Final read alignments having more than these many mismatches are discarded.</source>
         <translation>Bu uyumsuzluklardan daha fazlasına sahip olan son okuma hizalamaları atılır.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="320"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="321"/>
         <source>Segment mismatches</source>
         <translation>Segment uyuşmazlıkları</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="321"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="322"/>
         <source>Read segments are mapped independently, allowing up to this many mismatches in each segment alignment.</source>
         <translation>Okuma bölümleri bağımsız olarak eşlenir ve her bölüm hizalamasında bu kadar çok uyumsuzluğa izin verir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="326"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="327"/>
         <source>Solexa 1.3 quals</source>
         <translation>Solexa 1.3 kalite</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="327"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="328"/>
         <source>As of the Illumina GA pipeline version 1.3, quality scores are encoded in Phred-scaled base-64. Use this option for FASTQ files from pipeline 1.3 or later.</source>
         <translation>Illumina GA ardışık düzen sürüm 1.3&apos;ten itibaren, kalite puanları Phred ölçekli taban 64 olarak kodlanmıştır. Bu seçeneği, ardışık düzen 1.3 veya sonraki sürümlerden gelen FASTQ dosyaları için kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="332"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="333"/>
         <source>Bowtie version</source>
         <translation>Papyon versiyonu</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="333"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="334"/>
         <source>Specifies which Bowtie version should be used.</source>
         <translation>Hangi Bowtie sürümünün kullanılması gerektiğini belirtir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="336"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="337"/>
         <source>Bowtie -n mode</source>
         <translation>Papyon -n modu</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="337"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="338"/>
         <source>TopHat uses &lt;i&gt;-v&lt;/i&gt; in Bowtie for initial read mapping (the default), but with this option, &lt;i&gt;-n&lt;/i&gt; is used instead. Read segments are always mapped using &lt;i&gt;-v&lt;/i&gt; option.</source>
         <translation>TopHat, Bowtie&apos;de ilk okuma eşlemesi için &lt;i&gt;-v&lt;/i&gt; kullanır (varsayılan), ancak bu seçenekle bunun yerine &lt;i&gt;-n&lt;/i&gt; kullanılır. Okuma segmentleri her zaman &lt;i&gt;-v&lt;/i&gt; seçeneği kullanılarak eşlenir.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="343"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="344"/>
         <source>Bowtie tool path</source>
         <translation>Papyon aracı yolu</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="344"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="345"/>
         <source>The path to the Bowtie external tool.</source>
         <translation>Bowtie harici aracına giden yol.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="347"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="348"/>
         <source>SAMtools tool path</source>
         <translation>SAMtools araç yolu</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="348"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="349"/>
         <source>The path to the SAMtools tool. Note that the tool is available in the UGENE External Tool Package.</source>
         <translation>SAMtools aracının yolu. Aracın UGENE Harici Araç Paketinde mevcut olduğuna dikkat edin.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="352"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="353"/>
         <source>TopHat tool path</source>
         <translation>TopHat aracı yolu</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="353"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="354"/>
         <source>The path to the TopHat external tool in UGENE.</source>
         <translation>UGENE&apos;deki TopHat harici aracının yolu.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="356"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="357"/>
         <source>Temporary folder</source>
         <translation>Geçici dosya</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="357"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="358"/>
         <source>The folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="411"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="412"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="412"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="413"/>
         <source>Index</source>
         <translation>Dizin</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="419"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="420"/>
         <source>Use -n mode</source>
         <translation>-n modunu kullan</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="420"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="421"/>
         <source>Use -v mode</source>
         <translation>-v modunu kullan</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="531"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="532"/>
         <source>Maps RNA-seq reads</source>
         <translation>Haritalar RNA-seq okur</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="542"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="543"/>
         <source> and finds splice junctions.</source>
         <translation> ve ekleme bağlantılarını bulur.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="610"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="611"/>
         <source>Incorrect value of the library type parameter for Cufflinks!</source>
         <translation>Kol Düğmeleri için kitaplık türü parametresinin yanlış değeri!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="639"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="640"/>
         <source>Unrecognized value of the Bowtie mode option!</source>
         <translation>Papyon modu seçeneğinin tanınmayan değeri!</translation>
     </message>
@@ -10701,7 +11248,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::LocalWorkflow::TrimmomaticPropertyDialog</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="182"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="179"/>
         <source>Apply</source>
         <translation>Uygula</translation>
     </message>
@@ -10796,12 +11343,12 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <translation>&lt;i&gt;MAFFT&lt;/i&gt;, unix benzeri işletim sistemleri için çok sayıda sıralı hizalama programıdır. </translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="76"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="79"/>
         <source>Path for %1 tool not selected.</source>
         <translation>%1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="77"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="80"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
@@ -10809,23 +11356,19 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::MAFFTSupportContext</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="126"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="129"/>
         <source>Align with MAFFT...</source>
         <translation>MAFFT ile hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="138"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="141"/>
         <source>Path for MAFFT tool not selected.</source>
         <translation>MAFFT aracı için yol seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="139"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="142"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-    <message>
-        <source>Path for %1 tool not selected.</source>
-        <translation type="vanished">%1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
@@ -10929,14 +11472,14 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="113"/>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="115"/>
-        <source>Align with Kalign</source>
-        <translation>Kalign ile Hizala</translation>
+        <source>Input file is not set!</source>
+        <translation>Girdi dosyası ayarlanmadı!</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="113"/>
-        <source>Input file is not set!</source>
-        <translation>Girdi dosyası ayarlanmadı!</translation>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="115"/>
+        <source>Align with MAFFT</source>
+        <translation type="unfinished">MAFFT ile hizala</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="115"/>
@@ -10960,42 +11503,42 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <translation>Sıraları hizalama görevine hizalayın</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="95"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="94"/>
         <source>Align sequences to alignment with MAFFT started</source>
         <translation>Dizileri, MAFFT başlatıldı ile hizalamaya hizalayın</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="170"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="169"/>
         <source>Output file &apos;%1&apos; not found</source>
         <translation>&apos;%1&apos; çıktı dosyası bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="172"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="171"/>
         <source>Output file &apos;%3&apos; not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Çıkış dosyası &apos;%3&apos; bulunamadı. %1 takım yolu &apos;%2&apos; geçerli değil mi?</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="179"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="178"/>
         <source>Loading output file &apos;%1&apos;</source>
         <translation>&apos;%1&apos; çıktı dosyası yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="258"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="257"/>
         <source>Row for updating doesn&apos;t found</source>
         <translation>Güncelleme satırı bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="275"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="274"/>
         <source>Additional enhancement of short sequences alignment performed</source>
         <translation>Kısa dizi hizalamasında ek geliştirme yapıldı</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="284"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="283"/>
         <source>The following sequence(s) were not aligned as they do not contain meaningful characters: &quot;%1&quot;.</source>
         <translation>Aşağıdaki diziler, anlamlı karakterler içermedikleri için hizalanmamıştır: &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="296"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="295"/>
         <source>MAFFT alignment successfully finished</source>
         <translation>MAFFT hizalaması başarıyla tamamlandı</translation>
     </message>
@@ -11003,104 +11546,337 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::MakeBlastDbDialog</name>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="40"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="42"/>
         <source>Build</source>
         <translation>İnşa et</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="41"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="43"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="71"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="73"/>
         <source>Select file(s)</source>
         <translation>Dosyaları seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="94"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="96"/>
         <source>Select a folder with input files</source>
         <translation>Giriş dosyalarını içeren bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="105"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="107"/>
         <source>Select a folder to save database files</source>
         <translation>Veritabanı dosyalarını kaydetmek için bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="114"/>
-        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="119"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="118"/>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="128"/>
         <source>Output database path contain space characters.</source>
         <translation>Çıktı veritabanı yolu boşluk karakterleri içerir.</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="120"/>
+        <source>Output database path does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/MakeBlastDbDialog.cpp" line="122"/>
+        <source>Output database path is read only.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::MakeBlastDbTask</name>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="52"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="53"/>
         <source>Run &apos;MakeBlastDbTask&apos; task</source>
         <translation>&apos;MakeBlastDbTask&apos; görevini çalıştırın</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="87"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="61"/>
+        <source>Output database path is read only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="91"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör kaldırılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="97"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="101"/>
         <source>Blast database creation has been cancelled</source>
         <translation>Blast veritabanı oluşturma iptal edildi</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="104"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="108"/>
         <source>Blast database has been successfully created</source>
         <translation>Blast veritabanı başarıyla oluşturuldu</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="105"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="109"/>
         <source>Source sequences: </source>
         <translation>Kaynak dizileri: </translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="113"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="117"/>
         <source>Database file path: %1</source>
         <translation>Veritabanı dosya yolu: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="115"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="119"/>
         <source>Type: %1</source>
         <translation>Tür: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="117"/>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="123"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="121"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="127"/>
         <source>Log file path: </source>
         <translation>Günlük dosyası yolu: </translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="121"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="125"/>
         <source>Blast database creation has been failed</source>
         <translation>Blast veritabanı oluşturma başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="145"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="149"/>
         <source>Cannot create temp folder</source>
         <translation>Geçici klasör oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="162"/>
-        <source>Trying to initialize Format DB task second time</source>
-        <translation>İkinci kez DB Biçimlendirme görevini başlatmaya çalışıyor</translation>
-    </message>
-    <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="164"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="168"/>
         <source>Output database path contain space characters.</source>
         <translation>Çıktı veritabanı yolu boşluk karakterleri içerir.</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="168"/>
+        <location filename="../src/blast/MakeBlastDbTask.cpp" line="172"/>
         <source>Input file set is empty.</source>
         <translation>Girdi dosyası kümesi boş.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldContext</name>
+    <message>
+        <location filename="../src/mfold/MfoldSupport.cpp" line="100"/>
+        <source>Path for mfold tool not selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldSupport.cpp" line="101"/>
+        <source>Do you want to select it now?</source>
+        <translation type="unfinished">Şimdi seçmek istiyor musunuz?</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldDialog</name>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="54"/>
+        <source>Region cannot be larger than %1 nucleotides</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="66"/>
+        <source>Reset settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="67"/>
+        <source>Run</source>
+        <translation type="unfinished">Çalıştır</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="68"/>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal Et</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="108"/>
+        <source>Select a folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="128"/>
+        <source>Start position not specified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="130"/>
+        <source>End position not specified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="132"/>
+        <source>Invalid start position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="134"/>
+        <source>Invalid end position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="136"/>
+        <source>Start position cannot be greater than end position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="173"/>
+        <source>Invalid sequence region!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="188"/>
+        <source>Invalid out path!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldDialog.cpp" line="191"/>
+        <source>Output dir is read-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldSupport</name>
+    <message>
+        <location filename="../src/mfold/MfoldSupport.cpp" line="54"/>
+        <source>The &lt;i&gt;mfold&lt;/i&gt; software computes a collection of optimal and suboptimal foldings &lt;a href=&quot;http://www.unafold.org/&quot;&gt;http://www.unafold.org/&lt;/a&gt;.&lt;br&gt;Secondary structure images are generated using Ghostscript &lt;a href=&quot;https://ghostscript.com/&quot;&gt;https://ghostscript.com/&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::MfoldTask</name>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="146"/>
+        <source>Error parsing `%1` param</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="186"/>
+        <source>Unexpected EOF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="211"/>
+        <source>Found %1 images in `%2` and %3 thermodynamic tables in `%4`</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="412"/>
+        <source>Parameters</source>
+        <translation type="unfinished">Parametreler</translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="419"/>
+        <source>Sequence name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="424"/>
+        <source>Sequence path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="429"/>
+        <source>Region</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="434"/>
+        <source>Sequence type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="435"/>
+        <source>Circular</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="435"/>
+        <source>Linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="436"/>
+        <source>DNA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="436"/>
+        <source>RNA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="440"/>
+        <source>Temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="445"/>
+        <source>Percent suboptimality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="450"/>
+        <source>Ionic conditions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="459"/>
+        <source>Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="462"/>
+        <location filename="../src/mfold/MfoldTask.cpp" line="469"/>
+        <source>default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="467"/>
+        <source>Maximum distance between paired bases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="480"/>
+        <source>Output HTML report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="495"/>
+        <source>Found structures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="511"/>
+        <source>Structure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="541"/>
+        <source>mfold log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="551"/>
+        <source>Predict and visualize hairpins with mfold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="568"/>
+        <source>mfold tool is invalid, check it in settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="601"/>
+        <source>No hairpins found. Nothing to show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mfold/MfoldTask.cpp" line="615"/>
+        <source>Unable to create output file `%1`</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11148,22 +11924,22 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::MrBayesWidget</name>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="63"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="66"/>
         <source>Substitution model</source>
         <translation>İkame modeli</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="67"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="70"/>
         <source>Rate Matrix (fixed)</source>
         <translation>Oran Matrisi (sabit)</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="178"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="161"/>
         <source>Path for %1 tool not selected.</source>
         <translation>%1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="179"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="162"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
@@ -11269,52 +12045,35 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::PhyMLGetCalculatedTreeTask</name>
     <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="192"/>
+        <location filename="../src/phyml/PhyMLTask.cpp" line="193"/>
         <source>Generating output trees from PhyML</source>
         <translation>PhyML&apos;den çıktı ağaçları oluşturma</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="201"/>
+        <location filename="../src/phyml/PhyMLTask.cpp" line="202"/>
         <source>Output file is not found</source>
         <translation>Çıktı dosyası bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="227"/>
+        <location filename="../src/phyml/PhyMLTask.cpp" line="229"/>
         <source>No trees are found</source>
         <translation>Ağaç bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="232"/>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="238"/>
-        <source>No result tree in PhyML output</source>
-        <translation>PhyML çıktısında sonuç ağacı yok</translation>
     </message>
 </context>
 <context>
     <name>U2::PhyMLLogParser</name>
     <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="171"/>
+        <location filename="../src/phyml/PhyMLTask.cpp" line="170"/>
         <source>PhyML finished with error</source>
         <translation>PhyML hatayla tamamlandı</translation>
-    </message>
-    <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="187"/>
-        <source>UGENE internal error</source>
-        <translation>UGENE dahili hatası</translation>
     </message>
 </context>
 <context>
     <name>U2::PhyMLPrepareDataForCalculation</name>
     <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="41"/>
+        <location filename="../src/phyml/PhyMLTask.cpp" line="40"/>
         <source>Generating input file for PhyML</source>
         <translation>PhyML için girdi dosyası oluşturma</translation>
-    </message>
-    <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="67"/>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="71"/>
-        <source>Internal UGENE error</source>
-        <translation>Dahili UGENE hatası</translation>
     </message>
     <message>
         <location filename="../src/phyml/PhyMLTask.cpp" line="75"/>
@@ -11336,11 +12095,6 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <location filename="../src/phyml/PhyMLTask.cpp" line="93"/>
         <source>PhyML tree calculation</source>
         <translation>PhyML ağaç hesaplaması</translation>
-    </message>
-    <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="143"/>
-        <source>UGENE internal error</source>
-        <translation>UGENE dahili hatası</translation>
     </message>
 </context>
 <context>
@@ -11369,6 +12123,14 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="317"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
+    </message>
+</context>
+<context>
+    <name>U2::PrepareFastTreeWorkDirTask</name>
+    <message>
+        <location filename="../src/fasttree/FastTreeTask.cpp" line="77"/>
+        <source>Prepare FastTree work dir</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11408,8 +12170,8 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::PrepareInputForSpideyTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="191"/>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="204"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="195"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="208"/>
         <source>Failed to write DNA sequence  %1</source>
         <translation>%1  DNA dizisi yazılamadı</translation>
     </message>
@@ -11432,38 +12194,30 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <translation>Referans dosyasında birden fazla sekans: </translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="85"/>
-        <source>Unable to cast gobject to sequence object</source>
-        <translation>Gobject nesneyi sıralı hale getiremiyor</translation>
-    </message>
-    <message>
         <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="86"/>
         <source>The input reference sequence &apos;%1&apos; contains characters that don&apos;t belong to DNA alphabet.</source>
         <translation>Giriş referans dizisi &apos;%1&apos; DNA alfabesine ait olmayan karakterler içeriyor.</translation>
     </message>
 </context>
 <context>
-    <name>U2::PythonModuleBioSupport</name>
+    <name>U2::Python3ModuleCutadaptSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="89"/>
-        <source> (or biopython) is a python module for biological computations.</source>
-        <translation> (veya biopython) biyolojik hesaplamalar için bir python modülüdür.</translation>
+        <location filename="../src/python/Python3ModuleCutadaptSupport.cpp" line="41"/>
+        <source> finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/python/Python3ModuleCutadaptSupport.cpp" line="51"/>
+        <source>The &quot;Cutadapt&quot; module is not installed.Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>U2::PythonModuleSupport</name>
+    <name>U2::Python3Support</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="78"/>
-        <source>Python module is not installed. Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
-        <translation>Python modülü kurulu değil. Harici Araçlar ayarlarında modül yüklü olan başka bir Python komut dosyası yorumlayıcısına modülü yükleyin veya yolu ayarlayın</translation>
-    </message>
-</context>
-<context>
-    <name>U2::PythonSupport</name>
-    <message>
-        <location filename="../src/python/PythonSupport.cpp" line="51"/>
+        <location filename="../src/python/Python3Support.cpp" line="44"/>
         <source>Python scripts interpreter</source>
-        <translation>Python betikleri yorumlayıcısı</translation>
+        <translation type="unfinished">Python betikleri yorumlayıcısı</translation>
     </message>
 </context>
 <context>
@@ -11499,15 +12253,13 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <source>CAP3 run and open result task</source>
         <translation>CAP3 çalıştırma ve sonuç görevini açma</translation>
     </message>
+</context>
+<context>
+    <name>U2::RunFastTreeExternalToolTask</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="136"/>
-        <source>Invalid CAP3 task</source>
-        <translation>Geçersiz CAP3 görevi</translation>
-    </message>
-    <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="151"/>
-        <source>Project loader is NULL</source>
-        <translation>Proje yükleyici BOŞ</translation>
+        <location filename="../src/fasttree/FastTreeTask.cpp" line="105"/>
+        <source>Run FastTree tool</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11521,12 +12273,12 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SaveAlignmentTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="62"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="56"/>
         <source>Export alignment to &apos;%1&apos;</source>
         <translation>Hizalamayı &apos;%1&apos; e aktar</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="66"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="60"/>
         <source>An alignment is empty</source>
         <translation>Bir hizalama boş</translation>
     </message>
@@ -11534,7 +12286,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SaveMSA2SequencesTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="103"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="97"/>
         <source>Export alignment to sequence: %1</source>
         <translation>Hizalamayı şu sıraya aktar: %1</translation>
     </message>
@@ -11542,14 +12294,9 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SaveSequenceTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="132"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="126"/>
         <source>Save sequence</source>
         <translation>Sırayı kaydet</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="162"/>
-        <source>&apos;%&apos; format is not registered</source>
-        <translation>&apos;%&apos; formatı kayıtlı değil</translation>
     </message>
 </context>
 <context>
@@ -11568,7 +12315,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SnpEffDatabaseListTask</name>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseListTask.cpp" line="38"/>
+        <location filename="../src/snpeff/SnpEffDatabaseListTask.cpp" line="39"/>
         <source>SnpEff Database List task</source>
         <translation>SnpEff Veritabanı Listesi görevi</translation>
     </message>
@@ -11576,23 +12323,23 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SnpEffParser</name>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="60"/>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="82"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="61"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="83"/>
         <source>A problem occurred during allocating memory for running SnpEff. Check the &quot;Tasks memory limit&quot; parameter in the UGENE Application Settings.It is recommended to set this value to the available RAM on the computer.</source>
         <translation>SnpEff&apos;i çalıştırmak için bellek ayırırken bir sorun oluştu. UGENE Uygulama Ayarlarında &quot;Görevler hafıza limiti&quot; parametresini kontrol edin. Bu değerin bilgisayardaki mevcut RAM&apos;e ayarlanması önerilir.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="76"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="77"/>
         <source>There is not enough memory to complete the SnpEff execution.It is recommended to run SnpEff on a computer with RAM 4Gb or more.</source>
         <translation>SnpEff yürütmesini tamamlamak için yeterli bellek yok. 4 GB veya daha fazla RAM&apos;e sahip bir bilgisayarda SnpEff&apos;in çalıştırılması önerilir.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="87"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="88"/>
         <source>Failed to download SnpEff database. Check your internet connection.</source>
         <translation>SnpEff veritabanı indirilemedi. İnternet bağlantınızı kontrol edin.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="92"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="93"/>
         <source>Genome database &apos;%1&apos; is not found.</source>
         <translation>Genom veritabanı &apos;%1&apos; bulunamadı.</translation>
     </message>
@@ -11604,16 +12351,11 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <source>&lt;i&gt;SnpEff&lt;/i&gt;: Genetic variant annotation and effect prediction toolbox.</source>
         <translation>&lt;i&gt;SnpEff&lt;/i&gt;: Genetik varyant ek açıklaması ve etki tahmini araç kutusu.</translation>
     </message>
-    <message>
-        <location filename="../src/snpeff/SnpEffSupport.cpp" line="90"/>
-        <source>Failed to get SnpEff database list</source>
-        <translation>SnpEff veritabanı listesi alınamadı</translation>
-    </message>
 </context>
 <context>
     <name>U2::SnpEffTask</name>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="206"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="208"/>
         <source>SNPEff dataDir is not initialized.</source>
         <translation>SNPEff dataDir başlatılmadı.</translation>
     </message>
@@ -11643,17 +12385,17 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SpideyAlignmentTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="81"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="85"/>
         <source>Output file not found</source>
         <translation>Çıktı dosyası bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="86"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="90"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Çıktı dosyası bulunamadı. %1 takım yolu &apos;%2&apos; geçerli değil mi?</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="98"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="102"/>
         <source>Failed to open result file %1</source>
         <translation>%1 sonuç dosyası açılamadı</translation>
     </message>
@@ -11661,22 +12403,22 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SpideySupport</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="74"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="75"/>
         <source>&lt;i&gt;Spidey&lt;/i&gt; is mRNA-to-DNA alignment program.                    &lt;br&gt;Binaries can be downloaded from http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html</source>
         <translation>&lt;i&gt;Spidey&lt;/i&gt;, mRNA&apos;dan DNA&apos;ya hizalama programıdır.                    &lt;br&gt;İkili dosyalar http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html adresinden indirilebilir</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="76"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="77"/>
         <source>&lt;br&gt;&lt;br&gt; Wheelan SJ, Church DM, Ostell JM.</source>
         <translation>&lt;br&gt;&lt;br&gt; Wheelan SJ, Kilise DM, Ostell JM.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="77"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="78"/>
         <source>&lt;br&gt;Spidey: a tool for mRNA-to-genomic alignments</source>
         <translation>&lt;br&gt;Örümcek: mRNA&apos;dan genomik hizalamalar için bir araç</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="78"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="79"/>
         <source>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</source>
         <translation>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</translation>
     </message>
@@ -11684,17 +12426,17 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SpideySupportContext</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="111"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="118"/>
         <source>Align sequence to mRNA</source>
         <translation>Diziyi mRNA&apos;ya hizalayın</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="139"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="146"/>
         <source>Path for %1 tool not selected.</source>
         <translation>%1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="140"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="147"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
@@ -11702,7 +12444,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::SpideySupportTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="244"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="271"/>
         <source>Failed to align mRNA to genomic sequence: no alignment is found.</source>
         <translation>MRNA&apos;yı genomik diziye hizalayamadı: hizalama bulunamadı.</translation>
     </message>
@@ -11718,30 +12460,38 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::StringTieTask</name>
     <message>
-        <location filename="../src/stringtie/StringTieTask.cpp" line="51"/>
+        <location filename="../src/stringtie/StringTieTask.cpp" line="53"/>
         <source>Assemble Transcripts with StringTie task</source>
         <translation>StringTie göreviyle Transkriptleri birleştirin</translation>
     </message>
 </context>
 <context>
+    <name>U2::TabixSupport</name>
+    <message>
+        <location filename="../src/samtools/TabixSupport.cpp" line="52"/>
+        <source>&lt;i&gt;Tabix&lt;/i&gt; is a generic indexer for TAB-delimited genome position files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::TabixSupportTask</name>
     <message>
-        <location filename="../src/samtools/TabixSupportTask.cpp" line="38"/>
+        <location filename="../src/samtools/TabixSupportTask.cpp" line="39"/>
         <source>Generate index with Tabix task</source>
         <translation>Tabix görevi ile dizin oluştur</translation>
     </message>
     <message>
-        <location filename="../src/samtools/TabixSupportTask.cpp" line="47"/>
+        <location filename="../src/samtools/TabixSupportTask.cpp" line="49"/>
         <source>Tabix indexing started</source>
         <translation>Tabix indeksleme başladı</translation>
     </message>
     <message>
-        <location filename="../src/samtools/TabixSupportTask.cpp" line="50"/>
+        <location filename="../src/samtools/TabixSupportTask.cpp" line="52"/>
         <source>Input file &apos;%1&apos; is already bgzipped</source>
         <translation>Girdi dosyası &apos;%1&apos; zaten bg sıkıştırılmış</translation>
     </message>
     <message>
-        <location filename="../src/samtools/TabixSupportTask.cpp" line="61"/>
+        <location filename="../src/samtools/TabixSupportTask.cpp" line="63"/>
         <source>Saving data to file &apos;%1&apos;</source>
         <translation>Veriler &apos;%1&apos; dosyasına kaydediliyor</translation>
     </message>
@@ -11782,7 +12532,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::TrimmomaticSupport</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticSupport.cpp" line="48"/>
+        <location filename="../src/trimmomatic/TrimmomaticSupport.cpp" line="53"/>
         <source>&lt;i&gt;Trimmomatic&lt;/i&gt; is a flexible read trimming tool for Illumina NGS data.</source>
         <translation>&lt;i&gt;Trimmomatic&lt;/i&gt;, Illumina NGS verileri için esnek bir okuma kırpma aracıdır.</translation>
     </message>
@@ -11800,13 +12550,13 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
     <message>
         <location filename="../src/ExternalToolSupportSettings.cpp" line="137"/>
         <source>Temporary UGENE dir is empty</source>
-        <translation>Geçici UGENE dizini boş</translation>
+        <translation type="unfinished">Geçici UGENE dizini boş</translation>
     </message>
 </context>
 <context>
     <name>U2::VcfConsensusSupport</name>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupport.cpp" line="51"/>
+        <location filename="../src/vcftools/VcfConsensusSupport.cpp" line="56"/>
         <source>Apply VCF variants to a fasta file to create consensus sequence.</source>
         <translation>Konsensüs dizisi oluşturmak için bir fasta dosyasına VCF varyantlarını uygulayın.</translation>
     </message>
@@ -11814,62 +12564,32 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::VcfConsensusSupportTask</name>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="40"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="41"/>
         <source>Create Vcf Consensus</source>
         <translation>Vcf Konsensüsü Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="49"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="51"/>
         <source>VcfConsensus started</source>
         <translation>VcfConsensus başladı</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="51"/>
-        <source>AppSettings is NULL</source>
-        <translation>Uygulama Ayarları BOŞ</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="53"/>
-        <source>UserAppsSettings is NULL</source>
-        <translation>Kullanıcı Uygulamaları Ayarları BOŞ</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="55"/>
-        <source>Temporary folder is not set!</source>
-        <translation>Geçici klasör ayarlanmadı!</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="60"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="62"/>
         <source>Can not create folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör oluşturulamaz.</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="64"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="66"/>
         <source>Saving temporary data to file &apos;%1&apos;</source>
         <translation>Geçici verileri &apos;%1&apos; dosyasına kaydetme</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="83"/>
-        <source>ExternalToolRegistry is NULL</source>
-        <translation>Harici Araç Kaydı BOŞ</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="87"/>
-        <source>There is no VcfConsensus external tool registered</source>
-        <translation>Kayıtlı VcfConsensus harici aracı yok</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="88"/>
-        <source>There is no Tabix external tool registered</source>
-        <translation>Kaydedilmiş Tabix harici aracı yok</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="109"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="118"/>
         <source>Trying to get path of NULL external tool</source>
         <translation>BOŞ harici aracın yolunu almaya çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="113"/>
+        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="122"/>
         <source>Path to %1</source>
         <translation>%1 yolu</translation>
     </message>
@@ -11916,74 +12636,54 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="169"/>
+        <source>All input reads contain gaps or Ns only, abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="170"/>
         <source>Can&apos;t run alignment on non-nucleic reads</source>
         <translation>Nükleik olmayan okumalarda hizalama çalıştırılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="184"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="185"/>
         <source>Reference sequence is not accessible anymore</source>
         <translation>Referans dizisine artık erişilemiyor</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="188"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="189"/>
         <source>Error while running BLAST to align reads to reference: &apos;%1&apos;, %2</source>
         <translation>Okumaları referansa hizalamak için BLAST çalıştırılırken hata oluştu: &apos;%1&apos;, %2</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="190"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="191"/>
         <source>Error while aligning a read to reference with Smith-Waterman: &apos;%1</source>
         <translation>Okumayı Smith-Waterman ile referansa hizalarken hata oluştu: &apos;%1</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="385"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="386"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation>%1 algoritması bulunamadı. %1 eklentisini ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="388"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="389"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation>%1 algoritması bulunamadı. %1 eklentisinin güncel olup olmadığını kontrol edin.</translation>
-    </message>
-    <message>
-        <source>Map one read with BLAST &amp; SW task</source>
-        <translation type="vanished">BLAST &amp; SW göreviyle bir okumayı eşleyin</translation>
-    </message>
-    <message>
-        <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;, %3</source>
-        <oldsource>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</oldsource>
-        <translation type="obsolete">&quot;%1&quot; ile &quot;%2&quot; eşlenirken bir sorun oluştu.</translation>
-    </message>
-    <message>
-        <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</source>
-        <translation type="vanished">&quot;%1&quot; ile &quot;%2&quot; eşlenirken bir sorun oluştu.</translation>
-    </message>
-    <message>
-        <source>%1 was skipped. No BLAST results.</source>
-        <translation type="vanished">%1 atlandı. BLAST sonucu yok.</translation>
-    </message>
-    <message>
-        <source>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</source>
-        <translation type="vanished">%1 atlandı. Düşük benzerlik: %2. Minimum benzerlik %3 olarak ayarlandı</translation>
-    </message>
-    <message>
-        <source>Read doesn&apos;t contain meaningful data</source>
-        <translation type="vanished">Okuma anlamlı veriler içermez</translation>
     </message>
 </context>
 <context>
     <name>U2::Workflow::ComposeResultSubtask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="61"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="50"/>
         <source>Compose alignment</source>
         <translation>Hizalama oluştur</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="155"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="131"/>
         <source>The related chromatogram not found</source>
         <translation>İlgili kromatogram bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="187"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="163"/>
         <source>None of the reads satisfy minimum similarity criteria.</source>
         <translation>Okumaların hiçbiri asgari benzerlik kriterlerini karşılamıyor.</translation>
     </message>
@@ -11991,34 +12691,34 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::Workflow::IntegralBusPort</name>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="56"/>
-        <source>&apos;%1&apos; slot must be not binded</source>
-        <translation>&apos;%1&apos; yuvası bağlı olmamalıdır</translation>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="55"/>
+        <source>&apos;%1&apos; slot must be set</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="59"/>
-        <source>One of these slots must be not empty: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation>Bu yuvalardan biri boş olmamalıdır: &apos;%1&apos;, &apos;%2&apos;</translation>
+        <source>One of these slots must be set: &apos;%1&apos;, &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="64"/>
-        <source>Only one of these slots must be binded: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation>Bu yuvalardan yalnızca biri bağlanmalıdır: &apos;%1&apos;, &apos;%2&apos;</translation>
+        <source>Only one of these slots must be set: &apos;%1&apos;, &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="269"/>
-        <source>The slot must be not empty: &apos;%1&apos;</source>
-        <translation>Yuva boş olmamalıdır: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="772"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="773"/>
         <source>Error! One of these slots must be not empty: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation>Hata! Bu yuvalardan biri boş olmamalıdır: &apos;%1&apos;, &apos;%2&apos;</translation>
+        <translation type="unfinished">Hata! Bu yuvalardan biri boş olmamalıdır: &apos;%1&apos;, &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="778"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="779"/>
         <source>Error! You can not bind one of sequences slots and one of url slots simultaneously</source>
-        <translation>Hata! Sıra yuvalarından birini ve url yuvalarından birini aynı anda bağlayamazsınız</translation>
+        <translation type="unfinished">Hata! Sıra yuvalarından birini ve url yuvalarından birini aynı anda bağlayamazsınız</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="271"/>
+        <source>The slot must be not empty: &apos;%1&apos;</source>
+        <translation type="unfinished">Yuva boş olmamalıdır: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -12032,1583 +12732,6 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <location filename="../src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.cpp" line="65"/>
         <source>The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation>Görev, verileri işlemek için geçici bir klasör kullanır. Klasör yolunda boşluk olmaması gerekir. Lütfen UGENE Uygulama Ayarlarının &quot;Dizinler&quot; sekmesindeki &quot;Geçici dosyalar&quot; parametresi için uygun bir yol ayarlayın.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::Workflow::BlastReadsSubTask</name>
-    <message>
-        <source>Map reads with BLAST &amp; SW task</source>
-        <translation type="vanished">BLAST &amp; SW göreviyle harita okur</translation>
-    </message>
-    <message>
-        <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
-        <translation type="vanished">Görev, verileri işlemek için geçici bir klasör kullanır. Klasör yolunda boşluk olmaması gerekir. Lütfen UGENE Uygulama Ayarlarının &quot;Dizinler&quot; sekmesinde &quot;Geçici dosyalar&quot; parametresi için uygun bir yol ayarlayın.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::Workflow::ComposeResultSubTask</name>
-    <message>
-        <source>Compose alignment</source>
-        <translation type="vanished">Hizalama oluştur</translation>
-    </message>
-    <message>
-        <source>No read satisfy minimum similarity criteria.</source>
-        <translation type="vanished">Minimum benzerlik kriterlerini karşılayan okuma yok.</translation>
-    </message>
-    <message>
-        <source>The related chromatogram not found</source>
-        <translation type="vanished">İlgili kromatogram bulunamadı</translation>
-    </message>
-</context>
-<context>
-    <name>U2::Workflow::FormatDBSubTask</name>
-    <message>
-        <source>&apos;makeblastdb&apos; task wrapper</source>
-        <oldsource>Format DB task wrapper</oldsource>
-        <translation type="obsolete">DB görev sarmalayıcısını biçimlendir</translation>
-    </message>
-    <message>
-        <source>The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
-        <translation type="vanished">Görev, verileri işlemek için geçici bir klasör kullanır. Klasör yolunda boşluk olmaması gerekir. Lütfen UGENE Uygulama Ayarlarının &quot;Dizinler&quot; sekmesinde &quot;Geçici dosyalar&quot; parametresi için uygun bir yol ayarlayın.</translation>
-    </message>
-</context>
-<context>
-    <name>BlastAllSupportDialog</name>
-    <message>
-        <source>Request to Local BLAST Database</source>
-        <translation type="vanished">Yerel BLAST Veritabanına Talep</translation>
-    </message>
-    <message>
-        <source>blastn</source>
-        <translation type="vanished">blastn</translation>
-    </message>
-    <message>
-        <source>blastp</source>
-        <translation type="vanished">blastp</translation>
-    </message>
-    <message>
-        <source>blastx</source>
-        <translation type="vanished">blastx</translation>
-    </message>
-    <message>
-        <source>tblastn</source>
-        <translation type="vanished">tblastn</translation>
-    </message>
-    <message>
-        <source>tblastx</source>
-        <translation type="vanished">tblastx</translation>
-    </message>
-    <message>
-        <source>gpu-blastp</source>
-        <translation type="vanished">gpu-blastp</translation>
-    </message>
-</context>
-<context>
-    <name>FormatDBRunDialog</name>
-    <message>
-        <source>Input data</source>
-        <translation type="vanished">Giriş verileri</translation>
-    </message>
-    <message>
-        <source>Select input file(s) for formatting database:</source>
-        <translation type="vanished">Veritabanını biçimlendirmek için girdi dosyalarını seçin:</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BlastDbCmdSupport</name>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation type="vanished">BLAST %1 aracının yolu seçilmedi.</translation>
-    </message>
-    <message>
-        <source>Do you want to select it now?</source>
-        <translation type="vanished">Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-</context>
-<context>
-    <name>U2::CEASSupport</name>
-    <message>
-        <source>&lt;i&gt;CEAS&lt;/i&gt; - Cis-regulatory Element Annotation System - helps to characterize genome-wide protein-DNA interaction patterns from ChIP-chip and ChIP-Seq of both sharp and broad binding factors. It provides statistics on ChIP enrichment at important genome features such as specific chromosome, promoters, gene bodies, or exons, and infers genes most likely to be regulated by a binding factor.</source>
-        <translation type="vanished">&lt;i&gt;CEAS&lt;/i&gt; - Cis-regulatory Element Annotation System - hem keskin hem de geniş bağlanma faktörlerinin ChIP-chip ve ChIP-Seq&apos;ten genom çapında protein-DNA etkileşim modellerini karakterize etmeye yardımcı olur. Spesifik kromozom, promoterler, gen gövdeleri veya eksonlar gibi önemli genom özelliklerinde ChIP zenginleştirmesi hakkında istatistikler sağlar ve bir bağlanma faktörü tarafından düzenlenme olasılığı en yüksek olan genleri enfekte eder.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::CEASSupportTask</name>
-    <message>
-        <source>CEAS error: Can not find a required output file %1.</source>
-        <translation type="vanished">CEAS hatası: Gerekli bir çıktı dosyası %1 bulunamıyor.</translation>
-    </message>
-    <message>
-        <source>Can not copy the result file to: %1</source>
-        <translation type="vanished">Sonuç dosyası şu konuma kopyalanamıyor: %1</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ConductGOSupport</name>
-    <message>
-        <source>&lt;i&gt;Conduct GO&lt;/i&gt; - For a list of input genes, this tool uses R/BioC packages (GO, GOstats) to identify over represented GO terms.</source>
-        <translation type="vanished">&lt;i&gt;Davranış GO&lt;/i&gt; - Giriş genlerinin bir listesi için, bu araç fazla temsil edilen GO terimlerini tanımlamak için R / BioC paketlerini (GO, GOstats) kullanır.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ConductGOTask</name>
-    <message>
-        <source>Conduct GO warning: Can not find a required output file %1.</source>
-        <translation type="vanished">GO uyarısı yap: Gerekli bir çıktı dosyası %1 bulunamıyor.</translation>
-    </message>
-    <message>
-        <source>Can not copy the result file to: %1</source>
-        <translation type="vanished">Sonuç dosyası şu konuma kopyalanamıyor: %1</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ConservationPlotSupport</name>
-    <message>
-        <source>&lt;i&gt;ConservationPlot&lt;/i&gt; - Draw conservation plot for many bed files.</source>
-        <translation type="vanished">&lt;i&gt;ConservationPlot&lt;/i&gt; - Birçok yatak dosyası için koruma grafiği çizin.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ConservationPlotTask</name>
-    <message>
-        <source>An annotation table object wasn&apos;t found in the workflow data storage</source>
-        <translation type="vanished">İş akışı veri deposunda bir ek açıklama tablosu nesnesi bulunamadı</translation>
-    </message>
-    <message>
-        <source>Conservation Plot error: Can not find a required output file %1.</source>
-        <translation type="vanished">Koruma Plot hatası: Gerekli bir çıktı dosyası %1 bulunamıyor.</translation>
-    </message>
-    <message>
-        <source>Can not copy the result file to: %1</source>
-        <translation type="vanished">Sonuç dosyası şu konuma kopyalanamıyor: %1</translation>
-    </message>
-</context>
-<context>
-    <name>U2::FormatDBSupport</name>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation type="vanished">BLAST %1 aracının yolu seçilmedi.</translation>
-    </message>
-    <message>
-        <source>Do you want to select it now?</source>
-        <translation type="vanished">Şimdi seçmek istiyor musunuz?</translation>
-    </message>
-    <message>
-        <source>The &lt;i&gt;formatdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by &lt;i&gt;blastall&lt;/i&gt;.</source>
-        <translation type="vanished">&lt;i&gt;formatdb&lt;/i&gt;, bu veritabanları &lt;i&gt;blastall&lt;/i&gt; tarafından aranmadan önce protein veya nükleotid kaynak veritabanlarını formatlar.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::FormatDBRunDialog</name>
-    <message>
-        <source>Format</source>
-        <translation type="vanished">Biçim</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">İptal Et</translation>
-    </message>
-    <message>
-        <source>Input files paths contain space characters.</source>
-        <translation type="vanished">Girdi dosyası yolları boşluk karakterleri içerir.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::FormatDBTask</name>
-    <message>
-        <source>Output database path contain space characters.</source>
-        <translation type="vanished">Çıktı veritabanı yolu boşluk karakterleri içerir.</translation>
-    </message>
-    <message>
-        <source>Can not remove folder for temporary files.</source>
-        <translation type="vanished">Geçici dosyalar için klasör kaldırılamaz.</translation>
-    </message>
-    <message>
-        <source>Input files paths contain space characters.</source>
-        <translation type="vanished">Girdi dosyası yolları boşluk karakterleri içerir.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::Gene2PeakFormatLoader</name>
-    <message>
-        <source>Incorrect start position at line %1: &apos;%2&apos;</source>
-        <translation type="vanished">%1 satırında yanlış başlangıç konumu: &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>Incorrect end position at line %1: &apos;%2&apos;</source>
-        <translation type="vanished">%1 satırında yanlış son konum: &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>Incorrect NA value at line %1: &apos;%2&apos;</source>
-        <translation type="vanished">%1 satırında yanlış NA değeri: &apos;%2&apos;</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::CEASReportPrompter</name>
-    <message>
-        <source>Creates summary statistics on ChIP enrichment and saves it to %1.</source>
-        <translation type="vanished">ChIP zenginleştirmesi hakkında özet istatistikler oluşturur ve %1&apos;e kaydeder.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::CEASReportWorker</name>
-    <message>
-        <source>Peak regions</source>
-        <translation type="vanished">Tepe bölgeler</translation>
-    </message>
-    <message>
-        <source>Peak regions.</source>
-        <translation type="vanished">Tepe bölgeler.</translation>
-    </message>
-    <message>
-        <source>Enrichment signal</source>
-        <translation type="vanished">Zenginleştirme sinyali</translation>
-    </message>
-    <message>
-        <source>Enrichment signal.</source>
-        <translation type="vanished">Zenginleştirme sinyali.</translation>
-    </message>
-    <message>
-        <source>CEAS data</source>
-        <translation type="vanished">CEAS verileri</translation>
-    </message>
-    <message>
-        <source>Peak regions and enrichment signal profile for generating CEAS report.</source>
-        <translation type="vanished">CEAS raporu oluşturmak için pik bölgeler ve zenginleştirme sinyal profili.</translation>
-    </message>
-    <message>
-        <source>Output report file</source>
-        <translation type="vanished">Çıktı raporu dosyası</translation>
-    </message>
-    <message>
-        <source>Path to the report output file. Result for CEAS analysis.</source>
-        <translation type="vanished">Rapor çıktı dosyasının yolu. CEAS analizi için sonuç.</translation>
-    </message>
-    <message>
-        <source>Output annotations file</source>
-        <translation type="vanished">Çıktı ek açıklamalar dosyası</translation>
-    </message>
-    <message>
-        <source>Name of tab-delimited output text file, containing a row of annotations for every RefSeq gene. (file is not generated if no peak location data are supplied).</source>
-        <translation type="vanished">Her RefSeq geni için bir ek açıklama satırı içeren sekmeyle ayrılmış çıktı metin dosyasının adı. (tepe konum verisi sağlanmadıysa dosya oluşturulmaz).</translation>
-    </message>
-    <message>
-        <source>Gene annotations table</source>
-        <translation type="vanished">Gen ek açıklamaları tablosu</translation>
-    </message>
-    <message>
-        <source>Path to gene annotation table (e.g. a refGene table in sqlite3 db format (--gt).</source>
-        <translation type="vanished">Gen ek açıklama tablosuna giden yol (örneğin, sqlite3 db formatında (--gt) bir refGene tablosu.</translation>
-    </message>
-    <message>
-        <source>Span size</source>
-        <translation type="vanished">Açıklık boyutu</translation>
-    </message>
-    <message>
-        <source>Span from TSS and TTS in the gene-centered annotation (base pairs). ChIP regions within this range from TSS and TTS are considered when calculating the coverage rates in promoter and downstream (--span).</source>
-        <translation type="vanished">Gen merkezli açıklamada (baz çiftleri) TSS ve TTS&apos;den yayılma. TSS ve TTS&apos;den gelen bu aralıktaki ChIP bölgeleri, destekleyici ve aşağı akıştaki (--span) kapsam oranları hesaplanırken dikkate alınır.</translation>
-    </message>
-    <message>
-        <source>Wiggle profiling resolution</source>
-        <translation type="vanished">Wiggle profil oluşturma çözünürlüğü</translation>
-    </message>
-    <message>
-        <source>Wiggle profiling resolution. WARNING: Value smaller than the wig interval (resolution) may cause aliasing error (--pf-res).</source>
-        <translation type="vanished">Wiggle profil oluşturma çözünürlüğü. UYARI: Peruk aralığından (çözünürlük) daha küçük bir değer, takma ad hatasına (--pf-res) neden olabilir.</translation>
-    </message>
-    <message>
-        <source>Promoter/downstream interval</source>
-        <translation type="vanished">Destekleyici/aşağı akış aralığı</translation>
-    </message>
-    <message>
-        <source>Promoter/downstream intervals for ChIP region annotation are three values or a single value can be given. If a single value is given, it will be segmented into three equal fractions (e.g. 3000 is equivalent to 1000,2000,3000) (--rel-dist).</source>
-        <translation type="vanished">ChIP bölgesi bilgi notu için destekleyici / aşağı akış aralıkları üç değerdir veya tek bir değer verilebilir. Tek bir değer verilirse, üç eşit kesire bölünecektir (ör. 3000, 1000,2000,3000&apos;e eşdeğerdir) (--rel-dist).</translation>
-    </message>
-    <message>
-        <source>BiPromoter ranges</source>
-        <translation type="vanished">BiPromoter serileri</translation>
-    </message>
-    <message>
-        <source>Bidirectional-promoter sizes for ChIP region annotation. It&apos;s two values or a single value can be given. If a single value is given, it will be segmented into two equal fractions (e.g. 5000 is equivalent to 2500,5000) (--bisizes).</source>
-        <translation type="vanished">ChIP bölgesi ek açıklaması için çift yönlü destekleyici boyutları. İki değerdir veya tek bir değer verilebilir. Tek bir değer verilirse, iki eşit kesire bölünecektir (ör. 5000, 2500,5000&apos;e eşdeğerdir) (- iki boyut).</translation>
-    </message>
-    <message>
-        <source>Relative distance</source>
-        <translation type="vanished">Bağıl mesafe</translation>
-    </message>
-    <message>
-        <source>Relative distance to TSS/TTS in WIGGLE file. profiling. (--rel-dist)</source>
-        <translation type="vanished">WIGGLE dosyasında TSS / TTS&apos;ye göreceli mesafe. profil oluşturma. (--rel-dist)</translation>
-    </message>
-    <message>
-        <source>Gene group files</source>
-        <translation type="vanished">Gen grubu dosyaları</translation>
-    </message>
-    <message>
-        <source>Gene groups of particular interest in wig profiling. Each gene group file must have gene names in the 1st column. The file names are separated by commas (--gn-groups).</source>
-        <translation type="vanished">Peruk profillemede özellikle ilgi duyulan gen grupları. Her gen grubu dosyası 1. sütunda gen isimlerine sahip olmalıdır. Dosya adları virgülle (--gn-groups) ayrılmıştır.</translation>
-    </message>
-    <message>
-        <source>Gene group names</source>
-        <translation type="vanished">Gen grubu adları</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;Set this parameter empty for using default values.&lt;/i&gt;&lt;br&gt;The names of the gene groups from &quot;Gene group files&quot; parameter. These names appear in the legends of the wig profiling plots.&lt;br&gt; Values range: comma-separated list of strings. Default value: &apos;Group 1, Group 2,...Group n&apos; (--gn-group-names).</source>
-        <translation type="vanished">&lt;i&gt; Varsayılan değerleri kullanmak için bu parametreyi boş bırakın. &lt;/i&gt;&lt;br&gt; &quot;Gen grubu dosyaları&quot; parametresinden gen gruplarının adları. Bu adlar, peruk profili oluşturma çizimlerinin lejantlarında görünür. &lt;br&gt; Değerler aralığı: virgülle ayrılmış dizeler listesi. Varsayılan değer: &apos;Grup 1, Grup 2,.....Grup n&apos; (--gn-grup-adları).</translation>
-    </message>
-    <message>
-        <source>Report file</source>
-        <translation type="vanished">Rapor dosyası</translation>
-    </message>
-    <message>
-        <source>Annotations file</source>
-        <translation type="vanished">Ek açıklamalar dosyası</translation>
-    </message>
-    <message>
-        <source>Create CEAS Report</source>
-        <translation type="vanished">CEAS Raporu Oluşturun</translation>
-    </message>
-    <message>
-        <source>Provides summary statistics on ChIP enrichment in important genomic regions such as individual chromosomes, promoters, gene bodies or exons, and infers the genes most likely to be regulated by the binding factor under study.</source>
-        <translation type="vanished">Bireysel kromozomlar, destekleyiciler, gen gövdeleri veya eksonlar gibi önemli genomik bölgelerde ChIP zenginleştirmesi hakkında özet istatistikler sağlar ve incelenen bağlanma faktörü tarafından düzenlenmesi en muhtemel genleri etkiler.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::ConductGOPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">ayarlanmadı</translation>
-    </message>
-    <message>
-        <source>Uses annotations from &lt;u&gt;%1&lt;/u&gt; as gene list to conduct GO.</source>
-        <translation type="vanished">GO yapmak için gen listesi olarak &lt;u&gt;%1&lt;/u&gt; &apos;den ek açıklamaları kullanır.</translation>
-    </message>
-    <message>
-        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</source>
-        <translation type="vanished"> Tüm sonuç dosyalarını &lt;u&gt;%1&lt;/u&gt; klasörüne çıkarır</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::ConductGOWorker</name>
-    <message>
-        <source>Target genes</source>
-        <translation type="vanished">Hedef genler</translation>
-    </message>
-    <message>
-        <source>URL to file with genes to identify over represented GO terms.</source>
-        <translation type="vanished">Fazla temsil edilen GO terimlerini tanımlamak için genlerle dosyalanacak URL.</translation>
-    </message>
-    <message>
-        <source>Conduct GO data</source>
-        <translation type="vanished">GO verilerini yürütme</translation>
-    </message>
-    <message>
-        <source>Output folder</source>
-        <translation type="vanished">Çıktı klasörü</translation>
-    </message>
-    <message>
-        <source>The folder to store Conduct GO results.</source>
-        <translation type="vanished">Conduct GO sonuçlarını depolamak için klasör.</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="vanished">Başlık</translation>
-    </message>
-    <message>
-        <source>Title is used to name the output files - so make it meaningful.</source>
-        <translation type="vanished">Başlık, çıktı dosyalarını adlandırmak için kullanılır - bu yüzden onu anlamlı hale getirin.</translation>
-    </message>
-    <message>
-        <source>Gene Universe</source>
-        <translation type="vanished">Gen Evreni</translation>
-    </message>
-    <message>
-        <source>Select a gene universe.</source>
-        <translation type="vanished">Bir gen evreni seçin.</translation>
-    </message>
-    <message>
-        <source>Conduct GO</source>
-        <translation type="vanished">GO Davranışı</translation>
-    </message>
-    <message>
-        <source>Given a list of genes, using Bioconductor (GO, GOstats) and  DAVID at NIH.</source>
-        <translation type="vanished">NIH&apos;de Bioconductor (GO, GOstats) ve  DAVID kullanılarak genlerin bir listesi verildi.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::ConservationPlotPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">ayarlanmadı</translation>
-    </message>
-    <message>
-        <source>Uses annotations from &lt;u&gt;%1&lt;/u&gt; as peak regions for conservation plot.</source>
-        <translation type="vanished">Koruma grafiği için pik bölgeler olarak &lt;u&gt;%1&lt;/u&gt; &apos;den ek açıklamalar.</translation>
-    </message>
-    <message>
-        <source> Conservations scores from &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation type="vanished"> &lt;u&gt;%1&lt;/u&gt; tarihinden itibaren koruma puanları.</translation>
-    </message>
-    <message>
-        <source> Outputs the result to &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation type="vanished"> Sonucu &lt;u&gt;%1&lt;/u&gt; olarak verir</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::ConservationPlotWorker</name>
-    <message>
-        <source>Input regions</source>
-        <translation type="vanished">Giriş bölgeleri</translation>
-    </message>
-    <message>
-        <source>Regions (centered at peak summits for better performance).</source>
-        <translation type="vanished">Bölgeler (daha iyi performans için en yoğun zirvelerde ortalanır).</translation>
-    </message>
-    <message>
-        <source>conservation_plot data</source>
-        <translation type="vanished">koruma alanı verisi</translation>
-    </message>
-    <message>
-        <source>Regions to plot the PhastCons scores profiles.</source>
-        <translation type="vanished">PhastCons puan profillerini çizecek bölgeler.</translation>
-    </message>
-    <message>
-        <source>Output file</source>
-        <translation type="vanished">Çıktı dosyası</translation>
-    </message>
-    <message>
-        <source>File to store phastcons results (BMP).</source>
-        <translation type="vanished">Phastcon sonuçlarını (BMP) depolamak için dosya.</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="vanished">Başlık</translation>
-    </message>
-    <message>
-        <source>Title of the figure (--title).</source>
-        <translation type="vanished">Şeklin başlığı (--başlık).</translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="vanished">Etiket</translation>
-    </message>
-    <message>
-        <source>Label of data in the figure (--bed-label).</source>
-        <translation type="vanished">Şekildeki verilerin etiketi (--bed-label).</translation>
-    </message>
-    <message>
-        <source>Assembly version</source>
-        <translation type="vanished">Montaj versiyonu</translation>
-    </message>
-    <message>
-        <source>The folder to store phastcons scores (--phasdb).</source>
-        <translation type="vanished">Phastcons puanlarının saklanacağı klasör (--phasdb).</translation>
-    </message>
-    <message>
-        <source>Window width</source>
-        <translation type="vanished">Pencere genişliği</translation>
-    </message>
-    <message>
-        <source>Window width centered at middle of regions (-w).</source>
-        <translation type="vanished">Bölgelerin ortasında ortalanmış pencere genişliği (-w).</translation>
-    </message>
-    <message>
-        <source>Height</source>
-        <translation type="vanished">Yükseklik</translation>
-    </message>
-    <message>
-        <source>Height of plot (--height).</source>
-        <translation type="vanished">Arsa yüksekliği (--height).</translation>
-    </message>
-    <message>
-        <source>Width</source>
-        <translation type="vanished">En</translation>
-    </message>
-    <message>
-        <source>Width of plot (--width).</source>
-        <translation type="vanished">Çizim genişliği (--width).</translation>
-    </message>
-    <message>
-        <source>Conservation plot file</source>
-        <translation type="vanished">Koruma arsa dosyası</translation>
-    </message>
-    <message>
-        <source>Build Conservation Plot</source>
-        <translation type="vanished">Koruma Alanı Oluşturun</translation>
-    </message>
-    <message>
-        <source>Plots the PhastCons scores profiles.</source>
-        <translation type="vanished">PhastCons puan profillerini çizer.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::MACSPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">ayarlanmadı</translation>
-    </message>
-    <message>
-        <source>Uses &lt;u&gt;%1&lt;/u&gt; as treatment</source>
-        <translation type="vanished">Tedavi olarak &lt;u&gt;%1&lt;/u&gt; kullanıyor</translation>
-    </message>
-    <message>
-        <source> and &lt;u&gt;%1&lt;/u&gt; as control</source>
-        <translation type="vanished"> ve kontrol olarak &lt;u&gt;%1&lt;/u&gt;</translation>
-    </message>
-    <message>
-        <source> to call peaks.</source>
-        <translation type="vanished"> zirveleri aramak için.</translation>
-    </message>
-    <message>
-        <source> Outputs all files to &lt;u&gt;%1&lt;/u&gt; folder</source>
-        <translation type="vanished"> Tüm dosyaları &lt;u&gt;%1&lt;/u&gt; klasörüne çıkarır</translation>
-    </message>
-    <message>
-        <source> and pileup with &lt;u&gt;%1&lt;/u&gt; span</source>
-        <translation type="vanished"> ve &lt;u&gt;%1&lt;/u&gt; span ile zincirleme</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::MACSWorker</name>
-    <message>
-        <source>Bad model fold region: %1. Default region is used</source>
-        <translation type="vanished">Hatalı model katlama bölgesi: %1. Varsayılan bölge kullanılıyor</translation>
-    </message>
-    <message>
-        <source>unrecognized parsing error</source>
-        <translation type="vanished">tanınmayan ayrıştırma hatası</translation>
-    </message>
-    <message>
-        <source>Input control and treatment annotations are the same</source>
-        <translation type="vanished">Giriş kontrolü ve işlem ek açıklamaları aynıdır</translation>
-    </message>
-    <message>
-        <source>Treatment features</source>
-        <translation type="vanished">Tedavi özellikleri</translation>
-    </message>
-    <message>
-        <source>ChIP-seq treatment features.</source>
-        <translation type="vanished">ChIP-seq tedavi özellikleri.</translation>
-    </message>
-    <message>
-        <source>Control features</source>
-        <translation type="vanished">Kontrol özellikleri</translation>
-    </message>
-    <message>
-        <source>Control features (Optional).</source>
-        <translation type="vanished">Kontrol özellikleri (İsteğe bağlı).</translation>
-    </message>
-    <message>
-        <source>MACS data</source>
-        <translation type="vanished">MACS verileri</translation>
-    </message>
-    <message>
-        <source>ChIP-seq treatment features and control features (optional) to call peaks with MACS.</source>
-        <translation type="vanished">MACS ile zirveleri çağırmak için ChIP-seq işleme özellikleri ve kontrol özellikleri (isteğe bağlı).</translation>
-    </message>
-    <message>
-        <source>Peak regions</source>
-        <translation type="vanished">Tepe bölgeler</translation>
-    </message>
-    <message>
-        <source>Peak locations. Typically used in gene association study like CEAS, or correlation calculation.</source>
-        <translation type="vanished">Tepe yerleri. Genellikle CEAS gibi gen ilişkilendirme çalışmasında veya korelasyon hesaplamasında kullanılır.</translation>
-    </message>
-    <message>
-        <source>Peak summits</source>
-        <translation type="vanished">Zirve zirveleri</translation>
-    </message>
-    <message>
-        <source>Peak summits locations for every peaks. Typically used in DNA motif analysis or conservation check.</source>
-        <translation type="vanished">Peak, her zirve için yerleri zirveler. Tipik olarak DNA motif analizi veya koruma kontrolünde kullanılır.</translation>
-    </message>
-    <message>
-        <source>Treatment fragments pileup (wiggle)</source>
-        <translation type="vanished">Tedavi parçaları yığılıyor (kıpırdama)</translation>
-    </message>
-    <message>
-        <source>Wiggle format files which can be imported to UCSC genome browser/GMOD/Affy IGB.</source>
-        <translation type="vanished">UCSC genom tarayıcısına/GMOD/Affy IGB&apos;ye aktarılabilen Wiggle formatlı dosyalar.</translation>
-    </message>
-    <message>
-        <source>MACS output data</source>
-        <translation type="vanished">MACS çıktı verileri</translation>
-    </message>
-    <message>
-        <source>ChIP-seq peaks and summits. Pileup data (optional)</source>
-        <translation type="vanished">ChIP-seq zirveleri ve zirveleri. Yığın verileri (isteğe bağlı)</translation>
-    </message>
-    <message>
-        <source>Output folder</source>
-        <translation type="vanished">Çıktı klasörü</translation>
-    </message>
-    <message>
-        <source>Folder to save MACS output files.</source>
-        <translation type="vanished">MACS çıktı dosyalarını kaydetmek için klasör.</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="vanished">İsme göre</translation>
-    </message>
-    <message>
-        <source>The name string of the experiment. MACS will use this string NAME to create output files like &apos;NAME_peaks.xls&apos;, &apos;NAME_negative_peaks.xls&apos;, &apos;NAME_peaks.bed&apos;, &apos;NAME_summits.bed&apos;, &apos;NAME_model.r&apos; and so on. So please avoid any confliction between these filenames and your existing files (--name).</source>
-        <translation type="vanished">Deneyin ad dizesi. MACS, bu NAME dizesini &apos;NAME_peaks.xls&apos;, &apos;NAME_negative_peaks.xls&apos;, &apos;NAME_peaks.bed&apos;, &apos;NAME_summits.bed&apos;, &apos;NAME_model.r&apos; gibi çıktı dosyaları oluşturmak için kullanacaktır. Bu nedenle, lütfen bu dosya adları ile mevcut dosyalarınız (--name) arasında herhangi bir çelişki olmasını önleyin.</translation>
-    </message>
-    <message>
-        <source>Wiggle output</source>
-        <translation type="vanished">Wiggle çıktısı</translation>
-    </message>
-    <message>
-        <source>If this flag is on, MACS will store the fragment pileup in wiggle format for the whole genome data instead of for every chromosomes (--wig) (--single-profile).</source>
-        <translation type="vanished">Bu bayrak açıksa, MACS parça yığınını her kromozom (--wig) (--single-profil) yerine tüm genom verileri için kıpırdatma biçiminde kaydedecektir.</translation>
-    </message>
-    <message>
-        <source>Wiggle space</source>
-        <translation type="vanished">Kıpırdama alanı</translation>
-    </message>
-    <message>
-        <source>By default, the resolution for saving wiggle files is 10 bps,i.e., MACS will save the raw tag count every 10 bps. You can change it along with &apos;--wig&apos; option (--space).</source>
-        <translation type="vanished">Varsayılan olarak, kıpırdatma dosyalarını kaydetme çözünürlüğü 10 bps&apos;dir, yani MACS, ham etiket sayısını her 10 bps&apos;de kaydedecektir. Bunu &apos;--wig&apos; seçeneği (--space) ile değiştirebilirsiniz.</translation>
-    </message>
-    <message>
-        <source>Genome size (Mbp)</source>
-        <translation type="vanished">Genom boyutu (Mbp)</translation>
-    </message>
-    <message>
-        <source>Homo sapience - 2700 Mbp&lt;br&gt;Mus musculus - 1870 Mbp&lt;br&gt;Caenorhabditis elegans - 90 Mbp&lt;br&gt;Drosophila melanogaster  - 120 Mbp&lt;br&gt; It&apos;s the mappable genome size or effective genome size which is defined as the genome size which can be sequenced. Because of the repetitive features on the chromosomes, the actual mappable genome size will be smaller than the original size, about 90% or 70% of the genome size (--gsize).</source>
-        <translation type="vanished">Homo sapience - 2700 Mbp&lt;br&gt;Mus musculus - 1870 Mbp&lt;br&gt;Caenorhabditis elegans - 90 Mbp&lt;br&gt;Drosophila melanogaster - 120 Mbp&lt;br&gt;Eşleştirilebilen genom boyutu olarak tanımlanan, haritalanabilir genom boyutu veya etkili genom boyutudur. sıralanabilir. Kromozomlardaki tekrarlayan özellikler nedeniyle, gerçek eşlenebilir genom boyutu, orijinal boyuttan daha küçük olacaktır, genom boyutunun yaklaşık % 90 veya % 70&apos;i (--gsize).</translation>
-    </message>
-    <message>
-        <source>P-value</source>
-        <translation type="vanished">P değeri</translation>
-    </message>
-    <message>
-        <source>P-value cutoff. Default is 0.00001, for looser results, try 0.001 instead (--pvalue).</source>
-        <translation type="vanished">P değeri kesimi. Varsayılan 0.00001&apos;dir, daha gevşek sonuçlar için bunun yerine 0.001&apos;i deneyin (--p değeri).</translation>
-    </message>
-    <message>
-        <source>Q-value</source>
-        <translation type="vanished">Q değeri</translation>
-    </message>
-    <message>
-        <source>Minimum FDR (q-value) cutoff for peak detection.</source>
-        <translation type="vanished">Pik tespiti için minimum FDR (q-değeri) kesimi.</translation>
-    </message>
-    <message>
-        <source>Use model</source>
-        <translation type="vanished">Modeli kullan</translation>
-    </message>
-    <message>
-        <source>Whether or not to use MACS paired peaks model (--nomodel).</source>
-        <translation type="vanished">MACS eşleştirilmiş zirve modelinin (--nomodel) kullanılıp kullanılmayacağı.</translation>
-    </message>
-    <message>
-        <source>Model fold</source>
-        <translation type="vanished">Model katlama</translation>
-    </message>
-    <message>
-        <source>Select the regions within MFOLD range of high-confidence enrichment ratio against. &lt;b&gt;Model fold&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is true, which is the foldchange to chose paired peaks to build paired peaks model. Users need to set a lower(smaller) and upper(larger) number for fold change so that MACS will only use the peaks within these foldchange range to build model (--mfold).</source>
-        <translation type="vanished">MFOLD aralığında yüksek güvenilirlikli zenginleştirme oranına karşı bölgeleri seçin. &lt;b&gt;Model katlama&lt;/b&gt;, &lt;b&gt;Modeli kullan&lt;/b&gt; doğru olduğunda kullanılabilir; bu, eşleştirilmiş pikler modeli oluşturmak için eşleştirilmiş zirveleri seçen kat değişimidir. Kullanıcıların kat değişimi için daha düşük (daha küçük) ve daha büyük (daha büyük) bir sayı ayarlamaları gerekir, böylece MACS modeli oluşturmak için bu kat değişim aralığı içindeki zirveleri yalnızca kullanır (--mfold).</translation>
-    </message>
-    <message>
-        <source>Shift size</source>
-        <translation type="vanished">Vardiya boyutu</translation>
-    </message>
-    <message>
-        <source>An arbitrary shift value used as a half of the fragment size when model is not built. &lt;b&gt;Shift size&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is false, which will represent the HALF of the fragment size of your sample. If your sonication and size selection size is 300 bps, after you trim out nearly 100 bps adapters, the fragment size is about 200 bps, so you can specify 100 here (--shiftsize).</source>
-        <translation type="vanished">Model oluşturulmadığında parça boyutunun yarısı olarak kullanılan keyfi bir kaydırma değeri. &lt;b&gt;Kaydırma boyutu&lt;/b&gt;, &lt;b&gt;Modeli kullan&lt;/b&gt; yanlış olduğunda kullanılabilir ve bu, numunenizin parça boyutunun YARISINI temsil eder. Seslendirme ve boyut seçim boyutunuz 300 bps ise, yaklaşık 100 bps&apos;lik adaptörleri kestikten sonra, parça boyutu yaklaşık 200 bps&apos;dir, böylece burada 100 (--shiftsize) belirtebilirsiniz.</translation>
-    </message>
-    <message>
-        <source>Keep duplicates</source>
-        <translation type="vanished">Yinelenenleri saklayın</translation>
-    </message>
-    <message>
-        <source>It controls the MACS behavior towards duplicate tags at the exact same location -- the same coordination and the same strand. The default &lt;b&gt;auto&lt;/b&gt; option makes MACS calculate the maximum tags at the exact same location based on binomal distribution using 1e-5 as pvalue cutoff; and the &lt;b&gt;all&lt;/b&gt; option keeps every tags. If an &lt;b&gt;integer&lt;/b&gt; is given, at most this number of tags will be kept at the same location (--keep-dup).</source>
-        <translation type="vanished">Aynı konumdaki yinelenen etiketlere yönelik MACS davranışını kontrol eder - aynı koordinasyon ve aynı iplik. Varsayılan &lt;b&gt;otomatik&lt;/b&gt; seçeneği, MACS&apos;nin pvalue cutoff olarak 1e-5&apos;i kullanarak binomal dağılıma dayalı olarak aynı konumdaki maksimum etiketleri hesaplamasını sağlar; ve &lt;b&gt;tümü&lt;/b&gt; seçeneği her etiketi saklar. Bir &lt;b&gt;tamsayı&lt;/b&gt; verilirse, en fazla bu sayıda etiket aynı konumda tutulacaktır (--keep-dup).</translation>
-    </message>
-    <message>
-        <source>Band width</source>
-        <translation type="vanished">Bant genişliği</translation>
-    </message>
-    <message>
-        <source>The band width which is used to scan the genome for model building. You can set this parameter as the sonication fragment size expected from wet experiment. Used only while building the shifting model (--bw).</source>
-        <translation type="vanished">Model oluşturmak için genomu taramak için kullanılan bant genişliği. Bu parametreyi ıslak deneyden beklenen sonikasyon parçası boyutu olarak ayarlayabilirsiniz. Yalnızca değişen model (--bw) oluştururken kullanılır.</translation>
-    </message>
-    <message>
-        <source>Extended fragment pileup</source>
-        <translation type="vanished">Genişletilmiş parça yığılması</translation>
-    </message>
-    <message>
-        <source>Whether or not to generate extended fragment pileup, local lambda and score tracks at every bp.</source>
-        <translation type="vanished">Her bp&apos;de genişletilmiş parça yığını, yerel lambda ve skor izleri oluşturup oluşturmama.</translation>
-    </message>
-    <message>
-        <source>Tag size (optional)</source>
-        <translation type="vanished">Etiket boyutu (isteğe bağlı)</translation>
-    </message>
-    <message>
-        <source>Length of reads. Determined from first 10 reads if not specified (input &lt;b&gt;0&lt;/b&gt;) (--tsize).</source>
-        <translation type="vanished">Okuma uzunluğu. Belirtilmediyse ilk 10 okumadan belirlenir (giriş &lt;b&gt;0&lt;/b&gt;) (--tsize).</translation>
-    </message>
-    <message>
-        <source>Use lambda</source>
-        <translation type="vanished">Lambda kullan</translation>
-    </message>
-    <message>
-        <source>Whether to use local lambda model which can use the local bias at peak regions to throw out false positives (--nolambda).</source>
-        <translation type="vanished">Yanlış pozitifleri (--nolambda) atmak için tepe bölgelerdeki yerel önyargıyı kullanabilen yerel lambda modelinin kullanılıp kullanılmayacağı.</translation>
-    </message>
-    <message>
-        <source>Small nearby region</source>
-        <translation type="vanished">Yakındaki küçük bölge</translation>
-    </message>
-    <message>
-        <source>The small nearby region in basepairs to calculate dynamic lambda. This is used to capture the bias near the peak summit region. Invalid if there is no control data (--slocal).</source>
-        <translation type="vanished">Dinamik lambda&apos;yı hesaplamak için taban çiftlerindeki küçük yakın bölge. Bu, zirve zirvesi bölgesinin yakınındaki önyargıyı yakalamak için kullanılır. Kontrol verisi (--slocal) yoksa geçersizdir.</translation>
-    </message>
-    <message>
-        <source>Large nearby region</source>
-        <translation type="vanished">Yakındaki geniş bölge</translation>
-    </message>
-    <message>
-        <source>The large nearby region in basepairs to calculate dynamic lambda.  This is used to capture the surround bias (--llocal).</source>
-        <translation type="vanished">Dinamik lambda&apos;yı hesaplamak için taban çiftlerindeki büyük yakın bölge. Bu, çevre önyargısını (--llocal) yakalamak için kullanılır.</translation>
-    </message>
-    <message>
-        <source>Auto bimodal</source>
-        <translation type="vanished">Otomatik çift modlu</translation>
-    </message>
-    <message>
-        <source>Whether turn on the auto pair model process.If set, when MACS failed to build paired model, it will use the nomodelsettings, the “Shift size” parameter to shift and extend each tags (--on-auto).</source>
-        <translation type="vanished">Otomatik çift modeli sürecini açıp açmayacağı. Ayarlanırsa, MACS eşleştirilmiş model oluşturmada başarısız olduğunda, her bir etiketi kaydırmak ve genişletmek için nomodelsettings, &quot;Shift size&quot; parametresini kullanır (--on-auto).</translation>
-    </message>
-    <message>
-        <source>Scale to large</source>
-        <translation type="vanished">Büyük ölçekle</translation>
-    </message>
-    <message>
-        <source> When set, scale the small sample up to the bigger sample.By default, the bigger dataset will be scaled down towards the smaller dataset,which will lead to smaller p/qvalues and more specific results.Keep in mind that scaling down will bring down background noise more (--to-large).</source>
-        <translation type="vanished"> Ayarlandığında, küçük örneği daha büyük örneğe doğru ölçeklendirin. Varsayılan olarak, daha büyük veri kümesi daha küçük veri kümesine doğru ölçeklenecek ve bu da daha küçük p/q değerlerine ve daha özel sonuçlara yol açacaktır. arka plan gürültüsü daha fazla (--geniş).</translation>
-    </message>
-    <message>
-        <source>Shift control</source>
-        <translation type="vanished">Vardiya kontrolü</translation>
-    </message>
-    <message>
-        <source>When set, control tags will be shifted just as ChIP tags according to their strand before the extension of d, slocal and llocal. By default, control tags are extended centeredat their current positions regardless of strand. You may consider to turn this option on whilecomparing two ChIP datasets of different condition but the same factor.</source>
-        <translation type="vanished">Ayarlandığında, kontrol etiketleri, d, slocal ve llocal uzantılarından önce zincirlerine göre ChIP etiketleri gibi kaydırılacaktır. Varsayılan olarak, kontrol etiketleri, sarmaldan bağımsız olarak geçerli konumlarında ortalanmış olarak genişletilir. Farklı koşullara sahip ancak aynı faktöre sahip iki ChIP veri kümesini karşılaştırırken bu seçeneği açmayı düşünebilirsiniz.</translation>
-    </message>
-    <message>
-        <source>Half-extend</source>
-        <translation type="vanished">Yarım uzatma</translation>
-    </message>
-    <message>
-        <source>When set, MACS extends 1/2 d size for each fragment centered at its middle point.</source>
-        <translation type="vanished">Ayarlandığında, MACS, orta noktasında ortalanmış her parça için 1/2 d boyutunda genişler.</translation>
-    </message>
-    <message>
-        <source>Broad</source>
-        <translation type="vanished">Kalın</translation>
-    </message>
-    <message>
-        <source>If set, MACS will try to call broad peaks by linking nearby highly enriched regions.The linking region is controlled by another cutoff through “Broad cutoff”.The maximum linking region length is 4 times of d from MACS.</source>
-        <translation type="vanished">Ayarlanırsa, MACS, yakındaki yüksek oranda zenginleştirilmiş bölgeleri birbirine bağlayarak geniş zirveleri aramaya çalışacaktır. Bağlantı bölgesi, &quot;Geniş kesme&quot; yoluyla başka bir kesme tarafından kontrol edilir. Maksimum bağlantı bölgesi uzunluğu, MACS&apos;den d&apos;nin 4 katıdır.</translation>
-    </message>
-    <message>
-        <source>Broad cutoff</source>
-        <translation type="vanished">Geniş kesim</translation>
-    </message>
-    <message>
-        <source>Cutoff for broad region. This option is not available unless “Broad” is set.If “P-value” is set, this is a pvalue cutoff, otherwise, it&apos;s a qvalue cutoff.</source>
-        <translation type="vanished">Geniş bölge için kesim. Bu seçenek, &quot;Geniş&quot; ayarlanmadıkça kullanılamaz. &quot;P değeri&quot; ayarlanmışsa, bu bir p değeri kesimidir, aksi takdirde, bir qdeğer kesimidir.</translation>
-    </message>
-    <message>
-        <source>Find Peaks with MACS</source>
-        <translation type="vanished">MACS ile Zirveleri Bulun</translation>
-    </message>
-    <message>
-        <source>Performs peak calling for ChIP-Seq data.</source>
-        <translation type="vanished">ChIP-Seq verileri için en yüksek arama gerçekleştirir.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::Peak2GenePrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">ayarlanmadı</translation>
-    </message>
-    <message>
-        <source>Uses annotations from &lt;u&gt;%1&lt;/u&gt; as peak regions </source>
-        <translation type="vanished">En yoğun bölgeler olarak &lt;u&gt;%1&lt;/u&gt; kaynaklı ek açıklamaları kullanır </translation>
-    </message>
-    <message>
-        <source> to annotate with genes nearby from &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation type="vanished"> &lt;u&gt;%1&lt;/u&gt; adresindeki genlerle açıklama eklemek için.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::Peak2GeneWorker</name>
-    <message>
-        <source>Treatment features</source>
-        <translation type="vanished">Tedavi özellikleri</translation>
-    </message>
-    <message>
-        <source>Result peaks of MACS.</source>
-        <translation type="vanished">MACS&apos;nin sonuç zirveleri.</translation>
-    </message>
-    <message>
-        <source>Peak2gene data</source>
-        <translation type="vanished">Peak2gene verileri</translation>
-    </message>
-    <message>
-        <source>MACS peaks to get the refgenes near the peak summit/center.</source>
-        <translation type="vanished">MACS zirveleri, refgenleri zirve zirvesine / merkeze yakın bir yere götürür.</translation>
-    </message>
-    <message>
-        <source>Gene regions</source>
-        <translation type="vanished">Gen bölgeleri</translation>
-    </message>
-    <message>
-        <source>Annotation for each gene, containing all the peaks nearby.</source>
-        <translation type="vanished">Yakındaki tüm zirveleri içeren her gen için açıklama.</translation>
-    </message>
-    <message>
-        <source>Peak regions</source>
-        <translation type="vanished">Tepe bölgeler</translation>
-    </message>
-    <message>
-        <source>Annotation for each peak, containing all the genes nearby.</source>
-        <translation type="vanished">Yakındaki tüm genleri içeren her tepe için açıklama.</translation>
-    </message>
-    <message>
-        <source>Gene regions URL</source>
-        <translation type="vanished">Gen bölgeleri URL&apos;si</translation>
-    </message>
-    <message>
-        <source>URL to file with annotation for each gene, containing all the peaks nearby.</source>
-        <translation type="vanished">Yakındaki tüm zirveleri içeren, her gen için ek açıklama içeren dosyanın URL&apos;si.</translation>
-    </message>
-    <message>
-        <source>Peak regions URL</source>
-        <translation type="vanished">Tepe bölgeleri URL&apos;si</translation>
-    </message>
-    <message>
-        <source>URL to file with annotation for each peak, containing all the genes nearby.</source>
-        <translation type="vanished">Yakındaki tüm genleri içeren, her tepe noktası için ek açıklama içeren dosyalanacak URL.</translation>
-    </message>
-    <message>
-        <source>Peak2gene output data</source>
-        <translation type="vanished">Peak2gene çıktı verileri</translation>
-    </message>
-    <message>
-        <source>Genes containing all the peaks nearby and peaks containing all the genes nearby.</source>
-        <translation type="vanished">Yakındaki tüm zirveleri ve yakınındaki tüm genleri içeren zirveleri içeren genler.</translation>
-    </message>
-    <message>
-        <source>Output type</source>
-        <translation type="vanished">Çıktı türü</translation>
-    </message>
-    <message>
-        <source>Select which type of genes need to output. &lt;b&gt;up&lt;/b&gt; for genes upstream to peak summit, &lt;b&gt;down&lt;/b&gt; for genes downstream to peak summit, &lt;b&gt;all&lt;/b&gt; for both &lt;b&gt;up&lt;/b&gt; and &lt;b&gt;down&lt;/b&gt; (--op).</source>
-        <translation type="vanished">Hangi tür genlerin çıkması gerektiğini seçin. Yukarıdan zirveye genler için &lt;b&gt;yukarı&lt;/b&gt;, aşağı akıştan zirveye genler için &lt;b&gt;aşağı&lt;/b&gt;, hem &lt;b&gt;yukarı&lt;/b&gt; hem de &lt;b&gt;aşağı&lt;/b&gt; (--op).</translation>
-    </message>
-    <message>
-        <source>Official gene symbols</source>
-        <translation type="vanished">Resmi gen sembolleri</translation>
-    </message>
-    <message>
-        <source>Output &lt;b&gt;official gene symbol&lt;/b&gt; instead of &lt;b&gt;refseq name&lt;/b&gt; (--symbol).</source>
-        <translation type="vanished">&lt;b&gt;refseq adı&lt;/b&gt; (--sembol) yerine &lt;b&gt; resmi gen sembolü&lt;/b&gt;çıktı.</translation>
-    </message>
-    <message>
-        <source>Distance</source>
-        <translation type="vanished">Mesafe</translation>
-    </message>
-    <message>
-        <source>Set a number which unit is base. It will get the refGenes in n bases from peak center (--distance).</source>
-        <translation type="vanished">Hangi birimin temel olduğunu bir sayı ayarlayın. RefGenes&apos;i tepe merkezden (--messafe) n temelde alacaktır.</translation>
-    </message>
-    <message>
-        <source>Genome file</source>
-        <translation type="vanished">Genom dosyası</translation>
-    </message>
-    <message>
-        <source>Select a genome file (sqlite3 file) to search refGenes (--genome).</source>
-        <translation type="vanished">RefGenes (--genome) aramak için bir genom dosyası (sqlite3 dosyası) seçin.</translation>
-    </message>
-    <message>
-        <source>Annotate Peaks with peak2gene</source>
-        <translation type="vanished">Peak2gene ile Peaks&apos;e açıklama ekleyin</translation>
-    </message>
-    <message>
-        <source>Gets refGenes near the ChIP regions identified by a peak-caller.</source>
-        <translation type="vanished">Bir tepe arayan tarafından tanımlanan ChIP bölgelerinin yakınında refGenes alır.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::SeqPosComboBoxWithChecksDelegate</name>
-    <message>
-        <source>Hint:</source>
-        <translation type="vanished">İpucu:</translation>
-    </message>
-    <message>
-        <source>Use &apos;cistrome.xml&apos; to descrease the computation time. It is a comprehensive collection of motifs from the other databases with similar motifs deleted.</source>
-        <translation type="vanished">Hesaplama süresini azaltmak için &apos;cistrome.xml&apos; kullanın. Diğer veritabanlarından benzer motifler silinmiş kapsamlı bir motif koleksiyonudur.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::SeqPosPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">ayarlanmadı</translation>
-    </message>
-    <message>
-        <source>Uses regions from &lt;u&gt;%1&lt;/u&gt; to find motifs enriched in them.</source>
-        <translation type="vanished">&lt;u&gt;%1&lt;/u&gt; &apos;den bölgeleri zenginleştirilmiş motifleri bulmak için kullanır.</translation>
-    </message>
-    <message>
-        <source> Genome assembly: &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation type="vanished"> Genom montajı: &lt;u&gt;%1&lt;/u&gt;.</translation>
-    </message>
-    <message>
-        <source> Finds de novo motifs.</source>
-        <translation type="vanished"> De novo motifleri bulur.</translation>
-    </message>
-    <message>
-        <source> Uses &lt;u&gt;%1&lt;/u&gt; known motifs.</source>
-        <translation type="vanished"> Bilinen &lt;u&gt;%1&lt;/u&gt; motifleri kullanır.</translation>
-    </message>
-    <message>
-        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</source>
-        <translation type="vanished"> Tüm sonuç dosyalarını &lt;u&gt;%1&lt;/u&gt; klasörüne çıkarır</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::SeqPosWorker</name>
-    <message>
-        <source>Input regions</source>
-        <translation type="vanished">Giriş bölgeleri</translation>
-    </message>
-    <message>
-        <source>Peak summits.</source>
-        <translation type="vanished">Zirve zirveleri.</translation>
-    </message>
-    <message>
-        <source>SeqPos data</source>
-        <translation type="vanished">SeqPos verileri</translation>
-    </message>
-    <message>
-        <source>Finds motifs enriched in a set of regions.</source>
-        <translation type="vanished">Bir dizi bölgede zenginleştirilmiş motifler bulur.</translation>
-    </message>
-    <message>
-        <source>Output folder</source>
-        <translation type="vanished">Çıktı klasörü</translation>
-    </message>
-    <message>
-        <source>The folder to store seqpos results.</source>
-        <translation type="vanished">Sıra sonuçlarının saklanacağı klasör.</translation>
-    </message>
-    <message>
-        <source>Genome assembly version</source>
-        <translation type="vanished">Genom montaj versiyonu</translation>
-    </message>
-    <message>
-        <source>UCSC database version (GENOME).</source>
-        <translation type="vanished">UCSC veritabanı sürümü (GENOME).</translation>
-    </message>
-    <message>
-        <source>De novo motifs</source>
-        <translation type="vanished">De novo motifleri</translation>
-    </message>
-    <message>
-        <source>Run de novo motif search (-d).</source>
-        <translation type="vanished">De novo motif aramayı çalıştırın (-d).</translation>
-    </message>
-    <message>
-        <source>Motif database</source>
-        <translation type="vanished">Motif veritabanı</translation>
-    </message>
-    <message>
-        <source>Known motif collections (-m). Warning: computation time increases with selecting additional databases. It is recommended to use cistrome.xml. It is a comprehensive collection of motifs from the other databases with similar motifs deleted.</source>
-        <translation type="vanished">Bilinen motif koleksiyonları (-m). Uyarı: ek veritabanları seçildiğinde hesaplama süresi artar. Cistrome.xml kullanılması önerilir. Diğer veritabanlarından benzer motifler silinmiş kapsamlı bir motif koleksiyonudur.</translation>
-    </message>
-    <message>
-        <source>Output file name</source>
-        <translation type="vanished">Çıktı dosyası adı</translation>
-    </message>
-    <message>
-        <source>Name of the output file which stores new motifs found during a de novo search (-n).</source>
-        <translation type="vanished">Bir de novo arama (-n) sırasında bulunan yeni motifleri saklayan çıktı dosyasının adı.</translation>
-    </message>
-    <message>
-        <source>Region width</source>
-        <translation type="vanished">Bölge genişliği</translation>
-    </message>
-    <message>
-        <source>Width of the region to be scanned for motifs; depends on a resolution of assay (-w).</source>
-        <translation type="vanished">Motifler için taranacak bölgenin genişliği; (-w) tahlil çözünürlüğüne bağlıdır.</translation>
-    </message>
-    <message>
-        <source>Pvalue cutoff</source>
-        <translation type="vanished">P Değer kesme</translation>
-    </message>
-    <message>
-        <source>Pvalue cutoff for the motif significance (-p).</source>
-        <translation type="vanished">P Motif anlamı için değer kesme (-p).</translation>
-    </message>
-    <message>
-        <source>Collect Motifs with SeqPos</source>
-        <translation type="vanished">SeqPos ile Motifleri Toplayın</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MACSSupport</name>
-    <message>
-        <source>&lt;i&gt;MACS&lt;/i&gt; - Model-based Analysis of ChIP-Seq data, which analyzes datagenerated by short read sequencers such as Solexa&apos;s Genome Analyzer. MACS empirically models the shiftsize of ChIP-Seq tags, and uses it to improve the spatial resolution of predicted binding sites.MACS also uses a dynamic Poisson distribution to effectively capture local biases in the genome,allowing for more robust predictions. MACS compares favorably to existing ChIP-Seq peak-finding algorithms, and is freely available.</source>
-        <translation type="vanished">&lt;i&gt;MACS&lt;/i&gt; - Solexa&apos;nın Genom Analizcisi gibi kısa okumalı sıralayıcılar tarafından oluşturulan verileri analiz eden ChIP-Seq verilerinin model tabanlı analizi. MACS, ChIP-Seq etiketlerinin kayma boyutunu deneysel olarak modeller ve tahmin edilen bağlanma sitelerinin uzamsal çözünürlüğünü iyileştirmek için kullanır.MACS ayrıca genomdaki yerel önyargıları etkili bir şekilde yakalamak için dinamik bir Poisson dağılımı kullanarak daha sağlam tahminlere olanak tanır. MACS, mevcut ChIP-Seq tepe bulma algoritmalarına kıyasla daha avantajlıdır ve ücretsiz olarak kullanılabilir.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MACSTask</name>
-    <message>
-        <source>MACS peak calling</source>
-        <translation type="vanished">MACS tepe arama</translation>
-    </message>
-</context>
-<context>
-    <name>U2::Peak2GeneFormatLoader</name>
-    <message>
-        <source>Incorrect start position at line %1: &apos;%2&apos;</source>
-        <translation type="vanished">%1 satırında yanlış başlangıç konumu: &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>Incorrect end position at line %1: &apos;%2&apos;</source>
-        <translation type="vanished">%1 satırında yanlış son konum: &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>Incorrect peak score at line %1: &apos;%2&apos;</source>
-        <translation type="vanished">%1 satırında yanlış tepe puanı: &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>Incorrect NA value at line %1: &apos;%2&apos;</source>
-        <translation type="vanished">%1 satırında yanlış NA değeri: &apos;%2&apos;</translation>
-    </message>
-</context>
-<context>
-    <name>U2::Peak2GeneSupport</name>
-    <message>
-        <source>&lt;i&gt;peak2gene&lt;/i&gt; - Gets refGenes near the ChIP regions identified by a peak-caller</source>
-        <translation type="vanished">&lt;i&gt;peak2gene&lt;/i&gt; - Yoğun arayan tarafından tanımlanan ChIP bölgelerinin yakınındaki refGen&apos;leri alır</translation>
-    </message>
-</context>
-<context>
-    <name>U2::PythonModuleDjangoSupport</name>
-    <message>
-        <source>: Python module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Python modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::PythonModuleNumpySupport</name>
-    <message>
-        <source>: Python module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Python modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleCelegansdbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleDrosophila2dbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleGodbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleGostatsSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleHgu133adbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleHgu133bdbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleHgu133plus2dbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleHgu95av2dbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleMouse430a2dbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleOrgceegdbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleOrgdmegdbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleOrghsegdbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleOrgmmegdbSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleSeqlogoSupport</name>
-    <message>
-        <source>: Rscript module for the %1 tool</source>
-        <translation type="vanished">: %1 aracı için Rscript modülü</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RModuleSupport</name>
-    <message>
-        <source>R module is not installed. Install module or set path to another R scripts interpreter with installed module in the External Tools settings</source>
-        <translation type="vanished">R modülü kurulu değil. Harici Araçlar ayarlarında modülü kurun veya başka bir R komut dosyası yorumlayıcısının yolunu ayarlayın</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RSupport</name>
-    <message>
-        <source>Rscript interpreter</source>
-        <translation type="vanished">Rscript yorumlayıcı</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SeqPosSupport</name>
-    <message>
-        <source>&lt;i&gt;SeqPos&lt;/i&gt; - Finds motifs enriched in a set of regions.</source>
-        <translation type="vanished">&lt;i&gt;SeqPos&lt;/i&gt; - Bir dizi bölgede zenginleştirilmiş motifleri bulur.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::TBlastXTask</name>
-    <message>
-        <source>Unexpected settings combination</source>
-        <translation type="vanished">Beklenmeyen ayarlar kombinasyonu</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BlastAllSupport</name>
-    <message>
-        <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST package instead.</source>
-        <translation type="vanished">&lt;i&gt;blastall&lt;/i&gt;, BLAST aramalarını çalıştırmak için NCBI tarafından geliştirilen ve dağıtılan eski programdır. NCBI, insanların bunun yerine BLAST + paketinin programlarını kullanmaya başlamasını önerir.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BlastAllSupportContext</name>
-    <message>
-        <source>Query with local BLAST...</source>
-        <translation type="vanished">Yerel BLAST ile sorgu...</translation>
-    </message>
-    <message>
-        <source>Sequence object is NULL</source>
-        <translation type="vanished">Sıra nesnesi BOŞ</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BlastAllSupportMultiTask</name>
-    <message>
-        <source>Source file</source>
-        <translation type="vanished">Kaynak dosya</translation>
-    </message>
-    <message>
-        <source>Used database</source>
-        <translation type="vanished">Kullanılan veritabanı</translation>
-    </message>
-    <message>
-        <source>No any results found</source>
-        <translation type="vanished">Hiçbir sonuç bulunamadı</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BlastAllSupportRunDialog</name>
-    <message>
-        <source>Wrong parameters for creating annotations</source>
-        <translation type="vanished">Ek açıklamalar oluşturmak için yanlış parametreler</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">Hata</translation>
-    </message>
-    <message>
-        <source>Cannot create an annotation object. Please check settings</source>
-        <translation type="vanished">Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BlastAllSupportTask</name>
-    <message>
-        <source>A problem occurred during doing BLAST. The sequence is no more available.</source>
-        <translation type="vanished">BLAST yapılırken bir sorun oluştu. Sıra artık mevcut değil.</translation>
-    </message>
-    <message>
-        <source>Subdirectory for temporary files exists. Can not remove this folder.</source>
-        <translation type="vanished">Geçici dosyalar için alt dizin mevcuttur. Bu klasörü kaldıramazsınız.</translation>
-    </message>
-    <message>
-        <source>Can not create folder for temporary files.</source>
-        <translation type="vanished">Geçici dosyalar için klasör oluşturulamaz.</translation>
-    </message>
-    <message>
-        <source>Can not create fake NCBI ini file</source>
-        <translation type="vanished">Sahte NCBI ini dosyası oluşturulamıyor</translation>
-    </message>
-    <message>
-        <source>Output file not found</source>
-        <translation type="vanished">Çıktı dosyası bulunamadı</translation>
-    </message>
-    <message>
-        <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
-        <translation type="vanished">Çıktı dosyası bulunamadı. %1 takım yolu &apos;%2&apos; geçerli değil mi?</translation>
-    </message>
-    <message>
-        <source>Can not remove folder for temporary files.</source>
-        <translation type="vanished">Geçici dosyalar için klasör kaldırılamaz.</translation>
-    </message>
-    <message>
-        <source>Incorrect number of fields in line: %1</source>
-        <translation type="vanished">Satırda yanlış alan sayısı: %1</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get location. Start position is absent in [%1]</source>
-        <translation type="vanished">Konum alınamıyor. [%1] konumunda başlangıç konumu yok</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get location. End position is absent in [%1]</source>
-        <translation type="vanished">Konum alınamıyor. [%1] konumunda son konum yok</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get hit start location from [%1]</source>
-        <translation type="vanished">[%1] üzerinden isabet başlangıç konumu alınamıyor</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get hit end location from [%1]</source>
-        <translation type="vanished">[%1] üzerinden isabet bitiş konumu alınamıyor</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get align length from [%1]</source>
-        <translation type="vanished">[%1] üzerinden hizalama uzunluğu alınamıyor</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get gaps from [%1]</source>
-        <translation type="vanished">[%1] üzerinden boşluk alınamıyor</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get identity from [%1]</source>
-        <translation type="vanished">[%1] &apos;den kimlik alınamıyor</translation>
-    </message>
-    <message>
-        <source>Can&apos;t open output file</source>
-        <translation type="vanished">Çıktı dosyası açılamıyor</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get Hsp_query-from element</source>
-        <translation type="vanished">Hsp_query öğesinden alınamıyor</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get Hsp_query-to element</source>
-        <translation type="vanished">Hsp_query-öğesi alınamıyor</translation>
-    </message>
-    <message>
-        <source>Unknown strand source setting</source>
-        <translation type="vanished">Bilinmeyen iplik kaynağı ayarı</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get location. %1[%2]</source>
-        <translation type="vanished">Konum alınamıyor. %1 [%2]</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get identity</source>
-        <translation type="vanished">Kimlik alamıyorum</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get gaps</source>
-        <translation type="vanished">Boşluk alamıyorum</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get align length</source>
-        <translation type="vanished">Uzunluğu hizalayamıyorum</translation>
-    </message>
-    <message>
-        <source>Can&apos;t evaluate location</source>
-        <translation type="vanished">Konum değerlendirilemiyor</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BlastAllWithExtFileSpecifySupportRunDialog</name>
-    <message>
-        <source>Select input file</source>
-        <translation type="vanished">Giriş dosyasını seçin</translation>
-    </message>
-    <message>
-        <source>This file has the incompatible format for the BLAST search.</source>
-        <translation type="vanished">Bu dosya, BLAST + araması için uyumsuz biçime sahip.</translation>
-    </message>
-    <message>
-        <source>This file does not contain any sequence.</source>
-        <translation type="vanished">Bu dosya herhangi bir sıra içermiyor.</translation>
-    </message>
-    <message>
-        <source>Wrong input file</source>
-        <translation type="vanished">Yanlış girdi dosyası</translation>
-    </message>
-    <message>
-        <source>Wrong parameters for creating annotations</source>
-        <translation type="vanished">Ek açıklamalar oluşturmak için yanlış parametreler</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BowtieAssembleTask</name>
-    <message>
-        <source>Reference index file &quot;%1&quot; does not exist</source>
-        <translation type="vanished">Referans dizin dosyası &quot;%1&quot; mevcut değil</translation>
-    </message>
-    <message>
-        <source>Unknown short reads format %1</source>
-        <translation type="vanished">Bilinmeyen kısa okuma biçimi %1</translation>
-    </message>
-    <message>
-        <source>There is not enough memory on the computer!</source>
-        <translation type="vanished">Bilgisayarda yeterli bellek yok!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::BowtieBuildIndexTask</name>
-    <message>
-        <source>Reference file &quot;%1&quot; does not exist</source>
-        <translation type="vanished">&quot;%1&quot; referans dosyası mevcut değil</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ExternalToolsValidateTask</name>
-    <message>
-        <source>Checking external tools</source>
-        <translation type="vanished">Harici araçları kontrol etme</translation>
-    </message>
-    <message>
-        <source> failed: </source>
-        <translation type="vanished"> başarısız oldu: </translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::BlastAllPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">ayarlanmadı</translation>
-    </message>
-    <message>
-        <source> from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation type="vanished"> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
-    </message>
-    <message>
-        <source>For sequence %1 find annotations in database &lt;u&gt;%2&lt;/u&gt;.</source>
-        <translation type="vanished">%1 dizisi için &lt;u&gt;%2&lt;/u&gt; veritabanında ek açıklamaları bulun.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::BlastAllWorker</name>
-    <message>
-        <source>Best hits limit</source>
-        <translation type="vanished">En iyi vuruş sınırı</translation>
-    </message>
-    <message>
-        <source>Number of best hits from a region to keep. 0 turns it off. If used, 100 is recommended.</source>
-        <translation type="vanished">Bir bölgeden saklanacak en iyi isabetlerin sayısı. 0 kapatır. Kullanılırsa 100 önerilir.</translation>
-    </message>
-    <message>
-        <source>Input sequence</source>
-        <translation type="vanished">Giriş sırası</translation>
-    </message>
-    <message>
-        <source>Sequence for which annotations is searched.</source>
-        <translation type="vanished">Ek açıklamaların arandığı sıra.</translation>
-    </message>
-    <message>
-        <source>Annotations</source>
-        <translation type="vanished">Açıklamalar</translation>
-    </message>
-    <message>
-        <source>Found annotations.</source>
-        <translation type="vanished">Ek açıklamalar bulundu.</translation>
-    </message>
-    <message>
-        <source>Search type</source>
-        <translation type="vanished">Arama türü</translation>
-    </message>
-    <message>
-        <source>Select type of BLAST searches.</source>
-        <translation type="vanished">BLAST aramalarının türünü seçin.</translation>
-    </message>
-    <message>
-        <source>Database Path</source>
-        <translation type="vanished">Veritabanı Yolu</translation>
-    </message>
-    <message>
-        <source>Path with database files.</source>
-        <translation type="vanished">Veritabanı dosyalarının bulunduğu yol.</translation>
-    </message>
-    <message>
-        <source>Database Name</source>
-        <translation type="vanished">Veri tabanı ismi</translation>
-    </message>
-    <message>
-        <source>Base name for BLAST DB files.</source>
-        <translation type="vanished">BLAST DB dosyaları için temel ad.</translation>
-    </message>
-    <message>
-        <source>Expected value</source>
-        <translation type="vanished">Beklenen değer</translation>
-    </message>
-    <message>
-        <source>This setting specifies the statistical significance threshold for reporting matches against database sequences.</source>
-        <translation type="vanished">Bu ayar, veritabanı dizilerine göre eşleşmeleri raporlamak için istatistiksel anlamlılık eşiğini belirtir.</translation>
-    </message>
-    <message>
-        <source>Annotate as</source>
-        <translation type="vanished">Olarak ek açıklama</translation>
-    </message>
-    <message>
-        <source>Name for annotations.</source>
-        <translation type="vanished">Ek açıklamalar için ad.</translation>
-    </message>
-    <message>
-        <source>Tool Path</source>
-        <translation type="vanished">Araç Yolu</translation>
-    </message>
-    <message>
-        <source>External tool path.</source>
-        <translation type="vanished">Harici araç yolu.</translation>
-    </message>
-    <message>
-        <source>Temporary folder</source>
-        <translation type="vanished">Geçici dosya</translation>
-    </message>
-    <message>
-        <source>Folder for temporary files.</source>
-        <translation type="vanished">Geçici dosyalar için klasör.</translation>
-    </message>
-    <message>
-        <source>BLAST output</source>
-        <translation type="vanished">BLAST çıktısı</translation>
-    </message>
-    <message>
-        <source>Location of BLAST output file.</source>
-        <translation type="vanished">BLAST çıktı dosyasının konumu.</translation>
-    </message>
-    <message>
-        <source>BLAST output type</source>
-        <translation type="vanished">BLAST çıktı türü</translation>
-    </message>
-    <message>
-        <source>Type of BLAST output file.</source>
-        <translation type="vanished">BLAST çıktı dosyasının türü.</translation>
-    </message>
-    <message>
-        <source>Gapped alignment</source>
-        <translation type="vanished">Aralıklı hizalama</translation>
-    </message>
-    <message>
-        <source>Perform gapped alignment.</source>
-        <translation type="vanished">Aralıklı hizalama gerçekleştirin.</translation>
-    </message>
-    <message>
-        <source>Gap costs</source>
-        <translation type="vanished">Boşluk maliyetleri</translation>
-    </message>
-    <message>
-        <source>Cost to create and extend a gap in an alignment.</source>
-        <translation type="vanished">Bir hizalamada boşluk yaratma ve genişletme maliyeti.</translation>
-    </message>
-    <message>
-        <source>Match scores</source>
-        <translation type="vanished">Eşleşme skorları</translation>
-    </message>
-    <message>
-        <source>Reward and penalty for matching and mismatching bases.</source>
-        <translation type="vanished">Eşleşen ve uyuşmayan üsler için ödül ve ceza.</translation>
-    </message>
-    <message>
-        <source>Local BLAST search</source>
-        <translation type="vanished">Yerel BLAST araması</translation>
-    </message>
-    <message>
-        <source>Finds annotations for DNA sequence in local database.</source>
-        <translation type="vanished">Yerel veri tabanında DNA dizisi için ek açıklamalar bulur.</translation>
-    </message>
-    <message>
-        <source>Empty sequence supplied to BLAST</source>
-        <translation type="vanished">BLAST&apos;a verilen boş sıra</translation>
-    </message>
-    <message>
-        <source>Selected BLAST search with nucleotide input sequence</source>
-        <translation type="vanished">Nükleotid giriş dizisi ile seçilmiş BLAST araması</translation>
-    </message>
-    <message>
-        <source>Selected BLAST search with amino acid input sequence</source>
-        <translation type="vanished">Amino asit giriş dizisi ile seçilmiş BLAST araması</translation>
-    </message>
-    <message>
-        <source>Not selected BLAST output file</source>
-        <translation type="vanished">BLAST çıktı dosyası seçilmedi</translation>
     </message>
 </context>
 </TS>

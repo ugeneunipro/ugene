@@ -4,7 +4,7 @@
 <context>
     <name>U2::SamtoolsAdapter</name>
     <message>
-        <location filename="../src/SamtoolsAdapter.cpp" line="53"/>
+        <location filename="../src/SamtoolsAdapter.cpp" line="57"/>
         <source>Invalid cigar operation %1, cannot convert to samtools</source>
         <translatorcomment>Geçersiz puro işlemi %1, samtools&apos;a dönüştürülemiyor</translatorcomment>
         <translation>Invalid cigar operation %1, cannot convert to samtools</translation>

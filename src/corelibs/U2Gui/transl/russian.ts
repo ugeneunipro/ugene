@@ -1182,22 +1182,6 @@
 <context>
     <name>RegionSelectorController</name>
     <message>
-        <source>Whole sequence</source>
-        <translation type="vanished">Вся последовательность</translation>
-    </message>
-    <message>
-        <source>Selected region</source>
-        <translation type="vanished">Выбранный регион</translation>
-    </message>
-    <message>
-        <source>Custom region</source>
-        <translation type="vanished">Заданный регион</translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation type="vanished">Позиция</translation>
-    </message>
-    <message>
         <location filename="../src/util/RegionSelectorController.cpp" line="207"/>
         <source>Invalid Start position of region</source>
         <translation>Некорректная стартовая позиция в регионе</translation>
@@ -1211,29 +1195,6 @@
         <location filename="../src/util/RegionSelectorController.cpp" line="209"/>
         <source>Start position is greater than End position</source>
         <translation>Начальная позичия больше чем конечная</translation>
-    </message>
-</context>
-<context>
-    <name>RegionSelectorWithExcludedRegion</name>
-    <message>
-        <source>Form</source>
-        <translation type="vanished">Форма</translation>
-    </message>
-    <message>
-        <source>1</source>
-        <translation type="vanished">1</translation>
-    </message>
-    <message>
-        <source>-</source>
-        <translation type="vanished">-</translation>
-    </message>
-    <message>
-        <source>Exclude</source>
-        <translation type="vanished">Исключить</translation>
-    </message>
-    <message>
-        <source>Region</source>
-        <translation type="vanished">Регион</translation>
     </message>
 </context>
 <context>
@@ -1434,24 +1395,24 @@
 <context>
     <name>U2::AddDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="332"/>
-        <location filename="../src/OpenViewTask.cpp" line="345"/>
+        <location filename="../src/OpenViewTask.cpp" line="333"/>
+        <location filename="../src/OpenViewTask.cpp" line="346"/>
         <source>Opening view for document: &apos;NONAME&apos;</source>
         <translation>Открытие документа: &apos;NONAME&apos;</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="335"/>
-        <location filename="../src/OpenViewTask.cpp" line="347"/>
+        <location filename="../src/OpenViewTask.cpp" line="336"/>
+        <location filename="../src/OpenViewTask.cpp" line="348"/>
         <source>Opening view for document: %1</source>
         <translation>Открытие документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="337"/>
+        <location filename="../src/OpenViewTask.cpp" line="338"/>
         <source>Provided document is NULL</source>
         <translation>Provided document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="349"/>
+        <location filename="../src/OpenViewTask.cpp" line="350"/>
         <source>Document provider is NULL</source>
         <translation>Document provider is NULL</translation>
     </message>
@@ -1709,12 +1670,12 @@ complement(5..15)</translation>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="74"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="76"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="74"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="76"/>
         <source>Found annotations that are out of the sequence range, continue?</source>
         <translation>Найдены аннотации, выходящие за границы последовательности. Продолжить?</translation>
     </message>
@@ -1735,69 +1696,69 @@ complement(5..15)</translation>
 <context>
     <name>U2::DownloadRemoteFileDialog</name>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="61"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="58"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="62"/>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="59"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="131"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="128"/>
         <source>Select folder to save</source>
         <translation>Папка для сохранения</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="169"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="165"/>
         <source>Resource id is empty!</source>
         <translation>Идентификатор ресурса пуст!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="175"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="171"/>
         <source>No folder selected for saving file!</source>
         <translation>Не задана папка для сохранения файла!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="203"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="199"/>
         <source>There are more than 100 files found for download.
 Are you sure you want to open all of them?</source>
         <translation>Найдено более 100 файлов для скачивания. Открыть их все?</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
         <source>Open anyway</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
         <source>Don&apos;t open</source>
         <translation>Не открывать</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="224"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="220"/>
         <source>Download remote documents</source>
         <translation>Скачать удаленные документы</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="265"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="261"/>
         <source>Hint: </source>
         <translation>Подсказка: </translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="266"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="262"/>
         <source>Use database unique identifier.</source>
         <translation>Использовать уникальный идентификатор базы данных.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="267"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="263"/>
         <source>You can download multiple items by separating IDs with space or semicolon.</source>
         <translation>Вы можете скачать несколько элементов разделяя идентификаторы при помощи пробела или точки с запятой.</translation>
     </message>
@@ -2080,7 +2041,7 @@ Are you sure you want to open all of them?</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="229"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="232"/>
         <source>Save Image As</source>
         <translation>Сохранить изображение как</translation>
     </message>
@@ -2093,8 +2054,8 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::FileLineEdit</name>
     <message>
-        <location filename="../src/util/DialogUtils.cpp" line="65"/>
-        <location filename="../src/util/DialogUtils.cpp" line="71"/>
+        <location filename="../src/util/DialogUtils.cpp" line="63"/>
+        <location filename="../src/util/DialogUtils.cpp" line="69"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
@@ -2130,7 +2091,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/GUIUtils.cpp" line="154"/>
         <location filename="../src/util/GUIUtils.cpp" line="164"/>
-        <location filename="../src/util/GUIUtils.cpp" line="182"/>
+        <location filename="../src/util/GUIUtils.cpp" line="180"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
@@ -2145,7 +2106,7 @@ Are you sure you want to open all of them?</source>
         <translation>Не удалось запустить браузер Интернет, установленный по умолчанию.</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="182"/>
+        <location filename="../src/util/GUIUtils.cpp" line="180"/>
         <source>Please specify the browser executable</source>
         <translation>Не указано приложение браузера</translation>
     </message>
@@ -2219,42 +2180,42 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ImportToDatabaseDialog</name>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="61"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="62"/>
         <source>Files and folders</source>
         <translation>Файлы и папки</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="62"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="63"/>
         <source>Documents and objects</source>
         <translation>Документы и объекты</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="98"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="99"/>
         <source>Override options</source>
         <translation>Настройки замещения</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="102"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="103"/>
         <source>Reset to general options</source>
         <translation>Сброс на общие настройки</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="205"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="206"/>
         <source>Import</source>
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="291"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="292"/>
         <source>Select files to import</source>
         <translation>Выберите файлы для импорта</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="314"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="315"/>
         <source>Select a folder to import</source>
         <translation>Выберите папку для импорта</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="549"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="550"/>
         <source>This file will be imported with its own options.
 
 </source>
@@ -2263,59 +2224,59 @@ Are you sure you want to open all of them?</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="552"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="553"/>
         <source>File:
 </source>
         <translation>Файл:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="555"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="594"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="640"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="657"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="556"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="595"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="641"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="658"/>
         <source>Import to: </source>
         <translation>Импортировать в: </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="559"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="560"/>
         <source>A folder for file objects will be created</source>
         <translation>Будет создана папка для файловых объектов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="563"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="607"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="564"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="608"/>
         <source>If file is not recognized, it will be imported as binary data</source>
         <translation>Если файл не будет распознан, он будет импортирован в виде бинарных данных</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="568"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="612"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="569"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="613"/>
         <source>If file contains more than one sequence, they will imported as separate objects</source>
         <translation>Если файл содержит больше чем одну последовательность, то они будут импортированы как отдельные объекты</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="571"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="615"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="572"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="616"/>
         <source>If file contains more than one sequence, they will imported as single sequence with several &apos;Unknown&apos; bases as separator</source>
         <translation>Если файл содержит больше чем одну последовательность они будут импортированы в одну последовательность с несколькими &apos;Unknown&apos; символами в качестве разделителей</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="572"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="616"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="573"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="617"/>
         <source>Size of separator: %1</source>
         <translation>Размер разделителя: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="575"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="619"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="576"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="620"/>
         <source>If file contains more than one sequence, they will be joined into the multiple alignment</source>
         <translation>Если файл содержит больше чем одну последовательность они будут соединены в выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="588"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="632"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="651"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="589"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="633"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="652"/>
         <source>This folder will be imported with its own options.
 
 </source>
@@ -2324,34 +2285,34 @@ Are you sure you want to open all of them?</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="591"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="592"/>
         <source>Folder:
 </source>
         <translation>Папка:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="599"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="600"/>
         <source>The folder will be processed recursively</source>
         <translation>Эта папка будет будет обработана рекурсивно</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="603"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="604"/>
         <source>A folder for each file will be created</source>
         <translation>Будет создана папка для каждого файла</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="636"/>
         <source>The </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="636"/>
         <source> from document </source>
         <translation> из документа </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="654"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="655"/>
         <source>Document:
 </source>
         <translation>Документ:
@@ -2361,13 +2322,13 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::LoadRemoteDocumentAndAddToProjectTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="216"/>
-        <location filename="../src/OpenViewTask.cpp" line="226"/>
+        <location filename="../src/OpenViewTask.cpp" line="217"/>
+        <location filename="../src/OpenViewTask.cpp" line="227"/>
         <source>Load remote document and add to project</source>
         <translation>Load remote document and add to project</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="278"/>
+        <location filename="../src/OpenViewTask.cpp" line="279"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
     </message>
@@ -2375,7 +2336,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::LoadUnloadedDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="65"/>
+        <location filename="../src/OpenViewTask.cpp" line="66"/>
         <source>Load document: &apos;%1&apos;</source>
         <translation>Загрузка документа: %1</translation>
     </message>
@@ -2510,7 +2471,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/PasteController.cpp" line="119"/>
         <source>Data in clipboard is too large.</source>
-        <translation>Двнные в буфере обмена слишком большие.</translation>
+        <translation type="unfinished">Двнные в буфере обмена слишком большие.</translation>
     </message>
 </context>
 <context>
@@ -2579,17 +2540,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectFileUtils</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="256"/>
+        <location filename="../src/ProjectParsing.cpp" line="257"/>
         <source>Project version is not a double value</source>
         <translation>Версия проекта не является вещественным значением</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="261"/>
+        <location filename="../src/ProjectParsing.cpp" line="262"/>
         <source>Project file was created by a newer version of UGENE. Please update UGENE.</source>
         <translation>Файл проекта был создан более ранней версией UGENE. Пожалуйста, обновите UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="267"/>
+        <location filename="../src/ProjectParsing.cpp" line="268"/>
         <source>Not a valid UGENE project file %1</source>
         <translation>Некорректный файл проекта UGENE: &quot;%1&quot;</translation>
     </message>
@@ -2597,17 +2558,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectParser10</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="338"/>
+        <location filename="../src/ProjectParsing.cpp" line="339"/>
         <source>Can&apos;t find project file: %1, ignoring</source>
         <translation>Невозможно найти файл проекта: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="342"/>
+        <location filename="../src/ProjectParsing.cpp" line="343"/>
         <source>Duplicate document found: %1, ignoring</source>
         <translation>Найдены одинаковые документы: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="390"/>
+        <location filename="../src/ProjectParsing.cpp" line="391"/>
         <source>The last loaded state was locked by format</source>
         <translation>Крайнее загруженное состояние было заблокировано форматом</translation>
     </message>
@@ -2615,67 +2576,67 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectTreeController</name>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="467"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="468"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="270"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="271"/>
         <source>Import to the database...</source>
         <translation>Импортировать в базу данных...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="270"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="271"/>
         <source>Import to the folder...</source>
         <translation>Импортировать в папку...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="696"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="697"/>
         <source>Add object to document...</source>
         <translation>Добавить объект в документ...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="701"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="702"/>
         <source>Import...</source>
         <translation>Импорт...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="706"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="707"/>
         <source>Load selected document(s)</source>
         <translation>Загрузить выбранный документ(ы)</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="713"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="714"/>
         <source>Unload selected document(s)</source>
         <translation>Выгрузить выбранный документ(ы)</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="732"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="733"/>
         <source>Remove selected items</source>
         <translation>Удалить выбранные элементы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="824"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="825"/>
         <source>Unable to Remove</source>
         <translation>Невозможно удалить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="825"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="826"/>
         <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
         <translation>Некоторые из выбранных объектов используются другими пользователями базы данных. Попробуйте удалить их позже.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="725"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="726"/>
         <source>Rename...</source>
         <translation>Переименовать...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="717"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="718"/>
         <source>Lock document for editing</source>
         <translation>Заблокировать внесение изменений</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="721"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="722"/>
         <source>Unlock document for editing</source>
         <translation>Снять блокировку изменений</translation>
     </message>
@@ -2731,12 +2692,12 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::QueryBlockWidget</name>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="213"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="217"/>
         <source>Term:</source>
         <translation>Условие:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="224"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="228"/>
         <source>All fields</source>
         <translation>Все поля</translation>
     </message>
@@ -2777,29 +2738,29 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::RegionSelector</name>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="132"/>
+        <location filename="../src/util/RegionSelector.cpp" line="126"/>
         <source>Set minimum</source>
         <translation>Установить минимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="137"/>
+        <location filename="../src/util/RegionSelector.cpp" line="131"/>
         <source>Set maximum</source>
         <translation>Установить максимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="144"/>
-        <location filename="../src/util/RegionSelector.cpp" line="169"/>
+        <location filename="../src/util/RegionSelector.cpp" line="138"/>
+        <location filename="../src/util/RegionSelector.cpp" line="163"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="152"/>
-        <location filename="../src/util/RegionSelector.cpp" line="177"/>
+        <location filename="../src/util/RegionSelector.cpp" line="146"/>
+        <location filename="../src/util/RegionSelector.cpp" line="171"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="99"/>
+        <location filename="../src/util/RegionSelector.cpp" line="93"/>
         <source>Invalid sequence region!</source>
         <translation>Некорректный регион последовательности!</translation>
     </message>
@@ -2825,13 +2786,6 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
         <source>Location</source>
         <translation>Позиция</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RegionSelectorWithExcludedRegion</name>
-    <message>
-        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
-        <translation type="vanished">&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</translation>
     </message>
 </context>
 <context>
@@ -2983,17 +2937,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::SearchGenbankSequenceDialogController</name>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="48"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="50"/>
         <source>Download</source>
         <translation>Скачать</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="49"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="51"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="170"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="174"/>
         <source>No results found corresponding to the query</source>
         <translation>Не найдено результатов соответствующих запросу</translation>
     </message>

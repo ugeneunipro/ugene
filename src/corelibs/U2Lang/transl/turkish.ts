@@ -33,17 +33,17 @@
         <translation>Maksimum mesafe</translation>
     </message>
     <message>
-        <location filename="../src/model/QDScheme.cpp" line="659"/>
+        <location filename="../src/model/QDScheme.cpp" line="639"/>
         <source>%1. %2</source>
         <translation>%1. %2</translation>
     </message>
     <message>
-        <location filename="../src/model/QDScheme.cpp" line="667"/>
+        <location filename="../src/model/QDScheme.cpp" line="647"/>
         <source>Invalid distance values</source>
         <translation>Geçersiz mesafe değerleri</translation>
     </message>
     <message>
-        <location filename="../src/model/QDScheme.cpp" line="674"/>
+        <location filename="../src/model/QDScheme.cpp" line="654"/>
         <source>Constraints can not be placed between elements of the same group</source>
         <translation>Kısıtlamalar aynı grubun elemanları arasına yerleştirilemez</translation>
     </message>
@@ -63,21 +63,21 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="481"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="499"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="551"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="587"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="614"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="648"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="674"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="690"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="706"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="722"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="778"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="808"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="847"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="873"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="900"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="927"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="954"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="981"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="590"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="617"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="651"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="677"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="693"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="709"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="725"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="781"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="811"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="850"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="876"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="903"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="930"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="957"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="984"/>
         <source>Incorrect number of arguments</source>
         <translation>Yanlış sayıda bağımsız değişken</translation>
     </message>
@@ -94,10 +94,10 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="448"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="486"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="568"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="593"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="601"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="620"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="727"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="596"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="604"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="623"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="730"/>
         <source>Empty or invalid sequence</source>
         <translation>Boş veya geçersiz sıra</translation>
     </message>
@@ -122,8 +122,8 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="321"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="438"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="511"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="660"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="858"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="663"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="861"/>
         <source>Second argument must be a number</source>
         <translation>İkinci argüman bir sayı olmalıdır</translation>
     </message>
@@ -150,16 +150,16 @@
     <message>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="504"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="558"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="653"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="679"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="695"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="711"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="656"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="682"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="698"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="714"/>
         <source>Invalid alignment</source>
         <translation>Geçersiz hizalama</translation>
     </message>
     <message>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="514"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="664"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="667"/>
         <source>Row is out of range</source>
         <translation>Satır aralık dışında</translation>
     </message>
@@ -179,52 +179,52 @@
         <translation>Uzunluk aralık dışında</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="604"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="607"/>
         <source>Alphabets of each sequence must be the same</source>
         <translation>Her dizinin alfabeleri aynı olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="628"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="631"/>
         <source>Alphabets don&apos;t match</source>
         <translation>Alfabe eşleşmiyor</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="882"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="885"/>
         <source>Empty annotation name</source>
         <translation>Ek açıklama adı boş</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="905"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="932"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="959"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="908"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="935"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="962"/>
         <source>Invalid file path</source>
         <translation>Geçersiz dosya yolu</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="910"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="937"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="913"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="940"/>
         <source>No data to write</source>
         <translation>Yazılacak veri yok</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="915"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="942"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="964"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="918"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="945"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="967"/>
         <source>Cannot open the file by given path</source>
         <translation>Dosya verilen yolla açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="986"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="989"/>
         <source>Empty file path</source>
         <translation>Boş dosya yolu</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="991"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="994"/>
         <source>Can&apos;t detect the sequence file format: </source>
         <translation>Sıra dosyası biçimi algılanamıyor: </translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="1007"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="1010"/>
         <source>There are no sequences in the file: </source>
         <translation>Dosyada hiç sıra yok: </translation>
     </message>
@@ -232,43 +232,43 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="191"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="444"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="525"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="634"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="637"/>
         <source>Third argument must be a number</source>
         <translation>Üçüncü argüman bir sayı olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="732"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="783"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="813"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="852"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="878"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="735"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="786"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="816"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="855"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="881"/>
         <source>Invalid annotations</source>
         <translation>Geçersiz ek açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="736"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="739"/>
         <source>Empty name</source>
         <translation>Ad boş</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="787"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="817"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="790"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="820"/>
         <source>Empty qualifier name</source>
         <translation>Boş niteleyici adı</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="791"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="821"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="794"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="824"/>
         <source>Empty qualifier value</source>
         <translation>Boş niteleyici değeri</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="827"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="830"/>
         <source>forth argument must be a string</source>
         <translation>dördüncü argüman bir dizge olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="862"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="865"/>
         <source>Index is out of range</source>
         <translation>Dizin aralık dışında</translation>
     </message>
@@ -358,22 +358,6 @@
         <translation>%1, %2 yuvalarının farklı türleri var</translation>
     </message>
     <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="45"/>
-        <source>Retrieving value of unassigned variable: %1</source>
-        <translation>Atanmamış değişkenin değeri alınıyor: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="60"/>
-        <location filename="../src/model/wizard/Variable.cpp" line="61"/>
-        <source>Unassigned variable: %1</source>
-        <translation>Atanmamış değişken: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="78"/>
-        <source>Variable is not defined: %1</source>
-        <translation>Değişken tanımlanmadı: %1</translation>
-    </message>
-    <message>
         <location filename="../src/model/wizard/Variable.cpp" line="89"/>
         <source>Can not parse predicate from the string: %1</source>
         <translation>Dizeden yüklem ayrıştırılamıyor: %1</translation>
@@ -434,32 +418,32 @@
         <translation>UGENE harici hatası. Lütfen tekrar deneyin</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="525"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="527"/>
         <source>Wrong label size value: %1</source>
         <translation>Yanlış etiket boyutu değeri: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="566"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="568"/>
         <source>The variable is already defined: %1</source>
         <translation>Değişken zaten tanımlandı: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="256"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="254"/>
         <source>Empty script text</source>
         <translation>Boş komut dosyası metni</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="264"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="262"/>
         <source>Script syntax check failed! Line: %1, error: %2</source>
         <translation>Komut dosyası söz dizimi denetimi başarısız oldu! Satır: %1, hata: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="382"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="375"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="382"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="375"/>
         <source>Default value</source>
         <translation>Öntanımlı değer</translation>
     </message>
@@ -474,7 +458,7 @@
         <translation>Bu bir dosya değil: </translation>
     </message>
     <message>
-        <location filename="../src/model/Schema.cpp" line="502"/>
+        <location filename="../src/model/Schema.cpp" line="332"/>
         <source>Duplicate alias &apos;%1&apos;. It has been removed</source>
         <translation>Yinelenen takma ad &apos;%1&apos;. Kaldırıldı</translation>
     </message>
@@ -499,7 +483,7 @@
         <translation>&quot;%1 %2&quot; de tanımlanmamış yapı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="68"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="67"/>
         <source>Undefined block in .meta: &apos;%1&apos;</source>
         <translation>.Meta&apos;da tanımlanmamış blok: &apos;%1&apos;</translation>
     </message>
@@ -550,13 +534,9 @@
         <translation>%1&apos;den sonra %2 bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Utils.cpp" line="63"/>
+        <location filename="../src/support/serialize/Utils.cpp" line="64"/>
         <source>Cannot create flow graph</source>
         <translation>Akış grafiği oluşturulamıyor</translation>
-    </message>
-    <message>
-        <source>The workflow contains a cycle</source>
-        <translation>İş akışı bir döngü içerir</translation>
     </message>
 </context>
 <context>
@@ -709,390 +689,365 @@
 <context>
     <name>U2::HRSchemaSerializer</name>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="86"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="88"/>
         <source>Parameter &apos;%1&apos; undefined for element &apos;%2&apos;</source>
         <translation>&apos;%2&apos; öğesi için &apos;%1&apos; parametresi tanımsız</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="90"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="92"/>
         <source>Cannot parse value from &apos;%1&apos;: no value factory</source>
         <translation>&apos;%1&apos;den değer ayrıştırılamıyor: değer fabrikası yok</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="95"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="97"/>
         <source>Cannot parse value from &apos;%1&apos;</source>
         <translation>&quot;%1&quot; den değer ayrıştırılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="157"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="303"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="161"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="307"/>
         <source>Bad header: expected &apos;%1&apos;, got &apos;%2&apos;</source>
         <translation>Hatalı başlık: &apos;%1&apos; bekleniyordu, &apos;%2&apos; alınan</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="381"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="383"/>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="385"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="397"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="399"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="443"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="387"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="389"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="401"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="403"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="447"/>
         <source>Database select definition: &apos;%1&apos; expected but not found</source>
         <translation>Veritabanı seçme tanımı: &apos;%1&apos; bekleniyordu ancak bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="389"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="393"/>
         <source>Database select definition: invalid DB object URL</source>
         <translation>Veritabanı seçim tanımı: geçersiz DB nesne URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="404"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="408"/>
         <source>Database select definition: invalid DB folder URL</source>
         <translation>Veritabanı seçim tanımı: geçersiz DB klasörü URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="445"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="449"/>
         <source>Database select definition: expected either object or folder definition but both found</source>
         <translation>Veritabanı seçim tanımı: nesne veya klasör tanımı bekleniyordu ancak ikisi de bulundu</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="456"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="460"/>
         <source>Database select definition: &apos;%1&apos; or &apos;%2&apos; expected but neither found</source>
         <translation>Veritabanı seçme tanımı: &apos;%1&apos; veya &apos;%2&apos; bekleniyordu ancak ikisi de bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="459"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="463"/>
         <source>Database select definition: &apos;%1&apos; is expected, &apos;%2&apos; is found</source>
         <translation>Veritabanı seçim tanımı: &apos;%1&apos; bekleniyor, &apos;%2&apos; bulundu</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="484"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="488"/>
         <source>folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
         <translation>klasör url tanımı: &apos;%1&apos; veya &apos;%2&apos; bekleniyor, &apos;%3&apos; bulundu</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="493"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="497"/>
         <source>Element name cannot contain whitespaces: &apos;%1&apos;</source>
         <translation>Öğe adı boşluk içeremez: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="496"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="500"/>
         <source>Element name cannot contain dots: &apos;%1&apos;</source>
         <translation>Öğe adı nokta içeremez: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="499"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="503"/>
         <source>Element &apos;%1&apos; already defined</source>
         <translation>&apos;%1&apos; öğesi zaten tanımlandı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="505"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="509"/>
         <source>Type attribute not set for %1 element</source>
         <translation>%1 öğesi için tür özelliği ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="513"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="517"/>
         <source>Unknown type of %1 element: %2</source>
         <translation>Bilinmeyen %1 öğesi türü: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="522"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="526"/>
         <source>Name attribute not set for %1 element</source>
         <translation>%1 öğesi için ad özelliği ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="565"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="569"/>
         <source>Unexpected actor attribute: %1</source>
         <translation>Beklenmeyen aktör özelliği: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="588"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="592"/>
         <source>No validator type</source>
         <translation>Doğrulayıcı türü yok</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="596"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="600"/>
         <source>Script validator has not a script</source>
         <translation>Komut dosyası doğrulayıcısının bir komut dosyası yok</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="602"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="606"/>
         <source>Too many blocks in validator definition</source>
         <translation>Doğrulayıcı tanımında çok fazla blok var</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="617"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="621"/>
         <source>Grouper out slot action: empty type</source>
         <translation>Gruplama yuvası eylemi: boş tür</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="619"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="623"/>
         <source>Grouper out slot action: invalid type: %1</source>
         <translation>Gruplama alanı eylemi: geçersiz tür: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="628"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="632"/>
         <source>Grouper out slot action: invalid parameter: %1</source>
         <translation>Gruplama yuvası eylemi: geçersiz parametre: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="640"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="644"/>
         <source>Grouper out slot action: bad int &apos;%1&apos; at parameter %2</source>
         <translation>Grup dışı alan eylemi: %2 parametresinde kötü int &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="652"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="656"/>
         <source>Grouper out slot action: bad bool &apos;%1&apos; at parameter %2</source>
         <translation>Gruplama yuvası eylemi: %2 parametresinde bozuk &apos;%1&apos; bool</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="688"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="692"/>
         <source>Grouper out slot: duplicated slot name: %1</source>
         <translation>Gruplayıcı çıkış aralığı: yinelenen alan adı: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="694"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="698"/>
         <source>Grouper out slot: unknown attribute: %1</source>
         <translation>Gruplama aralığı: bilinmeyen özellik: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="698"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="702"/>
         <source>Grouper out slot: unknown block definition: &apos;%1&apos;. %2 expected</source>
         <translation>Gruplayıcı çıkış yuvası: bilinmeyen blok tanımı: &apos;%1&apos;. %2 bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="702"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="706"/>
         <source>Grouper out slot: unknown token: &apos;%1&apos;. %2 or %3 expected</source>
         <translation>Gruplama çıkışı yuvası: bilinmeyen simge: &apos;%1&apos;. %2 veya %3 bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="707"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="711"/>
         <source>Grouper out slot: empty slot name</source>
         <translation>Gruplayıcı çıkış yuvası: boş yuva adı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="710"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="714"/>
         <source>Grouper out slot: empty in-slot</source>
         <translation>Gruplayıcı çıkış yuvası: yuva içi boş</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1734"/>
-        <source>Error: element name in the workflow file contains spaces</source>
-        <translation>Hata: iş akışı dosyasındaki öğe adı boşluklar içeriyor</translation>
-    </message>
-    <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2129"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2058"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 oyuncunun işaretçi özelliği yok</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2153"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2082"/>
         <source>Name attribute is not set for the marker</source>
         <translation>İşaretçi için ad özelliği ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2156"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2085"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>%1 işaretçi için tür özelliği ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2163"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2092"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>%1 işaretçi için niteleyici adı özelliği ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="814"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="818"/>
         <source>Links list is not empty. Maybe .meta is defined earlier than actor-bindings</source>
         <translation>Bağlantılar listesi boş değil. Belki .meta, aktör bağlamalarından daha önce tanımlanmıştır</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="859"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="955"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="863"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="959"/>
         <source>%1 element is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 öğesi tanımsız: takma adlar bloğunda &quot;%2&quot; de</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="866"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="870"/>
         <source>%1 parameter is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 parametresi tanımsız: takma adlar bloğunda &quot;%2&quot; de</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="878"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="882"/>
         <source>Duplicate parameter alias &quot;%1&quot;</source>
         <translation>Yinelenen parametre takma adı &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="888"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="892"/>
         <source>Empty parameter alias block: &quot;%1&quot;</source>
         <translation>Boş parametre takma adı bloğu: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="897"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="901"/>
         <source>Duplicate parameter alias name &quot;%1&quot; at &quot;%2&quot;</source>
         <translation>&quot;%2&quot; konumunda yinelenen parametre takma adı &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="915"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="919"/>
         <source>No other blocks allowed in alias block</source>
         <translation>Takma ad bloğunda başka bloklara izin verilmez</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1095"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1044"/>
         <source>Undefined actor id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Tanımlanmamış aktör kimliği &apos;%1&apos;, &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="850"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="854"/>
         <source>Validating actor bindings graph failed: &apos;%1&apos;</source>
         <translation>Aktör bağlamaları grafiği doğrulanamadı: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="758"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="762"/>
         <source>%1 definition expected at .iterations block</source>
         <translation>.İterations bloğunda %1 tanımı bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="765"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="769"/>
         <source>Cannot parse integer from &apos;%1&apos;: iteration id</source>
         <translation>Tamsayı &apos;%1&apos;den ayrıştırılamıyor: yineleme kimliği</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="772"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="776"/>
         <source>Element id &apos;%1&apos; undefined in .iteration block</source>
         <translation>.İteration bloğunda &apos;%1&apos; öğe kimliği tanımsız</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="921"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="925"/>
         <source>%1 element undefined in aliases block</source>
         <translation>Takma adlar bloğunda %1 öğe tanımsız</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="925"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="929"/>
         <source>%1 has no parameter %2: in aliases block</source>
         <translation>%1 %2 parametresine sahip değil: takma ad bloğunda</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="934"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="938"/>
         <source>No other blocks allowed in help block</source>
         <translation>Yardım bloğunda başka bloklara izin verilmez</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="941"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="945"/>
         <source>Undefined parameter alias used in help block: &apos;%1&apos;</source>
         <translation>Yardım bloğunda kullanılan tanımlanmamış parametre takma adı: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="962"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="966"/>
         <source>%1 port is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 bağlantı noktası tanımsız: takma adlar bloğunda &quot;%2&quot; konumunda</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="974"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="978"/>
         <source>%1 slot is undefined: at &quot;%2&quot; in aliases block&apos;</source>
         <translation>%1 yuva tanımsız: takma adlar bloğundaki &quot;%2&quot; de &apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="985"/>
-        <source>Duplicate port alias &quot;%1&quot;</source>
-        <translation>Yinelenen bağlantı noktası takma adı &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="996"/>
-        <source>Empty port aliases are not allowed: %1</source>
-        <translation>Boş bağlantı noktası takma adlarına izin verilmez: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1005"/>
-        <source>Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</source>
-        <translation>&quot;%2&quot; konumunda yinelenen bağlantı noktası takma adı &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1025"/>
-        <source>Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</source>
-        <translation>&quot;%2&quot; bağlantı noktası takma adında yinelenen yuva takma adı &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1037"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1061"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="986"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1010"/>
         <source>Undefined element id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>&quot;%2&quot; de tanımlanmamış öğe kimliği &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1052"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1076"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1001"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1025"/>
         <source>Undefined slot id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>&quot;%2&quot; de tanımlanmamış alan kimliği &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1066"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1015"/>
         <source>Undefined port id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>&quot;%2&quot; de tanımlanmamış bağlantı noktası kimliği &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1069"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1018"/>
         <source>Destination port should be input: %1</source>
         <translation>Hedef bağlantı noktası girilmelidir: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="822"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="835"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="826"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="839"/>
         <source>Undefined element id: &apos;%1&apos;</source>
         <translation>Tanımsız öğe kimliği: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="155"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="159"/>
         <source>XML workflow format is obsolete and not supported</source>
         <translation>XML iş akışı biçimi eski ve desteklenmiyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="211"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="215"/>
         <source>The included file &apos;%1&apos; doesn&apos;t exists</source>
         <translation>Dahil edilen &apos;%1&apos; dosyası mevcut değil</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="220"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="224"/>
         <source>Can&apos;t open &apos;%1&apos;</source>
         <translation>&apos;%1&apos; açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="240"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="244"/>
         <source>File &apos;%1&apos; contains mistakes</source>
         <translation>&apos;%1&apos; dosyası hatalar içeriyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="252"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="256"/>
         <source>There is recursive including of the file: &apos;%1&apos;</source>
         <translation>Dosya dahil özyinelemeli: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="276"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="280"/>
         <source>Unknown file format: &apos;%1&apos;</source>
         <translation>Bilinmeyen dosya biçimi: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="308"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="312"/>
         <source>Workflow name not specified</source>
         <translation>İş akışı adı belirtilmedi</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="361"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="365"/>
         <source>Url definition does not contain dataset name</source>
         <translation>Url tanımı veri kümesi adı içermiyor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="827"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="840"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="831"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="844"/>
         <source>Cannot find &apos;%1&apos; port at &apos;%2&apos;</source>
         <translation>&apos;%2&apos; konumunda &apos;%1&apos; bağlantı noktası bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="805"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="809"/>
         <source>Cannot bind %1:%2 to %3:%4</source>
         <translation>%1:%2 to %3:%4 bağlanamıyor</translation>
     </message>
     <message>
         <location filename="../src/support/serialize/HRVisualSerializer.cpp" line="177"/>
         <source>Undefined data-flow link: &apos;%1&apos;. Define it in actor-bindings</source>
-        <translation>Tanımsız veri akışı bağlantısı: &apos;%1&apos;. Aktör bağlamalarında tanımlayın</translation>
+        <translation type="unfinished">Tanımsız veri akışı bağlantısı: &apos;%1&apos;. Aktör bağlamalarında tanımlayın</translation>
     </message>
 </context>
 <context>
@@ -1187,12 +1142,12 @@
 <context>
     <name>U2::LocalWorkflow::BaseNGSTask</name>
     <message>
-        <location filename="../src/support/BaseNGSWorker.cpp" line="182"/>
+        <location filename="../src/support/BaseNGSWorker.cpp" line="169"/>
         <source>No input URL</source>
         <translation>Giriş URL&apos;si yok</translation>
     </message>
     <message>
-        <location filename="../src/support/BaseNGSWorker.cpp" line="193"/>
+        <location filename="../src/support/BaseNGSWorker.cpp" line="180"/>
         <source>Folder does not exist: </source>
         <translation>Klasör mevcut değil: </translation>
     </message>
@@ -1356,32 +1311,6 @@
         <source>Wrapper task for: &quot;%1&quot;</source>
         <translation>&quot;%1&quot; için sarmalayıcı görevi</translation>
     </message>
-    <message>
-        <location filename="../src/support/NoFailTaskWrapper.cpp" line="45"/>
-        <location filename="../src/support/NoFailTaskWrapper.cpp" line="50"/>
-        <source>SubTask is NULL</source>
-        <translation>Alt Görev BOŞ</translation>
-    </message>
-</context>
-<context>
-    <name>U2::PrompterBaseImpl</name>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1339"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1362"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1398"/>
-        <source>unset</source>
-        <translation>ayarlanmadı</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1377"/>
-        <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation>&lt;u&gt;%1&lt;/u&gt; giriş kaynaklarının yanında dosya (lar)</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1345"/>
-        <source>the list of files</source>
-        <translation>dosyaların listesi</translation>
-    </message>
 </context>
 <context>
     <name>U2::QualifierMarker</name>
@@ -1474,7 +1403,7 @@
     <message>
         <location filename="../src/model/ActorPrototypeRegistry.cpp" line="33"/>
         <source>Can&apos;t register element config with ID &apos;%1&apos;%2. There is already registered element with this ID%3.</source>
-        <translation>Öğe yapılandırması &apos;%1&apos; %2 kimliğiyle kaydedilemiyor. Bu kimlik%3 ile zaten kayıtlı bir öğe var.</translation>
+        <translation type="unfinished">Öğe yapılandırması &apos;%1&apos; %2 kimliğiyle kaydedilemiyor. Bu kimlik%3 ile zaten kayıtlı bir öğe var.</translation>
     </message>
 </context>
 <context>
@@ -1812,19 +1741,19 @@
 <context>
     <name>U2::Workflow::IntegralBusPort</name>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="453"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="487"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="458"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="494"/>
         <source>No input data supplied</source>
         <translation>Hiçbir giriş verisi sağlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="500"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="507"/>
         <source>Empty input slot: %1</source>
         <translation>Boş giriş yuvası: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="503"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="516"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="510"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="523"/>
         <source>Bad slot binding: %1 to %2</source>
         <translation>Hatalı yuva bağlama: %1 - %2</translation>
     </message>
@@ -1855,28 +1784,28 @@
         <translation>meta veri yok</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="320"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="321"/>
         <source>Invalid content: duplicate process %1</source>
         <translation>Geçersiz içerik: yinelenen işlem %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="327"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="328"/>
         <source>Invalid content: unknown process type %1</source>
         <translation>Geçersiz içerik: bilinmeyen işlem türü %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="358"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="359"/>
         <source>Invalid content: unknown port %1 requested for %2</source>
         <translation>Geçersiz içerik: %2 için bilinmeyen %1 bağlantı noktası istendi</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="387"/>
-        <location filename="../src/support/SchemaSerializer.cpp" line="394"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="388"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="395"/>
         <source>Invalid content: no such process %1 to bind</source>
         <translation>Geçersiz içerik: bağlanacak böyle bir işlem yok %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="406"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="407"/>
         <source>Invalid content: cannot bind [%1 : %2] to [%3 : %4]</source>
         <translation>Geçersiz içerik: [%1 : %2] ile [%3 : %4] arasında bağlantı kurulamaz</translation>
     </message>
@@ -1900,32 +1829,32 @@
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="160"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="157"/>
         <source>Workflow run</source>
         <translation>İş akışı çalıştır</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="174"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="170"/>
         <source>Unknown domain %1</source>
         <translation>Bilinmeyen alan %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="217"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="215"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>İş akışına ön işlem yapılamadı. Dahil edilen dosyalardan bazıları bozuk</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="225"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="223"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>%3 etki alanında çalışan %1 %2 oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="235"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="233"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>%3 etki alanında %1 %2 bağlantısı oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="249"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="247"/>
         <source>Failed to create a workflow context</source>
         <translation>İş akışı bağlamı oluşturulamadı</translation>
     </message>
@@ -1943,7 +1872,7 @@
 <context>
     <name>U2::WorkflowRunSerializedSchemeTask</name>
     <message>
-        <location filename="../src/support/external_script/WorkflowRunSerializedSchemeTask.cpp" line="109"/>
+        <location filename="../src/support/external_script/WorkflowRunSerializedSchemeTask.cpp" line="105"/>
         <source>Cannot find workflow: %1</source>
         <translation>İş akışı bulunamıyor: %1</translation>
     </message>
@@ -1969,216 +1898,173 @@
         <translation>Birkaç sihirbaz sayfasının eşit kimlikleri var: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="227"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="228"/>
         <source>Page&apos;s id and next id are equal: %1</source>
         <translation>Sayfanın kimliği ve sonraki kimliği eşit: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="231"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="232"/>
         <source>Double definition of next id in the page with id: %1</source>
         <translation>Şu kimliğe sahip sayfadaki sonraki kimliğin çift tanımı: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="303"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="305"/>
         <source>Element id is undefined in the element selector</source>
         <translation>Öğe seçicide öğe kimliği tanımsız</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="308"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="310"/>
         <source>Undefined actor id: %1</source>
         <translation>Tanımsız oyuncu kimliği: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="318"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="320"/>
         <source>Unknown block name in element selector definition: %1</source>
         <translation>Öğe seçici tanımında bilinmeyen blok adı: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="427"/>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="431"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="429"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="433"/>
         <source>Not enough attributes for Tophat samples widget</source>
         <translation>Tophat örnekleri widget&apos;ı için yeterli özellik yok</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="441"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="443"/>
         <source>Not enough attributes for the label widget</source>
         <translation>Etiket widget&apos;ı için yeterli özellik yok</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="457"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="459"/>
         <source>Id is undefined in some selector value definition</source>
         <translation>Bazı seçici değer tanımlarında kimlik tanımsız</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="462"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="464"/>
         <source>Prototype is undefined in the selector value definition: %1</source>
         <translation>Seçici değer tanımında prototip tanımsız: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="470"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="472"/>
         <source>The same prototype could not be mapped: %1</source>
         <translation>Aynı prototip eşlenemedi: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="476"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="478"/>
         <source>Unknown block name in selector value definition: %1</source>
         <translation>Seçici değer tanımında bilinmeyen blok adı: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="489"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="491"/>
         <source>Undefined source port id for some port mapping</source>
         <translation>Bazı bağlantı noktası eşlemeleri için tanımlanmamış kaynak bağlantı noktası kimliği</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="493"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="495"/>
         <source>Undefined destination port id for some port mapping</source>
         <translation>Bazı bağlantı noktası eşlemeleri için tanımlanmamış hedef bağlantı noktası kimliği</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="501"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="503"/>
         <source>Unknown block name in port mapping definition: %1</source>
         <translation>Bağlantı noktası eşleme tanımında bilinmeyen blok adı: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="575"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="577"/>
         <source>Unknown widget name: %1</source>
         <translation>Bilinmeyen widget adı: %1</translation>
     </message>
 </context>
 <context>
-    <name>U2::WorkflowSettings</name>
-    <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="263"/>
-        <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
-        <translation>Komut satırı UGENE yolu bulunamadı, ayrı bir işlemde çalıştırma olasılığı devre dışı bırakılacak</translation>
-    </message>
-</context>
-<context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/model/Attribute.cpp" line="242"/>
+        <location filename="../src/model/Attribute.cpp" line="244"/>
         <source>Required parameter is not set: %1</source>
         <translation>Gerekli parametre ayarlanmadı: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="564"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="571"/>
         <source>Either parameter &apos;%1&apos; or input slot &apos;%2&apos; must be set</source>
         <translation>Ya parametre &apos;%1&apos; ya da giriş yuvası &apos;%2&apos; ayarlanmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="288"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="286"/>
         <source>The schema contains loops</source>
         <translation>Şema döngüler içeriyor</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="349"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="347"/>
         <source> (use --%1 option)</source>
         <translation> (--%1 seçeneğini kullanın)</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="404"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="397"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;List of values&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="404"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="397"/>
         <source>List of values</source>
         <translation>Değerler listesi</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="566"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="560"/>
         <source>%1 actors in workflow have &apos;%2&apos; alias</source>
         <translation>İş akışındaki %1 aktörlerin &apos;%2&apos; takma adı var</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="643"/>
-        <source>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</source>
-        <translation>%1 öğesi bir %2&apos;dir. Maalesef UGENE&apos;nin şu anki sürümü, paketlerdeki filtreleri ve gruplayıcıları desteklemiyor.</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="651"/>
-        <source>filter</source>
-        <translation>filtre</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="653"/>
-        <source>grouper</source>
-        <translation>orfoz</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="661"/>
-        <source>The workflow has not any aliased ports</source>
-        <translation>İş akışında takma adlı bağlantı noktası yok</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="678"/>
-        <source>The aliased port %1.%2 has no aliased slots</source>
-        <translation>Takma ad olan %1.%2 bağlantı noktasında takma alan yok</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="687"/>
-        <source>The free port %1.%2 is not aliased</source>
-        <translation>Boş bağlantı noktası %1.%2 takma ad değil</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="700"/>
-        <source>The required parameter %1.%2 is empty and not aliased</source>
-        <translation>Gerekli %1.%2 parametresi boş ve takma ad değil</translation>
-    </message>
-    <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="896"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="821"/>
         <source>Specified variable &quot;%%1%&quot; does not exist, please check the command again.</source>
         <translation>Belirtilen değişken &quot;%%1%&quot; mevcut değil, lütfen komutu tekrar kontrol edin.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="900"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="825"/>
         <source>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</source>
         <translation>&quot;%1&quot; harici araç ayarlanmamış. Bunu Ayarlar -&gt; Tercihler -&gt; Harici Araçlar&apos;dan ayarlayabilirsiniz</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="904"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="829"/>
         <source>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</source>
         <translation>&quot;%1&quot; harici aracı geçersiz. UGENE, aracın bu sürümünü desteklemeyebilir veya araçlara giden yanlış bir yol seçilmiştir</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="908"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="833"/>
         <source>Custom tool &quot;%1&quot;, specified for the &quot;%2&quot; element, didn&apos;t pass validation.</source>
         <translation>&quot;%2&quot; öğesi için belirtilen &quot;%1&quot; özel aracı doğrulamayı geçemedi.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1180"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1085"/>
         <source>Can&apos;t access output file path: &apos;%1&apos;</source>
         <translation>Çıktı dosyası yoluna erişilemiyor: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1197"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1102"/>
         <source>Workflow output folder &apos;%1&apos; can&apos;t be accessed. Check that the folder exists and you have enough permissions to write to it, or choose another folder in the UGENE Application Settings.</source>
         <translation>İş akışı çıktı klasörüne &apos;%1&apos; erişilemiyor. Klasörün var olup olmadığını ve üzerine yazmak için yeterli izniniz olduğunu kontrol edin veya UGENE Uygulama Ayarlarında başka bir klasör seçin.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1219"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1124"/>
         <source>Empty shared database URL specified</source>
         <translation>Boş paylaşılan veritabanı URL&apos;si belirtildi</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1291"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1186"/>
         <source>Wrong samples map string</source>
         <translation>Yanlış numune eşleme dizesi</translation>
     </message>
     <message>
-        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="129"/>
+        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="121"/>
         <source>Required parameter has no datasets specified: %1</source>
-        <translation>Gerekli parametrede veri kümesi belirtilmemiş: %1</translation>
+        <translation type="unfinished">Gerekli parametrede veri kümesi belirtilmemiş: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="136"/>
+        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="128"/>
         <source>Required parameter has no input urls specified: %1</source>
-        <translation>Gerekli parametrede belirtilmiş giriş url&apos;si yok: %1</translation>
+        <translation type="unfinished">Gerekli parametrede belirtilmiş giriş url&apos;si yok: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="141"/>
+        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="133"/>
         <source>Required parameter %1 has empty dataset: %2</source>
-        <translation>Gerekli %1 parametresinde boş veri kümesi var: %2</translation>
+        <translation type="unfinished">Gerekli %1 parametresinde boş veri kümesi var: %2</translation>
     </message>
 </context>
 </TS>
