@@ -456,11 +456,57 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>ImportSchemaDialog</name>
+    <message>
+        <source>Import Workflow to Element</source>
+        <translation type="vanished">İş Akışını Öğeye İçe Aktar</translation>
+    </message>
+    <message>
+        <source>Input new element name:</source>
+        <translation type="vanished">Yeni eleman adını girin:</translation>
+    </message>
+</context>
+<context>
     <name>PaletteWidget</name>
     <message>
         <location filename="../src/PaletteWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Biçim</translation>
+    </message>
+</context>
+<context>
+    <name>PortAliasesConfigurationDialog</name>
+    <message>
+        <source>Configure Port and Slot Aliases</source>
+        <translation type="vanished">Bağlantı Noktası ve Yuva Takma Adlarını Yapılandırın</translation>
+    </message>
+    <message>
+        <source>Workflow ports</source>
+        <translation type="vanished">İş akışı bağlantı noktaları</translation>
+    </message>
+    <message>
+        <source>Slot</source>
+        <translation type="vanished">Yuva</translation>
+    </message>
+    <message>
+        <source>Alias</source>
+        <translation type="vanished">Lakab</translation>
+    </message>
+    <message>
+        <source>Port alias</source>
+        <translation type="vanished">Bağlantı noktası takma adı</translation>
+    </message>
+    <message>
+        <source>Port type:</source>
+        <translation type="vanished">Port tipi:</translation>
+    </message>
+    <message>
+        <source>Port alias:</source>
+        <translation type="vanished">Bağlantı noktası takma adı:</translation>
+    </message>
+    <message>
+        <source>Port description:</source>
+        <translation type="vanished">Bağlantı noktası açıklaması:</translation>
     </message>
 </context>
 <context>
@@ -1152,6 +1198,33 @@ Değişiklikleri uygulamak ister misiniz? </translation>
     </message>
 </context>
 <context>
+    <name>U2::ImportSchemaDialog</name>
+    <message>
+        <source>Error</source>
+        <translation type="vanished">Hata</translation>
+    </message>
+    <message>
+        <source>Element name is empty</source>
+        <translation type="vanished">Öğe adı boş</translation>
+    </message>
+    <message>
+        <source>Element name contains spaces</source>
+        <translation type="vanished">Öğe adı boşluklar içeriyor</translation>
+    </message>
+    <message>
+        <source>Element name contains dots</source>
+        <translation type="vanished">Öğe adı noktalar içeriyor</translation>
+    </message>
+    <message>
+        <source>Element name contains @</source>
+        <translation type="vanished">Öğe adı @ içerir</translation>
+    </message>
+    <message>
+        <source>An element with this name already exists</source>
+        <translation type="vanished">Bu isimde bir eleman zaten var</translation>
+    </message>
+</context>
+<context>
     <name>U2::ItemViewStyle</name>
     <message>
         <location filename="../src/ItemViewStyle.cpp" line="62"/>
@@ -1342,6 +1415,10 @@ Değişiklikleri uygulamak ister misiniz? </translation>
         <source>Error on getting %1 sequence: </source>
         <translation>%1 dizisi alınırken hata oluştu: </translation>
     </message>
+    <message>
+        <source>Amino Translation</source>
+        <translation type="vanished">Amino Çevirisi</translation>
+    </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::AssemblyToSequencesPrompter</name>
@@ -1453,6 +1530,10 @@ Değişiklikleri uygulamak ister misiniz? </translation>
 </context>
 <context>
     <name>U2::LocalWorkflow::BaseWriteAssemblyWorker</name>
+    <message>
+        <source>Assembly writer: NULL assembly object</source>
+        <translation type="vanished">Derleme yazıcısı: BOŞ derleme nesnesi</translation>
+    </message>
     <message>
         <location filename="../src/library/WriteAssemblyWorkers.cpp" line="181"/>
         <source>Build index (BAM only)</source>
@@ -1797,6 +1878,14 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <source>Converts the file to selected format if it is not excluded.</source>
         <translation>Dışarıda bırakılmamışsa, dosyayı seçilen biçime dönüştürür.</translation>
     </message>
+    <message>
+        <source>A file to perform format conversion</source>
+        <translation type="vanished">Biçim dönüştürme gerçekleştirmek için bir dosya</translation>
+    </message>
+    <message>
+        <source>File of selected format</source>
+        <translation type="vanished">Seçili formattaki dosya</translation>
+    </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::ConvertSnpeffVariationsToAnnotationsPrompter</name>
@@ -1955,7 +2044,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="143"/>
         <source>Output data</source>
-        <translation type="unfinished">Çıkış verileri</translation>
+        <translation>Çıkış verileri</translation>
     </message>
 </context>
 <context>
@@ -2201,6 +2290,13 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="106"/>
         <source>Error with msa object</source>
         <translation>Msa nesnesiyle ilgili hata</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::FastQWriter</name>
+    <message>
+        <source>Fastq writer: NULL sequence object</source>
+        <translation type="vanished">Fastq yazıcı: BOŞ sıra nesnesi</translation>
     </message>
 </context>
 <context>
@@ -2952,6 +3048,20 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::GFFWriter</name>
+    <message>
+        <source>GFF writer: NULL sequence object</source>
+        <translation type="vanished">GFF yazıcı: BOŞ sıra nesnesi</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::GenbankWriter</name>
+    <message>
+        <source>Genbank writer: NULL sequence object</source>
+        <translation type="vanished">Genbank yazar: BOŞ sıra nesnesi</translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::GetFileListPrompter</name>
     <message>
         <location filename="../src/library/GetFileListWorker.cpp" line="133"/>
@@ -3274,6 +3384,13 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/SequencesToMSAWorker.h" line="79"/>
         <source>MSAFromSequencesTask</source>
         <translation>Sıra Görevinden MSA</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::MSAWriter</name>
+    <message>
+        <source>Empty alignment passed for writing to %1</source>
+        <translation type="vanished">%1&apos;e yazmak için boş hizalama geçildi</translation>
     </message>
 </context>
 <context>
@@ -3749,6 +3866,13 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::RawSeqWriter</name>
+    <message>
+        <source>Raw sequence writer: NULL sequence object</source>
+        <translation type="vanished">Ham dizi yazar: BOŞ sıra nesnesi</translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::ReadAnnotationsTask</name>
     <message>
         <location filename="../src/library/ReadAnnotationsWorker.cpp" line="232"/>
@@ -4075,6 +4199,10 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::RenameChomosomeInVariationWorker</name>
     <message>
+        <source>An unexpected task type</source>
+        <translation type="vanished">Beklenmeyen bir görev türü</translation>
+    </message>
+    <message>
         <location filename="../src/library/RenameChromosomeInVariationWorker.cpp" line="109"/>
         <source>Source file URL is empty</source>
         <translation>Kaynak dosya URL&apos;si boş</translation>
@@ -4351,30 +4479,30 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ScriptWorker</name>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="205"/>
-        <location filename="../src/library/ScriptWorker.cpp" line="206"/>
-        <source>no script text</source>
-        <translation>senaryo metni yok</translation>
-    </message>
-    <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="60"/>
         <source>For input port was set empty data type</source>
-        <translation type="unfinished">Giriş bağlantı noktası için boş veri türü ayarlandı</translation>
+        <translation>Giriş bağlantı noktası için boş veri türü ayarlandı</translation>
     </message>
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="74"/>
         <source>For output port was set empty data type</source>
-        <translation type="unfinished">Çıkış bağlantı noktası için boş veri türü ayarlandı</translation>
+        <translation>Çıkış bağlantı noktası için boş veri türü ayarlandı</translation>
     </message>
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="83"/>
         <source>Input data</source>
-        <translation type="unfinished">Giriş verileri</translation>
+        <translation>Giriş verileri</translation>
     </message>
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="84"/>
         <source>Output data</source>
-        <translation type="unfinished">Çıkış verileri</translation>
+        <translation>Çıkış verileri</translation>
+    </message>
+    <message>
+        <location filename="../src/library/ScriptWorker.cpp" line="205"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="206"/>
+        <source>no script text</source>
+        <translation>senaryo metni yok</translation>
     </message>
 </context>
 <context>
@@ -4414,6 +4542,10 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="72"/>
         <source>There is no sequence object in the message</source>
         <translation>Mesajda sıralama nesnesi yok</translation>
+    </message>
+    <message>
+        <source>An unexpected task type</source>
+        <translation type="vanished">Beklenmeyen bir görev türü</translation>
     </message>
     <message>
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="85"/>
@@ -5138,6 +5270,10 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Öğe, varyasyon verilerini içeren mesajları alır ve verileri uygun formatlardan birinde (örn. VCF) belirtilen dosyaya / dosyalara kaydeder.</translation>
     </message>
     <message>
+        <source>Write variants: internal error</source>
+        <translation type="vanished">Varyantları yazın: dahili hata</translation>
+    </message>
+    <message>
         <location filename="../src/library/WriteVariationWorker.cpp" line="115"/>
         <source>Write Variants</source>
         <translation>Varyantları Yaz</translation>
@@ -5221,6 +5357,13 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/SampleActionsManager.cpp" line="104"/>
         <source>This task requires the following plugins: %1. Add them and try again, please.</source>
         <translation>Bu görev şu eklentileri gerektiriyor: %1. Bunları ekleyin ve tekrar deneyin lütfen.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SaveWorkflowSceneTask</name>
+    <message>
+        <source>Save workflow scene task</source>
+        <translation type="vanished">İş akışı sahne görevini kaydetme</translation>
     </message>
 </context>
 <context>
@@ -5422,6 +5565,45 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/GalaxyConfigConfigurationDialogImpl.cpp" line="66"/>
         <source>Set destination folder</source>
         <translation>Hedef klasörü ayarla</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Workflow::PortAliasesConfigurationDialog</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">İptal</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="vanished">Giriş</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="vanished">Çıkış</translation>
+    </message>
+    <message>
+        <source>Workflow Designer</source>
+        <translation type="vanished">İş Akışı Tasarımcısı</translation>
+    </message>
+    <message>
+        <source>There is a port with some aliased slots but without alias name:
+%1</source>
+        <translation type="vanished">Bazı takma adlara sahip ancak takma adı olmayan bir bağlantı noktası var:
+%1</translation>
+    </message>
+    <message>
+        <source>Slot aliases of one port must be different!</source>
+        <translation type="vanished">Bir bağlantı noktasının yuva takma adları farklı olmalıdır!</translation>
+    </message>
+    <message>
+        <source>Port aliases must be different! Rename one of ports:
+%1 or %2</source>
+        <translation type="vanished">Bağlantı noktası takma adları farklı olmalıdır! Bağlantı noktalarından birini yeniden adlandırın:
+%1 yada %2</translation>
     </message>
 </context>
 <context>
@@ -5747,6 +5929,14 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <source>Filter short scaffolds...</source>
         <translation>Kısa iskeleleri filtreleyin...</translation>
     </message>
+    <message>
+        <source>ChIP-Seq data analysis...</source>
+        <translation type="vanished">ChIP-Seq veri analizi...</translation>
+    </message>
+    <message>
+        <source>Metagenomics classification...</source>
+        <translation type="vanished">Metagenomik sınıflandırması...</translation>
+    </message>
 </context>
 <context>
     <name>U2::WorkflowDocFormat</name>
@@ -6034,7 +6224,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="948"/>
         <source>UGENE workflow element</source>
-        <translation type="unfinished">UGENE iş akışı öğesi</translation>
+        <translation>UGENE iş akışı öğesi</translation>
     </message>
 </context>
 <context>
@@ -6107,9 +6297,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Öğe stili</translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation type="vanished">Hata</translation>
+    </message>
+    <message>
         <location filename="../src/WorkflowViewController.cpp" line="780"/>
         <source>Select all elements</source>
         <translation>Tüm öğeleri seçin</translation>
+    </message>
+    <message>
+        <source>Import workflow to element...</source>
+        <translation type="vanished">İş akışını öğeye aktarın...</translation>
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="775"/>
@@ -6216,6 +6414,10 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Parametre takma adlarını ayarlayın...</translation>
     </message>
     <message>
+        <source>Set port and slot aliases...</source>
+        <translation type="vanished">Bağlantı noktası ve yuva takma adlarını ayarlayın...</translation>
+    </message>
+    <message>
         <location filename="../src/WorkflowViewController.cpp" line="820"/>
         <source>Hide scripting options</source>
         <translation>Komut dosyası seçeneklerini gizle</translation>
@@ -6301,6 +6503,10 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/WorkflowViewController.cpp" line="1749"/>
         <source>Can not create Galaxy config</source>
         <translation>Galaxy yapılandırması oluşturulamıyor</translation>
+    </message>
+    <message>
+        <source>The workflow contains a wizard. Sorry, but current version of UGENE doesn&apos;t support of wizards in the includes.</source>
+        <translation type="vanished">İş akışı bir sihirbaz içerir. Maalesef UGENE&apos;nin şu anki sürümü, içerdiği sihirbazları desteklemiyor.</translation>
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="1770"/>
@@ -6582,6 +6788,22 @@ Değişiklikleri kaydetmek istiyor musunuz?</translation>
         <location filename="../src/WorkflowSettingsWidget.ui" line="80"/>
         <source>Runtime settings</source>
         <translation>Çalışma zamanı ayarları</translation>
+    </message>
+    <message>
+        <source>Use directory for output files</source>
+        <translation type="vanished">Çıktı dosyaları için dizin kullan</translation>
+    </message>
+    <message>
+        <source>Directory for custom elements with scripts</source>
+        <translation type="vanished">Komut dosyaları içeren özel öğeler için dizin</translation>
+    </message>
+    <message>
+        <source>Directory for custom elements with external tools</source>
+        <translation type="vanished">Harici araçlarla özel öğeler için dizin</translation>
+    </message>
+    <message>
+        <source>Directory for included schema elements</source>
+        <translation type="vanished">Dahil edilen şema öğeleri için dizin</translation>
     </message>
 </context>
 <context>

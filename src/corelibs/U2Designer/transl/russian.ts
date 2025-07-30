@@ -1449,6 +1449,14 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
 Переименуйте файл или переместите его в каталог, который не содержит символ &apos;;&apos; в пути.</translation>
     </message>
     <message>
+        <source>File path or name contains &apos;;&apos; symbol.<byte value="xd"/>
+That kind of file path/name can&apos;t be correctly handled by this element.<byte value="xd"/>
+Please rename the file or move it to directory which not contain &apos;;&apos; in it path.</source>
+        <translation type="vanished">Путь/имя файла содержит символ &apos;;&apos;.
+Такой путь/имя файла не могут быть корректно обработаны этим элементом.
+Пожалуйста, переименуйте/переместите файл в папку путь до которой не содержит &apos;;&apos;.</translation>
+    </message>
+    <message>
         <location filename="../src/support/URLLineEdit.cpp" line="236"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
@@ -1575,7 +1583,7 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
     <message>
         <location filename="../src/DesignerUtils.cpp" line="33"/>
         <source>UGENE workflow documents</source>
-        <translation type="unfinished">Вычислительные схемы UGENE</translation>
+        <translation>Вычислительные схемы UGENE</translation>
     </message>
 </context>
 </TS>

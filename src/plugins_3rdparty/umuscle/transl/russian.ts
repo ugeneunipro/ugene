@@ -521,6 +521,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>MultipleAlignment object has been changed</source>
+        <translation type="vanished">MultipleAlignment object has been changed</translation>
+    </message>
+    <message>
         <location filename="../src/MuscleTask.cpp" line="502"/>
         <source>Illegal number of sequences in the MUSCLE alignment result</source>
         <translation>Illegal number of sequences in the MUSCLE alignment result</translation>
@@ -629,6 +633,10 @@
         <location filename="../src/MuscleTask.cpp" line="100"/>
         <source>Incorrect region to align</source>
         <translation>Incorrect region to align</translation>
+    </message>
+    <message>
+        <source>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</source>
+        <translation type="vanished">Stopping MUSCLE task, because of error in MultipleAlignment::mid function</translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="102"/>

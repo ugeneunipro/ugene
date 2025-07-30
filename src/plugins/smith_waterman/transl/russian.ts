@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
         <source>Smith-Waterman</source>
-        <translation type="unfinished">Поиск Смита-Ватермана</translation>
+        <translation>Поиск Смита-Ватермана</translation>
     </message>
 </context>
 <context>

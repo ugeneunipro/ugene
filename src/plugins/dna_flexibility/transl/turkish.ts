@@ -116,6 +116,18 @@
         <source>Searches a DNA sequence for regions of high DNA helix flexibility.</source>
         <translation>Yüksek DNA sarmal esnekliğine sahip bölgeler için bir DNA dizisi arar.</translation>
     </message>
+    <message>
+        <source>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</source>
+        <translation type="vanished">DNA esnekliği hesaplaması sırasında UGENE&apos;nin belleği doldu. 32 bit UGENE sürümünün bellek tüketiminde bir kısıtlaması vardır. Bunun yerine 64 bit sürümü kullanmayı deneyin.</translation>
+    </message>
+    <message>
+        <source>Out of memory during the DNA flexibility calculating.</source>
+        <translation type="vanished">DNA esnekliği hesaplanırken bellek yetersiz.</translation>
+    </message>
+    <message>
+        <source>Internal error occurred during the DNA flexibility calculating.</source>
+        <translation type="vanished">DNA esnekliği hesaplaması sırasında dahili hata oluştu.</translation>
+    </message>
 </context>
 <context>
     <name>U2::DNAFlexTask</name>

@@ -119,6 +119,10 @@ p, li { white-space: pre-wrap; }
         <translation>Hizalama sırasında &quot;en iyi&quot; modunu kullanın</translation>
     </message>
     <message>
+        <source>Use GPU-optimization</source>
+        <translation type="vanished">GPU optimizasyonunu kullanın</translation>
+    </message>
+    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="265"/>
         <source>Advanced parameters</source>
         <translation>Gelişmiş parametreler</translation>
@@ -883,6 +887,10 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
         <location filename="../src/GenomeAlignerWorker.cpp" line="388"/>
         <source>Index</source>
         <translation>Dizin</translation>
+    </message>
+    <message>
+        <source>Use GPU-optimization</source>
+        <translation type="vanished">GPU optimizasyonunu kullanın</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="91"/>

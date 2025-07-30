@@ -57,6 +57,10 @@
         <translation>Dışbükey Harita</translation>
     </message>
     <message>
+        <source>Ball-and-Stick</source>
+        <translation type="vanished">Top ve Çubuk</translation>
+    </message>
+    <message>
         <location filename="../src/BioStruct3DColorScheme.cpp" line="78"/>
         <source>Molecular Chains</source>
         <translation>Moleküler Zincirler</translation>
@@ -227,6 +231,10 @@
         <translation>Hata</translation>
     </message>
     <message>
+        <source>The &quot;3D Structure Viewer&quot; was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. Please try to update drivers and reset the UGENE settings to default in the &quot;Application Settings&quot; dialog.</source>
+        <translation type="vanished">OpenGL Gölgeleme Dili (GLSL) ile yazılmış gölgelendirici programları bu sistemde desteklenmediği için &quot;3B Yapı Görüntüleyici&quot; devre dışı bırakıldı. Lütfen &quot;Uygulama Ayarları&quot; iletişim kutusunda sürücüleri güncellemeyi ve UGENE ayarlarını varsayılana sıfırlamayı deneyin.</translation>
+    </message>
+    <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="564"/>
         <source>Unable to open file %1 for writing</source>
         <translation>%1 dosyası yazmak için açılamıyor</translation>
@@ -309,6 +317,14 @@
         <source>(not supported by your videocard)</source>
         <translation>(video kartınız tarafından desteklenmez)</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Vazgeç</translation>
+    </message>
 </context>
 <context>
     <name>U2::BioStruct3DViewContext</name>
@@ -342,6 +358,22 @@ Video kartı sürücüsünü güncelleyerek sisteminizi yükseltmeyi deneyebilir
 </context>
 <context>
     <name>U2::SelectModelsDialog</name>
+    <message>
+        <source>All</source>
+        <translation type="vanished">Hepsi</translation>
+    </message>
+    <message>
+        <source>Invert</source>
+        <translation type="vanished">Evir</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Vazgeç</translation>
+    </message>
     <message>
         <location filename="../src/SelectModelsDialog.cpp" line="73"/>
         <source>Error</source>

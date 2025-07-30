@@ -19,6 +19,11 @@
         <translation>Puanlama matrisi:</translation>
     </message>
     <message>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="55"/>
+        <source>View...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
         <source>Gap penalty</source>
         <translation>Boşluk cezası</translation>
@@ -32,11 +37,6 @@
         <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="99"/>
         <source>Extension:</source>
         <translation>Uzantı:</translation>
-    </message>
-    <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="55"/>
-        <source>View...</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
         <source>Smith-Waterman</source>
-        <translation type="unfinished">Smith-Waterman</translation>
+        <translation>Smith-Waterman</translation>
     </message>
 </context>
 <context>
@@ -353,6 +353,14 @@
 <context>
     <name>U2::PairwiseAlignmentSmithWatermanTask</name>
     <message>
+        <source>Substitution matrix is empty</source>
+        <translation type="vanished">İkame matrisi boş</translation>
+    </message>
+    <message>
+        <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
+        <translation type="vanished">Bu görev için gereken bellek miktarı %1 MB&apos;dir, ancak %2 MB ile sınırlıdır.</translation>
+    </message>
+    <message>
         <location filename="../src/SWAlgorithmTask.cpp" line="595"/>
         <source>Not enough memory to run the task. Required: %1 MB, limit %2 MB.</source>
         <translation type="unfinished"></translation>
@@ -361,6 +369,10 @@
         <location filename="../src/SWAlgorithmTask.cpp" line="601"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
+    </message>
+    <message>
+        <source>%1 results found</source>
+        <translation type="vanished">%1 sonuç bulundu</translation>
     </message>
 </context>
 <context>
@@ -544,6 +556,10 @@
 </context>
 <context>
     <name>U2::SWAlgorithmTask</name>
+    <message>
+        <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
+        <translation type="vanished">Bu görev için gereken bellek miktarı %1 MB&apos;dir, ancak %2 MB ile sınırlıdır.</translation>
+    </message>
     <message>
         <location filename="../src/SWAlgorithmTask.cpp" line="167"/>
         <source>Not enough memory to run the task. Required: %1 MB, limit %2 MB.</source>

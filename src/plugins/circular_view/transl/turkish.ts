@@ -180,9 +180,21 @@
 <context>
     <name>U2::CircularViewImageExportController</name>
     <message>
+        <source>List of Circular Views is empty!</source>
+        <translation type="vanished">Dairesel Görünümler Listesi boş!</translation>
+    </message>
+    <message>
         <location filename="../src/CircularViewImageExportTask.cpp" line="143"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
+    </message>
+    <message>
+        <source>Sequence context is NULL!</source>
+        <translation type="vanished">Sıra bağlamı BOŞ!</translation>
+    </message>
+    <message>
+        <source>Sequence Gobject is NULL</source>
+        <translation type="vanished">Sequence Gobject BOŞ</translation>
     </message>
 </context>
 <context>
@@ -197,9 +209,21 @@
         <source>Enables drawing of DNA sequences using circular representation</source>
         <translation>Dairesel gösterimi kullanarak DNA dizilerinin çizilmesini sağlar</translation>
     </message>
+    <message>
+        <source>OPWidgetFactoryRegistry is NULL</source>
+        <translation type="vanished">OP Widget Fabrika Kaydı BOŞ</translation>
+    </message>
 </context>
 <context>
     <name>U2::CircularViewRenderArea</name>
+    <message>
+        <source>CircularView is NULL</source>
+        <translation type="vanished">CircularView NULL</translation>
+    </message>
+    <message>
+        <source>Circular view settings are NULL</source>
+        <translation type="vanished">Dairesel görünüm ayarları BOŞ</translation>
+    </message>
     <message>
         <location filename="../src/CircularView.cpp" line="384"/>
         <source>circular view size %1 %2</source>
@@ -208,6 +232,10 @@
 </context>
 <context>
     <name>U2::CircularViewSettingsWidget</name>
+    <message>
+        <source>Circular view settings is NULL</source>
+        <translation type="vanished">Dairesel görünüm ayarları BOŞ</translation>
+    </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="64"/>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="112"/>
@@ -249,6 +277,17 @@
     </message>
 </context>
 <context>
+    <name>U2::CircularViewSettingsWidgetFactory</name>
+    <message>
+        <source>Circular view context is NULL</source>
+        <translation type="vanished">Dairesel görünüm bağlamı BOŞ</translation>
+    </message>
+    <message>
+        <source>Object view is NULL</source>
+        <translation type="vanished">Nesne görünümü BOŞ</translation>
+    </message>
+</context>
+<context>
     <name>U2::CircularViewSplitter</name>
     <message>
         <location filename="../src/CircularViewSplitter.cpp" line="49"/>
@@ -279,6 +318,26 @@
         <location filename="../src/CircularViewSplitter.cpp" line="68"/>
         <source>Show/hide restriction sites map</source>
         <translation>Kısıtlama siteleri haritasını göster / gizle</translation>
+    </message>
+    <message>
+        <source>Circular View is NULL</source>
+        <translation type="vanished">Dairesel Görünüm BOŞ</translation>
+    </message>
+    <message>
+        <source>Circular View viewport is NULL</source>
+        <translation type="vanished">Dairesel Görünüm görünüm alanı BOŞ</translation>
+    </message>
+    <message>
+        <source>Scroll area is NULL</source>
+        <translation type="vanished">Kaydırma alanı BOŞ</translation>
+    </message>
+    <message>
+        <source>Sequence context is NULL</source>
+        <translation type="vanished">Sıra bağlamı BOŞ</translation>
+    </message>
+    <message>
+        <source>Sequence obejct is NULL</source>
+        <translation type="vanished">Sıra nesnesi BOŞ</translation>
     </message>
 </context>
 <context>

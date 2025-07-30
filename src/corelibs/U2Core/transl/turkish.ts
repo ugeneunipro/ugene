@@ -74,6 +74,14 @@
         <translation>Çeviri</translation>
     </message>
     <message>
+        <source>UGENE internal error</source>
+        <translation type="vanished">UGENE dahili hatası</translation>
+    </message>
+    <message>
+        <source>Invalid database type: %1</source>
+        <translation type="vanished">Geçersiz veritabanı türü: %1</translation>
+    </message>
+    <message>
         <location filename="../src/gobjects/GObjectUtils.cpp" line="415"/>
         <source>Unsupported object type: %1</source>
         <translation>Desteklenmeyen nesne türü: %1</translation>
@@ -82,6 +90,10 @@
         <location filename="../src/util/U2SequenceUtils.cpp" line="511"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Sıra alfabesi tespit edilemiyor. Muhtemelen bunun nedeni, birleştirilmiş dizilerin bazılarının boş olmasıdır.</translation>
+    </message>
+    <message>
+        <source>Invalid number of symbols: %1</source>
+        <translation type="vanished">Geçersiz simge sayısı: %1</translation>
     </message>
     <message>
         <location filename="../src/datatype/U2FeatureType.cpp" line="108"/>
@@ -147,6 +159,10 @@
         <location filename="../src/datatype/U2FeatureType.cpp" line="115"/>
         <source>Gap in the sequence</source>
         <translation>Sıradaki boşluk</translation>
+    </message>
+    <message>
+        <source>Region that defines a functional gene, possibly including upstream (promotor, enhancer, etc) and downstream control elements, and for which a name has been assigned.</source>
+        <translation type="vanished">İşlevsel bir geni tanımlayan, muhtemelen yukarı akış (yükseltici, güçlendirici, vb.) Ve aşağı akış kontrol öğelerini içeren ve kendisine bir ad atanan bölge.</translation>
     </message>
     <message>
         <location filename="../src/datatype/U2FeatureType.cpp" line="205"/>
@@ -234,6 +250,10 @@
         <translation>RNA Habercisi</translation>
     </message>
     <message>
+        <source>A non-protein-coding gene, other than ribosomal RNA and transfer RNA, the functional molecule of which is the RNA transcrip</source>
+        <translation type="vanished">Fonksiyonel molekülü RNA transkripti olan ribozomal RNA ve transfer RNA dışında protein kodlamayan bir gen</translation>
+    </message>
+    <message>
         <location filename="../src/datatype/U2FeatureType.cpp" line="131"/>
         <source>Span of the N immunological feature</source>
         <translation>N immünolojik özelliğin aralığı</translation>
@@ -242,6 +262,10 @@
         <location filename="../src/datatype/U2FeatureType.cpp" line="132"/>
         <source>Presented sequence revises a previous version</source>
         <translation>Sunulan sıra, önceki bir sürümü revize ediyor</translation>
+    </message>
+    <message>
+        <source>Region containing polycistronic transcript including a cluster of genes that are under the control of the same regulatory sequences/promotor and in the same biological pathway</source>
+        <translation type="vanished">Aynı düzenleyici sekansların / promotorun kontrolü altında ve aynı biyolojik yolda bulunan bir gen kümesini içeren polisistronik transkript içeren bölge</translation>
     </message>
     <message>
         <location filename="../src/datatype/U2FeatureType.cpp" line="134"/>
@@ -459,9 +483,53 @@
         <translation>5 &apos;çevrilmemiş bölge (lider)</translation>
     </message>
     <message>
+        <source>&apos;Protein&apos; feature key</source>
+        <translation type="vanished">&apos;Protein&apos; özellik anahtarı</translation>
+    </message>
+    <message>
+        <source>&apos;Region&apos; feature key</source>
+        <translation type="vanished">&apos;Bölge&apos; özellik anahtarı</translation>
+    </message>
+    <message>
+        <source>&apos;Site&apos; feature key</source>
+        <translation type="vanished">&apos;Site&apos; özellik anahtarı</translation>
+    </message>
+    <message>
         <location filename="../src/datatype/U2FeatureType.cpp" line="143"/>
         <source>Any region of sequence that functions in the regulation of transcription or translation</source>
         <translation>Transkripsiyon veya çevirinin düzenlenmesinde işlev gören herhangi bir dizi bölgesi</translation>
+    </message>
+    <message>
+        <source>Genes</source>
+        <translation type="vanished">Genler</translation>
+    </message>
+    <message>
+        <source>Signals</source>
+        <translation type="vanished">Sinyaller</translation>
+    </message>
+    <message>
+        <source>Binding</source>
+        <translation type="vanished">Bağlama</translation>
+    </message>
+    <message>
+        <source>Variation</source>
+        <translation type="vanished">Çeşitlilik</translation>
+    </message>
+    <message>
+        <source>Repeats</source>
+        <translation type="vanished">Tekrarla</translation>
+    </message>
+    <message>
+        <source>RNA</source>
+        <translation type="vanished">RNA</translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation type="vanished">Çeş</translation>
+    </message>
+    <message>
+        <source>Spans</source>
+        <translation type="vanished">Aralıklar</translation>
     </message>
     <message>
         <location filename="../src/util/U2FeatureUtils.cpp" line="143"/>
@@ -469,9 +537,32 @@
         <translation>Beklenmeyen özellik operatör değeri algılandı.</translation>
     </message>
     <message>
+        <source>Unexpected number of sequences in a multiple alignment</source>
+        <translation type="vanished">Çoklu hizalamada beklenmeyen dizi sayısı</translation>
+    </message>
+    <message>
+        <source>Unexpected error on MSA rows import</source>
+        <translation type="vanished">MSA satırları içe aktarmada beklenmeyen hata</translation>
+    </message>
+    <message>
+        <source>Symbol is not belong to alphabet</source>
+        <translation type="vanished">Sembol alfabeye ait değil</translation>
+    </message>
+    <message>
+        <source>Unexpected error on MCA rows import</source>
+        <translation type="vanished">MCA satırları içe aktarmada beklenmeyen hata</translation>
+    </message>
+    <message>
         <location filename="../src/globals/ClipboardController.cpp" line="35"/>
         <source>Block size is too big and can&apos;t be copied into the clipboard</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StrPackUtils</name>
+    <message>
+        <source>QVariant value can&apos;t be converted to string</source>
+        <translation type="vanished">QVariant değeri dizeye dönüştürülemez</translation>
     </message>
 </context>
 <context>
@@ -513,6 +604,10 @@
         <source>Document was removed.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Document was removed</source>
+        <translation type="vanished">Belge kaldırıldı</translation>
+    </message>
 </context>
 <context>
     <name>U2::AddObjectsToDocumentTask</name>
@@ -524,6 +619,22 @@
 </context>
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
+    <message>
+        <source>Object is empty.</source>
+        <translation type="vanished">Nesne boş.</translation>
+    </message>
+    <message>
+        <source>Object is locked for modifications.</source>
+        <translation type="vanished">Nesne, değişiklikler için kilitlendi.</translation>
+    </message>
+    <message>
+        <source>Some sequences have wrong alphabet: </source>
+        <translation type="vanished">Bazı dizilerde yanlış alfabe var: </translation>
+    </message>
+    <message>
+        <source> and others</source>
+        <translation type="vanished"> ve diğerleri</translation>
+    </message>
     <message>
         <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="147"/>
         <source>Add sequences to alignment task</source>
@@ -567,9 +678,21 @@
 <context>
     <name>U2::AppResourcePool</name>
     <message>
+        <source>Threads</source>
+        <translation type="vanished">İş Parçacığı</translation>
+    </message>
+    <message>
+        <source>Memory</source>
+        <translation type="vanished">Bellek</translation>
+    </message>
+    <message>
         <location filename="../src/globals/AppResources.cpp" line="96"/>
         <source>Mb</source>
         <translation>Mb</translation>
+    </message>
+    <message>
+        <source>Project</source>
+        <translation type="vanished">Proje</translation>
     </message>
 </context>
 <context>
@@ -578,6 +701,13 @@
         <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="94"/>
         <source>Auto-annotations [%1 | %2]</source>
         <translation>Otomatik ek açıklamalar [%1 | %2]</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AutoAnnotationsUpdateTask</name>
+    <message>
+        <source>Empty auto-annotation object</source>
+        <translation type="vanished">Otomatik ek açıklama nesnesi boş</translation>
     </message>
 </context>
 <context>
@@ -626,6 +756,10 @@
         <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="77"/>
         <source>Specifies the language to use. The following values are available: EN, RU, TR.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specifies the language to use. The following values are available: CS, EN, RU, ZH.</source>
+        <translation type="vanished">Kullanılacak dili belirtir. Aşağıdaki değerler mevcuttur: CS, EN, RU, ZH.</translation>
     </message>
     <message>
         <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="78"/>
@@ -683,6 +817,10 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <location filename="../src/tasks/CloneObjectTask.cpp" line="52"/>
         <source>Invalid destination database reference</source>
         <translation>Geçersiz hedef veritabanı referansı</translation>
+    </message>
+    <message>
+        <source>Error! No DBI</source>
+        <translation type="vanished">Hata! DBI yok</translation>
     </message>
     <message>
         <location filename="../src/tasks/CloneObjectTask.cpp" line="68"/>
@@ -1277,6 +1415,10 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <source>Locked by user</source>
         <translation>Kullanıcı tarafından kilitlendi</translation>
     </message>
+    <message>
+        <source>Lock is NULL</source>
+        <translation type="vanished">Kilit BOŞ</translation>
+    </message>
 </context>
 <context>
     <name>U2::DocumentFormat</name>
@@ -1332,6 +1474,10 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <translation> araç</translation>
     </message>
     <message>
+        <source>External tool is absent</source>
+        <translation type="vanished">Harici araç yok</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="61"/>
         <source>External tool &quot;%1&quot; is absent</source>
         <translation type="unfinished"></translation>
@@ -1385,9 +1531,21 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <translation>Geçici klasör kaldırılamıyor: yol boş.</translation>
     </message>
     <message>
+        <source>Can not remove files from temporary folder.</source>
+        <translation type="vanished">Dosyaları geçici klasörden kaldıramazsınız.</translation>
+    </message>
+    <message>
+        <source>Can not remove folder for temporary files.</source>
+        <translation type="vanished">Geçici dosyalar için klasör kaldırılamaz.</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="349"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Geçici dosyalar için klasör oluşturulamıyor: %1</translation>
+    </message>
+    <message>
+        <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
+        <translation type="vanished">Yürütülebilir bir dosya &quot;%1&quot; olduğu gibi çalıştırılamıyor. Bunu bir cmd satırı komutu olarak çalıştırmayı deneyin: &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="336"/>
@@ -1486,99 +1644,99 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="41"/>
         <source>Unknown</source>
-        <translation type="unfinished">Bilinmeyen</translation>
+        <translation>Bilinmeyen</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="42"/>
         <source>Unloaded</source>
-        <translation type="unfinished">Yüklenmedi</translation>
+        <translation>Yüklenmedi</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="43"/>
         <source>Text</source>
-        <translation type="unfinished">Metin</translation>
+        <translation>Metin</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="44"/>
         <source>Sequence</source>
-        <translation type="unfinished">Sıra</translation>
+        <translation>Sıra</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="44"/>
         <source>Sequences</source>
-        <translation type="unfinished">Diziler</translation>
+        <translation>Diziler</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="45"/>
         <source>Annotation</source>
-        <translation type="unfinished">Not</translation>
+        <translation>Not</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="45"/>
         <source>Annotations</source>
-        <translation type="unfinished">Açıklamalar</translation>
+        <translation>Açıklamalar</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="46"/>
         <source>Variation</source>
-        <translation type="unfinished">Çeşitlilik</translation>
+        <translation>Çeşitlilik</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="46"/>
         <source>Variations</source>
-        <translation type="unfinished">Varyasyonlar</translation>
+        <translation>Varyasyonlar</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="47"/>
         <source>Chromatogram</source>
-        <translation type="unfinished">Kromatogram</translation>
+        <translation>Kromatogram</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="47"/>
         <source>Chromatograms</source>
-        <translation type="unfinished">Kromatogramlar</translation>
+        <translation>Kromatogramlar</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
         <source>Alignment</source>
-        <translation type="unfinished">Hizalama</translation>
+        <translation>Hizalama</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
         <source>Alignments</source>
-        <translation type="unfinished">Hizalamalar</translation>
+        <translation>Hizalamalar</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Tree</source>
-        <translation type="unfinished">Ağaç</translation>
+        <translation>Ağaç</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Trees</source>
-        <translation type="unfinished">Ağaçlar</translation>
+        <translation>Ağaçlar</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>3D model</source>
-        <translation type="unfinished">3B model</translation>
+        <translation>3B model</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>3D models</source>
-        <translation type="unfinished">3B modeller</translation>
+        <translation>3B modeller</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>Assembly</source>
-        <translation type="unfinished">Montaj</translation>
+        <translation>Montaj</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>Assemblies</source>
-        <translation type="unfinished">Birleştirmeler</translation>
+        <translation>Birleştirmeler</translation>
     </message>
 </context>
 <context>
@@ -1672,6 +1830,14 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
 </context>
 <context>
     <name>U2::HttpFileAdapter</name>
+    <message>
+        <source>Incorrect url string has been passed to HttpFileAdapter::open()</source>
+        <translation type="vanished">HttpFileAdapter :: open () &apos;a yanlış url dizesi geçirildi</translation>
+    </message>
+    <message>
+        <source>Downloading from %1</source>
+        <translation type="vanished">%1&apos;den indiriliyor</translation>
+    </message>
     <message>
         <location filename="../src/io/HttpFileAdapter.cpp" line="126"/>
         <source>GET %1</source>
@@ -1792,6 +1958,14 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <location filename="../src/tasks/shared_db/ImportObjectToDatabaseTask.cpp" line="40"/>
         <source>Invalid database reference</source>
         <translation>Geçersiz veritabanı referansı</translation>
+    </message>
+    <message>
+        <source>Error! No DBI</source>
+        <translation type="vanished">Hata! DBI yok</translation>
+    </message>
+    <message>
+        <source>Error! No object DBI</source>
+        <translation type="vanished">Hata! Nesne DBI yok</translation>
     </message>
     <message>
         <location filename="../src/tasks/shared_db/ImportObjectToDatabaseTask.cpp" line="54"/>
@@ -1942,6 +2116,10 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <translation>&apos;%1&apos; bir klasör değil</translation>
     </message>
     <message>
+        <source>Avoid characters in the &apos;%1&apos; parameter that do not correspond to the operating system locale settings.</source>
+        <translation type="vanished">İşletim sistemi yerel ayarlarına karşılık gelmeyen &apos;%1&apos; parametresindeki karakterlerden kaçının.</translation>
+    </message>
+    <message>
         <location filename="../src/globals/L10n.h" line="90"/>
         <source>&apos;%1&apos; does not match database object URL format</source>
         <translation>&apos;%1&apos;, veritabanı nesnesi URL biçimiyle eşleşmiyor</translation>
@@ -2037,7 +2215,7 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <location filename="../src/util/IOAdapterUtils.cpp" line="101"/>
         <location filename="../src/util/IOAdapterUtils.cpp" line="109"/>
         <source>Failed to detect IO adapter for %1</source>
-        <translation type="unfinished">%1 için GÇ adaptörü algılanamadı</translation>
+        <translation>%1 için GÇ adaptörü algılanamadı</translation>
     </message>
 </context>
 <context>
@@ -2051,6 +2229,10 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="460"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Kimlik=%1 olan sıra bulunamadı.</translation>
+    </message>
+    <message>
+        <source>Redirecting to %1</source>
+        <translation type="vanished">%1&apos;e yönlendiriliyor</translation>
     </message>
 </context>
 <context>
@@ -2087,9 +2269,29 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>The fileURL  to load is empty</source>
+        <translation type="vanished">Yüklenecek URL  dosyası boş</translation>
+    </message>
+    <message>
+        <source>Cannot get an IO file adapter factory for the file URL: %1</source>
+        <translation type="vanished">URL: %1 dosyası için bir GÇ dosya bağdaştırıcısı fabrikası alınamıyor</translation>
+    </message>
+    <message>
+        <source>Cannot detect the file format: %1</source>
+        <translation type="vanished">Dosya biçimi algılanamıyor: %1</translation>
+    </message>
+    <message>
+        <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
+        <translation type="vanished">Belge biçimi NULL (biçim kimliği: &apos;%1&apos;, dosya URL&apos;si: &apos;%2&apos;)</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="433"/>
         <source>Document not found %1</source>
         <translation>Belge bulunamadı %1</translation>
+    </message>
+    <message>
+        <source>Not enough memory to load document %1</source>
+        <translation type="vanished">%1 belgesini yüklemek için yeterli bellek yok</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="465"/>
@@ -2179,6 +2381,21 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <location filename="../src/io/LocalFileAdapter.cpp" line="33"/>
         <source>Local file</source>
         <translation>Yerel dosya</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAUtils</name>
+    <message>
+        <source>Alignment is empty!</source>
+        <translation type="vanished">Hizalama boş!</translation>
+    </message>
+    <message>
+        <source>Sequences in alignment have different sizes!</source>
+        <translation type="vanished">Hizalamadaki dizilerin farklı boyutları vardır!</translation>
+    </message>
+    <message>
+        <source>Can&apos;t find a row in an alignment!</source>
+        <translation type="vanished">Bir hizalamada satır bulamıyorum!</translation>
     </message>
 </context>
 <context>
@@ -2275,6 +2492,10 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <source>Invalid crop row ids</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Failed to crop an alignment!</source>
+        <translation type="vanished">Hizalama kırpılamadı!</translation>
+    </message>
 </context>
 <context>
     <name>U2::MsaObject</name>
@@ -2306,6 +2527,33 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <location filename="../src/util/MsaUtils.cpp" line="393"/>
         <source>Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::MultipleSequenceAlignmentObject</name>
+    <message>
+        <source>Unexpected gap start</source>
+        <translation type="vanished">Beklenmeyen boşluk başlangıcı</translation>
+    </message>
+    <message>
+        <source>Unexpected gap start (too small)</source>
+        <translation type="vanished">Beklenmeyen boşluk başlangıcı (çok küçük)</translation>
+    </message>
+    <message>
+        <source>Unexpected gap start (too big)</source>
+        <translation type="vanished">Beklenmeyen boşluk başlangıcı (çok büyük)</translation>
+    </message>
+    <message>
+        <source> Incorrect gap splitting</source>
+        <translation type="vanished"> Yanlış boşluk bölme</translation>
+    </message>
+    <message>
+        <source> Alignment walker is ended</source>
+        <translation type="vanished"> Hizalama yürüteç sona erdi</translation>
+    </message>
+    <message>
+        <source> Alignment changed</source>
+        <translation type="vanished"> Hizalama değişti</translation>
     </message>
 </context>
 <context>
@@ -2604,6 +2852,14 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Can&apos;t remove original file to place tmp file instead</source>
+        <translation type="vanished">Bunun yerine tmp dosyasını yerleştirmek için orijinal dosyayı kaldıramazsınız</translation>
+    </message>
+    <message>
+        <source>Can&apos;t rename saved tmp file to original file</source>
+        <translation type="vanished">Kaydedilmiş tmp dosyası orijinal dosya olarak yeniden adlandırılamıyor</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="187"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded: </source>
         <translation>&apos;%1&apos; belgesi kaldırılamıyor: </translation>
@@ -2668,6 +2924,13 @@ UGENE kaydedilmemiş değişiklikler içeriyor.</translation>
         <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="139"/>
         <source>Sequence walker subtask</source>
         <translation>Sıralı yürüteç alt görevi</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SequenceDbiWalkerTask</name>
+    <message>
+        <source>Target region out of sequence range</source>
+        <translation type="vanished">Sıra aralığı dışında hedef bölge</translation>
     </message>
 </context>
 <context>
@@ -2830,6 +3093,10 @@ UGENE kaydedilmemiş değişiklikler içeriyor.</translation>
         <source>DbiPool: DBI not found! Dbi ID: %1</source>
         <translation>DbiPool: DBI bulunamadı! Dbi Kimliği: %1</translation>
     </message>
+    <message>
+        <source>Invalid dbi reference</source>
+        <translation type="vanished">Geçersiz dbi referansı</translation>
+    </message>
 </context>
 <context>
     <name>U2::U2DbiRegistry</name>
@@ -2871,6 +3138,10 @@ UGENE kaydedilmemiş değişiklikler içeriyor.</translation>
         <location filename="../src/util/U2SequenceUtils.cpp" line="55"/>
         <source>Alphabet is not found!</source>
         <translation>Alfabe bulunamadı!</translation>
+    </message>
+    <message>
+        <source>Invalid sequence DBI</source>
+        <translation type="vanished">Geçersiz dizi DBI</translation>
     </message>
     <message>
         <location filename="../src/util/U2SequenceUtils.cpp" line="702"/>

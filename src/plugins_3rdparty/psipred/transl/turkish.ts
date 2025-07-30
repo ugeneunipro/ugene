@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/PsipredAlgTask.cpp" line="55"/>
         <source>psipred: sequence is too long, max seq size is 10000</source>
-        <translation type="unfinished">psipred: sıra çok uzun, maksimum sıra boyutu 10000</translation>
+        <translation>psipred: sıra çok uzun, maksimum sıra boyutu 10000</translation>
     </message>
     <message>
         <location filename="../src/PsipredAlgTask.cpp" line="60"/>
         <source>psipred: sequence is too short, min seq size is 5</source>
-        <translation type="unfinished">psipred: sıra çok kısa, minimum sıra boyutu 5</translation>
+        <translation>psipred: sıra çok kısa, minimum sıra boyutu 5</translation>
     </message>
 </context>
 </TS>

@@ -42,4 +42,11 @@
         <translation>UGENE&apos;nin %1 bitlik sürümü başladı</translation>
     </message>
 </context>
+<context>
+    <name>U2::AppContextImpl</name>
+    <message>
+        <source>UGENE script environment initialization started</source>
+        <translation type="vanished">UGENE komut dosyası ortamı başlatma başladı</translation>
+    </message>
+</context>
 </TS>

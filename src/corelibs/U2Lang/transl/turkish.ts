@@ -358,6 +358,18 @@
         <translation>%1, %2 yuvalarının farklı türleri var</translation>
     </message>
     <message>
+        <source>Retrieving value of unassigned variable: %1</source>
+        <translation type="vanished">Atanmamış değişkenin değeri alınıyor: %1</translation>
+    </message>
+    <message>
+        <source>Unassigned variable: %1</source>
+        <translation type="vanished">Atanmamış değişken: %1</translation>
+    </message>
+    <message>
+        <source>Variable is not defined: %1</source>
+        <translation type="vanished">Değişken tanımlanmadı: %1</translation>
+    </message>
+    <message>
         <location filename="../src/model/wizard/Variable.cpp" line="89"/>
         <source>Can not parse predicate from the string: %1</source>
         <translation>Dizeden yüklem ayrıştırılamıyor: %1</translation>
@@ -537,6 +549,10 @@
         <location filename="../src/support/serialize/Utils.cpp" line="64"/>
         <source>Cannot create flow graph</source>
         <translation>Akış grafiği oluşturulamıyor</translation>
+    </message>
+    <message>
+        <source>The workflow contains a cycle</source>
+        <translation type="vanished">İş akışı bir döngü içerir</translation>
     </message>
 </context>
 <context>
@@ -855,6 +871,10 @@
         <translation>Gruplayıcı çıkış yuvası: yuva içi boş</translation>
     </message>
     <message>
+        <source>Error: element name in the workflow file contains spaces</source>
+        <translation type="vanished">Hata: iş akışı dosyasındaki öğe adı boşluklar içeriyor</translation>
+    </message>
+    <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2058"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 oyuncunun işaretçi özelliği yok</translation>
@@ -966,6 +986,22 @@
         <translation>%1 yuva tanımsız: takma adlar bloğundaki &quot;%2&quot; de &apos;</translation>
     </message>
     <message>
+        <source>Duplicate port alias &quot;%1&quot;</source>
+        <translation type="vanished">Yinelenen bağlantı noktası takma adı &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Empty port aliases are not allowed: %1</source>
+        <translation type="vanished">Boş bağlantı noktası takma adlarına izin verilmez: %1</translation>
+    </message>
+    <message>
+        <source>Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</source>
+        <translation type="vanished">&quot;%2&quot; konumunda yinelenen bağlantı noktası takma adı &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</source>
+        <translation type="vanished">&quot;%2&quot; bağlantı noktası takma adında yinelenen yuva takma adı &quot;%1&quot;</translation>
+    </message>
+    <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="986"/>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1010"/>
         <source>Undefined element id &apos;%1&apos; at &apos;%2&apos;</source>
@@ -1047,7 +1083,7 @@
     <message>
         <location filename="../src/support/serialize/HRVisualSerializer.cpp" line="177"/>
         <source>Undefined data-flow link: &apos;%1&apos;. Define it in actor-bindings</source>
-        <translation type="unfinished">Tanımsız veri akışı bağlantısı: &apos;%1&apos;. Aktör bağlamalarında tanımlayın</translation>
+        <translation>Tanımsız veri akışı bağlantısı: &apos;%1&apos;. Aktör bağlamalarında tanımlayın</translation>
     </message>
 </context>
 <context>
@@ -1311,6 +1347,25 @@
         <source>Wrapper task for: &quot;%1&quot;</source>
         <translation>&quot;%1&quot; için sarmalayıcı görevi</translation>
     </message>
+    <message>
+        <source>SubTask is NULL</source>
+        <translation type="vanished">Alt Görev BOŞ</translation>
+    </message>
+</context>
+<context>
+    <name>U2::PrompterBaseImpl</name>
+    <message>
+        <source>unset</source>
+        <translation type="vanished">ayarlanmadı</translation>
+    </message>
+    <message>
+        <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
+        <translation type="vanished">&lt;u&gt;%1&lt;/u&gt; giriş kaynaklarının yanında dosya (lar)</translation>
+    </message>
+    <message>
+        <source>the list of files</source>
+        <translation type="vanished">dosyaların listesi</translation>
+    </message>
 </context>
 <context>
     <name>U2::QualifierMarker</name>
@@ -1403,7 +1458,7 @@
     <message>
         <location filename="../src/model/ActorPrototypeRegistry.cpp" line="33"/>
         <source>Can&apos;t register element config with ID &apos;%1&apos;%2. There is already registered element with this ID%3.</source>
-        <translation type="unfinished">Öğe yapılandırması &apos;%1&apos; %2 kimliğiyle kaydedilemiyor. Bu kimlik%3 ile zaten kayıtlı bir öğe var.</translation>
+        <translation>Öğe yapılandırması &apos;%1&apos; %2 kimliğiyle kaydedilemiyor. Bu kimlik%3 ile zaten kayıtlı bir öğe var.</translation>
     </message>
 </context>
 <context>
@@ -1975,6 +2030,13 @@
     </message>
 </context>
 <context>
+    <name>U2::WorkflowSettings</name>
+    <message>
+        <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
+        <translation type="vanished">Komut satırı UGENE yolu bulunamadı, ayrı bir işlemde çalıştırma olasılığı devre dışı bırakılacak</translation>
+    </message>
+</context>
+<context>
     <name>U2::WorkflowUtils</name>
     <message>
         <location filename="../src/model/Attribute.cpp" line="244"/>
@@ -2010,6 +2072,34 @@
         <location filename="../src/support/WorkflowUtils.cpp" line="560"/>
         <source>%1 actors in workflow have &apos;%2&apos; alias</source>
         <translation>İş akışındaki %1 aktörlerin &apos;%2&apos; takma adı var</translation>
+    </message>
+    <message>
+        <source>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</source>
+        <translation type="vanished">%1 öğesi bir %2&apos;dir. Maalesef UGENE&apos;nin şu anki sürümü, paketlerdeki filtreleri ve gruplayıcıları desteklemiyor.</translation>
+    </message>
+    <message>
+        <source>filter</source>
+        <translation type="vanished">filtre</translation>
+    </message>
+    <message>
+        <source>grouper</source>
+        <translation type="vanished">orfoz</translation>
+    </message>
+    <message>
+        <source>The workflow has not any aliased ports</source>
+        <translation type="vanished">İş akışında takma adlı bağlantı noktası yok</translation>
+    </message>
+    <message>
+        <source>The aliased port %1.%2 has no aliased slots</source>
+        <translation type="vanished">Takma ad olan %1.%2 bağlantı noktasında takma alan yok</translation>
+    </message>
+    <message>
+        <source>The free port %1.%2 is not aliased</source>
+        <translation type="vanished">Boş bağlantı noktası %1.%2 takma ad değil</translation>
+    </message>
+    <message>
+        <source>The required parameter %1.%2 is empty and not aliased</source>
+        <translation type="vanished">Gerekli %1.%2 parametresi boş ve takma ad değil</translation>
     </message>
     <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="821"/>
@@ -2054,17 +2144,17 @@
     <message>
         <location filename="../src/model/url_attribute/URLAttribute.cpp" line="121"/>
         <source>Required parameter has no datasets specified: %1</source>
-        <translation type="unfinished">Gerekli parametrede veri kümesi belirtilmemiş: %1</translation>
+        <translation>Gerekli parametrede veri kümesi belirtilmemiş: %1</translation>
     </message>
     <message>
         <location filename="../src/model/url_attribute/URLAttribute.cpp" line="128"/>
         <source>Required parameter has no input urls specified: %1</source>
-        <translation type="unfinished">Gerekli parametrede belirtilmiş giriş url&apos;si yok: %1</translation>
+        <translation>Gerekli parametrede belirtilmiş giriş url&apos;si yok: %1</translation>
     </message>
     <message>
         <location filename="../src/model/url_attribute/URLAttribute.cpp" line="133"/>
         <source>Required parameter %1 has empty dataset: %2</source>
-        <translation type="unfinished">Gerekli %1 parametresinde boş veri kümesi var: %2</translation>
+        <translation>Gerekli %1 parametresinde boş veri kümesi var: %2</translation>
     </message>
 </context>
 </TS>

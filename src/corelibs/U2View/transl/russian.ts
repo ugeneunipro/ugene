@@ -5353,7 +5353,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MaEditorConsensusArea.cpp" line="73"/>
         <source>Consensus mode...</source>
-        <translation type="unfinished">Алгоритм построения консенсуса...</translation>
+        <translation>Алгоритм построения консенсуса...</translation>
     </message>
 </context>
 <context>
@@ -5801,6 +5801,10 @@ Simple overview is unavailable.</source>
         <translation>Внешний вид</translation>
     </message>
     <message>
+        <source>Navigation</source>
+        <translation type="vanished">Навигация</translation>
+    </message>
+    <message>
         <location filename="../src/ov_mca/McaEditor.cpp" line="313"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
@@ -6156,6 +6160,10 @@ Simple overview is unavailable.</source>
         <translation>Конвертировать выравнивание из RAW в Amino алфавит: использовать X для неизвестных символов</translation>
     </message>
     <message>
+        <source>Go to position…</source>
+        <translation type="vanished">Перейти к позиции...</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/MsaEditor.cpp" line="340"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
@@ -6190,6 +6198,10 @@ Simple overview is unavailable.</source>
         <location filename="../src/ov_msa/MsaEditor.cpp" line="438"/>
         <source>Highlighting</source>
         <translation>Подсветка</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation type="vanished">Навигация</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MsaEditor.cpp" line="462"/>
@@ -6261,6 +6273,13 @@ Simple overview is unavailable.</source>
         <location filename="../src/ov_msa/MaEditorFactory.cpp" line="162"/>
         <source>MSA object is too large to be opened in MSA Editor!</source>
         <translation>Объект слишком большой чтобы открыть его в редакторе выравниваний!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MsaEditorMultilineWgt</name>
+    <message>
+        <source>Go to Position</source>
+        <translation type="vanished">Перейти к позиции</translation>
     </message>
 </context>
 <context>
@@ -6754,7 +6773,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAViewTasks.cpp" line="262"/>
         <source>No sequence info found!</source>
-        <translation type="unfinished">Информация о последовательности не найдена!</translation>
+        <translation>Информация о последовательности не найдена!</translation>
     </message>
 </context>
 <context>
@@ -7562,6 +7581,10 @@ Please, load the corresponding plugins.</source>
         <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="213"/>
         <source>Copy formatted alignment to the clipboard</source>
         <translation>Copy formatted alignment to the clipboard</translation>
+    </message>
+    <message>
+        <source>The subalignment is too big and can&apos;t be copied into the clipboard</source>
+        <translation type="vanished">Область выравнивания слишком большая и не может быть скопирована в буфер обмена</translation>
     </message>
 </context>
 <context>

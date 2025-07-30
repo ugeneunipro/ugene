@@ -83,6 +83,13 @@
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <source>Incorrect list of Blastn databases</source>
+        <translation type="vanished">Yanlış Blastn veritabanları listesi</translation>
+    </message>
+</context>
+<context>
     <name>RemoteBLASTDialog</name>
     <message>
         <location filename="../src/RemoteBLASTDialog.ui" line="26"/>
@@ -218,6 +225,18 @@
         <location filename="../src/RemoteBLASTDialog.ui" line="313"/>
         <source>The database description:</source>
         <translation>Veritabanı açıklaması:</translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTDialog.ui" line="341"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Segoe UI&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTDialog.ui" line="388"/>
@@ -436,6 +455,18 @@
         <translation>Sonuç sınırı:</translation>
     </message>
     <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/RemoteBLASTDialog.ui" line="776"/>
         <source>EValue</source>
         <translation>DEĞERLENDİRME</translation>
@@ -455,18 +486,6 @@
         <source>Score</source>
         <translation>Puan</translation>
     </message>
-    <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="341"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Segoe UI&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>U2::CheckNCBISequenceCircularityTask</name>
@@ -474,6 +493,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location filename="../src/RemoteBLASTTask.cpp" line="533"/>
         <source>Check NCBI sequence circularity</source>
         <translation>NCBI sıra döngüselliğini kontrol edin</translation>
+    </message>
+    <message>
+        <source>ID is empty</source>
+        <translation type="vanished">Kimlik boş</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTTask.cpp" line="564"/>
@@ -492,6 +515,26 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location filename="../src/RemoteBLASTTask.cpp" line="232"/>
         <source>Create annotations from BLAST results</source>
         <translation>BLAST sonuçlarından ek açıklamalar oluşturun</translation>
+    </message>
+    <message>
+        <source>HttpBlastResult list is empty</source>
+        <translation type="vanished">Http Blast Sonuç listesi boş</translation>
+    </message>
+    <message>
+        <source>HttpRequest is NULL!</source>
+        <translation type="vanished">Http İsteği BOŞ!</translation>
+    </message>
+    <message>
+        <source>Wrong number of annotations</source>
+        <translation type="vanished">Yanlış ek açıklama sayısı</translation>
+    </message>
+    <message>
+        <source>Invalid subtask</source>
+        <translation type="vanished">Geçersiz alt görev</translation>
+    </message>
+    <message>
+        <source>No corresponding annotations</source>
+        <translation type="vanished">Karşılık gelen ek açıklama yok</translation>
     </message>
 </context>
 <context>
@@ -597,6 +640,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Select the database to search through. Available databases are blastn, blastp and cdd.</source>
+        <translation type="vanished">Aranacak veritabanını seçin. Mevcut veritabanları blastn, blastp ve cdd&apos;dir.</translation>
+    </message>
+    <message>
+        <source>Select the database to search through.</source>
+        <translation type="vanished">Aranacak veritabanını seçin.</translation>
+    </message>
+    <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="65"/>
         <source>Expected value</source>
         <translation>Beklenen değer</translation>
@@ -622,9 +673,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Kısa sekans</translation>
     </message>
     <message>
+        <source>Optimize search for short sequences.</source>
+        <translation type="vanished">Kısa diziler için aramayı optimize edin.</translation>
+    </message>
+    <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="69"/>
         <source>Entrez query</source>
         <translation>Entrez sorgusu</translation>
+    </message>
+    <message>
+        <source>Enter an Entrez query to limit search.</source>
+        <translation type="vanished">Aramayı sınırlandırmak için bir Entrez sorgusu girin.</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="70"/>
@@ -632,9 +691,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Olarak ek açıklama</translation>
     </message>
     <message>
+        <source>Name for annotations.</source>
+        <translation type="vanished">Ek açıklamalar için ad.</translation>
+    </message>
+    <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="66"/>
         <source>Results limit</source>
         <translation>Sonuç sınırı</translation>
+    </message>
+    <message>
+        <source>The maximum number of results.</source>
+        <translation type="vanished">Maksimum sonuç sayısı.</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="67"/>
@@ -642,9 +709,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Megablast</translation>
     </message>
     <message>
+        <source>Use megablast.</source>
+        <translation type="vanished">Megablast kullanın.</translation>
+    </message>
+    <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="71"/>
         <source>BLAST output</source>
         <translation>BLAST çıktısı</translation>
+    </message>
+    <message>
+        <source>Location of BLAST output file. This parameter insignificant for cdd search.</source>
+        <translation type="vanished">BLAST çıktı dosyasının konumu. Bu parametre cdd araması için önemsizdir.</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="73"/>
@@ -672,6 +747,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>Uzaktan BLAST</translation>
     </message>
     <message>
+        <source>Incorrect value for the &apos;e-value&apos; parameter, default value passed to the workflow</source>
+        <translation type="vanished">&apos;E-değer&apos; parametresi için yanlış değer, iş akışına varsayılan değer geçildi</translation>
+    </message>
+    <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="128"/>
         <source>Finds annotations for DNA sequence in remote database.</source>
         <translation>Uzak veritabanında DNA dizisi için ek açıklamalar bulur.</translation>
@@ -680,6 +759,41 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location filename="../src/RemoteBLASTWorker.cpp" line="210"/>
         <source>Annotations name is empty, default name used</source>
         <translation>Ek açıklama adı boş, varsayılan ad kullanıldı</translation>
+    </message>
+    <message>
+        <source>Selected nucleotide database</source>
+        <translation type="vanished">Seçilmiş nükleotid veritabanı</translation>
+    </message>
+    <message>
+        <source>Selected amino acid database</source>
+        <translation type="vanished">Seçilmiş amino asit veritabanı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Merge</name>
+    <message>
+        <source>Qualifier %1 not found</source>
+        <translation type="vanished">%1 niteleyici bulunamadı</translation>
+    </message>
+    <message>
+        <source>Can not merge %1 qualifiers: values are not the same.</source>
+        <translation type="vanished">%1 niteleyicileri birleştirilemiyor: değerler aynı değil.</translation>
+    </message>
+    <message>
+        <source>Can not find &apos;%1&apos; qualifier</source>
+        <translation type="vanished">&apos;%1&apos; niteleyicisi bulunamıyor</translation>
+    </message>
+    <message>
+        <source>Can not convert qualifier value &apos;%1&apos; to double</source>
+        <translation type="vanished">&apos;%1&apos; niteleyici değeri iki katına dönüştürülemiyor</translation>
+    </message>
+    <message>
+        <source>Can not find &apos;E-value&apos; qualifier</source>
+        <translation type="vanished">&apos;E-değeri&apos; niteleyicisi bulunamıyor</translation>
+    </message>
+    <message>
+        <source>Can not convert qualifier value &apos;%1&apos; to int</source>
+        <translation type="vanished">&apos;%1&apos; niteleyici değeri int&apos;e dönüştürülemiyor</translation>
     </message>
 </context>
 <context>
@@ -863,6 +977,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <location filename="../src/RemoteBLASTPlugin.cpp" line="248"/>
         <source>Selected annotations belongs to different tables</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sequence objects is NULL</source>
+        <translation type="vanished">Sıra nesneleri BOŞ</translation>
     </message>
 </context>
 <context>

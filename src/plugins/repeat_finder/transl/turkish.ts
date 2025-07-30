@@ -423,6 +423,10 @@
         <translation>Ek açıklama bulunamadı: %1</translation>
     </message>
     <message>
+        <source>Sequence size is too large!</source>
+        <translation type="vanished">Sıra boyutu çok büyük!</translation>
+    </message>
+    <message>
         <location filename="../src/FindTandemsDialog.cpp" line="208"/>
         <source>Not enough memory error ocurred while preparing data. Try to set smaller region.</source>
         <translation>Veriler hazırlanırken yeterli hafıza hatası oluşmadı. Daha küçük bir bölge ayarlamaya çalışın.</translation>

@@ -14,6 +14,14 @@
         <translation>Hedefler</translation>
     </message>
     <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Primer oligos may not overlap any region specified in this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;start,length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs where start is the index of the first base of the excluded region, and length is its length. This tag is useful for tasks such as excluding regions of low sequence quality or for excluding regions containing repetitive elements such as ALUs or LINEs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Primer oligolar bu etikette belirtilen herhangi bir bölgeyle çakışamaz. İlişkili değer,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt; başlangıç, uzunluk &lt;/span&gt;&lt;/p&gt;&lt;p&gt;çiftlerinin boşlukla ayrılmış bir listesi olmalıdır. Hariç tutulan bölgenin ilk tabanının indeksi ve uzunluk onun uzunluğudur. Bu etiket, düşük sıra kalitesindeki bölgeleri hariç tutmak veya ALU&apos;lar veya LINE&apos;lar gibi tekrar eden öğeleri içeren bölgeleri hariç tutmak gibi görevler için kullanışlıdır. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If one or more Targets is specified then a legal primer pair must flank at least one of them. A Target might be a simple sequence repeat site (for example a CA repeat) or a single-base-pair polymorphism. The value should be a space-separated list of &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;start,length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs where start is the index of the first base of a Target, and length is its length.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir veya daha fazla Hedef belirtilirse, en az birinin yanında yasal bir primer çifti bulunmalıdır. Bir Hedef, basit bir dizi tekrar sahası (örneğin, bir CA tekrarı) veya bir tek-baz-çift polimorfizmi olabilir. Değer, başlangıç dizini olan &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:-600;&quot;&gt;başlangıç, uzunluk &lt;/span&gt;&lt;/p&gt;&lt;p&gt; çiftlerinin boşlukla ayrılmış bir listesi olmalıdır Hedefin ilk tabanının uzunluğu ve uzunluğu onun uzunluğudur. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="884"/>
         <location filename="../src/Primer3Dialog.ui" line="923"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of product size ranges, for example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt; 150-250 100-300 301-400 &lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 first tries to pick primers in the first range. If that is not possible, it goes to the next range and tries again. It continues in this way until it has either picked all necessary primers or until there are no more ranges. For technical reasons this option makes much lighter computational demands than the Product Size option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -48,6 +56,18 @@
         <location filename="../src/Primer3Dialog.ui" line="1059"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed sum of similarities of a primer pair (one similarity for each primer) with any single sequence in Mispriming Library. &lt;/p&gt;&lt;p&gt;Library sequence weights are not used in computing the sum of similarities.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir primer çiftinin (her primer için bir benzerlik), Mispriming Kitaplığındaki herhangi bir tek sıra ile izin verilen maksimum benzerlik toplamı. &lt;/p&gt;&lt;p&gt;Benzerliklerin toplamının hesaplanmasında kütüphane sıra ağırlıkları kullanılmaz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed similarity to ectopic sites in the sequence from which you are designing the primers.&lt;/p&gt;&lt;p&gt;The scoring system is the same as used for Max Mispriming, except that an ambiguity code is never treated as a consensus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Astarları tasarladığınız sıradaki ektopik sitelere izin verilen maksimum benzerlik..&lt;/p&gt;&lt;p&gt;Puanlama sistemi, bir belirsizlik kodunun hiçbir zaman bir fikir birliği olarak değerlendirilmemesi dışında, Max Mispriming için kullanılanla aynıdır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed summed similarity of both primers to ectopic sites in the sequence from which you are designing the primers.&lt;/p&gt;&lt;p&gt;The scoring system is the same as used for Max Mispriming, except that an ambiguity code is never treated as a consensus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Astarları tasarladığınız sıradaki her iki primerin ektopik bölgelere izin verilen maksimum toplam benzerliği.&lt;/p&gt;&lt;p&gt;Puanlama sistemi, bir belirsizlik kodunun hiçbir zaman bir fikir birliği olarak değerlendirilmemesi dışında, Max Mispriming için kullanılanla aynıdır..&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Index of the first base of a start codon.&lt;/p&gt;&lt;p&gt;This parameter allows Primer3 to select primer pairs to create in-frame amplicons e.g. to create a template for a fusion protein. Primer3 will attempt to select an in-frame left primer, ideally starting at or to the left of the start codon, or to the right if necessary. Negative values of this parameter are legal if the actual start codon is to the left of available sequence. If this parameter is non-negative Primer3 signals an error if the codon at the position specified by this parameter is not an ATG. A value less than or equal to -10^6 indicates that Primer3 should ignore this parameter. Primer3 selects the position of the right primer by scanning right from the left primer for a stop codon. Ideally the right primer will end at or after the stop codon.&lt;/p&gt;&lt;p&gt;This parameter should be considered EXPERIMENTAL. Please check the output carefully; some erroneous inputs might cause an error in Primer3.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir başlangıç kodonunun ilk tabanının dizini.&lt;/p&gt;&lt;p&gt;Bu parametre, Primer3&apos;ün çerçeve içi amplikonlar, ör. bir füzyon proteini için bir şablon oluşturmak için. Primer3, ideal olarak başlangıç kodonunun solunda veya solunda veya gerekirse sağında başlayarak bir çerçeve içi sol primer seçmeye çalışacaktır. Bu parametrenin negatif değerleri, gerçek başlangıç kodonu mevcut dizinin solundaysa yasaldır. Bu parametre negatif değilse, Primer3 bu parametre ile belirtilen konumdaki kodon bir ATG değilse bir hata sinyali verir. -10 ^ 6&apos;dan küçük veya ona eşit bir değer, Primer3&apos;ün bu parametreyi göz ardı etmesi gerektiğini gösterir. Primer3, bir durdurma kodonu için sol primerden sağa tarayarak sağ primerin konumunu seçer. İdeal olarak, doğru primer durdurma kodonunda veya sonrasında sona erecektir.&lt;/p&gt;&lt;p&gt;Bu parametre DENEYSEL olarak düşünülmelidir. Lütfen çıktıyı dikkatlice kontrol edin; bazı hatalı girişler Primer3&apos;te hataya neden olabilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="230"/>
@@ -173,6 +193,10 @@
         <translation>Astar Çiftleri</translation>
     </message>
     <message>
+        <source>Hyb Oligos</source>
+        <translation type="vanished">Hyb Oligos</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="6667"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section allows one to set output annotations&apos; settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu bölüm, çıktı açıklamalarının ayarlarının yapılmasına izin verir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -194,6 +218,14 @@
         <translation>Astar Tasarımcısı</translation>
     </message>
     <message>
+        <source>Excluded regions</source>
+        <translation type="vanished">Hariç tutulan bölgeler</translation>
+    </message>
+    <message>
+        <source>Product size ranges</source>
+        <translation type="vanished">Ürün boyutu aralıkları</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="933"/>
         <source>Mispriming/Repeat library</source>
         <translation>Hatalı priming / Tekrar kitaplığı</translation>
@@ -204,14 +236,34 @@
         <translation>Döndürülecek numara</translation>
     </message>
     <message>
+        <source>Max repeat mispriming</source>
+        <translation type="vanished">Max yanlış priming işlemini tekrarlayın</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="2278"/>
         <source>Max template mispriming</source>
         <translation>Maks şablon yanlış priming</translation>
     </message>
     <message>
+        <source>Max 3&apos; stability</source>
+        <translation type="vanished">Max 3 &apos;kararlılık</translation>
+    </message>
+    <message>
+        <source>Pair max repeat mispriming</source>
+        <translation type="vanished">Çift maks. Yanlış priming tekrarı</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="2355"/>
         <source>Pair max template mispriming</source>
         <translation>Çift maks. Şablonda yanlış priming</translation>
+    </message>
+    <message>
+        <source>Start codon position</source>
+        <translation type="vanished">Kodon konumunu başlat</translation>
+    </message>
+    <message>
+        <source>Pick hybridization probe (internal oligo)</source>
+        <translation type="vanished">Hibridizasyon probu seçin (dahili oligo)</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="294"/>
@@ -250,6 +302,14 @@
         <translation>Max Tm farkı</translation>
     </message>
     <message>
+        <source>Max self complementarity</source>
+        <translation type="vanished">Maksimum kendini tamamlayıcılık</translation>
+    </message>
+    <message>
+        <source>Max 3&apos; self complementarity</source>
+        <translation type="vanished">Maksimum 3 &apos;kendini tamamlayıcılık</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="3045"/>
         <source>Inside target penalty</source>
         <translation>Hedef içi ceza</translation>
@@ -265,6 +325,10 @@
         <translation>Maksimum poli-X</translation>
     </message>
     <message>
+        <source>First base index</source>
+        <translation type="vanished">İlk temel dizin</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="3068"/>
         <source>CG clamp</source>
         <translation>CG kelepçesi</translation>
@@ -276,9 +340,33 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erime sıcaklığı hesaplaması için tuz düzeltme formülünü belirtir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <source>Annealing oligo concentration</source>
+        <translation type="vanished">Tavlama oligo konsantrasyonu</translation>
+    </message>
+    <message>
+        <source> Liberal base</source>
+        <translation type="vanished"> Serbest temel</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="3295"/>
         <source>Show debugging info</source>
         <translation>Hata ayıklama bilgilerini göster</translation>
+    </message>
+    <message>
+        <source>Hyb oligo excluded region</source>
+        <translation type="vanished">Hyb oligo hariç bölge</translation>
+    </message>
+    <message>
+        <source>Hyb oligo size</source>
+        <translation type="vanished">Hyb oligo boyutu</translation>
+    </message>
+    <message>
+        <source>Hyb oligo Tm</source>
+        <translation type="vanished">Hyb oligo Tm</translation>
+    </message>
+    <message>
+        <source>Hyb oligo GC%</source>
+        <translation type="vanished">Hyb oligo GC%</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3491"/>
@@ -307,6 +395,54 @@
         <location filename="../src/Primer3Dialog.ui" line="3720"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için Primer GC% eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Hyb oligo self complementarity</source>
+        <translation type="vanished">Hyb oligo kendini tamamlayıcılık</translation>
+    </message>
+    <message>
+        <source>Hyb oligo mishyb library</source>
+        <translation type="vanished">Hyb oligo mishyb kütüphanesi</translation>
+    </message>
+    <message>
+        <source>Hyb oligo min sequence quality</source>
+        <translation type="vanished">Hyb oligo min sekans kalitesi</translation>
+    </message>
+    <message>
+        <source>Hyb oligo conc of monovalent cations</source>
+        <translation type="vanished">Tek değerlikli katyonların Hyb oligo konsantrasyonu</translation>
+    </message>
+    <message>
+        <source>Hyb oligo conc of divalent cations</source>
+        <translation type="vanished">İki değerlikli katyonların Hyb oligo konsantrasyonu</translation>
+    </message>
+    <message>
+        <source>Hyb oligo max 3&apos; self complementarity</source>
+        <translation type="vanished">Hyb oligo max 3 &apos;kendini tamamlayıcılık</translation>
+    </message>
+    <message>
+        <source>Hyb oligo max poly-X</source>
+        <translation type="vanished">Hyb oligo max poli-X</translation>
+    </message>
+    <message>
+        <source>Hyb oligo max mishyb</source>
+        <translation type="vanished">Hyb oligo max mishyb</translation>
+    </message>
+    <message>
+        <source>Hyb oligo [dNTP]</source>
+        <translation type="vanished">Hyb oligo [dNTP]</translation>
+    </message>
+    <message>
+        <source>Hyb oligo DNA concentration</source>
+        <translation type="vanished">Hyb oligo DNA konsantrasyonu</translation>
+    </message>
+    <message>
+        <source>Self complementarity</source>
+        <translation type="vanished">Kendini tamamlayıcılık</translation>
+    </message>
+    <message>
+        <source>3&apos; self complementarity</source>
+        <translation type="vanished">3 &apos;kendini tamamlayıcılık</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6259"/>
@@ -364,9 +500,77 @@
         <translation>Sıra kalite aralığı maks:</translation>
     </message>
     <message>
+        <location filename="../src/Primer3Dialog.ui" line="6502"/>
+        <source>Posterior Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6505"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can define actions for primers when Primer3 calculation is already finished - for example, check if result primer pairs self- and hetero-dimers are good enough.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6511"/>
+        <source>Check self- and hetero-dimers of primer pairs and filter pairs with inappropriate parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6514"/>
+        <source>Check complementary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6531"/>
+        <location filename="../src/Primer3Dialog.ui" line="6553"/>
+        <location filename="../src/Primer3Dialog.ui" line="6588"/>
+        <source>Save primer report in CSV file format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6556"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6565"/>
+        <source>Max base pairs in dimer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6591"/>
+        <source>Generate CSV report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6598"/>
+        <location filename="../src/Primer3Dialog.ui" line="6621"/>
+        <source>Maximum persantage of G/C base pairs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6601"/>
+        <source> %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6611"/>
+        <source>Max dimer GC-content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6624"/>
+        <source> bp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="6715"/>
         <source>Help</source>
         <translation>Yardım</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6735"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6742"/>
@@ -389,10 +593,22 @@
         <translation>Astarları seçin</translation>
     </message>
     <message>
+        <source>Concentration of monovalent cations</source>
+        <translation type="vanished">Tek değerlikli katyonların konsantrasyonu</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="1244"/>
         <location filename="../src/Primer3Dialog.ui" line="1782"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies details of melting temperature calculation.&lt;/p&gt;&lt;p&gt;First method uses the table of thermodynamic parameters from the paper [Breslauer KJ, et. al (1986), Proc Natl Acad Sci 83:4746-50 http://dx.doi.org/10.1073/pnas.83.11.3746]&lt;/p&gt;&lt;p&gt;Second method (recommended) was suggested in the paper [SantaLucia JR (1998), Proc Natl Acad Sci 95:1460-65 http://dx.doi.org/10.1073/pnas.95.4.1460].&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erime sıcaklığı hesaplamasının ayrıntılarını belirtir.&lt;/p&gt;&lt;p&gt;İlk yöntem, kağıttaki termodinamik parametreler tablosunu kullanır [Breslauer KJ, et. al (1986), Proc Natl Acad Sci 83: 4746-50 http://dx.doi.org/10.1073/pnas.83.11.3746]&lt;/p&gt;&lt;p&gt;Makalede ikinci yöntem (önerilen) önerilmiştir [SantaLucia JR (1998), Proc Natl Acad Sci 95: 1460-65 http://dx.doi.org/10.1073/pnas.95.4.1460].&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Max #N&apos;s</source>
+        <translation type="vanished">Max #N&apos;s</translation>
+    </message>
+    <message>
+        <source>Concentration of divalent cations</source>
+        <translation type="vanished">İki değerlikli katyonların konsantrasyonu</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2944"/>
@@ -416,6 +632,14 @@
         <translation>DNTP&apos;lerin konsantrasyonu</translation>
     </message>
     <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable 3&apos;-anchored global alignment score when testing a single primer for self-complementarity, and the maximum allowable 3&apos;-anchored global alignment score when testing for complementarity between left and right primers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kendini tamamlayıcılık için tek bir primer test edilirken izin verilen maksimum 3&apos;-bağlantılı global hizalama skoru ve sol ve sağ primerler arasında tamamlayıcılık için test edilirken maksimum izin verilebilir 3&apos;-bağlantılı global hizalama skoru.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable local alignment score when testing a single primer for (local) self-complementarity and the maximum allowable local alignment score when testing for complementarity between left and right primers.&lt;/p&gt;&lt;p&gt;Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Yerel) kendi kendini tamamlayıcılık için tek bir primer test edilirken izin verilen maksimum yerel hizalama puanı ve sol ve sağ primerler arasında tamamlayıcılık için test edilirken izin verilen maksimum yerel hizalama puanı.&lt;/p&gt;&lt;p&gt;PCR&apos;de zorunlu olarak kendinden hazırlamaya neden olmadan primerlerin birbirine tavlanma eğilimini tahmin etmek için yerel kendi kendini tamamlayıcılık alınır. Puanlama sistemi, tamamlayıcı bazlar için 1.00, herhangi bir taban (veya N) ile bir N ile eşleşme için -0.25, uyumsuzluk için -1.00 ve bir boşluk için -2.00 verir. Yalnızca tek baz çifti boşluklarına izin verilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="2974"/>
         <location filename="../src/Primer3Dialog.ui" line="3091"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum number of unknown bases (N) allowable in any primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -426,6 +650,10 @@
         <location filename="../src/Primer3Dialog.ui" line="3006"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable length of a mononucleotide repeat, for example AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir mononükleotid tekrarının izin verilen maksimum uzunluğu, örneğin AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Non-default values valid only for sequences with 0 or 1 target regions.&lt;/p&gt;&lt;p&gt;If the primer is part of a pair that spans a target and does not overlap the target, then multiply this value times the number of nucleotide positions from the 3&apos; end to the (unique) target to get the &apos;position penalty&apos;. The effect of this parameter is to allow Primer3 to include nearness to the target as a term in the objective function.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Varsayılan olmayan değerler yalnızca 0 veya 1 hedef bölgeli diziler için geçerlidir.&lt;/p&gt;&lt;p&gt;Primer, bir hedefi kapsayan ve hedefle örtüşmeyen bir çiftin parçasıysa, bu değeri 3 &apos;ucundan (benzersiz) hedefe kadar olan nükleotid konumlarının sayısıyla çarparak&apos; pozisyon cezası &apos;elde edin. Bu parametrenin etkisi, Primer3&apos;ün hedefe yakınlığı amaç fonksiyonunda bir terim olarak dahil etmesine izin vermektir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2796"/>
@@ -464,6 +692,14 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;PCR boyunca her tavlama oligo&apos;nun nanomolar (nM) konsantrasyonu olarak kullanılacak bir değer&lt;/p&gt;&lt;p&gt;Primer3 bu argümanı oligo erime sıcaklıklarını tahmin etmek için kullanır.&lt;/p&gt;&lt;p&gt;Varsayılan (50nM), Whitehead / MIT Genom Araştırma Merkezi&apos;nde kullanılan standart protokolle iyi çalışır - 10 nanogram şablonlu 20 mikrolitre reaksiyonda her primer için 20 mikromolar konsantrasyonda 0,5 mikrolitre, 0,1&apos;de 0,025 birim / mikrolitre Taq polimeraz 56 derece Celsius tavlama sıcaklığı ile 35 döngü kullanılarak her bir dNTP, 1.5mM MgCl2, 50mM KCl, 10mM Tris-HCL (pH 9.3) mM.&lt;/p&gt;&lt;p&gt;Bu parametrenin değeri, başlangıç reaksiyon karışımındaki gerçek oligo konsantrasyonundan daha azdır çünkü  bu, belirli bir döngüdeki şablon miktarına (PCR ürünü dahil) bağlı olan tavlama oligolarının konsantrasyonudur. Bu konsantrasyon, bir PCR sırasında büyük ölçüde artar; Neyse ki PCR, çeşitli oligo eritme sıcaklıkları için oldukça sağlam görünmektedir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Non-default values valid only for sequences with 0 or 1 target regions.&lt;/p&gt;&lt;p&gt;If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the &apos;position penalty&apos;.&lt;/p&gt;&lt;p&gt;The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Varsayılan olmayan değerler yalnızca 0 veya 1 hedef bölgeli diziler için geçerlidir.&lt;/p&gt;&lt;p&gt;Primer, bir hedefi kapsayan ve hedefle örtüşen bir çiftin parçasıysa, bu değeri, &apos;pozisyon cezasını&apos; elde etmek için primerin (benzersiz) hedefle örtüştüğü nükleotid pozisyonlarının sayısıyla çarpın.&lt;/p&gt;&lt;p&gt;Bu parametrenin etkisi, Primer3&apos;ün amaç işlevinde bir terim olarak hedefle örtüşmeyi içermesine izin vermektir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Do not treat ambiguity codes in libraries as consensus</source>
+        <translation type="vanished">Kitaplıklardaki belirsizlik kodlarını fikir birliği olarak değerlendirmeyin</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="3381"/>
         <source>Lowercase masking</source>
         <translation>Küçük harf maskeleme</translation>
@@ -477,6 +713,10 @@
         <location filename="../src/Primer3Dialog.ui" line="3422"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parameters governing choice of internal oligos are analogous to the parameters governing choice of primer pairs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligoların seçimini yöneten parametreler, primer çiftlerinin seçimini yöneten parametrelere benzer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&amp;lt;start&amp;gt;,&amp;lt;length&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs, where &amp;lt;start&amp;gt; is the index of the first base of an excluded region, and &amp;lt;length&amp;gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ortadaki oligolar, bu etiketle belirtilen herhangi bir bölgeyle çakışamaz. İlişkili değer boşlukla ayrılmış bir liste olmalıdır&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&amp;lt;başlangıç&amp;gt;,&amp;lt;uzunluk&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;çiftler, burada &amp;lt;başlangıç&amp;gt; hariç tutulan bir bölgenin ilk tabanının dizinidir ve &amp;lt;uzunluk&amp;gt; uzunluğu. Genellikle iç oligolar için Hedef bölgeler hariç tutulan bölgeler yapılır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3588"/>
@@ -506,6 +746,50 @@
         <location filename="../src/Primer3Dialog.ui" line="4104"/>
         <source>Max #Ns</source>
         <translation>Max #Ns</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max self complemntarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için primer maksimum kendi kendine uyumluluğunun eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max #Ns for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için primer max #Ns&apos;nin eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer mispriming library, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Primer yanlış priming kitaplığına benzer, ancak kaçınmaya çalıştığımız olay, dahili oligo&apos;nun, bunlardan hazırlanmak yerine bu kitaplıktaki dizilere melezleştirilmesidir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer minimum quality for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için primer minimum kalite eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of monovalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için tek değerlikli katyonların primer konsantrasyonunun eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of divalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için iki değerlikli katyonların primer konsantrasyonunun eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max 3&apos; self complementarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için primer max 3 &apos;kendi kendini tamamlama eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max poly-X for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için primer max poly-X&apos;in eşdeğer parametresi&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer max library mispriming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Primer max kitaplık yanlış priming&apos;e benzer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of the dNTPs for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için dNTP&apos;lerin primer konsantrasyonunun eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer DNA concentration for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dahili oligo için primer DNA konsantrasyonunun eşdeğer parametresi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4471"/>
@@ -561,6 +845,10 @@
         <translation>#N&apos;s</translation>
     </message>
     <message>
+        <source>Mispriming</source>
+        <translation type="vanished">Yanlış astarlama</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="4972"/>
         <location filename="../src/Primer3Dialog.ui" line="6148"/>
         <source>Sequence quality</source>
@@ -582,9 +870,53 @@
         <translation>Son kararlılık</translation>
     </message>
     <message>
+        <source>Template mispriming</source>
+        <translation type="vanished">Şablon yanlış priming</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="5245"/>
         <source>Product size</source>
         <translation>Ürün boyutu</translation>
+    </message>
+    <message>
+        <source>Tm difference</source>
+        <translation type="vanished">Tm farkı</translation>
+    </message>
+    <message>
+        <source>Any complementarity</source>
+        <translation type="vanished">Herhangi bir tamamlayıcılık</translation>
+    </message>
+    <message>
+        <source>3&apos; complementarity</source>
+        <translation type="vanished">3 &apos;tamamlayıcılık</translation>
+    </message>
+    <message>
+        <source>Pair mispriming</source>
+        <translation type="vanished">Çift yanlış priming</translation>
+    </message>
+    <message>
+        <source>Primer penalty weight</source>
+        <translation type="vanished">Astar ceza ağırlığı</translation>
+    </message>
+    <message>
+        <source>Hyb oligo penalty weight</source>
+        <translation type="vanished">Hyb oligo ceza ağırlığı</translation>
+    </message>
+    <message>
+        <source>Primer pair template mispriming weight</source>
+        <translation type="vanished">Astar çifti şablonu yanlış astarlama ağırlığı</translation>
+    </message>
+    <message>
+        <source>Hyb oligo #N&apos;s</source>
+        <translation type="vanished">Hyb oligo #N&apos;s</translation>
+    </message>
+    <message>
+        <source>Hyb oligo mishybing</source>
+        <translation type="vanished">Hyb oligo mishybing</translation>
+    </message>
+    <message>
+        <source>Hyb oligo sequence quality</source>
+        <translation type="vanished">Hyb oligo sekans kalitesi</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6283"/>
@@ -610,195 +942,6 @@
         <location filename="../src/Primer3Dialog.ui" line="6139"/>
         <source>Sequence Quality</source>
         <translation>Sıra Kalitesi</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4474"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section describes &amp;quot;penalty weights&amp;quot;, which allow the user to modify the criteria that Primer3 uses to select the &amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu bölüm açıklar &amp;quot;ceza ağırlıkları&amp;quot;,bu, kullanıcının Primer3&apos;ün seçtiği kriterleri değiştirmesine izin verir.&amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;İki ağırlık sınıfı vardır: bazı parametreler için bir &apos;Lt&apos; (küçüktür) ve bir &apos;Gt&apos; (büyüktür) ağırlık vardır. Bunlar, Primer3&apos;ün, değer belirtilen optimumdan (sırasıyla) küçük veya büyük olduğunda kullandığı ağırlıklardır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4498"/>
-        <location filename="../src/Primer3Dialog.ui" line="4521"/>
-        <location filename="../src/Primer3Dialog.ui" line="4552"/>
-        <location filename="../src/Primer3Dialog.ui" line="4575"/>
-        <location filename="../src/Primer3Dialog.ui" line="4591"/>
-        <location filename="../src/Primer3Dialog.ui" line="4607"/>
-        <location filename="../src/Primer3Dialog.ui" line="4630"/>
-        <location filename="../src/Primer3Dialog.ui" line="4640"/>
-        <location filename="../src/Primer3Dialog.ui" line="4656"/>
-        <location filename="../src/Primer3Dialog.ui" line="4666"/>
-        <location filename="../src/Primer3Dialog.ui" line="4676"/>
-        <location filename="../src/Primer3Dialog.ui" line="4686"/>
-        <location filename="../src/Primer3Dialog.ui" line="5816"/>
-        <location filename="../src/Primer3Dialog.ui" line="5826"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal değerden (Lt) küçük veya (Gt) büyük bir primerin karşılık gelen parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4721"/>
-        <location filename="../src/Primer3Dialog.ui" line="4731"/>
-        <location filename="../src/Primer3Dialog.ui" line="4744"/>
-        <location filename="../src/Primer3Dialog.ui" line="4754"/>
-        <location filename="../src/Primer3Dialog.ui" line="4767"/>
-        <location filename="../src/Primer3Dialog.ui" line="4777"/>
-        <location filename="../src/Primer3Dialog.ui" line="4793"/>
-        <location filename="../src/Primer3Dialog.ui" line="4806"/>
-        <location filename="../src/Primer3Dialog.ui" line="4819"/>
-        <location filename="../src/Primer3Dialog.ui" line="4835"/>
-        <location filename="../src/Primer3Dialog.ui" line="4848"/>
-        <location filename="../src/Primer3Dialog.ui" line="4864"/>
-        <location filename="../src/Primer3Dialog.ui" line="4877"/>
-        <location filename="../src/Primer3Dialog.ui" line="4893"/>
-        <location filename="../src/Primer3Dialog.ui" line="4917"/>
-        <location filename="../src/Primer3Dialog.ui" line="4933"/>
-        <location filename="../src/Primer3Dialog.ui" line="4946"/>
-        <location filename="../src/Primer3Dialog.ui" line="4956"/>
-        <location filename="../src/Primer3Dialog.ui" line="4969"/>
-        <location filename="../src/Primer3Dialog.ui" line="4985"/>
-        <location filename="../src/Primer3Dialog.ui" line="4998"/>
-        <location filename="../src/Primer3Dialog.ui" line="5014"/>
-        <location filename="../src/Primer3Dialog.ui" line="5056"/>
-        <location filename="../src/Primer3Dialog.ui" line="5072"/>
-        <location filename="../src/Primer3Dialog.ui" line="5085"/>
-        <location filename="../src/Primer3Dialog.ui" line="5101"/>
-        <location filename="../src/Primer3Dialog.ui" line="5277"/>
-        <location filename="../src/Primer3Dialog.ui" line="5293"/>
-        <location filename="../src/Primer3Dialog.ui" line="5306"/>
-        <location filename="../src/Primer3Dialog.ui" line="5322"/>
-        <location filename="../src/Primer3Dialog.ui" line="5338"/>
-        <location filename="../src/Primer3Dialog.ui" line="5357"/>
-        <location filename="../src/Primer3Dialog.ui" line="5847"/>
-        <location filename="../src/Primer3Dialog.ui" line="5863"/>
-        <location filename="../src/Primer3Dialog.ui" line="5876"/>
-        <location filename="../src/Primer3Dialog.ui" line="5892"/>
-        <location filename="../src/Primer3Dialog.ui" line="5905"/>
-        <location filename="../src/Primer3Dialog.ui" line="5921"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Önceden tanımlanmış optimum değerden farklı bir primer parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5027"/>
-        <location filename="../src/Primer3Dialog.ui" line="5043"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the overall weight of the position penalty in calculating the penalty for a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir astar cezasının hesaplanmasında pozisyon cezasının toplam ağırlığını belirler.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5167"/>
-        <location filename="../src/Primer3Dialog.ui" line="5183"/>
-        <location filename="../src/Primer3Dialog.ui" line="5199"/>
-        <location filename="../src/Primer3Dialog.ui" line="5209"/>
-        <location filename="../src/Primer3Dialog.ui" line="5225"/>
-        <location filename="../src/Primer3Dialog.ui" line="5242"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimum değerden (Lt) küçük veya (Gt) büyük bir primer çiftinin karşılık gelen parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5370"/>
-        <location filename="../src/Primer3Dialog.ui" line="5386"/>
-        <location filename="../src/Primer3Dialog.ui" line="5399"/>
-        <location filename="../src/Primer3Dialog.ui" line="5415"/>
-        <location filename="../src/Primer3Dialog.ui" line="5428"/>
-        <location filename="../src/Primer3Dialog.ui" line="5444"/>
-        <location filename="../src/Primer3Dialog.ui" line="5468"/>
-        <location filename="../src/Primer3Dialog.ui" line="5484"/>
-        <location filename="../src/Primer3Dialog.ui" line="5497"/>
-        <location filename="../src/Primer3Dialog.ui" line="5513"/>
-        <location filename="../src/Primer3Dialog.ui" line="5526"/>
-        <location filename="../src/Primer3Dialog.ui" line="5542"/>
-        <location filename="../src/Primer3Dialog.ui" line="5555"/>
-        <location filename="../src/Primer3Dialog.ui" line="5571"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Önceden tanımlanmış optimum değerden farklı bir primer çifti parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5624"/>
-        <location filename="../src/Primer3Dialog.ui" line="5654"/>
-        <location filename="../src/Primer3Dialog.ui" line="5670"/>
-        <location filename="../src/Primer3Dialog.ui" line="5686"/>
-        <location filename="../src/Primer3Dialog.ui" line="5709"/>
-        <location filename="../src/Primer3Dialog.ui" line="5739"/>
-        <location filename="../src/Primer3Dialog.ui" line="5749"/>
-        <location filename="../src/Primer3Dialog.ui" line="5765"/>
-        <location filename="../src/Primer3Dialog.ui" line="5775"/>
-        <location filename="../src/Primer3Dialog.ui" line="5792"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal değerden (Lt) daha küçük veya (Gt) daha büyük bir dahili oligo için karşılık gelen parametre için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5934"/>
-        <location filename="../src/Primer3Dialog.ui" line="5950"/>
-        <location filename="../src/Primer3Dialog.ui" line="5963"/>
-        <location filename="../src/Primer3Dialog.ui" line="5979"/>
-        <location filename="../src/Primer3Dialog.ui" line="6003"/>
-        <location filename="../src/Primer3Dialog.ui" line="6019"/>
-        <location filename="../src/Primer3Dialog.ui" line="6032"/>
-        <location filename="../src/Primer3Dialog.ui" line="6048"/>
-        <location filename="../src/Primer3Dialog.ui" line="6061"/>
-        <location filename="../src/Primer3Dialog.ui" line="6077"/>
-        <location filename="../src/Primer3Dialog.ui" line="6090"/>
-        <location filename="../src/Primer3Dialog.ui" line="6106"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Önceden tanımlanmış optimum değerden farklı bir dahili oligo parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6262"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu bölümde kullanıcı, primer ürününün ekson-ekson birleşimiyle örtüşmesi veya intron yayılması gerektiğini belirleyebilir. Bu sadece açıklamalı eksonlarla bir cDNA (mRNA) dizisi için primerler tasarlarken geçerlidir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6268"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This feature allows one to specify if primer product must span intron-exon boundaries.&lt;/p&gt;&lt;p&gt;Checking this option will result in ignoring &lt;span style=&quot; font-style:italic;&quot;&gt;Excluded&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;Target Regions&lt;/span&gt; from Main section.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu özellik, primer ürününün intron-ekson sınırlarını kapsaması gerekip gerekmediğini belirlemeye izin verir.&lt;/p&gt;&lt;p&gt;Bu seçeneğin işaretlenmesi, göz ardı edilmesine neden olacaktır. &lt;span style=&quot; font-style:italic;&quot;&gt;Hariç tutuldu&lt;/span&gt; ve &lt;span style=&quot; font-style:italic;&quot;&gt;Hedef Bölgeler&lt;/span&gt; Ana bölümden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6298"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name of the annotation which defines the exons in the mRNA sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;MRNA dizisindeki eksonları tanımlayan ek açıklamanın adı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6403"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aralık ayarlanmışsa, primer araması seçilen eksonlarla sınırlı olacaktır. Örneğin:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Aralık, gerçek ekson aralığından daha büyükse veya başlangıç ekson sayısı ekson sayısını aşarsa, hata mesajı görüntülenir. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6444"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This number of found primer pairs wil bel queried to check if they fulfill the requirements for RTPCR.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bulunan bu sayıda primer çifti, RTPCR gereksinimlerini karşılayıp karşılamadıklarını kontrol etmek için sorgulanacaktır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6142"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu bölümde kullanıcı, hedef sıranın ve ilgili parametrelerin sıra kalitesini belirleyebilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6155"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boşlukla ayrılmış tam sayıların listesi. Bu bağımsız değişken boş değilse, Kaynak Sırasındaki her taban için tam olarak bir tamsayı olmalıdır. Yüksek sayılar, o konumda baz aramasında yüksek güveni gösterir ve düşük sayılar, bu konumdaki baz aramasına düşük güveni gösterir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6177"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir primer içinde izin verilen minimum sıra kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6200"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within the 3&apos; pentamer of a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir primerin 3 &apos;pentameri içinde izin verilen minimum sekans kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6223"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum yasal sıra kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6246"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maksimum yasal sıralama kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6664"/>
-        <source>Result Settings</source>
-        <translation>Sonuç Ayarları</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="50"/>
@@ -1831,9 +1974,74 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/Primer3Dialog.ui" line="4474"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section describes &amp;quot;penalty weights&amp;quot;, which allow the user to modify the criteria that Primer3 uses to select the &amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu bölüm açıklar &amp;quot;ceza ağırlıkları&amp;quot;,bu, kullanıcının Primer3&apos;ün seçtiği kriterleri değiştirmesine izin verir.&amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;İki ağırlık sınıfı vardır: bazı parametreler için bir &apos;Lt&apos; (küçüktür) ve bir &apos;Gt&apos; (büyüktür) ağırlık vardır. Bunlar, Primer3&apos;ün, değer belirtilen optimumdan (sırasıyla) küçük veya büyük olduğunda kullandığı ağırlıklardır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4498"/>
+        <location filename="../src/Primer3Dialog.ui" line="4521"/>
+        <location filename="../src/Primer3Dialog.ui" line="4552"/>
+        <location filename="../src/Primer3Dialog.ui" line="4575"/>
+        <location filename="../src/Primer3Dialog.ui" line="4591"/>
+        <location filename="../src/Primer3Dialog.ui" line="4607"/>
+        <location filename="../src/Primer3Dialog.ui" line="4630"/>
+        <location filename="../src/Primer3Dialog.ui" line="4640"/>
+        <location filename="../src/Primer3Dialog.ui" line="4656"/>
+        <location filename="../src/Primer3Dialog.ui" line="4666"/>
+        <location filename="../src/Primer3Dialog.ui" line="4676"/>
+        <location filename="../src/Primer3Dialog.ui" line="4686"/>
+        <location filename="../src/Primer3Dialog.ui" line="5816"/>
+        <location filename="../src/Primer3Dialog.ui" line="5826"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal değerden (Lt) küçük veya (Gt) büyük bir primerin karşılık gelen parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="4689"/>
         <source>Bound</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4721"/>
+        <location filename="../src/Primer3Dialog.ui" line="4731"/>
+        <location filename="../src/Primer3Dialog.ui" line="4744"/>
+        <location filename="../src/Primer3Dialog.ui" line="4754"/>
+        <location filename="../src/Primer3Dialog.ui" line="4767"/>
+        <location filename="../src/Primer3Dialog.ui" line="4777"/>
+        <location filename="../src/Primer3Dialog.ui" line="4793"/>
+        <location filename="../src/Primer3Dialog.ui" line="4806"/>
+        <location filename="../src/Primer3Dialog.ui" line="4819"/>
+        <location filename="../src/Primer3Dialog.ui" line="4835"/>
+        <location filename="../src/Primer3Dialog.ui" line="4848"/>
+        <location filename="../src/Primer3Dialog.ui" line="4864"/>
+        <location filename="../src/Primer3Dialog.ui" line="4877"/>
+        <location filename="../src/Primer3Dialog.ui" line="4893"/>
+        <location filename="../src/Primer3Dialog.ui" line="4917"/>
+        <location filename="../src/Primer3Dialog.ui" line="4933"/>
+        <location filename="../src/Primer3Dialog.ui" line="4946"/>
+        <location filename="../src/Primer3Dialog.ui" line="4956"/>
+        <location filename="../src/Primer3Dialog.ui" line="4969"/>
+        <location filename="../src/Primer3Dialog.ui" line="4985"/>
+        <location filename="../src/Primer3Dialog.ui" line="4998"/>
+        <location filename="../src/Primer3Dialog.ui" line="5014"/>
+        <location filename="../src/Primer3Dialog.ui" line="5056"/>
+        <location filename="../src/Primer3Dialog.ui" line="5072"/>
+        <location filename="../src/Primer3Dialog.ui" line="5085"/>
+        <location filename="../src/Primer3Dialog.ui" line="5101"/>
+        <location filename="../src/Primer3Dialog.ui" line="5277"/>
+        <location filename="../src/Primer3Dialog.ui" line="5293"/>
+        <location filename="../src/Primer3Dialog.ui" line="5306"/>
+        <location filename="../src/Primer3Dialog.ui" line="5322"/>
+        <location filename="../src/Primer3Dialog.ui" line="5338"/>
+        <location filename="../src/Primer3Dialog.ui" line="5357"/>
+        <location filename="../src/Primer3Dialog.ui" line="5847"/>
+        <location filename="../src/Primer3Dialog.ui" line="5863"/>
+        <location filename="../src/Primer3Dialog.ui" line="5876"/>
+        <location filename="../src/Primer3Dialog.ui" line="5892"/>
+        <location filename="../src/Primer3Dialog.ui" line="5905"/>
+        <location filename="../src/Primer3Dialog.ui" line="5921"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Önceden tanımlanmış optimum değerden farklı bir primer parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4724"/>
@@ -1877,9 +2085,25 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/Primer3Dialog.ui" line="5027"/>
+        <location filename="../src/Primer3Dialog.ui" line="5043"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the overall weight of the position penalty in calculating the penalty for a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir astar cezasının hesaplanmasında pozisyon cezasının toplam ağırlığını belirler.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="5088"/>
         <source>Primer failure rate</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="5167"/>
+        <location filename="../src/Primer3Dialog.ui" line="5183"/>
+        <location filename="../src/Primer3Dialog.ui" line="5199"/>
+        <location filename="../src/Primer3Dialog.ui" line="5209"/>
+        <location filename="../src/Primer3Dialog.ui" line="5225"/>
+        <location filename="../src/Primer3Dialog.ui" line="5242"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimum değerden (Lt) küçük veya (Gt) büyük bir primer çiftinin karşılık gelen parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5280"/>
@@ -1895,6 +2119,24 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="5341"/>
         <source>TH: Template Mispriming Weight</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="5370"/>
+        <location filename="../src/Primer3Dialog.ui" line="5386"/>
+        <location filename="../src/Primer3Dialog.ui" line="5399"/>
+        <location filename="../src/Primer3Dialog.ui" line="5415"/>
+        <location filename="../src/Primer3Dialog.ui" line="5428"/>
+        <location filename="../src/Primer3Dialog.ui" line="5444"/>
+        <location filename="../src/Primer3Dialog.ui" line="5468"/>
+        <location filename="../src/Primer3Dialog.ui" line="5484"/>
+        <location filename="../src/Primer3Dialog.ui" line="5497"/>
+        <location filename="../src/Primer3Dialog.ui" line="5513"/>
+        <location filename="../src/Primer3Dialog.ui" line="5526"/>
+        <location filename="../src/Primer3Dialog.ui" line="5542"/>
+        <location filename="../src/Primer3Dialog.ui" line="5555"/>
+        <location filename="../src/Primer3Dialog.ui" line="5571"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Önceden tanımlanmış optimum değerden farklı bir primer çifti parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5373"/>
@@ -1932,6 +2174,20 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/Primer3Dialog.ui" line="5624"/>
+        <location filename="../src/Primer3Dialog.ui" line="5654"/>
+        <location filename="../src/Primer3Dialog.ui" line="5670"/>
+        <location filename="../src/Primer3Dialog.ui" line="5686"/>
+        <location filename="../src/Primer3Dialog.ui" line="5709"/>
+        <location filename="../src/Primer3Dialog.ui" line="5739"/>
+        <location filename="../src/Primer3Dialog.ui" line="5749"/>
+        <location filename="../src/Primer3Dialog.ui" line="5765"/>
+        <location filename="../src/Primer3Dialog.ui" line="5775"/>
+        <location filename="../src/Primer3Dialog.ui" line="5792"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal değerden (Lt) daha küçük veya (Gt) daha büyük bir dahili oligo için karşılık gelen parametre için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.ui" line="5627"/>
         <source>Internal oligo Size</source>
         <translation type="unfinished"></translation>
@@ -1955,6 +2211,22 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="5879"/>
         <source>TH: Internal Oligo 3&apos; End Complementarity</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="5934"/>
+        <location filename="../src/Primer3Dialog.ui" line="5950"/>
+        <location filename="../src/Primer3Dialog.ui" line="5963"/>
+        <location filename="../src/Primer3Dialog.ui" line="5979"/>
+        <location filename="../src/Primer3Dialog.ui" line="6003"/>
+        <location filename="../src/Primer3Dialog.ui" line="6019"/>
+        <location filename="../src/Primer3Dialog.ui" line="6032"/>
+        <location filename="../src/Primer3Dialog.ui" line="6048"/>
+        <location filename="../src/Primer3Dialog.ui" line="6061"/>
+        <location filename="../src/Primer3Dialog.ui" line="6077"/>
+        <location filename="../src/Primer3Dialog.ui" line="6090"/>
+        <location filename="../src/Primer3Dialog.ui" line="6106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Önceden tanımlanmış optimum değerden farklı bir dahili oligo parametresi için ceza ağırlığı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5966"/>
@@ -1982,72 +2254,64 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6502"/>
-        <source>Posterior Actions</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6262"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu bölümde kullanıcı, primer ürününün ekson-ekson birleşimiyle örtüşmesi veya intron yayılması gerektiğini belirleyebilir. Bu sadece açıklamalı eksonlarla bir cDNA (mRNA) dizisi için primerler tasarlarken geçerlidir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6505"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can define actions for primers when Primer3 calculation is already finished - for example, check if result primer pairs self- and hetero-dimers are good enough.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6268"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This feature allows one to specify if primer product must span intron-exon boundaries.&lt;/p&gt;&lt;p&gt;Checking this option will result in ignoring &lt;span style=&quot; font-style:italic;&quot;&gt;Excluded&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;Target Regions&lt;/span&gt; from Main section.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu özellik, primer ürününün intron-ekson sınırlarını kapsaması gerekip gerekmediğini belirlemeye izin verir.&lt;/p&gt;&lt;p&gt;Bu seçeneğin işaretlenmesi, göz ardı edilmesine neden olacaktır. &lt;span style=&quot; font-style:italic;&quot;&gt;Hariç tutuldu&lt;/span&gt; ve &lt;span style=&quot; font-style:italic;&quot;&gt;Hedef Bölgeler&lt;/span&gt; Ana bölümden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6511"/>
-        <source>Check self- and hetero-dimers of primer pairs and filter pairs with inappropriate parameters</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6298"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name of the annotation which defines the exons in the mRNA sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;MRNA dizisindeki eksonları tanımlayan ek açıklamanın adı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6514"/>
-        <source>Check complementary</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6403"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aralık ayarlanmışsa, primer araması seçilen eksonlarla sınırlı olacaktır. Örneğin:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Aralık, gerçek ekson aralığından daha büyükse veya başlangıç ekson sayısı ekson sayısını aşarsa, hata mesajı görüntülenir. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6531"/>
-        <location filename="../src/Primer3Dialog.ui" line="6553"/>
-        <location filename="../src/Primer3Dialog.ui" line="6588"/>
-        <source>Save primer report in CSV file format</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6444"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This number of found primer pairs wil bel queried to check if they fulfill the requirements for RTPCR.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bulunan bu sayıda primer çifti, RTPCR gereksinimlerini karşılayıp karşılamadıklarını kontrol etmek için sorgulanacaktır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6556"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6142"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu bölümde kullanıcı, hedef sıranın ve ilgili parametrelerin sıra kalitesini belirleyebilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6565"/>
-        <source>Max base pairs in dimer</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6155"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boşlukla ayrılmış tam sayıların listesi. Bu bağımsız değişken boş değilse, Kaynak Sırasındaki her taban için tam olarak bir tamsayı olmalıdır. Yüksek sayılar, o konumda baz aramasında yüksek güveni gösterir ve düşük sayılar, bu konumdaki baz aramasına düşük güveni gösterir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6591"/>
-        <source>Generate CSV report</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6177"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir primer içinde izin verilen minimum sıra kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6598"/>
-        <location filename="../src/Primer3Dialog.ui" line="6621"/>
-        <source>Maximum persantage of G/C base pairs</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6200"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within the 3&apos; pentamer of a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir primerin 3 &apos;pentameri içinde izin verilen minimum sekans kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6601"/>
-        <source> %</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6223"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum yasal sıra kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6611"/>
-        <source>Max dimer GC-content</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6246"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maksimum yasal sıralama kalitesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6624"/>
-        <source> bp</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6735"/>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="6664"/>
+        <source>Result Settings</source>
+        <translation>Sonuç Ayarları</translation>
     </message>
 </context>
 <context>
@@ -2417,6 +2681,38 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 <context>
     <name>U2::GTest</name>
     <message>
+        <source>Illegal TARGET value: %1</source>
+        <translation type="vanished">Geçersiz HEDEF değeri: %1</translation>
+    </message>
+    <message>
+        <source>Illegal PRIMER_DEFAULT_PRODUCT value: %1</source>
+        <translation type="vanished">Geçersiz PRIMER_VARSAYILAN_ÜRÜN değeri: %1</translation>
+    </message>
+    <message>
+        <source>Illegal PRIMER_INTERNAL_OLIGO_EXCLUDED_REGION value: %1</source>
+        <translation type="vanished">Yasadışı PRIMER_DAHİLİ_OLIGO_HARİÇ_BÖLGE değeri: %1</translation>
+    </message>
+    <message>
+        <source>Illegal INCLUDED_REGION value: %1</source>
+        <translation type="vanished">Yasadışı INCLUDED_REGION değeri: %1</translation>
+    </message>
+    <message>
+        <source>Illegal EXCLUDED_REGION value: %1</source>
+        <translation type="vanished">Yasadışı EXCLUDED_REGION değeri: %1</translation>
+    </message>
+    <message>
+        <source>Unrecognized PRIMER_TASK</source>
+        <translation type="vanished">Tanınmayan PRIMER_GÖREV</translation>
+    </message>
+    <message>
+        <source>Contradiction in primer_task definition</source>
+        <translation type="vanished">Birincil görev tanımında çelişki</translation>
+    </message>
+    <message>
+        <source>Missing SEQUENCE tag</source>
+        <translation type="vanished">Eksik SEQUENCE etiketi</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Tests.cpp" line="128"/>
         <location filename="../src/Primer3Tests.cpp" line="134"/>
         <source>Illegal SEQUENCE_TARGET value: %1</source>
@@ -2473,12 +2769,12 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Tests.cpp" line="554"/>
         <source>Error in sequence quality data</source>
-        <translation type="unfinished">Sıra kalitesi verilerinde hata</translation>
+        <translation>Sıra kalitesi verilerinde hata</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="558"/>
         <source>Sequence quality data missing</source>
-        <translation type="unfinished">Sıra kalitesi verileri eksik</translation>
+        <translation>Sıra kalitesi verileri eksik</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="585"/>
@@ -2501,10 +2797,26 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>PRIMER_PAIRS_NUMBER is incorrect. Expected:%2, but Actual:%3</source>
+        <translation type="vanished">ASTAR_ÇİFTLERİ_NUMARASI yanlış. Beklenen: %2, ancak Gerçek: %3</translation>
+    </message>
+    <message>
+        <source>%1 is incorrect. Expected:%2,%3, but Actual:NULL</source>
+        <translation type="vanished">%1 yanlış. Beklenen:%2,%3, ancak Gerçek:BOŞ</translation>
+    </message>
+    <message>
+        <source>%1 is incorrect. Expected:NULL, but Actual:%2,%3</source>
+        <translation type="vanished">%1 yanlış. Beklenen: BOŞ, ancak Gerçek:%2,%3</translation>
+    </message>
+    <message>
+        <source>%1 is incorrect. Expected:%2,%3, but Actual:%4,%5</source>
+        <translation type="vanished">%1 yanlış. Beklenen:%2,%3, ancak Gerçek:%4,%5</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Tests.cpp" line="888"/>
         <location filename="../src/Primer3Tests.cpp" line="896"/>
         <source>%1 is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished">%1 yanlış. Beklenen:%2, ancak Gerçekleşen:%3</translation>
+        <translation>%1 yanlış. Beklenen:%2, ancak Gerçekleşen:%3</translation>
     </message>
 </context>
 <context>
@@ -2799,6 +3111,78 @@ In case of calculation, all incorrect values will be ignored. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Start Codon Position</source>
+        <translation type="vanished">Codon Pozisyonunu Başlat</translation>
+    </message>
+    <message>
+        <source>Product Min Tm</source>
+        <translation type="vanished">Ürün Min Tm</translation>
+    </message>
+    <message>
+        <source>Product Opt Tm</source>
+        <translation type="vanished">Ürün Seçimi Tm</translation>
+    </message>
+    <message>
+        <source>Product Max Tm</source>
+        <translation type="vanished">Ürün Max Tm</translation>
+    </message>
+    <message>
+        <source>Opt GC%</source>
+        <translation type="vanished">Opt GC%</translation>
+    </message>
+    <message>
+        <source>Inside Penalty</source>
+        <translation type="vanished">İç Ceza</translation>
+    </message>
+    <message>
+        <source>Internal Oligo Opt Tm</source>
+        <translation type="vanished">Dahili Oligo Opt Tm</translation>
+    </message>
+    <message>
+        <source>Excluded Regions</source>
+        <translation type="vanished">Hariç Tutulan Bölgeler</translation>
+    </message>
+    <message>
+        <source>Internal Oligo Excluded Regions</source>
+        <translation type="vanished">Dahili Oligo Hariç Tutulan Bölgeler</translation>
+    </message>
+    <message>
+        <source>Targets</source>
+        <translation type="vanished">Hedefler</translation>
+    </message>
+    <message>
+        <source>Included region is too small for current product size ranges</source>
+        <translation type="vanished">Dahil edilen bölge, mevcut ürün boyutu aralıkları için çok küçük</translation>
+    </message>
+    <message>
+        <source>Product Size Ranges</source>
+        <translation type="vanished">Ürün Boyut Aralıkları</translation>
+    </message>
+    <message>
+        <source>Sequence Quality</source>
+        <translation type="vanished">Sıra Kalitesi</translation>
+    </message>
+    <message>
+        <source>Sequence quality list length must be equal to the sequence length</source>
+        <translation type="vanished">Sıra kalitesi liste uzunluğu, sıra uzunluğuna eşit olmalıdır</translation>
+    </message>
+    <message>
+        <source>Can&apos;t pick hyb oligo and only one primer</source>
+        <translation type="vanished">Hyb oligo ve sadece bir primer seçemiyorum</translation>
+    </message>
+    <message>
+        <source>Nothing to pick</source>
+        <translation type="vanished">Seçecek bir şey yok</translation>
+    </message>
+    <message>
+        <source>The field &apos;%1&apos; has invalid value</source>
+        <translation type="vanished">&apos;%1&apos; alanı geçersiz değere sahip</translation>
+    </message>
+    <message>
+        <source>Cannot create an annotation object. Please check settings.</source>
+        <translation type="vanished">Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin.</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.cpp" line="919"/>
         <source>Save primer settings</source>
         <translation>Astar ayarlarını kaydedin</translation>
@@ -2812,6 +3196,10 @@ In case of calculation, all incorrect values will be ignored. Continue?</source>
         <location filename="../src/Primer3Dialog.cpp" line="931"/>
         <source>Load settings</source>
         <translation>Yükleme Ayarları</translation>
+    </message>
+    <message>
+        <source>Can not load settings file: invalid format.</source>
+        <translation type="vanished">Ayarlar dosyası yüklenemiyor: geçersiz format.</translation>
     </message>
 </context>
 <context>
@@ -2858,6 +3246,25 @@ In case of calculation, all incorrect values will be ignored. Continue?</source>
         <location filename="../src/task/Primer3Task.cpp" line="180"/>
         <source>Sequence Primer3 error: &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Primer3ToAnnotationsTask</name>
+    <message>
+        <source>Search primers to annotations</source>
+        <translation type="vanished">Ek açıklamalara giden primerleri ara</translation>
+    </message>
+    <message>
+        <source>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</source>
+        <translation type="vanished">%1. dizisiyle ilişkili herhangi bir ekson ek açıklaması bulunamadı Sağlanan dizinin cDNA olduğundan ve ek açıklamalı eksonik yapıya sahip olduğundan emin olun</translation>
+    </message>
+    <message>
+        <source>The first exon from the selected range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</source>
+        <translation type="vanished">Seçilen aralıktaki [%1,%2] ilk ekson, ekson sayısından (%2) daha büyük. Lütfen doğru ekson aralığını ayarlayın.</translation>
+    </message>
+    <message>
+        <source>The the selected exon range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</source>
+        <translation type="vanished">Seçilen ekson aralığı [%1,%2] ekson sayısından (%2) daha büyük. Lütfen doğru ekson aralığını ayarlayın.</translation>
     </message>
 </context>
 <context>

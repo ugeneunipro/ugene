@@ -62,6 +62,10 @@
         <translation>Sıra URL&apos;si yok</translation>
     </message>
     <message>
+        <source>No document loaded</source>
+        <translation type="vanished">Yüklü belge yok</translation>
+    </message>
+    <message>
         <location filename="../src/AssemblySamtoolsMpileup.cpp" line="135"/>
         <source>Incorrect variant track object in %1</source>
         <translation>%1 konumunda yanlış varyant izleme nesnesi</translation>

@@ -45,6 +45,18 @@
         <translation>Okumak için &quot;%1&quot; açılamadı</translation>
     </message>
     <message>
+        <source>Fail to read the header from the file: &quot;%1&quot;</source>
+        <translation type="vanished">Dosyadan başlık okunamadı: &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Can not build the fasta index for the file: &quot;%1&quot;</source>
+        <translation type="vanished">Dosya için fasta dizini oluşturulamıyor: &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Error parsing the reads from the file: &quot;%1&quot;</source>
+        <translation type="vanished">Okumaları dosyadan ayrıştırırken hata oluştu: &quot;%1&quot;</translation>
+    </message>
+    <message>
         <location filename="../src/BAMUtils.cpp" line="94"/>
         <source>Fail to read the header from the file, probably, not an assembly format: &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
@@ -65,6 +77,10 @@
         <translation>Verilen url ile dosya açılamıyor: %1.</translation>
     </message>
     <message>
+        <source>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</source>
+        <translation type="vanished">Geçersiz veritabanı kullanıcı izinleri ayarlandı, bu nedenle UGENE bu veritabanını kullanamaz. Sorunu gidermek için sistem yöneticinize bağlanın.</translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/SQLiteBlobInputStream.cpp" line="96"/>
         <source>Can not read data. The database is closed or the data were changed.</source>
         <translation>Veriler okunamıyor. Veritabanı kapatıldı veya veriler değiştirildi.</translation>
@@ -73,6 +89,10 @@
         <location filename="../src/sqlite_dbi/SQLiteBlobOutputStream.cpp" line="49"/>
         <source>Can not write data. The database is closed or the data were changed.</source>
         <translation>Veri yazılamıyor. Veritabanı kapatıldı veya veriler değiştirildi.</translation>
+    </message>
+    <message>
+        <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
+        <translation type="vanished">Beklenmeyen sayıda değiştirilmiş nesne. Beklenen: 1, gerçek: %1</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="270"/>
@@ -129,9 +149,29 @@
         <translation>Hat çok uzun</translation>
     </message>
     <message>
+        <source>A name is not match with AF names</source>
+        <translation type="vanished">Bir isim AF isimleriyle eşleşmiyor</translation>
+    </message>
+    <message>
+        <source>First line is not an ace header</source>
+        <translation type="vanished">İlk satır bir as başlığı değil</translation>
+    </message>
+    <message>
+        <source>No contig count tag in the header line</source>
+        <translation type="vanished">Başlık satırında bitiş sayısı etiketi yok</translation>
+    </message>
+    <message>
+        <source>Must be CO keyword</source>
+        <translation type="vanished">CO anahtar kelimesi olmalı</translation>
+    </message>
+    <message>
         <location filename="../src/ace/AceFormat.cpp" line="214"/>
         <source>Unexpected end of file</source>
         <translation>Beklenmedik dosya sonlandırması</translation>
+    </message>
+    <message>
+        <source>There is no note about reads count</source>
+        <translation type="vanished">Okuma sayısı hakkında not yok</translation>
     </message>
     <message>
         <location filename="../src/ace/AceFormat.cpp" line="225"/>
@@ -143,6 +183,10 @@
         <location filename="../src/ace/AceFormat.cpp" line="53"/>
         <source>ACE is a format used for storing information about genomic confgurations</source>
         <translation>ACE, genomik konfigürasyonlar hakkında bilgi depolamak için kullanılan bir formattır</translation>
+    </message>
+    <message>
+        <source>A name is duplicated</source>
+        <translation type="vanished">Bir isim yineleniyor</translation>
     </message>
     <message>
         <location filename="../src/ace/AceFormat.cpp" line="231"/>
@@ -300,6 +344,14 @@
         <translation>ACE dosyası içe aktarma: %1</translation>
     </message>
     <message>
+        <source>Dbi ref is invalid</source>
+        <translation type="vanished">Dbi referansı geçersiz</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create a temporary database</source>
+        <translation type="vanished">Geçici bir veritabanı oluşturamıyorum</translation>
+    </message>
+    <message>
         <location filename="../src/ace/AceImporter.cpp" line="136"/>
         <source>Failed to get load task for : %1</source>
         <translation>%1 için yükleme görevi alınamadı</translation>
@@ -383,6 +435,14 @@
         <source>APR file import: %1</source>
         <translation>APR dosyası içe aktarma: %1</translation>
     </message>
+    <message>
+        <source>Empty destination url</source>
+        <translation type="vanished">Hedef URL boş</translation>
+    </message>
+    <message>
+        <source>Invalid I/O environment!</source>
+        <translation type="vanished">Geçersiz I/O ortamı!</translation>
+    </message>
 </context>
 <context>
     <name>U2::BAMUtils</name>
@@ -427,14 +487,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Sort bam file: &quot;%1&quot; using %2 Mb of memory. Result sorted file is: &quot;%3&quot;</source>
+        <translation type="vanished">Bam dosyasını sıralayın: &quot;%1&quot; %2 Mb bellek kullanılarak. Sonuç olarak sıralanan dosya: &quot;%3&quot;</translation>
+    </message>
+    <message>
         <location filename="../src/BAMUtils.cpp" line="388"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>BAM dosyaları birleştiriliyor: &quot;%1&quot;. Ortaya çıkan birleştirilmiş dosya: &quot;%2&quot;</translation>
     </message>
     <message>
+        <source>Remove PCR duplicate in BAM file: &quot;%1&quot;. Resulting  file is: &quot;%2&quot;</source>
+        <translation type="vanished">BAM dosyasındaki PCR kopyasını kaldırın: &quot;%1&quot;. Ortaya çıkan dosya: &quot;%2&quot;</translation>
+    </message>
+    <message>
         <location filename="../src/BAMUtils.cpp" line="437"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Bam dosyası için dizin oluşturma: &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Wrong line in a SAM file.</source>
+        <translation type="vanished">SAM dosyasında yanlış satır.</translation>
     </message>
 </context>
 <context>
@@ -515,6 +587,10 @@
         <translation>BED kaydetme başlatılıyor: &apos;%1&apos;</translation>
     </message>
     <message>
+        <source>Can not convert GObject to AnnotationTableObject</source>
+        <translation type="vanished">Nesne, Ek Açıklama Tablosu Nesnesine dönüştürülemiyor</translation>
+    </message>
+    <message>
         <location filename="../src/BedFormat.cpp" line="428"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Kromozom adı tespit edilemiyor. &apos;Chr&apos; adı kullanılacaktır.</translation>
@@ -568,6 +644,18 @@
         <translation>&apos;%1&apos; bgzip sıkıştırmasını başlat</translation>
     </message>
     <message>
+        <source>IOAdapterRegistry is NULL!</source>
+        <translation type="vanished">IOAdapterRegistry BOŞ!</translation>
+    </message>
+    <message>
+        <source>IOAdapterFactory is NULL!</source>
+        <translation type="vanished">IOAdapterFactory BOŞ!</translation>
+    </message>
+    <message>
+        <source>Can not create IOAdapter!</source>
+        <translation type="vanished">IOAdapter oluşturulamıyor!</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="69"/>
         <source>Can not open input file &apos;%1&apos;</source>
         <translation>&apos;%1&apos; giriş dosyası açılamıyor</translation>
@@ -618,6 +706,30 @@
         <source>Clone assembly object to the destination database</source>
         <translation>Montaj nesnesini hedef veritabanına klonla</translation>
     </message>
+    <message>
+        <source>Invalid assembly ID</source>
+        <translation type="vanished">Geçersiz derleme kimliği</translation>
+    </message>
+    <message>
+        <source>Invalid source database reference</source>
+        <translation type="vanished">Geçersiz kaynak veritabanı referansı</translation>
+    </message>
+    <message>
+        <source>Invalid destination database reference</source>
+        <translation type="vanished">Geçersiz hedef veritabanı referansı</translation>
+    </message>
+    <message>
+        <source>Can&apos;t get the cloned object</source>
+        <translation type="vanished">Klonlanmış nesne alınamıyor</translation>
+    </message>
+    <message>
+        <source>Unexpected result object: expect AssemblyObject, got %1 object</source>
+        <translation type="vanished">Beklenmeyen sonuç nesnesi: Montaj Nesnesi bekleniyor, %1 nesnesini al</translation>
+    </message>
+    <message>
+        <source>Unexpected result object: expect U2SequenceObject, got %1 object</source>
+        <translation type="vanished">Beklenmeyen sonuç nesnesi: U2SequenceObject bekleniyor, %1 nesnesi var</translation>
+    </message>
 </context>
 <context>
     <name>U2::ClustalWAlnFormat</name>
@@ -667,6 +779,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Sequence names are not matched</source>
+        <translation type="vanished">Sıra adları eşleşmiyor</translation>
+    </message>
+    <message>
         <location filename="../src/ClustalWAlnFormat.cpp" line="201"/>
         <source>Alphabet is unknown</source>
         <translation>Alfabe bilinmiyor</translation>
@@ -682,22 +798,12 @@
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="47"/>
         <source>Convert ACE to UGENE database (%1)</source>
-        <translation type="unfinished">ACE&apos;yi UGENE veritabanına dönüştür (%1)</translation>
+        <translation>ACE&apos;yi UGENE veritabanına dönüştür (%1)</translation>
     </message>
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="58"/>
         <source>Converting assembly from %1 to %2 started</source>
-        <translation type="unfinished">Derleme %1&apos;den %2&apos;ye dönüştürülmeye başlandı</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="70"/>
-        <source>Can&apos;t open file &apos;%1&apos;</source>
-        <translation type="unfinished">&apos;%1&apos; dosyası açılamıyor</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="88"/>
-        <source>Importing</source>
-        <translation type="unfinished">İçe Aktarılıyor</translation>
+        <translation>Derleme %1&apos;den %2&apos;ye dönüştürülmeye başlandı</translation>
     </message>
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="142"/>
@@ -705,20 +811,54 @@
         <translation type="unfinished">Girdi dosyasında derleme yok</translation>
     </message>
     <message>
+        <source>IOAdapterFactory is NULL</source>
+        <translation type="vanished">IOAdapterFactory BOŞ</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="70"/>
+        <source>Can&apos;t open file &apos;%1&apos;</source>
+        <translation>&apos;%1&apos; dosyası açılamıyor</translation>
+    </message>
+    <message>
+        <source>DBI is NULL</source>
+        <translation type="vanished">DBI BOŞ</translation>
+    </message>
+    <message>
+        <source>Object DBI is NULL</source>
+        <translation type="vanished">DBI Nesnesi BOŞ</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="88"/>
+        <source>Importing</source>
+        <translation>İçe Aktarılıyor</translation>
+    </message>
+    <message>
+        <source>Assembly DBI is NULL</source>
+        <translation type="vanished">Montaj DBI&apos;sı BOŞ</translation>
+    </message>
+    <message>
+        <source>Sequence DBI is NULL</source>
+        <translation type="vanished">DBI dizisi BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="156"/>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="199"/>
         <source>Invalid source file</source>
-        <translation type="unfinished">Geçersiz kaynak dosya</translation>
+        <translation>Geçersiz kaynak dosya</translation>
     </message>
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="220"/>
         <source>Packing reads for assembly &apos;%1&apos; (%2 of %3)</source>
-        <translation type="unfinished">Ambalaj &apos;%1&apos; derlemesi için okur (%2 / %3)</translation>
+        <translation>Ambalaj &apos;%1&apos; derlemesi için okur (%2 / %3)</translation>
+    </message>
+    <message>
+        <source>Attribute DBI is NULL</source>
+        <translation type="vanished">Öznitelik DBI BOŞ</translation>
     </message>
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="275"/>
         <source>Warning: incorrect maxProw == %1, probably packing was not done! Attribute was not set</source>
-        <translation type="unfinished">Uyarı: yanlış maxProw == %1, muhtemelen paketleme yapılmadı! Öznitelik ayarlanmadı</translation>
+        <translation>Uyarı: yanlış maxProw == %1, muhtemelen paketleme yapılmadı! Öznitelik ayarlanmadı</translation>
     </message>
 </context>
 <context>
@@ -817,7 +957,7 @@
         <location filename="../src/FastqFormat.cpp" line="402"/>
         <location filename="../src/PDWFormat.cpp" line="152"/>
         <source>Document is empty.</source>
-        <translation type="unfinished">Belge boş.</translation>
+        <translation>Belge boş.</translation>
     </message>
 </context>
 <context>
@@ -825,12 +965,16 @@
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="156"/>
         <source>First line is not an ace header</source>
-        <translation type="unfinished">İlk satır bir as başlığı değil</translation>
+        <translation>İlk satır bir as başlığı değil</translation>
+    </message>
+    <message>
+        <source>There is no assemblies in input file</source>
+        <translation type="vanished">Girdi dosyasında derleme yok</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="173"/>
         <source>There are not enough assemblies</source>
-        <translation type="unfinished">Yeterli montaj yok</translation>
+        <translation>Yeterli montaj yok</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="193"/>
@@ -841,62 +985,74 @@
         <location filename="../src/ace/AceImportUtils.cpp" line="232"/>
         <location filename="../src/ace/AceImportUtils.cpp" line="482"/>
         <source>Unexpected end of file</source>
-        <translation type="unfinished">Beklenmedik dosya sonlandırması</translation>
+        <translation>Beklenmedik dosya sonlandırması</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="236"/>
         <source>Line is too long</source>
-        <translation type="unfinished">Hat çok uzun</translation>
+        <translation>Hat çok uzun</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="245"/>
         <source>No contig count tag in the header line</source>
-        <translation type="unfinished">Başlık satırında bitiş sayısı etiketi yok</translation>
+        <translation>Başlık satırında bitiş sayısı etiketi yok</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="257"/>
         <source>Not enough parameters in current line</source>
-        <translation type="unfinished">Mevcut satırda yeterli parametre yok</translation>
+        <translation>Mevcut satırda yeterli parametre yok</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="268"/>
         <source>Parameter is not a digit</source>
-        <translation type="unfinished">Parametre rakam değil</translation>
+        <translation>Parametre rakam değil</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="276"/>
         <source>There is no note about reads count</source>
-        <translation type="unfinished">Okuma sayısı hakkında not yok</translation>
+        <translation>Okuma sayısı hakkında not yok</translation>
+    </message>
+    <message>
+        <source>A name is duplicated</source>
+        <translation type="vanished">Bir isim yineleniyor</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="291"/>
         <source>No consensus</source>
-        <translation type="unfinished">Fikir birliği yok</translation>
+        <translation>Fikir birliği yok</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="301"/>
         <source>BQ keyword hasn&apos;t been found</source>
-        <translation type="unfinished">BQ anahtar kelimesi bulunamadı</translation>
+        <translation>BQ anahtar kelimesi bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="304"/>
         <source>Unexpected symbols in consensus data</source>
-        <translation type="unfinished">Konsensüs verilerinde beklenmeyen semboller</translation>
+        <translation>Konsensüs verilerinde beklenmeyen semboller</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="315"/>
         <source>Can&apos;t find a sequence name in current line</source>
-        <translation type="unfinished">Mevcut satırda bir sıra adı bulamıyorum</translation>
+        <translation>Mevcut satırda bir sıra adı bulamıyorum</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="325"/>
         <source>An empty sequence name</source>
-        <translation type="unfinished">Boş bir sıra adı</translation>
+        <translation>Boş bir sıra adı</translation>
+    </message>
+    <message>
+        <source>Invalid AF tag</source>
+        <translation type="vanished">Geçersiz AF etiketi</translation>
+    </message>
+    <message>
+        <source>A name is duplicated: %1</source>
+        <translation type="vanished">Bir ad yineleniyor: %1</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="395"/>
         <source>Not all reads were found</source>
-        <translation type="unfinished">Tüm okumalar bulunamadı</translation>
+        <translation>Tüm okumalar bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="404"/>
@@ -904,72 +1060,76 @@
         <location filename="../src/ace/AceImportUtils.cpp" line="440"/>
         <location filename="../src/ace/AceImportUtils.cpp" line="452"/>
         <source>Bad AF note</source>
-        <translation type="unfinished">Kötü AF notu</translation>
+        <translation>Kötü AF notu</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="478"/>
         <source>There is no read note</source>
-        <translation type="unfinished">Okunan not yok</translation>
+        <translation>Okunan not yok</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="491"/>
         <source>Invalid RD part</source>
-        <translation type="unfinished">Geçersiz RD parçası</translation>
+        <translation>Geçersiz RD parçası</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="495"/>
-        <source>A name is not match with AF names</source>
-        <translation type="unfinished">Bir isim AF isimleriyle eşleşmiyor</translation>
+        <source>Can&apos;t find the RD tag</source>
+        <translation type="vanished">RD etiketini bulamıyorum</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="503"/>
         <source>QA keyword hasn&apos;t been found</source>
-        <translation type="unfinished">QA anahtar kelimesi bulunamadı</translation>
+        <translation>QA anahtar kelimesi bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
         <source>QA error bad range</source>
-        <translation type="unfinished">QA hatası hatalı aralık</translation>
+        <translation>QA hatası hatalı aralık</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="515"/>
         <source>Unexpected symbols in sequence data</source>
-        <translation type="unfinished">Sıra verilerinde beklenmeyen semboller</translation>
+        <translation>Sıra verilerinde beklenmeyen semboller</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImportUtils.cpp" line="495"/>
+        <source>A name is not match with AF names</source>
+        <translation>Bir isim AF isimleriyle eşleşmiyor</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="521"/>
         <source>Can&apos;t find clear range start in current line</source>
-        <translation type="unfinished">Mevcut satırda net aralık başlangıcı bulunamıyor</translation>
+        <translation>Mevcut satırda net aralık başlangıcı bulunamıyor</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="522"/>
         <source>Clear range start is invalid</source>
-        <translation type="unfinished">Aralık başlangıcını temizle geçersiz</translation>
+        <translation>Aralık başlangıcını temizle geçersiz</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="529"/>
         <source>Can&apos;t find clear range end in current line</source>
-        <translation type="unfinished">Mevcut satırda net aralık sonu bulunamıyor</translation>
+        <translation>Mevcut satırda net aralık sonu bulunamıyor</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="530"/>
         <source>Clear range end is invalid</source>
-        <translation type="unfinished">Aralık sonunu temizle geçersiz</translation>
+        <translation>Aralık sonunu temizle geçersiz</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="554"/>
         <source>There is no next element</source>
-        <translation type="unfinished">Sonraki öğe yok</translation>
+        <translation>Sonraki öğe yok</translation>
     </message>
     <message>
         <location filename="../src/tasks/ConvertFileTask.cpp" line="56"/>
         <source>Conversion file from %1 to %2</source>
-        <translation type="unfinished">%1&apos;den %2&apos;ye dönüştürme dosyası</translation>
+        <translation>%1&apos;den %2&apos;ye dönüştürme dosyası</translation>
     </message>
     <message>
         <location filename="../src/tasks/MergeBamTask.cpp" line="45"/>
         <source>Merge BAM files with SAMTools merge</source>
-        <translation type="unfinished">BAM dosyalarını SAMTools birleştirmeyle birleştir</translation>
+        <translation>BAM dosyalarını SAMTools birleştirmeyle birleştir</translation>
     </message>
 </context>
 <context>
@@ -1143,6 +1303,10 @@
         <translation>FAŞTA formatı, baz çiftlerinin veya amino asitlerin tek harfli kodlar kullanılarak temsil edildiği nükleotit sekanslarını veya peptit sekanslarını temsil etmek için metin bazlı bir formattır. Biçim ayrıca sıra adlarının ve yorumların dizilerden önce gelmesine izin verir.</translation>
     </message>
     <message>
+        <source>Line is too long</source>
+        <translation type="vanished">Hat çok uzun</translation>
+    </message>
+    <message>
         <location filename="../src/FastaFormat.cpp" line="145"/>
         <source>First line is not a FASTA header</source>
         <translation>İlk satır bir FASTA başlığı değil</translation>
@@ -1151,6 +1315,10 @@
         <location filename="../src/FastaFormat.cpp" line="241"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>&quot;%1&quot; dosyası görüntülenemeyecek kadar çok dizi içeriyor. Ancak, bu verileri &lt;i&gt;Araçlar -&gt; NGS veri analizi&lt;/i&gt; menüsünden veya İş Akışı Tasarımcısı ile oluşturulmuş boru hatlarından kullanarak işleyebilirsiniz.</translation>
+    </message>
+    <message>
+        <source>Sequence #%1 is processed</source>
+        <translation type="vanished">#%1 dizisi işlendi</translation>
     </message>
     <message>
         <location filename="../src/FastaFormat.cpp" line="272"/>
@@ -1255,6 +1423,10 @@
         <location filename="../src/FpkmTrackingFormat.cpp" line="86"/>
         <source>The FPKM (fragments per kilobase of exon model per million mapped fragments) Tracking Format is a native Cufflinks format to output estimated expression values.</source>
         <translation>FPKM (her bir milyon eşlenmiş parça başına ekson modeli kilobaz başına parça) İzleme Formatı, tahmini ifade değerlerinin çıktısını almak için yerel bir Kol Düğmesi formatıdır.</translation>
+    </message>
+    <message>
+        <source>Internal error: qualifier with name &apos;%1&apos; and &apos;%2&apos; can&apos;t be added</source>
+        <translation type="vanished">Dahili hata: &apos;%1&apos; ve &apos;%2&apos; adlı niteleyici eklenemez</translation>
     </message>
     <message>
         <location filename="../src/FpkmTrackingFormat.cpp" line="150"/>
@@ -1596,6 +1768,18 @@
         <translation>eksik KAYNAK kaydı</translation>
     </message>
     <message>
+        <source>There is no IOAdapter registry yet</source>
+        <translation type="vanished">Henüz IOAdapter kaydı yok</translation>
+    </message>
+    <message>
+        <source>IOAdapterFactory is NULL</source>
+        <translation type="vanished">IOAdapterFactory BOŞ</translation>
+    </message>
+    <message>
+        <source>IOAdapter is NULL</source>
+        <translation type="vanished">IOAdapter BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="812"/>
         <source>Invalid annotation table!</source>
         <translation>Geçersiz ek açıklama tablosu!</translation>
@@ -1617,6 +1801,18 @@
         <location filename="../src/tasks/BgzipTask.cpp" line="137"/>
         <source>Start decompression &apos;%1&apos;</source>
         <translation>Sıkıştırmayı başlat &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>IOAdapterRegistry is NULL!</source>
+        <translation type="vanished">IOAdapterRegistry BOŞ!</translation>
+    </message>
+    <message>
+        <source>IOAdapterFactory is NULL!</source>
+        <translation type="vanished">IOAdapterFactory BOŞ!</translation>
+    </message>
+    <message>
+        <source>Can not create IOAdapter!</source>
+        <translation type="vanished">IOAdapter oluşturulamıyor!</translation>
     </message>
     <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="162"/>
@@ -1800,6 +1996,14 @@
         <location filename="../src/MSFFormat.cpp" line="59"/>
         <source>MSF format is used to store multiple aligned sequences. Files include the sequence name and the sequence itself, which is usually aligned with other sequences in the file.</source>
         <translation>MSF biçimi, birden çok hizalanmış diziyi depolamak için kullanılır. Dosyalar, genellikle dosyadaki diğer dizilerle hizalanan sıra adını ve dizinin kendisini içerir.</translation>
+    </message>
+    <message>
+        <source>Incorrect format</source>
+        <translation type="vanished">Yanlış format</translation>
+    </message>
+    <message>
+        <source>Unexpected end of file</source>
+        <translation type="vanished">Beklenmedik dosya sonlandırması</translation>
     </message>
     <message>
         <location filename="../src/MSFFormat.cpp" line="154"/>
@@ -2034,6 +2238,10 @@
         <source>Too much reads without a pair (&gt;%1). Check the input data are set correctly.</source>
         <translation>Çift olmadan çok fazla okuma (&gt;%1). Giriş verilerinin doğru ayarlanıp ayarlanmadığını kontrol edin.</translation>
     </message>
+    <message>
+        <source>Invalid sequence info</source>
+        <translation type="vanished">Geçersiz sıra bilgisi</translation>
+    </message>
 </context>
 <context>
     <name>U2::PhylipFormat</name>
@@ -2090,6 +2298,10 @@
         <source>Unexpected end of file</source>
         <translation type="unfinished">Beklenmedik dosya sonlandırması</translation>
     </message>
+    <message>
+        <source>Error parsing file</source>
+        <translation type="vanished">Dosya ayrıştırılırken hata oluştu</translation>
+    </message>
 </context>
 <context>
     <name>U2::PhylipInterleavedFormat</name>
@@ -2098,6 +2310,26 @@
         <source>PHYLIP Interleaved</source>
         <translation>PHYLIP Interleaved</translation>
     </message>
+    <message>
+        <source>Illegal line</source>
+        <translation type="vanished">Yasadışı hat</translation>
+    </message>
+    <message>
+        <source>Wrong header</source>
+        <translation type="vanished">Yanlış başlık</translation>
+    </message>
+    <message>
+        <source>Block is incomplete</source>
+        <translation type="vanished">Blok eksik</translation>
+    </message>
+    <message>
+        <source>Block is incomlete</source>
+        <translation type="vanished">Blok eksik</translation>
+    </message>
+    <message>
+        <source>Number of characters does not correspond to the stated number</source>
+        <translation type="vanished">Karakter sayısı belirtilen sayıya karşılık gelmiyor</translation>
+    </message>
 </context>
 <context>
     <name>U2::PhylipSequentialFormat</name>
@@ -2105,6 +2337,26 @@
         <location filename="../src/PhylipFormat.cpp" line="139"/>
         <source>PHYLIP Sequential</source>
         <translation>PHYLIP Sıralı</translation>
+    </message>
+    <message>
+        <source>Illegal line</source>
+        <translation type="vanished">Yasadışı hat</translation>
+    </message>
+    <message>
+        <source>Wrong header</source>
+        <translation type="vanished">Yanlış başlık</translation>
+    </message>
+    <message>
+        <source>There is not enough data</source>
+        <translation type="vanished">Yeterli veri yok</translation>
+    </message>
+    <message>
+        <source>Error parsing file</source>
+        <translation type="vanished">Dosya ayrıştırılırken hata oluştu</translation>
+    </message>
+    <message>
+        <source>Number of characters does not correspond to the stated number</source>
+        <translation type="vanished">Karakter sayısı belirtilen sayıya karşılık gelmiyor</translation>
     </message>
 </context>
 <context>
@@ -2218,6 +2470,30 @@
         <location filename="../src/StockholmFormat.cpp" line="524"/>
         <source>A multiple sequence alignments file format</source>
         <translation>Çoklu dizi hizalamaları dosya formatı</translation>
+    </message>
+    <message>
+        <source>unknown error occurred</source>
+        <translation type="vanished">bilinmeyen hata oluştu</translation>
+    </message>
+    <message>
+        <source>invalid file: bad header line</source>
+        <translation type="vanished">geçersiz dosya: hatalı başlık satırı</translation>
+    </message>
+    <message>
+        <source>invalid file: empty sequence name</source>
+        <translation type="vanished">geçersiz dosya: boş sıra adı</translation>
+    </message>
+    <message>
+        <source>invalid file: equal sequence names in one block</source>
+        <translation type="vanished">geçersiz dosya: bir blokta eşit sıralı isimler</translation>
+    </message>
+    <message>
+        <source>invalid file: sequence names are not equal in blocks</source>
+        <translation type="vanished">geçersiz dosya: sıra adları bloklarda eşit değildir</translation>
+    </message>
+    <message>
+        <source>invalid file: sequences in block are not of equal size</source>
+        <translation type="vanished">geçersiz dosya: bloktaki diziler eşit boyutta değil</translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="392"/>
@@ -2389,22 +2665,27 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="80"/>
         <source>There is no assembly object with the specified id.</source>
-        <translation type="unfinished">Belirtilen kimliğe sahip bir derleme nesnesi yok.</translation>
+        <translation>Belirtilen kimliğe sahip bir derleme nesnesi yok.</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
+        <source>Unsupported attribute type: %1</source>
+        <translation>Desteklenmeyen öznitelik türü: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="93"/>
         <source>Unsupported reads storage type: %1</source>
-        <translation type="unfinished">Desteklenmeyen okuma depolama türü: %1</translation>
+        <translation>Desteklenmeyen okuma depolama türü: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="359"/>
         <source>Packing method is not supported: %1</source>
-        <translation type="unfinished">Paketleme yöntemi desteklenmiyor: %1</translation>
+        <translation>Paketleme yöntemi desteklenmiyor: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="443"/>
         <source>Packed data are empty!</source>
-        <translation type="unfinished">Paketlenmiş veriler boş!</translation>
+        <translation>Paketlenmiş veriler boş!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="450"/>
@@ -2437,24 +2718,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
-        <source>Unsupported attribute type: %1</source>
-        <translation type="unfinished">Desteklenmeyen öznitelik türü: %1</translation>
-    </message>
-    <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="227"/>
         <source>Error checking SQLite database: %1!</source>
-        <translation type="unfinished">SQLite veritabanı kontrol edilirken hata oluştu: %1!</translation>
+        <translation>SQLite veritabanı kontrol edilirken hata oluştu: %1!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="240"/>
         <source>Error creating table: %1, error: %2</source>
-        <translation type="unfinished">Tablo oluşturulurken hata oluştu: %1, hata: %2</translation>
+        <translation>Tablo oluşturulurken hata oluştu: %1, hata: %2</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="278"/>
         <source>Not a %1 SQLite database: %2</source>
-        <translation type="unfinished">%1 SQLite veritabanı değil: %2</translation>
+        <translation>%1 SQLite veritabanı değil: %2</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="284"/>
@@ -2464,7 +2740,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="343"/>
         <source>Database is already opened!</source>
-        <translation type="unfinished">Veritabanı zaten açıldı!</translation>
+        <translation>Veritabanı zaten açıldı!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="347"/>
@@ -2474,7 +2750,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="353"/>
         <source>URL is not specified</source>
-        <translation type="unfinished">URL belirtilmedi</translation>
+        <translation>URL belirtilmedi</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="367"/>
@@ -2482,14 +2758,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Error opening SQLite database: %1!</source>
+        <translation type="vanished">SQLite veritabanı açılırken hata oluştu: %1!</translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="421"/>
         <source>Database is already closed!</source>
-        <translation type="unfinished">Veritabanı zaten kapalı!</translation>
+        <translation>Veritabanı zaten kapalı!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="425"/>
         <source>Illegal database state %1!</source>
-        <translation type="unfinished">Geçersiz veritabanı durumu %1!</translation>
+        <translation>Geçersiz veritabanı durumu %1!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
@@ -2499,17 +2779,17 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="450"/>
         <source>Failed to close database: %1, err: %2</source>
-        <translation type="unfinished">Veritabanı kapatılamadı: %1, hata: %2</translation>
+        <translation>Veritabanı kapatılamadı: %1, hata: %2</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteFeatureDbi.cpp" line="146"/>
         <source>Annotation table object not found.</source>
-        <translation type="unfinished">Ek açıklama tablosu nesnesi bulunamadı.</translation>
+        <translation>Ek açıklama tablosu nesnesi bulunamadı.</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteModDbi.cpp" line="147"/>
         <source>An object single modification step not found!</source>
-        <translation type="unfinished">Bir nesne tek değişiklik adımı bulunamadı!</translation>
+        <translation>Bir nesne tek değişiklik adımı bulunamadı!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="391"/>
@@ -2521,14 +2801,14 @@
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="541"/>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="710"/>
         <source>Msa object not found!</source>
-        <translation type="unfinished">Msa nesnesi bulunamadı!</translation>
+        <translation>Msa nesnesi bulunamadı!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="616"/>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="764"/>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="801"/>
         <source>Msa row not found!</source>
-        <translation type="unfinished">Msa satırı bulunamadı!</translation>
+        <translation>Msa satırı bulunamadı!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1251"/>
@@ -2539,7 +2819,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="279"/>
         <source>Not an object! Id: %1, type: %2</source>
-        <translation type="unfinished">Bir nesne değil! Kimlik: %1, tür: %2</translation>
+        <translation>Bir nesne değil! Kimlik: %1, tür: %2</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="303"/>
@@ -2549,45 +2829,53 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="617"/>
         <source>Can&apos;t undo an operation for the object!</source>
-        <translation type="unfinished">Nesne için bir işlemi geri alamazsınız!</translation>
+        <translation>Nesne için bir işlemi geri alamazsınız!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="700"/>
         <source>Can&apos;t redo an operation for the object!</source>
-        <translation type="unfinished">Nesne için bir işlemi yeniden yapamazsınız!</translation>
+        <translation>Nesne için bir işlemi yeniden yapamazsınız!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="870"/>
         <source>Object not found!</source>
-        <translation type="unfinished">Nesne bulunamadı!</translation>
+        <translation>Nesne bulunamadı!</translation>
+    </message>
+    <message>
+        <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
+        <translation type="vanished">Beklenmeyen satır sayısı. Sorgu: &apos;%1&apos;, satırlar: %2</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="932"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="945"/>
         <source>Object not found.</source>
-        <translation type="unfinished">Nesne bulunamadı.</translation>
+        <translation>Nesne bulunamadı.</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="982"/>
         <source>Folder not found: %1</source>
-        <translation type="unfinished">Klasör bulunamadı: %1</translation>
+        <translation>Klasör bulunamadı: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteSequenceDbi.cpp" line="74"/>
         <source>Sequence object not found.</source>
-        <translation type="unfinished">Sıra nesnesi bulunamadı.</translation>
+        <translation>Sıra nesnesi bulunamadı.</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="103"/>
+        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="136"/>
+        <source>Sequence name is not set!</source>
+        <translation>Sıra adı ayarlanmadı!</translation>
+    </message>
+    <message>
+        <source>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</source>
+        <translation type="vanished">RTree dizini oluşturma sırasında hata: %1! SQLite kitaplığında RTree indeks desteği olup olmadığını kontrol edin!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="67"/>
         <source>An error occurred during updating UDR</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="103"/>
-        <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="136"/>
-        <source>Sequence name is not set!</source>
-        <translation type="unfinished">Sıra adı ayarlanmadı!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="125"/>

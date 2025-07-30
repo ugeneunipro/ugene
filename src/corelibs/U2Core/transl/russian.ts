@@ -1395,6 +1395,10 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
+        <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
+        <translation type="vanished">Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="378"/>
         <source>Can&apos;t run the executable file &quot;%1&quot; directly. Trying to run it as a command line command: &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
@@ -1486,99 +1490,99 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="41"/>
         <source>Unknown</source>
-        <translation type="unfinished">Неизвестный тип</translation>
+        <translation>Неизвестный тип</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="42"/>
         <source>Unloaded</source>
-        <translation type="unfinished">Не загруженный</translation>
+        <translation>Не загруженный</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="43"/>
         <source>Text</source>
-        <translation type="unfinished">Текст</translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="44"/>
         <source>Sequence</source>
-        <translation type="unfinished">Последовательность</translation>
+        <translation>Последовательность</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="44"/>
         <source>Sequences</source>
-        <translation type="unfinished">Последовательности</translation>
+        <translation>Последовательности</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="45"/>
         <source>Annotation</source>
-        <translation type="unfinished">Аннотация</translation>
+        <translation>Аннотация</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="45"/>
         <source>Annotations</source>
-        <translation type="unfinished">Аннотации</translation>
+        <translation>Аннотации</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="46"/>
         <source>Variation</source>
-        <translation type="unfinished">Вариация</translation>
+        <translation>Вариация</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="46"/>
         <source>Variations</source>
-        <translation type="unfinished">Вариации</translation>
+        <translation>Вариации</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="47"/>
         <source>Chromatogram</source>
-        <translation type="unfinished">Хроматограмма</translation>
+        <translation>Хроматограмма</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="47"/>
         <source>Chromatograms</source>
-        <translation type="unfinished">Хроматограммы</translation>
+        <translation>Хроматограммы</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
         <source>Alignment</source>
-        <translation type="unfinished">Выравнивание</translation>
+        <translation>Выравнивание</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
         <source>Alignments</source>
-        <translation type="unfinished">Выравнивания</translation>
+        <translation>Выравнивания</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Tree</source>
-        <translation type="unfinished">Дерево</translation>
+        <translation>Дерево</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Trees</source>
-        <translation type="unfinished">Деревья</translation>
+        <translation>Деревья</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>3D model</source>
-        <translation type="unfinished">3D модель</translation>
+        <translation>3D модель</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>3D models</source>
-        <translation type="unfinished">3D модели</translation>
+        <translation>3D модели</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>Assembly</source>
-        <translation type="unfinished">Сборка</translation>
+        <translation>Сборка</translation>
     </message>
     <message>
         <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>Assemblies</source>
-        <translation type="unfinished">Сборки</translation>
+        <translation>Сборки</translation>
     </message>
 </context>
 <context>
@@ -2037,7 +2041,7 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/util/IOAdapterUtils.cpp" line="101"/>
         <location filename="../src/util/IOAdapterUtils.cpp" line="109"/>
         <source>Failed to detect IO adapter for %1</source>
-        <translation type="unfinished">Невозможно определить IO адаптер для %1</translation>
+        <translation>Невозможно определить IO адаптер для %1</translation>
     </message>
 </context>
 <context>
@@ -2051,6 +2055,10 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="460"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
+    </message>
+    <message>
+        <source>Redirecting to %1</source>
+        <translation type="vanished">Перенаправление на %1</translation>
     </message>
 </context>
 <context>
@@ -2281,7 +2289,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/util/MsaWalker.cpp" line="100"/>
         <source> Incorrect gap splitting</source>
-        <translation type="unfinished"> Неправильное разделение гэпа</translation>
+        <translation> Неправильное разделение гэпа</translation>
     </message>
 </context>
 <context>

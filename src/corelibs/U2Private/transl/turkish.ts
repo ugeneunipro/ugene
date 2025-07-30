@@ -69,6 +69,10 @@
         <translation>Eklenti yükleme hatası: %1, Hata dizesi %2</translation>
     </message>
     <message>
+        <source>Settings is NULL</source>
+        <translation type="vanished">Ayarlar BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/PluginSupportImpl.cpp" line="440"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation>Eklenti yükleme hatası: %1. Doğrulama başarısız oldu.</translation>
@@ -206,6 +210,10 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
         <location filename="../src/ServiceRegistryImpl.cpp" line="179"/>
         <source>Enable &apos;%1&apos; service</source>
         <translation>&apos;%1&apos; hizmetini etkinleştir</translation>
+    </message>
+    <message>
+        <source>Required service is not enabled: %1</source>
+        <translation type="vanished">Gerekli hizmet etkinleştirilmedi: %1</translation>
     </message>
 </context>
 <context>
@@ -382,9 +390,25 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Waiting for resource &apos;%1&apos;, count: %2</source>
+        <translation type="vanished">&apos;%1&apos; kaynağı bekleniyor, sayı: %2</translation>
+    </message>
+    <message>
+        <source>Not enough resources for the task, resource name: &apos;%1&apos; max: %2%3 requested: %4%5</source>
+        <translation type="vanished">Görev için yeterli kaynak yok, kaynak adı: &apos;%1&apos; maks: %2%3 talep edildi: %4%5</translation>
+    </message>
+    <message>
+        <source>Waiting for resource &apos;%1&apos;, count: %2%3</source>
+        <translation type="vanished">&apos;%1&apos; kaynağı bekleniyor, sayı: %2%3</translation>
+    </message>
+    <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="619"/>
         <source>Registering new task: %1</source>
         <translation>Yeni görev kaydediliyor: %1</translation>
+    </message>
+    <message>
+        <source>Invalid name</source>
+        <translation type="vanished">Geçersiz ad</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="929"/>
@@ -400,6 +424,14 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
         <location filename="../src/TaskSchedulerImpl.cpp" line="147"/>
         <source>Subtask {%1} is canceled %2</source>
         <translation>Alt görev {%1} iptal edildi %2</translation>
+    </message>
+    <message>
+        <source>No required resources for the task, resource id: &apos;%1&apos;</source>
+        <translation type="vanished">Görev için gerekli kaynak yok, kaynak kimliği: &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Unable to run test because required resource not found</source>
+        <translation type="vanished">Gerekli kaynak bulunamadığı için test çalıştırılamıyor</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="661"/>

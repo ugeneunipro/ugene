@@ -786,6 +786,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Calculating average and dispersion matrixes</source>
+        <translation type="vanished">Ortalama ve dağılım matrislerinin hesaplanması</translation>
+    </message>
+    <message>
         <location filename="../src/SiteconBuildDialogController.cpp" line="226"/>
         <source>Calculating weights</source>
         <translation>Ağırlıkların hesaplanması</translation>

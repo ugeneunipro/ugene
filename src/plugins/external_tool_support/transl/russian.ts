@@ -3916,12 +3916,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="326"/>
         <source>Align sequences to alignment with MAFFT…</source>
-        <translation type="unfinished">Добавить последовательности к выравниванию с MAFFT...</translation>
+        <translation>Добавить последовательности к выравниванию с MAFFT...</translation>
     </message>
     <message>
         <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="327"/>
         <source>Align selected sequences to alignment with MAFFT…</source>
-        <translation type="unfinished">Выровнять выделенные последовательности на выравнивание при помощи MAFFT...</translation>
+        <translation>Выровнять выделенные последовательности на выравнивание при помощи MAFFT...</translation>
     </message>
 </context>
 <context>
@@ -5037,6 +5037,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="143"/>
         <source>Can not create a file: %1</source>
         <translation>Can not create a file: %1</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CutadaptSupport</name>
+    <message>
+        <source>&lt;i&gt;cutadapt&lt;/i&gt; removes adapter sequences from high-throughput sequencing data. This is necessary when the reads are longer than the molecule that is sequenced, such as in microRNA data.</source>
+        <translation type="vanished">&lt;i&gt;cutadapt&lt;/i&gt; удаляет последовательности из данных секвенирования с высокой пропускной способностью. Это необходимо, когда риды больше, чем молекулы, которые секвенированы, например, в данных микроРНК.</translation>
     </message>
 </context>
 <context>
@@ -8686,6 +8693,119 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::CutAdaptFastqPrompter</name>
+    <message>
+        <source>unset</source>
+        <translation type="vanished">не указан</translation>
+    </message>
+    <message>
+        <source> from &lt;u&gt;%1&lt;/u&gt;</source>
+        <translation type="vanished"> из &lt;u&gt;%1&lt;/u&gt;</translation>
+    </message>
+    <message>
+        <source>Removes adapter sequences %1.</source>
+        <translation type="vanished">Удаляет переходные последовательности %1.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::CutAdaptFastqTask</name>
+    <message>
+        <source>Can not copy the result file to: %1</source>
+        <translation type="vanished">Can not copy the result file to: %1</translation>
+    </message>
+    <message>
+        <source>Unknown file format: </source>
+        <translation type="vanished">Unknown file format: </translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::CutAdaptFastqWorker</name>
+    <message>
+        <source>Cut Adapter</source>
+        <translation type="vanished">Удаление адаптеров</translation>
+    </message>
+    <message>
+        <source>Removes adapter sequences</source>
+        <translation type="vanished">Удаляет последовательности адаптеров</translation>
+    </message>
+    <message>
+        <source>Input File</source>
+        <translation type="vanished">Входной файл</translation>
+    </message>
+    <message>
+        <source>Set of FASTQ reads files</source>
+        <translation type="vanished">Набор ридов вормате FASTQ</translation>
+    </message>
+    <message>
+        <source>Output File</source>
+        <translation type="vanished">Выходной файл</translation>
+    </message>
+    <message>
+        <source>Output FASTQ file(s)</source>
+        <translation type="vanished">Выходные FASTQ файлы</translation>
+    </message>
+    <message>
+        <source>Output folder</source>
+        <translation type="vanished">Выходная папка</translation>
+    </message>
+    <message>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation type="vanished">выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
+    </message>
+    <message>
+        <source>Custom folder</source>
+        <translation type="vanished">Частная папка</translation>
+    </message>
+    <message>
+        <source>Select the custom output folder.</source>
+        <translation type="vanished">Укажите частную выходную папку.</translation>
+    </message>
+    <message>
+        <source>Output file name</source>
+        <translation type="vanished">Имя выходного файла</translation>
+    </message>
+    <message>
+        <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension.</source>
+        <translation type="vanished">Имя выходного файла. По умолчанию будет использовано имя первого файла с соответствующим расширением.</translation>
+    </message>
+    <message>
+        <source>FASTA file with 3&apos; adapters</source>
+        <translation type="vanished">FASTA файл с адаптерами 3&apos;</translation>
+    </message>
+    <message>
+        <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$&apos; character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
+        <translation type="vanished">FASTA файл с одним или несколькими адаптерами 3&apos;. Сам адаптер и все, что следует за ним обрезано. Если последовательность адаптера заканчивается символом &apos;$&apos;, адаптер прикрепляется к концу рида.</translation>
+    </message>
+    <message>
+        <source>FASTA file with 5&apos; adapters</source>
+        <translation type="vanished">FASTA файл с адаптерами 5&apos;</translation>
+    </message>
+    <message>
+        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end. If the adapter sequence starts with the character &apos;^&apos;, the adapter is &apos;anchored&apos;. An anchored adapter must appear in its entirety at the 5&apos; end of the read (it is a prefix of the read). A non-anchored adapter may appear partially at the 5&apos; end, or it may occur within the read. If it is found within a read, the sequence preceding the adapter is also trimmed. In all cases, the adapter itself is trimmed.</source>
+        <translation type="vanished">FASTA файл с одним или несколькими адаптерами. Если адаптер начинается с символа &apos;^&apos;, адаптер называется«якорь». Если будет найден такой адаптер в риде, последовательность предшествующая адаптеру также обрезается.</translation>
+    </message>
+    <message>
+        <source>FASTA file with 5&apos; and 3&apos; adapters</source>
+        <translation type="vanished">FASTA файл с 5&apos; и 3&apos; концевыми адаптерами</translation>
+    </message>
+    <message>
+        <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end or 3&apos; end.</source>
+        <translation type="vanished">FASTA файл с одним или несколькими адаптерами 5&apos; или 3&apos; концов.</translation>
+    </message>
+    <message>
+        <source>Input file</source>
+        <translation type="vanished">Входной файл</translation>
+    </message>
+    <message>
+        <source>Workflow</source>
+        <translation type="vanished">Схема</translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="vanished">Частный</translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::FastQCPrompter</name>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="71"/>
@@ -9502,6 +9622,10 @@ See also the &quot;Input data&quot; parameter of the element.</source>
 </context>
 <context>
     <name>U2::LocalWorkflow::Kraken2ClassifyWorker</name>
+    <message>
+        <source>Quantity of files with reads in &quot;URL 1&quot; and &quot;URL 2&quot; should be equal.</source>
+        <translation type="vanished">Количество файлов с ридами в &quot;URL 1&quot; и &quot;URL 2&quot; должно быть одинаковым.</translation>
+    </message>
     <message>
         <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="138"/>
         <location filename="../src/kraken2/Kraken2ClassifyWorker.cpp" line="145"/>
@@ -12247,6 +12371,20 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
+    <name>U2::PythonModuleSupport</name>
+    <message>
+        <source>Python module is not installed. Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
+        <translation type="vanished">Python модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
+    </message>
+</context>
+<context>
+    <name>U2::PythonSupport</name>
+    <message>
+        <source>Python scripts interpreter</source>
+        <translation type="vanished">Python интерпретатор</translation>
+    </message>
+</context>
+<context>
     <name>U2::RegisterCustomToolTask</name>
     <message>
         <location filename="../src/custom_tools/RegisterCustomToolTask.cpp" line="36"/>
@@ -12576,7 +12714,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/ExternalToolSupportSettings.cpp" line="137"/>
         <source>Temporary UGENE dir is empty</source>
-        <translation type="unfinished">Temporary UGENE dir is empty</translation>
+        <translation>Temporary UGENE dir is empty</translation>
     </message>
 </context>
 <context>
@@ -12717,34 +12855,35 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::IntegralBusPort</name>
     <message>
-        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="55"/>
-        <source>&apos;%1&apos; slot must be set</source>
-        <translation type="unfinished">Слот &apos;%1&apos; должен быть установлен</translation>
-    </message>
-    <message>
-        <location filename="../src/cufflinks/CufflinksWorker.cpp" line="59"/>
-        <source>One of these slots must be set: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation type="unfinished">Один из этих слотов должен быть установлен: &apos;%1&apos;, &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/cufflinks/CufflinksWorker.cpp" line="64"/>
-        <source>Only one of these slots must be set: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="271"/>
+        <source>The slot must be not empty: &apos;%1&apos;</source>
+        <translation>Слот не должен быть пустым: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="773"/>
         <source>Error! One of these slots must be not empty: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation type="unfinished">Ошибка! Один из этих слотов не должен быть пустым: &apos;%1&apos;, &apos;%2&apos;</translation>
+        <translation>Ошибка! Один из этих слотов не должен быть пустым: &apos;%1&apos;, &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="779"/>
         <source>Error! You can not bind one of sequences slots and one of url slots simultaneously</source>
-        <translation type="unfinished">Ошибка! Вы не можете связать слот последовательности и слот пути одновременно</translation>
+        <translation>Ошибка! Вы не можете связать слот последовательности и слот пути одновременно</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="271"/>
-        <source>The slot must be not empty: &apos;%1&apos;</source>
-        <translation type="unfinished">Слот не должен быть пустым: &apos;%1&apos;</translation>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="55"/>
+        <source>&apos;%1&apos; slot must be set</source>
+        <translation>Слот &apos;%1&apos; должен быть установлен</translation>
+    </message>
+    <message>
+        <location filename="../src/cufflinks/CufflinksWorker.cpp" line="59"/>
+        <source>One of these slots must be set: &apos;%1&apos;, &apos;%2&apos;</source>
+        <translation>Один из этих слотов должен быть установлен: &apos;%1&apos;, &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/cufflinks/CufflinksWorker.cpp" line="64"/>
+        <source>Only one of these slots must be set: &apos;%1&apos;, &apos;%2&apos;</source>
+        <translatorcomment>Должен быть установлен только один из этих слотов: &apos;%1&apos;, &apos;%2&apos;</translatorcomment>
+        <translation></translation>
     </message>
 </context>
 <context>

@@ -30,6 +30,64 @@
         <translation>...</translation>
     </message>
     <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;The SAM file does not contain the header. Please, choose the reference sequence.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;SAM файл не может содержать заголовок. Выберите референсную последовательность.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Index file (*.bai) is not available. Partial import is going to be slowed down.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Индексный файл (*.bai) недоступен.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Input SAM file does not contain a header. Сhoose a file with reference sequences or references info will be generated.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SAM файл не содержит заголовка. Выберите референсную последовательность.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Index file (*.bai) is not available. Partial import is going to be slowed down.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Индексный файл (*.bai) недоступен.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/ConvertToSQLiteDialog.ui" line="87"/>
+        <source>There is no header in the SAM file. Сhoose a file with the reference sequences or the header information will be generated automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ConvertToSQLiteDialog.ui" line="97"/>
+        <source>Index file (*.bai) is not available. Partial import is going to be slowed down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/ConvertToSQLiteDialog.ui" line="135"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
@@ -58,16 +116,6 @@
         <location filename="../src/ConvertToSQLiteDialog.ui" line="208"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
-    </message>
-    <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="87"/>
-        <source>There is no header in the SAM file. Сhoose a file with the reference sequences or the header information will be generated automatically.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="97"/>
-        <source>Index file (*.bai) is not available. Partial import is going to be slowed down.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -343,6 +391,10 @@
         <translation>Программы:</translation>
     </message>
     <message>
+        <source>Please select the file with the reference sequence</source>
+        <translation type="obsolete">Выберите файл с референсной последовательностью</translation>
+    </message>
+    <message>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="311"/>
         <source>Please select assemblies to be imported</source>
         <translation>Выберите сборку, которая будет импортирована</translation>
@@ -411,6 +463,10 @@ To append data to existing file press &apos;Append&apos;.</source>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="326"/>
         <source>Destination UGENEDB File</source>
         <translation>Destination UGENEDB File</translation>
+    </message>
+    <message>
+        <source>UGENEDB Files (*.ugenedb);;All Files (*)</source>
+        <translation type="vanished">UGENEDB Files (*.ugenedb);;All Files (*)</translation>
     </message>
     <message>
         <location filename="../src/ConvertToSQLiteTask.cpp" line="86"/>
@@ -543,6 +599,10 @@ To append data to existing file press &apos;Append&apos;.</source>
         <location filename="../src/SamReader.cpp" line="180"/>
         <source>Invalid mate position: %1</source>
         <translation>Invalid mate position: %1</translation>
+    </message>
+    <message>
+        <source>Invalid template length of a sigle-fragment template: %1</source>
+        <translation type="vanished">Invalid template length of a sigle-fragment template: %1</translation>
     </message>
     <message>
         <location filename="../src/Reader.cpp" line="168"/>
@@ -741,6 +801,10 @@ To append data to existing file press &apos;Append&apos;.</source>
         <translation>Invalid template length value: %1</translation>
     </message>
     <message>
+        <source>Invalid template length of a single-fragment template: %1</source>
+        <translation type="vanished">Invalid template length of a single-fragment template: %1</translation>
+    </message>
+    <message>
         <location filename="../src/SamReader.cpp" line="195"/>
         <source>Invalid sequence: %1</source>
         <translation>Invalid sequence: %1</translation>
@@ -802,6 +866,10 @@ To append data to existing file press &apos;Append&apos;.</source>
         <location filename="../src/BAMDbiPlugin.cpp" line="127"/>
         <source>BAM/SAM file import: %1</source>
         <translation>BAM/SAM file import: %1</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create a temporary database</source>
+        <translation type="vanished">Can&apos;t create a temporary database</translation>
     </message>
     <message>
         <location filename="../src/BAMDbiPlugin.cpp" line="259"/>
@@ -968,6 +1036,10 @@ To append data to existing file press &apos;Append&apos;.</source>
 </context>
 <context>
     <name>U2::BAMFormat</name>
+    <message>
+        <source>BAM File</source>
+        <translation type="vanished">BAM файл</translation>
+    </message>
     <message>
         <location filename="../src/BAMFormat.cpp" line="46"/>
         <source>BAM</source>

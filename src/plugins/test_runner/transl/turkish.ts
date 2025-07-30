@@ -64,6 +64,14 @@
         <source>Can&apos;t load suite %1, errors: %2</source>
         <translation>%1 paketi yüklenemiyor, hatalar: %2</translation>
     </message>
+    <message>
+        <source>test_runner_plug_name</source>
+        <translation type="vanished">test_çalıştırıcısı_eklenti_adı</translation>
+    </message>
+    <message>
+        <source>test_runner_desc</source>
+        <translation type="vanished">test_çalıştırıcısı_azalan</translation>
+    </message>
 </context>
 <context>
     <name>U2::TestRunnerService</name>
@@ -102,6 +110,10 @@
         <location filename="../src/TestViewController.cpp" line="918"/>
         <source>info</source>
         <translation>bilgi</translation>
+    </message>
+    <message>
+        <source>env_mb_title</source>
+        <translation type="vanished">env_mb_başlığı</translation>
     </message>
     <message>
         <location filename="../src/TestViewController.cpp" line="1141"/>

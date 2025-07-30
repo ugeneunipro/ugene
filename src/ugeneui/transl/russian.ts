@@ -696,6 +696,13 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>U2::AppContextImpl</name>
+    <message>
+        <source>Style not available %1</source>
+        <translation type="vanished">Стиль не доступен: %1</translation>
+    </message>
+</context>
+<context>
     <name>U2::AppSettingsDialogController</name>
     <message>
         <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="45"/>
@@ -890,6 +897,10 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Folder name contains illegal characters</source>
+        <translation type="vanished">Название папки содержит недопустимые символы</translation>
+    </message>
+    <message>
         <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="422"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
@@ -908,6 +919,10 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="447"/>
         <source>New Name</source>
         <translation>Новое имя</translation>
+    </message>
+    <message>
+        <source>New name contains illegal characters</source>
+        <translation type="vanished">Новое имя содержит недопустимые символы</translation>
     </message>
     <message>
         <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="485"/>
@@ -2503,7 +2518,7 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/Main.cpp" line="561"/>
         <source>UGENE initialization started</source>
-        <translation type="unfinished">Инициализация UGENE</translation>
+        <translation>Инициализация UGENE</translation>
     </message>
 </context>
 <context>
@@ -2706,6 +2721,10 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <translation>Авто масштабирование в HDPI (нужен перезапуск)</translation>
     </message>
     <message>
+        <source>Updates</source>
+        <translation type="vanished">Обновления</translation>
+    </message>
+    <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="109"/>
         <source>Do not check and ask about UGENE updates during UGENE startup.</source>
         <translation>Не проверять и не спрашивать об обновлениях при запуске UGENE.</translation>
@@ -2714,6 +2733,10 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="112"/>
         <source>Check for updates when UGENE starts</source>
         <translation>Проверять обновления при запуске UGENE</translation>
+    </message>
+    <message>
+        <source>Experimental features</source>
+        <translation type="vanished">Экспериментальные функции</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="129"/>
@@ -2726,6 +2749,10 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <translation>Включить экспериментальные функции</translation>
     </message>
     <message>
+        <source>Default settings</source>
+        <translation type="vanished">Настройки по умолчанию</translation>
+    </message>
+    <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="139"/>
         <source>Resets all UGENE settings to default. Requires restart.</source>
         <translation>Сбросить все настройки UGENE на значения по умолчанию. Требуется перезапуск.</translation>
@@ -2736,9 +2763,20 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <translation>Установить настройки по умолчанию при следующем запуске</translation>
     </message>
     <message>
+        <source>Statistical reports</source>
+        <translation type="vanished">Отчеты о статистике использования</translation>
+    </message>
+    <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="51"/>
         <source>Appearance</source>
         <translation>Внешний вид</translation>
+    </message>
+</context>
+<context>
+    <name>UserAppsSettings</name>
+    <message>
+        <source>UGENE initialization started</source>
+        <translation type="vanished">Инициализация UGENE</translation>
     </message>
 </context>
 </TS>

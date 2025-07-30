@@ -19,24 +19,18 @@
         <translation>Organizatör</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="40"/>
-        <source>Terminator</source>
-        <translation>Sonlandırıcı</translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="89"/>
-        <source>Primer</source>
-        <translation>Astar</translation>
-    </message>
-    <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="75"/>
-        <source>Gene</source>
-        <translation>Gen</translation>
-    </message>
-    <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="33"/>
         <source>Two-hybrid gene</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="vanished">Orijin</translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="40"/>
+        <source>Terminator</source>
+        <translation>Sonlandırıcı</translation>
     </message>
     <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="47"/>
@@ -64,6 +58,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="89"/>
+        <source>Primer</source>
+        <translation>Astar</translation>
+    </message>
+    <message>
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="96"/>
         <source>Reporter gene</source>
         <translation type="unfinished"></translation>
@@ -87,6 +86,19 @@
         <location filename="../src/CustomAutoAnnotationDialog.ui" line="129"/>
         <source>Invert</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="75"/>
+        <source>Gene</source>
+        <translation>Gen</translation>
+    </message>
+    <message>
+        <source>Other features</source>
+        <translation type="vanished">Diğer özellikler</translation>
+    </message>
+    <message>
+        <source>Regulatory</source>
+        <translation type="vanished">Düzenleyici</translation>
     </message>
 </context>
 <context>

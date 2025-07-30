@@ -104,6 +104,31 @@
         <translation>Kaldır</translation>
     </message>
     <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
+        <source>Open the &quot;Edit Molecule Fragment&quot; dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="204"/>
+        <source>Automatically edit selected fragment&apos;s 5&apos; end and fit it to the 3&apos; end of the fragment above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="207"/>
+        <source>Adjust 5&apos; end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="217"/>
+        <source>Automatically edit selected fragment&apos;s 3&apos; end and fit it to the 5&apos; end of the fragment below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="220"/>
+        <source>Adjust 3&apos; end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="227"/>
         <source>Clear molecule contents</source>
         <translation>Molekül içeriğini temizle</translation>
@@ -172,31 +197,6 @@
         <location filename="../src/ConstructMoleculeDialog.ui" line="338"/>
         <source>Save immediately</source>
         <translation>Hemen kaydedin</translation>
-    </message>
-    <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
-        <source>Open the &quot;Edit Molecule Fragment&quot; dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="204"/>
-        <source>Automatically edit selected fragment&apos;s 5&apos; end and fit it to the 3&apos; end of the fragment above</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="207"/>
-        <source>Adjust 5&apos; end</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="217"/>
-        <source>Automatically edit selected fragment&apos;s 3&apos; end and fit it to the 5&apos; end of the fragment below</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="220"/>
-        <source>Adjust 3&apos; end</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -353,6 +353,14 @@ Temizle </translation>
         <translation>Sol Uç</translation>
     </message>
     <message>
+        <source>Overhang</source>
+        <translation type="vanished">Çıkıntı</translation>
+    </message>
+    <message>
+        <source>Custom overhang</source>
+        <translation type="vanished">Özel çıkıntı</translation>
+    </message>
+    <message>
         <location filename="../src/EditFragmentDialog.ui" line="56"/>
         <location filename="../src/EditFragmentDialog.ui" line="133"/>
         <source>5&apos;-3&apos;</source>
@@ -385,6 +393,10 @@ Temizle </translation>
         <location filename="../src/EditFragmentDialog.ui" line="169"/>
         <source>Reset</source>
         <translation>Sıfırla</translation>
+    </message>
+    <message>
+        <source>Blunt</source>
+        <translation type="vanished">Baskılama</translation>
     </message>
 </context>
 <context>
@@ -433,7 +445,22 @@ Temizle </translation>
     </message>
 </context>
 <context>
+    <name>EnzymesSelectorDialog</name>
+    <message>
+        <source>Select Enzymes</source>
+        <translation type="vanished">Enzimler Seçin</translation>
+    </message>
+</context>
+<context>
     <name>EnzymesSelectorWidget</name>
+    <message>
+        <source>Select enzymes</source>
+        <translation type="vanished">Enzimleri seçin</translation>
+    </message>
+    <message>
+        <source>Filter by name:</source>
+        <translation type="vanished">Ada göre filtrele:</translation>
+    </message>
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="76"/>
         <source>Name</source>
@@ -460,6 +487,10 @@ Temizle </translation>
         <translation>Organizm / Detaylar</translation>
     </message>
     <message>
+        <source>Selected enzymes:</source>
+        <translation type="vanished">Seçilmiş enzimler:</translation>
+    </message>
+    <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="117"/>
         <source>Load enzymes database</source>
         <translation>Enzimler veritabanını yükle</translation>
@@ -475,9 +506,21 @@ Temizle </translation>
         <translation>Enzimleri dışa aktar</translation>
     </message>
     <message>
+        <source>Load selection</source>
+        <translation type="vanished">Seçimi yükle</translation>
+    </message>
+    <message>
+        <source>Save selection</source>
+        <translation type="vanished">Seçimi kaydet</translation>
+    </message>
+    <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="127"/>
         <source>Export current selection as new database</source>
         <translation>Mevcut seçimi yeni veritabanı olarak dışa aktar</translation>
+    </message>
+    <message>
+        <source>Select all enzymes in database</source>
+        <translation type="vanished">Veritabanındaki tüm enzimleri seçin</translation>
     </message>
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="240"/>
@@ -488,31 +531,6 @@ Temizle </translation>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="224"/>
         <source>Save selected enzymes list to a text file</source>
         <translation>Seçili enzimler listesini bir metin dosyasına kaydedin</translation>
-    </message>
-    <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="147"/>
-        <source>Select All</source>
-        <translation>Tümünü Seç</translation>
-    </message>
-    <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="154"/>
-        <source>Empty selection</source>
-        <translation>Seçimi boşalt</translation>
-    </message>
-    <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="157"/>
-        <source>Select None</source>
-        <translation>Hiçbirini Seçme</translation>
-    </message>
-    <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="164"/>
-        <source>Invert current selection</source>
-        <translation>Mevcut seçimi tersine çevir</translation>
-    </message>
-    <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="167"/>
-        <source>Invert selection</source>
-        <translation>Seçimi tersine çevir</translation>
     </message>
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="23"/>
@@ -534,6 +552,11 @@ Temizle </translation>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="144"/>
         <source>Select all enzymes in the table</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="147"/>
+        <source>Select All</source>
+        <translation>Tümünü Seç</translation>
     </message>
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="205"/>
@@ -629,6 +652,81 @@ Temizle </translation>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="541"/>
         <source>&lt;status label&gt;</source>
         <translation type="unfinished">&lt;status label&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="154"/>
+        <source>Empty selection</source>
+        <translation>Seçimi boşalt</translation>
+    </message>
+    <message>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="157"/>
+        <source>Select None</source>
+        <translation>Hiçbirini Seçme</translation>
+    </message>
+    <message>
+        <source>Select enzymes by length of recognition sequence</source>
+        <translation type="vanished">Tanıma dizisinin uzunluğuna göre enzimleri seçin</translation>
+    </message>
+    <message>
+        <source>Select by length</source>
+        <translation type="vanished">Uzunluğa göre seçin</translation>
+    </message>
+    <message>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="164"/>
+        <source>Invert current selection</source>
+        <translation>Mevcut seçimi tersine çevir</translation>
+    </message>
+    <message>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="167"/>
+        <source>Invert selection</source>
+        <translation>Seçimi tersine çevir</translation>
+    </message>
+    <message>
+        <source>REBASE Info</source>
+        <translation type="vanished">REBASE Bilgi</translation>
+    </message>
+</context>
+<context>
+    <name>FindEnzymesDialog</name>
+    <message>
+        <source>Find Restriction Sites</source>
+        <translation type="vanished">Kısıtlama Sitelerini Bulun</translation>
+    </message>
+    <message>
+        <source>Include only enzymes that cut from &apos;Minimum Hits&apos; to &apos;Maximum Hits&apos; times</source>
+        <translation type="vanished">Yalnızca &apos;Minimum İsabet&apos; ile &apos;Maksimum İsabet&apos; sürelerini kesen enzimleri dahil edin</translation>
+    </message>
+    <message>
+        <source>Filter by number of results:</source>
+        <translation type="vanished">Sonuç sayısına göre filtreleyin:</translation>
+    </message>
+    <message>
+        <source>Minimum hits:</source>
+        <translation type="vanished">Minimum isabet:</translation>
+    </message>
+    <message>
+        <source>Maximum hits:</source>
+        <translation type="vanished">Maksimum isabet:</translation>
+    </message>
+    <message>
+        <source>Search  in:</source>
+        <translation type="vanished">Araştır  :</translation>
+    </message>
+    <message>
+        <source>&lt;status label&gt;</source>
+        <translation type="vanished">&lt;status label&gt;</translation>
     </message>
 </context>
 <context>
@@ -732,6 +830,10 @@ Temizle </translation>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="60"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
+    </message>
+    <message>
+        <source>Selected region is too large to proceed!</source>
+        <translation type="vanished">Seçili bölge devam etmek için çok büyük!</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="210"/>
@@ -845,6 +947,10 @@ Başka bir bölge seçin.</translation>
         <location filename="../src/DigestSequenceDialog.cpp" line="235"/>
         <source> : %1 cut(s)</source>
         <translation> : %1 kesim</translation>
+    </message>
+    <message>
+        <source>Auto-annotations update task is NULL.</source>
+        <translation type="vanished">Otomatik ek açıklama güncelleme görevi NULL.</translation>
     </message>
     <message>
         <location filename="../src/DigestSequenceDialog.cpp" line="332"/>
@@ -1002,6 +1108,10 @@ Başka bir bölge seçin.</translation>
         <translation>Desteklenmeyen enzimler dosya biçimi</translation>
     </message>
     <message>
+        <source>The enzyme &apos;%1&apos; has unknown sequence</source>
+        <translation type="vanished">&apos;%1&apos; enzimi bilinmeyen diziye sahip</translation>
+    </message>
+    <message>
         <location filename="../src/EnzymesIO.cpp" line="45"/>
         <source>Not defined</source>
         <translation type="unfinished"></translation>
@@ -1087,6 +1197,17 @@ Ligasyonu başlatmak için bir proje oluşturun veya mevcut bir.</translation>
         <location filename="../src/EnzymesPlugin.cpp" line="65"/>
         <source>Restriction analysis</source>
         <translation>Kısıtlama analizi</translation>
+    </message>
+</context>
+<context>
+    <name>U2::EnzymesSelectorDialog</name>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Vazgeç</translation>
     </message>
 </context>
 <context>
@@ -1194,6 +1315,14 @@ Ligasyonu başlatmak için bir proje oluşturun veya mevcut bir.</translation>
         <translation>Enzim veritabanı dosyasını seçin</translation>
     </message>
     <message>
+        <source>Minimum length</source>
+        <translation type="vanished">Minimum uzunluk</translation>
+    </message>
+    <message>
+        <source>Enter minimum length of recognition sites</source>
+        <translation type="vanished">Minimum tanıma sitelerinin uzunluğunu girin</translation>
+    </message>
+    <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="654"/>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="663"/>
         <source>Save selection</source>
@@ -1214,6 +1343,22 @@ Ligasyonu başlatmak için bir proje oluşturun veya mevcut bir.</translation>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="663"/>
         <source>Failed to open %1 for writing</source>
         <translation>%1 yazmak için açılamadı</translation>
+    </message>
+    <message>
+        <source>Error!</source>
+        <translation type="vanished">Hata!</translation>
+    </message>
+    <message>
+        <source>No enzyme selected!</source>
+        <translation type="vanished">Enzim seçilmedi!</translation>
+    </message>
+    <message>
+        <source>Selected enzyme has no ID!</source>
+        <translation type="vanished">Seçilen enzimin kimliği yok!</translation>
+    </message>
+    <message>
+        <source>Selection files</source>
+        <translation type="vanished">Seçim dosyaları</translation>
     </message>
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="730"/>
@@ -1243,6 +1388,45 @@ Ligasyonu başlatmak için bir proje oluşturun veya mevcut bir.</translation>
         <location filename="../src/FindEnzymesTask.cpp" line="431"/>
         <source>Restriction Sites</source>
         <translation>Kısıtlama Siteleri</translation>
+    </message>
+</context>
+<context>
+    <name>U2::FindEnzymesDialog</name>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Vazgeç</translation>
+    </message>
+    <message>
+        <source>Total number of enzymes: %1, selected %2</source>
+        <translation type="vanished">Toplam enzim sayısı: %1, seçilen %2</translation>
+    </message>
+    <message>
+        <source>Invalid &apos;Search&apos; region!</source>
+        <translation type="vanished">Geçersiz &apos;Arama&apos; bölgesi!</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;body align=&quot;center&quot;&gt;Enzim seçilmedi! Enzim açıklamalarının&lt;br&gt;vurgulanmasını kapatmak istiyor musunuz? &lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Error!</source>
+        <translation type="vanished">Hata!</translation>
+    </message>
+    <message>
+        <source>Minimum hit value must be lesser or equal then maximum!</source>
+        <translation type="vanished">Minimum isabet değeri, maksimumdan küçük veya ona eşit olmalıdır!</translation>
+    </message>
+    <message>
+        <source>Too many results to render. Please reduce the search region or number of selected enzymes.</source>
+        <translation type="vanished">İşlenemeyecek kadar çok sonuç var. Lütfen arama bölgesini veya seçilen enzimlerin sayısını azaltın.</translation>
+    </message>
+    <message>
+        <source>Warning!</source>
+        <translation type="vanished">Uyarı!</translation>
     </message>
 </context>
 <context>
@@ -1315,6 +1499,10 @@ Ligasyonu başlatmak için bir proje oluşturun veya mevcut bir.</translation>
         <translation>Enzimleri Bul</translation>
     </message>
     <message>
+        <source>Alphabet is not nucleic.</source>
+        <translation type="vanished">Alfabe nükleik değildir.</translation>
+    </message>
+    <message>
         <location filename="../src/FindEnzymesTask.cpp" line="188"/>
         <source>Excluded search region with enzyme offsets equal or larger than whole sequence. %1 enzyme search skipped.</source>
         <translation type="unfinished"></translation>
@@ -1367,14 +1555,26 @@ Ligasyonu başlatmak için bir proje oluşturun veya mevcut bir.</translation>
         <translation>&apos;%1&apos; enzimini bulun</translation>
     </message>
     <message>
+        <source>Alphabet is not nucleic.</source>
+        <translation type="vanished">Alfabe nükleik değildir.</translation>
+    </message>
+    <message>
         <location filename="../src/FindEnzymesTask.cpp" line="348"/>
         <source>Find enzyme &apos;%1&apos; parallel</source>
         <translation>Paralel &apos;%1&apos; enzimini bulun</translation>
     </message>
     <message>
+        <source>No enzyme alphabet</source>
+        <translation type="vanished">Enzim alfabesi yok</translation>
+    </message>
+    <message>
         <location filename="../src/FindEnzymesTask.cpp" line="378"/>
         <source>Non-nucleic enzyme alphabet: %1, enzyme: %2, skipping..</source>
         <translation>Nükleik olmayan enzim alfabesi: %1, enzim: %2, atlanıyor..</translation>
+    </message>
+    <message>
+        <source>Failed to get sequence alphabet</source>
+        <translation type="vanished">Sıralı alfabe alınamadı</translation>
     </message>
 </context>
 <context>

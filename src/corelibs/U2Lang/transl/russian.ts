@@ -1047,7 +1047,7 @@
     <message>
         <location filename="../src/support/serialize/HRVisualSerializer.cpp" line="177"/>
         <source>Undefined data-flow link: &apos;%1&apos;. Define it in actor-bindings</source>
-        <translation type="unfinished">Undefined data-flow link: &apos;%1&apos;. Define it in actor-bindings</translation>
+        <translation>Undefined data-flow link: &apos;%1&apos;. Define it in actor-bindings</translation>
     </message>
 </context>
 <context>
@@ -1313,6 +1313,21 @@
     </message>
 </context>
 <context>
+    <name>U2::PrompterBaseImpl</name>
+    <message>
+        <source>unset</source>
+        <translation type="vanished">не указан</translation>
+    </message>
+    <message>
+        <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
+        <translation type="vanished">файл(ы) рядом с исходным(и) &lt;u&gt;%1&lt;/u&gt;</translation>
+    </message>
+    <message>
+        <source>the list of files</source>
+        <translation type="vanished">список файлов</translation>
+    </message>
+</context>
+<context>
     <name>U2::QualifierMarker</name>
     <message>
         <location filename="../src/model/Marker.cpp" line="398"/>
@@ -1403,7 +1418,7 @@
     <message>
         <location filename="../src/model/ActorPrototypeRegistry.cpp" line="33"/>
         <source>Can&apos;t register element config with ID &apos;%1&apos;%2. There is already registered element with this ID%3.</source>
-        <translation type="unfinished">Can&apos;t register element config with ID &apos;%1&apos;%2. There is already registered element with this ID%3.</translation>
+        <translation>Can&apos;t register element config with ID &apos;%1&apos;%2. There is already registered element with this ID%3.</translation>
     </message>
 </context>
 <context>
@@ -2012,6 +2027,22 @@
         <translation>%1 actors in workflow have &apos;%2&apos; alias</translation>
     </message>
     <message>
+        <source>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</source>
+        <translation type="vanished">%1 элемент %2. Текущая версия UGENE не поддерживает фильтрацию и группировку.</translation>
+    </message>
+    <message>
+        <source>filter</source>
+        <translation type="vanished">filter</translation>
+    </message>
+    <message>
+        <source>grouper</source>
+        <translation type="vanished">grouper</translation>
+    </message>
+    <message>
+        <source>The required parameter %1.%2 is empty and not aliased</source>
+        <translation type="vanished">The required parameter %1.%2 is empty and not aliased</translation>
+    </message>
+    <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="821"/>
         <source>Specified variable &quot;%%1%&quot; does not exist, please check the command again.</source>
         <translation>Указанная переменная &quot;%%1%&quot; не существует, проверьте команду.</translation>
@@ -2054,17 +2085,17 @@
     <message>
         <location filename="../src/model/url_attribute/URLAttribute.cpp" line="121"/>
         <source>Required parameter has no datasets specified: %1</source>
-        <translation type="unfinished">Required parameter has no datasets specified: %1</translation>
+        <translation>Required parameter has no datasets specified: %1</translation>
     </message>
     <message>
         <location filename="../src/model/url_attribute/URLAttribute.cpp" line="128"/>
         <source>Required parameter has no input urls specified: %1</source>
-        <translation type="unfinished">Required parameter has no input urls specified: %1</translation>
+        <translation>Required parameter has no input urls specified: %1</translation>
     </message>
     <message>
         <location filename="../src/model/url_attribute/URLAttribute.cpp" line="133"/>
         <source>Required parameter %1 has empty dataset: %2</source>
-        <translation type="unfinished">Required parameter %1 has empty dataset: %2</translation>
+        <translation>Required parameter %1 has empty dataset: %2</translation>
     </message>
 </context>
 </TS>

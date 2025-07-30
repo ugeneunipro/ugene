@@ -1955,7 +1955,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="143"/>
         <source>Output data</source>
-        <translation type="unfinished">Выходные данные</translation>
+        <translation>Выходные данные</translation>
     </message>
 </context>
 <context>
@@ -4352,30 +4352,30 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ScriptWorker</name>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="205"/>
-        <location filename="../src/library/ScriptWorker.cpp" line="206"/>
-        <source>no script text</source>
-        <translation>нет текста скрипта</translation>
-    </message>
-    <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="60"/>
         <source>For input port was set empty data type</source>
-        <translation type="unfinished">Для входного порта указан пустой тип данных</translation>
+        <translation>Для входного порта указан пустой тип данных</translation>
     </message>
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="74"/>
         <source>For output port was set empty data type</source>
-        <translation type="unfinished">Для выходного порта указан пустой тип данных</translation>
+        <translation>Для выходного порта указан пустой тип данных</translation>
     </message>
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="83"/>
         <source>Input data</source>
-        <translation type="unfinished">Входные данные</translation>
+        <translation>Входные данные</translation>
     </message>
     <message>
         <location filename="../src/library/IncludedProtoFactoryImpl.cpp" line="84"/>
         <source>Output data</source>
-        <translation type="unfinished">Выходные данные</translation>
+        <translation>Выходные данные</translation>
+    </message>
+    <message>
+        <location filename="../src/library/ScriptWorker.cpp" line="205"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="206"/>
+        <source>no script text</source>
+        <translation>нет текста скрипта</translation>
     </message>
 </context>
 <context>
@@ -6037,7 +6037,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="948"/>
         <source>UGENE workflow element</source>
-        <translation type="unfinished">Элемент схемы</translation>
+        <translation>Элемент схемы</translation>
     </message>
 </context>
 <context>

@@ -533,6 +533,14 @@
         <source>Sequence name</source>
         <translation>Sıra adı</translation>
     </message>
+    <message>
+        <source>Save file immediately</source>
+        <translation type="vanished">Dosyayı hemen kaydedin</translation>
+    </message>
+    <message>
+        <source>Document format:</source>
+        <translation type="vanished">Belge biçimi:</translation>
+    </message>
 </context>
 <context>
     <name>CreateObjectRelationDialog</name>
@@ -565,6 +573,11 @@
         <translation>Veritabanı:</translation>
     </message>
     <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="97"/>
+        <source>Open database page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="124"/>
         <source>Save to directory:</source>
         <translation>Dizine kaydet:</translation>
@@ -593,11 +606,6 @@
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="183"/>
         <source>Force download the appropriate sequence</source>
         <translation>Uygun diziyi indirmeye zorla</translation>
-    </message>
-    <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="97"/>
-        <source>Open database page</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -841,6 +849,17 @@
     </message>
 </context>
 <context>
+    <name>FolderNameDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="vanished">İletişim</translation>
+    </message>
+    <message>
+        <source>Enter the folder name:</source>
+        <translation type="vanished">Klasör adını girin:</translation>
+    </message>
+</context>
+<context>
     <name>ImageExportForm</name>
     <message>
         <location filename="../src/util/ExportImageDialog.ui" line="20"/>
@@ -1002,6 +1021,14 @@
         <source>Create a subfolder for each document</source>
         <translation>Her belge için bir alt klasör oluşturun</translation>
     </message>
+    <message>
+        <source> bases</source>
+        <translation type="vanished"> üsler</translation>
+    </message>
+    <message>
+        <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
+        <translation type="vanished">Parçalar arasında bilinmeyen sembollerin sayısı (nükleik için N - veya amino için X -):</translation>
+    </message>
 </context>
 <context>
     <name>ImportToDatabaseDialog</name>
@@ -1119,6 +1146,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation type="vanished">Hata</translation>
+    </message>
+    <message>
+        <source>Document with the same URL is added to the project.
+Remove it from the project first.</source>
+        <translation type="vanished">Aynı URL&apos;ye sahip belge projeye eklenir.
+Önce onu projeden çıkarın.</translation>
+    </message>
+    <message>
         <location filename="../src/util/ExportObjectUtils.cpp" line="146"/>
         <location filename="../src/util/ExportObjectUtils.cpp" line="181"/>
         <source>Unable to create I/O factory for </source>
@@ -1129,6 +1166,32 @@
         <location filename="../src/util/ExportObjectUtils.cpp" line="185"/>
         <source>Unknown document format I/O factory: </source>
         <translation>Bilinmeyen belge biçimi I/O fabrikası: </translation>
+    </message>
+    <message>
+        <source>Error! No DBI</source>
+        <translation type="vanished">Hata! DBI yok</translation>
+    </message>
+    <message>
+        <source>Error! No object DBI</source>
+        <translation type="vanished">Hata! Nesne DBI yok</translation>
+    </message>
+    <message>
+        <source>Confirm Deletion</source>
+        <translation type="vanished">Silmeyi Onayla</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete items in Recycle Bin?
+The items cannot be recovered once deleted.</source>
+        <translation type="vanished">Geri Dönüşüm Kutusu&apos;ndaki öğeleri silmek istediğinizden emin misiniz?
+Öğeler silindikten sonra kurtarılamaz.</translation>
+    </message>
+    <message>
+        <source>Unable to Remove</source>
+        <translation type="vanished">Kaldırılamıyor</translation>
+    </message>
+    <message>
+        <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
+        <translation type="vanished">Seçilen nesnelerin bazıları veritabanının diğer kullanıcıları tarafından kullanılıyor. Daha sonra çıkarmayı deneyin.</translation>
     </message>
 </context>
 <context>
@@ -1180,7 +1243,34 @@
     </message>
 </context>
 <context>
+    <name>RegionSelector</name>
+    <message>
+        <source>Whole sequence</source>
+        <translation type="vanished">Tüm dizi</translation>
+    </message>
+    <message>
+        <source>Selected region</source>
+        <translation type="vanished">Seçili bölge</translation>
+    </message>
+    <message>
+        <source>Custom region</source>
+        <translation type="vanished">Özel bölge</translation>
+    </message>
+</context>
+<context>
     <name>RegionSelectorController</name>
+    <message>
+        <source>Whole sequence</source>
+        <translation type="vanished">Tüm dizi</translation>
+    </message>
+    <message>
+        <source>Selected region</source>
+        <translation type="vanished">Seçili bölge</translation>
+    </message>
+    <message>
+        <source>Custom region</source>
+        <translation type="vanished">Özel bölge</translation>
+    </message>
     <message>
         <location filename="../src/util/RegionSelectorController.cpp" line="207"/>
         <source>Invalid Start position of region</source>
@@ -1195,6 +1285,29 @@
         <location filename="../src/util/RegionSelectorController.cpp" line="209"/>
         <source>Start position is greater than End position</source>
         <translation>Başlangıç konumu, Bitiş konumundan daha büyük</translation>
+    </message>
+</context>
+<context>
+    <name>RegionSelectorWithExcludedRegion</name>
+    <message>
+        <source>Form</source>
+        <translation type="vanished">Form</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="vanished">1</translation>
+    </message>
+    <message>
+        <source>-</source>
+        <translation type="vanished">-</translation>
+    </message>
+    <message>
+        <source>Exclude</source>
+        <translation type="vanished">Hariç tut</translation>
+    </message>
+    <message>
+        <source>Region</source>
+        <translation type="vanished">Bölge</translation>
     </message>
 </context>
 <context>
@@ -1694,6 +1807,17 @@ tamamlayıcı (5..15)</translation>
     </message>
 </context>
 <context>
+    <name>U2::DialogUtils</name>
+    <message>
+        <source>Error</source>
+        <translation type="vanished">Hata</translation>
+    </message>
+    <message>
+        <source>Project is locked</source>
+        <translation type="vanished">Proje kilitlendi</translation>
+    </message>
+</context>
+<context>
     <name>U2::DownloadRemoteFileDialog</name>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="58"/>
@@ -1815,6 +1939,41 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/util/EditQualifierDialog.cpp" line="100"/>
         <source>Illegal qualifier value</source>
         <translation>Geçersiz niteleyici değeri</translation>
+    </message>
+</context>
+<context>
+    <name>U2::EditSequenceDialogController</name>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Vazgeç</translation>
+    </message>
+    <message>
+        <source>Insert Sequence</source>
+        <translation type="vanished">Sıra Ekle</translation>
+    </message>
+    <message>
+        <source>Replace sequence</source>
+        <translation type="vanished">Sırayı değiştir</translation>
+    </message>
+    <message>
+        <source>Folder to save is not exists</source>
+        <translation type="vanished">Kaydedilecek klasör mevcut değil</translation>
+    </message>
+    <message>
+        <source>Entered path is empty</source>
+        <translation type="vanished">Girilen yol boş</translation>
+    </message>
+    <message>
+        <source>Filename is empty</source>
+        <translation type="vanished">Dosya adı boş</translation>
+    </message>
+    <message>
+        <source>Select file to save...</source>
+        <translation type="vanished">Kaydedilecek dosyayı seçin...</translation>
     </message>
 </context>
 <context>
@@ -2022,6 +2181,10 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ExportImageDialog</name>
     <message>
+        <source>Image export task factory is NULL</source>
+        <translation type="vanished">Görüntü dışa aktarma görevi fabrikası BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/util/ExportImageDialog.cpp" line="97"/>
         <source>The image file path is empty.</source>
         <translation>Görüntü dosyası yolu boş.</translation>
@@ -2053,6 +2216,13 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     </message>
 </context>
 <context>
+    <name>U2::FeatureKeyFilterTask</name>
+    <message>
+        <source>DbiRef is invalid</source>
+        <translation type="vanished">DbiRef geçersiz</translation>
+    </message>
+</context>
+<context>
     <name>U2::FileLineEdit</name>
     <message>
         <location filename="../src/util/DialogUtils.cpp" line="63"/>
@@ -2067,6 +2237,32 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/util/project/FilteredProjectGroup.cpp" line="66"/>
         <source>Unnamed group</source>
         <translation>Adsız grup</translation>
+    </message>
+</context>
+<context>
+    <name>U2::FolderNameDialog</name>
+    <message>
+        <source>Add Folder</source>
+        <translation type="vanished">Klasör Ekle</translation>
+    </message>
+    <message>
+        <source>Rename Folder</source>
+        <translation type="vanished">Klasörü Yeniden Adlandır</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GObjectView</name>
+    <message>
+        <source>Can&apos;t add object: %1 to the closing view</source>
+        <translation type="vanished">Nesne eklenemiyor: %1 kapanış görünümüne</translation>
+    </message>
+    <message>
+        <source>Object is already added to view %1!</source>
+        <translation type="vanished">Nesne zaten %1 görünümüne eklendi!</translation>
+    </message>
+    <message>
+        <source>Can&apos;t add object: %1</source>
+        <translation type="vanished">Nesne eklenemiyor: %1</translation>
     </message>
 </context>
 <context>
@@ -2145,6 +2341,21 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/util/HelpButton.cpp" line="33"/>
         <source>Help</source>
         <translation>Yardım</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ImageExportController</name>
+    <message>
+        <source>SVG format is not supported</source>
+        <translation type="vanished">SVG formatı desteklenmiyor</translation>
+    </message>
+    <message>
+        <source>PS/PDF format is not supported</source>
+        <translation type="vanished">PS / PDF formatı desteklenmiyor</translation>
+    </message>
+    <message>
+        <source>Raster formats are disabled</source>
+        <translation type="vanished">Raster formatları devre dışı bırakıldı</translation>
     </message>
 </context>
 <context>
@@ -2329,9 +2540,21 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <translation>Uzak belgeyi yükleyin ve projeye ekleyin</translation>
     </message>
     <message>
+        <source>Load remote document</source>
+        <translation type="vanished">Uzak belgeyi yükle</translation>
+    </message>
+    <message>
         <location filename="../src/OpenViewTask.cpp" line="279"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>%2 veritabanında %1 bulunamıyor</translation>
+    </message>
+    <message>
+        <source>Failed to download %1 from %2. Error: %3</source>
+        <translation type="vanished">%2&apos;den %1 indirilemedi. Hata: %3</translation>
+    </message>
+    <message>
+        <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</source>
+        <translation type="vanished">Belge başarıyla indirildi: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2396,6 +2619,21 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/util/RangeSelector.cpp" line="199"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Notification</name>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Remove notification after closing</source>
+        <translation type="vanished">Kapattıktan sonra bildirimi kaldır</translation>
+    </message>
+    <message>
+        <source>Detailed message</source>
+        <translation type="vanished">Ayrıntılı mesaj</translation>
     </message>
 </context>
 <context>
@@ -2468,11 +2706,30 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     </message>
 </context>
 <context>
+    <name>U2::OpenViewTask</name>
+    <message>
+        <source>State is NULL</source>
+        <translation type="vanished">Durum BOŞ</translation>
+    </message>
+    <message>
+        <source>GObject factory is NULL</source>
+        <translation type="vanished">GObject fabrikası BOŞ</translation>
+    </message>
+</context>
+<context>
     <name>U2::PasteFactory</name>
     <message>
         <location filename="../src/PasteController.cpp" line="119"/>
         <source>Data in clipboard is too large.</source>
-        <translation type="unfinished">Panodaki veriler çok büyük.</translation>
+        <translation>Panodaki veriler çok büyük.</translation>
+    </message>
+    <message>
+        <source>Unable to handle so huge data in clipboard.</source>
+        <translation type="vanished">Panodaki çok büyük veriler işlenemiyor.</translation>
+    </message>
+    <message>
+        <source>UGENE can not recognize current clipboard content as one of supported formats.</source>
+        <translation type="vanished">UGENE, mevcut pano içeriğini desteklenen biçimlerden biri olarak tanıyamaz.</translation>
     </message>
 </context>
 <context>
@@ -2494,6 +2751,10 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/PasteController.cpp" line="169"/>
         <source>Failed to create tmp file for clipboard content: %1.</source>
         <translation>Pano içeriği için tmp dosyası oluşturulamadı: %1.</translation>
+    </message>
+    <message>
+        <source>Cannot detect file format</source>
+        <translation type="vanished">Dosya formatı algılanamıyor</translation>
     </message>
 </context>
 <context>
@@ -2569,6 +2830,10 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <translation>Yinelenen belge bulundu: %1, yok sayılıyor</translation>
     </message>
     <message>
+        <source>Database document: %1, ignoring</source>
+        <translation type="vanished">Veritabanı belgesi: %1, yok sayılıyor</translation>
+    </message>
+    <message>
         <location filename="../src/ProjectParsing.cpp" line="391"/>
         <source>The last loaded state was locked by format</source>
         <translation>Son yüklenen durum format tarafından kilitlendi</translation>
@@ -2590,6 +2855,30 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/util/project/ProjectTreeController.cpp" line="271"/>
         <source>Import to the folder...</source>
         <translation>Klasöre aktar...</translation>
+    </message>
+    <message>
+        <source>Unable to Restore</source>
+        <translation type="vanished">Geri yüklenemiyor</translation>
+    </message>
+    <message>
+        <source>UGENE is unable to restore some object from Recycle Bin because its original location does not exist. You can still restore the objects by dragging them with mouse from Recycle Bin.</source>
+        <translation type="vanished">UGENE, orijinal konumu olmadığı için Geri Dönüşüm Kutusu&apos;ndan bazı nesneleri geri yükleyemiyor. Yine de nesneleri Geri Dönüşüm Kutusu&apos;ndan fare ile sürükleyerek geri yükleyebilirsiniz.</translation>
+    </message>
+    <message>
+        <source>UGENE is unable to restore some folder from Recycle Bin because its original location does not exist. You can still restore the folders by dragging them with mouse from Recycle Bin.</source>
+        <translation type="vanished">UGENE, orijinal konumu olmadığı için Geri Dönüşüm Kutusu&apos;ndan bazı klasörleri geri yükleyemiyor. Klasörleri yine de Fare ile Geri Dönüşüm Kutusu&apos;ndan sürükleyerek geri yükleyebilirsiniz.</translation>
+    </message>
+    <message>
+        <source>Select a database to import anything</source>
+        <translation type="vanished">Herhangi bir şeyi içe aktarmak için bir veritabanı seçin</translation>
+    </message>
+    <message>
+        <source>No object to add to view</source>
+        <translation type="vanished">Görünüme eklenecek nesne yok</translation>
+    </message>
+    <message>
+        <source>No object to remove from view</source>
+        <translation type="vanished">Görünümden kaldırılacak nesne yok</translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectTreeController.cpp" line="697"/>
@@ -2625,6 +2914,18 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/util/project/ProjectTreeController.cpp" line="826"/>
         <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
         <translation type="unfinished">Seçilen nesnelerin bazıları veritabanının diğer kullanıcıları tarafından kullanılıyor. Daha sonra çıkarmayı deneyin.</translation>
+    </message>
+    <message>
+        <source>Add folder...</source>
+        <translation type="vanished">Klasör Ekle...</translation>
+    </message>
+    <message>
+        <source>Restore selected items</source>
+        <translation type="vanished">Seçili öğeleri geri yükle</translation>
+    </message>
+    <message>
+        <source>Empty recycle bin</source>
+        <translation type="vanished">Boş geri dönüşüm kutusu</translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectTreeController.cpp" line="726"/>
@@ -2769,6 +3070,22 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::RegionSelectorController</name>
     <message>
+        <source>Region is not in sequence range</source>
+        <translation type="vanished">Bölge sıra aralığında değil</translation>
+    </message>
+    <message>
+        <source>Cannot get preset name, ComboBox is NULL</source>
+        <translation type="vanished">Ön ayar adı alınamıyor, Açılır Kutu BOŞ</translation>
+    </message>
+    <message>
+        <source>Cannot set preset, ComboBox is NULL</source>
+        <translation type="vanished">Ön ayar yapılamıyor, Açılır Kutu BOŞ</translation>
+    </message>
+    <message>
+        <source>Region lineEdit is NULL</source>
+        <translation type="vanished">Bölge satırı Düzenleme BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/util/RegionSelectorController.cpp" line="74"/>
         <source>Whole sequence</source>
         <translation type="unfinished">Tüm dizi</translation>
@@ -2787,6 +3104,13 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
         <source>Location</source>
         <translation type="unfinished">Konum</translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegionSelectorWithExludedRegion</name>
+    <message>
+        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
+        <translation type="vanished">&apos;Hariç tut&apos; bölgesi, &apos;Arama Yeri&apos; bölgesini içerir. Arama bölgesi boş.</translation>
     </message>
 </context>
 <context>
@@ -2948,6 +3272,10 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
         <translation>Kapat</translation>
     </message>
     <message>
+        <source>an unexpected subtask</source>
+        <translation type="vanished">beklenmedik bir alt görev</translation>
+    </message>
+    <message>
         <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="174"/>
         <source>No results found corresponding to the query</source>
         <translation>Sorguya karşılık gelen sonuç bulunamadı</translation>
@@ -2994,6 +3322,10 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 </context>
 <context>
     <name>U2::SequenceTextEdit</name>
+    <message>
+        <source>Invalid mimedata</source>
+        <translation type="vanished">Geçersiz mime verisi</translation>
+    </message>
     <message>
         <location filename="../src/util/SequenceTextEdit.cpp" line="42"/>
         <source>Pasting large data</source>
@@ -3121,6 +3453,13 @@ Metin düzenleme temizlendi.</translation>
         <location filename="../src/UnloadDocumentTask.cpp" line="159"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::WebViewControllerPrivate</name>
+    <message>
+        <source>Can not open a file for writing: </source>
+        <translation type="vanished">Dosya yazmak için açılamıyor: </translation>
     </message>
 </context>
 <context>

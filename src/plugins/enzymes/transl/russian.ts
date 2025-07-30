@@ -487,6 +487,14 @@
         <translation>Экспортировать ферменты</translation>
     </message>
     <message>
+        <source>Load selection</source>
+        <translation type="vanished">Загрузить выделенное</translation>
+    </message>
+    <message>
+        <source>Save selection</source>
+        <translation type="vanished">Сохранить выделенное</translation>
+    </message>
+    <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="336"/>
         <source>Enzyme table filter</source>
         <translation>Фильтр таблицы ферментов</translation>
@@ -572,6 +580,16 @@
         <translation>Выбранные сайты</translation>
     </message>
     <message>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="227"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="243"/>
+        <source>Load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="287"/>
         <source>Selected enzyme info</source>
         <translation>Выделенный энзим</translation>
@@ -612,6 +630,14 @@
         <translation>Очистить выборку</translation>
     </message>
     <message>
+        <source>Select enzymes by length of recognition sequence</source>
+        <translation type="vanished">Выбрать ферменты по длине выбранной последовательности</translation>
+    </message>
+    <message>
+        <source>Select by length</source>
+        <translation type="vanished">Выбрать по длине</translation>
+    </message>
+    <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="164"/>
         <source>Invert current selection</source>
         <translation>Инвертировать текущее выделение</translation>
@@ -622,14 +648,8 @@
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="227"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="243"/>
-        <source>Load</source>
-        <translation type="unfinished"></translation>
+        <source>REBASE Info</source>
+        <translation type="vanished">REBASE Инфо</translation>
     </message>
 </context>
 <context>
@@ -1191,6 +1211,14 @@ To start ligation create a project or open an existing.</source>
         <translation>Выбор базы ферментов рестрикции</translation>
     </message>
     <message>
+        <source>Minimum length</source>
+        <translation type="vanished">Минимальная длина</translation>
+    </message>
+    <message>
+        <source>Enter minimum length of recognition sites</source>
+        <translation type="vanished">Введите минимальную длину сайта распознавания</translation>
+    </message>
+    <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="654"/>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="663"/>
         <source>Save selection</source>
@@ -1211,6 +1239,18 @@ To start ligation create a project or open an existing.</source>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="663"/>
         <source>Failed to open %1 for writing</source>
         <translation>Невозможно открыть %1 для записи</translation>
+    </message>
+    <message>
+        <source>Error!</source>
+        <translation type="vanished">Проблема!</translation>
+    </message>
+    <message>
+        <source>No enzyme selected!</source>
+        <translation type="vanished">Фермент не выбран!</translation>
+    </message>
+    <message>
+        <source>Selected enzyme has no ID!</source>
+        <translation type="vanished">Выбранный фермент не имеет идентификатора!</translation>
     </message>
     <message>
         <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.cpp" line="730"/>

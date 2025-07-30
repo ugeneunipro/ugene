@@ -1092,6 +1092,12 @@ Maybe model data are not enough for selected algorithm</source>
         <translation type="unfinished">Sıfır uzunlukta veya bozuk model
 Model verileri seçilen algoritma için yeterli olmayabilir</translation>
     </message>
+    <message>
+        <source>Zero length or corrupted model.
+Maybe model data are not enough for selected algorithm</source>
+        <translation type="vanished">Sıfır uzunluk veya bozuk model.
+Model verileri seçilen algoritma için yeterli olmayabilir</translation>
+    </message>
 </context>
 <context>
     <name>U2::PWMatrixReadTask</name>

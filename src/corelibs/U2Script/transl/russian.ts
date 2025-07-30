@@ -42,4 +42,15 @@
         <translation>%1-bit version of UGENE started</translation>
     </message>
 </context>
+<context>
+    <name>U2::AppContextImpl</name>
+    <message>
+        <source>Added path: %1</source>
+        <translation type="vanished">Добавленный путь: %1</translation>
+    </message>
+    <message>
+        <source>UGENE script environment initialization started</source>
+        <translation type="vanished">UGENE script environment initialization started</translation>
+    </message>
+</context>
 </TS>

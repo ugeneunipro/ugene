@@ -44,17 +44,17 @@ Geçersiz amino asit türü veya ikincil yapı durumu : ==&gt;%3&lt;==</translat
     <message>
         <location filename="../src/GorIVAlgTask.cpp" line="49"/>
         <source>seq database not found</source>
-        <translation type="unfinished">seq veritabanı bulunamadı</translation>
+        <translation>seq veritabanı bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/GorIVAlgTask.cpp" line="55"/>
         <source>observed structures database not found</source>
-        <translation type="unfinished">gözlemlenen yapılar veritabanı bulunamadı</translation>
+        <translation>gözlemlenen yapılar veritabanı bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/GorIVAlgTask.cpp" line="62"/>
         <source>sequence is too long, max seq size is 10000</source>
-        <translation type="unfinished">sıra çok uzun, maksimum sıra boyutu 10000</translation>
+        <translation>sıra çok uzun, maksimum sıra boyutu 10000</translation>
     </message>
 </context>
 </TS>

@@ -31,6 +31,10 @@
         <translation>Amino formunda hizala</translation>
     </message>
     <message>
+        <source>Invalid MSA object detected</source>
+        <translation type="vanished">Geçersiz MSA nesnesi algılandı</translation>
+    </message>
+    <message>
         <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="103"/>
         <source>AlignInAminoFormTask: Input alphabet is not nucleic!</source>
         <translation>AlignIn Amino Form Görev: Giriş alfabesi nükleik değildir!</translation>
@@ -39,6 +43,26 @@
         <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="104"/>
         <source>AlignInAminoFormTask: Input alignment is empty!</source>
         <translation>AlignIn Amino Form Görevi: Giriş hizalaması boş!</translation>
+    </message>
+    <message>
+        <source>Invalid applications settings detected</source>
+        <translation type="vanished">Geçersiz uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <source>Invalid users applications settings detected</source>
+        <translation type="vanished">Geçersiz kullanıcı uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <source>Invalid MSA document detected</source>
+        <translation type="vanished">Geçersiz MSA belgesi algılandı</translation>
+    </message>
+    <message>
+        <source>NULL clonedObj in AlignInAminoFormTask::prepare!</source>
+        <translation type="vanished">Amino Form Görevinde Hizalamada BOŞ klon dObj::hazırlayın!</translation>
+    </message>
+    <message>
+        <source>Can not find row %1 in original alignment.</source>
+        <translation type="vanished">Orijinal hizalamada %1 satırı bulunamadı.</translation>
     </message>
 </context>
 <context>
@@ -177,7 +201,106 @@
     </message>
 </context>
 <context>
+    <name>U2::MSAConsensusAlgorithmFactoryClustal</name>
+    <message>
+        <source>Emulates ClustalW program and file format behavior.</source>
+        <translation type="vanished">ClustalW programını ve dosya biçimi davranışını taklit eder.</translation>
+    </message>
+    <message>
+        <source>ClustalW</source>
+        <translation type="vanished">ClustalW</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAConsensusAlgorithmFactoryDefault</name>
+    <message>
+        <source>Based on JalView algorithm. Returns &apos;+&apos; if there are 2 characters with high frequency. Returns symbol in lower case if the symbol content in a row is lower than the threshold specified.</source>
+        <translation type="vanished">JalView algoritmasına dayanmaktadır. Yüksek frekanslı 2 karakter varsa &apos;+&apos; döndürür. Bir satırdaki sembol içeriği belirtilen eşikten düşükse sembolü küçük harflerle döndürür.</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="vanished">Varsayılan</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAConsensusAlgorithmFactoryLevitsky</name>
+    <message>
+        <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
+Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
+For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
+        <translation type="vanished">Victor Levitsky&apos;nin DNA hizalamalarıyla çalışması için önerdiği algoritma.
+Önce genişletilmiş (15 sembol) DNA alfabesini kullanarak her sembol için genel hizalama sıklığını toplar.
+Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu değere eşit olacak şekilde, tüm hizalamadaki en nadir sembolü seçer.</translation>
+    </message>
+    <message>
+        <source>Levitsky</source>
+        <translation type="vanished">Levitsky</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAConsensusAlgorithmFactoryStrict</name>
+    <message>
+        <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
+        <translation type="vanished">Bir sütundaki sembol frekansı belirtilen eşikten düşükse algoritma boşluk karakteri (&apos;-&apos;) döndürür.</translation>
+    </message>
+    <message>
+        <source>Strict</source>
+        <translation type="vanished">Katı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithm</name>
+    <message>
+        <source>MSA distance algorithm &quot;%1&quot; task</source>
+        <translation type="vanished">MSA mesafe algoritması &quot;%1&quot; görevi</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmFactoryHamming</name>
+    <message>
+        <source>Based on Hamming distance between two sequences</source>
+        <translation type="vanished">İki sekans arasındaki Hamming mesafesine göre</translation>
+    </message>
+    <message>
+        <source>Hamming dissimilarity</source>
+        <translation type="vanished">Hamming farklılığı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmFactoryHammingRevCompl</name>
+    <message>
+        <source>Based on Hamming distance between two sequences</source>
+        <translation type="vanished">İki sekans arasındaki Hamming mesafesine göre</translation>
+    </message>
+    <message>
+        <source>Hamming reverse-complement</source>
+        <translation type="vanished">Hamming ters tamamlayıcı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmFactorySimilarity</name>
+    <message>
+        <source>Based on similarity distance between two sequences</source>
+        <translation type="vanished">İki sekans arasındaki benzerlik mesafesine göre</translation>
+    </message>
+    <message>
+        <source>Similarity</source>
+        <translation type="vanished">Benzerlik</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSADistanceAlgorithmHammingRevCompl</name>
+    <message>
+        <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
+        <translation type="vanished">Hamming ters tamamlama algoritması çalıştırılırken beklenmeyen bir hata oluştu.</translation>
+    </message>
+</context>
+<context>
     <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
+    <message>
+        <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
+        <translation type="vanished">Algoritma, genişletilmiş DNA alfabesinden en iyi karakteri seçer. Yalnızca bir eşik değerden daha büyük frekanslara sahip bazlar dikkate alınır.</translation>
+    </message>
     <message>
         <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="193"/>
         <source>Simple extended</source>
@@ -508,6 +631,10 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
         <source>Failed to map row name: %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Tree construction algorithm %1 not found</source>
+        <translation type="vanished">Ağaç oluşturma algoritması %1 bulunamadı</translation>
+    </message>
 </context>
 <context>
     <name>U2::PhyTreeGeneratorTask</name>
@@ -535,6 +662,10 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
 </context>
 <context>
     <name>U2::SimpleAddToAlignmentTask</name>
+    <message>
+        <source>Align sequences to an existing alignment by UGENE started</source>
+        <translation type="vanished">UGENE tarafından başlatılan dizileri mevcut bir hizalamaya hizalayın</translation>
+    </message>
     <message>
         <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="51"/>
         <source>Align sequences to alignment with UGENE started</source>
@@ -630,6 +761,10 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
 <context>
     <name>U2::SplicedAlignmentTask</name>
     <message>
+        <source>SplicedAlignmentTask</source>
+        <translation type="vanished">Eklenmiş Hizalama Görevi</translation>
+    </message>
+    <message>
         <location filename="../src/registry/SplicedAlignmentTask.cpp" line="27"/>
         <source>Partial Alignment Task</source>
         <translation type="unfinished"></translation>
@@ -713,9 +848,21 @@ Her sütun için, sütundaki yüzdesi eşik değerinden daha büyük veya bu de�
         <translation>Nükleik hizalamayı aminoya çevirin</translation>
     </message>
     <message>
+        <source>Invalid MSA object detected</source>
+        <translation type="vanished">Geçersiz MSA nesnesi algılandı</translation>
+    </message>
+    <message>
+        <source>Multiple alignment already has amino-acid alphabet</source>
+        <translation type="vanished">Çoklu hizalamada zaten amino asit alfabesi var</translation>
+    </message>
+    <message>
         <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="52"/>
         <source>Unable to find suitable translation for %1</source>
         <translation>%1 için uygun çeviri bulunamadı</translation>
+    </message>
+    <message>
+        <source>Invalid translation object</source>
+        <translation type="vanished">Geçersiz çeviri nesnesi</translation>
     </message>
 </context>
 </TS>

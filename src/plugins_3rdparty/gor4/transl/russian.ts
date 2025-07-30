@@ -43,17 +43,17 @@ Invalid amino acid type or secondary structure state : ==&gt;%3&lt;==</source>
     <message>
         <location filename="../src/GorIVAlgTask.cpp" line="49"/>
         <source>seq database not found</source>
-        <translation type="unfinished">Sequence database not found</translation>
+        <translation>Sequence database not found</translation>
     </message>
     <message>
         <location filename="../src/GorIVAlgTask.cpp" line="55"/>
         <source>observed structures database not found</source>
-        <translation type="unfinished">observed structures database not found</translation>
+        <translation>observed structures database not found</translation>
     </message>
     <message>
         <location filename="../src/GorIVAlgTask.cpp" line="62"/>
         <source>sequence is too long, max seq size is 10000</source>
-        <translation type="unfinished">Too long input sequence: maximum allowed length is 10000</translation>
+        <translation>Too long input sequence: maximum allowed length is 10000</translation>
     </message>
 </context>
 </TS>

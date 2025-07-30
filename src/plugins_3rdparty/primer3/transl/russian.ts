@@ -2450,94 +2450,94 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 <context>
     <name>U2::GTest</name>
     <message>
+        <location filename="../src/Primer3Tests.cpp" line="554"/>
+        <source>Error in sequence quality data</source>
+        <translation>Error in sequence quality data</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Tests.cpp" line="558"/>
+        <source>Sequence quality data missing</source>
+        <translation>Sequence quality data missing</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Tests.cpp" line="128"/>
         <location filename="../src/Primer3Tests.cpp" line="134"/>
         <source>Illegal SEQUENCE_TARGET value: %1</source>
-        <translation type="unfinished">Недопустимое значение SEQUENCE_TARGET: %1</translation>
+        <translation>Недопустимое значение SEQUENCE_TARGET: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="148"/>
         <source>Illegal SEQUENCE_OVERLAP_JUNCTION_LIST value: %1</source>
-        <translation type="unfinished">Недопустимое значение SEQUENCE_OVERLAP_JUNCTION_LIST: %1</translation>
+        <translation>Недопустимое значение SEQUENCE_OVERLAP_JUNCTION_LIST: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="163"/>
         <source>Illegal SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST value: %1</source>
-        <translation type="unfinished">Недопустимое значение SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST: %1</translation>
+        <translation>Недопустимое значение SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="178"/>
         <source>Illegal SEQUENCE_EXCLUDED_REGION value: %1</source>
-        <translation type="unfinished">Недопустимое значение SEQUENCE_EXCLUDED_REGION: %1</translation>
+        <translation>Недопустимое значение SEQUENCE_EXCLUDED_REGION: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="204"/>
         <source>Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1</source>
-        <translation type="unfinished">Недопустимое значение SEQUENCE_PRIMER_PAIR_OK_REGION_LIST: %1</translation>
+        <translation>Недопустимое значение SEQUENCE_PRIMER_PAIR_OK_REGION_LIST: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="218"/>
         <source>Illegal SEQUENCE_INCLUDED_REGION value: %1</source>
-        <translation type="unfinished">Недопустимое значение SEQUENCE_INCLUDED_REGION: %1</translation>
+        <translation>Недопустимое значение SEQUENCE_INCLUDED_REGION: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="236"/>
         <location filename="../src/Primer3Tests.cpp" line="243"/>
         <source>Illegal SEQUENCE_INTERNAL_EXCLUDED_REGION value: %1</source>
-        <translation type="unfinished">Недопустимое значение SEQUENCE_INTERNAL_EXCLUDED_REGION: %1</translation>
+        <translation>Недопустимое значение SEQUENCE_INTERNAL_EXCLUDED_REGION: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="258"/>
         <source>Illegal PRIMER_PRODUCT_SIZE_RANGE value: %1</source>
-        <translation type="unfinished">Недопустимое значение PRIMER_PRODUCT_SIZE_RANGE: %1</translation>
+        <translation>Недопустимое значение PRIMER_PRODUCT_SIZE_RANGE: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="409"/>
         <source>Incorrect results num. Pairs: %1, left: %2, right: %3, inernal: %4</source>
-        <translation type="unfinished">Некорректное количество результатов. Пары: %1, слева: %2, справа: %3, внутренние: %4</translation>
+        <translation>Некорректное количество результатов. Пары: %1, слева: %2, справа: %3, внутренние: %4</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="424"/>
         <location filename="../src/Primer3Tests.cpp" line="435"/>
         <location filename="../src/Primer3Tests.cpp" line="446"/>
         <source>Incorrect parameter: %1</source>
-        <translation type="unfinished">Некорректный параметр: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Tests.cpp" line="554"/>
-        <source>Error in sequence quality data</source>
-        <translation type="unfinished">Error in sequence quality data</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Tests.cpp" line="558"/>
-        <source>Sequence quality data missing</source>
-        <translation type="unfinished">Sequence quality data missing</translation>
+        <translation>Некорректный параметр: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="585"/>
         <source>No error, but expected: %1</source>
-        <translation type="unfinished">Нет ошибки, но ожидалось: %1</translation>
+        <translation>Нет ошибки, но ожидалось: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="588"/>
         <source>An unexpected error. Expected: %1, but Actual: %2</source>
-        <translation type="unfinished">Неожиданная ошибка. Ожидалось: %1, но фактическое значение: %2</translation>
+        <translation>Неожиданная ошибка. Ожидалось: %1, но фактическое значение: %2</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="597"/>
         <source>No warning, but expected: %1</source>
-        <translation type="unfinished">Нет предупреждения, но ожидалось: %1</translation>
+        <translation>Нет предупреждения, но ожидалось: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="601"/>
         <source>An unexpected warning. Expected: %1, but Actual: %2</source>
-        <translation type="unfinished">Неожиданное предупреждение. Ожидалось: %1, но фактическое значение: %2</translation>
+        <translation>Неожиданное предупреждение. Ожидалось: %1, но фактическое значение: %2</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="888"/>
         <location filename="../src/Primer3Tests.cpp" line="896"/>
         <source>%1 is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished">%1 is incorrect. Expected:%2, but Actual:%3</translation>
+        <translation>%1 is incorrect. Expected:%2, but Actual:%3</translation>
     </message>
 </context>
 <context>
@@ -2778,6 +2778,12 @@ Fix criticals and re-run Primer3.</source>
         <translation>
 
 Исправьте критичные ошибки и перезапустите Primer3.</translation>
+    </message>
+    <message>
+        <source>
+In case of calculation, all incorrect values will be ignored. Continue?</source>
+        <translation type="vanished">
+Если вы продолжите расчет, то все неверные значения будут проигнорированы. Продолжить?</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="1008"/>

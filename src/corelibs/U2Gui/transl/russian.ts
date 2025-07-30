@@ -1182,6 +1182,22 @@
 <context>
     <name>RegionSelectorController</name>
     <message>
+        <source>Whole sequence</source>
+        <translation type="vanished">Вся последовательность</translation>
+    </message>
+    <message>
+        <source>Selected region</source>
+        <translation type="vanished">Выбранный регион</translation>
+    </message>
+    <message>
+        <source>Custom region</source>
+        <translation type="vanished">Заданный регион</translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="vanished">Позиция</translation>
+    </message>
+    <message>
         <location filename="../src/util/RegionSelectorController.cpp" line="207"/>
         <source>Invalid Start position of region</source>
         <translation>Некорректная стартовая позиция в регионе</translation>
@@ -1195,6 +1211,29 @@
         <location filename="../src/util/RegionSelectorController.cpp" line="209"/>
         <source>Start position is greater than End position</source>
         <translation>Начальная позичия больше чем конечная</translation>
+    </message>
+</context>
+<context>
+    <name>RegionSelectorWithExcludedRegion</name>
+    <message>
+        <source>Form</source>
+        <translation type="vanished">Форма</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="vanished">1</translation>
+    </message>
+    <message>
+        <source>-</source>
+        <translation type="vanished">-</translation>
+    </message>
+    <message>
+        <source>Exclude</source>
+        <translation type="vanished">Исключить</translation>
+    </message>
+    <message>
+        <source>Region</source>
+        <translation type="vanished">Регион</translation>
     </message>
 </context>
 <context>
@@ -2471,7 +2510,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/PasteController.cpp" line="119"/>
         <source>Data in clipboard is too large.</source>
-        <translation type="unfinished">Двнные в буфере обмена слишком большие.</translation>
+        <translation>Двнные в буфере обмена слишком большие.</translation>
     </message>
 </context>
 <context>
@@ -2786,6 +2825,13 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/RegionSelectorController.cpp" line="85"/>
         <source>Location</source>
         <translation>Позиция</translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegionSelectorWithExcludedRegion</name>
+    <message>
+        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
+        <translation type="vanished">&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</translation>
     </message>
 </context>
 <context>

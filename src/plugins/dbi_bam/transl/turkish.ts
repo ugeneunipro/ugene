@@ -30,6 +30,40 @@
         <translation>...</translation>
     </message>
     <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Input SAM file does not contain a header. Сhoose a file with reference sequences or references info will be generated.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Giriş SAM dosyası başlık içermiyor. Referans dizileri içeren bir dosya seçin veya referans bilgileri oluşturulacaktır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Index file (*.bai) is not available. Partial import is going to be slowed down.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Dizin dosyası (* .bai) mevcut değil. Kısmi ithalat yavaşlayacak.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/ConvertToSQLiteDialog.ui" line="87"/>
+        <source>There is no header in the SAM file. Сhoose a file with the reference sequences or the header information will be generated automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ConvertToSQLiteDialog.ui" line="97"/>
+        <source>Index file (*.bai) is not available. Partial import is going to be slowed down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/ConvertToSQLiteDialog.ui" line="135"/>
         <source>Select All</source>
         <translation>Tümünü Seç</translation>
@@ -60,14 +94,28 @@
         <translation>Projeye ekle</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="87"/>
-        <source>There is no header in the SAM file. Сhoose a file with the reference sequences or the header information will be generated automatically.</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;The SAM file does not contain the header. Please, choose the reference sequence.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;SAM dosyası başlık içermiyor. Lütfen referans sırasını seçin.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="97"/>
-        <source>Index file (*.bai) is not available. Partial import is going to be slowed down.</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Index file (*.bai) is not available. Partial import is going to be slowed down.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Dizin dosyası (*.bai) mevcut değil. Kısmi ithalat yavaşlayacak.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -414,6 +462,10 @@ Mevcut dosyaya veri eklemek için &apos;Ekle&apos;ye basın.</translation>
         <translation>Hedef UGENEDB Dosyası</translation>
     </message>
     <message>
+        <source>UGENEDB Files (*.ugenedb);;All Files (*)</source>
+        <translation type="vanished">UGENEDB Dosyaları (*.ugenedb);;Tüm Dosyalar (*)</translation>
+    </message>
+    <message>
         <location filename="../src/ConvertToSQLiteTask.cpp" line="86"/>
         <location filename="../src/ConvertToSQLiteTask.cpp" line="101"/>
         <location filename="../src/ConvertToSQLiteTask.cpp" line="115"/>
@@ -544,6 +596,10 @@ Mevcut dosyaya veri eklemek için &apos;Ekle&apos;ye basın.</translation>
         <location filename="../src/SamReader.cpp" line="180"/>
         <source>Invalid mate position: %1</source>
         <translation>Geçersiz montaj ilişkisi konumu: %1</translation>
+    </message>
+    <message>
+        <source>Invalid template length of a sigle-fragment template: %1</source>
+        <translation type="vanished">Tek parçalı bir şablon için geçersiz şablon uzunluğu: %1</translation>
     </message>
     <message>
         <location filename="../src/Reader.cpp" line="168"/>
@@ -742,6 +798,10 @@ Mevcut dosyaya veri eklemek için &apos;Ekle&apos;ye basın.</translation>
         <translation>Geçersiz şablon uzunluğu değeri: %1</translation>
     </message>
     <message>
+        <source>Invalid template length of a single-fragment template: %1</source>
+        <translation type="vanished">Tek parçalı bir şablon için geçersiz şablon uzunluğu: %1</translation>
+    </message>
+    <message>
         <location filename="../src/SamReader.cpp" line="195"/>
         <source>Invalid sequence: %1</source>
         <translation>Geçersiz sıra: %1</translation>
@@ -783,6 +843,10 @@ Mevcut dosyaya veri eklemek için &apos;Ekle&apos;ye basın.</translation>
         <source>Object not found</source>
         <translation>Nesne bulunamadı</translation>
     </message>
+    <message>
+        <source>Please select the file with the reference sequence</source>
+        <translation type="vanished">Lütfen referans sırasına sahip dosyayı seçin</translation>
+    </message>
 </context>
 <context>
     <name>U2::BAM::BAMImporter</name>
@@ -803,6 +867,10 @@ Mevcut dosyaya veri eklemek için &apos;Ekle&apos;ye basın.</translation>
         <location filename="../src/BAMDbiPlugin.cpp" line="127"/>
         <source>BAM/SAM file import: %1</source>
         <translation>BAM / SAM dosyası içe aktarma: %1</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create a temporary database</source>
+        <translation type="vanished">Geçici bir veritabanı oluşturamıyorum</translation>
     </message>
     <message>
         <location filename="../src/BAMDbiPlugin.cpp" line="259"/>
@@ -969,6 +1037,10 @@ Mevcut dosyaya veri eklemek için &apos;Ekle&apos;ye basın.</translation>
 </context>
 <context>
     <name>U2::BAMFormat</name>
+    <message>
+        <source>BAM File</source>
+        <translation type="vanished">BAM Dosyası</translation>
+    </message>
     <message>
         <location filename="../src/BAMFormat.cpp" line="46"/>
         <source>BAM</source>

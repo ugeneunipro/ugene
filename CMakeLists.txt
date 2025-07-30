@@ -206,7 +206,6 @@ foreach (TS_FILE IN LISTS ALL_TS_FILES)
                 PRE_BUILD
                 COMMAND ${Qt5_LUPDATE_EXECUTABLE}
                 -locations absolute
-                -no-obsolete
                 -I ${CMAKE_SOURCE_DIR}/src/include
                 -I ${SUBPROJECT_DIR}/src
                 ${SUBPROJECT_SOURCES}

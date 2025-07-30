@@ -311,6 +311,18 @@
         <source>Unsupported alphabet: %1</source>
         <translation>Desteklenmeyen alfabe: %1</translation>
     </message>
+    <message>
+        <source>Alignment is empty</source>
+        <translation type="vanished">Hizalama boş</translation>
+    </message>
+    <message>
+        <source>Not enough memory to do this alignment. You can try the 64-bit version of UGENE. In this case, more available memory will be used for aligning.</source>
+        <translation type="vanished">Bu hizalamayı yapmak için yeterli bellek yok. UGENE&apos;nin 64 bit sürümünü deneyebilirsiniz. Bu durumda, hizalama için daha fazla kullanılabilir bellek kullanılacaktır.</translation>
+    </message>
+    <message>
+        <source>Not enough memory to do this alignment.</source>
+        <translation type="vanished">Bu hizalamayı yapmak için yeterli bellek yok.</translation>
+    </message>
 </context>
 <context>
     <name>U2::MuscleAddSequencesToProfileTask</name>
@@ -454,6 +466,10 @@
         <translation>Geçersiz hizalama bölgesi</translation>
     </message>
     <message>
+        <source>Align with Kalign</source>
+        <translation type="vanished">Kalign ile Hizala</translation>
+    </message>
+    <message>
         <location filename="../src/MuscleAlignDialogController.cpp" line="224"/>
         <source>Input file is not set!</source>
         <translation>Girdi dosyası ayarlanmadı!</translation>
@@ -521,6 +537,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>MultipleAlignment object has been changed</source>
+        <translation type="vanished">Çoklu Sıra Hizalama nesnesi değiştirildi</translation>
+    </message>
+    <message>
         <location filename="../src/MuscleTask.cpp" line="502"/>
         <source>Illegal number of sequences in the MUSCLE alignment result</source>
         <translation>KAS hizalama sonucunda geçersiz dizi sayısı</translation>
@@ -558,6 +578,14 @@
         <source>Select file with alignment</source>
         <translation>Hizalamalı dosyayı seçin</translation>
     </message>
+    <message>
+        <source>Align with MUSCLE...</source>
+        <translation type="vanished">MUSCLE ile hizalayın...</translation>
+    </message>
+    <message>
+        <source>Align profile to profile with MUSCLE...</source>
+        <translation type="vanished">MUSCLE ile profili profile hizalayın...</translation>
+    </message>
 </context>
 <context>
     <name>U2::MuscleParallelTask</name>
@@ -589,6 +617,10 @@
         <source>Align with MUSCLE…</source>
         <translation>KAS ile hizala…</translation>
     </message>
+    <message>
+        <source>Align with MUSCLE...</source>
+        <translation type="vanished">MUSCLE ile hizalayın...</translation>
+    </message>
 </context>
 <context>
     <name>U2::MusclePrepareTask</name>
@@ -612,6 +644,10 @@
         <source>No sequences in input file</source>
         <translation>Giriş dosyasında sıra yok</translation>
     </message>
+    <message>
+        <source>Alignment is empty</source>
+        <translation type="vanished">Hizalama boş</translation>
+    </message>
 </context>
 <context>
     <name>U2::MuscleTask</name>
@@ -629,6 +665,10 @@
         <location filename="../src/MuscleTask.cpp" line="100"/>
         <source>Incorrect region to align</source>
         <translation>Hizalanacak yanlış bölge</translation>
+    </message>
+    <message>
+        <source>Stopping MUSCLE task, because of error in MultipleAlignment::mid function</source>
+        <translation type="vanished">Çoklu Sıra Hizalamasındaki hata nedeniyle KAS görevini durdurma::orta işlev</translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="102"/>

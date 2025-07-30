@@ -2,6 +2,159 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru" sourcelanguage="en">
 <context>
+    <name>GTest</name>
+    <message>
+        <source>value not set %1</source>
+        <translation type="vanished">value not set %1</translation>
+    </message>
+    <message>
+        <source>no subsequences selected</source>
+        <translation type="vanished">no subsequences selected</translation>
+    </message>
+    <message>
+        <source>invalid region %1</source>
+        <translation type="vanished">invalid region %1</translation>
+    </message>
+    <message>
+        <source>start position of window not an integer</source>
+        <translation type="vanished">start position of window not an integer</translation>
+    </message>
+    <message>
+        <source>end position of window not an integer</source>
+        <translation type="vanished">end position of window not an integer</translation>
+    </message>
+    <message>
+        <source>context not found %1</source>
+        <translation type="vanished">context not found %1</translation>
+    </message>
+    <message>
+        <source>container of object with type &quot;%1&quot; is empty</source>
+        <translation type="vanished">container of object with type &quot;%1&quot; is empty</translation>
+    </message>
+    <message>
+        <source>Expected and actual alignment sizes are different: %1 , %2</source>
+        <translation type="vanished">Expected and actual alignment sizes are different: %1 , %2</translation>
+    </message>
+    <message>
+        <source>Expected and actual alignments not equal</source>
+        <translation type="vanished">Expected and actual alignments not equal</translation>
+    </message>
+    <message>
+        <source>incorrect value %1</source>
+        <translation type="vanished">incorrect value %1</translation>
+    </message>
+    <message>
+        <source>File with sequences has empty name</source>
+        <translation type="vanished">File with sequences has empty name</translation>
+    </message>
+    <message>
+        <source>Sequence %1 not found</source>
+        <translation type="vanished">Sequence %1 not found</translation>
+    </message>
+    <message>
+        <source>Length of sequence is incorrect. Expected:%2, but Actual:%1</source>
+        <translation type="vanished">Length of sequence is incorrect. Expected:%2, but Actual:%1</translation>
+    </message>
+    <message>
+        <source>Sequence is incorrect. Expected:%1, but Actual:%2</source>
+        <translation type="vanished">Sequence is incorrect. Expected:%1, but Actual:%2</translation>
+    </message>
+    <message>
+        <source>Regions is incorrect. Expected size:%1 Actual size:%2</source>
+        <translation type="vanished">Regions is incorrect. Expected size:%1 Actual size:%2</translation>
+    </message>
+    <message>
+        <source>Regions is incorrect. Expected:%3,%4, but Actual:%1,%2</source>
+        <translation type="vanished">Regions is incorrect. Expected:%3,%4, but Actual:%1,%2</translation>
+    </message>
+    <message>
+        <source>Regions is incorrect. actual region didn&apos;t found in expected region list</source>
+        <translation type="vanished">Regions is incorrect. actual region didn&apos;t found in expected region list</translation>
+    </message>
+    <message>
+        <source>Context not found %1</source>
+        <translation type="vanished">Context not found %1</translation>
+    </message>
+    <message>
+        <source>Sequence is incorrect. Actual:%1, but expected:%2</source>
+        <translation type="vanished">Sequence is incorrect. Actual:%1, but expected:%2</translation>
+    </message>
+    <message>
+        <source>value for %1 is incorrect</source>
+        <translation type="vanished">value for %1 is incorrect</translation>
+    </message>
+    <message>
+        <source>value incorrect for %1</source>
+        <translation type="vanished">value incorrect for %1</translation>
+    </message>
+    <message>
+        <source>%1 attribute value greater or equal pattern length</source>
+        <translation type="vanished">%1 attribute value greater or equal pattern length</translation>
+    </message>
+    <message>
+        <source>value for %1 incorrect</source>
+        <translation type="vanished">value for %1 incorrect</translation>
+    </message>
+    <message>
+        <source>Expected and actual result sizes are different: %1 , %2</source>
+        <translation type="vanished">Expected and actual result sizes are different: %1 , %2</translation>
+    </message>
+    <message>
+        <source>Expected and actual regions are different: %1..%2 , %3..%4</source>
+        <translation type="vanished">Expected and actual regions are different: %1..%2 , %3..%4</translation>
+    </message>
+    <message>
+        <source>Could find a loaded document</source>
+        <translation type="vanished">Could find a loaded document</translation>
+    </message>
+    <message>
+        <source>No sequence in the document loaded</source>
+        <translation type="vanished">No sequence in the document loaded</translation>
+    </message>
+    <message>
+        <source>Actual sequence %1 does not match expected sequence %2</source>
+        <translation type="vanished">Actual sequence %1 does not match expected sequence %2</translation>
+    </message>
+    <message>
+        <source>Expected annotation %1 has not been found in the actual annotations. If the test fails, please, load the sequence %2 with annotation from DAS, manually compare the annotations and update the test. There might be updates in the DAS databases.</source>
+        <translation type="vanished">Expected annotation %1 has not been found in the actual annotations. If the test fails, please, load the sequence %2 with annotation from DAS, manually compare the annotations and update the test. There might be updates in the DAS databases.</translation>
+    </message>
+    <message>
+        <source>File %1 content not equal with expected</source>
+        <translation type="vanished">File %1 content not equal with expected</translation>
+    </message>
+    <message>
+        <source>container of object with type &quot;%1&quot; is empty or less than %2</source>
+        <translation type="vanished">container of object with type &quot;%1&quot; is empty or less than %2</translation>
+    </message>
+    <message>
+        <source>Actual results not equal with expected, row %1 column %2
+Expected %3, got %4</source>
+        <translation type="vanished">Actual results not equal with expected, row %1 column %2
+Expected %3, got %4</translation>
+    </message>
+    <message>
+        <source>algorithm not found %1</source>
+        <translation type="vanished">algorithm not found %1</translation>
+    </message>
+    <message>
+        <source>unable to create algorithm %1</source>
+        <translation type="vanished">unable to create algorithm %1</translation>
+    </message>
+    <message>
+        <source>wrong length of %1 sequence: %2</source>
+        <translation type="vanished">wrong length of %1 sequence: %2</translation>
+    </message>
+    <message>
+        <source>Wrong %1 sequence alphabet</source>
+        <translation type="vanished">Wrong %1 sequence alphabet</translation>
+    </message>
+    <message>
+        <source>wrong value: %1</source>
+        <translation type="vanished">wrong value: %1</translation>
+    </message>
+</context>
+<context>
     <name>U2::GTest</name>
     <message>
         <location filename="../src/EditAlignmentTests.cpp" line="44"/>
@@ -251,9 +404,24 @@ Expected %3, got %4</translation>
 <context>
     <name>U2::GTest_CopyFile</name>
     <message>
+        <source>Can&apos;t copy file &apos;%1&apos; to &apos;%2&apos;.</source>
+        <translation type="vanished">Can&apos;t copy file &apos;%1&apos; to &apos;%2&apos;.</translation>
+    </message>
+    <message>
         <location filename="../src/UtilTestActions.cpp" line="53"/>
         <source>Can&apos;t copy %1 &apos;%2&apos; to &apos;%3&apos;.</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest_LoadDASDocumentTask</name>
+    <message>
+        <source>No DASSourceRegistry</source>
+        <translation type="vanished">No DASSourceRegistry</translation>
+    </message>
+    <message>
+        <source>Cannot find das source by DB name given: %1</source>
+        <translation type="vanished">Cannot find das source by DB name given: %1</translation>
     </message>
 </context>
 <context>
@@ -262,6 +430,13 @@ Expected %3, got %4</translation>
         <location filename="../src/LoadRemoteDocumentTests.cpp" line="75"/>
         <source>Given database name %1 not present in database registry</source>
         <translation>Given database name %1 not present in database registry</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest_PingRemoteServiceTask</name>
+    <message>
+        <source>Can not parse remote server settings file %1</source>
+        <translation type="vanished">Can not parse remote server settings file %1</translation>
     </message>
 </context>
 <context>

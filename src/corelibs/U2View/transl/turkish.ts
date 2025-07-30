@@ -140,6 +140,21 @@ Muhtemelen veriler çok büyük.</translation>
     </message>
 </context>
 <context>
+    <name>BranchSettingsDialog</name>
+    <message>
+        <source>Branch Settings</source>
+        <translation type="vanished">Şube Ayarları</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="vanished">Renk</translation>
+    </message>
+    <message>
+        <source>Line Weight</source>
+        <translation type="vanished">Çizgi kalınlığı</translation>
+    </message>
+</context>
+<context>
     <name>BuildIndexFromRefDialog</name>
     <message>
         <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="20"/>
@@ -387,6 +402,14 @@ Muhtemelen veriler çok büyük.</translation>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="179"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
+    </message>
+    <message>
+        <source>Extract Selected as MSA</source>
+        <translation type="vanished">MSA Olarak Seçileni Çıkar</translation>
+    </message>
+    <message>
+        <source>From </source>
+        <translation type="vanished">Nereden </translation>
     </message>
 </context>
 <context>
@@ -724,6 +747,18 @@ Muhtemelen veriler çok büyük.</translation>
         <translation>Çakışan sonuçları kaldırın</translation>
     </message>
     <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Warning: I&apos;m replaced with another editor in the code!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Uyarı: Kodda başka bir düzenleyiciyle değiştirildim!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="70"/>
         <source>Load patterns from file</source>
         <translation>Dosyadan desen yükle</translation>
@@ -742,6 +777,22 @@ Muhtemelen veriler çok büyük.</translation>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="272"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
+    </message>
+    <message>
+        <source>Search for:</source>
+        <translation type="vanished">Şunun için ara:</translation>
+    </message>
+    <message>
+        <source>Load pattern from file</source>
+        <translation type="vanished">Dosyadan desen yükle</translation>
+    </message>
+    <message>
+        <source>Find file with newline-separated patterns</source>
+        <translation type="vanished">Satırsonu ile ayrılmış desenlere sahip dosyayı bul</translation>
+    </message>
+    <message>
+        <source>Path:</source>
+        <translation type="vanished">Yol:</translation>
     </message>
 </context>
 <context>
@@ -835,6 +886,11 @@ Muhtemelen veriler çok büyük.</translation>
         <translation>Diziler:</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="145"/>
+        <source>Amino</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="168"/>
         <source>Format:</source>
         <translation>Format:</translation>
@@ -843,11 +899,6 @@ Muhtemelen veriler çok büyük.</translation>
         <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="178"/>
         <source>Copy</source>
         <translation>Kopya</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="145"/>
-        <source>Amino</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1129,16 +1180,6 @@ Muhtemelen veriler çok büyük.</translation>
         <translation>Seç</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="71"/>
-        <source>Include consensus</source>
-        <translation>Fikir birliğini dahil et</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="78"/>
-        <source>Include ruler</source>
-        <translation>Cetveli dahil et</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="64"/>
         <source>Include names</source>
         <translation type="unfinished"></translation>
@@ -1147,6 +1188,20 @@ Muhtemelen veriler çok büyük.</translation>
         <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="90"/>
         <source>Bases per line (multiline image):</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include sequences&apos; names</source>
+        <translation type="vanished">Dizilerin adlarını dahil et</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="71"/>
+        <source>Include consensus</source>
+        <translation>Fikir birliğini dahil et</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="78"/>
+        <source>Include ruler</source>
+        <translation>Cetveli dahil et</translation>
     </message>
 </context>
 <context>
@@ -1288,6 +1343,14 @@ Değiştirmek istiyor musun?</translation>
         <location filename="../src/ov_sequence/AnnotatedDNAViewTasks.cpp" line="185"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
+    </message>
+    <message>
+        <source>Overview is NULL</source>
+        <translation type="vanished">Genel Bakış BOŞ</translation>
+    </message>
+    <message>
+        <source>Graph overview is NULL</source>
+        <translation type="vanished">Grafiğe genel bakış BOŞ</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="106"/>
@@ -1588,9 +1651,21 @@ Dalları daraltmak için çift tıklayın</translation>
         <translation>Kısıtlama Sitesi</translation>
     </message>
     <message>
+        <source>none</source>
+        <translation type="vanished">hiç</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.cpp" line="60"/>
         <source>Search in Alignment</source>
         <translation>Hizalamada Ara</translation>
+    </message>
+    <message>
+        <source>Rendering tree view</source>
+        <translation type="vanished">Ağaç görünümü oluşturma</translation>
+    </message>
+    <message>
+        <source>Generating tree view</source>
+        <translation type="vanished">Ağaç görünümü oluşturma</translation>
     </message>
     <message>
         <location filename="../src/ov_mca/reads_tab/McaReadsTabFactory.cpp" line="71"/>
@@ -1807,6 +1882,10 @@ Dalları daraltmak için çift tıklayın</translation>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="32"/>
         <source>Smith-Waterman Search</source>
         <translation>Smith-Waterman Araması</translation>
+    </message>
+    <message>
+        <source>Advanced..</source>
+        <translation type="vanished">Gelişmiş..</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="339"/>
@@ -2045,6 +2124,10 @@ Dalları daraltmak için çift tıklayın</translation>
         <translation>Etiketleri hizalayın</translation>
     </message>
     <message>
+        <source>Show font settings</source>
+        <translation type="vanished">Yazı tipi ayarlarını göster</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="161"/>
         <source>Font</source>
         <translation>Yazı tipi</translation>
@@ -2080,27 +2163,6 @@ Dalları daraltmak için çift tıklayın</translation>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="485"/>
-        <source>Font size</source>
-        <translation>Yazı tipi boyu</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="471"/>
-        <source>Scale range</source>
-        <translation>Ölçek aralığı</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="391"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="478"/>
-        <source>Line width</source>
-        <translation>Çizgi Kalınlığı</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="350"/>
-        <source>Color</source>
-        <translation>Renk</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="333"/>
         <source>Curvature</source>
         <translation type="unfinished"></translation>
@@ -2120,6 +2182,39 @@ Dalları daraltmak için çift tıklayın</translation>
         <source>Tip shapes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="485"/>
+        <source>Font size</source>
+        <translation>Yazı tipi boyu</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="471"/>
+        <source>Scale range</source>
+        <translation>Ölçek aralığı</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="391"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="478"/>
+        <source>Line width</source>
+        <translation>Çizgi Kalınlığı</translation>
+    </message>
+    <message>
+        <source>Width</source>
+        <translation type="vanished">Genişlik</translation>
+    </message>
+    <message>
+        <source>Height</source>
+        <translation type="vanished">Yükseklik</translation>
+    </message>
+    <message>
+        <source>Show pen settings</source>
+        <translation type="vanished">Kalem ayarlarını göster</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="350"/>
+        <source>Color</source>
+        <translation>Renk</translation>
+    </message>
 </context>
 <context>
     <name>TreeSettingsDialog</name>
@@ -2129,14 +2224,41 @@ Dalları daraltmak için çift tıklayın</translation>
         <translation>Ağaç Ayarları</translation>
     </message>
     <message>
+        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="22"/>
+        <source>Tree view</source>
+        <translation type="unfinished">Ağaç görünümü</translation>
+    </message>
+    <message>
+        <source>Width</source>
+        <translation type="vanished">Genişlik</translation>
+    </message>
+    <message>
+        <source>Height (Rectangular)</source>
+        <translation type="vanished">Yükseklik (Dikdörtgen)</translation>
+    </message>
+    <message>
+        <source>Tree View</source>
+        <translation type="vanished">Ağaç Görünümü</translation>
+    </message>
+    <message>
         <location filename="../src/phyltree/TreeSettingsDialog.ui" line="35"/>
         <source>Scale Range</source>
         <translation>Ölçek Aralığı</translation>
     </message>
+</context>
+<context>
+    <name>U2</name>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="22"/>
-        <source>Tree view</source>
-        <translation type="unfinished">Ağaç görünümü</translation>
+        <source>All alphabets</source>
+        <translation type="vanished">Tüm alfabeler</translation>
+    </message>
+    <message>
+        <source>Amino acid alphabet</source>
+        <translation type="vanished">Amino asit alfabesi</translation>
+    </message>
+    <message>
+        <source>Nucleotide alphabet</source>
+        <translation type="vanished">Nükleotid alfabesi</translation>
     </message>
 </context>
 <context>
@@ -2211,6 +2333,13 @@ Dalları daraltmak için çift tıklayın</translation>
         <location filename="../src/ov_sequence/ADVAnnotationCreation.cpp" line="50"/>
         <source>Create annotations task</source>
         <translation>Ek açıklama görevi oluştur</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ADVSequenceObjectContext</name>
+    <message>
+        <source>Incorrect signal sender!</source>
+        <translation type="vanished">Yanlış sinyal gönderen!</translation>
     </message>
 </context>
 <context>
@@ -2485,9 +2614,17 @@ Dalları daraltmak için çift tıklayın</translation>
         <source>Add short reads to document</source>
         <translation>Belgeye kısa okumalar ekleyin</translation>
     </message>
+    <message>
+        <source>Invalid database reference detected</source>
+        <translation type="vanished">Geçersiz veritabanı referansı algılandı</translation>
+    </message>
 </context>
 <context>
     <name>U2::AddTreeWidget</name>
+    <message>
+        <source>There are no displayed trees so settings are hidden.</source>
+        <translation type="vanished">Görüntülenen ağaç yok, bu nedenle ayarlar gizlidir.</translation>
+    </message>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="373"/>
         <source>No active trees found.</source>
@@ -2565,6 +2702,10 @@ Dalları daraltmak için çift tıklayın</translation>
         <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="129"/>
         <source>Next annotation</source>
         <translation>Sonraki açıklama</translation>
+    </message>
+    <message>
+        <source>Sequence context is NULL</source>
+        <translation type="vanished">Sıra bağlamı BOŞ</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="317"/>
@@ -2698,6 +2839,14 @@ Dalları daraltmak için çift tıklayın</translation>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="823"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>&apos;%1&apos; vurgulamayı etkinleştir</translation>
+    </message>
+    <message>
+        <source>Reverse sequence</source>
+        <translation type="vanished">Ters sıra</translation>
+    </message>
+    <message>
+        <source>Go To</source>
+        <translation type="vanished">Git</translation>
     </message>
 </context>
 <context>
@@ -2881,6 +3030,10 @@ Dalları daraltmak için çift tıklayın</translation>
 <context>
     <name>U2::AssemblyBrowser</name>
     <message>
+        <source>Error!</source>
+        <translation type="vanished">Hata!</translation>
+    </message>
+    <message>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="152"/>
         <source>Failed to open assembly browser for %1, assembly %2: model length should be &gt; 0</source>
         <translation>%1 için derleme tarayıcısı açılamadı, derleme %2: model uzunluğu &gt; 0 olmalıdır</translation>
@@ -2891,6 +3044,10 @@ Dalları daraltmak için çift tıklayın</translation>
         <translation>%1,%2 derlemesi için açık derleme tarayıcısı açılırken hata oluştu</translation>
     </message>
     <message>
+        <source>Internal error: only object with document can be added to browser</source>
+        <translation type="vanished">Dahili hata: tarayıcıya yalnızca belgeli nesne eklenebilir</translation>
+    </message>
+    <message>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="216"/>
         <source>Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.</source>
         <translation>Montaj Tarayıcısına yalnızca bir nükleotid dizisi veya bir varyant izleme nesneleri eklenebilir.</translation>
@@ -2899,6 +3056,10 @@ Dalları daraltmak için çift tıklayın</translation>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="220"/>
         <source>Internal error: broken sequence object</source>
         <translation>Dahili hata: bozuk sıra nesnesi</translation>
+    </message>
+    <message>
+        <source>Internal error: empty document format</source>
+        <translation type="vanished">Dahili hata: boş belge biçimi</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="267"/>
@@ -3168,6 +3329,18 @@ Dalları daraltmak için çift tıklayın</translation>
 <context>
     <name>U2::AssemblyModel</name>
     <message>
+        <source>No active project found!</source>
+        <translation type="vanished">Etkin proje bulunamadı!</translation>
+    </message>
+    <message>
+        <source>No reference document found in the project</source>
+        <translation type="vanished">Projede referans belge bulunamadı</translation>
+    </message>
+    <message>
+        <source>No reference object found in the project</source>
+        <translation type="vanished">Projede referans nesne bulunamadı</translation>
+    </message>
+    <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="310"/>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="639"/>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="644"/>
@@ -3197,6 +3370,10 @@ Referans sıralı başka bir dosya açmayı deneyin ve bunu montajla ilişkilend
 Do you want to remove the association?</source>
         <translation>&apos;%1&apos; dizisi &apos;%2&apos; derlemesiyle ilişkili mi?
 İlişkilendirmeyi kaldırmak istiyor musunuz?</translation>
+    </message>
+    <message>
+        <source>Reference document is not ready!</source>
+        <translation type="vanished">Referans belge hazır değil!</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="639"/>
@@ -3484,6 +3661,21 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
     </message>
 </context>
 <context>
+    <name>U2::BranchSettingsDialog</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Vazgeç</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">TAMAM</translation>
+    </message>
+    <message>
+        <source>Select Color</source>
+        <translation type="vanished">Renk Seç</translation>
+    </message>
+</context>
+<context>
     <name>U2::BuildIndexDialog</name>
     <message>
         <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="58"/>
@@ -3540,6 +3732,22 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
         <source>Calculate coverage per base for assembly on region (%1, %2)</source>
         <translation>Bölgede montaj için taban başına kapsamı hesaplayın (%1, %2)</translation>
     </message>
+    <message>
+        <source>Invalid database reference</source>
+        <translation type="vanished">Geçersiz veritabanı referansı</translation>
+    </message>
+    <message>
+        <source>Invalid assembly ID</source>
+        <translation type="vanished">Geçersiz derleme kimliği</translation>
+    </message>
+    <message>
+        <source>Assembly DBI is NULL</source>
+        <translation type="vanished">Montaj DBI&apos;sı BOŞ</translation>
+    </message>
+    <message>
+        <source>Cigar string: out of bounds</source>
+        <translation type="vanished">Puro dizisi: sınırların dışında</translation>
+    </message>
 </context>
 <context>
     <name>U2::CalculateCoveragePerBaseTask</name>
@@ -3547,6 +3755,18 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="135"/>
         <source>Calculate coverage per base for assembly</source>
         <translation>Montaj için taban başına kapsamı hesaplayın</translation>
+    </message>
+    <message>
+        <source>Invalid database reference</source>
+        <translation type="vanished">Geçersiz veritabanı referansı</translation>
+    </message>
+    <message>
+        <source>Invalid assembly ID</source>
+        <translation type="vanished">Geçersiz derleme kimliği</translation>
+    </message>
+    <message>
+        <source>An unexpected subtask</source>
+        <translation type="vanished">Beklenmedik bir alt görev</translation>
     </message>
 </context>
 <context>
@@ -3786,6 +4006,25 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
+    <message>
+        <source>Please, input the file name.</source>
+        <translation type="vanished">Lütfen dosya adını giriniz.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="vanished">Hata</translation>
+    </message>
+    <message>
+        <source>Please, change the output file.</source>
+        <translation type="vanished">Lütfen çıktı dosyasını değiştirin.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CreateRectangularBranchesTask</name>
+    <message>
+        <source>An internal error: a tree is in an incorrect state, can&apos;t create a branch</source>
+        <translation type="vanished">Dahili bir hata: bir ağaç yanlış durumda, dal oluşturamıyor</translation>
+    </message>
 </context>
 <context>
     <name>U2::CreateRulerDialogController</name>
@@ -3877,6 +4116,34 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
         <source>No path specified</source>
         <translation>Yol belirtilmedi</translation>
     </message>
+    <message>
+        <source>Extract</source>
+        <translation type="vanished">Çıkart</translation>
+    </message>
+    <message>
+        <source>Folder to save does not exist</source>
+        <translation type="vanished">Kaydedilecek klasör mevcut değil</translation>
+    </message>
+    <message>
+        <source>No write permission to &apos;%1&apos; folder</source>
+        <translation type="vanished">&apos;%1&apos; klasörüne yazma izni yok</translation>
+    </message>
+    <message>
+        <source>Filename to save is empty</source>
+        <translation type="vanished">Kaydedilecek dosya adı boş</translation>
+    </message>
+    <message>
+        <source>No write permission to &apos;%1&apos; file</source>
+        <translation type="vanished">&apos;%1&apos; dosyasına yazma izni yok</translation>
+    </message>
+    <message>
+        <source>Illegal region!</source>
+        <translation type="vanished">Yasadışı bölge!</translation>
+    </message>
+    <message>
+        <source>You must select at least one sequence</source>
+        <translation type="vanished">En az bir sıra seçmelisiniz</translation>
+    </message>
 </context>
 <context>
     <name>U2::CreateTreeViewerTask</name>
@@ -3884,6 +4151,10 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
         <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="215"/>
         <source>Open tree viewer</source>
         <translation>Ağaç görüntüleyiciyi aç</translation>
+    </message>
+    <message>
+        <source>Invalid tree object detected</source>
+        <translation type="vanished">Geçersiz ağaç nesnesi algılandı</translation>
     </message>
 </context>
 <context>
@@ -3900,6 +4171,10 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
         <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="341"/>
         <source>Calculate sequence statistics</source>
         <translation>Sıra istatistiklerini hesapla</translation>
+    </message>
+    <message>
+        <source>Alphabet is NULL</source>
+        <translation type="vanished">Alfabe BOŞ</translation>
     </message>
 </context>
 <context>
@@ -3979,6 +4254,10 @@ Dosyayı değiştirmek için yeterli hakkınız yok</translation>
         <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="388"/>
         <source>The sequence &amp; clipboard content have different alphabet</source>
         <translation>Sıra ve pano içeriği farklı alfabelere sahip</translation>
+    </message>
+    <message>
+        <source>Edit sequence</source>
+        <translation type="vanished">Sırayı düzenle</translation>
     </message>
 </context>
 <context>
@@ -4158,6 +4437,13 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
     </message>
 </context>
 <context>
+    <name>U2::ExportAutoAnnotationsGroupTask</name>
+    <message>
+        <source>Invalid annotation group provided</source>
+        <translation type="vanished">Geçersiz ek açıklama grubu sağlandı</translation>
+    </message>
+</context>
+<context>
     <name>U2::ExportConsensusDialog</name>
     <message>
         <location filename="../src/ov_assembly/ExportConsensusDialog.cpp" line="45"/>
@@ -4207,6 +4493,14 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <location filename="../src/ov_assembly/ExportConsensusTask.cpp" line="49"/>
         <source>Export consensus of assembly &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File name cannot be empty</source>
+        <translation type="vanished">Dosya adı boş olamaz</translation>
+    </message>
+    <message>
+        <source>Internal: couldn&apos;t find document format with id &apos;%1&apos;</source>
+        <translation type="vanished">Dahili: &apos;%1&apos; kimliğine sahip belge biçimi bulunamadı</translation>
     </message>
 </context>
 <context>
@@ -4277,6 +4571,14 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <source>Export consensus variations of assembly &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>&apos;%1&apos; derlemesinin fikir birliği varyasyonlarını &apos;%2&apos; olarak dışa aktar</translation>
     </message>
+    <message>
+        <source>File name cannot be empty</source>
+        <translation type="vanished">Dosya adı boş olamaz</translation>
+    </message>
+    <message>
+        <source>Internal: couldn&apos;t find document format with id &apos;%1&apos;</source>
+        <translation type="vanished">Dahili: &apos;%1&apos; kimliğine sahip belge biçimi bulunamadı</translation>
+    </message>
 </context>
 <context>
     <name>U2::ExportCoverageDialog</name>
@@ -4316,9 +4618,17 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
 <context>
     <name>U2::ExportCoverageHistogramTask</name>
     <message>
+        <source>Attribute DBI is NULL</source>
+        <translation type="vanished">Öznitelik DBI BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="168"/>
         <source>Can&apos;t get the assembly length: attribute is missing</source>
         <translation>Montaj uzunluğu alınamıyor: nitelik eksik</translation>
+    </message>
+    <message>
+        <source>Assembly has zero length</source>
+        <translation type="vanished">Montajın uzunluğu sıfırdır</translation>
     </message>
 </context>
 <context>
@@ -4327,6 +4637,30 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="62"/>
         <source>Export assembly coverage per base</source>
         <translation>Taban başına montaj kapsamını dışa aktar</translation>
+    </message>
+    <message>
+        <source>Invalid database reference</source>
+        <translation type="vanished">Geçersiz veritabanı referansı</translation>
+    </message>
+    <message>
+        <source>Invalid assembly ID</source>
+        <translation type="vanished">Geçersiz derleme kimliği</translation>
+    </message>
+    <message>
+        <source>Invalid destination url</source>
+        <translation type="vanished">Geçersiz hedef url</translation>
+    </message>
+    <message>
+        <source>Can&apos;t write the compressed file: IOAdapterFactory is NULL</source>
+        <translation type="vanished">Sıkıştırılmış dosya yazılamıyor: IOAdapterFactory BOŞ</translation>
+    </message>
+    <message>
+        <source>Can&apos;t write the file: IOAdapterFactory is NULL</source>
+        <translation type="vanished">Dosya yazılamıyor: IOAdapterFactory BOŞ</translation>
+    </message>
+    <message>
+        <source>Not all regions were processed</source>
+        <translation type="vanished">Tüm bölgeler işlenmedi</translation>
     </message>
 </context>
 <context>
@@ -4376,6 +4710,21 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
     </message>
 </context>
 <context>
+    <name>U2::ExportHighligtningTask</name>
+    <message>
+        <source>Export highlighting</source>
+        <translation type="vanished">Vurgulamayı dışa aktar</translation>
+    </message>
+    <message>
+        <source>Export highlighting finished successfully</source>
+        <translation type="vanished">Dışa aktarma vurgulama başarıyla tamamlandı</translation>
+    </message>
+    <message>
+        <source>Result file:</source>
+        <translation type="vanished">Sonuç dosyası:</translation>
+    </message>
+</context>
+<context>
     <name>U2::ExportMaConsensusTask</name>
     <message>
         <location filename="../src/ov_msa/MaEditorTasks.cpp" line="255"/>
@@ -4409,6 +4758,13 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <location filename="../src/ov_assembly/ExportReadsDialog.cpp" line="52"/>
         <source>Select file to save</source>
         <translation>Kaydetmek için dosya seçin</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportSequencesTask</name>
+    <message>
+        <source>Export selected sequences from alignment</source>
+        <translation type="vanished">Seçili dizileri hizalamadan dışa aktar</translation>
     </message>
 </context>
 <context>
@@ -4473,6 +4829,10 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <source>Extract consensus</source>
         <translation>Fikir birliği elde edin</translation>
     </message>
+    <message>
+        <source>No sequences in alignment</source>
+        <translation type="vanished">Hizalamada sıra yok</translation>
+    </message>
 </context>
 <context>
     <name>U2::FilterUnpairedReadsTask</name>
@@ -4487,6 +4847,10 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <translation>Eşleştirilmemiş okumaları filtreleme, eşleştirilmemiş verilerde başlatılır</translation>
     </message>
     <message>
+        <source>The count of upstream files is not equal to the count of downstream files</source>
+        <translation type="vanished">Yukarı akış dosyalarının sayısı, aşağı akış dosyalarının sayısına eşit değil</translation>
+    </message>
+    <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="308"/>
         <source>%1 read pairs were mapped, %2 reads without a pair from files &quot;%3&quot; and &quot;%4&quot; were skipped.</source>
         <translation>%1 okuma çifti eşlendi, %2 &quot;%3&quot; ve &quot;%4&quot; dosyalarından çift olmadan okundu.</translation>
@@ -4494,6 +4858,14 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
 </context>
 <context>
     <name>U2::FindPatternListTask</name>
+    <message>
+        <source>Searching patterns in sequence task</source>
+        <translation type="vanished">Sıralı görevde kalıpları arama</translation>
+    </message>
+    <message>
+        <source>Empty pattern</source>
+        <translation type="vanished">Boş tabir</translation>
+    </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="120"/>
         <source>Find patterns in sequence</source>
@@ -4576,6 +4948,10 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <translation>Sonuçlar şu değerden uzun değil:</translation>
     </message>
     <message>
+        <source>The value is longer than the search region. Please input a shorter value or select another region!</source>
+        <translation type="vanished">Değer, arama bölgesinden daha uzun. Lütfen daha kısa bir değer girin veya başka bir bölge seçin!</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="441"/>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="448"/>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="454"/>
@@ -4616,10 +4992,30 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <translation>Bilgi: sıra adlarında arama yapmak için lütfen en az bir model girin.</translation>
     </message>
     <message>
+        <source>Warning: annotation name or annotation group name are invalid. </source>
+        <translation type="vanished">Uyarı: ek açıklama adı veya ek açıklama grubu adı geçersiz. </translation>
+    </message>
+    <message>
+        <source>Reason: </source>
+        <translation type="vanished">Neden: </translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="466"/>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="473"/>
         <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;/b&gt;</source>
         <translation>&lt;b&gt;&lt;metin rengi=%1&gt;%2&lt;/font&gt;&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source> Please input valid annotation names. </source>
+        <translation type="vanished"> Lütfen geçerli ek açıklama adları girin. </translation>
+    </message>
+    <message>
+        <source>Warning: annotation names are invalid. </source>
+        <translation type="vanished">Uyarı: ek açıklama adları geçersiz. </translation>
+    </message>
+    <message>
+        <source> It will be automatically changed to acceptable name if &apos;Get annotations&apos; button is pressed. </source>
+        <translation type="vanished"> &apos;Ek açıklamaları al&apos; düğmesine basılırsa, otomatik olarak kabul edilebilir adla değiştirilecektir. </translation>
     </message>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="465"/>
@@ -4630,6 +5026,14 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="467"/>
         <source> Please input a valid pattern </source>
         <translation> Lütfen geçerli bir kalıp girin </translation>
+    </message>
+    <message>
+        <source>Warning: search region values is not correct. </source>
+        <translation type="vanished">Uyarı: arama bölgesi değerleri doğru değil. </translation>
+    </message>
+    <message>
+        <source> Please input a valid region to search</source>
+        <translation type="vanished"> Lütfen aramak için geçerli bir bölge girin</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/find_pattern/FindPatternMsaWidget.cpp" line="477"/>
@@ -4661,9 +5065,21 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <source>No results</source>
         <translation>Sonuç yok</translation>
     </message>
+    <message>
+        <source>Use Ctrl+Enter to input multiple patterns</source>
+        <translation type="vanished">Birden çok desen girmek için Ctrl + Enter tuşlarını kullanın</translation>
+    </message>
+    <message>
+        <source>Warning: invalid regexp. </source>
+        <translation type="vanished">Uyarı: geçersiz regexp. </translation>
+    </message>
 </context>
 <context>
     <name>U2::FindPatternTask</name>
+    <message>
+        <source>Searching a pattern in sequence task</source>
+        <translation type="vanished">Sıralı görevde bir model arama</translation>
+    </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="35"/>
         <source>Find pattern in sequence</source>
@@ -4756,6 +5172,10 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="442"/>
         <source>Results no longer than:</source>
         <translation>Sonuçlar şu değerden uzun değil:</translation>
+    </message>
+    <message>
+        <source>The value is longer than the search region. Please input a shorter value or select another region!</source>
+        <translation type="vanished">Değer, arama bölgesinden daha uzun. Lütfen daha kısa bir değer girin veya başka bir bölge seçin!</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="689"/>
@@ -4870,6 +5290,18 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <translation> Lütfen geçerli ek açıklama adları girin. </translation>
     </message>
     <message>
+        <source>Warning: annotation names are invalid. </source>
+        <translation type="vanished">Uyarı: ek açıklama adları geçersiz. </translation>
+    </message>
+    <message>
+        <source> It will be automatically changed to acceptable name if &apos;Get annotations&apos; button is pressed. </source>
+        <translation type="vanished"> &apos;Ek açıklamaları al&apos; düğmesine basılırsa, otomatik olarak kabul edilebilir adla değiştirilecektir. </translation>
+    </message>
+    <message>
+        <source>Warning: there is no pattern to search. </source>
+        <translation type="vanished">Uyarı: Aranacak bir model yok. </translation>
+    </message>
+    <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="752"/>
         <source> Please input a valid pattern or choose a file with patterns </source>
         <translation> Lütfen geçerli bir kalıp girin veya kalıpları olan bir dosya seçin </translation>
@@ -4889,13 +5321,44 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
         <source>Results: %1/%2</source>
         <translation>Sonuçlar: %1/%2</translation>
     </message>
+    <message>
+        <source>Warning: annotation name or annotation group name are invalid. </source>
+        <translation type="vanished">Uyarı: ek açıklama adı veya ek açıklama grubu adı geçersiz. </translation>
+    </message>
+    <message>
+        <source>Sequence in focus is NULL</source>
+        <translation type="vanished">Odaktaki sıra BOŞ</translation>
+    </message>
+    <message>
+        <source>Warning: invalid regexp. </source>
+        <translation type="vanished">Uyarı: geçersiz regexp. </translation>
+    </message>
+</context>
+<context>
+    <name>U2::FindQualifierTask</name>
+    <message>
+        <source>Searching for a qualifier</source>
+        <translation type="vanished">Bir niteleyici aranıyor</translation>
+    </message>
 </context>
 <context>
     <name>U2::FormatsMsaClipboardTask</name>
     <message>
+        <source>No temporary document.</source>
+        <translation type="vanished">Geçici belge yok.</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="108"/>
         <source>Cannot read the temporary file.</source>
         <translation>Geçici dosya okunamıyor.</translation>
+    </message>
+    <message>
+        <source>Invalid applications settings detected</source>
+        <translation type="vanished">Geçersiz uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <source>Invalid users applications settings detected</source>
+        <translation type="vanished">Geçersiz kullanıcı uygulama ayarları algılandı</translation>
     </message>
 </context>
 <context>
@@ -4918,6 +5381,10 @@ Lütfen ayarlarda harici araçları kontrol edin.</translation>
 </context>
 <context>
     <name>U2::GSequenceGraphView</name>
+    <message>
+        <source>Select all extremum points...</source>
+        <translation type="vanished">Tüm uç noktaları seçin...</translation>
+    </message>
     <message>
         <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="56"/>
         <source>Save cutoffs as annotations...</source>
@@ -5016,6 +5483,12 @@ Directory Path: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Unable to create output folder for result assembly.
+Directory Path: %1</source>
+        <translation type="vanished">Sonuç montajı için çıktı klasörü oluşturulamıyor.
+Dizin Yolu: %1</translation>
+    </message>
+    <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="325"/>
         <source>Select output folder</source>
         <translation>Çıktı klasörünü seçin</translation>
@@ -5023,6 +5496,10 @@ Directory Path: %1</source>
 </context>
 <context>
     <name>U2::GetAssemblyLengthTask</name>
+    <message>
+        <source>Attribute DBI is NULL</source>
+        <translation type="vanished">Öznitelik DBI BOŞ</translation>
+    </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="196"/>
         <source>Can&apos;t get the assembly length: attribute is missing</source>
@@ -5034,6 +5511,10 @@ Directory Path: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Assembly has zero length</source>
+        <translation type="vanished">Montajın uzunluğu sıfırdır</translation>
+    </message>
+    <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.h" line="46"/>
         <source>Get length of Assembly</source>
         <translation>Montaj uzunluğunu alın</translation>
@@ -5041,6 +5522,10 @@ Directory Path: %1</source>
 </context>
 <context>
     <name>U2::GetAssemblyVisibleNameTask</name>
+    <message>
+        <source>Assembly DBI is NULL</source>
+        <translation type="vanished">Montaj DBI&apos;sı BOŞ</translation>
+    </message>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.h" line="70"/>
         <source>Get visible name of Assembly</source>
@@ -5061,6 +5546,21 @@ Directory Path: %1</source>
         <location filename="../src/ov_sequence/GraphLabelModel.cpp" line="121"/>
         <source>QLabel {color : %1; }</source>
         <translation>QLabel {renk : %1; }</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GraphLabelsSelectDialog</name>
+    <message>
+        <source>Window size</source>
+        <translation type="vanished">Pencere boyutu</translation>
+    </message>
+    <message>
+        <source>Mark labels only in selected area</source>
+        <translation type="vanished">Etiketleri yalnızca seçili alanda işaretle</translation>
+    </message>
+    <message>
+        <source>Graph Settings</source>
+        <translation type="vanished">Grafik Ayarları</translation>
     </message>
 </context>
 <context>
@@ -5098,6 +5598,10 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp" line="292"/>
         <source>Load sequences and add to alignment task</source>
         <translation>Sıraları yükleyin ve hizalama görevine ekleyin</translation>
+    </message>
+    <message>
+        <source>Alignment object is null</source>
+        <translation type="vanished">Hizalama nesnesi boş</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp" line="310"/>
@@ -5149,11 +5653,420 @@ Directory Path: %1</source>
     </message>
 </context>
 <context>
+    <name>U2::MSAEditor</name>
+    <message>
+        <source>Align</source>
+        <translation type="vanished">Hizala</translation>
+    </message>
+    <message>
+        <source>Tree</source>
+        <translation type="vanished">Ağaç</translation>
+    </message>
+    <message>
+        <source>By name</source>
+        <translation type="vanished">Ada Göre</translation>
+    </message>
+    <message>
+        <source>By name, descending</source>
+        <translation type="vanished">Ada göre azalan</translation>
+    </message>
+    <message>
+        <source>By length</source>
+        <translation type="vanished">Uzunluğa göre</translation>
+    </message>
+    <message>
+        <source>By length, descending</source>
+        <translation type="vanished">Boyuna göre azalan</translation>
+    </message>
+    <message>
+        <source>Realign sequence(s) to other sequences</source>
+        <translation type="vanished">Dizileri diğer dizilere yeniden hizalayın</translation>
+    </message>
+    <message>
+        <source>Create new color scheme</source>
+        <translation type="vanished">Yeni renk şeması oluşturun</translation>
+    </message>
+    <message>
+        <source>Sort selected sequences range or the whole alignment by name, ascending</source>
+        <translation type="vanished">Seçilen sıra aralığını veya hizalamanın tamamını ada göre artan şekilde sırala</translation>
+    </message>
+    <message>
+        <source>Sort selected sequences range or the whole alignment by name, descending</source>
+        <translation type="vanished">Seçili dizi aralığını veya tüm hizalamayı ada göre azalan sırala</translation>
+    </message>
+    <message>
+        <source>Sort selected sequences range or the whole alignment by length, ascending</source>
+        <translation type="vanished">Seçilen dizi aralığını veya tüm hizalamayı uzunluğa göre artan şekilde sırala</translation>
+    </message>
+    <message>
+        <source>Sort selected sequences range or the whole alignment by length, descending</source>
+        <translation type="vanished">Seçili dizi aralığını veya tüm hizalamayı uzunluğa göre azalan şekilde sırala</translation>
+    </message>
+    <message>
+        <source>By leading gap</source>
+        <translation type="vanished">Önde gelen boşlukla</translation>
+    </message>
+    <message>
+        <source>Sort selected sequences range or the whole alignment by leading gap, ascending</source>
+        <translation type="vanished">Seçili dizi aralığını veya hizalamanın tamamını önde gelen boşluğa göre artan şekilde sırala</translation>
+    </message>
+    <message>
+        <source>By leading gap, descending</source>
+        <translation type="vanished">Boşluğa liderlik ederek, alçalarak</translation>
+    </message>
+    <message>
+        <source>Sort selected sequences range or the whole alignment by leading gap, descending</source>
+        <translation type="vanished">Seçili dizi aralığını veya tüm hizalamayı satır aralığı boşluğuna göre azalan şekilde sırala</translation>
+    </message>
+    <message>
+        <source>Convert to RNA alphabet (T-&gt;U)</source>
+        <translation type="vanished">RNA alfabesine dönüştür (T-&gt;U)</translation>
+    </message>
+    <message>
+        <source>Convert alignment from DNA to RNA alphabet: replace T with U</source>
+        <translation type="vanished">Hizalamayı DNA&apos;dan RNA alfabesine dönüştürün: T&apos;yi U ile değiştirin</translation>
+    </message>
+    <message>
+        <source>Convert to DNA alphabet (U-&gt;T)</source>
+        <translation type="vanished">DNA alfabesine dönüştür (U-&gt;T)</translation>
+    </message>
+    <message>
+        <source>Convert alignment from RNA to DNA alphabet: replace U with T</source>
+        <translation type="vanished">Hizalamayı RNA&apos;dan DNA alfabesine dönüştürün: U yerine T</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="vanished">Düzenle</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <translation type="vanished">Sırala</translation>
+    </message>
+    <message>
+        <source>Appearance</source>
+        <translation type="vanished">Görünüş</translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation type="vanished">Renkler</translation>
+    </message>
+    <message>
+        <source>Custom schemes</source>
+        <translation type="vanished">Özel şemalar</translation>
+    </message>
+    <message>
+        <source>Highlighting</source>
+        <translation type="vanished">Vurgulama</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation type="vanished">Gezinme</translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="vanished">Gelişmiş</translation>
+    </message>
+    <message>
+        <source>Go to position…</source>
+        <translation type="vanished">Pozisyona git…</translation>
+    </message>
+    <message>
+        <source>Search in sequences…</source>
+        <translation type="vanished">Sırayla ara…</translation>
+    </message>
+    <message>
+        <source>Search in sequence names…</source>
+        <translation type="vanished">Sıra adlarında ara…</translation>
+    </message>
+    <message>
+        <source>Align sequence(s) to this alignment</source>
+        <translation type="vanished">Sıraları bu hizalamaya hizalayın</translation>
+    </message>
+    <message>
+        <source>Set this sequence as reference</source>
+        <translation type="vanished">Bu sıralamayı referans olarak ayarlayın</translation>
+    </message>
+    <message>
+        <source>Unset reference sequence</source>
+        <translation type="vanished">Ayarlanmamış referans sırası</translation>
+    </message>
+    <message>
+        <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
+        <translation type="vanished">Sıralar eklenirken bir sorun oluştu. Çoklu hizalama artık mevcut değil.</translation>
+    </message>
+    <message>
+        <source>A problem occurred during realigning sequences. The multiple alignment is no more available.</source>
+        <translation type="vanished">Dizileri yeniden hizalarken bir sorun oluştu. Çoklu hizalama artık mevcut değil.</translation>
+    </message>
+    <message>
+        <source>Open file with sequences</source>
+        <translation type="vanished">Dosyayı sıralı aç</translation>
+    </message>
+    <message>
+        <source>Build Tree</source>
+        <translation type="vanished">Ağaç Oluştur</translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation type="vanished">İstatistikler</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAEditorConsensusCache</name>
+    <message>
+        <source>Can not update consensus chache item</source>
+        <translation type="vanished">Mutabakat chache öğesi güncellenemiyor</translation>
+    </message>
+</context>
+<context>
     <name>U2::MSAEditorOffsetsViewController</name>
     <message>
         <location filename="../src/ov_msa/MsaEditorOffsetsView.cpp" line="69"/>
         <source>Show offsets</source>
         <translation>Ofsetleri göster</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAEditorSequenceArea</name>
+    <message>
+        <source>Remove columns of gaps...</source>
+        <translation type="vanished">Boşluk Sütunlarını Kaldır...</translation>
+    </message>
+    <message>
+        <source>Export selected sequence(s)...</source>
+        <translation type="vanished">Seçili dizileri dışa aktar...</translation>
+    </message>
+    <message>
+        <source>Remove all gaps</source>
+        <translation type="vanished">Tüm boşlukları kaldırın</translation>
+    </message>
+    <message>
+        <source>Sequence from file...</source>
+        <translation type="vanished">Dosyadan sıra...</translation>
+    </message>
+    <message>
+        <source>Sequence from current project...</source>
+        <translation type="vanished">Mevcut projeden sıra...</translation>
+    </message>
+    <message>
+        <source>Replace selected rows with reverse-complement</source>
+        <translation type="vanished">Seçili satırları ters tümlemeyle değiştir</translation>
+    </message>
+    <message>
+        <source>Replace selected rows with reverse</source>
+        <translation type="vanished">Seçili satırları tersiyle değiştir</translation>
+    </message>
+    <message>
+        <source>Replace selected rows with complement</source>
+        <translation type="vanished">Seçili satırları tamamlayıcıyla değiştir</translation>
+    </message>
+    <message>
+        <source>Go to Position</source>
+        <translation type="vanished">Pozisyona Git</translation>
+    </message>
+    <message>
+        <source>MSA is locked</source>
+        <translation type="vanished">MSA kilitlendi</translation>
+    </message>
+    <message>
+        <source>No new rows were inserted: selection contains no valid sequences.</source>
+        <translation type="vanished">Yeni satır eklenmedi: seçim geçerli bir sıra içermiyor.</translation>
+    </message>
+    <message>
+        <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
+        <translation type="vanished">Hizalama değiştirildi, böylece alfabesi &quot;%1&quot; den &quot;%2&quot; ye değiştirildi. Orijinal hizalamayı geri yüklemek istiyorsanız &quot;Geri Al&quot; seçeneğini kullanın.</translation>
+    </message>
+    <message>
+        <source>Open file with sequences</source>
+        <translation type="vanished">Dosyayı sıralı aç</translation>
+    </message>
+    <message>
+        <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
+        <translation type="vanished">Sıralar eklenirken bir sorun oluştu. Çoklu hizalama artık mevcut değil.</translation>
+    </message>
+    <message>
+        <source>Save subalignment...</source>
+        <translation type="vanished">Alt hizalamayı kaydet...</translation>
+    </message>
+    <message>
+        <source>Switch on/off collapsing</source>
+        <translation type="vanished">Daraltmayı aç / kapat</translation>
+    </message>
+    <message>
+        <source>Update collapsed groups</source>
+        <translation type="vanished">Daraltılmış grupları güncelleyin</translation>
+    </message>
+    <message>
+        <source>Go to position...</source>
+        <translation type="vanished">Pozisyona git...</translation>
+    </message>
+    <message>
+        <source>Sort sequences by name</source>
+        <translation type="vanished">Dizileri ada göre sırala</translation>
+    </message>
+    <message>
+        <source>DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()</source>
+        <translation type="vanished">DNA Alfabesi MSA Düzenleyici Sıra Alanında boş::Amino Alfabesine sahip ()</translation>
+    </message>
+    <message>
+        <source>MultipleAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</source>
+        <translation type="vanished">Çoklu Hizalama Nesnesi, MSA Düzenleyici Sıra Alanında boş::Amino Alfabesine sahip ()</translation>
+    </message>
+    <message>
+        <source>Custom schemes</source>
+        <translation type="vanished">Özel şemalar</translation>
+    </message>
+    <message>
+        <source>Create new color scheme</source>
+        <translation type="vanished">Yeni renk şeması oluşturun</translation>
+    </message>
+    <message>
+        <source>Highlighting</source>
+        <translation type="vanished">Vurgulama</translation>
+    </message>
+    <message>
+        <source>NULL collapsible model!</source>
+        <translation type="vanished">BOŞ katlanabilir model!</translation>
+    </message>
+    <message>
+        <source>NULL msa object!</source>
+        <translation type="vanished">BOŞ msa nesnesi!</translation>
+    </message>
+    <message>
+        <source>Go To</source>
+        <translation type="vanished">Git</translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation type="vanished">Renkler</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAEditorTreeManager</name>
+    <message>
+        <source>Calculate phy tree</source>
+        <translation type="vanished">Bitkisel ağacı hesapla</translation>
+    </message>
+    <message>
+        <source>No algorithms for building phylogenetic tree are available.</source>
+        <translation type="vanished">Filogenetik ağaç oluşturmak için hiçbir algoritma mevcut değildir.</translation>
+    </message>
+    <message>
+        <source>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</source>
+        <translation type="vanished">Ağaç Görüntüleyici *, MSA Düzenleyici Ağaç Görüntüleyicisi işlevinde MSA Düzenleyici Ağaç Görüntüleyicisine * dönüştürülemiyor::sl_aç Ağaç Görevi Tamamlandı (Görev * t)</translation>
+    </message>
+    <message>
+        <source>Select files to open...</source>
+        <translation type="vanished">Açılacak dosyaları seçin...</translation>
+    </message>
+    <message>
+        <source>Incorrect reference to the MSAEditor</source>
+        <translation type="vanished">MSAEditor&apos;a yanlış referans</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAEditorTreeViewer</name>
+    <message>
+        <source>MSAEditor tree toolbar</source>
+        <translation type="vanished">MSAEditor ağaç araç çubuğu</translation>
+    </message>
+    <message>
+        <source>Disable Tree and Alignment synchronization</source>
+        <translation type="vanished">Ağaç ve Hizalama senkronizasyonunu devre dışı bırakın</translation>
+    </message>
+    <message>
+        <source>Enable Tree and Alignment synchronization</source>
+        <translation type="vanished">Ağaç ve Hizalama senkronizasyonunu etkinleştirin</translation>
+    </message>
+    <message>
+        <source>Refresh tree</source>
+        <translation type="vanished">Ağacı yenile</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAGeneralTab</name>
+    <message>
+        <source>Alignment info</source>
+        <translation type="vanished">Hizalama bilgileri</translation>
+    </message>
+    <message>
+        <source>Consensus mode</source>
+        <translation type="vanished">Konsensüs modu</translation>
+    </message>
+    <message>
+        <source>Copy (custom format)</source>
+        <translation type="vanished">Kopyala (özel biçim)</translation>
+    </message>
+    <message>
+        <source>Rich text (HTML)</source>
+        <translation type="vanished">Zengin metin (HTML)</translation>
+    </message>
+    <message>
+        <source>RNA</source>
+        <translation type="vanished">RNA</translation>
+    </message>
+    <message>
+        <source>Convert DNA alignment to RNA alignment</source>
+        <translation type="vanished">DNA hizalamasını RNA hizalamasına dönüştürün</translation>
+    </message>
+    <message>
+        <source>DNA</source>
+        <translation type="vanished">DNA</translation>
+    </message>
+    <message>
+        <source>Convert RNA alignment to DNA alignment</source>
+        <translation type="vanished">RNA hizalamasını DNA hizalamasına dönüştürün</translation>
+    </message>
+    <message>
+        <source>Sort sequences</source>
+        <translation type="vanished">Sıraları sırala</translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
+        <translation type="vanished">Panoya kopyala</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAHighlightingTab</name>
+    <message>
+        <source>Threshold</source>
+        <translation type="vanished">Eşik</translation>
+    </message>
+    <message>
+        <source>Use dots</source>
+        <translation type="vanished">Noktaları kullanın</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="vanished">Dışa Aktar</translation>
+    </message>
+    <message>
+        <source>Highlight characters with conservation level:</source>
+        <translation type="vanished">Koruma düzeyine sahip karakterleri vurgulayın:</translation>
+    </message>
+    <message>
+        <source> threshold</source>
+        <translation type="vanished"> eşik</translation>
+    </message>
+    <message>
+        <source>Threshold: %1%</source>
+        <translation type="vanished">Eşik: %1%</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="vanished">Renk</translation>
+    </message>
+    <message>
+        <source>Highlighting</source>
+        <translation type="vanished">Vurgulama</translation>
+    </message>
+    <message>
+        <source>Info: set a reference sequence.</source>
+        <translation type="vanished">Bilgi: bir referans sırası ayarlamanızı sağlar.</translation>
+    </message>
+    <message>
+        <source>Info: export is not available for the selected highlighting.</source>
+        <translation type="vanished">Bilgi: seçili vurgulama için dışa aktarma yapılamaz.</translation>
     </message>
 </context>
 <context>
@@ -5172,6 +6085,29 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/export_image/MsaImageExportTask.cpp" line="371"/>
         <source>Warning: selected region is too big to be exported. You can try to select another region.</source>
         <translation>Uyarı: seçilen bölge dışa aktarılamayacak kadar büyük. Başka bir bölge seçmeyi deneyebilirsiniz.</translation>
+    </message>
+    <message>
+        <source>MSA sequence area is NULL</source>
+        <translation type="vanished">MSA sıra alanı BOŞ</translation>
+    </message>
+    <message>
+        <source>MSA Collapsible Model is NULL</source>
+        <translation type="vanished">MSA Katlanabilir Model BOŞ</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MSAImageExportTask</name>
+    <message>
+        <source>MSA Editor UI is NULL</source>
+        <translation type="vanished">MSA Düzenleyici Kullanıcı Arayüzü BOŞ</translation>
+    </message>
+    <message>
+        <source>MSA Editor is NULL</source>
+        <translation type="vanished">MSA Düzenleyicisi NULL</translation>
+    </message>
+    <message>
+        <source>MSA Consensus area is NULL</source>
+        <translation type="vanished">MSA Konsensüs alanı BOŞ</translation>
     </message>
 </context>
 <context>
@@ -5195,6 +6131,14 @@ Directory Path: %1</source>
 </context>
 <context>
     <name>U2::MSAImageExportToSvgTask</name>
+    <message>
+        <source>Nothing to export</source>
+        <translation type="vanished">Dışa aktarılacak bir şey yok</translation>
+    </message>
+    <message>
+        <source>The image size is too big.</source>
+        <translation type="vanished">Görüntü boyutu çok büyük.</translation>
+    </message>
     <message>
         <location filename="../src/ov_msa/export_image/MsaImageExportTask.cpp" line="240"/>
         <source>SVG %1</source>
@@ -5225,6 +6169,21 @@ Directory Path: %1</source>
     </message>
 </context>
 <context>
+    <name>U2::MaClustalOverviewCalculationTask</name>
+    <message>
+        <source>MSAConsensusAlgorithmRegistry is NULL!</source>
+        <translation type="vanished">MSA Konsensüs Algoritma Kaydı BOŞ!</translation>
+    </message>
+    <message>
+        <source>Clustal algorithm factory is NULL</source>
+        <translation type="vanished">Clustal algoritma fabrikası BOŞ</translation>
+    </message>
+    <message>
+        <source>MSA is NULL</source>
+        <translation type="vanished">MSA BOŞ</translation>
+    </message>
+</context>
+<context>
     <name>U2::MaConsensusMismatchController</name>
     <message>
         <location filename="../src/ov_mca/MaConsensusMismatchController.cpp" line="53"/>
@@ -5240,6 +6199,21 @@ Directory Path: %1</source>
         <location filename="../src/ov_mca/MaConsensusMismatchController.cpp" line="138"/>
         <source>There are no variations in the consensus sequence.</source>
         <translation>Konsensüs dizisinde hiçbir değişiklik yoktur.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaConsensusOverviewCalculationTask</name>
+    <message>
+        <source>MSAConsensusAlgorithmRegistry is NULL!</source>
+        <translation type="vanished">MSA Konsensüs Algoritma Kaydı BOŞ!</translation>
+    </message>
+    <message>
+        <source>Strict consensus algorithm factory is NULL</source>
+        <translation type="vanished">Sıkı fikir birliği algoritması fabrikası BOŞ</translation>
+    </message>
+    <message>
+        <source>MSA is NULL</source>
+        <translation type="vanished">MSA BOŞ</translation>
     </message>
 </context>
 <context>
@@ -5325,6 +6299,10 @@ Directory Path: %1</source>
         <translation type="unfinished">Gezinme</translation>
     </message>
     <message>
+        <source>Export as image</source>
+        <translation type="vanished">Görüntü olarak dışa aktar</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/MaEditor.cpp" line="443"/>
         <source>Overview</source>
         <translation>Genel Görünüm</translation>
@@ -5349,13 +6327,33 @@ Directory Path: %1</source>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
+    <message>
+        <source>Align</source>
+        <translation type="vanished">Hizala</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="vanished">Düzenle</translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="vanished">Görünüm</translation>
+    </message>
 </context>
 <context>
     <name>U2::MaEditorConsensusArea</name>
     <message>
         <location filename="../src/ov_msa/MaEditorConsensusArea.cpp" line="73"/>
         <source>Consensus mode...</source>
-        <translation type="unfinished">Konsensüs modu...</translation>
+        <translation>Konsensüs modu...</translation>
+    </message>
+    <message>
+        <source>Copy consensus</source>
+        <translation type="vanished">Fikir birliğini kopyala</translation>
+    </message>
+    <message>
+        <source>Copy consensus with gaps</source>
+        <translation type="vanished">Boşluklarla fikir birliğini kopyalayın</translation>
     </message>
 </context>
 <context>
@@ -5389,9 +6387,29 @@ Directory Path: %1</source>
         <translation>Sıra adını düzenleyin</translation>
     </message>
     <message>
+        <source>Copy current sequence</source>
+        <translation type="vanished">Mevcut sekansı kopyala</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="66"/>
         <source>Remove sequence(s)</source>
         <translation>Dizileri kaldır</translation>
+    </message>
+    <message>
+        <source>MSA Editor UI is NULL</source>
+        <translation type="vanished">MSA Düzenleyici Kullanıcı Arayüzü BOŞ</translation>
+    </message>
+    <message>
+        <source>MSA Editor sequence area is NULL</source>
+        <translation type="vanished">MSA Düzenleyicisi sıra alanı BOŞ</translation>
+    </message>
+    <message>
+        <source>MSA Object is NULL</source>
+        <translation type="vanished">MSA Nesnesi BOŞ</translation>
+    </message>
+    <message>
+        <source>Invalid sequence index</source>
+        <translation type="vanished">Geçersiz sıra dizini</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="62"/>
@@ -5427,6 +6445,18 @@ Directory Path: %1</source>
         <translation>Seçili karakteri değiştir</translation>
     </message>
     <message>
+        <source>Fill selection with gaps</source>
+        <translation type="vanished">Seçimi boşluklarla doldur</translation>
+    </message>
+    <message>
+        <source>Invalid collapsible item model!</source>
+        <translation type="vanished">Geçersiz katlanabilir öğe modeli!</translation>
+    </message>
+    <message>
+        <source>Alignment object is not available</source>
+        <translation type="vanished">Hizalama nesnesi mevcut değil</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/MaEditorSequenceArea.cpp" line="103"/>
         <source>Insert gaps</source>
         <translation type="unfinished"></translation>
@@ -5457,6 +6487,14 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/MaEditorSequenceArea.cpp" line="1530"/>
         <source>Can&apos;t replace selected characters. The result row will have only gaps.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top left corner of the selection has incorrect coords</source>
+        <translation type="vanished">Seçimin sol üst köşesinde yanlış koordinatlar var</translation>
+    </message>
+    <message>
+        <source>Bottom right corner of the selection has incorrect coords</source>
+        <translation type="vanished">Seçimin sağ alt köşesinde yanlış koordinatlar var</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorSequenceArea.cpp" line="1563"/>
@@ -5575,6 +6613,22 @@ Directory Path: %1</source>
         <source>Cut</source>
         <translation>Kes</translation>
     </message>
+    <message>
+        <source>Copy selection</source>
+        <translation type="vanished">Seçimi Kopyala</translation>
+    </message>
+    <message>
+        <source>Copy formatted</source>
+        <translation type="vanished">Biçimlendirilmiş kopyala</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="vanished">Geri al</translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation type="vanished">Tekrarla</translation>
+    </message>
 </context>
 <context>
     <name>U2::MaExportConsensusWidget</name>
@@ -5595,6 +6649,14 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="40"/>
         <source>Render overview</source>
         <translation>Oluşturmaya genel bakış</translation>
+    </message>
+    <message>
+        <source>MSA is NULL</source>
+        <translation type="vanished">MSA BOŞ</translation>
+    </message>
+    <message>
+        <source>Overview width is zero</source>
+        <translation type="vanished">Genel bakış genişliği sıfırdır</translation>
     </message>
 </context>
 <context>
@@ -5622,9 +6684,33 @@ Directory Path: %1</source>
         <source>MSA highlighting scheme registry is NULL</source>
         <translation>MSA vurgulama düzeni kaydı BOŞ</translation>
     </message>
+    <message>
+        <source>MSA highlighting scheme factory with &apos;%1&apos; id is NULL</source>
+        <translation type="vanished">&apos;%1&apos; kimliğine sahip MSA vurgulama düzeni fabrikası BOŞ</translation>
+    </message>
+    <message>
+        <source>Color scheme is NULL</source>
+        <translation type="vanished">Renk düzeni BOŞ</translation>
+    </message>
+    <message>
+        <source>Highlighting scheme is NULL</source>
+        <translation type="vanished">Vurgulama düzeni BOŞ</translation>
+    </message>
+    <message>
+        <source>Highlighting scheme factory is NULL</source>
+        <translation type="vanished">Vurgulama düzeni fabrikası BOŞ</translation>
+    </message>
 </context>
 <context>
     <name>U2::MaOverviewContextMenu</name>
+    <message>
+        <source>Overview is NULL</source>
+        <translation type="vanished">Genel Bakış BOŞ</translation>
+    </message>
+    <message>
+        <source>Graph overview is NULL</source>
+        <translation type="vanished">Grafiğe genel bakış BOŞ</translation>
+    </message>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="55"/>
         <source>Set color...</source>
@@ -5634,6 +6720,10 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="131"/>
         <source>Show simple overview</source>
         <translation>Basit genel bakışı göster</translation>
+    </message>
+    <message>
+        <source>Export as image</source>
+        <translation type="vanished">Görüntü olarak dışa aktar</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="138"/>
@@ -5717,6 +6807,14 @@ Directory Path: %1</source>
 <context>
     <name>U2::MaOverviewImageExportToBitmapTask</name>
     <message>
+        <source>Overview is NULL</source>
+        <translation type="vanished">Genel Bakış BOŞ</translation>
+    </message>
+    <message>
+        <source>Graph overview is NULL</source>
+        <translation type="vanished">Grafiğe genel bakış BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="46"/>
         <source>Nothing to export. </source>
         <translation>Dışa aktarılacak bir şey yok. </translation>
@@ -5728,6 +6826,13 @@ Directory Path: %1</source>
     </message>
 </context>
 <context>
+    <name>U2::MaSangerOverview</name>
+    <message>
+        <source>Incorrect multiple chromatogram alignment object</source>
+        <translation type="vanished">Yanlış çoklu kromatogram hizalama nesnesi</translation>
+    </message>
+</context>
+<context>
     <name>U2::MaSimpleOverview</name>
     <message>
         <location filename="../src/ov_msa/overview/MaSimpleOverview.cpp" line="87"/>
@@ -5735,6 +6840,10 @@ Directory Path: %1</source>
 Simple overview is unavailable.</source>
         <translation>Çoklu sıra hizalaması, mevcut pencere boyutu için çok büyük.
 Basit bir genel bakış kullanılamaz.</translation>
+    </message>
+    <message>
+        <source>Incorrect multiple alignment object!</source>
+        <translation type="vanished">Yanlış çoklu hizalama nesnesi!</translation>
     </message>
 </context>
 <context>
@@ -5793,6 +6902,10 @@ Basit bir genel bakış kullanılamaz.</translation>
         <translation>Karakter yazı tipini değiştir...</translation>
     </message>
     <message>
+        <source>Go to selected read</source>
+        <translation type="vanished">Seçili okumaya git</translation>
+    </message>
+    <message>
         <location filename="../src/ov_mca/McaEditor.cpp" line="260"/>
         <source>Alignment</source>
         <translation>Hizalama</translation>
@@ -5801,6 +6914,10 @@ Basit bir genel bakış kullanılamaz.</translation>
         <location filename="../src/ov_mca/McaEditor.cpp" line="267"/>
         <source>Appearance</source>
         <translation>Görünüş</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation type="vanished">Gezinme</translation>
     </message>
     <message>
         <location filename="../src/ov_mca/McaEditor.cpp" line="313"/>
@@ -5923,6 +7040,10 @@ Basit bir genel bakış kullanılamaz.</translation>
         <location filename="../src/ov_mca/McaEditorWgt.cpp" line="113"/>
         <source>Remove selection</source>
         <translation>Karakteri / boşluğu kaldır</translation>
+    </message>
+    <message>
+        <source>Clear selection</source>
+        <translation type="vanished">Seçimi temizle</translation>
     </message>
 </context>
 <context>
@@ -6242,6 +7363,18 @@ Basit bir genel bakış kullanılamaz.</translation>
 <context>
     <name>U2::MsaEditorAlignmentDependentWidget</name>
     <message>
+        <source>Data are outdated</source>
+        <translation type="vanished">Veriler güncel değil</translation>
+    </message>
+    <message>
+        <source>Data are valid</source>
+        <translation type="vanished">Veriler geçerlidir</translation>
+    </message>
+    <message>
+        <source>Data are being updated</source>
+        <translation type="vanished">Veriler güncelleniyor</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="202"/>
         <source>Data is outdated</source>
         <translation type="unfinished"></translation>
@@ -6399,6 +7532,10 @@ Basit bir genel bakış kullanılamaz.</translation>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="64"/>
         <source>Click to sort selected sequences range or the whole alignment</source>
         <translation>Seçili dizi aralığını veya tüm hizalamayı sıralamak için tıklayın</translation>
+    </message>
+    <message>
+        <source>Click to sort sequence in the alignment</source>
+        <translation type="vanished">Hizalamadaki sırayı sıralamak için tıklayın</translation>
     </message>
 </context>
 <context>
@@ -6756,7 +7893,7 @@ Basit bir genel bakış kullanılamaz.</translation>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAViewTasks.cpp" line="262"/>
         <source>No sequence info found!</source>
-        <translation type="unfinished">Sıralama bilgisi bulunamadı!</translation>
+        <translation>Sıralama bilgisi bulunamadı!</translation>
     </message>
 </context>
 <context>
@@ -6797,6 +7934,10 @@ Basit bir genel bakış kullanılamaz.</translation>
 </context>
 <context>
     <name>U2::OpenMaEditorTask</name>
+    <message>
+        <source>Documet removed from project</source>
+        <translation type="vanished">Belge projeden kaldırıldı</translation>
+    </message>
     <message>
         <location filename="../src/ov_msa/MaEditorTasks.cpp" line="91"/>
         <source>Document removed from project</source>
@@ -6906,6 +8047,17 @@ Basit bir genel bakış kullanılamaz.</translation>
         <location filename="../src/ov_sequence/Overview.cpp" line="346"/>
         <source>Annotation density </source>
         <translation>Ek açıklama yoğunluğu </translation>
+    </message>
+</context>
+<context>
+    <name>U2::OverviewRenderArea</name>
+    <message>
+        <source>Overview is NULL</source>
+        <translation type="vanished">Genel Bakış BOŞ</translation>
+    </message>
+    <message>
+        <source>ADVSingleSequenceWidget is NULL</source>
+        <translation type="vanished">ADV Tek Sıralı Pencere Öğesi BOŞ</translation>
     </message>
 </context>
 <context>
@@ -7026,6 +8178,13 @@ Basit bir genel bakış kullanılamaz.</translation>
     </message>
 </context>
 <context>
+    <name>U2::PrepareSequenceObjectsTask</name>
+    <message>
+        <source>Prepare sequences</source>
+        <translation type="vanished">Dizileri hazırlayın</translation>
+    </message>
+</context>
+<context>
     <name>U2::RealignSequencesInAlignmentTask</name>
     <message>
         <location filename="../src/ov_msa/align_to_alignment/RealignSequencesInAlignmentTask.cpp" line="46"/>
@@ -7098,6 +8257,64 @@ Basit bir genel bakış kullanılamaz.</translation>
         <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="158"/>
         <source>Invalid cutoff range.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error!</source>
+        <translation type="vanished">Hata!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SaveSelectedSequenceFromMSADialog</name>
+    <message>
+        <source>Export Selected Sequence(s)</source>
+        <translation type="vanished">Seçili Dizileri Dışa Aktar</translation>
+    </message>
+    <message>
+        <source>Export to folder</source>
+        <translation type="vanished">Klasöre aktar</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="vanished">...</translation>
+    </message>
+    <message>
+        <source>File name</source>
+        <translation type="vanished">Dosya adı</translation>
+    </message>
+    <message>
+        <source>File format</source>
+        <translation type="vanished">Dosya Biçimi</translation>
+    </message>
+    <message>
+        <source>Sequence name</source>
+        <translation type="vanished">Sıra adı</translation>
+    </message>
+    <message>
+        <source>Custom name</source>
+        <translation type="vanished">Özel ad</translation>
+    </message>
+    <message>
+        <source>Keep gaps</source>
+        <translation type="vanished">Boşlukları koruyun</translation>
+    </message>
+    <message>
+        <source>Add to project</source>
+        <translation type="vanished">Projeye ekle</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SaveSelectedSequenceFromMSADialogController</name>
+    <message>
+        <source>Export</source>
+        <translation type="vanished">Dışarı aktar</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Vazgeç</translation>
+    </message>
+    <message>
+        <source>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</source>
+        <translation type="vanished">&quot;%1&quot; dosyası zaten mevcut, başka bir dosya adı seçin veya kaydetmek için başka bir dizin seçin!</translation>
     </message>
 </context>
 <context>
@@ -7206,6 +8423,10 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <translation>Seçim</translation>
     </message>
     <message>
+        <source>MSA Object is NULL</source>
+        <translation type="vanished">MSA Nesnesi BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="76"/>
         <source>Start position must be less than end position!</source>
         <translation>Başlangıç konumu, son konumdan küçük olmalıdır!</translation>
@@ -7219,6 +8440,10 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <location filename="../src/ov_msa/MsaSelectSubalignmentDialog.cpp" line="93"/>
         <source>No sequences selected</source>
         <translation>Dizi seçilmedi</translation>
+    </message>
+    <message>
+        <source>Ma Editor is NULL</source>
+        <translation type="vanished">Ma Düzenleyicisi BOŞ</translation>
     </message>
 </context>
 <context>
@@ -7240,6 +8465,24 @@ Lütfen ilgili eklentileri yükleyin.</translation>
     </message>
 </context>
 <context>
+    <name>U2::SequenceAreaRenderer</name>
+    <message>
+        <source>Alignment object is NULL</source>
+        <translation type="vanished">Hizalama nesnesi BOŞ</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SequenceExportSettingsWidget</name>
+    <message>
+        <source>Cannot cast CustomExportSettings to SequenceExportSettings</source>
+        <translation type="vanished">Özel Dışa Aktarma Ayarları Sıralı Dışa Aktarma Ayarlarına aktarılamıyor</translation>
+    </message>
+    <message>
+        <source>Sequence Object is NULL</source>
+        <translation type="vanished">Sıra nesnesi BOŞ</translation>
+    </message>
+</context>
+<context>
     <name>U2::SequenceInfo</name>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="115"/>
@@ -7255,6 +8498,14 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="130"/>
         <source>Dinucleotides</source>
         <translation>Dinükleotidler</translation>
+    </message>
+    <message>
+        <source>Sequence context is NULL</source>
+        <translation type="vanished">Sıra bağlamı BOŞ</translation>
+    </message>
+    <message>
+        <source>Sequence alphabet is NULL</source>
+        <translation type="vanished">Sıra alfabesi BOŞ</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="74"/>
@@ -7399,6 +8650,10 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <translation>Çerçeve -%1</translation>
     </message>
     <message>
+        <source>Incorrect signal sender!</source>
+        <translation type="vanished">Yanlış sinyal gönderen!</translation>
+    </message>
+    <message>
         <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="289"/>
         <source>Select genetic code</source>
         <translation>Genetik kodu seçin</translation>
@@ -7425,9 +8680,17 @@ Lütfen ilgili eklentileri yükleyin.</translation>
 <context>
     <name>U2::SingleSequenceImageExportController</name>
     <message>
+        <source>Sequence Widget is NULL</source>
+        <translation type="vanished">Sıra Widget&apos;ı BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/ov_sequence/image_export/SingleSequenceImageExportController.cpp" line="44"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
+    </message>
+    <message>
+        <source>Sequence Object is NULL</source>
+        <translation type="vanished">Sıra Nesnesi BOŞ</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/image_export/SingleSequenceImageExportController.cpp" line="96"/>
@@ -7652,6 +8915,22 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <translation>Dallar</translation>
     </message>
     <message>
+        <source>Hide font settings</source>
+        <translation type="vanished">Yazı tipi ayarlarını gizle</translation>
+    </message>
+    <message>
+        <source>Show font settings</source>
+        <translation type="vanished">Yazı tipi ayarlarını göster</translation>
+    </message>
+    <message>
+        <source>Hide pen settings</source>
+        <translation type="vanished">Kalem ayarlarını gizle</translation>
+    </message>
+    <message>
+        <source>Show pen settings</source>
+        <translation type="vanished">Kalem ayarlarını göster</translation>
+    </message>
+    <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="282"/>
         <source>Rectangular</source>
         <translation>Dikdörtgen</translation>
@@ -7716,6 +8995,10 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="136"/>
         <source>Unrooted</source>
         <translation>Köksüz</translation>
+    </message>
+    <message>
+        <source>Branch Settings...</source>
+        <translation type="vanished">Şube Ayarları...</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="141"/>
@@ -7799,9 +9082,21 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Reset Zooming</source>
+        <translation type="vanished">Yakınlaştırmayı sıfırla</translation>
+    </message>
+    <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="186"/>
         <source>Print Tree...</source>
         <translation>Ağacı Yazdır...</translation>
+    </message>
+    <message>
+        <source>Screen Capture...</source>
+        <translation type="vanished">Ekran Görüntüsü...</translation>
+    </message>
+    <message>
+        <source>Whole Tree as SVG...</source>
+        <translation type="vanished">SVG olarak Bütün Ağaç...</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="217"/>
@@ -7814,6 +9109,10 @@ Lütfen ilgili eklentileri yükleyin.</translation>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="295"/>
         <source>Show Labels</source>
         <translation>Etiketleri Göster</translation>
+    </message>
+    <message>
+        <source>Export Tree Image</source>
+        <translation type="vanished">Ağaç Görüntüsünü Dışa Aktar</translation>
     </message>
 </context>
 <context>
@@ -7831,6 +9130,10 @@ Lütfen ilgili eklentileri yükleyin.</translation>
 </context>
 <context>
     <name>U2::TreeViewerUI</name>
+    <message>
+        <source>Export Tree Image</source>
+        <translation type="vanished">Ağaç Görüntüsünü Dışa Aktar</translation>
+    </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="497"/>
         <source>Tree image</source>

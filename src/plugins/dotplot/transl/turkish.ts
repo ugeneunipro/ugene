@@ -357,6 +357,10 @@
 <context>
     <name>U2::DotPlotImageExportController</name>
     <message>
+        <source>Dotplot widget is NULL</source>
+        <translation type="vanished">Dotplot widget&apos;ı BOŞ</translation>
+    </message>
+    <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="61"/>
         <source>Dotplot</source>
         <translation>Dotplot</translation>
@@ -370,6 +374,13 @@
         <location filename="../src/DotPlotImageExportTask.cpp" line="79"/>
         <source>Include repeat selection</source>
         <translation>Tekrar seçimi dahil et</translation>
+    </message>
+</context>
+<context>
+    <name>U2::DotPlotImageExportToBitmapTask</name>
+    <message>
+        <source>Incorrect DPI parameter</source>
+        <translation type="vanished">Yanlış DPI parametresi</translation>
     </message>
 </context>
 <context>
@@ -434,6 +445,10 @@
         <location filename="../src/DotPlotSplitter.cpp" line="52"/>
         <source>Hand tool (&lt;b&gt;H&lt;/b&gt;)</source>
         <translation>El aracı (&lt;b&gt;H&lt;/b&gt;)</translation>
+    </message>
+    <message>
+        <source>One of the sequences in dotplot is NULL</source>
+        <translation type="vanished">Nokta grafiğindeki dizilerden biri NULL</translation>
     </message>
 </context>
 <context>
@@ -552,6 +567,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Sequence size is too large!</source>
+        <translation type="vanished">Sıra boyutu çok büyük!</translation>
+    </message>
+    <message>
         <location filename="../src/DotPlotWidget.cpp" line="690"/>
         <location filename="../src/DotPlotWidget.cpp" line="695"/>
         <source>Invalid sequence</source>
@@ -588,6 +607,10 @@
         <location filename="../src/DotPlotWidget.cpp" line="784"/>
         <source>Save dot-plot data before closing?</source>
         <translation>Kapatmadan önce nokta çizimi verileri kaydedilsin mi?</translation>
+    </message>
+    <message>
+        <source>Invalid weight and height parameters!</source>
+        <translation type="vanished">Geçersiz ağırlık ve boy parametreleri!</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="984"/>

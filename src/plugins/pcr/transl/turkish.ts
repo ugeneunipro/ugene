@@ -27,6 +27,10 @@
         <translation>Primerleri Dışa aktar</translation>
     </message>
     <message>
+        <source>Export to:</source>
+        <translation type="vanished">Şuraya aktar:</translation>
+    </message>
+    <message>
         <location filename="../src/export/ExportPrimersDialog.ui" line="38"/>
         <source>Format:</source>
         <translation>Biçimi:</translation>
@@ -40,6 +44,18 @@
         <location filename="../src/export/ExportPrimersDialog.ui" line="67"/>
         <source>...</source>
         <translation>...</translation>
+    </message>
+    <message>
+        <source>Database:</source>
+        <translation type="vanished">Veritabanı:</translation>
+    </message>
+    <message>
+        <source>Destination folder:</source>
+        <translation type="vanished">Hedef dizin:</translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="vanished">Bağlan</translation>
     </message>
 </context>
 <context>
@@ -56,6 +72,14 @@
         <location filename="../src/import/ImportPrimersDialog.ui" line="20"/>
         <source>Import Primers</source>
         <translation>Primerleri İçe aktar</translation>
+    </message>
+    <message>
+        <source>Import from:</source>
+        <translation type="vanished">Şuradan aktar:</translation>
+    </message>
+    <message>
+        <source>Connect to database</source>
+        <translation type="vanished">Veritabanına bağlanın</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimersDialog.ui" line="28"/>
@@ -92,6 +116,10 @@
         <translation>Form</translation>
     </message>
     <message>
+        <source>Maximum product</source>
+        <translation type="vanished">Maksimum ürün</translation>
+    </message>
+    <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="101"/>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="147"/>
         <source> bp</source>
@@ -106,6 +134,16 @@
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="117"/>
         <source>Extract annotations</source>
         <translation>Ek açıklamaları ayıklayın</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="134"/>
+        <source>Use ambiguous bases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="172"/>
+        <source>Maximum product size</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="199"/>
@@ -141,16 +179,6 @@
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="408"/>
         <source>Info: choose a nucleic sequence for running In Silico PCR</source>
         <translation>Bilgi: Silico PCR&apos;da çalıştırmak için bir nükleik sekans seçin</translation>
-    </message>
-    <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="134"/>
-        <source>Use ambiguous bases</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="172"/>
-        <source>Maximum product size</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -206,6 +234,21 @@
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <source>Local file</source>
+        <translation type="vanished">Yerel dosya</translation>
+    </message>
+    <message>
+        <source>Shared database</source>
+        <translation type="vanished">Paylaşılan veritabanı</translation>
+    </message>
+    <message>
+        <source>Local file(s)</source>
+        <translation type="vanished">Yerel dosyalar</translation>
+    </message>
+</context>
+<context>
     <name>U2::EditPrimerDialog</name>
     <message>
         <location filename="../src/EditPrimerDialog.cpp" line="44"/>
@@ -227,6 +270,10 @@
         <location filename="../src/export/ExportPrimersToDatabaseTask.cpp" line="36"/>
         <source>Export primers</source>
         <translation>Primerleri Dışa aktar</translation>
+    </message>
+    <message>
+        <source>Unexpected objects count</source>
+        <translation type="vanished">Beklenmeyen nesnelerin sayısı</translation>
     </message>
 </context>
 <context>
@@ -277,6 +324,10 @@
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="40"/>
         <source>Import primer from the shared database object: %1</source>
         <translation>Primerleri paylaşılan veritabanı nesnesinden içe aktar: %1</translation>
+    </message>
+    <message>
+        <source>A non-sequence object was provided</source>
+        <translation type="vanished">Sıralı olmayan bir nesne sağlandı</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="48"/>
@@ -343,6 +394,10 @@
         <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="46"/>
         <source>Internal error: can&apos;t load the file &apos;%1&apos;</source>
         <translation>Dahili hata: &apos;%1&apos; dosyası yüklenemiyor</translation>
+    </message>
+    <message>
+        <source>Document wasn&apos;t loaded</source>
+        <translation type="vanished">Belge yüklenmedi</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="58"/>
@@ -528,6 +583,17 @@
         <location filename="../src/FindPrimerPairsWorker.cpp" line="62"/>
         <source>Find correct pairs over primers from &quot;%1&quot;.</source>
         <translation type="unfinished">&quot;%1&quot; den primerler üzerinde doğru çiftleri bulun.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::FindPrimerPairsPromter</name>
+    <message>
+        <source>unset</source>
+        <translation type="vanished">ayarlanmadı</translation>
+    </message>
+    <message>
+        <source>Find correct pairs over primers from &quot;%1&quot;.</source>
+        <translation type="vanished">&quot;%1&quot; den primerler üzerinde doğru çiftleri bulun.</translation>
     </message>
 </context>
 <context>
@@ -802,6 +868,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Primer sequence is too long: %1. The pair is skipped</source>
+        <translation type="vanished">Primer dizisi çok uzun: %1. Çift atlandı</translation>
+    </message>
+    <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="300"/>
         <source>Wrong sequence objects count</source>
         <translation>Yanlış sıralama nesneleri sayılır</translation>
@@ -820,6 +890,10 @@
         <location filename="../src/InSilicoPcrWorker.cpp" line="348"/>
         <source>The sequence is too long: </source>
         <translation>Sıra çok uzun: </translation>
+    </message>
+    <message>
+        <source>Primers specified in &quot;%1&quot; are too long.</source>
+        <translation type="vanished">&quot;%1&quot; içinde belirtilen astarlar çok uzun.</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="391"/>
@@ -988,6 +1062,10 @@
         <translation>Sıra</translation>
     </message>
     <message>
+        <source>Incorrect primer number</source>
+        <translation type="vanished">Yanlış primer numarası</translation>
+    </message>
+    <message>
         <location filename="../src/PrimerLibraryTable.cpp" line="139"/>
         <location filename="../src/PrimerLibraryTable.cpp" line="141"/>
         <source>N/A</source>
@@ -1043,6 +1121,73 @@ Kitaplığı yönetmek için &quot;Araçlar -&gt; Primer -&gt; Primer Kitaplığ
         <location filename="../src/PrimerLibraryWidget.cpp" line="71"/>
         <source>Temperature</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::PrimerStatistics</name>
+    <message>
+        <source>The primers contain a character from the Extended DNA alphabet.</source>
+        <translation type="vanished">Primerler, Genişletilmiş DNA alfabesinden bir karakter içerir.</translation>
+    </message>
+    <message>
+        <source>The forward primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="vanished">İleri primer, Genişletilmiş DNA alfabesinden bir karakter içerir.</translation>
+    </message>
+    <message>
+        <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="vanished">Ters primer, Genişletilmiş DNA alfabesinden bir karakter içerir.</translation>
+    </message>
+    <message>
+        <source> Unable to calculate primer statistics.</source>
+        <translation type="vanished"> Astar istatistikleri hesaplanamıyor.</translation>
+    </message>
+    <message>
+        <source>low GC-content</source>
+        <translation type="vanished">düşük GC içeriği</translation>
+    </message>
+    <message>
+        <source>high GC-content</source>
+        <translation type="vanished">yüksek GC içeriği</translation>
+    </message>
+    <message>
+        <source>low melting temperature</source>
+        <translation type="vanished">düşük erime sıcaklığı</translation>
+    </message>
+    <message>
+        <source>high melting temperature</source>
+        <translation type="vanished">yüksek erime sıcaklığı</translation>
+    </message>
+    <message>
+        <source>low GC clamp</source>
+        <translation type="vanished">düşük GC kelepçesi</translation>
+    </message>
+    <message>
+        <source>high base runs value</source>
+        <translation type="vanished">yüksek temel koşu değeri</translation>
+    </message>
+    <message>
+        <source>forward primer has %1.</source>
+        <translation type="vanished">ileri primer %1&apos;e sahiptir.</translation>
+    </message>
+    <message>
+        <source>reverse primer has %1.</source>
+        <translation type="vanished">ters astar %1&apos;e sahiptir.</translation>
+    </message>
+    <message>
+        <source>Criteria</source>
+        <translation type="vanished">Kriterler</translation>
+    </message>
+    <message>
+        <source>Valid Values</source>
+        <translation type="vanished">Geçerli Değerler</translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="vanished">İleri</translation>
+    </message>
+    <message>
+        <source>Reverse</source>
+        <translation type="vanished">Ters çevir</translation>
     </message>
 </context>
 </TS>

@@ -200,6 +200,10 @@ bu birleştirme sırası yuvası:</translation>
         <translation>Aralık:</translation>
     </message>
     <message>
+        <source>radioButtonsGroup</source>
+        <translation type="vanished">radyo Düğme Grubu</translation>
+    </message>
+    <message>
         <location filename="../src/EditIntegerMarkerWidget.ui" line="42"/>
         <source>..</source>
         <translation>..</translation>
@@ -287,6 +291,10 @@ bu birleştirme sırası yuvası:</translation>
         <location filename="../src/EditStringMarkerWidget.ui" line="20"/>
         <source>Starts with</source>
         <translation>İle başlar</translation>
+    </message>
+    <message>
+        <source>buttonGroup</source>
+        <translation type="vanished">buttonGroup</translation>
     </message>
     <message>
         <location filename="../src/EditStringMarkerWidget.ui" line="33"/>
@@ -521,6 +529,18 @@ bu birleştirme sırası yuvası:</translation>
         <translation>Tanımsız değişken: %1</translation>
     </message>
     <message>
+        <source>Actors selector is already defined: %1</source>
+        <translation type="vanished">Aktör seçici zaten tanımlanmış: %1</translation>
+    </message>
+    <message>
+        <source>Unknown actors selector: %1</source>
+        <translation type="vanished">Bilinmeyen aktörler seçici: %1</translation>
+    </message>
+    <message>
+        <source>Unknown actors selector value id: %1</source>
+        <translation type="vanished">Bilinmeyen aktörler seçici değer kimliği: %1</translation>
+    </message>
+    <message>
         <location filename="../src/wizard/WizardPageController.cpp" line="83"/>
         <source>The page is broken. Please, close the wizard and report us the error: ugene@unipro.ru</source>
         <translation>Sayfa bozuldu. Lütfen sihirbazı kapatın ve hatayı bize bildirin: ugene@unipro.ru</translation>
@@ -537,6 +557,10 @@ bu birleştirme sırası yuvası:</translation>
         <location filename="../src/SequenceActionDialog.ui" line="40"/>
         <source>Merge into one sequence</source>
         <translation>Tek bir dizide birleştirin</translation>
+    </message>
+    <message>
+        <source>buttonGroup</source>
+        <translation type="vanished">buttonGroup</translation>
     </message>
     <message>
         <location filename="../src/SequenceActionDialog.ui" line="59"/>
@@ -652,6 +676,13 @@ papyon indeks dosyası</translation>
         <location filename="../src/PropertyWidget.cpp" line="239"/>
         <source>True</source>
         <translation>Doğru</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ComboBoxWithDbUrlWidget</name>
+    <message>
+        <source>Add New Connection</source>
+        <translation type="vanished">Yeni Bağlantı Ekle</translation>
     </message>
 </context>
 <context>
@@ -778,6 +809,17 @@ papyon indeks dosyası</translation>
         <location filename="../src/dashboard/DashboardInfoRegistry.cpp" line="140"/>
         <source>Can&apos;t register a dashboard info: &apos;%1&apos;</source>
         <translation>Gösterge tablosu bilgisi kaydedilemiyor: &apos;%1&apos;</translation>
+    </message>
+</context>
+<context>
+    <name>U2::DashboardJsAgent</name>
+    <message>
+        <source>Error</source>
+        <translation type="vanished">Hata</translation>
+    </message>
+    <message>
+        <source>The file does not exist</source>
+        <translation type="vanished">Dosya mevcut değil</translation>
     </message>
 </context>
 <context>
@@ -1244,6 +1286,14 @@ Klasörü ayarlayın:</translation>
         <translation>Ek açıklama nesnesi mevcut değil</translation>
     </message>
     <message>
+        <source>Invalid applications settings detected</source>
+        <translation type="vanished">Geçersiz uygulama ayarları algılandı</translation>
+    </message>
+    <message>
+        <source>Invalid users applications settings detected</source>
+        <translation type="vanished">Geçersiz kullanıcı uygulama ayarları algılandı</translation>
+    </message>
+    <message>
         <location filename="../src/QDScheduler.cpp" line="368"/>
         <source>No results have been found for this scheme</source>
         <translation>Bu şema için sonuç bulunamadı</translation>
@@ -1574,7 +1624,7 @@ Please rename the file or move it to directory which not contain &apos;;&apos; i
     <message>
         <location filename="../src/DesignerUtils.cpp" line="33"/>
         <source>UGENE workflow documents</source>
-        <translation type="unfinished">UGENE iş akışı belgeleri</translation>
+        <translation>UGENE iş akışı belgeleri</translation>
     </message>
 </context>
 </TS>

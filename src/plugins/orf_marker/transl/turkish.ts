@@ -231,6 +231,10 @@ Arama bölgesinin ötesine geçen sınır ORF&apos;lerini göz ardı edin
         <source>Object with annotations was removed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Annotation table object is NULL!</source>
+        <translation type="vanished">Ek açıklama tablosu nesnesi BOŞ!</translation>
+    </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::ORFPrompter</name>
@@ -483,6 +487,10 @@ Arama bölgesinin ötesine geçen sınır ORF&apos;lerini göz ardı edin
         <location filename="../src/ORFDialog.cpp" line="348"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
+    </message>
+    <message>
+        <source>Sequence object is NULL</source>
+        <translation type="vanished">Sıra nesnesi BOŞ</translation>
     </message>
     <message>
         <location filename="../src/ORFDialog.cpp" line="72"/>

@@ -516,6 +516,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Illegal parameter: input alignment is not empty!</source>
+        <translation type="vanished">Geçersiz parametre: giriş hizalaması boş değil!</translation>
+    </message>
+    <message>
+        <source>%1 is not a BLAST annotation</source>
+        <translation type="vanished">%1 bir BLAST ek açıklaması değil</translation>
+    </message>
+    <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="488"/>
         <source>Can not export BLAST annotations from different sequences</source>
         <translation>Farklı dizilerden BLAST ek açıklamaları dışa aktarılamaz</translation>
@@ -524,6 +532,10 @@
         <location filename="../src/ExportSequenceViewItems.cpp" line="491"/>
         <source>Can not find qualifier to set as a name for BLAST sequence</source>
         <translation>BLAST dizisi için ad olarak ayarlanacak niteleyici bulunamıyor</translation>
+    </message>
+    <message>
+        <source>Illegal parameter: Input alignment is not empty!</source>
+        <translation type="vanished">Geçersiz parametre: Giriş hizalaması boş değil!</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="642"/>
@@ -579,6 +591,17 @@
         <location filename="../src/ExportSequenceViewItems.cpp" line="588"/>
         <source>Can&apos;t derive alignment alphabet</source>
         <translation>Hizalama alfabesi türetilemiyor</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AddExportedDocumentAndOpenViewTask</name>
+    <message>
+        <source>Document is already added to the project %1</source>
+        <translation type="vanished">Belge %1 projesine zaten eklendi</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create load task</source>
+        <translation type="vanished">Yükleme görevi oluşturulamıyor</translation>
     </message>
 </context>
 <context>
@@ -731,6 +754,10 @@
         <translation>Sıra oluşturucu için referans, bir dizi veya bir hizalama olmalıdır</translation>
     </message>
     <message>
+        <source>Incorrect reference file: %1</source>
+        <translation type="vanished">Yanlış referans dosyası: %1</translation>
+    </message>
+    <message>
         <location filename="../src/DNASequenceGenerator.cpp" line="314"/>
         <source>Generated MSA</source>
         <translation>Oluşturulan MSA</translation>
@@ -747,6 +774,13 @@
         <location filename="../src/DNASequenceGenerator.cpp" line="391"/>
         <source>Base content can be evaluated for sequence or sequence alignment</source>
         <translation>Temel içerik, dizi veya dizi hizalaması için değerlendirilebilir</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportAlignmentTask</name>
+    <message>
+        <source>Export alignment to &apos;%1&apos;</source>
+        <translation type="vanished">Hizalamayı &apos;%1&apos; e aktar</translation>
     </message>
 </context>
 <context>
@@ -814,6 +848,13 @@
         <location filename="../src/ExportChromatogramDialog.cpp" line="69"/>
         <source>File name is empty!</source>
         <translation>Dosya adı boş!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportDNAChromatogramTask</name>
+    <message>
+        <source>Export chromatogram to SCF</source>
+        <translation type="vanished">Kromatogramı SCF&apos;ye aktar</translation>
     </message>
 </context>
 <context>
@@ -945,6 +986,21 @@
     </message>
 </context>
 <context>
+    <name>U2::ExportMSA2MSATask</name>
+    <message>
+        <source>Export alignment to alignment: %1</source>
+        <translation type="vanished">Hizalamayı şu hizaya aktar: %1</translation>
+    </message>
+    <message>
+        <source>Nothing to export: multiple alignment is empty</source>
+        <translation type="vanished">Dışa aktarılacak bir şey yok: çoklu hizalama boş</translation>
+    </message>
+    <message>
+        <source>Out of memory</source>
+        <translation type="vanished">Bellek Aşımı</translation>
+    </message>
+</context>
+<context>
     <name>U2::ExportMSA2SequencesDialog</name>
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="20"/>
@@ -952,34 +1008,25 @@
         <translation>Hizalamayı Ayrı Dizilere Dönüştür</translation>
     </message>
     <message>
+        <source>Export to file</source>
+        <translation type="vanished">Dosyaya aktar</translation>
+    </message>
+    <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="51"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="67"/>
-        <source>Keep</source>
-        <translation>Tut</translation>
+        <source>File format to use</source>
+        <translation type="vanished">Kullanılacak dosya biçimi</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="77"/>
-        <source>Trim</source>
-        <translation>Kırp</translation>
+        <source>Add document to the project</source>
+        <translation type="vanished">Projeye belge ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
-        <source>Export</source>
-        <translation>Dışa Aktar</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="55"/>
-        <source>Cancel</source>
-        <translation>Vazgeç</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="65"/>
-        <source>File name is empty!</source>
-        <translation>Dosya adı boş!</translation>
+        <source>Gap characters (&apos;-&apos;)</source>
+        <translation type="vanished">Boşluk karakterleri (&apos;-&apos;)</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="31"/>
@@ -997,9 +1044,41 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="67"/>
+        <source>Keep</source>
+        <translation>Tut</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="77"/>
+        <source>Trim</source>
+        <translation>Kırp</translation>
+    </message>
+    <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="101"/>
         <source>Add exported document to the project</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
+        <source>Export</source>
+        <translation>Dışa Aktar</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="55"/>
+        <source>Cancel</source>
+        <translation>Vazgeç</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="65"/>
+        <source>File name is empty!</source>
+        <translation>Dosya adı boş!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportMSA2SequencesTask</name>
+    <message>
+        <source>Export alignment to sequence: %1</source>
+        <translation type="vanished">Hizalamayı şu sıraya aktar: %1</translation>
     </message>
 </context>
 <context>
@@ -1007,17 +1086,17 @@
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="41"/>
         <source>Export</source>
-        <translation type="unfinished">Dışa Aktar</translation>
+        <translation>Dışa Aktar</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="42"/>
         <source>Cancel</source>
-        <translation type="unfinished">Vazgeç</translation>
+        <translation>Vazgeç</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="71"/>
         <source>Export Alignment</source>
-        <translation type="unfinished">Dışa aktarma Hizalaması</translation>
+        <translation>Dışa aktarma Hizalaması</translation>
     </message>
 </context>
 <context>
@@ -1152,6 +1231,10 @@
         <location filename="../src/ExportProjectViewItems.cpp" line="609"/>
         <source>Set output quality file</source>
         <translation>Çıktı kalitesi dosyasını ayarla</translation>
+    </message>
+    <message>
+        <source>Export nucleic alignment to amino translation...</source>
+        <translation type="vanished">Nükleik hizalamayı amino çeviriye aktarın...</translation>
     </message>
 </context>
 <context>
@@ -1414,73 +1497,73 @@
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="116"/>
         <source>Unable to create temporary file</source>
-        <translation type="unfinished">Geçici dosya oluşturulamıyor</translation>
+        <translation>Geçici dosya oluşturulamıyor</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="135"/>
         <source>Invalid translation table num: %1</source>
-        <translation type="unfinished">Geçersiz çeviri tablosu numarası: %1</translation>
+        <translation>Geçersiz çeviri tablosu numarası: %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="151"/>
         <location filename="../src/DNAExportPluginTests.cpp" line="157"/>
         <source>Invalid base : %1</source>
-        <translation type="unfinished">Geçersiz taban: %1</translation>
+        <translation>Geçersiz taban: %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="178"/>
         <source>Invalid translation frame : %1</source>
-        <translation type="unfinished">Geçersiz çeviri çerçevesi: %1</translation>
+        <translation>Geçersiz çeviri çerçevesi: %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="191"/>
         <source> context not found %1</source>
-        <translation type="unfinished"> içerik %1 bulunamadı</translation>
+        <translation> içerik %1 bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="197"/>
         <source> container of object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished"> &quot;%1&quot; türündeki nesnenin kapsayıcı boş</translation>
+        <translation> &quot;%1&quot; türündeki nesnenin kapsayıcı boş</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="243"/>
         <source>context  not found %1</source>
-        <translation type="unfinished">içerik %1  bulunamadı</translation>
+        <translation>içerik %1  bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="249"/>
         <source>container  of object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished">&quot;%1&quot; türündeki nesnenin kapsayıcı  boş</translation>
+        <translation>&quot;%1&quot; türündeki nesnenin kapsayıcı  boş</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="266"/>
         <source>context not  found %1</source>
-        <translation type="unfinished">içerik %1  bulunamadı</translation>
+        <translation>içerik %1  bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="272"/>
         <source>container of  object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished">&quot;%1&quot; türündeki nesnenin kapsayıcı  boş</translation>
+        <translation>&quot;%1&quot; türündeki nesnenin kapsayıcı  boş</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="279"/>
         <source>Unexpected alignment length %1, expected %2</source>
-        <translation type="unfinished">Beklenmeyen hizalama uzunluğu %1, beklenen %2</translation>
+        <translation>Beklenmeyen hizalama uzunluğu %1, beklenen %2</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="284"/>
         <source>Unexpected alignment size %1, expected %2</source>
-        <translation type="unfinished">Beklenmeyen hizalama boyutu %1, beklenen %2</translation>
+        <translation>Beklenmeyen hizalama boyutu %1, beklenen %2</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="293"/>
         <source>Invalid name for row %1: %2, expected %3</source>
-        <translation type="unfinished">%1 satırı için geçersiz ad: %2, beklenen %3</translation>
+        <translation>%1 satırı için geçersiz ad: %2, beklenen %3</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="298"/>
         <source>Invalid char at row %1 column %2: %3, expected %4</source>
-        <translation type="unfinished">%1. Satır %2 sütununda geçersiz karakter: %3, beklenen %4</translation>
+        <translation>%1. Satır %2 sütununda geçersiz karakter: %3, beklenen %4</translation>
     </message>
 </context>
 <context>
@@ -1665,6 +1748,10 @@ Lütfen &apos;Sonuçlar önizlemesinde&apos; bir sütun başlığına tıklayara
         <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="519"/>
         <source>[group]</source>
         <translation>[grup]</translation>
+    </message>
+    <message>
+        <source>Invalid start position/end position/length configuration!</source>
+        <translation type="vanished">Geçersiz başlangıç konumu / bitiş konumu / uzunluk yapılandırması!</translation>
     </message>
 </context>
 <context>
@@ -1997,6 +2084,10 @@ Bu çalışanı .fasta ve .qual pair&apos;i fastq biçimine dönüştürmek içi
 </context>
 <context>
     <name>U2::MSAExportContext</name>
+    <message>
+        <source>Amino translation...</source>
+        <translation type="vanished">Amino çevirisi...</translation>
+    </message>
     <message>
         <location filename="../src/ExportAlignmentViewItems.cpp" line="78"/>
         <source>Export amino acid translated alignment...</source>

@@ -2,6 +2,159 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr" sourcelanguage="en">
 <context>
+    <name>GTest</name>
+    <message>
+        <source>value not set %1</source>
+        <translation type="vanished">değer %1 ayarlanmadı</translation>
+    </message>
+    <message>
+        <source>no subsequences selected</source>
+        <translation type="vanished">alt dizi seçilmedi</translation>
+    </message>
+    <message>
+        <source>invalid region %1</source>
+        <translation type="vanished">geçersiz bölge %1</translation>
+    </message>
+    <message>
+        <source>start position of window not an integer</source>
+        <translation type="vanished">pencerenin başlangıç konumu tam sayı değil</translation>
+    </message>
+    <message>
+        <source>end position of window not an integer</source>
+        <translation type="vanished">pencerenin son konumu tam sayı değil</translation>
+    </message>
+    <message>
+        <source>context not found %1</source>
+        <translation type="vanished">içerik %1 bulunamadı</translation>
+    </message>
+    <message>
+        <source>container of object with type &quot;%1&quot; is empty</source>
+        <translation type="vanished">&quot;%1&quot; türündeki nesnenin kapsayıcı boş</translation>
+    </message>
+    <message>
+        <source>Expected and actual alignment sizes are different: %1 , %2</source>
+        <translation type="vanished">Beklenen ve gerçek hizalama boyutları farklı: %1 , %2</translation>
+    </message>
+    <message>
+        <source>Expected and actual alignments not equal</source>
+        <translation type="vanished">Beklenen ve gerçek hizalamalar eşit değil</translation>
+    </message>
+    <message>
+        <source>incorrect value %1</source>
+        <translation type="vanished">yanlış değer %1</translation>
+    </message>
+    <message>
+        <source>File with sequences has empty name</source>
+        <translation type="vanished">Sıralı dosyanın adı boş</translation>
+    </message>
+    <message>
+        <source>Sequence %1 not found</source>
+        <translation type="vanished">%1 dizisi bulunamadı</translation>
+    </message>
+    <message>
+        <source>Length of sequence is incorrect. Expected:%2, but Actual:%1</source>
+        <translation type="vanished">Sıranın uzunluğu yanlış. Beklenen: %2, ancak Gerçek: %1</translation>
+    </message>
+    <message>
+        <source>Sequence is incorrect. Expected:%1, but Actual:%2</source>
+        <translation type="vanished">Sıra yanlış. Beklenen: %1, ancak Gerçek: %2</translation>
+    </message>
+    <message>
+        <source>Regions is incorrect. Expected size:%1 Actual size:%2</source>
+        <translation type="vanished">Bölgeler yanlış. Beklenen boyut: %1 Gerçek boyut: %2</translation>
+    </message>
+    <message>
+        <source>Regions is incorrect. Expected:%3,%4, but Actual:%1,%2</source>
+        <translation type="vanished">Bölgeler yanlış. Beklenen: %3,%4, ancak Gerçek: %1,%2</translation>
+    </message>
+    <message>
+        <source>Regions is incorrect. actual region didn&apos;t found in expected region list</source>
+        <translation type="vanished">Bölgeler yanlış. gerçek bölge beklenen bölge listesinde bulunamadı</translation>
+    </message>
+    <message>
+        <source>Context not found %1</source>
+        <translation type="vanished">Bağlam %1 bulunamadı</translation>
+    </message>
+    <message>
+        <source>Sequence is incorrect. Actual:%1, but expected:%2</source>
+        <translation type="vanished">Sıra yanlış. Gerçek: %1, ancak beklenen: %2</translation>
+    </message>
+    <message>
+        <source>value for %1 is incorrect</source>
+        <translation type="vanished">%1 değeri yanlış</translation>
+    </message>
+    <message>
+        <source>value incorrect for %1</source>
+        <translation type="vanished">%1 için değer yanlış</translation>
+    </message>
+    <message>
+        <source>%1 attribute value greater or equal pattern length</source>
+        <translation type="vanished">%1 öznitelik değeri büyük veya eşit desen uzunluğu</translation>
+    </message>
+    <message>
+        <source>value for %1 incorrect</source>
+        <translation type="vanished">%1 değeri yanlış</translation>
+    </message>
+    <message>
+        <source>Expected and actual result sizes are different: %1 , %2</source>
+        <translation type="vanished">Beklenen ve gerçek sonuç boyutları farklı: %1, %2</translation>
+    </message>
+    <message>
+        <source>Expected and actual regions are different: %1..%2 , %3..%4</source>
+        <translation type="vanished">Beklenen ve gerçek bölgeler farklı: %1..%2, %3..%4</translation>
+    </message>
+    <message>
+        <source>Could find a loaded document</source>
+        <translation type="vanished">Yüklenmiş bir belge bulabilirim</translation>
+    </message>
+    <message>
+        <source>No sequence in the document loaded</source>
+        <translation type="vanished">Yüklenen belgede sıra yok</translation>
+    </message>
+    <message>
+        <source>Actual sequence %1 does not match expected sequence %2</source>
+        <translation type="vanished">Gerçek sekans %1, beklenen sekans %2 ile eşleşmiyor</translation>
+    </message>
+    <message>
+        <source>Expected annotation %1 has not been found in the actual annotations. If the test fails, please, load the sequence %2 with annotation from DAS, manually compare the annotations and update the test. There might be updates in the DAS databases.</source>
+        <translation type="vanished">Beklenen %1 notu, gerçek ek açıklamalarda bulunamadı. Test başarısız olursa, lütfen %2 dizisini DAS&apos;tan bilgi notuyla birlikte yükleyin, ek açıklamaları manuel olarak karşılaştırın ve testi güncelleyin. DAS veritabanlarında güncellemeler olabilir.</translation>
+    </message>
+    <message>
+        <source>File %1 content not equal with expected</source>
+        <translation type="vanished">Dosya %1 içeriği beklenen ile aynı değil</translation>
+    </message>
+    <message>
+        <source>container of object with type &quot;%1&quot; is empty or less than %2</source>
+        <translation type="vanished">&quot;%1&quot; türündeki nesnenin kapsayıcı boş veya %2&apos;den küçük</translation>
+    </message>
+    <message>
+        <source>Actual results not equal with expected, row %1 column %2
+Expected %3, got %4</source>
+        <translation type="vanished">Gerçek sonuçlar beklenen ile eşit değil, satır %1 sütun %2
+Beklenen %3, %4 alınan</translation>
+    </message>
+    <message>
+        <source>algorithm not found %1</source>
+        <translation type="vanished">algoritma %1 bulunamadı</translation>
+    </message>
+    <message>
+        <source>unable to create algorithm %1</source>
+        <translation type="vanished">%1 algoritması oluşturulamıyor</translation>
+    </message>
+    <message>
+        <source>wrong length of %1 sequence: %2</source>
+        <translation type="vanished">%1 dizisinin yanlış uzunluğu: %2</translation>
+    </message>
+    <message>
+        <source>Wrong %1 sequence alphabet</source>
+        <translation type="vanished">Yanlış %1 sıra alfabesi</translation>
+    </message>
+    <message>
+        <source>wrong value: %1</source>
+        <translation type="vanished">yanlış değer: %1</translation>
+    </message>
+</context>
+<context>
     <name>U2::GTest</name>
     <message>
         <location filename="../src/EditAlignmentTests.cpp" line="44"/>
@@ -251,9 +404,24 @@ Beklenen %3, %4 alınan</translation>
 <context>
     <name>U2::GTest_CopyFile</name>
     <message>
+        <source>Can&apos;t copy file &apos;%1&apos; to &apos;%2&apos;.</source>
+        <translation type="vanished">&apos;%1&apos; dosyası &apos;%2&apos; klasörüne kopyalanamıyor.</translation>
+    </message>
+    <message>
         <location filename="../src/UtilTestActions.cpp" line="53"/>
         <source>Can&apos;t copy %1 &apos;%2&apos; to &apos;%3&apos;.</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest_LoadDASDocumentTask</name>
+    <message>
+        <source>No DASSourceRegistry</source>
+        <translation type="vanished">DAS Kaynak Kaydı Yok</translation>
+    </message>
+    <message>
+        <source>Cannot find das source by DB name given: %1</source>
+        <translation type="vanished">Verilen DB adına göre das kaynağı bulunamadı: %1</translation>
     </message>
 </context>
 <context>
@@ -262,6 +430,13 @@ Beklenen %3, %4 alınan</translation>
         <location filename="../src/LoadRemoteDocumentTests.cpp" line="75"/>
         <source>Given database name %1 not present in database registry</source>
         <translation>Verilen %1 veritabanı adı, veritabanı kayıt defterinde mevcut değil</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest_PingRemoteServiceTask</name>
+    <message>
+        <source>Can not parse remote server settings file %1</source>
+        <translation type="vanished">Uzak sunucu ayarları dosyası %1 ayrıştırılamıyor</translation>
     </message>
 </context>
 <context>
