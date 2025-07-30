@@ -395,9 +395,6 @@ void AddPluginTask::prepare() {
     if (verificationIsEnabled) {
         PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
         if (verify_func && !verificationMode && (checkVersion != Version::appVersion().toString() || forceVerification)) {
-            if (desc.id.contains("3D_", Qt::CaseInsensitive)) {
-                int i = 0;
-            }
             verifyTask = new VerifyPluginTask(ps, desc);
             addSubTask(verifyTask);
         }
@@ -405,9 +402,6 @@ void AddPluginTask::prepare() {
 }
 
 Task::ReportResult AddPluginTask::report() {
-    if (desc.id.contains("3D", Qt::CaseInsensitive)) {
-        int i = 0;
-    }
     CHECK_OP(stateInfo, ReportResult_Finished);
 
     if (verifyPlugin()) {
