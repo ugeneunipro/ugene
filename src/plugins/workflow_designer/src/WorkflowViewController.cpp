@@ -665,14 +665,12 @@ void WorkflowView::createActions() {
 
     estimateAction = new QAction(tr("&Estimate workflow"), this);
     estimateAction->setObjectName("Estimate workflow");
-    estimateAction->setIcon(QIcon(":core/images/sum.png"));
-    GUIUtils::setIcon(estimateAction, IconRef("workflow_designer", "sum.png"));
+    GUIUtils::setIcon(estimateAction, IconRef("core", "sum.png"));
     estimateAction->setObjectName("Estimate workflow");
     connect(estimateAction, SIGNAL(triggered()), SLOT(sl_estimate()));
 
     pauseAction = new QAction(tr("&Pause workflow"), this);
     pauseAction->setObjectName("Pause workflow");
-    pauseAction->setIcon(QIcon(":workflow_designer/images/pause.png"));
     GUIUtils::setIcon(pauseAction, IconRef("workflow_designer", "pause.png"));
     pauseAction->setShortcut(QKeySequence("Ctrl+P"));
     pauseAction->setEnabled(false);
