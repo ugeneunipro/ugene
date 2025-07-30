@@ -242,7 +242,7 @@ void GUIUtils::setIcon(QObject* object, const IconRef& iconRef) {
     } else if (auto label = qobject_cast<QLabel*>(object)) {
         label->setPixmap(GUIUtils::getIconResource(iconRef).pixmap(MainWindow::PIXMAP_SIZE, MainWindow::PIXMAP_SIZE));
     } else {
-        FAIL(QString("Cannot set icon for object %1 of type %2").arg(object->objectName(), object->metaObject()->className()));
+        FAIL(QString("Cannot set icon for object %1 of type %2").arg(object->objectName(), object->metaObject()->className()), );
     }
     object->setProperty(MainWindow::ICON_REF_PROPERTY_NAME, QVariant::fromValue(iconRef));
 }
