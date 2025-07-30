@@ -318,6 +318,9 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
 
             // Advance in state.
             if (ch == '(') {  // A new child.
+                CHECK_EXT_BREAK(nodeStack.size() < MAXIMUM_ALLOWED_DEEP, si.setError(
+                                DatatypeSerializers::tr("Tree branch is too long, %1 or more nodes. Unable display it correctly.")
+                                .arg(QString::number(MAXIMUM_ALLOWED_DEEP))))
                 CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
                 auto pn = new PhyNode();
                 PhyBranch* bd = PhyTreeUtils::addBranch(nodeStack.top(), pn, 0);

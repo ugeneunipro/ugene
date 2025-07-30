@@ -72,6 +72,8 @@ public:
 
     /** Returns the list of trees parsed from reader stream. */
     static QList<PhyTree> parseTrees(IOAdapterReader& reader, U2OpStatus& os);
+    
+    static constexpr int MAXIMUM_ALLOWED_DEEP = 411;
 };
 
 /**

@@ -1574,6 +1574,18 @@ GUI_TEST_CLASS_DEFINITION(test_8174) {
     GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8175) {
+    /*
+     *1. Open _common_data/scenarios/tree_view/deep_tree_412.nwk
+     *Expected state: no crash, corresponding message 
+     **/
+    
+    GTLogTracer lt;
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/tree_view/deep_tree_412.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished();    
+    CHECK_SET_ERR(lt.hasError("Tree branch is too long"), "Expected no errors");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
