@@ -39,6 +39,8 @@ const QString BioStruct3DSerializer::ID = "3d_1.14";
 const QString WMatrixSerializer::ID = "wm_1.14";
 const QString FMatrixSerializer::ID = "fm_1.14";
 
+static const int MAXIMUM_ALLOWED_TREE_DEPTH = 411;
+
 #define CHECK_SIZE(size, result) \
     if (offset + (size) > length) { \
         os.setError("The data are too short"); \
@@ -318,9 +320,9 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
 
             // Advance in state.
             if (ch == '(') {  // A new child.
-                CHECK_EXT_BREAK(nodeStack.size() < MAXIMUM_ALLOWED_DEEP, si.setError(
+                CHECK_EXT_BREAK(nodeStack.size() < MAXIMUM_ALLOWED_TREE_DEPTH, si.setError(
                                 DatatypeSerializers::tr("Tree branch is too long, %1 or more nodes. Unable display it correctly.")
-                                .arg(QString::number(MAXIMUM_ALLOWED_DEEP))))
+                                .arg(QString::number(MAXIMUM_ALLOWED_TREE_DEPTH))))
                 CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
                 auto pn = new PhyNode();
                 PhyBranch* bd = PhyTreeUtils::addBranch(nodeStack.top(), pn, 0);
