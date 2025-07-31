@@ -150,12 +150,12 @@
 <context>
     <name>U2::AnnotatorPlugin</name>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="54"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="55"/>
         <source>DNA Annotator</source>
         <translation>Поиск сгруппированных аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="54"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="55"/>
         <source>This plugin contains routines to manipulate and search DNA sequence annotations</source>
         <translation>Поиск сгруппированных аннотаций</translation>
     </message>
@@ -163,22 +163,22 @@
 <context>
     <name>U2::AnnotatorViewContext</name>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="92"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="93"/>
         <source>Find annotated regions...</source>
         <translation>Поиск участков, соответствующих аннотации...</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="96"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="97"/>
         <source>Annotate plasmid...</source>
         <translation>Автоматический поиск плазмид...</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="117"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="118"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="117"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="118"/>
         <source>No annotations found</source>
         <translation>Аннотаций не найдено</translation>
     </message>
@@ -186,8 +186,8 @@
 <context>
     <name>U2::CollocationSearchTask</name>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="315"/>
-        <location filename="../src/CollocationsDialogController.cpp" line="344"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="316"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="345"/>
         <source>Search for annotated regions</source>
         <translation>Поиск сгруппированных аннотаций</translation>
     </message>
@@ -195,48 +195,48 @@
 <context>
     <name>U2::CollocationsDialogController</name>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="52"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="53"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="53"/>
-        <location filename="../src/CollocationsDialogController.cpp" line="95"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="54"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="96"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="56"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="57"/>
         <source>&lt;&lt;click &apos;+&apos; button to add new annotation&gt;&gt;</source>
         <translation>&lt;&lt; Кликните &apos;+&apos; чтобы добавить аннотацию &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="95"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="96"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="101"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="102"/>
         <source>Searching... found %1 regions. Progress: %2%</source>
         <translation>Сканируется последовательность, прогресс %2. Найдено %1 регионов</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="103"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="104"/>
         <source>Found %1 regions</source>
         <translation>Найдено %1 регионов</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="105"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="106"/>
         <source>Ready</source>
         <translation>Готов к поиску</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="105"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="106"/>
         <source>Select annotation names to search</source>
         <translation>Выберите аннотации</translation>
     </message>
     <message>
-        <location filename="../src/CollocationsDialogController.cpp" line="125"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="126"/>
         <source>No annotations left</source>
         <translation>Аннотаций больше нет</translation>
     </message>
