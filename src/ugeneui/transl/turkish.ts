@@ -2602,8 +2602,9 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
+        <location filename="../src/Main.cpp" line="561"/>
         <source>UGENE initialization started</source>
-        <translation type="vanished">UGENE başlatma başladı</translation>
+        <translation>UGENE başlatma başladı</translation>
     </message>
 </context>
 <context>
@@ -2859,9 +2860,8 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
 <context>
     <name>UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="561"/>
         <source>UGENE initialization started</source>
-        <translation type="unfinished">UGENE başlatma başladı</translation>
+        <translation type="obsolete">UGENE başlatma başladı</translation>
     </message>
 </context>
 </TS>

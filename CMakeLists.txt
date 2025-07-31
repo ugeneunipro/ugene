@@ -185,3 +185,33 @@ include(${CMAKE_SOURCE_DIR}/cmake/Environment.cmake)
 if (NOT WIN32)
     file(COPY "${CMAKE_SOURCE_DIR}/etc/shared/ugene${UGENE_BUILD_MODE_SUFFIX}" DESTINATION "${CMAKE_BINARY_DIR}/dist")
 endif ()
+
+# Update translation build target.
+set(ALL_TS_FILES ${GLOBAL_TRANSLATIONS_RU} ${GLOBAL_TRANSLATIONS_TR})
+add_custom_target(update_all_translations)
+
+foreach (TS_FILE IN LISTS ALL_TS_FILES)
+    get_filename_component(TRANSL_DIR ${TS_FILE} DIRECTORY)
+    get_filename_component(SUBPROJECT_DIR ${TRANSL_DIR} DIRECTORY)
+
+    file(GLOB_RECURSE SUBPROJECT_SOURCES
+            "${SUBPROJECT_DIR}/*.cpp"
+            "${SUBPROJECT_DIR}/*.h"
+            "${SUBPROJECT_DIR}/*.ui"
+    )
+
+    if (SUBPROJECT_SOURCES)
+        add_custom_command(
+                TARGET update_all_translations
+                PRE_BUILD
+                COMMAND ${Qt5_LUPDATE_EXECUTABLE}
+                -locations absolute
+                -I ${CMAKE_SOURCE_DIR}/src/include
+                -I ${SUBPROJECT_DIR}/src
+                ${SUBPROJECT_SOURCES}
+                -ts ${TS_FILE}
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                COMMENT "Updating ${TS_FILE}..."
+        )
+    endif ()
+endforeach ()

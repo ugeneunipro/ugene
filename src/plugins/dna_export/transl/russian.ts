@@ -703,7 +703,7 @@
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="174"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="199"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="200"/>
         <source>Base content</source>
         <translation>Состав</translation>
     </message>
@@ -713,7 +713,7 @@
         <translation>Суммарный состав должен быть 100%</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="199"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="200"/>
         <source>Incorrect GC Skew value</source>
         <translation>Некорректное значение GC смещения</translation>
     </message>
@@ -1897,12 +1897,12 @@ Please assign a column role by clicking on a column header in &apos;Results prev
         <translation>Не указан путь до референса.</translation>
     </message>
     <message>
-        <location filename="../src/GenerateDNAWorker.cpp" line="256"/>
+        <location filename="../src/GenerateDNAWorker.cpp" line="258"/>
         <source>Base content must be between 0 and 100</source>
         <translation>Базовый состав должен быть между 0 и 100</translation>
     </message>
     <message>
-        <location filename="../src/GenerateDNAWorker.cpp" line="261"/>
+        <location filename="../src/GenerateDNAWorker.cpp" line="263"/>
         <source>Total content percentage is more than 100</source>
         <translation>Суммарный процентный состав больше 100</translation>
     </message>
@@ -1998,17 +1998,17 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>U2::MSAExportContext</name>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="80"/>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="78"/>
         <source>Export amino acid translated alignment...</source>
         <translation>Экспорт выровненной последовательности, переведенной в аминокислоты...</translation>
     </message>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="84"/>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="82"/>
         <source>Export whole alignment to a sequence file format...</source>
         <translation>Экспорт всего выравнивания в формат файла последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="88"/>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="86"/>
         <source>Export selected rows to separate sequence files...</source>
         <translation>Экспорт выбранных строк в отдельные файлы последовательности...</translation>
     </message>

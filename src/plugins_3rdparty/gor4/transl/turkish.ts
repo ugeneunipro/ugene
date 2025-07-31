@@ -29,12 +29,12 @@ Geçersiz amino asit türü veya ikincil yapı durumu : ==&gt;%3&lt;==</translat
 <context>
     <name>U2::SecStructPredictPlugin</name>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="51"/>
+        <location filename="../src/GorIVPlugin.cpp" line="56"/>
         <source>GORIV</source>
         <translation>GORIV</translation>
     </message>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="51"/>
+        <location filename="../src/GorIVPlugin.cpp" line="56"/>
         <source>GORIV protein secondary structure prediction</source>
         <translation>GORIV protein ikincil yapı tahmini</translation>
     </message>
@@ -42,17 +42,17 @@ Geçersiz amino asit türü veya ikincil yapı durumu : ==&gt;%3&lt;==</translat
 <context>
     <name>U2::SecStructPredictTask</name>
     <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="50"/>
+        <location filename="../src/GorIVAlgTask.cpp" line="49"/>
         <source>seq database not found</source>
         <translation>seq veritabanı bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="56"/>
+        <location filename="../src/GorIVAlgTask.cpp" line="55"/>
         <source>observed structures database not found</source>
         <translation>gözlemlenen yapılar veritabanı bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="63"/>
+        <location filename="../src/GorIVAlgTask.cpp" line="62"/>
         <source>sequence is too long, max seq size is 10000</source>
         <translation>sıra çok uzun, maksimum sıra boyutu 10000</translation>
     </message>
