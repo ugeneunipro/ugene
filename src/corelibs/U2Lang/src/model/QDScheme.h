@@ -143,8 +143,8 @@ public:
     QString getDisplayName() const {
         return descriptor.getDisplayName();
     }
-    virtual QIcon getIcon() const {
-        return QIcon();
+    virtual IconRef getIconRef() const {
+        return IconRef();
     }
 
     virtual QDActor* createInstance() const = 0;

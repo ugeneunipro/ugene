@@ -226,7 +226,6 @@ private:
     Task* searchTask;
     int previousMaxResult;
     QStringList currentSearchPatternList;
-    QMovie* progressMovie;
     bool setSelectionToTheFirstResult;
     bool isSearchInNamesMode;
 

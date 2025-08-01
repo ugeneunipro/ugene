@@ -36,6 +36,7 @@
 
 #include <U2Gui/GScrollBar.h>
 #include <U2Gui/GraphUtils.h>
+#include <U2Gui/GUIUtils.h>
 
 #include "ADVSingleSequenceWidget.h"
 #include "DetView.h"
@@ -57,7 +58,8 @@ Overview::Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
     panView = p->getPanView();
     detView = p->getDetView();
 
-    auto densityGraphAction = new QAction(QIcon(":core/images/sum.png"), "", this);
+    auto densityGraphAction = new QAction("", this);
+    GUIUtils::setIcon(densityGraphAction, IconRef("core", "sum.png"));
     densityGraphAction->setObjectName("density_graph_action");
     densityGraphAction->setCheckable(true);
     densityGraphAction->setToolTip(tr("Toggle annotation density graph"));

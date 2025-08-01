@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QWidget>
 
+#include <U2Core/IconRef.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/global.h>
@@ -134,6 +135,14 @@ public:
     virtual void addNotification(const QString& message, NotificationType type) = 0;
 
     virtual void registerAction(QAction* action) = 0;
+
+    static constexpr char* ICON_REF_PROPERTY_NAME = "icon-ref";
+    static constexpr char* MOVIE_REF_PROPERTY_NAME = "icon-ref-movie";
+    static constexpr char* WINDOWS_ICON_REF_PROPERTY_NAME = "icon-ref-movie";
+    static constexpr int PIXMAP_SIZE = 16;
+
+signals:
+    void si_colorThemeSwitched();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -217,7 +226,7 @@ public:
         : QObject(p) {
     }
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks = QKeySequence()) = 0;
+    virtual QAction* registerDock(MWDockArea area, QWidget* w, const IconRef& iconRef, const QKeySequence& ks = QKeySequence()) = 0;
 
     virtual QWidget* findWidget(const QString& widgetObjName) = 0;
 
@@ -228,6 +237,8 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName) = 0;
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
+
+    virtual void colorThemeSwitched() = 0;
 };
 
 }  // namespace U2

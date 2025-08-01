@@ -227,7 +227,7 @@ void BlastWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new BlastPrompter());
-    proto->setIconPath(":external_tool_support/images/ncbi.png");
+    proto->setIconRef(IconRef("external_tool_support", "ncbi.png"));
     proto->setValidator(new ToolsValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 

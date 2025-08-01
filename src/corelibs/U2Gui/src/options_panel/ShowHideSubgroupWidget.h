@@ -87,7 +87,6 @@ private:
     QLabel* arrow;
 
     QLabel* progressMovieLabel;
-    QMovie* progressMovie;
 
     /**
      * Used to provide a small timeout before the progress start

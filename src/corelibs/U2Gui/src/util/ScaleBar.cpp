@@ -26,6 +26,9 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
 
 ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
@@ -38,23 +41,25 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     connect(scaleBar, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_updateState()));
 
-    minusAction = new QAction(QIcon(":core/images/minus.png"), tr("Decrease peaks height"), this);
+    minusAction = new QAction(tr("Decrease peaks height"), this);
+    GUIUtils::setIcon(minusAction, IconRef("core", "minus.png"));
     connect(minusAction, SIGNAL(triggered()), SLOT(sl_minusButtonClicked()));
 
     minusButton = new QToolButton();
     minusButton->setText(QString(tr("Decrease peaks height")));
-    minusButton->setIcon(QIcon(":core/images/minus.png"));
+    GUIUtils::setIcon(minusButton, IconRef("core", "minus.png"));
     minusButton->setFixedSize(20, 20);
     minusButton->setAutoRepeat(true);
     minusButton->setAutoRepeatInterval(20);
     connect(minusButton, SIGNAL(clicked()), minusAction, SLOT(trigger()));
 
-    plusAction = new QAction(QIcon(":core/images/plus.png"), tr("Increase peaks height"), this);
+    plusAction = new QAction(tr("Increase peaks height"), this);
+    GUIUtils::setIcon(plusAction, IconRef("core", "plus.png"));
     connect(plusAction, SIGNAL(triggered()), SLOT(sl_plusButtonClicked()));
 
     plusButton = new QToolButton(this);
     plusButton->setText(QString(tr("Increase peaks height")));
-    plusButton->setIcon(QIcon(":core/images/plus.png"));
+    GUIUtils::setIcon(plusButton, IconRef("core", "plus.png"));
     plusButton->setAutoRepeat(true);
     plusButton->setAutoRepeatInterval(20);
     plusButton->setFixedSize(20, 20);

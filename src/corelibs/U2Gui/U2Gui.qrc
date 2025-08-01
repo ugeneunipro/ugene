@@ -39,6 +39,7 @@
         <file>images/collapse_update.png</file>
         <file>images/color_wheel.png</file>
         <file>images/consensus.png</file>
+        <file>images/copy.png</file>
         <file>images/copy_annotation_sequence.png</file>
         <file>images/copy_annotation_translation.png</file>
         <file>images/copy_complement_annotation_sequence.png</file>
@@ -50,6 +51,7 @@
         <file>images/copy_translation.png</file>
         <file>images/create_annotation.png</file>
         <file>images/create_annotation_icon.png</file>
+        <file>images/database_copy.png</file>
         <file>images/database_with_arrow.png</file>
         <file>images/details_view.png</file>
         <file>images/dna.png</file>

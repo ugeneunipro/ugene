@@ -40,6 +40,7 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Gui/GlassView.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -726,7 +727,7 @@ void QueryViewController::loadScene(const QString& content) {
 
 void QueryViewController::createActions() {
     runAction = new QAction(tr("Run Schema..."), this);
-    runAction->setIcon(QIcon(":query_designer/images/run.png"));
+    GUIUtils::setIcon(runAction, IconRef("query_designer", "run.png"));
     connect(runAction, SIGNAL(triggered()), SLOT(sl_run()));
 
     newAction = new QAction(tr("New Schema"), this);
@@ -736,20 +737,20 @@ void QueryViewController::createActions() {
 
     loadAction = new QAction(tr("Load Schema..."), this);
     loadAction->setShortcut(QKeySequence("Ctrl+L"));
-    loadAction->setIcon(QIcon(":query_designer/images/fileopen.png"));
+    GUIUtils::setIcon(loadAction, IconRef("query_designer", "fileopen.png"));
     connect(loadAction, SIGNAL(triggered()), SLOT(sl_loadScene()));
 
     saveAction = new QAction(tr("Save Schema"), this);
     saveAction->setShortcut(QKeySequence::Save);
     saveAction->setShortcutContext(Qt::WidgetShortcut);
-    saveAction->setIcon(QIcon(":query_designer/images/filesave.png"));
+    GUIUtils::setIcon(saveAction, IconRef("query_designer", "filesave.png"));
     saveAction->setDisabled(true);
     connect(saveAction, SIGNAL(triggered()), SLOT(sl_saveScene()));
 
     saveAsAction = new QAction(tr("Save Schema As..."), this);
     saveAsAction->setShortcut(QKeySequence::SaveAs);
     saveAsAction->setShortcutContext(Qt::WidgetShortcut);
-    saveAsAction->setIcon(QIcon(":query_designer/images/filesave.png"));
+    GUIUtils::setIcon(saveAsAction, IconRef("query_designer", "filesave.png"));
     connect(saveAsAction, SIGNAL(triggered()), SLOT(sl_saveSceneAs()));
 
     deleteAction = new QAction(tr("Delete"), this);
@@ -846,7 +847,7 @@ void QueryViewController::setupMDIToolbar(QToolBar* tb) {
     QAction* a = viewModeMenu->menuAction();
     tt->setDefaultAction(a);
     tt->setPopupMode(QToolButton::InstantPopup);
-    tt->setIcon(QIcon(":query_designer/images/eye.png"));
+    GUIUtils::setIcon(tt, IconRef("query_designer", "eye.png"));
     tb->addWidget(tt);
 
     auto st = new QToolButton(tb);
@@ -855,7 +856,7 @@ void QueryViewController::setupMDIToolbar(QToolBar* tb) {
     QAction* sa = strandMenu->menuAction();
     st->setDefaultAction(sa);
     st->setPopupMode(QToolButton::InstantPopup);
-    st->setIcon(QIcon(":query_designer/images/strands.png"));
+    GUIUtils::setIcon(st, IconRef("query_designer", "strands.png"));
     tb->addWidget(st);
 
     tb->addSeparator();

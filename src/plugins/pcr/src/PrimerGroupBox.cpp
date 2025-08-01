@@ -37,6 +37,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -51,6 +52,9 @@ PrimerGroupBox::PrimerGroupBox(QWidget* parent)
       findPrimerTask(nullptr),
       annotatedDnaView(nullptr) {
     setupUi(this);
+
+    GUIUtils::setIcon(reverseComplementButton, IconRef("core", "show_compl.png"));
+    GUIUtils::setIcon(browseButton, IconRef("core", "database_with_arrow.png"));
 
     connect(primerEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onPrimerChanged(const QString&)));
     connect(reverseComplementButton, SIGNAL(clicked()), SLOT(sl_translate()));

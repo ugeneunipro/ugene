@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include "AppSettingsDialogController.h"
@@ -42,7 +43,8 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
     registerBuiltinPages();
     QMenu* m = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_SETTINGS);
 
-    auto settingsDialogAction = new QAction(QIcon(":ugene/images/preferences.png"), tr("Preferences..."), this);
+    auto settingsDialogAction = new QAction(tr("Preferences..."), this);
+    GUIUtils::setIcon(settingsDialogAction, IconRef("ugene", "preferences.png"));
     connect(settingsDialogAction, SIGNAL(triggered()), SLOT(sl_showSettingsDialog()));
     settingsDialogAction->setObjectName("action__settings");
 #ifdef Q_OS_DARWIN

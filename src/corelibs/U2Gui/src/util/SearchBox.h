@@ -54,7 +54,6 @@ private:
 
     bool firstShow = true;
     QLabel* progressLabel = nullptr;
-    QMovie* progressMovie = nullptr;
     QLabel* searchIconLabel = nullptr;
     QToolButton* clearButton = nullptr;
 };

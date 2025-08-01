@@ -30,6 +30,8 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Designer/BreakpointHitCountDialog.h>
 #include <U2Designer/DelegateEditors.h>
 #include <U2Designer/EditBreakpointLabelsDialog.h>
@@ -127,7 +129,7 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus* initDebugInfo,
 
 void BreakpointManagerView::createActions() {
     newBreakpointAction = new QAction(tr("&Break at element..."), this);
-    newBreakpointAction->setIcon(QIcon(":workflow_designer/images/breakpoint.png"));
+    GUIUtils::setIcon(newBreakpointAction, IconRef("workflow_designer", "breakpoint.png"));
     newBreakpointAction->setShortcut(QKeySequence("Ctrl+B"));
     connect(newBreakpointAction, SIGNAL(triggered()), SLOT(sl_newBreakpoint()));
     connect(newBreakpointAction, SIGNAL(triggered()), scene, SLOT(update()));
@@ -156,7 +158,7 @@ void BreakpointManagerView::createActions() {
     disableAllBreakpointsAction->setEnabled(false);
 
     highlightItemWithBreakpoint = new QAction(tr("H&ighlight selected item"), this);
-    highlightItemWithBreakpoint->setIcon(QIcon(":workflow_designer/images/highlight_item.png"));
+    GUIUtils::setIcon(highlightItemWithBreakpoint, IconRef("workflow_designer", "highlight_item.png"));
     highlightItemWithBreakpoint->setShortcut(QKeySequence("Ctrl+H"));
     connect(highlightItemWithBreakpoint, SIGNAL(triggered()), SLOT(sl_highlightItem()));
     highlightItemWithBreakpoint->setEnabled(false);

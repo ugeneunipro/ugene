@@ -29,6 +29,8 @@
 #include <QTableView>
 #include <QtMath>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "InvestigationDataModel.h"
 
 const qint16 HEADER_TEXT_MARGIN = 40;
@@ -65,9 +67,9 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
         this);
     connect(exportInvestigationAction, SIGNAL(triggered()), SLOT(sl_exportInvestigation()));
 
-    copyToClipboardAction = new QAction(QIcon(":workflow_designer/images/clipboard.png"),
-                                        tr(COPY_TO_CLIPBOARD_ACTION_NAME),
+    copyToClipboardAction = new QAction(tr(COPY_TO_CLIPBOARD_ACTION_NAME),
                                         this);
+    GUIUtils::setIcon(copyToClipboardAction, IconRef("core", "paste.png"));
     connect(copyToClipboardAction, SIGNAL(triggered()), SLOT(sl_copyToClipboard()));
 
     hideThisColumnAction = new QAction(tr(HIDE_SELECTED_COLUMN_ACTION_NAME), this);

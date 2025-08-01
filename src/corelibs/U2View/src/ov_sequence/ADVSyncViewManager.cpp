@@ -25,6 +25,8 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "AnnotatedDNAView.h"
@@ -74,12 +76,12 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     connect(syncByAnnSelAction, SIGNAL(triggered()), SLOT(sl_sync()));
 
     lockMenu = new QMenu(tr("Lock scales"));
-    lockMenu->setIcon(QIcon(":core/images/lock_scales.png"));
+    GUIUtils::setIcon(lockMenu, IconRef("core", "lock_scales.png"));
     lockMenu->addActions(lockActionGroup->actions());
     connect(lockMenu, &QMenu::aboutToShow, this, &ADVSyncViewManager::sl_setUpLockMenuActions);
 
     syncMenu = new QMenu(tr("Adjust scales"));
-    syncMenu->setIcon(QIcon(":core/images/sync_scales.png"));
+    GUIUtils::setIcon(syncMenu, IconRef("core", "sync_scales.png"));
     syncMenu->addAction(syncByStartPosAction);
     syncMenu->addAction(syncBySeqSelAction);
     syncMenu->addAction(syncByAnnSelAction);
@@ -102,7 +104,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     // auto-annotations highlighting ops
 
     toggleAutoAnnotationsMenu = new QMenu("Global automatic annotation highlighting");
-    toggleAutoAnnotationsMenu->setIcon(QIcon(":core/images/predefined_annotation_groups.png"));
+    GUIUtils::setIcon(toggleAutoAnnotationsMenu, IconRef("core", "predefined_annotation_groups.png"));
     connect(toggleAutoAnnotationsMenu, SIGNAL(aboutToShow()), SLOT(sl_updateAutoAnnotationsMenu()));
 
     toggleAutoAnnotationsButton = new QToolButton();
