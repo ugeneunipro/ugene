@@ -4,12 +4,12 @@
 <context>
     <name>ExcludeReasonDialog</name>
     <message>
-        <location filename="../src/ExcludeReasonDialog.ui" line="20"/>
+        <location filename="../src/ExcludeReasonDialog.ui"/>
         <source>exclude reason</source>
         <translation>nedeni hariç tut</translation>
     </message>
     <message>
-        <location filename="../src/ExcludeReasonDialog.ui" line="35"/>
+        <location filename="../src/ExcludeReasonDialog.ui"/>
         <source>Set exclude reason</source>
         <translation>Hariç tutma nedenini ayarlayın</translation>
     </message>
@@ -17,27 +17,27 @@
 <context>
     <name>TestView</name>
     <message>
-        <location filename="../src/TestView.ui" line="14"/>
+        <location filename="../src/TestView.ui"/>
         <source>Test Runner</source>
         <translation>Test Çalıştırıcısı</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="28"/>
+        <location filename="../src/TestView.ui"/>
         <source>testColumn</source>
         <translation>test Sütunu</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="33"/>
+        <location filename="../src/TestView.ui"/>
         <source>stateColumn</source>
         <translation>durum Sütunu</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="65"/>
+        <location filename="../src/TestView.ui"/>
         <source>info_label</source>
         <translation>bilgi_etiketi</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="112"/>
+        <location filename="../src/TestView.ui"/>
         <source>Save test</source>
         <translation>Testi kaydet</translation>
     </message>

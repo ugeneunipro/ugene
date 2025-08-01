@@ -4,22 +4,22 @@
 <context>
     <name>CustomAutoAnnotationDialog</name>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="14"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Plasmid Auto Annotations</source>
         <translation>Plasmid Otomatik Açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="20"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Selected features</source>
         <translation>Seçili özellikler</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="26"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Promoter</source>
         <translation>Organizatör</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="33"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Two-hybrid gene</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28,67 +28,67 @@
         <translation type="vanished">Orijin</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="40"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Terminator</source>
         <translation>Sonlandırıcı</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="47"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Localization sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="54"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Regulatory sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="61"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Affinity tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="68"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Replication origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="82"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Selectable marker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="89"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Primer</source>
         <translation>Astar</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="96"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Reporter gene</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="103"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Miscellaneous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="115"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="122"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="129"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Invert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="75"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Gene</source>
         <translation>Gen</translation>
     </message>
@@ -104,57 +104,57 @@
 <context>
     <name>FindAnnotationCollocationsDialog</name>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="58"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="63"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="96"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Region size:</source>
         <translation>Bölge boyutu:</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="20"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Find Groups of Annotated Regions</source>
         <translation>Açıklamalı Bölge Gruplarını Bul</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="158"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Save regions as annotations</source>
         <translation>Bölgeleri açıklama olarak kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="165"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Clear results</source>
         <translation>Sonuçları temizle</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="176"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Result strand</source>
         <translation>Sonuç şeridi</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="182"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Direct</source>
         <translation>Doğrudan</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="189"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Complement</source>
         <translation>Tamamlayıcı</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="196"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Both</source>
         <translation>İkisi de</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="219"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Annotation must fit into region</source>
         <translation>Ek açıklama bölgeye sığmalıdır</translation>
     </message>

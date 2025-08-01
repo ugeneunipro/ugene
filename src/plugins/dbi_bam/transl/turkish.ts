@@ -4,28 +4,27 @@
 <context>
     <name>ConvertToSQLiteDialog</name>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="20"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Import BAM File</source>
         <translation>BAM Dosyasını İçe Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="58"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Source URL:</source>
         <translation>Kaynak URL:</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="65"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Info</source>
         <translation>Bilgi</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="37"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Reference:</source>
         <translation>Referans:</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="72"/>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="194"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -54,42 +53,42 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;left&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Dizin dosyası (* .bai) mevcut değil. Kısmi ithalat yavaşlayacak.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="87"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>There is no header in the SAM file. Сhoose a file with the reference sequences or the header information will be generated automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="97"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Index file (*.bai) is not available. Partial import is going to be slowed down.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="135"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Select All</source>
         <translation>Tümünü Seç</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="142"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Deselect All</source>
         <translation>Tüm Seçimi Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="149"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Invert Selection</source>
         <translation>Seçimi Tersine Çevir</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="172"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Import unmapped reads</source>
         <translation>Eşlenmemiş okumaları içe aktar</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="184"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Destination URL:</source>
         <translation>Hedef URL:</translation>
     </message>
     <message>
-        <location filename="../src/ConvertToSQLiteDialog.ui" line="208"/>
+        <location filename="../src/ConvertToSQLiteDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>

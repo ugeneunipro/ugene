@@ -4,97 +4,97 @@
 <context>
     <name>CircularViewSettingsWidget</name>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="20"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="38"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show title</source>
         <translation>Показывать названия</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="48"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show length</source>
         <translation>Показывать длину</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="64"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="84"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="104"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Attribute</source>
         <translation>Признак</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="150"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Bold</source>
         <translation>Жирный</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="153"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="193"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Inside</source>
         <translation>Внутри</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="198"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Outside</source>
         <translation>Снаружи</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="203"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Inside/Outside</source>
         <translation>Внутри/Снаружи</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="208"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="292"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Label font size</source>
         <translation>Размер шрифта</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="270"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show ruler line</source>
         <translation>Показывать шкалу</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="222"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Font size</source>
         <translation>Размер шрифта</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="254"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Label position</source>
         <translation>Позиция ярлыка</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="280"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show coordinates</source>
         <translation>Показывать координаты</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="335"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>There are no displayed Circular Views, so settings are hidden.</source>
         <translation>Нет круговых видов, настройки скрыты.</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="363"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Open Circular View(s)</source>
         <translation>Открыть круговой вид(ы)</translation>
     </message>
@@ -126,17 +126,17 @@
 <context>
     <name>SetSequenceOriginDialog</name>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="32"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>Set sequence origin</source>
         <translation>Установка точки отсчета</translation>
     </message>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="40"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>New origin:</source>
         <translation>Отсчет с:</translation>
     </message>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="47"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>New sequence origin point. All annotations will be shifted relative to new origin point.</source>
         <translation>Новая точка отсчета. Все аннотации будут сдвинуты относительно новой точки отсчета.</translation>
     </message>

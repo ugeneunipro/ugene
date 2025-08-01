@@ -4,17 +4,17 @@
 <context>
     <name>EditPrimerDialog</name>
     <message>
-        <location filename="../src/EditPrimerDialog.ui" line="14"/>
+        <location filename="../src/EditPrimerDialog.ui"/>
         <source>Create New Primer</source>
         <translation>Yeni Primer Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/EditPrimerDialog.ui" line="29"/>
+        <location filename="../src/EditPrimerDialog.ui"/>
         <source>Name</source>
         <translation>Ad</translation>
     </message>
     <message>
-        <location filename="../src/EditPrimerDialog.ui" line="36"/>
+        <location filename="../src/EditPrimerDialog.ui"/>
         <source>New Primer</source>
         <translation>Yeni Primer</translation>
     </message>
@@ -22,7 +22,7 @@
 <context>
     <name>ExportPrimersDialog</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="20"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>Export Primers</source>
         <translation>Primerleri Dışa aktar</translation>
     </message>
@@ -31,17 +31,17 @@
         <translation type="vanished">Şuraya aktar:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="38"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>Format:</source>
         <translation>Biçimi:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="55"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>File path:</source>
         <translation>Dosya yolu:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="67"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -69,7 +69,7 @@
 <context>
     <name>ImportPrimersDialog</name>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="20"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Import Primers</source>
         <translation>Primerleri İçe aktar</translation>
     </message>
@@ -82,28 +82,27 @@
         <translation type="vanished">Veritabanına bağlanın</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="28"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Files:</source>
         <translation>Dosyalar:</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="53"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Add file(s)</source>
         <translation>Dosya ekle</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="60"/>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="114"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="82"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Objects:</source>
         <translation>Nesneler:</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="107"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Add object(s)</source>
         <translation>Nesne ekle</translation>
     </message>
@@ -111,7 +110,7 @@
 <context>
     <name>InSilicoPcrOptionPanelWidget</name>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="14"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
@@ -120,63 +119,62 @@
         <translation type="vanished">Maksimum ürün</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="101"/>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="147"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source> bp</source>
         <translation> bp</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="124"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>3&apos; perfect match</source>
         <translation>3 &apos;mükemmel uyum</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="117"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Extract annotations</source>
         <translation>Ek açıklamaları ayıklayın</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="134"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Use ambiguous bases</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="172"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Maximum product size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="199"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>&lt;a href=&quot;details&quot;&gt;Show primers details&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;details&quot;&gt;Primer ayrıntılarını göster&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="260"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Find product(s)</source>
         <translation>Ürün bul</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="355"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Region</source>
         <translation>Bölge</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="360"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Length</source>
         <translation>Uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="365"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Ta</source>
         <translation>Ta</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="394"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Extract product(s)</source>
         <translation>Ürünler i ayıklayın</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="408"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Info: choose a nucleic sequence for running In Silico PCR</source>
         <translation>Bilgi: Silico PCR&apos;da çalıştırmak için bir nükleik sekans seçin</translation>
     </message>
@@ -184,27 +182,27 @@
 <context>
     <name>PrimerGroupBox</name>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="14"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="78"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Reverse-complement sequence</source>
         <translation>Ters tamamlayıcı dizisi</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="107"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Choose a primer from the primer library</source>
         <translation>Primer kitaplığından bir primer seçin</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="134"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Mismatches</source>
         <translation>Uyumsuzluklar</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="141"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source> bp</source>
         <translation> bp</translation>
     </message>
@@ -212,7 +210,7 @@
 <context>
     <name>PrimerLibrarySelector</name>
     <message>
-        <location filename="../src/PrimerLibrarySelector.ui" line="14"/>
+        <location filename="../src/PrimerLibrarySelector.ui"/>
         <source>Choose Primer</source>
         <translation>Primer Seçin</translation>
     </message>
@@ -220,7 +218,7 @@
 <context>
     <name>PrimerLibraryWidget</name>
     <message>
-        <location filename="../src/PrimerLibraryWidget.ui" line="14"/>
+        <location filename="../src/PrimerLibraryWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
@@ -228,7 +226,7 @@
 <context>
     <name>PrimersDetailsDialog</name>
     <message>
-        <location filename="../src/PrimersDetailsDialog.ui" line="14"/>
+        <location filename="../src/PrimersDetailsDialog.ui"/>
         <source>Primers Details</source>
         <translation>Primer Detayları</translation>
     </message>

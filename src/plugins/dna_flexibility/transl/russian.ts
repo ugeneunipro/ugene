@@ -4,52 +4,52 @@
 <context>
     <name>DNAFlexDialog</name>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="26"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>DNA Flexibility</source>
         <translation>ДНК гибкость</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="32"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>The DNA Flexibility plugin allows searching for high DNA flexibility regions.</source>
         <translation>Модуль &quot;ДНК гибкость&quot; позволяет искать в ДНК районы повышенной гибкости.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="51"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Search Settings</source>
         <translation>Параметры поиска</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="63"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>High DNA Flexibility Regions Settings</source>
         <translation>Параметры районов повышенной гибкости</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="71"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Window size</source>
         <translation>Размер окна</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="94"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Window step</source>
         <translation>Шаг</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="114"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Threshold</source>
         <translation>Пороговая величина</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="140"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Remember Settings</source>
         <translation>Запомнить настройки</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="147"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Restore Defaults</source>
         <translation>Настройки по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="160"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Output</source>
         <translation>Выходные параметры</translation>
     </message>

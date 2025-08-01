@@ -4,93 +4,92 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="20"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Compare sequences using Dotplot</source>
         <translation>Сравнение последовательностей при помощи Dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="33"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot параметры</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="55"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Custom algorithm</source>
         <translation>Алгоритм по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="102"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>X axis sequence</source>
         <translation>Последовательность оси X</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="115"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Minimum repeat length</source>
         <translation>Мин длина повторов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="122"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Y axis sequence</source>
         <translation>Последовательность оси Y</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="129"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Repeats  identity</source>
         <translation>Идентичность повторов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="158"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>bp</source>
         <translation>нк</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="186"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Эвристический подбор длины повторов, с тем чтобы кол-во повторов в последовательности не превысило 1000</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="189"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>1k</source>
         <translation>1к</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="218"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="240"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Сбросить к 100%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="243"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="298"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search inverted repeats</source>
         <translation>Искать инвертированные повторы</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="305"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search direct repeats</source>
         <translation>Искать прямые повторы</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="344"/>
-        <location filename="../src/DotPlotDialog.ui" line="351"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>default</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="376"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</source>
         <translation>Нажмите, чтобы загрузить последовательности из файловой системы. Последовательности будут добавлены в комбо-боксы, когда они будут загружены в проект</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="379"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Load Sequence</source>
         <translation>Загрузить</translation>
     </message>
@@ -98,40 +97,37 @@
 <context>
     <name>DotPlotFilesDialog</name>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="38"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="23"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Build Dotplot from Sequences</source>
         <translation>Построить dotplot последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with first sequence</source>
         <translation>Файл с первой последовательностью</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="45"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="96"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Join all sequences found in the file</source>
         <translation>Соединить последовательности</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="62"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="130"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Gap size:</source>
         <translation>Длина пробела:</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="79"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Compare sequence against itself</source>
         <translation>Саму с собой</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with second sequence</source>
         <translation>Файл со второй последовательностью</translation>
     </message>
@@ -139,92 +135,92 @@
 <context>
     <name>DotPlotFilterDialog</name>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="17"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="30"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Параметры фильтрации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="42"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No filtration applied</source>
         <translation>Фильтрация не применяется</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="45"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No Filtration</source>
         <translation>Без фильтрации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Show results that intersect the features</source>
         <translation>показывать результаты, которые пересекают аннотации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="58"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Intersection</source>
         <translation>Пересечение аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="65"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Intersection Parameters</source>
         <translation>Параметры пересечения</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Feature Name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="80"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select all names</source>
         <translation>Выбрать все имена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="83"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="90"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert the current selection</source>
         <translation>Инвертировать текущее выделение</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="93"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert Selection</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="100"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear the current selection</source>
         <translation>Очистить текущее выделение</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear Selection</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="110"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select names of the features to intersection</source>
         <translation>Выберете имена аннотаций для пересечения</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="113"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Selection</source>
         <translation>Выбор аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="139"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select only different names</source>
         <translation>Выбрать только различные имена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="142"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Different Only</source>
         <translation>Различные</translation>
     </message>

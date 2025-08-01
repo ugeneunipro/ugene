@@ -4,72 +4,72 @@
 <context>
     <name>CSVColumnConfigurationDialog</name>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="23"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Column role</source>
         <translation>Роль</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="36"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation start position</source>
         <translation>Начальная позиция</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="46"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Add offset</source>
         <translation>Смещение</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="59"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source> bp</source>
         <translation> сим</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="72"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation end position</source>
         <translation>Конечная позиция</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="82"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Inclusive</source>
         <translation>Включительно</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="92"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation length</source>
         <translation>Длина аннотации</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="99"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Complement strand mark</source>
         <translation>Комплементарное направление</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="109"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Mark value</source>
         <translation>Метка</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="126"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="133"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Qualifier</source>
         <translation>Квалификатор</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="29"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Ignore this column</source>
         <translation>Не использовать этот столбец</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="14"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Select the Role of the Column</source>
         <translation>Выберите роль данных в столбце</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="174"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation group</source>
         <translation>Группа аннотации</translation>
     </message>
@@ -77,104 +77,102 @@
 <context>
     <name>DNASequenceGeneratorDialog</name>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="14"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Generate Sequence</source>
         <translation>Генерация последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="26"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="34"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="50"/>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="76"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source> bp</source>
         <translation> сим</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="66"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Window size</source>
         <translation>Размер окна</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="128"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Number of sequences</source>
         <translation>Число последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="135"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Initialize random generator manually</source>
         <translation>Инициализация генератора случайных чисел вручную</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="188"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Content</source>
         <translation>Состав</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="194"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Reference</source>
         <translation>Референс</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="212"/>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="492"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="221"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Base content (%)</source>
         <translation>Состав (%)</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="245"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="295"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="342"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>G</source>
         <translation>G</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="389"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="426"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>GC Skew</source>
         <translation>GC смещение</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="471"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Output</source>
         <translation>Результат</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="477"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Output File</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="501"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Format</source>
         <translation>Формат</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="527"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -182,37 +180,37 @@
 <context>
     <name>ExportBlastResultDialog</name>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="14"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Export BLAST Result to Multiple Alignment</source>
         <translation>Экспорт результатов BLAST в множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="42"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Export to file</source>
         <translation>Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="35"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="49"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>File format to use</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="25"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Qualifier to use as name</source>
         <translation>Использовать квалификатор в качестве имени</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="64"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Add reference to alignment</source>
         <translation>Добавить референс к выравниванию</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="71"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
@@ -220,37 +218,37 @@
 <context>
     <name>ExportChromatogramDialog</name>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="14"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Export Chromatogram File</source>
         <translation>Экспорт хроматограммы</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="25"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Export to file</source>
         <translation>Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="35"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="42"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>File format to use</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="56"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Reversed</source>
         <translation>Обратная</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="66"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Complemented</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="75"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
@@ -258,32 +256,32 @@
 <context>
     <name>ExportMca2MsaDialog</name>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="20"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Export Alignment without Chromatograms </source>
         <translation>Экспорт выравнивания без хроматограмм </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="34"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>File format</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="52"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="61"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Export to file</source>
         <translation>Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="70"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Add document to project</source>
         <translation>Добавить в проект</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="80"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Include reference sequence</source>
         <translation>Добавить референсную последовательность в файл</translation>
     </message>
@@ -291,129 +289,127 @@
 <context>
     <name>ImportAnnotationsFromCSVDialog</name>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="25"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>File to read</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="35"/>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="60"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="44"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Results</source>
         <translation>Результаты</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="50"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Result file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="67"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>File format</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="77"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Add result file to project</source>
         <translation>Добавить результат к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="96"/>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="111"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Column separator</source>
         <translation>Разделитель столбцов</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="103"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>File parsing</source>
         <translation>Разбор файла</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="140"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>,</source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="150"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Guess</source>
         <translation>Определить</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="157"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Script</source>
         <translation>Скрипт</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="177"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="184"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>First  lines to skip</source>
         <translation>Пропускать сначала</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="207"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Do not skip</source>
         <translation>Не пропускать</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="210"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source> line(s)</source>
         <translation> строка(и)</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="220"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Skip all lines starts with the text</source>
         <translation>Пропускать строки, начинающиеся с текста</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="246"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="266"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Remove quotes</source>
         <translation>Удалить кавычки</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="283"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Default annotation name</source>
         <translation>Имя аннотации по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="296"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>misc_feature</source>
         <translation>misc_feature</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="259"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Interpret multiple separators like a single separator (try when separator is a whitespace character)</source>
         <translation>Интерпретировать повторяющийся разделитель как одиночный (используйте, когда разделителем служит пробел)</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="14"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Import Annotations from CSV</source>
         <translation>Импорт аннотаций из CSV</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="313"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Results preview</source>
         <translation>Просмотр результата</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="333"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Preview</source>
         <translation>Просмотр</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="357"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Raw file preview:</source>
         <translation>Просмотр &quot;сырого&quot; файла:</translation>
     </message>
@@ -819,102 +815,102 @@
 <context>
     <name>U2::ExportMSA2MSADialog</name>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="20"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Export Amino Acid Translation</source>
         <translation>Экспорт выравнивания в амино трансляции</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="28"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Export to file</source>
         <translation>Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="38"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="45"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>File format to use</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="55"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Amino translation</source>
         <translation>Таблица трансляции</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="67"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Include gaps</source>
         <translation>Учитывать пробелы</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="77"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Translate triplets with gaps as:</source>
         <translation>Транслировать тройные сочетания с пробелами как:</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="86"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="99"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Gap</source>
         <translation>Пробел</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="115"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Translation frame:</source>
         <translation>Трансляционная рамка:</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="124"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>+1</source>
         <translation>+1</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="137"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>-1</source>
         <translation>-1</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="150"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>+2</source>
         <translation>+2</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="163"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>-2</source>
         <translation>-2</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="176"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>+3</source>
         <translation>+3</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="189"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>-3</source>
         <translation>-3</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="202"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="212"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Export range</source>
         <translation>Рамки экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="218"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Whole alignment</source>
         <translation>Всё выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="228"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Selected rows</source>
         <translation>Выбранные строки</translation>
     </message>
@@ -947,42 +943,42 @@
 <context>
     <name>U2::ExportMSA2SequencesDialog</name>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="20"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Convert Alignment to Separate Sequences</source>
         <translation>Конвертировать выравнивание в разные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="51"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="31"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Export format</source>
         <translation>Формат экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="41"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Export file</source>
         <translation>Экспорт файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="58"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Gap characters (&apos;-&apos;)  </source>
         <translation>Символы пробела (&quot;-&quot;)  </translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="67"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Keep</source>
         <translation>Сохранять</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="77"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Trim</source>
         <translation>Удалять</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="101"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Add exported document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
@@ -1203,32 +1199,32 @@
 <context>
     <name>U2::ExportSequences2MSADialog</name>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="14"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Export Sequences as Alignment</source>
         <translation>Экспорт последовательностей в выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="25"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Export to file</source>
         <translation>Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="35"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="42"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>File format to use</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="54"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="64"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Use Genbank &quot;SOURCE&quot; tags as a name of sequences (for Genbank sequences only)</source>
         <translation>Использовать &quot;SOURCE&quot; в качестве имени последовательностей (только для Genbank)</translation>
     </message>
@@ -1251,117 +1247,117 @@
 <context>
     <name>U2::ExportSequencesDialog</name>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="32"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Export Selected Sequences</source>
         <translation>Экспорт выбранных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="53"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Export to file</source>
         <translation>Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="63"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="70"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>File format to use</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="46"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Export with annotations</source>
         <translation>Экспортировать с аннотациями</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="101"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="87"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Use custom sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="127"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save direct strand</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="137"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save complement strand</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="144"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save both strands</source>
         <translation>Обе</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="168"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Translate to amino alphabet</source>
         <translation>Транслировать</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="178"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save all amino frames</source>
         <translation>Сохранить все рамки трансляции</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="239"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Back translation options</source>
         <translation>Настройки обратной трансляции</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="245"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Translate back to nucleic alphabet</source>
         <translation>Транслировать обратно в алфавит нуклеотидов</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="257"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Most frequently used codons</source>
         <translation>Наиболее часто используемые кодоны</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="297"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Organism:</source>
         <translation>Организм:</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="339"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save as separate sequences</source>
         <translation>Отдельные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="270"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Frequency distribution</source>
         <translation>Частотное распределение</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="119"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Conversion options</source>
         <translation>Опции конвертации</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="208"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Use custom translation table</source>
         <translation>Таблица трансляций</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="331"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Merge options</source>
         <translation>Настройки соединения последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="373"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Add gap symbols between sequences</source>
         <translation>Добавить пробелы между последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="349"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Merge sequences</source>
         <translation>Объединить последовательности</translation>
     </message>
@@ -2090,47 +2086,47 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>U2::SaveSelectedSequenceFromMSADialog</name>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="14"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Export Selected Sequence(s)</source>
         <translation>Экспорт выбранных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="25"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Export to folder</source>
         <translation>Экспорт в папку</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="37"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="46"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>File format</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="56"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="62"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Sequence name</source>
         <translation>Имя последоавтельности</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="85"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Custom name</source>
         <translation>Пользовательское имя</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="117"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Keep gaps</source>
         <translation>Сохранить пропуски (промежутки)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="127"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -2156,12 +2152,12 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>getSequenceByIdDialog</name>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="14"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>Get Sequences by ID</source>
         <translation>Получить последовательность по идентификатору</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="34"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>The sequences from selected BLAST results will be downloaded from
 NCBI Genbank by their GI identifier
 </source>
@@ -2170,17 +2166,17 @@ NCBI Genbank по их идентификатору
 </translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>Save to directory:</source>
         <translation>Сохранить в:</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="67"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>

@@ -4,87 +4,87 @@
 <context>
     <name>CustomAutoAnnotationDialog</name>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="14"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Plasmid Auto Annotations</source>
         <translation>Поиск плазмид</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="20"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Selected features</source>
         <translation>Выбранные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="26"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Promoter</source>
         <translation>Промотор</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="33"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Two-hybrid gene</source>
         <translation>Двухгибридный ген</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="40"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Terminator</source>
         <translation>Терминатор</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="47"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Localization sequence</source>
         <translation>Сигнал локализации</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="54"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Regulatory sequence</source>
         <translation>Регуляторная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="61"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Affinity tag</source>
         <translation>Афинные метки</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="68"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Replication origin</source>
         <translation>Точка начала репликации</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="82"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Selectable marker</source>
         <translation>Селектируемый маркер</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="89"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Primer</source>
         <translation>Праймер</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="96"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Reporter gene</source>
         <translation>Репортёрные гены</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="103"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Miscellaneous</source>
         <translation>Различные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="115"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="122"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="129"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Invert</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.ui" line="75"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui"/>
         <source>Gene</source>
         <translation>Ген</translation>
     </message>
@@ -92,57 +92,57 @@
 <context>
     <name>FindAnnotationCollocationsDialog</name>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="58"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="63"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="96"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Region size:</source>
         <translation>Размер региона:</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="20"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Find Groups of Annotated Regions</source>
         <translation>Поиск сгруппированных аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="158"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Save regions as annotations</source>
         <translation>Сохранить регионы как аннотации</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="165"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Clear results</source>
         <translation>Сбросить результаты</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="176"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Result strand</source>
         <translation>Расположение результатов</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="182"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="189"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Complement</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="196"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Both</source>
         <translation>Обе</translation>
     </message>
     <message>
-        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="219"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui"/>
         <source>Annotation must fit into region</source>
         <translation>Аннотация должна содержаться в регионе</translation>
     </message>

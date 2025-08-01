@@ -4,52 +4,52 @@
 <context>
     <name>DNAFlexDialog</name>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="26"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>DNA Flexibility</source>
         <translation>DNA Esnekliği</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="32"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>The DNA Flexibility plugin allows searching for high DNA flexibility regions.</source>
         <translation>DNA Esnekliği eklentisi, yüksek DNA esneklik bölgelerinin aranmasına izin verir.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="51"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Search Settings</source>
         <translation>Arama Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="63"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>High DNA Flexibility Regions Settings</source>
         <translation>Yüksek DNA Esnekliği Bölgeleri Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="71"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Window size</source>
         <translation>Pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="94"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Window step</source>
         <translation>Pencere adımı</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="114"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Threshold</source>
         <translation>Eşik</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="140"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Remember Settings</source>
         <translation>Ayarları hatırla</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="147"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Restore Defaults</source>
         <translation>Varsayılanları Geri Yükle</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="160"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>

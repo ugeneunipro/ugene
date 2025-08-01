@@ -4,29 +4,27 @@
 <context>
     <name>SiteconBuildDialog</name>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="22"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Input alignment (nucleic)</source>
         <translation>Giriş hizalaması (nükleik)</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="32"/>
-        <location filename="../src/SiteconBuildDialog.ui" line="49"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="39"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Output model</source>
         <translation>Çıktı modeli</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="58"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Options</source>
         <translation>Seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="64"/>
-        <location filename="../src/SiteconBuildDialog.ui" line="95"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Window is used to pick out the most important alignment region and is located at the center of the alignment.
            Must be: windows size is not greater than TFBS alignment length,
            recommended: windows size is not greater than 50 bp.</source>
@@ -35,85 +33,82 @@
             önerilen: Pencere boyutu 50 bp&apos;den büyük değildir.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="69"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Window size</source>
         <translation>Pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="103"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="122"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Calibration random seed</source>
         <translation>Kalibrasyon rastgele tohum</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="173"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Calibration sequence length</source>
         <translation>Kalibrasyon sırası uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="206"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>       100 Kb</source>
         <translation>       100 Kb</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="211"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>       500 Kb</source>
         <translation>       500 Kb</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="216"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>         1 Mb</source>
         <translation>         1 Mb</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="221"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>         5 Mb</source>
         <translation>         5 Mb</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="232"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Weight algorithm</source>
         <translation>Ağırlık algoritması</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="290"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Default status</source>
         <translation>Varsayılan durum</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="259"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>       None</source>
         <translation>       Hiçbiri</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="264"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>  Algorithm N2</source>
         <translation>  Algoritma N2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="170"/>
-        <location filename="../src/SiteconBuildDialog.ui" line="193"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Length of random synthetic sequences used to calibrate the profile. Should not be less than window size.</source>
         <translation>Profili kalibre etmek için kullanılan rastgele sentetik dizilerin uzunluğu. Pencere boyutundan küçük olmamalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="119"/>
-        <location filename="../src/SiteconBuildDialog.ui" line="148"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>The random seed, where &lt;n&gt; is a positive integer. You can use this option to generate reproducible results for different runs on the same data.</source>
         <translation>&lt;n&gt; pozitif bir tamsayı olduğu rastgele tohum. Aynı veriler üzerinde farklı çalışmalar için tekrarlanabilir sonuçlar oluşturmak için bu seçeneği kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="14"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>SITECON Build</source>
         <translation>SITECON Build</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialog.ui" line="229"/>
-        <location filename="../src/SiteconBuildDialog.ui" line="252"/>
+        <location filename="../src/SiteconBuildDialog.ui"/>
         <source>Optional feature, in most cases applying no weight will fit. In some cases choosing algorithm 2 will increase the recognition quality.</source>
         <translation>Opsiyonel özellik, çoğu durumda ağırlık uygulanmaz. Bazı durumlarda algoritma 2&apos;nin seçilmesi, tanıma kalitesini artıracaktır.</translation>
     </message>
@@ -121,98 +116,97 @@
 <context>
     <name>SiteconSearchDialog</name>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="14"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>SITECON Search</source>
         <translation>SITECON Arama</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="22"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>File with model</source>
         <translation>Modelli dosya</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="36"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="46"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Threshold</source>
         <translation>Eşik</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="190"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Strands</source>
         <translation>Teller</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="196"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Both strands</source>
         <translation>Her iki dize</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="215"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Search in direct strand only</source>
         <translation>Yalnızca doğrudan iplikçikte ara</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="218"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Direct strand</source>
         <translation>Direkt dize</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="240"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Search in complement strand</source>
         <translation>Tamamlayıcı iplikçikte ara</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="243"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Complement strand</source>
         <translation>Tamamlayıcı iplik</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="106"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Range</source>
         <translation>Aralık</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="111"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Strand</source>
         <translation>Şerit</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="116"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>PSUM</source>
         <translation>PSUM</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="121"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>First type error</source>
         <translation>Birinci tip hatası</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="126"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Second type error</source>
         <translation>İkinci tip hata</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="70"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Clear results</source>
         <translation>Sonuçları temizle</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="77"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Save as annotations</source>
         <translation>Ek açıklamalar olarak kaydet</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="136"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Ready</source>
         <translation>Hazır</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialog.ui" line="43"/>
-        <location filename="../src/SiteconSearchDialog.ui" line="59"/>
+        <location filename="../src/SiteconSearchDialog.ui"/>
         <source>Recognition quality threshold, should be less than 100%. Choosing too low threshold will lead to recognition of too many TFBS recognised with too low trustworthiness. Choosing too high threshold may result in no TFBS recognised.</source>
         <translation>Tanıma kalitesi eşiği% 100&apos;den az olmalıdır. Çok düşük eşiğin seçilmesi, çok düşük güvenilirlikle tanınan çok fazla TFBS&apos;nin tanınmasına yol açacaktır. Çok yüksek eşik seçmek, TFBS&apos;nin tanınmamasına neden olabilir.</translation>
     </message>

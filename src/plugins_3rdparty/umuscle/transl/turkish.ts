@@ -4,93 +4,92 @@
 <context>
     <name>MuscleAlignmentDialog</name>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="20"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Align with MUSCLE</source>
         <translation>KAS ile hizala</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="28"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Input and output</source>
         <translation>Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="36"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Input file</source>
         <translation>Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="46"/>
-        <location filename="../src/MuscleAlignDialog.ui" line="63"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="53"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Output file</source>
         <translation>Çıktı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="83"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Mode</source>
         <translation>Mod</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="95"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Mode details:</source>
         <translation>Mod ayrıntıları:</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="115"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Advanced options</source>
         <translation>Gelişmiş seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="138"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Max iterations</source>
         <translation>Azami yineleme</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="181"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Max time (minutes)</source>
         <translation>Azami süre (dakika)</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="225"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Translating alignment to amino allows one to avoid errors of inserting gaps within codon boundaries.</source>
         <translation>Hizalamanın aminoya çevrilmesi, kodon sınırları içine boşluklar yerleştirme hatalarından kaçınmaya izin verir.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="228"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Translate to amino when aligning</source>
         <translation>Hizalarken aminoya çevirin</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="240"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Translation table:</source>
         <translation>Çeviri tablosu:</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="261"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Region to align</source>
         <translation>Hizalanacak bölge</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="351"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="269"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Whole alignment</source>
         <translation>Tam hizalama</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="284"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Column range</source>
         <translation>Sütun aralığı</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialog.ui" line="123"/>
+        <location filename="../src/MuscleAlignDialog.ui"/>
         <source>Do not re-arrange sequences (-stable)</source>
         <translation>Sıraları yeniden düzenleme (-stable)</translation>
     </message>

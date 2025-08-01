@@ -4,152 +4,147 @@
 <context>
     <name>GenecutOPWidget</name>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="14"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="51"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Login form</source>
         <translation>Форма авторизации</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="61"/>
-        <location filename="../src/GenecutOPWidget.ui" line="174"/>
-        <location filename="../src/GenecutOPWidget.ui" line="407"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>username@server.com</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="74"/>
-        <location filename="../src/GenecutOPWidget.ui" line="420"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="84"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Show password</source>
         <translation>Показать пароль</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="91"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Remember me</source>
         <translation>Запомнить меня</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="111"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Login</source>
         <translation>Авторизироваться</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="121"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Forgot password</source>
         <translation>Забыли пароль</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="128"/>
-        <location filename="../src/GenecutOPWidget.ui" line="483"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Register</source>
         <translation>Зарегистрироваться</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="164"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Reset your password</source>
         <translation>Восстановить пароль</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="191"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Send password reset email</source>
         <translation>Отправить на почту</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="198"/>
-        <location filename="../src/GenecutOPWidget.ui" line="490"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Back to login</source>
         <translation>Обратно к авторизации</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="234"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Welcome, </source>
         <translation>Добро пожаловать, </translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="241"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Open this sequence in GeneCut</source>
         <translation>Открыть последовательность в GeneCut</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="248"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Fetch results</source>
         <translation>Вытянуть результаты</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="271"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="276"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Status</source>
         <translation>Статус</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="284"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Short description:</source>
         <translation>Краткое описание:</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="314"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Remove selected report</source>
         <translation>Удалить выделенный отчет</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="324"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Get the input sequence</source>
         <translation>Скачать входную последовательнсть</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="334"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Open full report in GeneCut</source>
         <translation>Открыть полный отчет в GeneCut</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="344"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Get the result sequence</source>
         <translation>Скачать результирующую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="354"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Compare input and result sequences</source>
         <translation>Сравнить</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="361"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Logout</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="397"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Register form</source>
         <translation>Форма регистрации</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="433"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Password confirmation</source>
         <translation>Подтверждение пароля</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="443"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>First name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="453"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Last name</source>
         <translation>Фамилия</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="297"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -168,7 +163,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenecutOPWidget.ui" line="460"/>
+        <location filename="../src/GenecutOPWidget.ui"/>
         <source>Subscribe to newsletters</source>
         <translation>Подписаться на новостную рассылку</translation>
     </message>

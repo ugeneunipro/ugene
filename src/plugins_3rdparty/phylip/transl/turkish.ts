@@ -4,62 +4,62 @@
 <context>
     <name>NeighborJoinWidget</name>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="51"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Distance Matrix</source>
         <translation>Mesafe Matrisi</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="68"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Distance matrix model</source>
         <translation>Mesafe matris modeli</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="88"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Coefficient of variation of substitution rate among sites</source>
         <translation>Siteler arasında ikame oranının değişim katsayısı</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="117"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Gamma distributed rates across sites</source>
         <translation>Siteler arasında gama dağılım oranları</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="131"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Transition/transversion ratio</source>
         <translation>Geçiş/dönüşüm oranı</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="176"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Bootstrapping and Consensus Tree</source>
         <translation>Önyükleme ve Konsensüs Ağacı</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="185"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Enable bootstrapping</source>
         <translation>Önyüklemeyi etkinleştirin</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="218"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Number of replicates</source>
         <translation>Yineleme sayısı</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="245"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Seed (must be odd)</source>
         <translation>Tohum (eşsiz olmalı)</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="272"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Consensus type</source>
         <translation>Konsensüs türü</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="289"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Fraction</source>
         <translation>Kesir</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="331"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Display Options</source>
         <translation>Görüntüleme seçenekleri</translation>
     </message>

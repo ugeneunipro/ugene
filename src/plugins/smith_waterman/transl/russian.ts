@@ -4,37 +4,37 @@
 <context>
     <name>PairwiseAlignmentSmithWatermanOptionsPanelMainWidget</name>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="14"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="20"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui"/>
         <source>Algorithm version:</source>
         <translation>Версия алгоритма:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="30"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui"/>
         <source>Scoring matrix:</source>
         <translation>Матрица:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="55"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui"/>
         <source>View...</source>
         <translation>Посмотреть...</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui"/>
         <source>Gap penalty</source>
         <translation>Штраф за пробел</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="92"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui"/>
         <source>Open:</source>
         <translation>Открыть:</translation>
     </message>
     <message>
-        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="99"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui"/>
         <source>Extension:</source>
         <translation>Расширение:</translation>
     </message>

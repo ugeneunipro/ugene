@@ -4,27 +4,27 @@
 <context>
     <name>AddConstraintDialog</name>
     <message>
-        <location filename="../src/AddConstraintDialog.ui" line="14"/>
+        <location filename="../src/AddConstraintDialog.ui"/>
         <source>Add Constraint</source>
         <translation>Kısıtlama Ekle</translation>
     </message>
     <message>
-        <location filename="../src/AddConstraintDialog.ui" line="30"/>
+        <location filename="../src/AddConstraintDialog.ui"/>
         <source>From</source>
         <translation>Şundan</translation>
     </message>
     <message>
-        <location filename="../src/AddConstraintDialog.ui" line="43"/>
+        <location filename="../src/AddConstraintDialog.ui"/>
         <source>To</source>
         <translation>Şuna</translation>
     </message>
     <message>
-        <location filename="../src/AddConstraintDialog.ui" line="84"/>
+        <location filename="../src/AddConstraintDialog.ui"/>
         <source>Min</source>
         <translation>Asg</translation>
     </message>
     <message>
-        <location filename="../src/AddConstraintDialog.ui" line="97"/>
+        <location filename="../src/AddConstraintDialog.ui"/>
         <source>Max</source>
         <translation>Azm</translation>
     </message>
@@ -32,17 +32,17 @@
 <context>
     <name>QDDialog</name>
     <message>
-        <location filename="../src/QDDialog.ui" line="14"/>
+        <location filename="../src/QDDialog.ui"/>
         <source>Analyze with Query Schema</source>
         <translation>Sorgu Şeması ile Analiz Et</translation>
     </message>
     <message>
-        <location filename="../src/QDDialog.ui" line="22"/>
+        <location filename="../src/QDDialog.ui"/>
         <source>File with query</source>
         <translation>Sorgulu dosya</translation>
     </message>
     <message>
-        <location filename="../src/QDDialog.ui" line="32"/>
+        <location filename="../src/QDDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -111,24 +111,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QueryEditorWidget</name>
     <message>
-        <location filename="../src/QueryEditorWidget.ui" line="14"/>
+        <location filename="../src/QueryEditorWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditorWidget.ui" line="35"/>
+        <location filename="../src/QueryEditorWidget.ui"/>
         <source>Property Editor</source>
         <translation>Özellik Düzenleyici</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditorWidget.ui" line="49"/>
-        <location filename="../src/QueryEditorWidget.ui" line="78"/>
-        <location filename="../src/QueryEditorWidget.ui" line="88"/>
+        <location filename="../src/QueryEditorWidget.ui"/>
         <source>TextLabel</source>
         <translation>MetinEtiketi</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditorWidget.ui" line="152"/>
+        <location filename="../src/QueryEditorWidget.ui"/>
         <source>Parameters</source>
         <translation>Parametreler</translation>
     </message>
@@ -136,28 +134,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>RunQueryDlg</name>
     <message>
-        <location filename="../src/RunQueryDialog.ui" line="26"/>
+        <location filename="../src/RunQueryDialog.ui"/>
         <source>Run Schema</source>
         <translation>Şemayı Çalıştır</translation>
     </message>
     <message>
-        <location filename="../src/RunQueryDialog.ui" line="45"/>
+        <location filename="../src/RunQueryDialog.ui"/>
         <source>Load sequence</source>
         <translation>Yükleme sırası</translation>
     </message>
     <message>
-        <location filename="../src/RunQueryDialog.ui" line="58"/>
+        <location filename="../src/RunQueryDialog.ui"/>
         <source>Save results to</source>
         <translation>Sonuçları şuraya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/RunQueryDialog.ui" line="83"/>
-        <location filename="../src/RunQueryDialog.ui" line="90"/>
+        <location filename="../src/RunQueryDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/RunQueryDialog.ui" line="122"/>
+        <location filename="../src/RunQueryDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>

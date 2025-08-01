@@ -4,24 +4,24 @@
 <context>
     <name>AnnsActionDialog</name>
     <message>
-        <location filename="../src/AnnsActionDialog.ui" line="14"/>
+        <location filename="../src/AnnsActionDialog.ui"/>
         <source>New Annotations Action</source>
         <translation>Yeni Ek Açıklamalar Eylemi</translation>
     </message>
     <message>
-        <location filename="../src/AnnsActionDialog.ui" line="34"/>
+        <location filename="../src/AnnsActionDialog.ui"/>
         <source>Merge into one annotation table</source>
         <translation>Tek bir ek açıklama tablosunda birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/AnnsActionDialog.ui" line="53"/>
+        <location filename="../src/AnnsActionDialog.ui"/>
         <source>Shift annotations using
 this merge sequence slot:</source>
         <translation>Ek açıklamaları kullanarak kaydırın
 bu birleştirme sırası yuvası:</translation>
     </message>
     <message>
-        <location filename="../src/AnnsActionDialog.ui" line="64"/>
+        <location filename="../src/AnnsActionDialog.ui"/>
         <source>Filter duplicated annotations</source>
         <translation>Yinelenen ek açıklamaları filtrele</translation>
     </message>
@@ -29,27 +29,27 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>BreakpointHitCountDialog</name>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.ui" line="26"/>
+        <location filename="../src/BreakpointHitCountDialog.ui"/>
         <source>Breakpoint Hit Count</source>
         <translation>Kesme Noktası Vuruş Sayısı</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.ui" line="50"/>
+        <location filename="../src/BreakpointHitCountDialog.ui"/>
         <source>When the breakpoint is h&amp;it:</source>
         <translation>Kesme noktasına u&amp;laşıldığında:</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.ui" line="89"/>
+        <location filename="../src/BreakpointHitCountDialog.ui"/>
         <source>Current hit count:</source>
         <translation>Mevcut isabet sayısı:</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.ui" line="96"/>
+        <location filename="../src/BreakpointHitCountDialog.ui"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointHitCountDialog.ui" line="43"/>
+        <location filename="../src/BreakpointHitCountDialog.ui"/>
         <source>A breakpoint is hit when the breakpoint location is reached and the condition is&lt;br&gt;satisfied. The hit count is the number of times the breakpoint has been hit.</source>
         <translation>Kesme noktası konumuna ulaşıldığında ve koşul karşılandığında&lt;br&gt;bir kesme noktasına ulaşılır. Hit sayısı, kesme noktasının kaç kez vurulduğudur.</translation>
     </message>
@@ -57,17 +57,17 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>CreateDirectoryDialog</name>
     <message>
-        <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
+        <location filename="../src/CreateDirectoryDialog.ui"/>
         <source>Create a directory</source>
         <translation>Bir dizin oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/CreateDirectoryDialog.ui" line="43"/>
+        <location filename="../src/CreateDirectoryDialog.ui"/>
         <source>Parent directory:</source>
         <translation>Ana Dizin:</translation>
     </message>
     <message>
-        <location filename="../src/CreateDirectoryDialog.ui" line="63"/>
+        <location filename="../src/CreateDirectoryDialog.ui"/>
         <source>Name:</source>
         <translation>Ad:</translation>
     </message>
@@ -75,32 +75,32 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>DatasetWidget</name>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="20"/>
+        <location filename="../src/DatasetWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="40"/>
+        <location filename="../src/DatasetWidget.ui"/>
         <source>Add file(s)</source>
         <translation>Dosya ekle</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="62"/>
+        <location filename="../src/DatasetWidget.ui"/>
         <source>Add directory</source>
         <translation>Dizin ekle</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="94"/>
+        <location filename="../src/DatasetWidget.ui"/>
         <source>Up url(s)</source>
         <translation>Yukarı url&apos;ler</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="119"/>
+        <location filename="../src/DatasetWidget.ui"/>
         <source>Down url(s)</source>
         <translation>Aşağı URL&apos;ler</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="144"/>
+        <location filename="../src/DatasetWidget.ui"/>
         <source>Delete urls(s)</source>
         <translation>URL&apos;leri silin</translation>
     </message>
@@ -108,12 +108,12 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>DbFolderOptions</name>
     <message>
-        <location filename="../src/DbFolderOptions.ui" line="32"/>
+        <location filename="../src/DbFolderOptions.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/DbFolderOptions.ui" line="50"/>
+        <location filename="../src/DbFolderOptions.ui"/>
         <source>Recursive</source>
         <translation>Özyinelemeli</translation>
     </message>
@@ -121,22 +121,22 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>DirectoryOptions</name>
     <message>
-        <location filename="../src/DirectoryOptions.ui" line="32"/>
+        <location filename="../src/DirectoryOptions.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/DirectoryOptions.ui" line="46"/>
+        <location filename="../src/DirectoryOptions.ui"/>
         <source>Exclude mask</source>
         <translation>Maskeyi hariç tut</translation>
     </message>
     <message>
-        <location filename="../src/DirectoryOptions.ui" line="75"/>
+        <location filename="../src/DirectoryOptions.ui"/>
         <source>Inсlude mask</source>
         <translation>Maske dahil et</translation>
     </message>
     <message>
-        <location filename="../src/DirectoryOptions.ui" line="112"/>
+        <location filename="../src/DirectoryOptions.ui"/>
         <source>Recursive</source>
         <translation>Özyinelemeli</translation>
     </message>
@@ -144,22 +144,22 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>EditBreakpointLabelsDialog</name>
     <message>
-        <location filename="../src/EditBreakpointLabelsDialog.ui" line="60"/>
+        <location filename="../src/EditBreakpointLabelsDialog.ui"/>
         <source>O&amp;r choose among existing labels</source>
         <translation>V&amp;eya mevcut etiketler arasından seçim yapın</translation>
     </message>
     <message>
-        <location filename="../src/EditBreakpointLabelsDialog.ui" line="53"/>
+        <location filename="../src/EditBreakpointLabelsDialog.ui"/>
         <source>&amp;Add</source>
         <translation>&amp;Ekle</translation>
     </message>
     <message>
-        <location filename="../src/EditBreakpointLabelsDialog.ui" line="26"/>
+        <location filename="../src/EditBreakpointLabelsDialog.ui"/>
         <source>Edit Breakpoint Labels</source>
         <translation>Kesme Noktası Etiketlerini Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/EditBreakpointLabelsDialog.ui" line="34"/>
+        <location filename="../src/EditBreakpointLabelsDialog.ui"/>
         <source>T&amp;ype a new label</source>
         <translation>Yeni bir etiket y&amp;azın</translation>
     </message>
@@ -167,27 +167,27 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>EditFloatMarkerWidget</name>
     <message>
-        <location filename="../src/EditFloatMarkerWidget.ui" line="14"/>
+        <location filename="../src/EditFloatMarkerWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/EditFloatMarkerWidget.ui" line="20"/>
+        <location filename="../src/EditFloatMarkerWidget.ui"/>
         <source>Interval:</source>
         <translation>Aralık:</translation>
     </message>
     <message>
-        <location filename="../src/EditFloatMarkerWidget.ui" line="42"/>
+        <location filename="../src/EditFloatMarkerWidget.ui"/>
         <source>..</source>
         <translation>..</translation>
     </message>
     <message>
-        <location filename="../src/EditFloatMarkerWidget.ui" line="64"/>
+        <location filename="../src/EditFloatMarkerWidget.ui"/>
         <source>Less than:</source>
         <translation>Küçüktür:</translation>
     </message>
     <message>
-        <location filename="../src/EditFloatMarkerWidget.ui" line="94"/>
+        <location filename="../src/EditFloatMarkerWidget.ui"/>
         <source>Greater than:</source>
         <translation>Büyüktür:</translation>
     </message>
@@ -195,7 +195,7 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>EditIntegerMarkerWidget</name>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="20"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui"/>
         <source>Interval:</source>
         <translation>Aralık:</translation>
     </message>
@@ -204,17 +204,17 @@ bu birleştirme sırası yuvası:</translation>
         <translation type="vanished">radyo Düğme Grubu</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="42"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui"/>
         <source>..</source>
         <translation>..</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="61"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui"/>
         <source>Less than:</source>
         <translation>Küçüktür:</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="88"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui"/>
         <source>Greater than:</source>
         <translation>Büyüktür:</translation>
     </message>
@@ -222,17 +222,17 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>EditMarkerDialog</name>
     <message>
-        <location filename="../src/EditMarkerDialog.ui" line="14"/>
+        <location filename="../src/EditMarkerDialog.ui"/>
         <source>Edit Marker</source>
         <translation>İşaretleyici</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerDialog.ui" line="28"/>
+        <location filename="../src/EditMarkerDialog.ui"/>
         <source>Marker name:</source>
         <translation>İşaretleyici adı:</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerDialog.ui" line="35"/>
+        <location filename="../src/EditMarkerDialog.ui"/>
         <source>NewMarker</source>
         <translation>Yenişaretleyici</translation>
     </message>
@@ -240,42 +240,42 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>EditMarkerGroupDialog</name>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="14"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>Edit Marker Group</source>
         <translation>İşaretçi Grubunu Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="22"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>Marker group name:</source>
         <translation>İşaretçi grubu adı:</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="29"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>NewMarkerGroup</source>
         <translation>Yeni İşaretçi Grubu</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="36"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>Marker group type:</source>
         <translation>İşaretçi grubu türü:</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="46"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>Parameter:</source>
         <translation>Parametre:</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="60"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="80"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.ui" line="87"/>
+        <location filename="../src/EditMarkerGroupDialog.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
@@ -283,12 +283,12 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>EditStringMarkerWidget</name>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="14"/>
+        <location filename="../src/EditStringMarkerWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="20"/>
+        <location filename="../src/EditStringMarkerWidget.ui"/>
         <source>Starts with</source>
         <translation>İle başlar</translation>
     </message>
@@ -297,17 +297,17 @@ bu birleştirme sırası yuvası:</translation>
         <translation type="vanished">buttonGroup</translation>
     </message>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="33"/>
+        <location filename="../src/EditStringMarkerWidget.ui"/>
         <source>Ends with</source>
         <translation>İle biter</translation>
     </message>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="43"/>
+        <location filename="../src/EditStringMarkerWidget.ui"/>
         <source>Contains</source>
         <translation>İçerir</translation>
     </message>
     <message>
-        <location filename="../src/EditStringMarkerWidget.ui" line="53"/>
+        <location filename="../src/EditStringMarkerWidget.ui"/>
         <source>Regular expression</source>
         <translation>Düzenli ifade</translation>
     </message>
@@ -315,32 +315,32 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>GrouperEditorWidget</name>
     <message>
-        <location filename="../src/GrouperEditorWidget.ui" line="14"/>
+        <location filename="../src/GrouperEditorWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/GrouperEditorWidget.ui" line="22"/>
+        <location filename="../src/GrouperEditorWidget.ui"/>
         <source>Group slot</source>
         <translation>Grup yuvası</translation>
     </message>
     <message>
-        <location filename="../src/GrouperEditorWidget.ui" line="39"/>
+        <location filename="../src/GrouperEditorWidget.ui"/>
         <source>Group operation</source>
         <translation>Grup operasyonu</translation>
     </message>
     <message>
-        <location filename="../src/GrouperEditorWidget.ui" line="60"/>
+        <location filename="../src/GrouperEditorWidget.ui"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/GrouperEditorWidget.ui" line="80"/>
+        <location filename="../src/GrouperEditorWidget.ui"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/GrouperEditorWidget.ui" line="87"/>
+        <location filename="../src/GrouperEditorWidget.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
@@ -348,22 +348,22 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>MarkerEditorWidget</name>
     <message>
-        <location filename="../src/MarkerEditorWidget.ui" line="14"/>
+        <location filename="../src/MarkerEditorWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/MarkerEditorWidget.ui" line="22"/>
+        <location filename="../src/MarkerEditorWidget.ui"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/MarkerEditorWidget.ui" line="42"/>
+        <location filename="../src/MarkerEditorWidget.ui"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/MarkerEditorWidget.ui" line="49"/>
+        <location filename="../src/MarkerEditorWidget.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
@@ -371,22 +371,22 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>MsaActionDialog</name>
     <message>
-        <location filename="../src/MsaActionDialog.ui" line="26"/>
+        <location filename="../src/MsaActionDialog.ui"/>
         <source>New Alignment Action</source>
         <translation>Yeni Hizalama İşlemi</translation>
     </message>
     <message>
-        <location filename="../src/MsaActionDialog.ui" line="34"/>
+        <location filename="../src/MsaActionDialog.ui"/>
         <source>Merge into one alignment</source>
         <translation>Tek bir hizalamada birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/MsaActionDialog.ui" line="50"/>
+        <location filename="../src/MsaActionDialog.ui"/>
         <source>Alignment name</source>
         <translation>Hizalama adı</translation>
     </message>
     <message>
-        <location filename="../src/MsaActionDialog.ui" line="60"/>
+        <location filename="../src/MsaActionDialog.ui"/>
         <source>Filter duplicated rows</source>
         <translation>Yinelenen satırları filtrele</translation>
     </message>
@@ -394,17 +394,17 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>NewBreakpointDialog</name>
     <message>
-        <location filename="../src/NewBreakpointDialog.ui" line="20"/>
+        <location filename="../src/NewBreakpointDialog.ui"/>
         <source>New Breakpoint</source>
         <translation>Yeni Kesme Noktası</translation>
     </message>
     <message>
-        <location filename="../src/NewBreakpointDialog.ui" line="28"/>
+        <location filename="../src/NewBreakpointDialog.ui"/>
         <source>Break execution when it reaches this element in the workflow</source>
         <translation>İş akışında bu öğeye ulaştığında yürütmeyi durdur</translation>
     </message>
     <message>
-        <location filename="../src/NewBreakpointDialog.ui" line="35"/>
+        <location filename="../src/NewBreakpointDialog.ui"/>
         <source>&amp;Element: </source>
         <translation>&amp;Öğe: </translation>
     </message>
@@ -412,17 +412,17 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>NewGrouperSlotDialog</name>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.ui" line="32"/>
+        <location filename="../src/NewGrouperSlotDialog.ui"/>
         <source>Setup New Data Merge Action</source>
         <translation>Yeni Veri Birleştirme Eylemini Ayarlayın</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.ui" line="43"/>
+        <location filename="../src/NewGrouperSlotDialog.ui"/>
         <source>Source data slot</source>
         <translation>Kaynak veri yuvası</translation>
     </message>
     <message>
-        <location filename="../src/NewGrouperSlotDialog.ui" line="60"/>
+        <location filename="../src/NewGrouperSlotDialog.ui"/>
         <source>Name of new slot with merged data</source>
         <translation>Birleştirilmiş verilere sahip yeni alanın adı</translation>
     </message>
@@ -430,28 +430,27 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>OutputFileDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.ui" line="14"/>
+        <location filename="../src/OutputFileDialog.ui"/>
         <source>Save file/directory</source>
         <translation>Dosyayı/dizini kaydet</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.ui" line="31"/>
+        <location filename="../src/OutputFileDialog.ui"/>
         <source>Create directory</source>
         <translation>Dizin oluştur</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.ui" line="63"/>
-        <location filename="../src/OutputFileDialog.ui" line="82"/>
+        <location filename="../src/OutputFileDialog.ui"/>
         <source>Save to file system</source>
         <translation>Dosya sistemine kaydet</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.ui" line="126"/>
+        <location filename="../src/OutputFileDialog.ui"/>
         <source>Directory:</source>
         <translation>Dizin:</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.ui" line="146"/>
+        <location filename="../src/OutputFileDialog.ui"/>
         <source>File name:</source>
         <translation>Dosya adı:</translation>
     </message>
@@ -549,12 +548,12 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>SequeceActionDialog</name>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="32"/>
+        <location filename="../src/SequenceActionDialog.ui"/>
         <source>New Sequence Action</source>
         <translation>Yeni Sıra Eylemi</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="40"/>
+        <location filename="../src/SequenceActionDialog.ui"/>
         <source>Merge into one sequence</source>
         <translation>Tek bir dizide birleştirin</translation>
     </message>
@@ -563,27 +562,27 @@ bu birleştirme sırası yuvası:</translation>
         <translation type="vanished">buttonGroup</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="59"/>
+        <location filename="../src/SequenceActionDialog.ui"/>
         <source>Merged sequence name</source>
         <translation>Birleştirilmiş sıra adı</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="69"/>
+        <location filename="../src/SequenceActionDialog.ui"/>
         <source>Gap size</source>
         <translation>Boşluk boyutu</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="96"/>
+        <location filename="../src/SequenceActionDialog.ui"/>
         <source>Merge into alignment</source>
         <translation>Uyum içinde birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="112"/>
+        <location filename="../src/SequenceActionDialog.ui"/>
         <source>Alignment name</source>
         <translation>Hizalama adı</translation>
     </message>
     <message>
-        <location filename="../src/SequenceActionDialog.ui" line="122"/>
+        <location filename="../src/SequenceActionDialog.ui"/>
         <source>Filter duplicated sequences</source>
         <translation>Yinelenen dizileri filtrele</translation>
     </message>
@@ -591,17 +590,17 @@ bu birleştirme sırası yuvası:</translation>
 <context>
     <name>StringActionDialog</name>
     <message>
-        <location filename="../src/StringActionDialog.ui" line="26"/>
+        <location filename="../src/StringActionDialog.ui"/>
         <source>New String Action</source>
         <translation>Yeni Dize Eylemi</translation>
     </message>
     <message>
-        <location filename="../src/StringActionDialog.ui" line="37"/>
+        <location filename="../src/StringActionDialog.ui"/>
         <source>Merge strings into one string</source>
         <translation>Dizeleri tek bir dizede birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/StringActionDialog.ui" line="53"/>
+        <location filename="../src/StringActionDialog.ui"/>
         <source>Separator</source>
         <translation>Ayraç</translation>
     </message>

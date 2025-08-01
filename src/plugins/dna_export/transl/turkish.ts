@@ -4,72 +4,72 @@
 <context>
     <name>CSVColumnConfigurationDialog</name>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="23"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Column role</source>
         <translation>Sütun rolü</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="36"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation start position</source>
         <translation>Ek açıklama başlangıç konumu</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="46"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Add offset</source>
         <translation>Ofset ekle</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="59"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source> bp</source>
         <translation> bp</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="72"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation end position</source>
         <translation>Ek açıklama bitiş konumu</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="82"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Inclusive</source>
         <translation>Kapsayıcı</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="92"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation length</source>
         <translation>Ek açıklama uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="99"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Complement strand mark</source>
         <translation>Tamamlayıcı iplik işareti</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="109"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Mark value</source>
         <translation>İşaret değeri</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="126"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation name</source>
         <translation>Ek açıklama adı</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="133"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Qualifier</source>
         <translation>Niteleyici</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="29"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Ignore this column</source>
         <translation>Bu sütunu yok say</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="14"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Select the Role of the Column</source>
         <translation>Sütunun Rolünü Seçin</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.ui" line="174"/>
+        <location filename="../src/CSVColumnConfigurationDialog.ui"/>
         <source>Annotation group</source>
         <translation>Ek açıklama grubu</translation>
     </message>
@@ -77,104 +77,102 @@
 <context>
     <name>DNASequenceGeneratorDialog</name>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="14"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Generate Sequence</source>
         <translation>Sıra Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="26"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Parameters</source>
         <translation>Parametreler</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="34"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Length</source>
         <translation>Uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="50"/>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="76"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source> bp</source>
         <translation> bp</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="66"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Window size</source>
         <translation>Pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="128"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Number of sequences</source>
         <translation>Dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="135"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Initialize random generator manually</source>
         <translation>Rastgele oluşturucuyu elle başlat</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="188"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Content</source>
         <translation>İçerik</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="194"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Reference</source>
         <translation>Referans</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="212"/>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="492"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="221"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Base content (%)</source>
         <translation>Temel içerik (%)</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="245"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="295"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="342"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>G</source>
         <translation>G</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="389"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="426"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>GC Skew</source>
         <translation>GC Eğriltme</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="471"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="477"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Output File</source>
         <translation>Çıktı Dosyası</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="501"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Format</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="527"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
@@ -182,37 +180,37 @@
 <context>
     <name>ExportBlastResultDialog</name>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="14"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Export BLAST Result to Multiple Alignment</source>
         <translation>BLAST Sonucunu Çoklu Hizalamaya Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="42"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="35"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="49"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>File format to use</source>
         <translation>Kullanılacak dosya biçimi</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="25"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Qualifier to use as name</source>
         <translation>Ad olarak kullanılacak niteleyici</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="64"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Add reference to alignment</source>
         <translation>Hizalamaya referans ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.ui" line="71"/>
+        <location filename="../src/ExportBlastResultDialog.ui"/>
         <source>Add document to the project</source>
         <translation>Projeye belge ekleyin</translation>
     </message>
@@ -220,37 +218,37 @@
 <context>
     <name>ExportChromatogramDialog</name>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="14"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Export Chromatogram File</source>
         <translation>Chromatogram Dosyasını Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="25"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="35"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="42"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>File format to use</source>
         <translation>Kullanılacak dosya biçimi</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="56"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Reversed</source>
         <translation>Ters çevirilmiş</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="66"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Complemented</source>
         <translation>Tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.ui" line="75"/>
+        <location filename="../src/ExportChromatogramDialog.ui"/>
         <source>Add document to the project</source>
         <translation>Projeye belge ekleyin</translation>
     </message>
@@ -258,32 +256,32 @@
 <context>
     <name>ExportMca2MsaDialog</name>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="20"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Export Alignment without Chromatograms </source>
         <translation>Kromatogramlar Olmadan İhracat Hizalaması </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="34"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>File format</source>
         <translation>Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="52"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="61"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="70"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Add document to project</source>
         <translation>Projeye belge ekle</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="80"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui"/>
         <source>Include reference sequence</source>
         <translation>Referans sırasını dahil et</translation>
     </message>
@@ -291,129 +289,127 @@
 <context>
     <name>ImportAnnotationsFromCSVDialog</name>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="25"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>File to read</source>
         <translation>Okunacak dosya</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="35"/>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="60"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="44"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Results</source>
         <translation>Sonuç</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="50"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Result file</source>
         <translation>Sonuç dosyası</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="67"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>File format</source>
         <translation>Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="77"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Add result file to project</source>
         <translation>Sonuç dosyasını projeye ekle</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="96"/>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="111"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Column separator</source>
         <translation>Sütun ayırıcı</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="103"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>File parsing</source>
         <translation>Dosya ayrıştırma</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="140"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>,</source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="150"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Guess</source>
         <translation>Tahmin et</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="157"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Script</source>
         <translation>Betik</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="177"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="184"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>First  lines to skip</source>
         <translation>İlk atlanacak  satırlar</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="207"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Do not skip</source>
         <translation>Geçme</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="210"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source> line(s)</source>
         <translation> satır(lar)</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="220"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Skip all lines starts with the text</source>
         <translation>Tüm satırları atla metinle başlar</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="246"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="266"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Remove quotes</source>
         <translation>Alıntıları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="283"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Default annotation name</source>
         <translation>Varsayılan ek açıklama adı</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="296"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>misc_feature</source>
         <translation>çeşitli_özellikler</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="259"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Interpret multiple separators like a single separator (try when separator is a whitespace character)</source>
         <translation>Birden çok ayırıcıyı tek bir ayırıcı gibi yorumlayın (ayırıcı bir boşluk karakteri olduğunda deneyin)</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="14"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Import Annotations from CSV</source>
         <translation>Ek Açıklamaları CSV&apos;den İçe Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="313"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Results preview</source>
         <translation>Sonuçların önizlemesi</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="333"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Preview</source>
         <translation>Önizlenim</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="357"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.ui"/>
         <source>Raw file preview:</source>
         <translation>Ham dosya önizlemesi:</translation>
     </message>
@@ -860,102 +856,102 @@
 <context>
     <name>U2::ExportMSA2MSADialog</name>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="20"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Export Amino Acid Translation</source>
         <translation>Amino Asit Tercümesini Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="28"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="38"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="45"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>File format to use</source>
         <translation>Kullanılacak dosya biçimi</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="55"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Amino translation</source>
         <translation>Amino çevirisi</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="67"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Include gaps</source>
         <translation>Boşlukları dahil et</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="77"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Translate triplets with gaps as:</source>
         <translation>Üçüzleri aşağıdaki gibi boşluklarla çevirin:</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="86"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="99"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Gap</source>
         <translation>Boşluk</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="115"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Translation frame:</source>
         <translation>Çeviri çerçevesi:</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="124"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>+1</source>
         <translation>+1</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="137"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>-1</source>
         <translation>-1</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="150"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>+2</source>
         <translation>+2</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="163"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>-2</source>
         <translation>-2</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="176"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>+3</source>
         <translation>+3</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="189"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>-3</source>
         <translation>-3</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="202"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Add document to the project</source>
         <translation>Projeye belge ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="212"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Export range</source>
         <translation>Dışa aktarma aralığı</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="218"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Whole alignment</source>
         <translation>Tam hizalama</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="228"/>
+        <location filename="../src/ExportMSA2MSADialog.ui"/>
         <source>Selected rows</source>
         <translation>Seçili satırlar</translation>
     </message>
@@ -1003,7 +999,7 @@
 <context>
     <name>U2::ExportMSA2SequencesDialog</name>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="20"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Convert Alignment to Separate Sequences</source>
         <translation>Hizalamayı Ayrı Dizilere Dönüştür</translation>
     </message>
@@ -1012,7 +1008,7 @@
         <translation type="vanished">Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="51"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -1029,32 +1025,32 @@
         <translation type="vanished">Boşluk karakterleri (&apos;-&apos;)</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="31"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Export format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="41"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Export file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="58"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Gap characters (&apos;-&apos;)  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="67"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Keep</source>
         <translation>Tut</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="77"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Trim</source>
         <translation>Kırp</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="101"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui"/>
         <source>Add exported document to the project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1286,32 +1282,32 @@
 <context>
     <name>U2::ExportSequences2MSADialog</name>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="14"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Export Sequences as Alignment</source>
         <translation>Dizileri Hizalama Olarak Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="25"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="35"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="42"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>File format to use</source>
         <translation>Kullanılacak dosya biçimi</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="54"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Add document to the project</source>
         <translation>Projeye belge ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.ui" line="64"/>
+        <location filename="../src/ExportSequences2MSADialog.ui"/>
         <source>Use Genbank &quot;SOURCE&quot; tags as a name of sequences (for Genbank sequences only)</source>
         <translation>Dizilerin adı olarak Genbank &quot;SOURCE&quot; etiketlerini kullanın (yalnızca Genbank dizileri için)</translation>
     </message>
@@ -1334,117 +1330,117 @@
 <context>
     <name>U2::ExportSequencesDialog</name>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="32"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Export Selected Sequences</source>
         <translation>Seçili Dizileri Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="53"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="63"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="70"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>File format to use</source>
         <translation>Kullanılacak dosya biçimi</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="46"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Export with annotations</source>
         <translation>Ek açıklamalarla dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="101"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Add document to the project</source>
         <translation>Projeye belge ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="87"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Use custom sequence name</source>
         <translation>Özel sıra adı kullan</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="127"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save direct strand</source>
         <translation>Doğrudan ipliği kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="137"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save complement strand</source>
         <translation>Tamamlayıcı ipliği kaydet</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="144"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save both strands</source>
         <translation>Her iki ipliği de kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="168"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Translate to amino alphabet</source>
         <translation>Amino alfabesine çevir</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="178"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save all amino frames</source>
         <translation>Tüm amino kareleri kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="239"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Back translation options</source>
         <translation>Geri çeviri seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="245"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Translate back to nucleic alphabet</source>
         <translation>Nükleik alfabeye geri çevirin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="257"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Most frequently used codons</source>
         <translation>En sık kullanılan kodonlar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="297"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Organism:</source>
         <translation>Organizma:</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="339"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Save as separate sequences</source>
         <translation>Ayrı diziler olarak kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="270"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Frequency distribution</source>
         <translation>Frekans dağılımı</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="119"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Conversion options</source>
         <translation>Dönüştürme seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="208"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Use custom translation table</source>
         <translation>Özel çeviri tablosu kullan</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="331"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Merge options</source>
         <translation>Birleştirme seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="373"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Add gap symbols between sequences</source>
         <translation>Diziler arasına boşluk sembolleri ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="349"/>
+        <location filename="../src/ExportSequencesDialog.ui"/>
         <source>Merge sequences</source>
         <translation>Sıraları birleştir</translation>
     </message>
@@ -2181,47 +2177,47 @@ Bu çalışanı .fasta ve .qual pair&apos;i fastq biçimine dönüştürmek içi
 <context>
     <name>U2::SaveSelectedSequenceFromMSADialog</name>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="14"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Export Selected Sequence(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="25"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Export to folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="37"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="46"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>File format</source>
         <translation type="unfinished">Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="56"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>File name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="62"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Sequence name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="85"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Custom name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="117"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Keep gaps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="127"/>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui"/>
         <source>Add to project</source>
         <translation type="unfinished">Projeye ekle</translation>
     </message>
@@ -2247,12 +2243,12 @@ Bu çalışanı .fasta ve .qual pair&apos;i fastq biçimine dönüştürmek içi
 <context>
     <name>getSequenceByIdDialog</name>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="14"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>Get Sequences by ID</source>
         <translation>Kimliğe göre Dizileri Al</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="34"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>The sequences from selected BLAST results will be downloaded from
 NCBI Genbank by their GI identifier
 </source>
@@ -2261,17 +2257,17 @@ GI tanımlayıcısına göre NCBI Genbank
 </translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>Save to directory:</source>
         <translation>Dizine kaydet:</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="67"/>
+        <location filename="../src/GetSequenceByIdDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>

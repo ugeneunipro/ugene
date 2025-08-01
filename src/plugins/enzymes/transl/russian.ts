@@ -4,197 +4,197 @@
 <context>
     <name>ConstructMoleculeDialog</name>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="20"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Construct Molecule</source>
         <translation>Сшивка фрагментов</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="33"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Construction</source>
         <translation>Создание молекулы</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="57"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Fragments available from active project</source>
         <translation>Фрагменты доступные из активного проекта</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="64"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add selected fragments to new molecule contents</source>
         <translation>Добавить выбранные фрагменты в состав новой молекулы</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="67"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="87"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>From Project</source>
         <translation>Из проекта</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="94"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add all available fragments to molecule contets</source>
         <translation>Добавить все доступные фрагменты в состав новой молекулы</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="97"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add All</source>
         <translation>Добавить все</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="106"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>New molecule contents:</source>
         <translation>Состав новой молекулы:</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="119"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>New molecule contents</source>
         <translation>Состав новой молекулы</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="123"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>5&apos;</source>
         <translation>5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="128"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Fragment</source>
         <translation>Фрагмент</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="133"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>3&apos;</source>
         <translation>3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="138"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Inverted</source>
         <translation>Инвертирован</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="161"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Move selected fragment up</source>
         <translation>Переместить на один уровень вверх</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="164"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Up</source>
         <translation>Вверх</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="171"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Move selected fragment down</source>
         <translation>Переместить на уровень вниз</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="174"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Down</source>
         <translation>Вниз</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="181"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Remove selected fragment from new molecule</source>
         <translation>Удалить выбранный фрагмент из состава молекулы</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="184"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="227"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Clear molecule contents</source>
         <translation>Убрать все фрагменты</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="230"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Clear All</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="252"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Annotate fragments in new molecule</source>
         <translation>Аннотировать фрагменты в новой молекуле</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="271"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Force &quot;blunt&quot; and omit all overhangs</source>
         <translation>Не учитывать липкие концы и исключить их</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="287"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Make circular</source>
         <translation>Сделать круговой</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="265"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Setting this option checked will result in ignoring overhangs while constructing new molecule.</source>
         <translation>Включение опции позволяет не учитывать липкие концы фрагментов при создании новой молекулы.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Available fragments (core length - length without sticky ends):</source>
         <translation>Доступные фрагменты:</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Open the &quot;Edit Molecule Fragment&quot; dialog</source>
         <translation>Откройте диалоговое окно &quot;Редактировать фрагмент&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="194"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="204"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Automatically edit selected fragment&apos;s 5&apos; end and fit it to the 3&apos; end of the fragment above</source>
         <translation>Автоматически отредактировать 5&apos; конец выделенного фрагмента таким образом, чтобы он подходил к 3&apos; концу фрагмента выше</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="207"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Adjust 5&apos; end</source>
         <translation>Подогнать 5&apos; конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="217"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Automatically edit selected fragment&apos;s 3&apos; end and fit it to the 5&apos; end of the fragment below</source>
         <translation>Автоматически отредактировать 3&apos; конец выделенного фрагмента таким образом, чтобы он подходил к 5&apos; концу фрагмента ниже</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="220"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Adjust 3&apos; end</source>
         <translation>Подогнать 3&apos; конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="284"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Circulirize result molecule</source>
         <translation>Сделать создаваемую молекулу круговой</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="295"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Output</source>
         <translation>Выходные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="303"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Path to file:</source>
         <translation>Путь к файлу:</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="313"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="325"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Open view for new molecule</source>
         <translation>Загрузить созданную молекулу</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="338"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Save immediately</source>
         <translation>Сохранить сразу</translation>
     </message>
@@ -202,39 +202,37 @@
 <context>
     <name>CreateFragmentDialog</name>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="14"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Create DNA Fragment</source>
         <translation>Создать фрагмент ДНК</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="24"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Fragment Options</source>
         <translation>Параметры фрагмента</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="35"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Include Left Overhang</source>
         <translation>Добавить левый выступ</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="49"/>
-        <location filename="../src/CreateFragmentDialog.ui" line="95"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Direct</source>
         <translation>Прямая цепь</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="59"/>
-        <location filename="../src/CreateFragmentDialog.ui" line="105"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Reverse-complement</source>
         <translation>Обратная</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="81"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Include Right Overhang</source>
         <translation>Добавить правый выступ</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="143"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Output</source>
         <translation>Выходные параметры</translation>
     </message>
@@ -242,99 +240,98 @@
 <context>
     <name>DigestSequenceDialog</name>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="20"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Digest Sequence into Fragments</source>
         <translation>Разбить на фрагменты</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="30"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Restriction Sites</source>
         <translation>Сайты рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="38"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Target Sequence:</source>
         <translation>Исходная последовательность:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="54"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>&lt;sequence name&gt;</source>
         <translation>&lt;имя последовательности&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="65"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Available enzymes:</source>
         <translation>Доступные ферменты:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="78"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Selected enzymes:</source>
         <translation>Выбранные энзимы:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="91"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Add --&gt;</source>
         <translation>Добавить --&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="101"/>
-        <location filename="../src/DigestSequenceDialog.ui" line="168"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="108"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Clear
  Selection </source>
         <translation>Очистить выборку </translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="129"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Add All --&gt;</source>
         <translation>Добавить Все --&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="139"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Conserved Annotations</source>
         <translation>Сохраненные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="145"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>List of conserved annotations:</source>
         <translation>Список сохраненных аннотаций:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="152"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Conserved annotations can not be &quot;distrupted&quot; when cutting occurs</source>
         <translation>Сохраненные аннотации не могут быть &quot;distrupted&quot; в процессе резки</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="161"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="175"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Remove All</source>
         <translation>Удалить все</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="198"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Output</source>
         <translation>Выходные параметры</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="218"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Use this option to treat the molecule as circular</source>
         <translation>Используйте эту опцию, чтобы использовать молекулу как круговую</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="221"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Circular molecule</source>
         <translation>Круговая молекула</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="228"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>&lt;hint label&gt;</source>
         <translation>&lt;hint label&gt;</translation>
     </message>
@@ -342,46 +339,42 @@
 <context>
     <name>EditFragmentDialog</name>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="20"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Edit Molecule Fragment</source>
         <translation>Редактировать фрагмент</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="28"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Left End</source>
         <translation>Левый конец</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="56"/>
-        <location filename="../src/EditFragmentDialog.ui" line="133"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>5&apos;-3&apos;</source>
         <translation>5&apos;-3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="73"/>
-        <location filename="../src/EditFragmentDialog.ui" line="150"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>3&apos;-5&apos;</source>
         <translation>3&apos;-5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="105"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Right End</source>
         <translation>Правый конец</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="36"/>
-        <location filename="../src/EditFragmentDialog.ui" line="113"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="184"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Preview:</source>
         <translation>Предварительный просмотр:</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="92"/>
-        <location filename="../src/EditFragmentDialog.ui" line="169"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
@@ -436,53 +429,52 @@
 <context>
     <name>EnzymesSelectorWidget</name>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="31"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Filter by:</source>
         <translation>Фильтровать по:</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="76"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="81"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Accession</source>
         <translation>Идентификатор</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="86"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="91"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="96"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Organizm / Details</source>
         <translation>Организм / Детали</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="101"/>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="350"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Suppliers</source>
         <translation>Поставщики</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="117"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Load enzymes database</source>
         <translation>Load enzymes database</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="120"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Open enzymes </source>
         <translation>Открыть ферменты </translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="130"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Export enzymes</source>
         <translation>Экспортировать ферменты</translation>
     </message>
@@ -495,137 +487,137 @@
         <translation type="vanished">Сохранить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="336"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Enzyme table filter</source>
         <translation>Фильтр таблицы ферментов</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="389"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="396"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="403"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Invert</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="412"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Overhang type</source>
         <translation>Тип перекрытия</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="431"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>to</source>
         <translation>до</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="469"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Recognition sequence length</source>
         <translation>Длина сайта распознования</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="476"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Keep only</source>
         <translation>Показывать только</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="485"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Forward and reverse-complementary enzyme strands are equal</source>
         <translation>Прямая и обратно-комплементарная последовательности сайта совпадают</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="488"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Palindromic</source>
         <translation>Палиндромные</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="498"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>No internal N&apos;s</source>
         <translation>Нет внутренних N</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="501"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Uninterrupted</source>
         <translation>Неразрывные</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="511"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>No extended DNA alphabet symbols (A, C, G, T and N only)</source>
         <translation>Нет символов расширенного алфавита ДНК (только A, C, G, T и N)</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="514"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Nondegenerate</source>
         <translation>Невырожденные</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="541"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>&lt;status label&gt;</source>
         <translation>&lt;статус&gt;</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="127"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Export current selection as new database</source>
         <translation>Экспортировать текущее выделение как базу данных</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="205"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Checked enzymes</source>
         <translation>Выбранные сайты</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="227"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="243"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="287"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Selected enzyme info</source>
         <translation>Выделенный энзим</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="144"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Select all enzymes in the table</source>
         <translation>Выделить все ферменты в таблице</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="240"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Hint: selection file should contain enzymes&apos; names separtated by whitespaces or commas</source>
         <translation>Подсказка: выделенный файл должен содержать имена ферментов, разделенных пробелами или запятыми</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="224"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Save selected enzymes list to a text file</source>
         <translation>Сохранить список выделенных ферментов в текстовый файл</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="147"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="23"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Find Restriction Sites</source>
         <translation>Рестрикционный анализ</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="154"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Empty selection</source>
         <translation>Пустое выделение</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="157"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Select None</source>
         <translation>Очистить выборку</translation>
     </message>
@@ -638,12 +630,12 @@
         <translation type="vanished">Выбрать по длине</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="164"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Invert current selection</source>
         <translation>Инвертировать текущее выделение</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="167"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Invert selection</source>
         <translation>Инвертировать</translation>
     </message>
@@ -655,17 +647,17 @@
 <context>
     <name>InsertEnzymeWidget</name>
     <message>
-        <location filename="../src/insert/InsertEnzymeWidget.ui" line="20"/>
+        <location filename="../src/insert/InsertEnzymeWidget.ui"/>
         <source>Select enzymes</source>
         <translation>Выбрать ферменты</translation>
     </message>
     <message>
-        <location filename="../src/insert/InsertEnzymeWidget.ui" line="26"/>
+        <location filename="../src/insert/InsertEnzymeWidget.ui"/>
         <source>Choose site to paste</source>
         <translation>Выберите фермент для вставки</translation>
     </message>
     <message>
-        <location filename="../src/insert/InsertEnzymeWidget.ui" line="60"/>
+        <location filename="../src/insert/InsertEnzymeWidget.ui"/>
         <source>Show sites with undefined suppliers</source>
         <translation>Показать ферменты с неизвестными поставщиками</translation>
     </message>
@@ -686,27 +678,27 @@
 <context>
     <name>ResultsCountFilter</name>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="17"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Find Restriction Sites</source>
         <translation>Рестрикционный анализ</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="32"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Include only enzymes that cut from &apos;Minimum Hits&apos; to &apos;Maximum Hits&apos; times</source>
         <translation>Включить только ферменты, разрезающие от Минимум до Максимум раз</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="35"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Result count filter</source>
         <translation>Фильтр по числу результатов</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="53"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Minimum hits:</source>
         <translation>Минимум:</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="88"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Maximum hits:</source>
         <translation>Максимум:</translation>
     </message>

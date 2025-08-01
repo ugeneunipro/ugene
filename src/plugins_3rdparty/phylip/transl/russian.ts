@@ -4,62 +4,62 @@
 <context>
     <name>NeighborJoinWidget</name>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="51"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Distance Matrix</source>
         <translation>Матрица расстояний</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="68"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Distance matrix model</source>
         <translation>Модель для подсчета матрицы</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="88"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Coefficient of variation of substitution rate among sites</source>
         <translation>Коэффициент вариации скорости замен</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="117"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Gamma distributed rates across sites</source>
         <translation>Гамма-распределение скорости замен</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="131"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Transition/transversion ratio</source>
         <translation>Отношение транзиций к трансверсиям</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="176"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Bootstrapping and Consensus Tree</source>
         <translation>Бутстреп-анализ и консенсусное дерево</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="185"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Enable bootstrapping</source>
         <translation>Бутстреп-анализ</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="218"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Number of replicates</source>
         <translation>Количество репликаций</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="245"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Seed (must be odd)</source>
         <translation>Затравка (должна быть нечетной)</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="272"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Consensus type</source>
         <translation>Тип консенсуса</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="289"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Fraction</source>
         <translation>Доля</translation>
     </message>
     <message>
-        <location filename="../src/NeighborJoinWidget.ui" line="331"/>
+        <location filename="../src/NeighborJoinWidget.ui"/>
         <source>Display Options</source>
         <translation>Опции отображения</translation>
     </message>

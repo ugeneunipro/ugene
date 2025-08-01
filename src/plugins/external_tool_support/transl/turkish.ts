@@ -4,83 +4,82 @@
 <context>
     <name>AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="20"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Input data</source>
         <translation>Girdi verileri</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="26"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Reference</source>
         <translation>Referans</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="14"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Map Sanger Reads to Reference</source>
         <translation>Map Sanger Okumaya Yönelik Okur</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="38"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Input a file with a reference sequence</source>
         <translation>Referans sıralı bir dosya girin</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="45"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="169"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="54"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Reads</source>
         <translation>Okur</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="79"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="86"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="98"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="114"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Mapping min similarity</source>
         <translation>Asgari benzerliği eşleme</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="134"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Trimming quality threshold</source>
         <translation>Kalite eşiği kırpılıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="141"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Read name in result alignment</source>
         <translation>Sonuç hizalamasında adı oku</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="162"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Input the result file path</source>
         <translation>Sonuç dosyası yolunu girin</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="121"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="154"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Result alignment</source>
         <translation>Sonuç hizalama</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="178"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
@@ -119,32 +118,32 @@
 <context>
     <name>BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/blast/BlastDBCmdDialog.ui" line="32"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui"/>
         <source>Fetch Sequences from BLAST Database</source>
         <translation>BLAST Veritabanından Dizileri Getirme</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBCmdDialog.ui" line="44"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui"/>
         <source>Query ID</source>
         <translation>Sorgu kimliği</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBCmdDialog.ui" line="121"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui"/>
         <source>Select database</source>
         <translation>Veritabanı seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBCmdDialog.ui" line="71"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui"/>
         <source>Output path</source>
         <translation>Çıktı yolu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBCmdDialog.ui" line="99"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBCmdDialog.ui" line="158"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
@@ -152,22 +151,22 @@
 <context>
     <name>BlastDBSelectorWidget</name>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidget.ui" line="20"/>
+        <location filename="../src/blast/BlastDBSelectorWidget.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidget.ui" line="43"/>
+        <location filename="../src/blast/BlastDBSelectorWidget.ui"/>
         <source>Database path</source>
         <translation>Veritabanı Yolu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidget.ui" line="61"/>
+        <location filename="../src/blast/BlastDBSelectorWidget.ui"/>
         <source>Database file</source>
         <translation>Veri tabanı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastDBSelectorWidget.ui" line="70"/>
+        <location filename="../src/blast/BlastDBSelectorWidget.ui"/>
         <source>Base name for BLAST DB files</source>
         <translation>BLAST DB dosyaları için temel ad</translation>
     </message>
@@ -175,287 +174,287 @@
 <context>
     <name>BlastLocalSearchDialog</name>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="14"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Search using local BLAST database</source>
         <translation>Yerel BLAST veritabanını kullanarak arama yapın</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="48"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>General options</source>
         <translation>Genel seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="59"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Select search:</source>
         <translation>Aramayı seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="95"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Kısa, neredeyse tam eşleşmeleri arayın</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="102"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Expectation value </source>
         <translation>Beklenti değeri </translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="109"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="116"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Max hits:</source>
         <translation>Azami isabet:</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="126"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Off</source>
         <translation>Kapalı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="163"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Both strands</source>
         <translation>Her iki dize</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="173"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Direct</source>
         <translation>Doğrudan</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="180"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Complement</source>
         <translation>Tamamlayıcı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="266"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Number of threads</source>
         <translation>Konu sayısı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="310"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Advanced options</source>
         <translation>Gelişmiş seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="325"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>D or d: default (equivalent to 2 )</source>
         <translation>D veya d: varsayılan (2&apos;ye eşdeğer)</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="330"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>0 or F or f: No composition-based statistics</source>
         <translation>0 veya F veya f: Bileşime dayalı istatistik yok</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="335"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>1: Composition-based statistics as in NAR 29:2994-3005, 2001</source>
         <translation>1: NAR 29: 2994-3005, 2001&apos;de olduğu gibi kompozisyona dayalı istatistikler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="340"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</source>
         <translation>2 veya T veya t: Bioinformatics 21: 902-911, 2005&apos;te olduğu gibi kompozisyona dayalı skor ayarlaması, sekans özelliklerine göre şartlandırılmış</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="345"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</source>
         <translation>3: Biyoinformatik 21: 902-911, 2005&apos;teki gibi kompozisyona dayalı puan ayarlaması, koşulsuz olarak</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="360"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>plain</source>
         <translation>sade</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="365"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="370"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="397"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Service</source>
         <translation>Hizmet</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="410"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Match scores</source>
         <translation>Eşleşme skorları</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="418"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>BLOSUM62</source>
         <translation>BLOSUM62</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="423"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>BLOSUM45</source>
         <translation>BLOSUM45</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="428"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>BLOSUM80</source>
         <translation>BLOSUM80</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="433"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>PAM30</source>
         <translation>PAM30</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="438"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>PAM70</source>
         <translation>PAM70</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="452"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Matrix</source>
         <translation>Matris</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="469"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="474"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="479"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="484"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="489"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>2 -7</source>
         <translation>2 -7</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="494"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>2 -5</source>
         <translation>2 -5</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="499"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="504"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="509"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>5 -4</source>
         <translation>5 -4</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="520"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>PHI pattern</source>
         <translation>PHI kalıbı</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="533"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Word size</source>
         <translation>Kelime boyutu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="589"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Threshold for extending hits</source>
         <translation>İsabetleri genişletme eşiği</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="592"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Threshold</source>
         <translation>Eşik</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="605"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Gap costs</source>
         <translation>Boşluk maliyetleri</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="612"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Composition-based statistics</source>
         <translation>Bileşime dayalı istatistikler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="626"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Filters</source>
         <translation>Süzgeçler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="635"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Low complexity filter</source>
         <translation>Düşük karmaşıklık filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="642"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Human repeats filter</source>
         <translation>İnsan tekrarları filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="652"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Masks</source>
         <translation>Maskeler</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="661"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Mask for lookup table only</source>
         <translation>Yalnızca arama tablosu için maske</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="671"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Mask lower case letters</source>
         <translation>Küçük harfleri maskele</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="706"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Extension options</source>
         <translation>Uzantı seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="720"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>X dropoff value (in bits)</source>
         <translation>X düşüş değeri (bit cinsinden)</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="729"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>For gapped alignment</source>
         <translation>Aralıklı hizalama için</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="743"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>For ungapped extensions</source>
         <translation>Açılmamış uzantılar için</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="750"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>For final gapped alignment</source>
         <translation>Son boşluklu hizalama için</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="777"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Multiple Hits window size</source>
         <translation>Çoklu İsabet pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastLocalSearchDialog.ui" line="789"/>
+        <location filename="../src/blast/BlastLocalSearchDialog.ui"/>
         <source>Perform gapped alignment</source>
         <translation>Aralıklı hizalama gerçekleştirin</translation>
     </message>
@@ -463,159 +462,152 @@
 <context>
     <name>Bowtie2Settings</name>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="41"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Parameters</source>
         <translation>Parametreler</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="60"/>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="76"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;By default, Bowtie2 performs end-to-end read alignment. That is, it searches for alignments involving all of the read characters. This is also called an &amp;quot;untrimmed&amp;quot; or &amp;quot;unclipped&amp;quot; alignment.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;When the --local option is specified, Bowtie2 performs local read alignment. In this mode, Bowtie2 might &amp;quot;trim&amp;quot; or &amp;quot;clip&amp;quot; some read characters from one or both ends of the alignment if doing so maximizes the alignment score.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; Varsayılan olarak, Bowtie2 uçtan uca okuma hizalaması gerçekleştirir. Yani, okunan tüm karakterleri içeren hizalamaları arar. Bu aynı zamanda &quot;kırpılmamış&quot; olarak da adlandırılır; veya &amp;quot;kırpılmamış &amp;quot; &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;--local seçeneği belirtildiğinde, Bowtie2 yerel okuma hizalamasını gerçekleştirir. Bu modda, Bowtie2, veya &amp;quot;klip&amp;quot; Bazıları hizalamanın bir veya iki ucundan karakter okursa, hizalama puanını en üst düzeye çıkarır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="63"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Mode</source>
         <translation>Mod</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="86"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>--end-to-end</source>
         <translation>--uçtan uca</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="91"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>--local</source>
         <translation>--yerel</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="106"/>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="174"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&amp;quot;Pads&amp;quot; dynamic programming problems by specified number of columns on either side to allow gaps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&amp;quot;Pads&amp;quot; boşluklara izin vermek için her iki tarafta belirtilen sütun sayısına göre dinamik programlama problemleri.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="109"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Add columns to allow gaps (--dpad)</source>
         <translation>Boşluklara izin vermek için sütunlar ekleyin (--dpad)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="119"/>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="187"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1. Setting this higher makes alignment slower (often much slower) but increases sensitivity.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Bir çekirdek hizalamasında izin verilen uyuşmazlıkların sayısını ayarlar. 0 veya 1 olarak ayarlanabilir. Bunu daha yükseğe ayarlamak, hizalamayı yavaşlatır (genellikle çok daha yavaş) ancak hassasiyeti artırır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="132"/>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="197"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Belirtilen sayıda paralel arama dizisini başlatın. İş parçacıkları ayrı işlemcilerde / çekirdeklerde çalışacak ve okumaları ayrıştırırken ve hizalamaları çıkarırken senkronize olacaktır. Hizalamaları aramak son derece paraleldir ve hızlanma doğrusala yakındır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="148"/>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="252"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Disallow gaps within specified number of positions of the beginning or end of the read.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Okumanın başlangıcında veya sonundaki belirtilen sayıda konumdaki boşluklara izin verme.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="161"/>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="229"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Use specified value as the seed for pseudo-random number generator.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sözde rasgele sayı üreteci için çekirdek olarak belirtilen değeri kullanın.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="164"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Seed (--seed)</source>
         <translation>Tohum (--tohum)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="190"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Number of mismatches</source>
         <translation>Uyumsuzlukların sayısı</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="200"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Threads</source>
         <translation>İş Parçacığı</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="210"/>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="239"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the length of the seed substrings to align. Smaller values make alignment slower but more senstive.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Hizalanacak tohum alt dizelerinin uzunluğunu ayarlar. Daha küçük değerler, hizalamayı daha yavaş ama daha hassas hale getirir.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="242"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Seed length (--L)</source>
         <translation>Tohum uzunluğu (--L)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="255"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Disallow gaps (--gbar)</source>
         <translation>Boşluklara izin verme (--gbar)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="281"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>Flags</source>
         <translation>İşaretler</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="293"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments for the constituent mates. This is called &amp;quot;mixed mode.&amp;quot; To disable mixed mode, set this option.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 runs a little faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 bir çift için çift uçlu bir hizalama bulamazsa, varsayılan olarak kurucu matlar için eşleşmemiş hizalamalar aramaya devam edecektir. Buna &amp;quot;karma mod denir.&amp;quot; Karışık modu devre dışı bırakmak için bu seçeneği ayarlayın&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2, karışık modda biraz daha hızlı çalışır, ancak tek tek eşlerin değil, yalnızca çiftlerin hizalama durumunu dikkate alır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="296"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>No unpaired alignments (--no-mixed)</source>
         <translation>Eşlenmemiş hizalama yok (--karışmasız)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="303"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Varsayılan olarak, Bowtie2 herhangi bir uyumlu hizalama bulamazsa uyumsuz hizalamaları arar. Uyumsuz bir hizalama, her iki montaj ilişkisinin benzersiz şekilde hizalandığı, ancak bu eşleştirilmiş uç kısıtlamalarını karşılamayan bir hizalamadır. Bu seçenek, bu davranışı devre dışı bırakır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="306"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>No discordant alignments (--no-discordant)</source>
         <translation>Uyumsuz hizalama yok (--uyumsuz yok)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="313"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the forward reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Bu seçenek seçilirse, Bowtie2 ileri referans şeridine göre hizalamaya çalışmayacaktır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="316"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>No forward orientation (--nofw)</source>
         <translation>İleri yönlendirme yok (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="323"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the reverse-complement reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Bu seçenek seçilirse, Bowtie2, ters tamamlayıcı referans dizgisine göre hizalamaya çalışmayacaktır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="326"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Ters tamamlayıcı yönelimi yok (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="333"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Bir montaj ilişkisi hizalaması diğeriyle örtüşüyorsa, bunun uyumlu olmadığını düşünün. Varsayılan: montaj ilişkileri uyumlu bir hizalamada üst üste gelebilir&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="336"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>No overlapping mates (--no-overlap)</source>
         <translation>Örtüşen montaj ilişkisi yok (--örtüşme yok)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="343"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the other in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Bir montaj ilişkisi hizalaması diğerini içeriyorsa, bunun uyumlu olmadığını düşünün. Varsayılan: bir montaj ilişkisi diğerini uyumlu bir hizalamada içerebilir.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="346"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui"/>
         <source>No mates containing one another (--no-contain)</source>
         <translation>Birbirini içeren montaj ilişkisi yok (--no-include)</translation>
     </message>
@@ -623,7 +615,7 @@
 <context>
     <name>BowtieBuildSettings</name>
     <message>
-        <location filename="../src/bowtie/BowtieBuildSettings.ui" line="20"/>
+        <location filename="../src/bowtie/BowtieBuildSettings.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
@@ -635,12 +627,12 @@
 <context>
     <name>BowtieSettings</name>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="41"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Parameters</source>
         <translation>Parametreler</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="110"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -661,12 +653,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;--nomaqround ile yuvarlama devre dışı bırakılabilir.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="121"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Maq error (--maqerr)</source>
         <translation>Maq hatası (--maqerr)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="144"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -683,7 +675,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;İzin verilen en düşük ayar 5&apos;tir ve varsayılan değer 28&apos;dir. Papyon, -l&apos;nin daha büyük değerleri için daha hızlıdır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="176"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -708,7 +700,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Varsayılan: 250.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="215"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
 Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
 Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
@@ -723,17 +715,17 @@ Tanımlayıcılara daha fazla bellek ayırmak için bu parametreyi ayarlamayı d
 Varsayılan: 64.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="246"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Use &lt;int&gt; as the seed for pseudo-random number generator</source>
         <translation>Sözde rastgele sayı oluşturucu için çekirdek olarak &lt;int&gt; kullanın</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="60"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Mode:  </source>
         <translation>Kip:  </translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="67"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -754,42 +746,42 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;-V modunda, hizalamalarda V uyuşmazlıkları olabilir, burada V, -v seçeneği kullanılarak 0 ile 3 arasında bir sayı olabilir. Kalite değerleri göz ardı edilir. -V seçeneği, -n seçeneğiyle birbirini dışlar.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="82"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>-n mode</source>
         <translation>-n modu</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="87"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>-v mode</source>
         <translation>-v modu</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="153"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Seed length (--seedlen)</source>
         <translation>Tohum uzunluğu (--seedlen)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="189"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Maximum of backtracks (--maxbts)</source>
         <translation>Maksimum geri izleme sayısı (--maxbts)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="223"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Descriptors memory usage (--chunkmbs)</source>
         <translation>Tanımlayıcılar bellek kullanımı (--chunkmbs)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="249"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Seed (--seed)</source>
         <translation>Tohum (--tohum)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="266"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Threads</source>
         <translation>İş Parçacığı</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="300"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Flags</source>
         <translation>İşaretler</translation>
     </message>
@@ -798,37 +790,37 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Renk alanı (--renk)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="322"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>No Maq rounding (--nomaqround)</source>
         <translation>Maq yuvarlama yok (--nomaqround)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="332"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>No forward orientation (--nofw)</source>
         <translation>İleri yönlendirme yok (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="342"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Ters tamamlayıcı yönelimi yok (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="362"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Try as hard (--tryhard)</source>
         <translation>Çok dene (--tryhard)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="376"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Best alignments (--best)</source>
         <translation>En iyi hizalamalar (--best)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="386"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>All alignments (--all)</source>
         <translation>Tüm hizalamalar (--all)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="312"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -847,17 +839,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Varsayılan olarak papyon da bu şekilde yuvarlanır. --nomaqround papyondaki bu yuvarlamayı önler.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="329"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>Eğer --nofw belirtilirse, papyon ileri referans şeridiyle hizalamaya çalışmaz.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="339"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>Eğer --norc belirtilirse, papyon ters tamamlayıcı referans dizgisine göre hizalamaya çalışmaz.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="349"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -882,7 +874,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;yada (c) birçok okumanın geçerli hizalamaları yoktur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="369"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Make Bowtie guarantee that reported singleton alignments are &quot;best&quot; in terms of stratum
 (i.e. number of mismatches, or mismatches in the seed in the case of -n mode)
 and in terms of the quality values at the mismatched position(s).
@@ -895,7 +887,7 @@ ve uyumsuz pozisyon (lar) daki kalite değerleri açısından.
            </translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="383"/>
+        <location filename="../src/bowtie/BowtieSettings.ui"/>
         <source>Report all valid alignments per read or pair.</source>
         <translation>Okuma veya çift başına tüm geçerli hizalamaları rapor edin.</translation>
     </message>
@@ -903,32 +895,32 @@ ve uyumsuz pozisyon (lar) daki kalite değerleri açısından.
 <context>
     <name>BwaBuildSettings</name>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="63"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui"/>
         <source>Index algorithm (-a)</source>
         <translation>Dizin algoritması (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="77"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui"/>
         <source>autodetect</source>
         <translation>otomatik tespit</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="82"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="87"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="92"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui"/>
         <source>is</source>
         <translation>dır</translation>
     </message>
@@ -951,222 +943,222 @@ Kararlı BWA performansı elde etmek için, dizin algoritmasının &quot;eşit&q
 <context>
     <name>BwaMemSettings</name>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="567"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Penalty for a mismatch</source>
         <translation>Uyumsuzluk cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="449"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Score for a sequence match</source>
         <translation>Sıralı bir maç için puan</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="551"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Mismatch penalty (-B)</source>
         <translation>Uyumsuzluk cezası (-B)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="484"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Gap open penalty (-O)</source>
         <translation>Boşluk açma cezası (-O)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="625"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Penalty for an unpaired read pair</source>
         <translation>Eşlenmemiş okuma çifti için ceza</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="746"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Minimum score to output</source>
         <translation>Çıktı için minimum puan</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="609"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Penalty unpaired (-U)</source>
         <translation>Eşleştirilmemiş ceza (-U)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="529"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Penalty for clipping </source>
         <translation>Kırpma cezası </translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="500"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Gap open penalty</source>
         <translation>Boşluk açma cezası</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="596"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Gap extension penalty; a gap of size k cost {-O} + {-E}*k</source>
         <translation>Boşluk uzatma cezası; k boyutunda bir boşluk maliyet {-O} + {-E}*k</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="513"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Penalty for clipping (-L)</source>
         <translation>Kırpma cezası (-L)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="730"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Score threshold (-T)</source>
         <translation>Puan eşiği (-T)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="132"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Min seed length (-k)</source>
         <translation>Minimum tohum uzunluğu (-k)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="319"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Look for internal seeds inside a seed longer than {-k} * FLOAT</source>
         <translation>{-K} * FLOAT&apos;dan daha uzun bir tohumun içindeki iç tohumları arayın</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="386"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Number of threads</source>
         <translation>Konu sayısı</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="148"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Off-diagonal X-dropoff</source>
         <translation>Çapraz dışı X-bırakma</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="354"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Band width for banded alignment</source>
         <translation>Bantlı hizalama için bant genişliği</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="271"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Band width (-w)</source>
         <translation>Bant genişliği (-w)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="202"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Minimum seed length</source>
         <translation>Asgari tohum uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="370"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Number of threads (-t)</source>
         <translation>Konu sayısı (-t)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="68"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Dropoff (-d)</source>
         <translation>Ayrılma (-d)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="186"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Skip seeds threshold (-c)</source>
         <translation>Tohum eşiği (-c) atla</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="84"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Skip seeds with more than INT occurrences </source>
         <translation>INT oluşumundan daha fazlasını içeren tohumları atlayın </translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="338"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Drop chain threshold (-D)</source>
         <translation>Düşürme zinciri eşiği (-D)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="306"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Drop chains shorter than FLOAT fraction of the longest overlapping chain</source>
         <translation>En uzun üst üste binen zincirin FLOAT fraksiyonundan daha kısa düşme zincirleri</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="45"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="290"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Internal seeds length (-r)</source>
         <translation>İç tohum uzunluğu (-r)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="435"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Scoring Options</source>
         <translation>Puanlama Seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="580"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Gap extension penalty (-E)</source>
         <translation>Boşluk uzatma cezası (-E)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="654"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Other</source>
         <translation>Diğer</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="668"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Index algorithm (-a)</source>
         <translation>Dizin algoritması (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="695"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>autodetect</source>
         <translation>otomatik tespit</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="700"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="705"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="710"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>is</source>
         <translation>is</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="465"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Matching score (-A)</source>
         <translation>Eşleşen skor (-A)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="164"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Rounds of mate rescues (-m)</source>
         <translation>Arkadaş kurtarma turları (-m)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="116"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Perform at most INT rounds of mate rescues for each read</source>
         <translation>Her okuma için en fazla INT tur arkadaşı kurtarma turu gerçekleştirin</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="681"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Skip mate rescue</source>
         <translation>Eş kurtarmayı atla</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="684"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Skip mate rescue (-S)</source>
         <translation>Eş kurtarmayı atla (-S)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="233"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Skip pairing; mate rescue performed unless -S also in use</source>
         <translation>Eşleştirmeyi atla; -S de kullanılmadığı sürece dost kurtarma yapılır</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="236"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>Skip pairing (-P)</source>
         <translation>Eşleştirmeyi atla (-P)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="410"/>
+        <location filename="../src/bwa/BwaMemSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1182,137 +1174,137 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BwaSettings</name>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="135"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>  Best hits (-R)</source>
         <translation>  En iyi eşleşmeler (-R)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="336"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Max gap extensions (-e)</source>
         <translation>Azami boşluk uzantıları (-e)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="346"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Indel offset (-i)</source>
         <translation>Indel ofset (-i)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="263"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Max long deletion extensions (-d)</source>
         <translation>Azami uzun silme uzantıları (-d)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="194"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Seed length (-l)</source>
         <translation>Tohum uzunluğu (-l)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="482"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Max seed differences (-k)</source>
         <translation>Azami tohum farklılıkları (-k)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="283"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Max queue entries (-m)</source>
         <translation>Azami sıra girişi (-m)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="356"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Enable long gaps</source>
         <translation>Uzun boşlukları etkinleştirin</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="171"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Missing prob (-n)</source>
         <translation>Eksik prob (-n)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="154"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Max #diff (-n)</source>
         <translation>Azm #fark (-n)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="42"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Long-scaled gap penalty for long deletions (-L)</source>
         <translation>Uzun silme işlemleri için uzun ölçekli boşluk cezası (-L)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="241"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Advanced</source>
         <translation>Gelişmiş</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="395"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Gap open penalty (-O)</source>
         <translation>Boşluk açma cezası (-O)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="303"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Barcode length (-B)</source>
         <translation>Barkod uzunluğu (-B)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="435"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Quality threshold (-q)</source>
         <translation>Kalite eşiği (-q)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="375"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Mismatch penalty (-M)</source>
         <translation>Uyumsuzluk cezası (-M)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="415"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Gap extension penalty (-E)</source>
         <translation>Boşluk uzatma cezası (-E)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="462"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Threads (-t)</source>
         <translation>Konular (-t)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="49"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Non-iterative mode (-N)</source>
         <translation>Yinelemesiz mod (-N)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="72"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Max gap opens (-o)</source>
         <translation>Maksimum boşluk açılır (-o)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="30"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Base Options</source>
         <translation>Baz Seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="85"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>Index algorithm (-a)</source>
         <translation>Dizin algoritması (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="102"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>autodetect</source>
         <translation>otomatik tespit</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="107"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="112"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSettings.ui" line="117"/>
+        <location filename="../src/bwa/BwaSettings.ui"/>
         <source>is</source>
         <translation>is</translation>
     </message>
@@ -1320,107 +1312,107 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BwaSwSettings</name>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="14"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="30"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Base Options</source>
         <translation>Baz Seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="288"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Score threshold (divided by match score) (-T)</source>
         <translation>Puan eşiği (eşleşme puanına bölünür) (-T)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="233"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Number of threads (-t)</source>
         <translation>Konu sayısı (-t)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="334"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Number of seeds to start rev alginment (-N)</source>
         <translation>Devir hizalamasını başlatacak tohum sayısı (-N)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="311"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Z-best (-z)</source>
         <translation>Z-en iyi (-z)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="393"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Prefer hard clipping in SAM output (-H)</source>
         <translation>SAM çıkışında (-H) sert kırpmayı tercih et</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="256"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Size of chunk of reads (-s)</source>
         <translation>Okuma yığınlarının boyutu (-s)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="90"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Score for a match (-a)</source>
         <translation>Bir eşleşme için skor (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="113"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Mismatch penalty (-b)</source>
         <translation>Uyumsuzluk cezası (-b)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="64"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>autodetect</source>
         <translation>otomatik tespit</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="69"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="74"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="79"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>is</source>
         <translation>dır</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="136"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Gap open penalty (-q)</source>
         <translation>Boşluk açma cezası (-q)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="159"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Gap extension penalty (-r)</source>
         <translation>Boşluk uzatma cezası (-r)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="182"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Band width (-w)</source>
         <translation>Bant genişliği (-w)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="208"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Index algorithm (-a)</source>
         <translation>Dizin algoritması (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="380"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>Mask level (-c)</source>
         <translation>Maske seviyesi (-c)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="347"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of seed to trigger reverse alignment&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ters hizalamayı tetikleyecek çekirdek sayısı&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaSwSettings.ui" line="405"/>
+        <location filename="../src/bwa/BwaSwSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1436,22 +1428,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CAP3SupportDialog</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="14"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Contig Assembly with CAP3</source>
         <translation>CAP3 ile Contig Montajı</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="27"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Base</source>
         <translation>Temel</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="33"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Input files (long DNA reads to assembly)</source>
         <translation>Giriş dosyaları (uzun DNA derlemeye okur)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="42"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1466,132 +1458,132 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FAŞTA dizileri için kalite puanları ek bir dosyada sağlanabilir. Dosya, orijinal dizilerle aynı klasörde bulunmalı ve FASTA dosyasıyla aynı ada sahip olmalıdır, ancak başka bir uzantı: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="54"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="61"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="68"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Remove All</source>
         <translation>Tümünü Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="90"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Result contig</source>
         <translation>Sonuç contig</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="99"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Path to result contig alignment in ACE format.</source>
         <translation>ACE biçiminde bitişik hizalama sonucunun yolu.</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="125"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Clipping for poor regions</source>
         <translation>Fakir bölgeler için kırpma</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="131"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Base quality cutoff for clipping (-c)</source>
         <translation>Kırpma için temel kalite kesimi (-c)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="148"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Clipping range (-y)</source>
         <translation>Kırpma aralığı (-y)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="171"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Length and percent identity of an overlap</source>
         <translation>Bir örtüşmenin uzunluğu ve özdeşlik yüzdesi</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="177"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Overlap length cutoff (-o)</source>
         <translation>Örtüşme uzunluğu kesme (-o)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="197"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Overlap percent identity cutoff (-p)</source>
         <translation>Örtüşme yüzdesi özdeşlik kesme (-p)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="220"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Quality difference score of an overlap</source>
         <translation>Bir örtüşmenin kalite farkı puanı</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="226"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Base quality cutoff for differences (-b)</source>
         <translation>Farklılıklar için temel kalite sınırı (-b)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="256"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Max qscore sum at differences (-d)</source>
         <translation>Farklarda maksimum qscore toplamı (-d)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="266"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Other parameters</source>
         <translation>Diğer parametreler</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="272"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Max number of word matches (-t)</source>
         <translation>Maksimum kelime eşleşmesi sayısı (-t)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="292"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Band expansion size (-a)</source>
         <translation>Bant genişletme boyutu (-a)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="318"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Max gap length in any overlap (-f)</source>
         <translation>Herhangi bir örtüşmede maksimum boşluk uzunluğu (-f)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="338"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Assembly reverse reads (-r)</source>
         <translation>Montaj ters okur (-r)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="364"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Similarity score of an overlap</source>
         <translation>Bir örtüşmenin benzerlik puanı</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="370"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Mismatch score factor (-n)</source>
         <translation>Uyumsuzluk puan faktörü (-n)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="390"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Overlap similarity score cutoff (-s)</source>
         <translation>Örtüşen benzerlik puanı kesme (-s)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="410"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Gap penalty factor (-g)</source>
         <translation>Boşluk ceza faktörü (-g)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="417"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Match score factor (-m)</source>
         <translation>Eşleşme skor faktörü (-m)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="109"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="119"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui"/>
         <source>Advanced</source>
         <translation>Gelişmiş</translation>
     </message>
@@ -1599,63 +1591,62 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClustalOSupportRunDialog</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="26"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Align with Clustal Omega</source>
         <translation>Clustal Omega ile hizalayın</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="34"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Input and output</source>
         <translation>Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="42"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Input file</source>
         <translation>Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="52"/>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="69"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="59"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Output file</source>
         <translation>Çıktı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="81"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Iteration</source>
         <translation>Yineleme</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="91"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Number of iterations</source>
         <translation>Yineleme sayısı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="137"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Max number guidetree iterations</source>
         <translation>Azami kılavuz ağaç yineleme sayısı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="180"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Max number of HMM iterations</source>
         <translation>Azami HMM yineleme sayısı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="217"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Miscellaneous</source>
         <translation>Çeşitli</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="227"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Number of threads</source>
         <translation>Kullanılan CPU sayısı</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="265"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui"/>
         <source>Set options automatically</source>
         <translation>Seçenekleri otomatik olarak ayarla</translation>
     </message>
@@ -1663,123 +1654,122 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClustalWSupportRunDialog</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="32"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Align with ClustalW</source>
         <translation>ClustalW ile hizala</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="46"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Input and output</source>
         <translation>Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="57"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Input file</source>
         <translation>Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="67"/>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="91"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="74"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Output file</source>
         <translation>Çıktı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="103"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Advanced options</source>
         <translation>Gelişmiş ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="113"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Gap opening penalty</source>
         <translation>Boşluk açma cezası</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="159"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Gap extension penalty</source>
         <translation>Boşluk uzatma cezası</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="208"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Weight matrix</source>
         <translation>Ağırlık matrisi</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="247"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>IUB</source>
         <translation>IUB</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="252"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>CLUSTALW</source>
         <translation>CLUSTALW</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="328"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Max iterations</source>
         <translation>Azami yineleme</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="300"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>NONE</source>
         <translation>YOK</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="305"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>TREE</source>
         <translation>AĞAÇ</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="310"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>ALIGNMENT</source>
         <translation>HİZALAMA</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="264"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Iteration type</source>
         <translation>Yineleme türü</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="377"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Out sequences order</source>
         <translation>Çıkış dizileri sırası</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="413"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Input</source>
         <translation>Giriş</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="418"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Aligned</source>
         <translation>Hizalı</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="436"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Protein gap parameters</source>
         <translation>Protein açığı parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="446"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Gap separation distance</source>
         <translation>Boşluk ayırma mesafesi</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="507"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Residue-specific gaps off</source>
         <translation>Kalıntıya özgü boşluklar</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="493"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>Hydrophilic gaps off</source>
         <translation>Hidrofilik boşluklar</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="500"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui"/>
         <source>No end gap separation penalty</source>
         <translation>Son boşluk ayırma cezası yok</translation>
     </message>
@@ -1856,44 +1846,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ETSSettingsWidget</name>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="26"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Resource settings</source>
         <translation>Kaynak ayarları</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="131"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="104"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Download link</source>
         <translation>İndirme adresi</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="151"/>
-        <location filename="../src/ETSSettingsWidget.ui" line="226"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Name</source>
         <translation>İsme göre</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="156"/>
-        <location filename="../src/ETSSettingsWidget.ui" line="231"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Path</source>
         <translation>Yol</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="267"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Import</source>
         <translation>İçe aktar</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="277"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="379"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1906,12 +1894,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hakkında daha fazla bilgi görüntülemek için harici bir araç seçin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="399"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Binary path:</source>
         <translation>İkili yol:</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="409"/>
+        <location filename="../src/ETSSettingsWidget.ui"/>
         <source>Version info</source>
         <translation>Sürüm bilgisi</translation>
     </message>
@@ -1934,193 +1922,192 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>HmmerBuildDialog</name>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="20"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>HMM3 Build</source>
         <translation>HMM3 Yapısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="42"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Input and output</source>
         <translation>Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="52"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Input alignment file</source>
         <translation>Giriş hizalama dosyası</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="62"/>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="79"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="69"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Build to profile</source>
         <translation>Profile göre oluştur</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="104"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Construction strategies</source>
         <translation>İnşaa stratejileri</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="126"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>assign cols w/ &gt;= symfrac residues as consensus</source>
         <translation>konsensüs olarak /&gt;= symtrac kalıntıları içeren sütunu atayın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="129"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>fast</source>
         <translation>hızlı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="142"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Sym fraction</source>
         <translation>Sym fraksiyonu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="164"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Manual construction</source>
         <translation>Manuel yapı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="167"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Hand (requires reference annotation)</source>
         <translation>El (referans açıklama gerektirir)</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="185"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Tag sequence as a fragment, if L &lt; x*&lt;L&gt;, where x is:</source>
         <translation>Parça olarak etiket dizisi, eğer L &lt; x*&lt;L&gt; ise, burada x:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="226"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Relative weighting</source>
         <translation>Bağıl ağırlıklandırma</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="234"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Henikoff position-based weights</source>
         <translation>Henikoff pozisyon bazlı ağırlıklar</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="250"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Gerstein/Sonnhammer/Chothia tree weights</source>
         <translation>Gerstein/Sonnhammer/Chothia ağaç ağırlıkları</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="274"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Henikoff simple filter weights</source>
         <translation>Henikoff basit filtre ağırlıkları</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="284"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Identity cutoff</source>
         <translation>Kimlik kesme</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="309"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Skip relative weighting; set all to 1</source>
         <translation>Göreli ağırlıklandırmayı atlayın; hepsini 1&apos;e ayarla</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="316"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Use weights given in alignment file</source>
         <translation>Hizalama dosyasında verilen ağırlıkları kullanın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="339"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Effective weighting</source>
         <translation>Etkili ağırlıklandırma</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="347"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Adjust effective sequence number to achieve relative entropy target</source>
         <translation>Göreceli entropi hedefine ulaşmak için etkili sıra numarasını ayarlayın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="381"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Minimum relative entropy/position</source>
         <translation>Minimum bağıl entropi/konum</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="433"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Sigma parameter</source>
         <translation>Sigma parametresi</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="466"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Use number of single linkage clusters as effective</source>
         <translation>Etkili olduğu kadar tek bağlantı kümelerinin sayısını kullanın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="476"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Fractional identity cutoff</source>
         <translation>Kesirli kimlik kesme</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="501"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Use number of sequences as effective</source>
         <translation>Etkili dizi sayısını kullanın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="516"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Effective sequence number for all models to</source>
         <translation>Tüm modeller için etkili sıra numarası</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="554"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>E-value calibration</source>
         <translation>E-değeri kalibrasyonu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="573"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Length of sequences for MSV Gumbel mu fit</source>
         <translation>MSV Gumbel mu fit dizilerinin uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="609"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Number of sequences for MSV Gumbel mu fit</source>
         <translation>MSV Gumbel mu fit için dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="642"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Length of sequences for Viterbi Gumbel mu fit</source>
         <translation>Viterbi Gumbel mu fit dizilerinin uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="672"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Number of sequences for Viterbi Gumbel mu fit</source>
         <translation>Viterbi Gumbel mu fit için dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="702"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Length of sequences for Forward exp tail mu fit</source>
         <translation>Forward exp tail mu fit için dizi uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="732"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Number of sequences for Forward exp tail mu fit</source>
         <translation>Forward exp tail mu fit için dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="762"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Tail mass for Forward exponential tail mu fit</source>
         <translation>İleri üstel kuyruk mu fit için kuyruk kütlesi</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="803"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Other</source>
         <translation>Diğer</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="819"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>Random generator seed</source>
         <translation>Rastgele üretici tohumu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.ui" line="862"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.ui"/>
         <source>* 0 means that one-time arbitrary seed will be used</source>
         <translation>* 0, tek seferlik keyfi tohumun kullanılacağı anlamına gelir</translation>
     </message>
@@ -2128,117 +2115,117 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>HmmerSearchDialog</name>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="20"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>HMM3 Search</source>
         <translation>HMM3 Arama</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="54"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Input and output</source>
         <translation>Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="65"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Query HMM file:</source>
         <translation>Sorgu HMM dosyası:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="75"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="92"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Reporting thresholds</source>
         <translation>Raporlama eşikleri</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="109"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Report domains with E-value less than</source>
         <translation>E-değeri şundan küçük olan alanları bildir</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="119"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>1E+</source>
         <translation>1E+</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="146"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Report domains with score greater than</source>
         <translation>Şundan daha yüksek puana sahip alanları bildirin</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="180"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Score threshold:</source>
         <translation>Puan eşiği:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="229"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Use profile&apos;s GA gathering cutoffs</source>
         <translation>Profilin GA toplama sınırlarını kullanın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="265"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Use profile&apos;s NC noise cutoffs</source>
         <translation>Profilin NC gürültü kesmelerini kullanın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="295"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Use profile&apos;s TC trusted cutoffs</source>
         <translation>Profilin TC güvenilen kesintilerini kullan</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="312"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Number of significant sequences for domain E-value calculation</source>
         <translation>Etki alanı E-değeri hesaplaması için önemli dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="345"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Acceleration heuristics</source>
         <translation>Hızlandırma buluşsal yöntemleri</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="360"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Turn off composition bias filter</source>
         <translation>Kompozisyon önyargı filtresini kapat</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="373"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Turn off biased composition score corrections</source>
         <translation>Önyargılı kompozisyon puanı düzeltmelerini kapatın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="386"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Turn all heuristic filters off (less speed, more power)</source>
         <translation>Tüm sezgisel filtreleri kapatın (daha az hız, daha fazla güç)</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="401"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>MSV filter threshold:</source>
         <translation>MSV filtre eşiği:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="434"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Viterbi filter threshold:</source>
         <translation>Viterbi filtre eşiği:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="464"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Forward filter threshold:</source>
         <translation>İleri filtre eşiği:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="500"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Other</source>
         <translation>Diğer</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="522"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>Random generator seed</source>
         <translation>Rastgele üretici tohumu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.ui" line="565"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.ui"/>
         <source>* 0 means that one-time arbitrary seed will be used</source>
         <translation>* 0, tek seferlik keyfi tohumun kullanılacağı anlamına gelir</translation>
     </message>
@@ -2246,22 +2233,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>IlluminaClipAdditionalSettingsDialog</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="32"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui"/>
         <source>Configure ILLUMINACLIP Optional Settings</source>
         <translation>ILLUMINACLIP İsteğe Bağlı Ayarları Yapılandırın</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="44"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui"/>
         <source>Provide optional settings</source>
         <translation>İsteğe bağlı ayarları sağlayın</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="68"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui"/>
         <source>Min adapter length</source>
         <translation>Asg adaptör uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui" line="81"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui"/>
         <source>Keep both reads</source>
         <translation>Her iki okumayı da sakla</translation>
     </message>
@@ -2269,47 +2256,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>IlluminaClipSettingsWidget</name>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="14"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="46"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="61"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="68"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>A FASTA file with the adapter sequences. Files for TruSeq2 (GAII machines), TruSeq3 (HiSeq and MiSeq machines) and Nextera kits for SE and PE reads are now available by default. The naming of the various sequences within the specified file determines how they are used.</source>
         <translation>Adaptör dizileri içeren bir FAŞTA dosyası. TruSeq2 (GAII makineleri), TruSeq3 (HiSeq ve MiSeq makineleri) için dosyalar ve SE ve PE okumaları için Nextera kitleri artık varsayılan olarak mevcuttur. Belirtilen dosyadaki çeşitli dizilerin adlandırılması, bunların nasıl kullanılacağını belirler.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="49"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>Adapter sequences</source>
         <translation>Adaptör dizileri</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="71"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="87"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="97"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>The maximum mismatch count in short sections which will still allow a full match to be performed.</source>
         <translation>Kısa bölümlerdeki maksimum uyumsuzluk sayısı, yine de tam bir eşleşmenin gerçekleştirilmesine izin verecek.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="90"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>Seed mismatches</source>
         <translation>Tohum uyuşmazlıkları</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="110"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="120"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="139"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="149"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2318,7 +2300,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Basit hizalama modu için bir eşik. 7 ile 15 arasındaki değerler önerilir. 12 temel dizinin mükemmel bir eşleşmesi, 7&apos;den biraz fazla puan alırken, 15 puan için 25 baz gerekir.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="113"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>Palindrome clip threshold</source>
         <translation>Palindrom klip eşiği</translation>
     </message>
@@ -2327,12 +2309,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Palindrom hizalama modu için bir eşik. Palindromik eşleşmeler için daha uzun bir hizalama mümkündür. Bu nedenle, eşik 30 aralığında olabilir. Bu eşik çok yüksek olmasına rağmen (neredeyse 50 bazlık bir eşleşme gerektirir) Trimmomatic hala çok, çok kısa adaptör parçalarını belirleyebilmektedir.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="142"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>Simple clip threshold</source>
         <translation>Basit klip eşiği</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="191"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui"/>
         <source>Optional...</source>
         <translation>İsteğe bağlı...</translation>
     </message>
@@ -2340,17 +2322,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ImportExternalToolDialog</name>
     <message>
-        <location filename="../src/custom_tools/ImportExternalToolDialog.ui" line="14"/>
+        <location filename="../src/custom_tools/ImportExternalToolDialog.ui"/>
         <source>Import External Tool</source>
         <translation>Harici Aracı İçe Aktar</translation>
     </message>
     <message>
-        <location filename="../src/custom_tools/ImportExternalToolDialog.ui" line="25"/>
+        <location filename="../src/custom_tools/ImportExternalToolDialog.ui"/>
         <source>External tool config</source>
         <translation>Harici araç yapılandırması</translation>
     </message>
     <message>
-        <location filename="../src/custom_tools/ImportExternalToolDialog.ui" line="40"/>
+        <location filename="../src/custom_tools/ImportExternalToolDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -2358,22 +2340,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>KalignPairwiseAlignmentOptionsWidget</name>
     <message>
-        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="14"/>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui"/>
         <source>Form</source>
         <translation type="unfinished">Biçim</translation>
     </message>
     <message>
-        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="37"/>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui"/>
         <source>Gap open penalty</source>
         <translation type="unfinished">Boşluk açma cezası</translation>
     </message>
     <message>
-        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="61"/>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui"/>
         <source>Gap extension penalty</source>
         <translation type="unfinished">Boşluk uzatma cezası</translation>
     </message>
     <message>
-        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui" line="85"/>
+        <location filename="../src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui"/>
         <source>Terminal gap extension penalty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2381,53 +2363,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>KalignSupportRunDialog</name>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="32"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Align with Kalign</source>
         <translation type="unfinished">Kalign ile Hizala</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="46"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Input and output</source>
         <translation type="unfinished">Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="52"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Input file</source>
         <translation type="unfinished">Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="62"/>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="79"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="69"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Output file</source>
         <translation type="unfinished">Çıktı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="95"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Advanced options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="104"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Gap open penalty</source>
         <translation type="unfinished">Boşluk açma cezası</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="149"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Gap extension penalty</source>
         <translation type="unfinished">Boşluk uzatma cezası</translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="194"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Terminal gap extension penalty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/kalign/KalignSupportRunDialog.ui" line="236"/>
+        <location filename="../src/kalign/KalignSupportRunDialog.ui"/>
         <source>Number of threads</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2448,12 +2429,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LengthSettingsWidget</name>
     <message>
-        <location filename="../src/trimmomatic/util/LengthSettingsWidget.ui" line="14"/>
+        <location filename="../src/trimmomatic/util/LengthSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/util/LengthSettingsWidget.ui" line="32"/>
+        <location filename="../src/trimmomatic/util/LengthSettingsWidget.ui"/>
         <source>Length</source>
         <translation>Süre</translation>
     </message>
@@ -2461,48 +2442,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MAFFTSupportRunDialog</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="20"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Align with MAFFT</source>
         <translation>MAFFT ile hizala</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="28"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Input and output</source>
         <translation>Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="36"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Input file</source>
         <translation>Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="46"/>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="63"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="53"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Output file</source>
         <translation>Çıktı dosyası</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="75"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Advanced options</source>
         <translation>Gelişmiş ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="85"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Gap opening penalty</source>
         <translation>Boşluk açma cezası</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="131"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Offset (works like gap extension penalty)</source>
         <translation>Ofset (boşluk uzatma cezası gibi çalışır)</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="174"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui"/>
         <source>Maximum number of iterative refinement</source>
         <translation>Azami yinelemeli ayrıntılandırma sayısı</translation>
     </message>
@@ -2510,89 +2490,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MakeBlastDbDialog</name>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="20"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Make Blast Database</source>
         <translation>Blast Veritabanı Yap</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="29"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Input data</source>
         <translation>Girdi verileri</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="38"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Select input file(s):</source>
         <translation>Girdi dosyalarını seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="59"/>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="93"/>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="220"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="68"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Or select directory with input files:</source>
         <translation>Veya giriş dosyalarını içeren dizini seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="105"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>File filter</source>
         <translation>Dosya filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="119"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Include files filter</source>
         <translation>Dosyaları dahil et filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="129"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>*.fa;*.fasta</source>
         <translation>*.fa;*.fasta</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="136"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Exclude files filter</source>
         <translation>Dosyaları hariç tut filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="146"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>*.pal</source>
         <translation>*.pal</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="158"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Type of file(s)</source>
         <translation>Dosya türü</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="167"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>protein</source>
         <translation>protein</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="177"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>nucleotide</source>
         <translation>nükleotid</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="190"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Output settings</source>
         <translation>Çıktı ayarları</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="205"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Select the path to save the database into:</source>
         <translation>Veritabanının kaydedileceği yolu seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="234"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Base name for BLAST files:</source>
         <translation>BLAST dosyaları için temel ad:</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbDialog.ui" line="244"/>
+        <location filename="../src/blast/MakeBlastDbDialog.ui"/>
         <source>Title for database file:</source>
         <translation>Veritabanı dosyası başlığı:</translation>
     </message>
@@ -2600,29 +2578,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MaxInfoSettingsWidget</name>
     <message>
-        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="14"/>
+        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="32"/>
-        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="42"/>
+        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui"/>
         <source>The read length which is likely to allow the location of the read within the target sequence. Extremely short reads, which can be placed into many different locations, provide little value. Typically, the length would be in the order of 40 bases, however, the value also depends on the size and complexity of the target sequence.</source>
         <translation>Hedef sekans içinde okumanın konumuna izin vermesi muhtemel olan okuma uzunluğu. Birçok farklı yere yerleştirilebilen son derece kısa okumalar çok az değer sağlar. Tipik olarak uzunluk, 40 baz mertebesinde olacaktır, ancak değer aynı zamanda hedef sekansın boyutuna ve karmaşıklığına da bağlıdır.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="35"/>
+        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui"/>
         <source>Target length</source>
         <translation>Hedef uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="58"/>
-        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="68"/>
+        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui"/>
         <source>The balance between preserving as much read length as possible vs. removal of incorrect bases. A low value of this parameter (&lt;0.2) favours longer reads, while a high value (&gt;0.8) favours read correctness.</source>
         <translation>Mümkün olduğunca çok okuma uzunluğunu korumak ile yanlış tabanların kaldırılması arasındaki denge. Bu parametrenin düşük bir değeri (&lt;0,2) daha uzun okumaları desteklerken, yüksek bir değer (&gt; 0,8) doğru okumayı destekler.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui" line="61"/>
+        <location filename="../src/trimmomatic/steps/MaxInfoSettingsWidget.ui"/>
         <source>Strictness</source>
         <translation>Sıkılık</translation>
     </message>
@@ -2630,134 +2606,132 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MfoldDialog</name>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="30"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>mfold settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="36"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Algorithm settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="42"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Folding temperature (between 0 and 100 °C).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="60"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="89"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>The concentrations of Sodium and Magnesium ions. DNA only.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="107"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Ionic conditions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="116"/>
-        <location filename="../src/mfold/MfoldDialog.ui" line="158"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source> M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="179"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter controls the value of the free energy increment, &lt;span style=&quot; font-style:italic;&quot;&gt;δδG&lt;/span&gt;. If this number is set to &lt;span style=&quot; font-style:italic;&quot;&gt;p&lt;/span&gt;, then only foldings within &lt;span style=&quot; font-style:italic;&quot;&gt;p%&lt;/span&gt; from the minimum free energy will be computed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="197"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Percent suboptimality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="226"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of foldings to be computed. The folding algorithm automatically computes a selection of secondary structures within the prescribed energy increment and stops when no more &lt;span style=&quot; font-style:italic;&quot;&gt;sufficiently different&lt;/span&gt; foldings can be found.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="244"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Max num of foldings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="270"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>The window parameter controls the number of foldings that are calculated and how different they will be from each other. It can be considered as a distance parameter. A smaller value for this parameter will usually result in a larger number of foldings being calculated, which may be very similar to each other. The default value is calculated based on the length of the sequence region.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="288"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="298"/>
-        <location filename="../src/mfold/MfoldDialog.ui" line="407"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="317"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the parameter &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp&lt;/span&gt; of the maximum distance between paired bases is specified, then any base pair &lt;span style=&quot; font-style:italic;&quot;&gt;{r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;i&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;, r&lt;/span&gt;&lt;span style=&quot; font-style:italic; vertical-align:sub;&quot;&gt;j&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;}&lt;/span&gt; in a folding of a linear molecule must satisfy the condition &lt;span style=&quot; font-style:italic;&quot;&gt;j-i≤maxbp&lt;/span&gt;. In a circular molecule, the condition becomes &lt;span style=&quot; font-style:italic;&quot;&gt;min{j-i, N+i-j}≤maxbp&lt;/span&gt;, where &lt;span style=&quot; font-style:italic;&quot;&gt;N&lt;/span&gt; is the length of the region. Thus, small maxbp values ensure that only short range base pairs are predicted. By default there are no restrictions, i.e. &lt;span style=&quot; font-style:italic;&quot;&gt;maxbp=∞&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="335"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Max base pair distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="345"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>default (∞)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="361"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Display settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="379"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>The frequency at which the bases in the image will be numbered. The default value is calculated based on the length of the sequence region.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="397"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Base numbering frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="426"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of rotation of the constructed structures. The default value means that the angle is chosen automatically by the structure drawing program. Otherwise, the structure is rotated by the modulo number of degrees specified, counterclockwise if the number is positive, or clockwise if the number is negative.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="444"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="490"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="505"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Output settings</source>
         <translation type="unfinished">Çıktı ayarları</translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="524"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>Save output to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mfold/MfoldDialog.ui" line="572"/>
+        <location filename="../src/mfold/MfoldDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dots per inch (DPI) is a measure of spatial printing, in particular the number of individual dots that can be placed in a line within the span of 1 inch (2.54 cm). The more dots per inch an image has, the more detail you&apos;ll see when saved.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2765,62 +2739,62 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MrBayesDialog</name>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="60"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Model</source>
         <translation>Model</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="78"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>ModelType</source>
         <translation>Model Türü</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="95"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Rate</source>
         <translation>Oran</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="118"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Gamma</source>
         <translation>Gama</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="151"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>MCMC</source>
         <translation>MCMC</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="163"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Chain length</source>
         <translation>Zincir uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="189"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Subsampling frequence</source>
         <translation>Alt örnekleme sıklığı</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="221"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Burn-in length</source>
         <translation>Burn-in uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="250"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Heated chains</source>
         <translation>Isıtmalı zincirler</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="279"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Heated chain temp</source>
         <translation>Isıtmalı zincir sıcaklığı</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="321"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Random seed</source>
         <translation>Rastgele parçacık</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialog.ui" line="329"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui"/>
         <source>Display Options</source>
         <translation>Görüntü Seçenekleri</translation>
     </message>
@@ -2828,152 +2802,152 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PhmmerSearchDialog</name>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="20"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Phmmer Search</source>
         <translation>Phmmer Arama</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="36"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Input and output</source>
         <translation>Girdi ve çıktı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="50"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Query sequence file:</source>
         <translation>Sorgu dizisi dosyası:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="60"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="87"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Reporting thresholds</source>
         <translation>Raporlama eşikleri</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="103"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Report domains with E-value less than</source>
         <translation>E-değeri şundan küçük olan alanları bildir</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="113"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>1E+</source>
         <translation>1E+</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="142"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Report domains with score greater than</source>
         <translation>Şundan daha yüksek puana sahip alanları bildirin</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="166"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Number of significant sequences for domain E-value calculation</source>
         <translation>Etki alanı E-değeri hesaplaması için önemli dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="201"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Scoring system</source>
         <translation>Skor sistemi</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="217"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Gap open probability</source>
         <translation>Boşluk açık olasılığı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="247"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Gap extend probability</source>
         <translation>Boşluk olasılığı uzatır</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="285"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Acceleration</source>
         <translation>Hızlandırma</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="297"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Turn off composition bias filter</source>
         <translation>Kompozisyon önyargı filtresini kapat</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="310"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Turn off biased composition score corrections</source>
         <translation>Önyargılı kompozisyon puanı düzeltmelerini kapatın</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="323"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Turn all heuristic filters off (less speed, more power)</source>
         <translation>Tüm sezgisel filtreleri kapatın (daha az hız, daha fazla güç)</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="338"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Viterbi filter threshold</source>
         <translation>Viterbi filtre eşiği</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="368"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>MSV filter threshold</source>
         <translation>MSV filtre eşiği</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="401"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Forward filter threshold</source>
         <translation>İleri filtre eşiği</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="437"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>E-value calibration</source>
         <translation>E-değeri kalibrasyonu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="456"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Length of sequences for MSV Gumbel mu fit</source>
         <translation>MSV Gumbel mu fit dizilerinin uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="492"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Number of sequences for MSV Gumbel mu fit</source>
         <translation>MSV Gumbel mu fit için dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="525"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Length of sequences for Viterbi Gumbel mu fit</source>
         <translation>Viterbi Gumbel mu fit dizilerinin uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="555"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Number of sequences for Viterbi Gumbel mu fit</source>
         <translation>Viterbi Gumbel mu fit için dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="585"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Length of sequences for Forward exp tail mu fit</source>
         <translation>Forward exp tail mu fit için dizi uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="615"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Number of sequences for Forward exp tail mu fit</source>
         <translation>Forward exp tail mu fit için dizi sayısı</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="645"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Tail mass for Forward exponential tail mu fit</source>
         <translation>İleri üstel kuyruk mu fit için kuyruk kütlesi</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="686"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Other</source>
         <translation>Diğer</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="702"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>Random generator seed</source>
         <translation>Rastgele üretici tohumu</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="745"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.ui"/>
         <source>* 0 means that one-time arbitrary seed will be used</source>
         <translation>* 0, tek seferlik keyfi tohumun kullanılacağı anlamına gelir</translation>
     </message>
@@ -2981,136 +2955,127 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PhyMLDialog</name>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="76"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Substitution model</source>
         <translation>İkame modeli</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="69"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Equilibrium frequencies</source>
         <translation>Denge frekansları</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="116"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>optimized</source>
         <translation>iyileştirilmiş</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="83"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>empirical</source>
         <translation>ampirik</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="106"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Transition / transversion ratio </source>
         <translation>Geçiş / dönüşüm oranı </translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="231"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>estimated </source>
         <translation>tahmini </translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="209"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Proportion of invariable sites</source>
         <translation>Değişmez sitelerin oranı</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="63"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Substitution Model</source>
         <translation>İkame Modeli</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="126"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Number of substitution rate categories</source>
         <translation>İkame oranı kategorilerinin sayısı</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="133"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="149"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="165"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="275"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="294"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="345"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Set a fixed value or get the maximum likelihood estimate.</source>
         <translation>Sabit bir değer belirleyin veya maksimum olasılık tahminini alın.</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="136"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="152"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="348"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>estimated</source>
         <translation>beklenen</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="171"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="281"/>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="300"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>fixed</source>
         <translation>onarıldı</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="313"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Gamma shape parameter</source>
         <translation>Gama şekli parametresi</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="362"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Branch Support</source>
         <translation>Şube Desteği</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="374"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Use fast likelihood-based method</source>
         <translation>Hızlı olasılığa dayalı yöntemi kullanın</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="394"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Perform bootstrap</source>
         <translation>Önyükleme gerçekleştirin</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="404"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>It is the number of bootstrap replicates.</source>
         <translation>Önyükleme kopyalarının sayısıdır.</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="418"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Tree Searching</source>
         <translation>Ağaç Arama</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="449"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="456"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Type of tree improvement</source>
         <translation>Ağaç iyileştirme türü</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="479"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Set number of random starting tree</source>
         <translation>Rastgele başlangıç ağacının sayısını ayarla</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="506"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Optimise tree topology</source>
         <translation>Ağaç topolojisini optimize edin</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="516"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Optimise branch lengths</source>
         <translation>Şube uzunluklarını optimize edin</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="526"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Optimise substitution rate</source>
         <translation>İkame oranını optimize edin</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialog.ui" line="534"/>
+        <location filename="../src/phyml/PhyMLDialog.ui"/>
         <source>Display Options</source>
         <translation>Görüntü Seçenekleri</translation>
     </message>
@@ -3267,12 +3232,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QualitySettingsWidget</name>
     <message>
-        <location filename="../src/trimmomatic/util/QualitySettingsWidget.ui" line="14"/>
+        <location filename="../src/trimmomatic/util/QualitySettingsWidget.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/util/QualitySettingsWidget.ui" line="32"/>
+        <location filename="../src/trimmomatic/util/QualitySettingsWidget.ui"/>
         <source>Quality threshold</source>
         <translation>Kalite eşiği</translation>
     </message>
@@ -3280,29 +3245,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SlidingWindowSettingsWidget</name>
     <message>
-        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui" line="14"/>
+        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui" line="32"/>
-        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui" line="42"/>
+        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui"/>
         <source>The number of bases to average across.</source>
         <translation>Ortalaması alınacak baz sayısı.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui" line="35"/>
+        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui"/>
         <source>Window size</source>
         <translation>Pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui" line="49"/>
-        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui" line="59"/>
+        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui"/>
         <source>The average quality required.</source>
         <translation>Gereken ortalama kalite.</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui" line="52"/>
+        <location filename="../src/trimmomatic/steps/SlidingWindowSettingsWidget.ui"/>
         <source>Quality threshold</source>
         <translation>Kalite eşiği</translation>
     </message>
@@ -3310,12 +3273,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SnpEffDatabaseDialog</name>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDialog.ui" line="14"/>
+        <location filename="../src/snpeff/SnpEffDatabaseDialog.ui"/>
         <source>Select SnpEff Database</source>
         <translation>SnpEff Veritabanını Seçin</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDialog.ui" line="23"/>
+        <location filename="../src/snpeff/SnpEffDatabaseDialog.ui"/>
         <source>Search...</source>
         <translation>Ara...</translation>
     </message>
@@ -3331,123 +3294,112 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SpadesInputData</name>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="14"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Configure SPAdes Input Type</source>
         <translation>SPAdes Giriş Türünü Yapılandırma</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="32"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Required input (at least one)</source>
         <translation>Gerekli giriş (en az bir)</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="53"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="337"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Illumina/Ion Torrent reads</source>
         <translation>Illumina / Ion Torrent okur</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="97"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Sequencing platform</source>
         <translation>Sıralama platformu</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="105"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Illumina</source>
         <translation>Illumina</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="110"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Ion Torrent</source>
         <translation>Ion Torrent</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="141"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Paired-end reads</source>
         <translation>Eşleştirilmiş uçlu okumalar</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="157"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="214"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="379"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>fr</source>
         <translation>fr</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="162"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="219"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="384"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>rf</source>
         <translation>rf</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="167"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="224"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="389"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>ff</source>
         <translation>ff</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="179"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="236"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="401"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Separate reads</source>
         <translation>Ayrı okumalar</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="184"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="241"/>
-        <location filename="../src/spades/SpadesInputData.ui" line="406"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Interlaced reads</source>
         <translation>Taramalı okumalar</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="198"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>High-quality mate-pairs</source>
         <translation>Yüksek kaliteli eş çiftleri</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="263"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Unpaired reads</source>
         <translation>Eşlenmemiş okumalar</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="288"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>PacBio CCS reads</source>
         <translation>PacBio CCS okur</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="316"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Additional input</source>
         <translation>Ek giriş</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="363"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Mate-pairs</source>
         <translation>Mate çiftleri</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="438"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>PacBio CLR reads</source>
         <translation>PacBio CLR okur</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="445"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Oxford Nanopore reads</source>
         <translation>Oxford Nanopore okur</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="452"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Sanger reads</source>
         <translation>Sanger okur</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="459"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Trusted contigs</source>
         <translation>Güvenilir contigs</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesInputData.ui" line="466"/>
+        <location filename="../src/spades/SpadesInputData.ui"/>
         <source>Untrusted contigs</source>
         <translation>Güvenilmeyen contigs</translation>
     </message>
@@ -3473,68 +3425,67 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SpadesSettings</name>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="20"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Form</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="30"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Base Options</source>
         <translation>Baz Seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="45"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Running mode</source>
         <translation>Çalışma modu</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="59"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Error Correction and Assembly</source>
         <translation>Hata Düzeltme ve Montaj</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="64"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Assembly only</source>
         <translation>Yalnızca montaj</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="69"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Error correction only</source>
         <translation>Yalnızca hata düzeltme</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="80"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>k-mer sizes (-k)</source>
         <translation>k-mer boyutları (-k)</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="99"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Dataset type</source>
         <translation>Veri kümesi türü</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="120"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Multi Cell</source>
         <translation>Çok Hücreli</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="125"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Single Cell</source>
         <translation>Tek Hücreli</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="142"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Memory limit GB (-m)</source>
         <translation>Bellek sınırı GB (-m)</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="158"/>
-        <location filename="../src/spades/SpadesSettings.ui" line="190"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Number of threads</source>
         <translation>Konu sayısı</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="174"/>
+        <location filename="../src/spades/SpadesSettings.ui"/>
         <source>Number of threads (-t)</source>
         <translation>Konu sayısı (-t)</translation>
     </message>
@@ -3821,42 +3772,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TrimmomaticPropertyDialog</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="20"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>Configure Trimmomatic Steps</source>
         <translation>Trimmomatic Adımlarını Yapılandırın</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="38"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>Steps</source>
         <translation>Basamaklar</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="98"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add new step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni adım ekle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="158"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step above&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili adımı yukarıya taşı&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="218"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move selected step below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili adımı aşağı taşı&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="275"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili adımı kaldır&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="309"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>Step settings</source>
         <translation>Adım ayarları</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui" line="393"/>
+        <location filename="../src/trimmomatic/TrimmomaticPropertyDialog.ui"/>
         <source>Description</source>
         <translation>Tanım</translation>
     </message>
@@ -3934,25 +3885,31 @@ p, li { white-space: pre-wrap; }
         <translation>Çıktı Dosyasını Seç...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="302"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="320"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="339"/>
         <source>Error</source>
-        <translation>Hata</translation>
+        <translation type="vanished">Hata</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="297"/>
         <source>Reference sequence is not set.</source>
         <translation>Referans sırası belirlenmemiş.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="302"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="299"/>
+        <source>Reference sequence path should not contain &quot;;&quot; character.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="304"/>
         <source>No reads provided.</source>
         <translation>Okuma sağlanmadı.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="320"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="311"/>
+        <source>Read sequence path should not contain &quot;;&quot; character.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="321"/>
         <source>Output file is not set.</source>
         <translation>Çıktı dosyası ayarlanmadı.</translation>
     </message>
@@ -3967,17 +3924,17 @@ p, li { white-space: pre-wrap; }
         <translation>Sonuç dosyası zaten var. Üzerine yazmak ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="339"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="338"/>
         <source>Unable to delete the file.</source>
         <translation>Dosya silinemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="351"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="348"/>
         <source>Open Reference Sequence</source>
         <translation>Açık Referans Sırası</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="362"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="359"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Okunan Dosyaları Seçin</translation>
     </message>

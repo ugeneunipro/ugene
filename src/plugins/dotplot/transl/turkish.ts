@@ -4,93 +4,92 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="20"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Compare sequences using Dotplot</source>
         <translation>Dotplot kullanarak dizileri karşılaştırın</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="33"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="55"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Custom algorithm</source>
         <translation>Özel algoritma</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="102"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>X axis sequence</source>
         <translation>X ekseni dizisi</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="115"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Minimum repeat length</source>
         <translation>Minimum tekrar uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="122"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Y axis sequence</source>
         <translation>Y ekseni dizisi</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="129"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Repeats  identity</source>
         <translation>Kimliği  tekrar eder</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="158"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="186"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Tekrar uzunluğunun sezgisel temelli seçimi, böylece dizideki tekrar sayısı 1000&apos;i aşmaz</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="189"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>1k</source>
         <translation>1k</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="218"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="240"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Yinelemeleri % 100&apos;e sıfırlar</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="243"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="298"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search inverted repeats</source>
         <translation>Tersine çevrilmiş tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="305"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search direct repeats</source>
         <translation>Doğrudan tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="344"/>
-        <location filename="../src/DotPlotDialog.ui" line="351"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>default</source>
         <translation>öntanımlı</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="376"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</source>
         <translation>Dosya sisteminden bir sıra yüklemek için tıklayın. Sıra, projeye yüklendiğinde açılan kutulara eklenecektir</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="379"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Load Sequence</source>
         <translation>Yükleme Sırası</translation>
     </message>
@@ -98,40 +97,37 @@
 <context>
     <name>DotPlotFilesDialog</name>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="38"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="23"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Build Dotplot from Sequences</source>
         <translation>Dizilerden Dotplot Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with first sequence</source>
         <translation>İlk sıralı dosya</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="45"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="96"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Join all sequences found in the file</source>
         <translation>Dosyada bulunan tüm dizileri birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="62"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="130"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Gap size:</source>
         <translation>Boşluk boyutu:</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="79"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Compare sequence against itself</source>
         <translation>Sırayı kendisiyle karşılaştırın</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with second sequence</source>
         <translation>İkinci sıralı dosya</translation>
     </message>
@@ -139,92 +135,92 @@
 <context>
     <name>DotPlotFilterDialog</name>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="17"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="30"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="42"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No filtration applied</source>
         <translation>Filtreleme uygulanmadı</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="45"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No Filtration</source>
         <translation>Filtrereme Yok</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Show results that intersect the features</source>
         <translation>Unsurlarla kesişen sonuçları göster</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="58"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Intersection</source>
         <translation>Kesişme Özellikleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="65"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Intersection Parameters</source>
         <translation>Kesişim Parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Feature Name</source>
         <translation>Özellik Adı</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="80"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select all names</source>
         <translation>Tüm isimleri seçin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="83"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select All</source>
         <translation>Tümünü Seç</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="90"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert the current selection</source>
         <translation>Mevcut seçimi tersine çevirin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="93"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert Selection</source>
         <translation>Seçimi Tersine Çevir</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="100"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear the current selection</source>
         <translation>Mevcut seçimi temizle</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear Selection</source>
         <translation>Seçimi Temizle</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="110"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select names of the features to intersection</source>
         <translation>Kesişecek unsurların adlarını seçin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="113"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Selection</source>
         <translation>Özellik Seçimi</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="139"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select only different names</source>
         <translation>Yalnızca farklı isimler seçin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="142"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Different Only</source>
         <translation>Sadece Farklı</translation>
     </message>
