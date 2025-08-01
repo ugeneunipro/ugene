@@ -4,27 +4,27 @@
 <context>
     <name>BioStruct3DSubsetEditor</name>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="14"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="20"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Structure</source>
         <translation>Структура</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="37"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Chain</source>
         <translation>Цепь</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="54"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="64"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Model</source>
         <translation>Модель</translation>
     </message>
@@ -80,17 +80,17 @@
 <context>
     <name>SelectModelsDialog</name>
     <message>
-        <location filename="../src/SelectModelsDialog.ui" line="14"/>
+        <location filename="../src/SelectModelsDialog.ui"/>
         <source>Select Models</source>
         <translation>Выбор моделей</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.ui" line="25"/>
+        <location filename="../src/SelectModelsDialog.ui"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.ui" line="32"/>
+        <location filename="../src/SelectModelsDialog.ui"/>
         <source>Invert</source>
         <translation>Инвертировать</translation>
     </message>
@@ -98,57 +98,57 @@
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="35"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Anaglyph view</source>
         <translation>Стереоизображение</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="49"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Eyes shift</source>
         <translation>Сдвиг слоев</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="20"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="279"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Set background color...</source>
         <translation>Выбрать цвет фона...</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="292"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Set selection color...</source>
         <translation>Выбрать цвет выделения...</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="301"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Detail level</source>
         <translation>Уровень детализации</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="325"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Unselected regions shading</source>
         <translation>Затемнение невыбранных регионов</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="96"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Glasses colors</source>
         <translation>Цвета очков</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="125"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Left</source>
         <translation>Левый</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="135"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Right</source>
         <translation>Правый</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="254"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Swap colors</source>
         <translation>Поменять местами</translation>
     </message>
@@ -156,22 +156,22 @@
 <context>
     <name>StructuralAlignmentDialog</name>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="14"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Structural Alignment</source>
         <translation>Структурное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="20"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="45"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Reference</source>
         <translation>Референсная</translation>
     </message>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="61"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Mobile</source>
         <translation>Мобильная</translation>
     </message>

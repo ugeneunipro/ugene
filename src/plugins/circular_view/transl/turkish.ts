@@ -4,97 +4,97 @@
 <context>
     <name>CircularViewSettingsWidget</name>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="20"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="38"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show title</source>
         <translation>Başlığı göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="48"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show length</source>
         <translation>Uzunluğu göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="64"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Font</source>
         <translation>Yazı Tipi</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="84"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Size</source>
         <translation>Boyut</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="104"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Attribute</source>
         <translation>Öznitelik</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="150"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Bold</source>
         <translation>Kalın</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="153"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="193"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Inside</source>
         <translation>İçinde</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="198"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Outside</source>
         <translation>Dışında</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="203"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Inside/Outside</source>
         <translation>İçeri/Dışarı</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="208"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>None</source>
         <translation>Hiçbiri</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="292"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Label font size</source>
         <translation>Etiket yazı tipi boyutu</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="270"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show ruler line</source>
         <translation>Cetvel çizgisini göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="222"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Font size</source>
         <translation>Yazı tipi boyutu</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="254"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Label position</source>
         <translation>Etiket konumu</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="280"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show coordinates</source>
         <translation>Koordinatları göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="335"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>There are no displayed Circular Views, so settings are hidden.</source>
         <translation>Görüntülenen Dairesel Görünüm yoktur, bu nedenle ayarlar gizlidir.</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="363"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Open Circular View(s)</source>
         <translation>Dairesel Görünümleri Aç</translation>
     </message>
@@ -126,17 +126,17 @@
 <context>
     <name>SetSequenceOriginDialog</name>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="32"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>Set sequence origin</source>
         <translation>Sekans kaynağını ayarla</translation>
     </message>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="40"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>New origin:</source>
         <translation>Yeni köken:</translation>
     </message>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="47"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>New sequence origin point. All annotations will be shifted relative to new origin point.</source>
         <translation>Yeni sekans başlangıç noktası. Tüm açıklamalar yeni başlangıç noktasına göre kaydırılacaktır.</translation>
     </message>

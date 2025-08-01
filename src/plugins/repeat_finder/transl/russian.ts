@@ -4,136 +4,132 @@
 <context>
     <name>FindRepeatsDialog</name>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="17"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Find Repeats</source>
         <translation>Поиск повторов</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="87"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="239"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="299"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>bp</source>
         <translation>нк</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="115"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Эвристический подбор длины повторов, с тем чтобы кол-во повторов в последовательности не превысило 1000</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="118"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>1k</source>
         <translation>1к</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="49"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Number of bases in a sliding window that is moved along the sequence</source>
         <translation>Число символов в окне, которое будет перемещаться вдоль последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="52"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Window size</source>
         <translation>Размер окна</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="125"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>How similar the two windows of the sequence</source>
         <translation>Схожесть двух окон в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="128"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Minimum indentity per window</source>
         <translation>Минимальное совпадение для окна</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="163"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="185"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Сбросить к 100%</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="188"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="211"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Minimum distance between repeats</source>
         <translation>Мин дистанция между повторами</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="258"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Maximum distance between repeats</source>
         <translation>Макс дистанция между повторами</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="363"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Advanced</source>
         <translation>Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="369"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Advanced parameters</source>
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="375"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Custom algorithm</source>
         <translation>Выбранный алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="402"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search only for repeats that lie inside of an annotated region</source>
         <translation>Искать только те повторы, что лежат внутри аннотированного региона</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="451"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search only for repeats that have an annotated region inside</source>
         <translation>Искать только те повторы, что содержат аннотированный регион</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="500"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Filter repeats that have an annotated region inside</source>
         <translation>Исключить из поиска повторы, содержащие аннотированный регион</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="609"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Nested repeats filter algorithm</source>
         <translation>Алгоритм исключения вложенных повторов</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="569"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Exclude tandems areas</source>
         <translation>Исключить тандемные области</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="444"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="493"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="542"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="549"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search for inverted repeats</source>
         <translation>Искать инвертированные повторы</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="321"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Region to process</source>
         <translation>Регион поиска</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="31"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Base</source>
         <translation>Основные настройки</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="37"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Repeat finder parameters</source>
         <translation>Параметры поиска повторов</translation>
     </message>
@@ -141,73 +137,72 @@
 <context>
     <name>FindTandemsDialog</name>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="248"/>
-        <location filename="../src/FindTandemsDialog.ui" line="267"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source> n</source>
         <translation> н</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="62"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="17"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Find Tandem Repeats</source>
         <translation>Поиск тандемов</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="31"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>General</source>
         <translation>Основные</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="37"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="55"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Preset settings</source>
         <translation>Предустановки</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="69"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min length of repeated sequence</source>
         <translation>Минимальная длина повторяемой последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="76"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Max length of repeated sequence</source>
         <translation>Максимальная длина повторяемой последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="83"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min length of tandem repeat</source>
         <translation>Минимальная длина тандема</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="90"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min number of repeats</source>
         <translation>Минимальное число повторов</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="308"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="328"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Show overlapped tandems</source>
         <translation>Показать перекрывающиеся тандемы</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="340"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Search in</source>
         <translation>Искать в</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="366"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Output</source>
         <translation>Сохранение</translation>
     </message>

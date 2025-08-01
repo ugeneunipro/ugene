@@ -4,124 +4,118 @@
 <context>
     <name>ORFDialogBase</name>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="35"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>ORF Marker</source>
         <translation>Поиск открытых рамок считывания</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="73"/>
-        <location filename="../src/ORFDialogUI.ui" line="403"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Strand</source>
         <translation>Цепь</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="85"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Both</source>
         <translation>Обе</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="79"/>
-        <location filename="../src/ORFDialogUI.ui" line="82"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Search in both strands</source>
         <translation>Искать в прямой и обратно-комплементарной цепях</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="101"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="95"/>
-        <location filename="../src/ORFDialogUI.ui" line="98"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Search frames in direct strand only</source>
         <translation>Искать только в прямой цепи</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="120"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Complement</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="114"/>
-        <location filename="../src/ORFDialogUI.ui" line="117"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Search frames in complement strand only</source>
         <translation>Искать только в обратно-комплементарной цепи</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="145"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Search Settings</source>
         <translation>Параметры поиска</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="163"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Min length, bp:</source>
         <translation>Мин длина, нукл:</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="157"/>
-        <location filename="../src/ORFDialogUI.ui" line="160"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <location filename="../src/ORFQuery.cpp" line="202"/>
         <source>Ignore ORFs shorter than the specified length</source>
         <translation>Не учитывать ORF короче указанной длины</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="181"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Must terminate within region</source>
         <translation>Терминатор внутри региона</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="194"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Must start with init codon</source>
         <translation>Старт-кодон обязателен</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="188"/>
-        <location filename="../src/ORFDialogUI.ui" line="191"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Specifies that each ORF found must start with the start codon</source>
         <translation>Указывает, что старт-кодон является обязательным</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="238"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Allow alternative init codons</source>
         <translation>Учитывать альтернативные старт-кодоны</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="252"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Include stop codon</source>
         <translation>Включить стоп-кодон</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="433"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Preview</source>
         <translation>Просмотреть</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="455"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Clear results</source>
         <translation>Очистить результаты</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="398"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="408"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="41"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Find Open Reading Frames in sequence</source>
         <translation>Поиск открытых рамок считывания в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="430"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Start searching ORFs</source>
         <translation>Начать поиск ORF</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="245"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -134,7 +128,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Включить стоп-кодон в аннотацию. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="204"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>
                Allow alternative (downstream) initiators, when another start codon is located within a longer ORF.
                Then all possible ORF will be found, not only the longest ones.
@@ -145,16 +139,14 @@ p, li { white-space: pre-wrap; }
              </translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="173"/>
-        <location filename="../src/ORFDialogUI.ui" line="177"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Ignore boundary ORFs which last beyond the search region(i.e. have no stop codon within the range).
              </source>
         <translation>Игнорировать границы ORF, находящиеся за пределами области поиска(т.е. не имеющие стоп-кодона в пределах диапазона).
              </translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="226"/>
-        <location filename="../src/ORFDialogUI.ui" line="232"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>
                Allow ORFs starting with alternative initiation codons,
                accordingly to the current translation table.
@@ -170,7 +162,7 @@ p, li { white-space: pre-wrap; }
         <translation>Стоп-кодон обязателен</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="210"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Allow overlaps</source>
         <translation>Учитывать перекрытые регионы</translation>
     </message>
@@ -199,17 +191,17 @@ Ignore boundary ORFs which last beyond the search region
 </translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="57"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="265"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Max result</source>
         <translation>Максимальное количество результатов</translation>
     </message>
     <message>
-        <location filename="../src/ORFDialogUI.ui" line="487"/>
+        <location filename="../src/ORFDialogUI.ui"/>
         <source>Output</source>
         <translation>Выходной файл</translation>
     </message>

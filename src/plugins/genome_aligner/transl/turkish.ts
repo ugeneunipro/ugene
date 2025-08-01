@@ -4,12 +4,12 @@
 <context>
     <name>BuildSuffixArraySettings</name>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="29"/>
+        <location filename="../src/BuildSuffixArraySettings.ui"/>
         <source>Reference fragmentation</source>
         <translation>Referans parçalama</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="43"/>
+        <location filename="../src/BuildSuffixArraySettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -26,17 +26,17 @@ p, li { white-space: pre-wrap; }
              hizalama sırasında kullanılan bellek miktarı.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="92"/>
+        <location filename="../src/BuildSuffixArraySettings.ui"/>
         <source>Resources</source>
         <translation>Kaynaklar</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="109"/>
+        <location filename="../src/BuildSuffixArraySettings.ui"/>
         <source>Total memory usage:</source>
         <translation>Toplam bellek kullanımı:</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="145"/>
+        <location filename="../src/BuildSuffixArraySettings.ui"/>
         <source>System memory size:</source>
         <translation>Sistem bellek boyutu:</translation>
     </message>
@@ -44,64 +44,62 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GenomeAlignerSettings</name>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="14"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="36"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Chech this box if mismatches between the reference sequence and the reads are allowed.</source>
         <translation>Referans dizisi ile okumalar arasında uyuşmazlıklara izin veriliyorsa bu kutuyu işaretleyin.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="39"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Mismatches allowed</source>
         <translation>Uyumsuzluklara izin verildi</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="53"/>
-        <location filename="../src/GenomeAlignerSettings.ui" line="79"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Select the number of mismatched nucleotides allowed.</source>
         <translation>İzin verilen uyumsuz nükleotid sayısını seçin.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="92"/>
-        <location filename="../src/GenomeAlignerSettings.ui" line="118"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Select the percentage of mismatches allowed. Note, that absolute number of mismatches can vary for different reads.</source>
         <translation>İzin verilen uyumsuzlukların yüzdesini seçin. Mutlak uyumsuzluk sayısının farklı okumalar için değişebileceğini unutmayın.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="56"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Mismatches number</source>
         <translation>Uyumsuzluk sayısı</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="30"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Common parameters</source>
         <translation>Ortak parametreler</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="95"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Percentage of mismatches</source>
         <translation>Uyumsuzluk yüzdesi</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="148"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Set short reads aligning options.</source>
         <translation>Kısa okumaları hizalama seçeneklerini ayarlayın.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="233"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Use both the read and its reverse complement during aligning.</source>
         <translation>Hizalama sırasında hem okumayı hem de ters tamamlayıcısını kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="236"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Align reverse complement reads</source>
         <translation>Ters tamamlayıcı okumaları hizala</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="213"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -114,7 +112,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Yalnızca en iyi hizalamalar hakkında rapor verin (uyumsuzluklar açısından).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="220"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Use &quot;best&quot;-mode during the alignment</source>
         <translation>Hizalama sırasında &quot;en iyi&quot; modunu kullanın</translation>
     </message>
@@ -123,58 +121,57 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">GPU optimizasyonunu kullanın</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="265"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Advanced parameters</source>
         <translation>Gelişmiş parametreler</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="271"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Maximum memory for short reads</source>
         <translation>Kısa okumalar için maksimum bellek</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="321"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Total memory usage:</source>
         <translation>Toplam bellek kullanımı:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="364"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>System memory size:</source>
         <translation>Sistem bellek boyutu:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="406"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Index parameters</source>
         <translation>Dizin parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="412"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Reference fragmentation</source>
         <translation>Referans parçalama</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="472"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Index memory usage size:</source>
         <translation>Dizin belleği kullanım boyutu:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="503"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
         <translation>Hizalama sırasında oluşturulacak referans için indeks dosyalarını kaydetmek için geçici bir dizin seçebilirsiniz. Bu algoritmayı aynı referansla ve aynı referans parçalama parametresiyle bir kez daha çalıştırmanız gerekirse, geçici dizinde yer alacak olan bu önceden oluşturulmuş dizini kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="535"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Directory for index files:</source>
         <translation>Dizin dosyaları için dizin:</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="168"/>
-        <location filename="../src/GenomeAlignerSettings.ui" line="194"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Omit reads with qualities lower than the specified value. Reads that have no qualities are not omited.</source>
         <translation>Belirtilen değerden daha düşük niteliklere sahip okumaları atla. Nitelikleri olmayan okumalar atlanmaz.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="279"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -189,7 +186,7 @@ p, li { white-space: pre-wrap; }
                  &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="420"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -206,22 +203,22 @@ p, li { white-space: pre-wrap; }
                  hizalama sırasında kullanılan bellek miktarı.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="525"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Specify an index to build during execution of the selected short reads aligning algorithm. If this option is selected, the value is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Seçilen kısa okuma hizalama algoritmasının yürütülmesi sırasında oluşturulacak bir dizin belirtin. Bu seçenek seçilirse, değer &lt;b&gt;gereklidir&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="518"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="151"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Align options</source>
         <translation>Hizalama seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="171"/>
+        <location filename="../src/GenomeAlignerSettings.ui"/>
         <source>Omit reads with qualities lower than</source>
         <translation>Şundan daha düşük niteliklere sahip okumaları atla</translation>
     </message>
@@ -229,7 +226,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GenomeAlignerSettingsWidget</name>
     <message>
-        <location filename="../src/GenomeAlignerSettingsWidget.ui" line="14"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.ui"/>
         <source>Genome aligner settings</source>
         <translation>Genom hizalayıcı ayarları</translation>
     </message>

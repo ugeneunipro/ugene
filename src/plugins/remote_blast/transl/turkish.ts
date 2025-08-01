@@ -92,142 +92,142 @@
 <context>
     <name>RemoteBLASTDialog</name>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="26"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Search Through a Remote Database</source>
         <translation>Uzak Veritabanında Ara</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="66"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>General options</source>
         <translation>Genel seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="86"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Select the search type:</source>
         <translation>Arama türünü seçin:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="94"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>blastn</source>
         <translation>blastn</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="99"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>blastp</source>
         <translation>blastp</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="104"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>cdd</source>
         <translation>cdd</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="112"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Kısa, neredeyse tam eşleşmeleri arayın</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="119"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Expectation value:</source>
         <translation>Beklenti değeri:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="126"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="197"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>The database:</source>
         <translation>Veritabanı:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="208"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Human genomic plus transcript - est_human</source>
         <translation>İnsan genomik artı transkript - est_insan</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="213"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Mouse genomic plus transcript - est_mouse</source>
         <translation>Fare genomik artı transkript - en_fare</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="218"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Nucleotide collection - nr</source>
         <translation>Nükleotid koleksiyonu - nr</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="223"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Reference nRNA sequences - refseq_rna</source>
         <translation>Referans nRNA dizileri - refseq_rna</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="228"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Reference genomic seqence - refseq_genomic</source>
         <translation>Referans genom dizisi - refseq_genomu</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="233"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>NCBI genomes - chromosome</source>
         <translation>NCBI genomları - kromozom</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="238"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Express sequence tags - est</source>
         <translation>Ekspres sıra etiketleri - est</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="243"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Non-human, non-mouse ESTs - est_other</source>
         <translation>İnsan olmayan, fare olmayan EST&apos;ler - est_diğer</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="248"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Genomic survey sequences - gss</source>
         <translation>Genomik anket dizileri - gss</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="253"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>High throughput genomic sequences - HTGS</source>
         <translation>Yüksek verimli genomik diziler - HTGS</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="258"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Patent sequences - pat</source>
         <translation>Patent dizileri - pat</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="263"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Protein data bank - pdb</source>
         <translation>Protein Bilgi Bankası - pdb</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="268"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Human ALU repeat elements - alu_repeats</source>
         <translation>İnsan ALU tekrar elemanları - alu_tekrarları</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="273"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Sequence tagged sites - dbsts</source>
         <translation>Sıra etiketli siteler - dbsts</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="278"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Whole-genome shotgun reads - wgs</source>
         <translation>Tüm genom av tüfeği okur - wgs</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="283"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Environmental samples - env_nt</source>
         <translation>Çevresel örnekler - env_nt</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="313"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>The database description:</source>
         <translation>Veritabanı açıklaması:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="341"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -239,218 +239,217 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="388"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Search timeout</source>
         <translation>Arama zaman aşımı</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="404"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source> min</source>
         <translation> dakika</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="426"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Advanced options</source>
         <translation>Gelişmiş seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="447"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="452"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="457"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>11</source>
         <translation>11</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="462"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>15</source>
         <translation>15</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="476"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Word size</source>
         <translation>Kelime boyutu</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="483"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Gap costs</source>
         <translation>Boşluk maliyetleri</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="500"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>11 1</source>
         <translation>11 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="505"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>5 2</source>
         <translation>5 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="510"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>4 2</source>
         <translation>4 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="515"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>1 2</source>
         <translation>1 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="520"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>0 2</source>
         <translation>0 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="525"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>3 1</source>
         <translation>3 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="530"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>2 1</source>
         <translation>2 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="535"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>1 1</source>
         <translation>1 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="549"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Match scores</source>
         <translation>Eşleşme skorları</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="560"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="565"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="570"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="575"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="580"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="585"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="599"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Matrix</source>
         <translation>Matris</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="612"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>PHI pattern</source>
         <translation>PHI kalıbı</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="632"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Entrez query</source>
         <translation>Entrez sorgusu</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="642"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Service</source>
         <translation>Hizmet</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="663"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>plain</source>
         <translation>sade</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="668"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="673"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="685"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Filters</source>
         <translation>Filtreler</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="691"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Low complexity filter</source>
         <translation>Düşük karmaşıklık filtresi</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="698"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Human repeats filter</source>
         <translation>İnsan tekrarları filtresi</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="708"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Masks</source>
         <translation>Maskeler</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="714"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Mask for lookup table only</source>
         <translation>Yalnızca arama tablosu için maske</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="721"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Mask lower case letters</source>
         <translation>Küçük harfleri maskele</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="733"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Filter results</source>
         <translation>Filtre sonuçları</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="741"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Filter by</source>
         <translation>Tarafından filtre</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="786"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Select result by</source>
         <translation>Şuna göre sonucu seçin</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="762"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>accession</source>
         <translation>katılım</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="133"/>
-        <location filename="../src/RemoteBLASTDialog.ui" line="143"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>The maximum number of results</source>
         <translation>Maksimum sonuç sayısı</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="136"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Results limit:</source>
         <translation>Sonuç sınırı:</translation>
     </message>
@@ -467,22 +466,22 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="776"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>EValue</source>
         <translation>DEĞERLENDİRME</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="748"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>def (filter by definition of annotations)</source>
         <translation>def (ek açıklamaların tanımına göre filtrele)</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="769"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>id</source>
         <translation>kimlik</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="755"/>
+        <location filename="../src/RemoteBLASTDialog.ui"/>
         <source>Score</source>
         <translation>Puan</translation>
     </message>

@@ -4,43 +4,42 @@
 <context>
     <name>HMMBuildDialog</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="32"/>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="49"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="14"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>HMM Build</source>
         <translation>HMM Yapısı</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="22"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Multiple alignment file:</source>
         <translation>Çoklu hizalama dosyası:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="39"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>File to save HMM profile:</source>
         <translation>HMM profilini kaydetmek için dosya:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="58"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="70"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Name can be any string of non-whitespace characters (e.g. one ”word”).</source>
         <translation>Ad, boşluk olmayan herhangi bir karakter dizisi olabilir (ör. Bir &quot;kelime&quot;).</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="73"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Name this HMM:</source>
         <translation>Bu HMM&apos;yi adlandırın:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="84"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              By default, the model is configured to find one or more nonoverlapping alignments to the complete model:
              multiple global alignments with respect to the model, and local with respect to the sequence
@@ -51,12 +50,12 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="90"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Default (hmmls) behaviour:</source>
         <translation>Varsayılan (hmmls) davranış:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="120"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              Configure the model for finding multiple domains per sequence, where each domain can be a local (fragmentary) alignment.
              This is analogous to the old hmmfs program of HMMER 1.
@@ -67,12 +66,12 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="126"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Emulate hmmfs behaviour:</source>
         <translation>Hmmfs davranışını taklit edin:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="153"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              Configure the model for finding a single global alignment to a target sequence,
              analogous to the old hmms program of HMMER 1.
@@ -83,12 +82,12 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="159"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Emulate hmms behaviour:</source>
         <translation>Hmms davranışını taklit edin:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="186"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              Configure the model for finding a single local alignment per target sequence.
              This is analogous to the standard Smith/Waterman algorithm or the hmmsw program of HMMER 1.
@@ -99,7 +98,7 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="192"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Emulate hmmsw behaviour:</source>
         <translation>Hmmsw davranışını taklit edin:</translation>
     </message>
@@ -135,23 +134,22 @@
 <context>
     <name>HMMCalibrateDialog</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="22"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>HMM file: </source>
         <translation>HMM dosyası: </translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="32"/>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="297"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="41"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="53"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              Fix the length of the random sequences to n
                  , where n is a positive (and reasonably sized) integer. 
@@ -162,17 +160,17 @@ The default is instead to generate sequences with a variety of different lengths
 Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşitli farklı uzunluklarda diziler oluşturmaktır.</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="59"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Fix the length of the random sequences to:</source>
         <translation>Rastgele dizilerin uzunluğunu şu şekilde sabitleyin:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="104"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Mean length of the synthetic sequences:</source>
         <translation>Sentetik dizilerin ortalama uzunluğu:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="146"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              Number of synthetic sequences.
              If n is less than about 1000, the fit to the EVD may fail
@@ -185,12 +183,12 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
              Varsayılan değer 5000&apos;dir; doğruluk ve hesaplama zamanı arasında bir değiş tokuş olarak deneysel olarak seçilmiştir.</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="153"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Number of synthetic sequences:</source>
         <translation>Sentetik dizi sayısı:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="195"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              Standard deviation of the synthetic sequence length.
              A positive number. The default is 200.
@@ -203,12 +201,12 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
          </translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="202"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Standard deviation:</source>
         <translation>Standart sapma:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="238"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              The random seed, where n is a positive integer. 
              The default is to use time() to generate a different seed for each run, 
@@ -221,27 +219,27 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
              Aynı HMM üzerindeki farklı hmmkalibre çalışmaları için tekrarlanabilir sonuçlar oluşturmak için bu seçeneği kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="245"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Random seed:</source>
         <translation>Rastgele parçacık:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="278"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Save calibrated profile to file</source>
         <translation>Kalibre edilmiş profili dosyaya kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="290"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Save calibrated profile to file:</source>
         <translation>Kalibre edilmiş profili dosyaya kaydedin:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="14"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>HMM Calibrate</source>
         <translation>HMM Kalibre Et</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="101"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Mean length of the synthetic sequences, positive real number. The default value is 325.</source>
         <translation>Sentetik dizilerin ortalama uzunluğu, pozitif gerçek sayı. Varsayılan değer 325&apos;tir.</translation>
     </message>
@@ -249,86 +247,69 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>HMMSearchDialog</name>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="23"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>HMM Search</source>
         <translation>HMM Araması</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="37"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>File with HMM profile:</source>
         <translation>HMM profiline sahip dosya:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="47"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="62"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="77"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="80"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="83"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="226"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="229"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="232"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <location filename="../src/u_search/HMMSearchWorker.cpp" line="92"/>
         <source>E-value filtering can be used to exclude low-probability hits from result.</source>
         <translation>E-değer filtreleme, düşük olasılıklı isabetleri sonuçtan hariç tutmak için kullanılabilir.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="86"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Filter results with E-value greater then:</source>
         <translation>E-değeri daha büyük olan sonuçları filtreleyin:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="119"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="122"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="125"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="135"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="138"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="141"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <location filename="../src/u_search/HMMSearchWorker.cpp" line="93"/>
         <source>Score based filtering is an alternative to E-value filtering to exclude low-probability hits from result.</source>
         <translation>Puan tabanlı filtreleme, sonuçtan düşük olasılıklı isabetleri hariç tutmak için E-değer filtrelemeye bir alternatiftir.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="128"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Filter results with Score lower than:</source>
         <translation>Şundan düşük Puanı olan sonuçları filtrele:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="188"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="191"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="194"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="210"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="213"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="216"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Calculate the E-value scores as if we had seen a sequence database of &lt;n&gt; sequences.</source>
         <translation>E-değeri puanlarını, &lt;n&gt; dizilerinin bir dizi veritabanı görmüş gibi hesaplayın.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="219"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Number of sequences in dababase:</source>
         <translation>Veritabanındaki dizi sayısı:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="277"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="280"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="283"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Variants of algorithm</source>
         <translation>Algoritmanın çeşitleri</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="241"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>1E</source>
         <translation>1E</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="257"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>

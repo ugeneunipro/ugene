@@ -14,103 +14,102 @@ Probably, the data are too big.</source>
 <context>
     <name>AssemblyToRefDialog</name>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="72"/>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="96"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="194"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="201"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="31"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Select a method to align short reads.</source>
         <translation>Выберите метод выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="20"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Map NGS Reads to Reference</source>
         <translation>Выравнивание NGS ридов на референс</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="34"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Mapping tool</source>
         <translation>Инструмент выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="41"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Select required align short reads method</source>
         <translation>Выберите требуемый метод выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="55"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Select a DNA sequence to align short reads to. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Выберите референсную последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="58"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Reference sequence</source>
         <translation>Референсная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="79"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>File in UGENE database format or SAM format (if the box SAM output check), to write the result of the alignment into. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Результат сборки контигов в формате SAM.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="82"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Result file name</source>
         <translation>Имя выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="107"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Library</source>
         <translation>Библиотека</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="115"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Single-end</source>
         <translation>Single-end</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="120"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Paired-end</source>
         <translation>Paired-end</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="141"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>SAM output</source>
         <translation>Сохранить в формате SAM</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="150"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Add short reads here. &lt;b&gt;At least one read&lt;/b&gt; should be presented.</source>
         <translation>Здесь показаны риды, которые будут выравнены на референтную последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="153"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Short reads</source>
         <translation>Короткие риды</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="161"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="166"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="171"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui"/>
         <source>Order</source>
         <translation>Порядок</translation>
     </message>
@@ -118,23 +117,22 @@ Probably, the data are too big.</source>
 <context>
     <name>AssemblyToSamDialog</name>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui" line="17"/>
+        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui"/>
         <source>Convert UGENE Assembly Database to SAM Format</source>
         <translation>Конвертировать данные UGENE в формат SAM</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui" line="25"/>
+        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui"/>
         <source>Assembly database:</source>
         <translation>База данных:</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui" line="35"/>
-        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui" line="52"/>
+        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui" line="42"/>
+        <location filename="../src/util_dna_assembly/AssemblyToSamDialog.ui"/>
         <source>Result SAM file:</source>
         <translation>Выходной SAM файл:</translation>
     </message>
@@ -142,46 +140,42 @@ Probably, the data are too big.</source>
 <context>
     <name>BuildIndexFromRefDialog</name>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="20"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>Build Index</source>
         <translation>Построить индекс</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="39"/>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="49"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>Select a method that would be used to align short reads.</source>
         <translation>Выберите метод выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="42"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>Map short reads method</source>
         <translation>Метод выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="76"/>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="86"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>Select a DNA sequence that would be used to align short reads to. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Выберите последовательность на которую будут выравнены ваш риды.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="79"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>Reference sequence</source>
         <translation>Референсная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="103"/>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="113"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>Specify the index to build for the reference sequence. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Индекс для референсной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="106"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>Index file name</source>
         <translation>Имя индекс файла</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="96"/>
-        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui" line="120"/>
+        <location filename="../src/util_dna_assembly/BuildIndexFromRefDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -189,17 +183,17 @@ Probably, the data are too big.</source>
 <context>
     <name>ColorSchemaDialog</name>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialog.ui" line="17"/>
+        <location filename="../src/ov_msa/ColorSchemaDialog.ui"/>
         <source>Color Scheme </source>
         <translation>Цветовая схема </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialog.ui" line="43"/>
+        <location filename="../src/ov_msa/ColorSchemaDialog.ui"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialog.ui" line="50"/>
+        <location filename="../src/ov_msa/ColorSchemaDialog.ui"/>
         <source>Restore last state</source>
         <translation>Вернуть последнее состояние</translation>
     </message>
@@ -207,37 +201,37 @@ Probably, the data are too big.</source>
 <context>
     <name>ColorSchemaSettingsWidget</name>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="17"/>
+        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui"/>
         <source>MSA Color Schemes Settings</source>
         <translation>Настройки цветовых схем</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="23"/>
+        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui"/>
         <source>Create and modify custom color schemes</source>
         <translation>Создание пользовательских цветовых схем</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="35"/>
+        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui"/>
         <source>Directory to save color scheme:</source>
         <translation>Папка для сохранения:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="47"/>
+        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="66"/>
+        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui"/>
         <source>Change color scheme</source>
         <translation>Изменить цветовую схему</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="73"/>
+        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui"/>
         <source>Create color scheme</source>
         <translation>Создать цветовую схему</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="80"/>
+        <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
@@ -245,22 +239,22 @@ Probably, the data are too big.</source>
 <context>
     <name>CreateMSAScheme</name>
     <message>
-        <location filename="../src/ov_msa/CreateMSAScheme.ui" line="23"/>
+        <location filename="../src/ov_msa/CreateMSAScheme.ui"/>
         <source>Create Alignment Color Scheme</source>
         <translation>Новая цветовая схема</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateMSAScheme.ui" line="50"/>
+        <location filename="../src/ov_msa/CreateMSAScheme.ui"/>
         <source>New scheme name</source>
         <translation>Имя новой схемы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateMSAScheme.ui" line="79"/>
+        <location filename="../src/ov_msa/CreateMSAScheme.ui"/>
         <source>Alphabet</source>
         <translation>Алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateMSAScheme.ui" line="110"/>
+        <location filename="../src/ov_msa/CreateMSAScheme.ui"/>
         <source>Use extended mode</source>
         <translation>Использовать расширенный режим</translation>
     </message>
@@ -268,32 +262,32 @@ Probably, the data are too big.</source>
 <context>
     <name>CreatePhyTree</name>
     <message>
-        <location filename="../src/phyltree/CreatePhyTreeDialog.ui" line="20"/>
+        <location filename="../src/phyltree/CreatePhyTreeDialog.ui"/>
         <source>Build Phylogenetic Tree</source>
         <translation>Построение филогенетического дерева</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/CreatePhyTreeDialog.ui" line="45"/>
+        <location filename="../src/phyltree/CreatePhyTreeDialog.ui"/>
         <source>Tree building method</source>
         <translation>Метод построения</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/CreatePhyTreeDialog.ui" line="86"/>
+        <location filename="../src/phyltree/CreatePhyTreeDialog.ui"/>
         <source>Save tree to</source>
         <translation>Сохранить дерево в</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/CreatePhyTreeDialog.ui" line="96"/>
+        <location filename="../src/phyltree/CreatePhyTreeDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/CreatePhyTreeDialog.ui" line="110"/>
+        <location filename="../src/phyltree/CreatePhyTreeDialog.ui"/>
         <source>Save Settings</source>
         <translation>Сохранить настройки</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/CreatePhyTreeDialog.ui" line="117"/>
+        <location filename="../src/phyltree/CreatePhyTreeDialog.ui"/>
         <source>Restore Default</source>
         <translation>Восстановить настройки</translation>
     </message>
@@ -301,32 +295,32 @@ Probably, the data are too big.</source>
 <context>
     <name>CreateRulerDialog</name>
     <message>
-        <location filename="../src/ov_sequence/CreateRulerDialog.ui" line="14"/>
+        <location filename="../src/ov_sequence/CreateRulerDialog.ui"/>
         <source>Create New Ruler</source>
         <translation>Создать новую шкалу</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/CreateRulerDialog.ui" line="28"/>
+        <location filename="../src/ov_sequence/CreateRulerDialog.ui"/>
         <source>Ruler name</source>
         <translation>Имя шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/CreateRulerDialog.ui" line="48"/>
+        <location filename="../src/ov_sequence/CreateRulerDialog.ui"/>
         <source>Ruler start</source>
         <translation>Начало шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/CreateRulerDialog.ui" line="68"/>
+        <location filename="../src/ov_sequence/CreateRulerDialog.ui"/>
         <source>Ruler color</source>
         <translation>Цвет шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/CreateRulerDialog.ui" line="75"/>
+        <location filename="../src/ov_sequence/CreateRulerDialog.ui"/>
         <source>Sample Text</source>
         <translation>образец</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/CreateRulerDialog.ui" line="88"/>
+        <location filename="../src/ov_sequence/CreateRulerDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -334,57 +328,57 @@ Probably, the data are too big.</source>
 <context>
     <name>CreateSubalignmentDialog</name>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="14"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>Save selection as subalignment</source>
         <translation>Сохранить выделение как выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="25"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>Columns from</source>
         <translation>Колонки от</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="54"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source> to </source>
         <translation> до </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="79"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>Selected sequences</source>
         <translation>Выбранные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="108"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>Invert selection</source>
         <translation>Инвертировать выбор</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="115"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>Select all</source>
         <translation>Выбрать всё</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="122"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>Clear selection</source>
         <translation>Снять выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="133"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="143"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="150"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>File format to use</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="179"/>
+        <location filename="../src/ov_msa/CreateSubalignmentDialog.ui"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -392,28 +386,28 @@ Probably, the data are too big.</source>
 <context>
     <name>DeleteGapsDialog</name>
     <message>
-        <location filename="../src/ov_msa/DeleteGapsDialog.ui" line="14"/>
+        <location filename="../src/ov_msa/DeleteGapsDialog.ui"/>
         <source>Remove Columns of Gaps</source>
         <translation>Удаление пробелов</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/DeleteGapsDialog.ui" line="22"/>
+        <location filename="../src/ov_msa/DeleteGapsDialog.ui"/>
         <source>Remove columns with number of gaps</source>
         <translation>Удалить столбцы с числом пробелов</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/DeleteGapsDialog.ui" line="32"/>
+        <location filename="../src/ov_msa/DeleteGapsDialog.ui"/>
         <source>Remove columns with percentage of gaps</source>
         <translation>Удалить столбцы с числом пробелов в процентах</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/DeleteGapsDialog.ui" line="39"/>
+        <location filename="../src/ov_msa/DeleteGapsDialog.ui"/>
         <source>%</source>
         <comment>%</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/DeleteGapsDialog.ui" line="52"/>
+        <location filename="../src/ov_msa/DeleteGapsDialog.ui"/>
         <source>Remove all gap-only columns</source>
         <translation>Удалить все пустые столбцы</translation>
     </message>
@@ -421,47 +415,47 @@ Probably, the data are too big.</source>
 <context>
     <name>ExportConsensusDialog</name>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="14"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>Export Consensus</source>
         <translation>Экспорт консенсуса</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="22"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>Export to file</source>
         <translation>Экспорт в файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="32"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="42"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="81"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>Keep gaps</source>
         <translation>Наличие пробелов</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="52"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>Consensus algorithm</source>
         <translation>Алгоритм консенсуса</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="62"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>File format</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="69"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>Mode</source>
         <translation>Мода</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="90"/>
+        <location filename="../src/ov_assembly/ExportConsensusDialog.ui"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -469,37 +463,37 @@ Probably, the data are too big.</source>
 <context>
     <name>ExportConsensusWidget</name>
     <message>
-        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui" line="14"/>
+        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui" line="37"/>
+        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui"/>
         <source>Export to file</source>
         <translation>Экспорт в файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui" line="47"/>
+        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui" line="61"/>
+        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui"/>
         <source>File format</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui" line="88"/>
+        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui"/>
         <source>Keep gaps</source>
         <translation>Наличие пробелов</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui" line="78"/>
+        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui"/>
         <source>Info: alphabet of the consensus is undefined, the sequence can only be saved into a plain text document.</source>
         <translation>Информация: алфавит консенсуса не определен, последовательность может быть сохранена только в текстовом формате.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui" line="121"/>
+        <location filename="../src/ov_msa/export_consensus/ExportConsensusWidget.ui"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
@@ -507,42 +501,42 @@ Probably, the data are too big.</source>
 <context>
     <name>ExportCoverageDialog</name>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="20"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>Export Assembly Coverage</source>
         <translation>Экспорт покрытия</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="29"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>Export to:</source>
         <translation>Экспортировать в:</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="41"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="50"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>Format:</source>
         <translation>Формат:</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="75"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>Compress the file</source>
         <translation>Сжать файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="142"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>Export coverage value</source>
         <translation>Экспортировать покрытие</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="152"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>Export bases quantity</source>
         <translation>Эксспортировать количество оснований</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="101"/>
+        <location filename="../src/ov_assembly/ExportCoverageDialog.ui"/>
         <source>Threshold:</source>
         <translation>Порог:</translation>
     </message>
@@ -550,57 +544,57 @@ Probably, the data are too big.</source>
 <context>
     <name>ExportHighlightedDialog</name>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="20"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>Export Highlighting to File</source>
         <translation>Экспорт подсвеченного в файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="31"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>Export to file</source>
         <translation>Экспорт в файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="41"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="52"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>Exported area:  from</source>
         <translation>Экспорт области: от</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="78"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source> to </source>
         <translation> до </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="109"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>Indexing</source>
         <translation>Индексация</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="118"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>1-based</source>
         <translation>нумеровать с 1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="128"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>0-based</source>
         <translation>нумеровать с 0</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="141"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>Keep gaps</source>
         <translation>Наличие пробелов</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="151"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>Dots instead not highlighted</source>
         <translation>Использовать точки где нет подсветки</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialog.ui" line="161"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialog.ui"/>
         <source>Transpose output</source>
         <translation>Транспонировать результат</translation>
     </message>
@@ -608,27 +602,27 @@ Probably, the data are too big.</source>
 <context>
     <name>ExportReadsDialog</name>
     <message>
-        <location filename="../src/ov_assembly/ExportReadsDialog.ui" line="14"/>
+        <location filename="../src/ov_assembly/ExportReadsDialog.ui"/>
         <source>Export Reads</source>
         <translation>Экспорт ридов</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportReadsDialog.ui" line="22"/>
+        <location filename="../src/ov_assembly/ExportReadsDialog.ui"/>
         <source>Export to file</source>
         <translation>Экспорт в файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportReadsDialog.ui" line="32"/>
+        <location filename="../src/ov_assembly/ExportReadsDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportReadsDialog.ui" line="39"/>
+        <location filename="../src/ov_assembly/ExportReadsDialog.ui"/>
         <source>File format</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExportReadsDialog.ui" line="51"/>
+        <location filename="../src/ov_assembly/ExportReadsDialog.ui"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -636,27 +630,27 @@ Probably, the data are too big.</source>
 <context>
     <name>ExtractAssemblyRegionDialog</name>
     <message>
-        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="14"/>
+        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui"/>
         <source>Export Assembly Region</source>
         <translation>Экспорт региона сборки</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="22"/>
+        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui"/>
         <source>Save to file</source>
         <translation>Сохранить в файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="32"/>
+        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="39"/>
+        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui"/>
         <source>File format</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="72"/>
+        <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -664,82 +658,82 @@ Probably, the data are too big.</source>
 <context>
     <name>FindPatternForm</name>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="401"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Search in</source>
         <translation>Поиск в</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="491"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="167"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Previous</source>
         <translation>Предыдущий</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="29"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Search pattern</source>
         <translation>Текст для поиска</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="35"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Input patterns</source>
         <translation>Паттерны</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="170"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Shift+Return</source>
         <translation>Shift+Return</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="211"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Next</source>
         <translation>Следующий</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="214"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Return</source>
         <translation>Возврат</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="414"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Strand</source>
         <translation>Цепь</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="427"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="633"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Create annotations</source>
         <translation>Создать аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="561"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Remove overlapped results</source>
         <translation>Удалить перекрывающиеся результаты</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="70"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Load patterns from file</source>
         <translation>Загрузить паттерны из файла</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="578"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Limit results number to:</source>
         <translation>Ограничить число результатов:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="82"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="272"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
@@ -747,67 +741,67 @@ Probably, the data are too big.</source>
 <context>
     <name>FindPatternMsaForm</name>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="31"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Search context</source>
         <translation>Контекст поиска</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="46"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Search pattern</source>
         <translation>Текст для поиска</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="122"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Group result sequences in the alignment</source>
         <translation>Сгруппировать последовательности в выравнивании</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="125"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Group</source>
         <translation>Группировать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="157"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Previous</source>
         <translation>Предыдущий</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="160"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Shift+Return</source>
         <translation>Shift+Return</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="204"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Next</source>
         <translation>Следующий</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="207"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Return</source>
         <translation>Возврат</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="265"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="372"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="414"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="484"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Remove overlapped results</source>
         <translation>Удалить перекрывающиеся результаты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui" line="501"/>
+        <location filename="../src/ov_msa/find_pattern/FindPatternMsaForm.ui"/>
         <source>Limit results number to:</source>
         <translation>Ограничить число результатов:</translation>
     </message>
@@ -815,37 +809,37 @@ Probably, the data are too big.</source>
 <context>
     <name>GeneralTabOptionsPanelWidget</name>
     <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="14"/>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="122"/>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui"/>
         <source>Alphabet:</source>
         <translation>Алфавит:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="60"/>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui"/>
         <source>Length:</source>
         <translation>Длина:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="89"/>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui"/>
         <source>Sequences:</source>
         <translation>Строки:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="145"/>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui"/>
         <source>Amino</source>
         <translation>Амино</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="168"/>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui"/>
         <source>Format:</source>
         <translation>Формат:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui" line="178"/>
+        <location filename="../src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
@@ -853,90 +847,87 @@ Probably, the data are too big.</source>
 <context>
     <name>GenomeAssemblyDialog</name>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="20"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Assemble Genomes</source>
         <translation>Сборка генома de novo</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="28"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Select a method to align short reads.</source>
         <translation>Выберите метод выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="31"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Assembly method</source>
         <translation>Метод сборки</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="38"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Select required align short reads method</source>
         <translation>Выберите требуемый метод выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="65"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="79"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>File in UGENE database format or SAM format (if the box SAM output check), to write the result of the alignment into. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Результат сборки контигов в формате SAM.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="82"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Output directory</source>
         <translation>Сохранить в</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="93"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Library</source>
         <translation>Библиотека</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="121"/>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="155"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="136"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="141"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="146"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Orientation</source>
         <translation>Ориентация</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="165"/>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="196"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="172"/>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="203"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="225"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="232"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Left reads</source>
         <translation>Левые риды</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="239"/>
+        <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui"/>
         <source>Right reads</source>
         <translation>Правые риды</translation>
     </message>
@@ -944,22 +935,22 @@ Probably, the data are too big.</source>
 <context>
     <name>LicenseDialog</name>
     <message>
-        <location filename="../src/LicenseDialog.ui" line="14"/>
+        <location filename="../src/LicenseDialog.ui"/>
         <source>License Agreement</source>
         <translation>Лицензионное соглашение</translation>
     </message>
     <message>
-        <location filename="../src/LicenseDialog.ui" line="20"/>
+        <location filename="../src/LicenseDialog.ui"/>
         <source>To use this algorithm need accept following license agreement:</source>
         <translation>Чтобы использовать этот алгоритм необходимо принять следующее лицензионное соглашение:</translation>
     </message>
     <message>
-        <location filename="../src/LicenseDialog.ui" line="45"/>
+        <location filename="../src/LicenseDialog.ui"/>
         <source>Accept</source>
         <translation>Принять</translation>
     </message>
     <message>
-        <location filename="../src/LicenseDialog.ui" line="52"/>
+        <location filename="../src/LicenseDialog.ui"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -967,27 +958,27 @@ Probably, the data are too big.</source>
 <context>
     <name>MaConsensusModeWidget</name>
     <message>
-        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui" line="14"/>
+        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui" line="20"/>
+        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui"/>
         <source>Consensus type:</source>
         <translation>Тип консенсуса:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui" line="32"/>
+        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui"/>
         <source>Threshold:</source>
         <translation>Порог:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui" line="39"/>
+        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui"/>
         <source>Reset to default value</source>
         <translation>Восстановить значение по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui" line="85"/>
+        <location filename="../src/ov_msa/general_tab/MaConsensusModeWidget.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
@@ -995,27 +986,27 @@ Probably, the data are too big.</source>
 <context>
     <name>McaAlternativeMutationsWidget</name>
     <message>
-        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui" line="14"/>
+        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui" line="20"/>
+        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui"/>
         <source>Show alternative mutations:</source>
         <translation>Показать альтернативные мутации:</translation>
     </message>
     <message>
-        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui" line="32"/>
+        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui"/>
         <source>Threshold:</source>
         <translation>Порог:</translation>
     </message>
     <message>
-        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui" line="69"/>
+        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui" line="105"/>
+        <location filename="../src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui"/>
         <source>Update</source>
         <translation>Обновить</translation>
     </message>
@@ -1023,17 +1014,17 @@ Probably, the data are too big.</source>
 <context>
     <name>McaGeneralTab</name>
     <message>
-        <location filename="../src/ov_mca/general_tab/McaGeneralTabOptionsPanelWidget.ui" line="14"/>
+        <location filename="../src/ov_mca/general_tab/McaGeneralTabOptionsPanelWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_mca/general_tab/McaGeneralTabOptionsPanelWidget.ui" line="52"/>
+        <location filename="../src/ov_mca/general_tab/McaGeneralTabOptionsPanelWidget.ui"/>
         <source>Sequences:</source>
         <translation>Строки:</translation>
     </message>
     <message>
-        <location filename="../src/ov_mca/general_tab/McaGeneralTabOptionsPanelWidget.ui" line="59"/>
+        <location filename="../src/ov_mca/general_tab/McaGeneralTabOptionsPanelWidget.ui"/>
         <source>Length:</source>
         <translation>Длина:</translation>
     </message>
@@ -1041,62 +1032,62 @@ Probably, the data are too big.</source>
 <context>
     <name>MsaDistanceColumnSettingsForm</name>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="23"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="77"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Show distances column</source>
         <translation>Показать колонки расстояний</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="104"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Distance algorithm:</source>
         <translation>Алгоритм построения:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="132"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Count</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="139"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Percentage</source>
         <translation>Проценты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="156"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Automatic updating</source>
         <translation>Автоматическое обновление</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="171"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>&lt;dataState&gt;</source>
         <translation>&lt;dataState&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="178"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Refresh distances</source>
         <translation>Обновить расстояния</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="181"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="200"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>&lt;hint&gt;</source>
         <translation>&lt;hint&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="114"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Profile mode</source>
         <translation>Способ профилирования</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui" line="146"/>
+        <location filename="../src/ov_msa/statistics/MsaDistancesColumnSettingsWidget.ui"/>
         <source>Exclude gaps</source>
         <translation>Исключить пробелы</translation>
     </message>
@@ -1104,47 +1095,47 @@ Probably, the data are too big.</source>
 <context>
     <name>MsaExportSettings</name>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="14"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="22"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="36"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Whole alignment</source>
         <translation>Все выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="41"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Custom region</source>
         <translation>Указанный регион</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="55"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Select</source>
         <translation>Выделить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="64"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Include names</source>
         <translation>Включить имена последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="90"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Bases per line (multiline image):</source>
         <translation>Символов в строке (режим переноса):</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="71"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Include consensus</source>
         <translation>Включить консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui" line="78"/>
+        <location filename="../src/ov_msa/export_image/MsaExportSettings.ui"/>
         <source>Include ruler</source>
         <translation>Включить шкалу</translation>
     </message>
@@ -1152,62 +1143,62 @@ Probably, the data are too big.</source>
 <context>
     <name>PairwiseAlignmentOptionsPanelWidget</name>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="20"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="148"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Similarity:</source>
         <translation>Схожесть:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="161"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Not defined</source>
         <translation>Не найдено</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="196"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Algorithm:</source>
         <translation>Алгоритм:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="251"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Open the alignment result in the new editor</source>
         <translation>Открыть результат в новом окне</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="254"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>In new window</source>
         <translation>В новом окне</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="283"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Output file:</source>
         <translation>Выходной файл:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="301"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Select file to save result of the alignment. If it is not defined, default file name will be used.</source>
         <translation>Выберите  файл для сохранения результатов. Если не указан, то будет использовано имя по умолчанию.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="304"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Default</source>
         <translation>Значение по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="311"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="343"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui" line="352"/>
+        <location filename="../src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1215,22 +1206,22 @@ Probably, the data are too big.</source>
 <context>
     <name>PhyTreeDisplayOptionsWidget</name>
     <message>
-        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui" line="14"/>
+        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui" line="41"/>
+        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui"/>
         <source>Display tree in new window</source>
         <translation>Отобразить дерево в новом окне</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui" line="57"/>
+        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui"/>
         <source>Display tree with alignment editor</source>
         <translation>Отобразить дерево рядом с выравниванием</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui" line="76"/>
+        <location filename="../src/phyltree/PhyTreeDisplayOptionsWidget.ui"/>
         <source>Synchronize alignment with tree</source>
         <translation>Синхронизовать выравнивание с деревом</translation>
     </message>
@@ -1600,32 +1591,32 @@ Double-click to collapse the branch</source>
 <context>
     <name>SaveGraphCutoffsDialog</name>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui" line="14"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui"/>
         <source>Save Graph Cutoffs as Annotations</source>
         <translation>Сохранить график порогов как аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui" line="141"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui"/>
         <source>Maximum cutoff</source>
         <translation>Максимальный порог</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui" line="154"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui"/>
         <source>Minimum cutoff</source>
         <translation>Минимальный порог</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui" line="52"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui"/>
         <source>Area to annotate</source>
         <translation>Область аннотирования</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui" line="64"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui"/>
         <source>Around cutoff values</source>
         <translation>Близкие к пороговым значения</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui" line="77"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialog.ui"/>
         <source>Between cutoff values</source>
         <translation>Значения между пороговыми</translation>
     </message>
@@ -1633,47 +1624,47 @@ Double-click to collapse the branch</source>
 <context>
     <name>SearchQualifierDialog</name>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="14"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Find Qualifier</source>
         <translation>Поиск квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="58"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Qualifier</source>
         <translation>Квалификатор</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="67"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Name:</source>
         <translation>Имя:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="77"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Value:</source>
         <translation>Значение:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="23"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Match Parameter</source>
         <translation>Параметры совпадения</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="32"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Contains substring</source>
         <translation>Содержит подстроку</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="45"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Exact match</source>
         <translation>Точное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="96"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Group Name</source>
         <translation>Имя группы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="122"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.ui"/>
         <source>Search in:</source>
         <translation>Поиск в:</translation>
     </message>
@@ -1681,27 +1672,27 @@ Double-click to collapse the branch</source>
 <context>
     <name>SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="14"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui"/>
         <source>Secondary Structure Prediction</source>
         <translation>Предсказание вторичной структуры</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="22"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="39"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="73"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui"/>
         <source>Total predicted:</source>
         <translation>Всего предсказано:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="80"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui"/>
         <source>0</source>
         <translation>0</translation>
     </message>
@@ -1709,37 +1700,37 @@ Double-click to collapse the branch</source>
 <context>
     <name>SelectSubalignmentDialog</name>
     <message>
-        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui" line="14"/>
+        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui"/>
         <source>Select Subalignment</source>
         <translation>Выделение участка выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui" line="22"/>
+        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui"/>
         <source>From </source>
         <translation>От </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui" line="48"/>
+        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui"/>
         <source> to </source>
         <translation> до </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui" line="73"/>
+        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui"/>
         <source>Selected sequences</source>
         <translation>Выбранные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui" line="102"/>
+        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui"/>
         <source>Invert selection</source>
         <translation>Инвертировать выбор</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui" line="109"/>
+        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui"/>
         <source>Select all</source>
         <translation>Выбрать всё</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui" line="116"/>
+        <location filename="../src/ov_msa/SelectSubalignmentDialog.ui"/>
         <source>Clear selection</source>
         <translation>Снять выделение</translation>
     </message>
@@ -1747,22 +1738,22 @@ Double-click to collapse the branch</source>
 <context>
     <name>SequenceExportSettingsWidget</name>
     <message>
-        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui" line="43"/>
+        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui"/>
         <source>Area</source>
         <translation>Область</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui" line="52"/>
+        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui"/>
         <source>Currently viewed</source>
         <translation>Текущая область</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui" line="65"/>
+        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui"/>
         <source>Zoomed annotations</source>
         <translation>Увеличенные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui" line="75"/>
+        <location filename="../src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui"/>
         <source>Sequence details</source>
         <translation>Детали последовательности</translation>
     </message>
@@ -1770,32 +1761,32 @@ Double-click to collapse the branch</source>
 <context>
     <name>SequenceSelectorWidget</name>
     <message>
-        <location filename="../src/ov_msa/SequenceSelectorWidget.ui" line="14"/>
+        <location filename="../src/ov_msa/SequenceSelectorWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SequenceSelectorWidget.ui" line="40"/>
+        <location filename="../src/ov_msa/SequenceSelectorWidget.ui"/>
         <source>Add selected sequence</source>
         <translation>Добавить выбранную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SequenceSelectorWidget.ui" line="43"/>
+        <location filename="../src/ov_msa/SequenceSelectorWidget.ui"/>
         <source>&gt;</source>
         <translation>&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SequenceSelectorWidget.ui" line="88"/>
+        <location filename="../src/ov_msa/SequenceSelectorWidget.ui"/>
         <source>Select and add</source>
         <translation>Выбрать и добавить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SequenceSelectorWidget.ui" line="123"/>
+        <location filename="../src/ov_msa/SequenceSelectorWidget.ui"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SequenceSelectorWidget.ui" line="126"/>
+        <location filename="../src/ov_msa/SequenceSelectorWidget.ui"/>
         <source>x</source>
         <translation>x</translation>
     </message>
@@ -1803,157 +1794,157 @@ Double-click to collapse the branch</source>
 <context>
     <name>SmithWatermanDialogBase</name>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="32"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Smith-Waterman Search</source>
         <translation>Поиск Смита-Ватермана</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="339"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>View..</source>
         <translation>Просмотр..</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="478"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Input and output</source>
         <translation>Ввод и вывод</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="42"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Smith-Waterman parameters</source>
         <translation>Параметры алгоритма Смита-Ватермана</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="48"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Pattern</source>
         <translation>Паттерн</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="220"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Smith-Waterman algorithm parameters</source>
         <translation>Параметры поиска</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="226"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Algorithm version</source>
         <translation>Версия алгоритма</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="289"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Scoring matrix</source>
         <translation>Матрица весов</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="352"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Gap scores</source>
         <translation>Веса пробелов</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="358"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Gap open</source>
         <translation>Открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="365"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Gap  extension </source>
         <translation>Продление пробела </translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="398"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Results filtering strategy</source>
         <translation>Фильтрация результатов</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="406"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Minimal score</source>
         <translation>Минимальная оценка</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="432"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="452"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Report results</source>
         <translation>Фильтровать</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="510"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Save results as</source>
         <translation>Сохранить результаты как</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="559"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Aligner options</source>
         <translation>Параметры выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="576"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Alignment files directory path</source>
         <translation>Путь до файлов выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="611"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="621"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Set advanced options</source>
         <translation>Установить дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="639"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Template for alignment files names</source>
         <translation>Пример для имен файлов выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="652"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Template for reference subsequences names</source>
         <translation>Пример для имен референсных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="691"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Template for pattern subsequences names</source>
         <translation>Пример для имен подпоследовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="730"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Pattern sequence name</source>
         <translation>Имя подстроки</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="103"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Search in</source>
         <translation>Поиск в</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="118"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Sequence</source>
         <translation>Последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="137"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Translation</source>
         <translation>Трансляции</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="172"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Strand</source>
         <translation>Цепь</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="181"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Both</source>
         <translation>Обе</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="191"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="201"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui"/>
         <source>Complement</source>
         <translation>Комплементарная</translation>
     </message>
@@ -1961,47 +1952,47 @@ Double-click to collapse the branch</source>
 <context>
     <name>TextSettingsDialog</name>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="14"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>Labels Formatting</source>
         <translation>Форматирование надписей</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="22"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="29"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="75"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="85"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>Attributes</source>
         <translation>Аттрибуты</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="100"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="115"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="130"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>U</source>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.ui" line="145"/>
+        <location filename="../src/phyltree/TextSettingsDialog.ui"/>
         <source>S</source>
         <translation>S</translation>
     </message>
@@ -2009,113 +2000,112 @@ Double-click to collapse the branch</source>
 <context>
     <name>TreeOptionWidget</name>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="23"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="58"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Tree layout</source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="75"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Tree view</source>
         <translation>Дерево</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="113"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Show names</source>
         <translation>Показать имена</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="120"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Show distances</source>
         <translation>Показать расстояния</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="127"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Show node labels</source>
         <translation>Показать метки узлов</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="134"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Align labels</source>
         <translation>Выровнять надписи</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="161"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="168"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="198"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Color  </source>
         <translation>Цвет  </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="231"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Attributes</source>
         <translation>Аттрибуты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="257"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="272"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="291"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>U</source>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="429"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Expansion </source>
         <translation>Расширение </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="442"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Node shapes</source>
         <translation>Внутренние узлы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="449"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Tip shapes</source>
         <translation>Концевые узлы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="333"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Curvature</source>
         <translation>Изгиб</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="485"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Font size</source>
         <translation>Размер шрифта</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="471"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Scale range</source>
         <translation>Диапазон шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="391"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="478"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Line width</source>
         <translation>Толщина линии</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="350"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
@@ -2123,17 +2113,17 @@ Double-click to collapse the branch</source>
 <context>
     <name>TreeSettingsDialog</name>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="14"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.ui"/>
         <source>Tree Settings</source>
         <translation>Настройки дерева</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="22"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.ui"/>
         <source>Tree view</source>
         <translation>Дерево</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="35"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.ui"/>
         <source>Scale Range</source>
         <translation>Диапазон шкалы</translation>
     </message>
@@ -8005,22 +7995,22 @@ Please, load the corresponding plugins.</source>
 <context>
     <name>annotHighlightSettings</name>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui" line="14"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui" line="71"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui"/>
         <source>Show on translation</source>
         <translation>Показать на трансляции</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui" line="47"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui"/>
         <source>Show annotations</source>
         <translation>Показать аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui" line="95"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui"/>
         <source>Show value of qualifier:</source>
         <translation>Показать значение квалификатора:</translation>
     </message>

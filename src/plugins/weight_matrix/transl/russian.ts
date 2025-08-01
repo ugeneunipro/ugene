@@ -4,7 +4,7 @@
 <context>
     <name>MatrixAndLogoWidget</name>
     <message>
-        <location filename="../src/MatrixAndLogoWidget.ui" line="20"/>
+        <location filename="../src/MatrixAndLogoWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
@@ -12,68 +12,67 @@
 <context>
     <name>PWMBuildDialog</name>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="14"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Build Weight or Frequency Matrix</source>
         <translation>Построить весовую или частотную матрицу</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="22"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="32"/>
-        <location filename="../src/PWMBuildDialog.ui" line="49"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="39"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="58"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Statistic options</source>
         <translation>Настройки статистики</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="64"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Statistic type:</source>
         <translation>Тип статистики:</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="71"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Mononucleic</source>
         <translation>Мононуклеотидная</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="81"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Dinucleic</source>
         <translation>Динуклеотидная</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="91"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Matrix options</source>
         <translation>Настройки матрицы</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="99"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Matrix type:</source>
         <translation>Тип матрицы:</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="106"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Frequency matrix</source>
         <translation>Частотная матрица</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="116"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Weight matrix</source>
         <translation>Весовая матрица</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialog.ui" line="130"/>
+        <location filename="../src/PWMBuildDialog.ui"/>
         <source>Weight algorithm</source>
         <translation>Весовой алгоритм</translation>
     </message>
@@ -86,136 +85,132 @@
 <context>
     <name>PWMSearchDialog</name>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="20"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Weight Matrix Search</source>
         <translation>Поиск с весовыми матрицами</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="31"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Matrix:</source>
         <translation>Матрица:</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="45"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="52"/>
-        <location filename="../src/PWMSearchDialog.ui" line="246"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Minimal score</source>
         <translation>Мин. оценка</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="55"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Score:</source>
         <translation>Оценка:</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="87"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>85%</source>
         <translation>85%</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="98"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Search JASPAR Database</source>
         <translation>Поиск по базе JASPAR</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="125"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>View matrix</source>
         <translation>Просмотр матрицы</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="203"/>
-        <location filename="../src/PWMSearchDialog.ui" line="206"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Reverse complement strand</source>
         <translation>Комплементарное</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="264"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Load list</source>
         <translation>Загрузить список</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="271"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Save list</source>
         <translation>Сохранить список</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="278"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Load folder</source>
         <translation>Загрузить папку</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="105"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Build new matrix</source>
         <translation>Построить новую матрицу</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="139"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Weight algorithm</source>
         <translation>Весовой алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="165"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Strands</source>
         <translation>Направление</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="171"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Both strands</source>
         <translation>Оба</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="184"/>
-        <location filename="../src/PWMSearchDialog.ui" line="187"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Direct strand</source>
         <translation>Прямое</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="306"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Range</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="241"/>
-        <location filename="../src/PWMSearchDialog.ui" line="311"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Matrix</source>
         <translation>Матрица</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="251"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="285"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Clear list</source>
         <translation>Очистить очередь</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="316"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Strand</source>
         <translation>Направление</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="321"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Score</source>
         <translation>Мин. оценка</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="331"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Clear results</source>
         <translation>Сбросить результаты</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="338"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Save as annotations</source>
         <translation>Сохранить результаты как аннотации</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialog.ui" line="362"/>
+        <location filename="../src/PWMSearchDialog.ui"/>
         <source>Status</source>
         <translation>Статус</translation>
     </message>
@@ -267,27 +262,27 @@
 <context>
     <name>SearchJASPARDatabase</name>
     <message>
-        <location filename="../src/SearchJASPARDatabase.ui" line="14"/>
+        <location filename="../src/SearchJASPARDatabase.ui"/>
         <source>Search JASPAR Database</source>
         <translation>Поиск по базе JASPAR</translation>
     </message>
     <message>
-        <location filename="../src/SearchJASPARDatabase.ui" line="24"/>
+        <location filename="../src/SearchJASPARDatabase.ui"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/SearchJASPARDatabase.ui" line="29"/>
+        <location filename="../src/SearchJASPARDatabase.ui"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../src/SearchJASPARDatabase.ui" line="34"/>
+        <location filename="../src/SearchJASPARDatabase.ui"/>
         <source>Class</source>
         <translation>Класс</translation>
     </message>
     <message>
-        <location filename="../src/SearchJASPARDatabase.ui" line="39"/>
+        <location filename="../src/SearchJASPARDatabase.ui"/>
         <source>Family</source>
         <translation>Семейство</translation>
     </message>
@@ -295,22 +290,22 @@
 <context>
     <name>SetDefaultParametersDialog</name>
     <message>
-        <location filename="../src/SetDefaultParametersDialog.ui" line="14"/>
+        <location filename="../src/SetDefaultParametersDialog.ui"/>
         <source>Set default parameters</source>
         <translation>Установить параметры по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/SetDefaultParametersDialog.ui" line="25"/>
+        <location filename="../src/SetDefaultParametersDialog.ui"/>
         <source>Weight algorithm</source>
         <translation>Весовой алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/SetDefaultParametersDialog.ui" line="35"/>
+        <location filename="../src/SetDefaultParametersDialog.ui"/>
         <source>Score:</source>
         <translation>Скор:</translation>
     </message>
     <message>
-        <location filename="../src/SetDefaultParametersDialog.ui" line="66"/>
+        <location filename="../src/SetDefaultParametersDialog.ui"/>
         <source>85%</source>
         <translation>85%</translation>
     </message>
@@ -1347,7 +1342,7 @@ Maybe model data are not enough for selected algorithm</source>
 <context>
     <name>ViewMatrixDialog</name>
     <message>
-        <location filename="../src/ViewMatrixDialog.ui" line="20"/>
+        <location filename="../src/ViewMatrixDialog.ui"/>
         <source>View Matrix</source>
         <translation>Просмотр матрицы</translation>
     </message>

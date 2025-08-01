@@ -57,17 +57,17 @@
 <context>
     <name>AceImportWidget</name>
     <message>
-        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="14"/>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="63"/>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui"/>
         <source>Save to file</source>
         <translation>Dosyaya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="77"/>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -75,27 +75,27 @@
 <context>
     <name>AddNewDocumentDialog</name>
     <message>
-        <location filename="../src/util/AddNewDocumentDialog.ui" line="20"/>
+        <location filename="../src/util/AddNewDocumentDialog.ui"/>
         <source>Add New Document</source>
         <translation>Yeni Belge Ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialog.ui" line="39"/>
+        <location filename="../src/util/AddNewDocumentDialog.ui"/>
         <source>Document format</source>
         <translation>Belge biçimi</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialog.ui" line="46"/>
+        <location filename="../src/util/AddNewDocumentDialog.ui"/>
         <source>Document location</source>
         <translation>Belge konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialog.ui" line="56"/>
+        <location filename="../src/util/AddNewDocumentDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialog.ui" line="71"/>
+        <location filename="../src/util/AddNewDocumentDialog.ui"/>
         <source>Compress file</source>
         <translation>Dosyayı sıkıştır</translation>
     </message>
@@ -103,22 +103,22 @@
 <context>
     <name>AprImportWidget</name>
     <message>
-        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="14"/>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui"/>
         <source>Save to fiie</source>
         <translation>Dosyaya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui"/>
         <source>File format</source>
         <translation>Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="87"/>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>AuthenticationDialog</name>
     <message>
-        <location filename="../src/util/AuthenticationDialog.ui" line="23"/>
+        <location filename="../src/util/AuthenticationDialog.ui"/>
         <source>Authentication</source>
         <translation>Doğrulama</translation>
     </message>
@@ -134,22 +134,22 @@
 <context>
     <name>AuthenticationWidget</name>
     <message>
-        <location filename="../src/util/AuthenticationWidget.ui" line="14"/>
+        <location filename="../src/util/AuthenticationWidget.ui"/>
         <source>Authentication</source>
         <translation>Kimlik Doğrulama</translation>
     </message>
     <message>
-        <location filename="../src/util/AuthenticationWidget.ui" line="33"/>
+        <location filename="../src/util/AuthenticationWidget.ui"/>
         <source>Login:</source>
         <translation>Giriş:</translation>
     </message>
     <message>
-        <location filename="../src/util/AuthenticationWidget.ui" line="40"/>
+        <location filename="../src/util/AuthenticationWidget.ui"/>
         <source>Password:</source>
         <translation>Parola:</translation>
     </message>
     <message>
-        <location filename="../src/util/AuthenticationWidget.ui" line="47"/>
+        <location filename="../src/util/AuthenticationWidget.ui"/>
         <source>Remember me</source>
         <translation>Beni Hatırla</translation>
     </message>
@@ -157,27 +157,27 @@
 <context>
     <name>BreakpointConditionEditDialog</name>
     <message>
-        <location filename="../src/util/BreakpointConditionEditDialog.ui" line="14"/>
+        <location filename="../src/util/BreakpointConditionEditDialog.ui"/>
         <source>Breakpoint Condition</source>
         <translation>Kesme Noktası Koşulu</translation>
     </message>
     <message>
-        <location filename="../src/util/BreakpointConditionEditDialog.ui" line="26"/>
+        <location filename="../src/util/BreakpointConditionEditDialog.ui"/>
         <source>When the breakpoint location is reached, the expression is evaluated and&lt;br&gt;the breakpoint is hit only if the expression is true or has changed.</source>
         <translation>Kesme noktası konumuna ulaşıldığında, ifade değerlendirilir ve&lt;br&gt;kesme noktasına yalnızca ifade doğruysa veya değişmişse ulaşılır.</translation>
     </message>
     <message>
-        <location filename="../src/util/BreakpointConditionEditDialog.ui" line="36"/>
+        <location filename="../src/util/BreakpointConditionEditDialog.ui"/>
         <source>Condition</source>
         <translation>Durum</translation>
     </message>
     <message>
-        <location filename="../src/util/BreakpointConditionEditDialog.ui" line="48"/>
+        <location filename="../src/util/BreakpointConditionEditDialog.ui"/>
         <source>Is true</source>
         <translation>Doğru</translation>
     </message>
     <message>
-        <location filename="../src/util/BreakpointConditionEditDialog.ui" line="61"/>
+        <location filename="../src/util/BreakpointConditionEditDialog.ui"/>
         <source>Has changed</source>
         <translation>Değişti</translation>
     </message>
@@ -185,7 +185,7 @@
 <context>
     <name>CommonImportOptionsDialog</name>
     <message>
-        <location filename="../src/util/shared_db/CommonImportOptionsDialog.ui" line="14"/>
+        <location filename="../src/util/shared_db/CommonImportOptionsDialog.ui"/>
         <source>Database Import Default Options</source>
         <translation>Veritabanı İçe Aktarma Varsayılan Seçenekleri</translation>
     </message>
@@ -193,7 +193,7 @@
 <context>
     <name>CreateAnnotationDialog</name>
     <message>
-        <location filename="../src/util/CreateAnnotationDialog.ui" line="20"/>
+        <location filename="../src/util/CreateAnnotationDialog.ui"/>
         <source>Create Annotation</source>
         <translation>Ek Açıklama Oluşturun</translation>
     </message>
@@ -201,115 +201,112 @@
 <context>
     <name>CreateAnnotationFullWidget</name>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="20"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Create Annotations</source>
         <translation>Ek Açıklamalar Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="63"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Annotation type:</source>
         <translation>Ek açıklama türü:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="127"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Annotation name</source>
         <translation>Ek açıklama adı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="137"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Use names of patterns as annotations names. In case the patterns are in FASTA format</source>
         <translation>Ek açıklama adları olarak desen adlarını kullanın. Desenlerin FAŞTA formatında olması durumunda</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="140"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Use pattern names</source>
         <translation>Desen adlarını Kullanın</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="150"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Group name</source>
         <translation>Küme adı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="157"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Predefined group names</source>
         <translation>Önceden tanımlanmış grup adları</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="160"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="351"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="491"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="565"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="174"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>by type</source>
         <translation>türe göre</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="184"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Description</source>
         <translation>Açıklama</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="191"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>auto</source>
         <translation>otomatik</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="206"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Location</source>
         <translation>Konum</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="247"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Simple format</source>
         <translation>Basit format</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="273"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="285"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Complement</source>
         <translation>Tamamlayıcı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="323"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>GenBank/EMBL format</source>
         <translation>GenBankası/EMBL biçimi</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="341"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Annotation location in GenBank format</source>
         <translation>GenBankası biçiminde ek açıklama konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="348"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Add/remove complement flag</source>
         <translation>Tamamlayıcı işareti ekle / kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="395"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Save annotation(s) to</source>
         <translation>Ek açıklamaları şuraya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="436"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Existing document</source>
         <translation>Mevcut belge</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="516"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>New document</source>
         <translation>Yeni belge</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="596"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui"/>
         <source>Use auto-annotations table</source>
         <translation>Otomatik ek açıklamalar tablosunu kullanın</translation>
     </message>
@@ -317,95 +314,92 @@
 <context>
     <name>CreateAnnotationNormalWidget</name>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="20"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Create Annotations</source>
         <translation>Ek Açıklamalar Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="47"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Choose a file to store the annotations</source>
         <translation>Ek açıklamaları saklamak için bir dosya seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="85"/>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="113"/>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="174"/>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="215"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Existing document</source>
         <translation>Mevcut belge</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>New document</source>
         <translation>Yeni belge</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="120"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Use auto-annotations table</source>
         <translation>Otomatik ek açıklamalar tablosunu kullanın</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="157"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>by type</source>
         <translation>türe göre</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="164"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>auto</source>
         <translation>otomatik</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="171"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Add/remove complement flag</source>
         <translation>Tamamlayıcı işareti ekle / kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="185"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Location</source>
         <translation>Konum</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="195"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Use names of patterns as annotations names. In case the patterns are in FASTA format</source>
         <translation>Ek açıklama adları olarak desen adlarını kullanın. Desenlerin FAŞTA formatında olması durumunda</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="198"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Use pattern name</source>
         <translation>Desen adını kullan</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="205"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Annotation location in GenBank format</source>
         <translation>GenBankası biçiminde ek açıklama konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="212"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Predefined group names</source>
         <translation>Önceden tanımlanmış grup adları</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="226"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Group name</source>
         <translation>Küme adı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="233"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Annotation name</source>
         <translation>Ek açıklama adı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="240"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Annotation type</source>
         <translation>Ek açıklama türü</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="247"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui"/>
         <source>Description</source>
         <translation>Açıklama</translation>
     </message>
@@ -413,95 +407,92 @@
 <context>
     <name>CreateAnnotationOptionsPanelWidget</name>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="14"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="41"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Choose a file to store the annotations</source>
         <translation>Ek açıklamaları saklamak için bir dosya seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="81"/>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="113"/>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="175"/>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="242"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Existing document:</source>
         <translation>Mevcut belge:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>New document:</source>
         <translation>Yeni belge:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="122"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Use auto-annotations table</source>
         <translation>Otomatik ek açıklamalar tablosunu kullanın</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="156"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Group name:</source>
         <translation>Grup adı:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="165"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>auto</source>
         <translation>otomatik</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="172"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Predefined group names</source>
         <translation>Önceden tanımlanmış grup adları</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="188"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Annotation type:</source>
         <translation>Ek açıklama türü:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="202"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Annotation name:</source>
         <translation>Ek açıklama adı:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="214"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>by type</source>
         <translation>türe göre</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="223"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Location:</source>
         <translation>Konum:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="232"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Annotation location in GenBank format</source>
         <translation>GenBankası biçiminde ek açıklama konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="239"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Add/remove complement flag</source>
         <translation>Tamamlayıcı işareti ekle / kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="255"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Description:</source>
         <translation>Tanım:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="265"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Use names of patterns as annotations names. In case the patterns are in FASTA format</source>
         <translation>Ek açıklama adları olarak desen adlarını kullanın. Desenlerin FAŞTA formatında olması durumunda</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="268"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui"/>
         <source>Use pattern name</source>
         <translation>Desen adını kullan</translation>
     </message>
@@ -509,27 +500,27 @@
 <context>
     <name>CreateDocumentFromTextDialog</name>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="14"/>
+        <location filename="../src/util/CreateDocumentFromTextDialog.ui"/>
         <source>Create Sequence</source>
         <translation>Sıra Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="22"/>
+        <location filename="../src/util/CreateDocumentFromTextDialog.ui"/>
         <source>Save sequence to file</source>
         <translation>Sırayı dosyaya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="32"/>
+        <location filename="../src/util/CreateDocumentFromTextDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="39"/>
+        <location filename="../src/util/CreateDocumentFromTextDialog.ui"/>
         <source>File format</source>
         <translation>Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="49"/>
+        <location filename="../src/util/CreateDocumentFromTextDialog.ui"/>
         <source>Sequence name</source>
         <translation>Sıra adı</translation>
     </message>
@@ -545,12 +536,12 @@
 <context>
     <name>CreateObjectRelationDialog</name>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialog.ui" line="14"/>
+        <location filename="../src/util/CreateObjectRelationDialog.ui"/>
         <source>Edit Object Relations</source>
         <translation>Nesne İlişkilerini Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialog.ui" line="20"/>
+        <location filename="../src/util/CreateObjectRelationDialog.ui"/>
         <source>Associate object with:</source>
         <translation>Nesneyi şununla ilişkilendir:</translation>
     </message>
@@ -558,52 +549,52 @@
 <context>
     <name>DownloadRemoteFileDialog</name>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="26"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Fetch Data from Remote Database</source>
         <translation>Uzak Veritabanından Veri Al</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="43"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Resource ID:</source>
         <translation>Kaynak Kimliği:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="66"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Database:</source>
         <translation>Veritabanı:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="97"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Open database page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="124"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Save to directory:</source>
         <translation>Dizine kaydet:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="149"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="158"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Output format:</source>
         <translation>Çıkış biçimi:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="170"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="180"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Some entries in the NCBI databases contain features without a sequence. You can download both sequence and features by checking this parameter. Note that some sequences are rather big.</source>
         <translation>NCBI veritabanlarındaki bazı girişler, sıra içermeyen özellikler içerir. Bu parametreyi kontrol ederek hem sıralamayı hem de özellikleri indirebilirsiniz. Bazı dizilerin oldukça büyük olduğuna dikkat edin.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="183"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui"/>
         <source>Force download the appropriate sequence</source>
         <translation>Uygun diziyi indirmeye zorla</translation>
     </message>
@@ -611,42 +602,42 @@
 <context>
     <name>EditConnectionDialog</name>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="23"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>Connection Settings</source>
         <translation>Bağlantı Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="31"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>Connection name:</source>
         <translation>Bağlantı adı:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="38"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>default</source>
         <translation>varsayılan</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="52"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>Database location</source>
         <translation>Veritabanı konumu</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="61"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>Host:</source>
         <translation>Ana bilgisayar:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="71"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="85"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>Database:</source>
         <translation>Veritabanı:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.ui" line="98"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.ui"/>
         <source>Authentication data</source>
         <translation>Kimlik doğrulama verileri</translation>
     </message>
@@ -654,17 +645,17 @@
 <context>
     <name>EditQualifierDialog</name>
     <message>
-        <location filename="../src/util/EditQualifierDialog.ui" line="14"/>
+        <location filename="../src/util/EditQualifierDialog.ui"/>
         <source>Edit Qualifier</source>
         <translation>Niteleyiciyi Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/util/EditQualifierDialog.ui" line="22"/>
+        <location filename="../src/util/EditQualifierDialog.ui"/>
         <source>Name</source>
         <translation>Ad</translation>
     </message>
     <message>
-        <location filename="../src/util/EditQualifierDialog.ui" line="34"/>
+        <location filename="../src/util/EditQualifierDialog.ui"/>
         <source>Value</source>
         <translation>Değer</translation>
     </message>
@@ -672,112 +663,112 @@
 <context>
     <name>EditSequenceDialog</name>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="22"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Annotations region resolving mode</source>
         <translation>Ek açıklamalar bölge çözümleme modu</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="28"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Expand affected annotation</source>
         <translation>Etkilenen ek açıklamayı genişletin</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="38"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Remove affected annotation</source>
         <translation>Etkilenen ek açıklamayı kaldırın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="45"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Split (join annotation parts)</source>
         <translation>Böl (detaylandırma bölümlerini birleştir)</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="52"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Split (separate annotations parts)</source>
         <translation>Böl (ayrı açıklama bölümleri)</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="64"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Recalculate values of qualifiers</source>
         <translation>Niteleyicilerin değerlerini yeniden hesaplayın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="76"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Position to insert</source>
         <translation>Eklenecek konum</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="134"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Press to insert before the start of the sequence</source>
         <translation>Sıranın başlangıcından önce eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="137"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>start</source>
         <translation>başlangıç</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="82"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Press to insert to the end of the sequence</source>
         <translation>Sıranın sonuna eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="85"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>end</source>
         <translation>bitiş</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="95"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Selection</source>
         <translation>Seçim</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="101"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Press to insert before the selection</source>
         <translation>Seçimden önce eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="104"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>before</source>
         <translation>öncesinde</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="111"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Press to insert after the selection</source>
         <translation>Seçimden sonra eklemek için basın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="114"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>after</source>
         <translation>sonrasında</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="121"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>To change the regsion select it on a sequence</source>
         <translation>Bölgeyi değiştirmek için bir sırayla seçin</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="165"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Save to new file</source>
         <translation>Yeni dosyaya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="179"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Document location:</source>
         <translation>Belge konumu:</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="189"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="196"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Document format:</source>
         <translation>Belge biçimi:</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSequenceDialog.ui" line="208"/>
+        <location filename="../src/util/EditSequenceDialog.ui"/>
         <source>Merge annotations to this file</source>
         <translation>Ek açıklamaları bu dosyayla birleştir</translation>
     </message>
@@ -785,32 +776,32 @@
 <context>
     <name>EditSettingDialogForm</name>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="14"/>
+        <location filename="../src/util/EditSettingsDialog.ui"/>
         <source>Annotation Settings on Sequence Editing</source>
         <translation>Sıra Düzenlemede Ek Açıklama Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
+        <location filename="../src/util/EditSettingsDialog.ui"/>
         <source>Expand or crop affected annotation</source>
         <translation>Etkilenen ek açıklamayı genişletin veya kırpın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="33"/>
+        <location filename="../src/util/EditSettingsDialog.ui"/>
         <source>Remove affected annotation</source>
         <translation>Etkilenen ek açıklamayı kaldırın</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="40"/>
+        <location filename="../src/util/EditSettingsDialog.ui"/>
         <source>Split (join annotation parts)</source>
         <translation>Böl (detaylandırma bölümlerini birleştir)</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="47"/>
+        <location filename="../src/util/EditSettingsDialog.ui"/>
         <source>Split (separate annotations parts)</source>
         <translation>Böl (ayrı açıklama bölümleri)</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="59"/>
+        <location filename="../src/util/EditSettingsDialog.ui"/>
         <source>Recalculate values of qualifiers</source>
         <translation>Niteleyicilerin değerlerini yeniden hesaplayın</translation>
     </message>
@@ -818,32 +809,32 @@
 <context>
     <name>ExportDocumentDialog</name>
     <message>
-        <location filename="../src/util/ExportDocumentDialog.ui" line="14"/>
+        <location filename="../src/util/ExportDocumentDialog.ui"/>
         <source>Export Document</source>
         <translation>Belgeyi dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportDocumentDialog.ui" line="25"/>
+        <location filename="../src/util/ExportDocumentDialog.ui"/>
         <source>Save to file</source>
         <translation>Dosyaya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportDocumentDialog.ui" line="42"/>
+        <location filename="../src/util/ExportDocumentDialog.ui"/>
         <source>File format</source>
         <translation>Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportDocumentDialog.ui" line="35"/>
+        <location filename="../src/util/ExportDocumentDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportDocumentDialog.ui" line="62"/>
+        <location filename="../src/util/ExportDocumentDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportDocumentDialog.ui" line="52"/>
+        <location filename="../src/util/ExportDocumentDialog.ui"/>
         <source>Compress file</source>
         <translation>Dosyayı Sıkıştır</translation>
     </message>
@@ -862,63 +853,62 @@
 <context>
     <name>ImageExportForm</name>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="20"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Export Image</source>
         <translation>Görüntüyü Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="105"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>File name</source>
         <translation>Dosya adı</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="78"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="41"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Export settings</source>
         <translation>Dışa Aktarma Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="56"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="124"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Format</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="237"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>DPI</source>
         <translation>DPI</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="316"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Width</source>
         <translation>Genişlik</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="296"/>
-        <location filename="../src/util/ExportImageDialog.ui" line="344"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>px</source>
         <translation>px</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="397"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Hint</source>
         <translation>İpucu</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="268"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Height</source>
         <translation>Yükseklik</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.ui" line="158"/>
+        <location filename="../src/util/ExportImageDialog.ui"/>
         <source>Quality</source>
         <translation>Kalite</translation>
     </message>
@@ -926,98 +916,97 @@
 <context>
     <name>ImportOptionsWidget</name>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="14"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Import to the Database Options</source>
         <translation>Veritabanı Seçeneklerine Aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="22"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Destination folder:</source>
         <translation>Hedef dizin:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="50"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Files and folders options</source>
         <translation>Dosya ve klasör seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="56"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Process directories recursively</source>
         <translation>Dizinleri yinelemeli olarak işleyin</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="63"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Keep folders structure</source>
         <translation>Klasör yapısını koru</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="70"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Create a subfolder for the top level folder</source>
         <translation>En üst düzey klasör için bir alt klasör oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="77"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Create a subfolder for each file</source>
         <translation>Her dosya için bir alt klasör oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="84"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Import unrecognized files</source>
         <translation>Tanınmayan dosyaları içe aktarın</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="107"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Multi-sequence files import policy</source>
         <translation>Çok sıralı dosya içe aktarma politikası</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="113"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Import as separate sequences</source>
         <translation>Ayrı diziler olarak içe aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="123"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Merge into a single sequence</source>
         <translation>Tek bir dizide birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Number of separator symbols (N - for nucleic or X - for amino) between parts.</source>
         <translation>Parçalar arasındaki ayırıcı sembollerin sayısı (nükleik için N - veya amino için X -).</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="135"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Separator characters between parts</source>
         <translation>Parçalar arasında ayırıcı karakterler</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="179"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Join into alignment</source>
         <translation>Uyumlulaştırmaya katılın</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="189"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Import ACE files as</source>
         <translation>ACE dosyalarını farklı içe aktarın</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="195"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Multiple sequence alignment</source>
         <translation>Çoklu dizi hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="208"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Short reads assembly</source>
         <translation>Kısa okuma montajı</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="240"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Documents and objects options</source>
         <translation>Belgeler ve nesneler seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="246"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui"/>
         <source>Create a subfolder for each document</source>
         <translation>Her belge için bir alt klasör oluşturun</translation>
     </message>
@@ -1033,42 +1022,42 @@
 <context>
     <name>ImportToDatabaseDialog</name>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="14"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>Import to the Database</source>
         <translation>Veritabanına Aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="35"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>Item to import</source>
         <translation>İçe aktarılacak öğe</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="40"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>Import to</source>
         <translation>Şuraya aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="50"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>Add files</source>
         <translation>Dosyaları Ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="57"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>Add folder</source>
         <translation>Klasör Ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="64"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>Add objects</source>
         <translation>Nesne ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="84"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>General options</source>
         <translation>Genel seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui" line="91"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
@@ -1076,12 +1065,12 @@
 <context>
     <name>ItemToImportEditDialog</name>
     <message>
-        <location filename="../src/util/shared_db/ItemToImportEditDialog.ui" line="14"/>
+        <location filename="../src/util/shared_db/ItemToImportEditDialog.ui"/>
         <source>Edit The Item To Import</source>
         <translation>İçe Aktarılacak Öğeyi Düzenleyin</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ItemToImportEditDialog.ui" line="22"/>
+        <location filename="../src/util/shared_db/ItemToImportEditDialog.ui"/>
         <source>Item to import:</source>
         <translation>İçe aktarılacak öğe:</translation>
     </message>
@@ -1089,22 +1078,22 @@
 <context>
     <name>MultipartDocFormatConfiguratorWidget</name>
     <message>
-        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui" line="19"/>
+        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui"/>
         <source>Create annotation</source>
         <translation>Ek açıklama oluştur</translation>
     </message>
     <message>
-        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui" line="25"/>
+        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui"/>
         <source>Separate sequences</source>
         <translation>Ayrı diziler</translation>
     </message>
     <message>
-        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui" line="32"/>
+        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui"/>
         <source>Merge sequences</source>
         <translation>Sıraları birleştir</translation>
     </message>
     <message>
-        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui" line="41"/>
+        <location filename="../src/util/MultipartDocFormatConfiguratorWidget.ui"/>
         <source>Gap length:</source>
         <translation>Boşluk uzunluğu:</translation>
     </message>
@@ -1112,7 +1101,7 @@
 <context>
     <name>ProjectTreeItemSelectorDialogBase</name>
     <message>
-        <location filename="../src/util/ProjectTreeItemSelectorDialogBase.ui" line="14"/>
+        <location filename="../src/util/ProjectTreeItemSelectorDialogBase.ui"/>
         <source>Select Item</source>
         <translation>Öğeyi Seç</translation>
     </message>
@@ -1197,47 +1186,47 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>RangeSelectionDialog</name>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="14"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>Region Selection</source>
         <translation>Bölge Seçimi</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="31"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>    Region:</source>
         <translation>    Bölge:</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="41"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>Single Range Selection</source>
         <translation>Tek Aralık Seçimi</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="51"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>Multiple Range Selection</source>
         <translation>Çoklu Aralık Seçimi</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="70"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="86"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>    Multi Region:</source>
         <translation>    Çoklu Bölge:</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="96"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>Input Format: 1..10,50..60</source>
         <translation>Giriş Formatı: 1..10,50..60</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="116"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>Min</source>
         <translation>Asg</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelectionDialog.ui" line="123"/>
+        <location filename="../src/util/RangeSelectionDialog.ui"/>
         <source>Max</source>
         <translation>Azm</translation>
     </message>
@@ -1313,57 +1302,57 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>RemovePartFromSequenceDialog</name>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="40"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Region to remove</source>
         <translation>Kaldırılacak bölge</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="128"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Annotations region resolving mode</source>
         <translation>Ek açıklamalar bölge çözümleme modu</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="32"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Remove Subsequence</source>
         <translation>Sonraki Diziyi Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="134"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Crop corresponding annotation</source>
         <translation>Karşılık gelen ek açıklamayı kırp</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="144"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Remove corresponding annotation</source>
         <translation>İlgili ek açıklamayı kaldır</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="68"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Save to new file</source>
         <translation>Yeni dosyaya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="80"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Merge annotations to this file</source>
         <translation>Ek açıklamaları bu dosyayla birleştir</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="89"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Document location:</source>
         <translation>Belge konumu:</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="99"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="106"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Document format:</source>
         <translation>Belge biçimi:</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="156"/>
+        <location filename="../src/util/RemovePartFromSequenceDialog.ui"/>
         <source>Recalculate values of qualifiers</source>
         <translation>Niteleyicilerin değerlerini yeniden hesaplayın</translation>
     </message>
@@ -1371,47 +1360,47 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>ScriptEditorDialog</name>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="20"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Used script</source>
         <translation>Kullanılan komut dosyası</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="30"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="55"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Script text</source>
         <translation>Komut dosyası metni</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="67"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Check syntax</source>
         <translation>Sözdizimini kontrol edin</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="74"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Save as...</source>
         <translation>Farklı kaydet...</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="88"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="81"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Clear</source>
         <translation>Temizle</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="14"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Script Editor</source>
         <translation>Komut Dosyası Düzenleyici</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.ui" line="108"/>
+        <location filename="../src/util/ScriptEditorDialog.ui"/>
         <source>Line:</source>
         <translation>Satır:</translation>
     </message>
@@ -1419,47 +1408,47 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>SearchGenbankSequenceDialog</name>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="20"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>NCBI Sequence Search</source>
         <translation>NCBI Sıra Araması</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="39"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>Database:</source>
         <translation>Veritabanı:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="64"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>Search query:</source>
         <translation>Arama sorgusu:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="87"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>Results:</source>
         <translation>Sonuçlar:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="104"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>ID</source>
         <translation>KİMLİK</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="109"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>Desc</source>
         <translation>Azalan</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="114"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>Size</source>
         <translation>Boyut</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="124"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>Result limit:</source>
         <translation>Sonuç sınırı:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="157"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui"/>
         <source>Search</source>
         <translation>Ara</translation>
     </message>
@@ -1467,32 +1456,32 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>SeqPasterWidget</name>
     <message>
-        <location filename="../src/util/SeqPasterWidget.ui" line="14"/>
+        <location filename="../src/util/SeqPasterWidget.ui"/>
         <source>Create annotation</source>
         <translation>Ek açıklama oluştur</translation>
     </message>
     <message>
-        <location filename="../src/util/SeqPasterWidget.ui" line="32"/>
+        <location filename="../src/util/SeqPasterWidget.ui"/>
         <source>Paste data here</source>
         <translation>Verileri buraya yapıştırın</translation>
     </message>
     <message>
-        <location filename="../src/util/SeqPasterWidget.ui" line="52"/>
+        <location filename="../src/util/SeqPasterWidget.ui"/>
         <source>Custom settings</source>
         <translation>Özel ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/util/SeqPasterWidget.ui" line="67"/>
+        <location filename="../src/util/SeqPasterWidget.ui"/>
         <source>Alphabet:</source>
         <translation>Alfabe:</translation>
     </message>
     <message>
-        <location filename="../src/util/SeqPasterWidget.ui" line="77"/>
+        <location filename="../src/util/SeqPasterWidget.ui"/>
         <source>Skip unknown symbols</source>
         <translation>Bilinmeyen sembolleri atla</translation>
     </message>
     <message>
-        <location filename="../src/util/SeqPasterWidget.ui" line="87"/>
+        <location filename="../src/util/SeqPasterWidget.ui"/>
         <source>Replace unknown symbols with</source>
         <translation>Bilinmeyen sembolleri şununla değiştir</translation>
     </message>
@@ -2113,37 +2102,37 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
 <context>
     <name>U2::ExportAnnotationsDialog</name>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="14"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui"/>
         <source>Export Annotations</source>
         <translation>Ek Açıklamaları Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="25"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui"/>
         <source>Export to file</source>
         <translation>Dosyaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="37"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="49"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui"/>
         <source>File format</source>
         <translation>Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="58"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="68"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui"/>
         <source>Save sequences under annotations</source>
         <translation>Ek açıklamalar altında sekansları kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="75"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui"/>
         <source>Save sequence names</source>
         <translation>Sıra adlarını kaydet</translation>
     </message>

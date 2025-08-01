@@ -4,27 +4,27 @@
 <context>
     <name>BioStruct3DSubsetEditor</name>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="14"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="20"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Structure</source>
         <translation>Yapı</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="37"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Chain</source>
         <translation>Zincir</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="54"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Region</source>
         <translation>Bölge</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.ui" line="64"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui"/>
         <source>Model</source>
         <translation>Model</translation>
     </message>
@@ -84,17 +84,17 @@
 <context>
     <name>SelectModelsDialog</name>
     <message>
-        <location filename="../src/SelectModelsDialog.ui" line="14"/>
+        <location filename="../src/SelectModelsDialog.ui"/>
         <source>Select Models</source>
         <translation>Modelleri Seçin</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.ui" line="25"/>
+        <location filename="../src/SelectModelsDialog.ui"/>
         <source>All</source>
         <translation type="unfinished">Hepsi</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.ui" line="32"/>
+        <location filename="../src/SelectModelsDialog.ui"/>
         <source>Invert</source>
         <translation type="unfinished">Evir</translation>
     </message>
@@ -102,57 +102,57 @@
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="35"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Anaglyph view</source>
         <translation>Anaglif görünümü</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="49"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Eyes shift</source>
         <translation>Gözler kayması</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="20"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="279"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Set background color...</source>
         <translation>Arka plan rengini ayarla...</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="292"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Set selection color...</source>
         <translation>Seçim rengini ayarlayın...</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="301"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Detail level</source>
         <translation>Detay seviyesi</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="325"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Unselected regions shading</source>
         <translation>Seçilmemiş bölgelerin gölgelendirilmesi</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="96"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Glasses colors</source>
         <translation>Gözlük renkleri</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="125"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Left</source>
         <translation>Sol</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="135"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Right</source>
         <translation>Sağ</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.ui" line="254"/>
+        <location filename="../src/SettingsDialog.ui"/>
         <source>Swap colors</source>
         <translation>Renkleri değiştir</translation>
     </message>
@@ -160,22 +160,22 @@
 <context>
     <name>StructuralAlignmentDialog</name>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="14"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Structural Alignment</source>
         <translation>Yapısal Hizalama</translation>
     </message>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="20"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="45"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Reference</source>
         <translation>Referans</translation>
     </message>
     <message>
-        <location filename="../src/StructuralAlignmentDialog.ui" line="61"/>
+        <location filename="../src/StructuralAlignmentDialog.ui"/>
         <source>Mobile</source>
         <translation>Mobile</translation>
     </message>

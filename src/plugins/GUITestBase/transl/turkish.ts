@@ -4,47 +4,47 @@
 <context>
     <name>GUITestRunner</name>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="14"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>GUI Test Runner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="22"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>Start selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="29"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>Start all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="36"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="43"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>List to stdout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="54"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>Tests:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="74"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>Type to filter by name...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="87"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/test_runner/GUITestRunner.ui" line="92"/>
+        <location filename="../src/test_runner/GUITestRunner.ui"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>

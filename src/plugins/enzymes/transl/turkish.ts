@@ -4,197 +4,197 @@
 <context>
     <name>ConstructMoleculeDialog</name>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="20"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Construct Molecule</source>
         <translation>Molekülü Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="33"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Construction</source>
         <translation>İnşa</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="57"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Fragments available from active project</source>
         <translation>Aktif projeden mevcut parçalar</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="64"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add selected fragments to new molecule contents</source>
         <translation>Yeni molekül içeriklerine seçilen fragmanları ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="67"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="87"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>From Project</source>
         <translation>Projeden</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="94"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add all available fragments to molecule contets</source>
         <translation>Molekül yarışmasına mevcut tüm parçaları ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="97"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Add All</source>
         <translation>Hepsini ekle</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="106"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>New molecule contents:</source>
         <translation>Yeni molekül içeriği:</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="119"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>New molecule contents</source>
         <translation>Yeni molekül içerikleri</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="123"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>5&apos;</source>
         <translation>5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="128"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Fragment</source>
         <translation>Bölümleme</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="133"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>3&apos;</source>
         <translation>3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="138"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Inverted</source>
         <translation>Ters Çevrilmiş</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="161"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Move selected fragment up</source>
         <translation>Seçili parçayı yukarı taşı</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="164"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Up</source>
         <translation>Yukarı</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="171"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Move selected fragment down</source>
         <translation>Seçili parçayı aşağı taşı</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="174"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Down</source>
         <translation>Aşağı</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="181"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Remove selected fragment from new molecule</source>
         <translation>Yeni molekülden seçilen parçayı çıkarın</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="184"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Open the &quot;Edit Molecule Fragment&quot; dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="204"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Automatically edit selected fragment&apos;s 5&apos; end and fit it to the 3&apos; end of the fragment above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="207"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Adjust 5&apos; end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="217"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Automatically edit selected fragment&apos;s 3&apos; end and fit it to the 5&apos; end of the fragment below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="220"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Adjust 3&apos; end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="227"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Clear molecule contents</source>
         <translation>Molekül içeriğini temizle</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="230"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Clear All</source>
         <translation>Hepsini temizle</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="252"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Annotate fragments in new molecule</source>
         <translation>Yeni moleküldeki fragmanlara açıklama ekleyin</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="271"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Force &quot;blunt&quot; and omit all overhangs</source>
         <translation>&quot;Künt&quot; zorla ve tüm çıkıntıları atla</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="287"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Make circular</source>
         <translation>Dairesel yap</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="265"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Setting this option checked will result in ignoring overhangs while constructing new molecule.</source>
         <translation>Bu seçeneğin işaretli olarak ayarlanması, yeni molekül oluşturulurken çıkıntıların göz ardı edilmesiyle sonuçlanacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Available fragments (core length - length without sticky ends):</source>
         <translation>Mevcut parçalar (çekirdek uzunluğu - yapışkan uçları olmayan uzunluk):</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="194"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="284"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Circulirize result molecule</source>
         <translation>Sonuç molekülünü dolaştırın</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="295"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="303"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Path to file:</source>
         <translation>Dosyanın yolu:</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="313"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="325"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Open view for new molecule</source>
         <translation>Yeni molekül için açık görünüm</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="338"/>
+        <location filename="../src/ConstructMoleculeDialog.ui"/>
         <source>Save immediately</source>
         <translation>Hemen kaydedin</translation>
     </message>
@@ -202,39 +202,37 @@
 <context>
     <name>CreateFragmentDialog</name>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="14"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Create DNA Fragment</source>
         <translation>DNA Parçası Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="24"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Fragment Options</source>
         <translation>Parça Seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="35"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Include Left Overhang</source>
         <translation>Sol Çıkıntıyı Dahil Et</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="49"/>
-        <location filename="../src/CreateFragmentDialog.ui" line="95"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Direct</source>
         <translation>Doğrudan</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="59"/>
-        <location filename="../src/CreateFragmentDialog.ui" line="105"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Reverse-complement</source>
         <translation>Ters tamamlayıcı</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="81"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Include Right Overhang</source>
         <translation>Sağ Çıkıntıyı Dahil Et</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.ui" line="143"/>
+        <location filename="../src/CreateFragmentDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>
@@ -242,100 +240,99 @@
 <context>
     <name>DigestSequenceDialog</name>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="20"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Digest Sequence into Fragments</source>
         <translation>Diziyi Parçalara Göre Özetleme</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="30"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Restriction Sites</source>
         <translation>Kısıtlama Siteleri</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="38"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Target Sequence:</source>
         <translation>Hedef Sıra:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="54"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>&lt;sequence name&gt;</source>
         <translation>&lt;sequence name&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="65"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Available enzymes:</source>
         <translation>Mevcut enzimler:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="78"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Selected enzymes:</source>
         <translation>Seçilmiş enzimler:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="91"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Add --&gt;</source>
         <translation>Ekle --&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="101"/>
-        <location filename="../src/DigestSequenceDialog.ui" line="168"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="108"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Clear
  Selection </source>
         <translation>Seçimi
 Temizle </translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="129"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Add All --&gt;</source>
         <translation>Hepsini Ekle --&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="139"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Conserved Annotations</source>
         <translation>Korunan Ek Açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="145"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>List of conserved annotations:</source>
         <translation>Korunan ek açıklamaların listesi:</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="152"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Conserved annotations can not be &quot;distrupted&quot; when cutting occurs</source>
         <translation>Korunan ek açıklamalar, kesme işlemi gerçekleştiğinde &quot;kesintiye uğratılamaz&quot;</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="161"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="175"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Remove All</source>
         <translation>Tümünü Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="198"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="218"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Use this option to treat the molecule as circular</source>
         <translation>Molekülü dairesel olarak tedavi etmek için bu seçeneği kullanın</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="221"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>Circular molecule</source>
         <translation>Dairesel molekül</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="228"/>
+        <location filename="../src/DigestSequenceDialog.ui"/>
         <source>&lt;hint label&gt;</source>
         <translation>&lt;hint label&gt;</translation>
     </message>
@@ -343,12 +340,12 @@ Temizle </translation>
 <context>
     <name>EditFragmentDialog</name>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="20"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Edit Molecule Fragment</source>
         <translation>Molekül Parçasını Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="28"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Left End</source>
         <translation>Sol Uç</translation>
     </message>
@@ -361,36 +358,32 @@ Temizle </translation>
         <translation type="vanished">Özel çıkıntı</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="56"/>
-        <location filename="../src/EditFragmentDialog.ui" line="133"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>5&apos;-3&apos;</source>
         <translation>5&apos;-3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="73"/>
-        <location filename="../src/EditFragmentDialog.ui" line="150"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>3&apos;-5&apos;</source>
         <translation>3&apos;-5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="105"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Right End</source>
         <translation>Sağ Uç</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="36"/>
-        <location filename="../src/EditFragmentDialog.ui" line="113"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Type</source>
         <translation>Tür</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="184"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Preview:</source>
         <translation>Önizleme:</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.ui" line="92"/>
-        <location filename="../src/EditFragmentDialog.ui" line="169"/>
+        <location filename="../src/EditFragmentDialog.ui"/>
         <source>Reset</source>
         <translation>Sıfırla</translation>
     </message>
@@ -462,27 +455,27 @@ Temizle </translation>
         <translation type="vanished">Ada göre filtrele:</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="76"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Name</source>
         <translation>Ad</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="81"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Accession</source>
         <translation>Katılım</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="86"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Type</source>
         <translation>Tür</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="91"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="96"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Organizm / Details</source>
         <translation>Organizm / Detaylar</translation>
     </message>
@@ -491,17 +484,17 @@ Temizle </translation>
         <translation type="vanished">Seçilmiş enzimler:</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="117"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Load enzymes database</source>
         <translation>Enzimler veritabanını yükle</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="120"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Open enzymes </source>
         <translation>Enzimleri aç </translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="130"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Export enzymes</source>
         <translation>Enzimleri dışa aktar</translation>
     </message>
@@ -514,7 +507,7 @@ Temizle </translation>
         <translation type="vanished">Seçimi kaydet</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="127"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Export current selection as new database</source>
         <translation>Mevcut seçimi yeni veritabanı olarak dışa aktar</translation>
     </message>
@@ -523,133 +516,132 @@ Temizle </translation>
         <translation type="vanished">Veritabanındaki tüm enzimleri seçin</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="240"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Hint: selection file should contain enzymes&apos; names separtated by whitespaces or commas</source>
         <translation>İpucu: seçim dosyası, enzimlerin adlarını beyaz boşluklarla veya virgüllerle ayrılmış olarak içermelidir</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="224"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Save selected enzymes list to a text file</source>
         <translation>Seçili enzimler listesini bir metin dosyasına kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="23"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Find Restriction Sites</source>
         <translation type="unfinished">Kısıtlama Sitelerini Bulun</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="31"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Filter by:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="101"/>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="350"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Suppliers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="144"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Select all enzymes in the table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="147"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Select All</source>
         <translation>Tümünü Seç</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="205"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Checked enzymes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="227"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="243"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="287"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Selected enzyme info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="336"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Enzyme table filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="389"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="396"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="403"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Invert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="412"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Overhang type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="431"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="469"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Recognition sequence length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="476"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Keep only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="485"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Forward and reverse-complementary enzyme strands are equal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="488"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Palindromic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="498"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>No internal N&apos;s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="501"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Uninterrupted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="511"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>No extended DNA alphabet symbols (A, C, G, T and N only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="514"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Nondegenerate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="541"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>&lt;status label&gt;</source>
         <translation type="unfinished">&lt;status label&gt;</translation>
     </message>
@@ -666,12 +658,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="154"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Empty selection</source>
         <translation>Seçimi boşalt</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="157"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Select None</source>
         <translation>Hiçbirini Seçme</translation>
     </message>
@@ -684,12 +676,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Uzunluğa göre seçin</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="164"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Invert current selection</source>
         <translation>Mevcut seçimi tersine çevir</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui" line="167"/>
+        <location filename="../src/enzymes_dialog/EnzymesSelectorWidget.ui"/>
         <source>Invert selection</source>
         <translation>Seçimi tersine çevir</translation>
     </message>
@@ -732,17 +724,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>InsertEnzymeWidget</name>
     <message>
-        <location filename="../src/insert/InsertEnzymeWidget.ui" line="20"/>
+        <location filename="../src/insert/InsertEnzymeWidget.ui"/>
         <source>Select enzymes</source>
         <translation type="unfinished">Enzimleri seçin</translation>
     </message>
     <message>
-        <location filename="../src/insert/InsertEnzymeWidget.ui" line="26"/>
+        <location filename="../src/insert/InsertEnzymeWidget.ui"/>
         <source>Choose site to paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/insert/InsertEnzymeWidget.ui" line="60"/>
+        <location filename="../src/insert/InsertEnzymeWidget.ui"/>
         <source>Show sites with undefined suppliers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -763,27 +755,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ResultsCountFilter</name>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="17"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Find Restriction Sites</source>
         <translation type="unfinished">Kısıtlama Sitelerini Bulun</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="32"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Include only enzymes that cut from &apos;Minimum Hits&apos; to &apos;Maximum Hits&apos; times</source>
         <translation type="unfinished">Yalnızca &apos;Minimum İsabet&apos; ile &apos;Maksimum İsabet&apos; sürelerini kesen enzimleri dahil edin</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="35"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Result count filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="53"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Minimum hits:</source>
         <translation type="unfinished">Minimum isabet:</translation>
     </message>
     <message>
-        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui" line="88"/>
+        <location filename="../src/enzymes_dialog/ResultsCountFilter.ui"/>
         <source>Maximum hits:</source>
         <translation type="unfinished">Maksimum isabet:</translation>
     </message>

@@ -4,136 +4,132 @@
 <context>
     <name>FindRepeatsDialog</name>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="17"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Find Repeats</source>
         <translation>Tekrarları Bul</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="87"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="239"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="299"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="115"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Tekrar uzunluğunun sezgisel temelli seçimi, böylece dizideki tekrar sayısı 1000&apos;i aşmaz</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="118"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>1k</source>
         <translation>1k</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="49"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Number of bases in a sliding window that is moved along the sequence</source>
         <translation>Sıra boyunca hareket ettirilen bir kayan penceredeki baz sayısı</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="52"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Window size</source>
         <translation>Pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="125"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>How similar the two windows of the sequence</source>
         <translation>Sıranın iki penceresi ne kadar benzer</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="128"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Minimum indentity per window</source>
         <translation>Pencere başına minimum girinti</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="163"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="185"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Yinelemeleri % 100&apos;e sıfırlar</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="188"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="211"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Minimum distance between repeats</source>
         <translation>Tekrarlar arasındaki minimum mesafe</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="258"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Maximum distance between repeats</source>
         <translation>Tekrarlar arasındaki maksimum mesafe</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="363"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Advanced</source>
         <translation>Gelişmiş</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="369"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Advanced parameters</source>
         <translation>Gelişmiş parametreler</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="375"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Custom algorithm</source>
         <translation>Özel algoritma</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="402"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search only for repeats that lie inside of an annotated region</source>
         <translation>Yalnızca ek açıklamalı bir bölgenin içinde bulunan tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="451"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search only for repeats that have an annotated region inside</source>
         <translation>Yalnızca içinde ek açıklamalı bir bölge olan tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="500"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Filter repeats that have an annotated region inside</source>
         <translation>İçinde açıklamalı bir bölge olan tekrarları filtrele</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="609"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Nested repeats filter algorithm</source>
         <translation>İç içe geçmiş tekrarlar filtre algoritması</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="569"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Exclude tandems areas</source>
         <translation>Tandem alanlarını hariç tut</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="444"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="493"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="542"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="549"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search for inverted repeats</source>
         <translation>Tersine çevrilmiş tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="321"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Region to process</source>
         <translation>İşlenecek bölge</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="31"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Base</source>
         <translation>Temel</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="37"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Repeat finder parameters</source>
         <translation>Bulucu parametrelerini tekrar et</translation>
     </message>
@@ -141,73 +137,72 @@
 <context>
     <name>FindTandemsDialog</name>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="248"/>
-        <location filename="../src/FindTandemsDialog.ui" line="267"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source> n</source>
         <translation> n</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="62"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="17"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Find Tandem Repeats</source>
         <translation>Tandem Tekrarlarını Bul</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="31"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>General</source>
         <translation>Genel</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="37"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="55"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Preset settings</source>
         <translation>Ön ayar ayarları</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="69"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min length of repeated sequence</source>
         <translation>Minimum tekrarlanan dizi uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="76"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Max length of repeated sequence</source>
         <translation>Maksimum tekrarlanan dizi uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="83"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min length of tandem repeat</source>
         <translation>Minimum tandem tekrar uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="90"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min number of repeats</source>
         <translation>Minimum tekrar sayısı</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="308"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="328"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Show overlapped tandems</source>
         <translation>Çakışan tandemleri göster</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="340"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Search in</source>
         <translation>Araştır</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="366"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>

@@ -4,17 +4,17 @@
 <context>
     <name>EditPrimerDialog</name>
     <message>
-        <location filename="../src/EditPrimerDialog.ui" line="14"/>
+        <location filename="../src/EditPrimerDialog.ui"/>
         <source>Create New Primer</source>
         <translation>Создать новый праймер</translation>
     </message>
     <message>
-        <location filename="../src/EditPrimerDialog.ui" line="29"/>
+        <location filename="../src/EditPrimerDialog.ui"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/EditPrimerDialog.ui" line="36"/>
+        <location filename="../src/EditPrimerDialog.ui"/>
         <source>New Primer</source>
         <translation>Новый праймер</translation>
     </message>
@@ -22,22 +22,22 @@
 <context>
     <name>ExportPrimersDialog</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="20"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>Export Primers</source>
         <translation>Экспорт праймеров</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="38"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>Format:</source>
         <translation>Формат:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="55"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>File path:</source>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="67"/>
+        <location filename="../src/export/ExportPrimersDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -53,33 +53,32 @@
 <context>
     <name>ImportPrimersDialog</name>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="20"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Import Primers</source>
         <translation>Импорт праймеров</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="28"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Files:</source>
         <translation>Файлы:</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="53"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Add file(s)</source>
         <translation>Добавить файл(ы)</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="60"/>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="114"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="82"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Objects:</source>
         <translation>Объекты:</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="107"/>
+        <location filename="../src/import/ImportPrimersDialog.ui"/>
         <source>Add object(s)</source>
         <translation>Добавить объект(ы)</translation>
     </message>
@@ -87,68 +86,67 @@
 <context>
     <name>InSilicoPcrOptionPanelWidget</name>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="14"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="101"/>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="147"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source> bp</source>
         <translation> нк</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="124"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>3&apos; perfect match</source>
         <translation>Совпадение на 3&apos; конце</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="117"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Extract annotations</source>
         <translation>Извлечь аннотации</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="134"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Use ambiguous bases</source>
         <translation>Использовать расширенный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="172"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Maximum product size</source>
         <translation>Максимальный размер продукта</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="199"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>&lt;a href=&quot;details&quot;&gt;Show primers details&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;details&quot;&gt;Показать информацию о праймерах&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="260"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Find product(s)</source>
         <translation>Найти продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="355"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="360"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="365"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Ta</source>
         <translation>Ta</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="394"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Extract product(s)</source>
         <translation>Извлечь продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="408"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui"/>
         <source>Info: choose a nucleic sequence for running In Silico PCR</source>
         <translation>Информация: выберите нуклеотидную последовательность для запуска In Silico PCR</translation>
     </message>
@@ -156,27 +154,27 @@
 <context>
     <name>PrimerGroupBox</name>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="14"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="78"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Reverse-complement sequence</source>
         <translation>Обратно-комплементарная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="107"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Choose a primer from the primer library</source>
         <translation>Выберите праймер из библиотеки праймеров</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="134"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source>Mismatches</source>
         <translation>Несоответствия</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.ui" line="141"/>
+        <location filename="../src/PrimerGroupBox.ui"/>
         <source> bp</source>
         <translation> нк</translation>
     </message>
@@ -184,7 +182,7 @@
 <context>
     <name>PrimerLibrarySelector</name>
     <message>
-        <location filename="../src/PrimerLibrarySelector.ui" line="14"/>
+        <location filename="../src/PrimerLibrarySelector.ui"/>
         <source>Choose Primer</source>
         <translation>Выберите праймер</translation>
     </message>
@@ -192,7 +190,7 @@
 <context>
     <name>PrimerLibraryWidget</name>
     <message>
-        <location filename="../src/PrimerLibraryWidget.ui" line="14"/>
+        <location filename="../src/PrimerLibraryWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
@@ -200,7 +198,7 @@
 <context>
     <name>PrimersDetailsDialog</name>
     <message>
-        <location filename="../src/PrimersDetailsDialog.ui" line="14"/>
+        <location filename="../src/PrimersDetailsDialog.ui"/>
         <source>Primers Details</source>
         <translation>Информация о праймерах</translation>
     </message>

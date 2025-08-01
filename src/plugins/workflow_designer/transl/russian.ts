@@ -4,12 +4,12 @@
 <context>
     <name>ChooseItemDialog</name>
     <message>
-        <location filename="../src/ChooseItemDialog.ui" line="14"/>
+        <location filename="../src/ChooseItemDialog.ui"/>
         <source>Choose task type</source>
         <translation>Выбор типа задачи</translation>
     </message>
     <message>
-        <location filename="../src/ChooseItemDialog.ui" line="20"/>
+        <location filename="../src/ChooseItemDialog.ui"/>
         <source>Add a task of the following type:</source>
         <translation>Возможно создать объект для следующих задач:</translation>
     </message>
@@ -30,17 +30,17 @@
 <context>
     <name>CreateCmdlineBasedWorkerWizardCommandPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandPage.ui" line="14"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandPage.ui"/>
         <source>WizardPage</source>
         <translation>WizardPage</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandPage.ui" line="32"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandPage.ui"/>
         <source>Command</source>
         <translation>Команда</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandPage.ui" line="44"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardCommandPage.ui"/>
         <source>Specify the execution string in the format expected by the command-line tool. Use argument names added for ports and parameters on the previous wizard pages.</source>
         <translation>Укажите строку выполнения в формате командной строки. Используйте имена аргументов, которые были добавлены для портов и параметров на предыдущих страницах визарда.</translation>
     </message>
@@ -48,28 +48,27 @@
 <context>
     <name>CreateCmdlineBasedWorkerWizardElementAppearancePage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui" line="14"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui"/>
         <source>WizardPage</source>
         <translation>WizardPage</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui" line="32"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui"/>
         <source>Element appearance</source>
         <translation>Внешний вид элемента</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui" line="39"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui"/>
         <source>Set up appearance of the element in the Workflow Designer GUI. Note that it is possible to specify an argument name in the &quot;Element description on the scene&quot; field, so that this value is replaced by an exact value provided in the &quot;Property Editor&quot;.</source>
         <translation>Настройте внешний вид элемента в графическом интерфейсе Дизайнера вычислительных схем. Обратите внимание, что имя аргумента можно указать в поле «Описание элемента на сцене», чтобы это значение было заменено точным значением, указанным в «Редакторе свойств».</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui" line="106"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui"/>
         <source>Element description on the scene</source>
         <translation>Описание элемента на сцене</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui" line="119"/>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui" line="161"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -82,7 +81,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;monospace&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui" line="148"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardElementAppearancePage.ui"/>
         <source>Detailed element description</source>
         <translation>Подробное описание элемента</translation>
     </message>
@@ -90,17 +89,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CreateCmdlineBasedWorkerWizardGeneralSettingsPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="14"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>WizardPage</source>
         <translation>WizardPage</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="32"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>General settings</source>
         <translation>Основные настройки</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="39"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>To integrate a custom command-line tool into a workflow, create a workflow element that will run this tool.
 
 Set up the element name. Select either a local executable file, an external tool provided with UGENE, or a custom external tool (see the &quot;External Tools&quot; page in the &quot;Application Settings&quot; dialog). Follow the wizard.
@@ -111,27 +110,27 @@ Set up the element name. Select either a local executable file, an external tool
 </translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="66"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>Element name</source>
         <translation>Имя элемента</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="94"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>External command-line tool</source>
         <translation>Внешний инструмент командной строки</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="152"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>Integrated external tool</source>
         <translation>Интегрированный внешний инструмент</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="159"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>Executable path</source>
         <translation>Путь к исполняемому файлу</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui" line="142"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardGeneralSettingsPage.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -139,17 +138,17 @@ Set up the element name. Select either a local executable file, an external tool
 <context>
     <name>CreateCmdlineBasedWorkerWizardInputDataPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui" line="14"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui"/>
         <source>WizardPage</source>
         <translation>WizardPage</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui" line="32"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui" line="50"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui"/>
         <source>To input data from other workflow element(s) to this element add one or several port(s) of the required type(s).
 
 The incoming data will be either saved into a file and the file URL will be specified as an argument in the command to run the tool or an input string can be used directly in the command in case of the &quot;String&quot; type, &quot;String data value&quot; argument value.
@@ -160,17 +159,17 @@ The incoming data will be either saved into a file and the file URL will be spec
 </translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui" line="124"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Error: please use unique argument names for all ports and parameters!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ошибка: используйте уникальные имена аргументов для всех портов и параметров!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui" line="149"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui"/>
         <source>Add input</source>
         <translation>Добавить входные данные</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui" line="156"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardInputDataPage.ui"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
@@ -178,17 +177,17 @@ The incoming data will be either saved into a file and the file URL will be spec
 <context>
     <name>CreateCmdlineBasedWorkerWizardOutputDataPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui" line="14"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui"/>
         <source>WizardPage</source>
         <translation>WizardPage</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui" line="35"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui" line="47"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui"/>
         <source>To output data from this element to other workflow element(s) add one or several port(s) of the required type(s).
 
 It is assumed that the external tool creates some file(s). This element reads the file(s) according to the specified type and format, and pass the data to the next element in the workflow. Alternatively, it is possible to pass the output file or folder URL, see the &quot;String&quot; type, &quot;Output URL&quot; argument value.
@@ -199,17 +198,17 @@ It is assumed that the external tool creates some file(s). This element reads th
 </translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui" line="121"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Error: please use unique argument names for all ports and parameters!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ошибка: используйте уникальные имена аргументов для всех портов и параметров!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui" line="146"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui"/>
         <source>Add output</source>
         <translation>Добавить выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui" line="153"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardOutputDataPage.ui"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
@@ -217,17 +216,17 @@ It is assumed that the external tool creates some file(s). This element reads th
 <context>
     <name>CreateCmdlineBasedWorkerWizardParametersPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui" line="14"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui"/>
         <source>WizardPage</source>
         <translation>WizardPage</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui" line="32"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui" line="41"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui"/>
         <source>Make the element configurable by adding one or several parameter(s).
 
 The parameter(s) value(s) can be later set up in the &quot;Property Editor&quot; (located at the right side of the Workflow Designer window) when an element is selected on the scene. During a workflow execution the specified parameters are applied to each input dataset.
@@ -238,17 +237,17 @@ The parameter(s) value(s) can be later set up in the &quot;Property Editor&quot;
 </translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui" line="109"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Error: please use unique argument names for all ports and parameters!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ошибка: используйте уникальные имена аргументов для всех портов и параметров!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui" line="134"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui"/>
         <source>Add parameter</source>
         <translation>Добавить параметр</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui" line="141"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardParametersPage.ui"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
@@ -256,32 +255,32 @@ The parameter(s) value(s) can be later set up in the &quot;Property Editor&quot;
 <context>
     <name>CreateCmdlineBasedWorkerWizardSummaryPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui" line="14"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui"/>
         <source>WizardPage</source>
         <translation>WizardPage</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui" line="32"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui"/>
         <source>Summary</source>
         <translation>Сводный отчёт</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui" line="83"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui"/>
         <source>Element name</source>
         <translation>Имя элемента</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui" line="140"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui"/>
         <source>Element description on the scene</source>
         <translation>Описание элемента на сцене</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui" line="185"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui"/>
         <source>Detailed element description</source>
         <translation>Подробное описание элемента</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui" line="230"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizardSummaryPage.ui"/>
         <source>Command</source>
         <translation>Команда</translation>
     </message>
@@ -289,27 +288,27 @@ The parameter(s) value(s) can be later set up in the &quot;Property Editor&quot;
 <context>
     <name>CreateScriptBlockDialog</name>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="14"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Create Element with Script</source>
         <translation>Создать элемент при помощи скрипта</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="22"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="29"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>ScriptBlock</source>
         <translation>Скрипт</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="38"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="45"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -322,62 +321,62 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span&gt;Пользовательский скрипт&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="58"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Input Port</source>
         <translation>Входной порт</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="65"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Add input slot</source>
         <translation>Добавить слот</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="72"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Delete input slot</source>
         <translation>Удалить слот</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="79"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Output Port</source>
         <translation>Выходной порт</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="86"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Add output slot</source>
         <translation>Добавить слот</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="93"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Delete output slot</source>
         <translation>Удалить слот</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="110"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Attributes</source>
         <translation>Атрибуты</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="117"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Add Attribute</source>
         <translation>Добавить атрибут</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="124"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Delete Attribute</source>
         <translation>Удалить атрибут</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="149"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="164"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>Error occurred while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
         <translation>Произошла ошибка во время сохранения. Невозможно записать в текущей папке. Выберите другую папку</translation>
     </message>
     <message>
-        <location filename="../src/CreateScriptBlockDialog.ui" line="182"/>
+        <location filename="../src/CreateScriptBlockDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -385,32 +384,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DashboardsManagerDialog</name>
     <message>
-        <location filename="../src/DashboardsManagerDialog.ui" line="14"/>
+        <location filename="../src/DashboardsManagerDialog.ui"/>
         <source>Dashboards Manager</source>
         <translation>Управление панелями</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.ui" line="20"/>
+        <location filename="../src/DashboardsManagerDialog.ui"/>
         <source>Check dashboards to show:</source>
         <translation>Выбрать панели для отображения:</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.ui" line="60"/>
+        <location filename="../src/DashboardsManagerDialog.ui"/>
         <source>Check selected</source>
         <translation>Отметить выделенные</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.ui" line="67"/>
+        <location filename="../src/DashboardsManagerDialog.ui"/>
         <source>Uncheck selected</source>
         <translation>Снять метки с выделенных</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.ui" line="74"/>
+        <location filename="../src/DashboardsManagerDialog.ui"/>
         <source>Remove selected</source>
         <translation>Удалить выделенные</translation>
     </message>
     <message>
-        <location filename="../src/DashboardsManagerDialog.ui" line="81"/>
+        <location filename="../src/DashboardsManagerDialog.ui"/>
         <source>Select all</source>
         <translation>Выделить все</translation>
     </message>
@@ -418,39 +417,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GalaxyConfigConfigurationDialog</name>
     <message>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="14"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui"/>
         <source>Create Galaxy config</source>
         <translation>Создать конфигурацию с Galaxy</translation>
     </message>
     <message>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="54"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="67"/>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="164"/>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="177"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="80"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui"/>
         <source>UGENE directory</source>
         <translation>Папка UGENE</translation>
     </message>
     <message>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="93"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui"/>
         <source>Destination directory</source>
         <translation>Расположение папки</translation>
     </message>
     <message>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="106"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui"/>
         <source>Galaxy directory</source>
         <translation>Папка Galaxy</translation>
     </message>
     <message>
-        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="119"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui"/>
         <source>Create</source>
         <translation>Создать</translation>
     </message>
@@ -458,7 +455,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PaletteWidget</name>
     <message>
-        <location filename="../src/PaletteWidget.ui" line="14"/>
+        <location filename="../src/PaletteWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
@@ -677,27 +674,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SchemaAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="23"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui"/>
         <source>Configure Parameter Aliases</source>
         <translation>Конфигурация алиасов параметров</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="40"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui"/>
         <source>Workflow elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="84"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="89"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui"/>
         <source>Alias</source>
         <translation>Алиас</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="94"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
@@ -705,17 +702,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>StartupDialog</name>
     <message>
-        <location filename="../src/StartupDialog.ui" line="14"/>
+        <location filename="../src/StartupDialog.ui"/>
         <source>Choose Output Directory</source>
         <translation>Выбор директории для сохранения выходных данных</translation>
     </message>
     <message>
-        <location filename="../src/StartupDialog.ui" line="20"/>
+        <location filename="../src/StartupDialog.ui"/>
         <source>Output Directory</source>
         <translation>Выходная директория</translation>
     </message>
     <message>
-        <location filename="../src/StartupDialog.ui" line="33"/>
+        <location filename="../src/StartupDialog.ui"/>
         <source>Note: you can change this option in the UGENE Application Settings
 (Settings &gt; Preferences &gt; Workflow Designer)</source>
         <translation>Замечание: вы можете изменить эти настройки в общих настройках UGENE
@@ -6450,32 +6447,32 @@ Do you want to save changes?</source>
 <context>
     <name>WorkflowEditorWidget</name>
     <message>
-        <location filename="../src/WorkflowEditorWidget.ui" line="14"/>
+        <location filename="../src/WorkflowEditorWidget.ui"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditorWidget.ui" line="68"/>
+        <location filename="../src/WorkflowEditorWidget.ui"/>
         <source>Property Editor</source>
         <translation>Редактор объектов</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditorWidget.ui" line="103"/>
+        <location filename="../src/WorkflowEditorWidget.ui"/>
         <source>TextLabel</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditorWidget.ui" line="185"/>
+        <location filename="../src/WorkflowEditorWidget.ui"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditorWidget.ui" line="285"/>
+        <location filename="../src/WorkflowEditorWidget.ui"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowEditorWidget.ui" line="342"/>
+        <location filename="../src/WorkflowEditorWidget.ui"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
@@ -6483,27 +6480,27 @@ Do you want to save changes?</source>
 <context>
     <name>WorkflowMetaDialog</name>
     <message>
-        <location filename="../src/WorkflowMetaDialog.ui" line="20"/>
+        <location filename="../src/WorkflowMetaDialog.ui"/>
         <source>Workflow Properties</source>
         <translation>Описание схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowMetaDialog.ui" line="28"/>
+        <location filename="../src/WorkflowMetaDialog.ui"/>
         <source>Location</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowMetaDialog.ui" line="38"/>
+        <location filename="../src/WorkflowMetaDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowMetaDialog.ui" line="45"/>
+        <location filename="../src/WorkflowMetaDialog.ui"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowMetaDialog.ui" line="55"/>
+        <location filename="../src/WorkflowMetaDialog.ui"/>
         <source>Comment</source>
         <translation>Комментарий</translation>
     </message>
@@ -6511,77 +6508,77 @@ Do you want to save changes?</source>
 <context>
     <name>WorkflowSettingsWidget</name>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="14"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Resource settings</source>
         <translation>Источник настроек</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="20"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Scene appearance</source>
         <translation>Сцена</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="40"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Element style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="50"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Element font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="60"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Element background color</source>
         <translation>Цвет фона</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="93"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Enable debugger</source>
         <translation>Включить отладку</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="106"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Directories</source>
         <translation>Директории</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="112"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Output files</source>
         <translation>Выходные файлы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="133"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Custom elements with script</source>
         <translation>Создать элемент при помощи скрипта</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="154"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Custom elements with external tools</source>
         <translation>Создать элемент при помощи внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="175"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Included schema elements</source>
         <translation>Включенные элементы схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="26"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Show grid</source>
         <translation>Показывать сетку</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="86"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Track running progress</source>
         <translation>Отображать прогресс выполнения схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="33"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Snap to grid</source>
         <translation>Привязываться к сетке</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSettingsWidget.ui" line="80"/>
+        <location filename="../src/WorkflowSettingsWidget.ui"/>
         <source>Runtime settings</source>
         <translation>Исполнение схем</translation>
     </message>

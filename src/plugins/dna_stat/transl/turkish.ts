@@ -4,67 +4,67 @@
 <context>
     <name>DNAStatMSAProfileDialog</name>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="14"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Generate Alignment Profile</source>
         <translation>Hizalama Profili Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="20"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Profile mode</source>
         <translation>Profil modu</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="26"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Count</source>
         <translation>Miktar</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="36"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Percentage</source>
         <translation>Yüzde</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="46"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Custom options</source>
         <translation>Özel seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="52"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Show scores for gaps</source>
         <translation>Boşluklar için puanları göster</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="59"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Show scores for symbols not used in alignment</source>
         <translation>Hizalamada kullanılmayan sembollerin puanlarını göster</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="66"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Skip gaps in consensus position increments</source>
         <translation>Konsensüs pozisyon artışlarındaki boşlukları atlayın</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="76"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Save profile to file</source>
         <translation>Profili dosyaya kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="111"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>File</source>
         <translation>Dosya</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="118"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="98"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Hypertext  (.HTML)</source>
         <translation>Köprü metni  (.HTML)</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="88"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui"/>
         <source>Comma separated ( .CSV)</source>
         <translation>Virgülle ayrılmış ( .CSV)</translation>
     </message>
@@ -72,62 +72,62 @@
 <context>
     <name>DistanceMatrixMSAProfileDialog</name>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="14"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Generate Distance Matrix</source>
         <translation>Mesafe Matrisi Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="22"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Distance algorithm</source>
         <translation>Mesafe algoritması</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="34"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Profile mode</source>
         <translation>Profil modu</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="40"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Count</source>
         <translation>Miktar</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="50"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Percentage</source>
         <translation>Yüzde</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="57"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Exclude gaps</source>
         <translation>Boşlukları hariç tutun</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="67"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Show group statistics of multiple alignment</source>
         <translation>Çoklu hizalamanın grup istatistiklerini göster</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="77"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Save profile to file</source>
         <translation>Profili dosyaya kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="89"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>File</source>
         <translation>Dosya</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="99"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="106"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Hypertext  (.HTML)</source>
         <translation>Köprü metni  (.HTML)</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="116"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui"/>
         <source>Comma separated ( .CSV)</source>
         <translation>Virgülle ayrılmış ( .CSV)</translation>
     </message>
