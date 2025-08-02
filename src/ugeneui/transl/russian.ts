@@ -637,14 +637,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2</name>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="471"/>
         <source>Path doesn&apos;t exist: </source>
-        <translation>Путь не существует: </translation>
+        <translation type="vanished">Путь не существует: </translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="473"/>
         <source>File is empty: </source>
-        <translation>Файл пуст: </translation>
+        <translation type="vanished">Файл пуст: </translation>
     </message>
 </context>
 <context>
@@ -2281,6 +2279,16 @@ Now you can type ugene in command line to start UGENE.</translation>
         <location filename="../src/task_view/TaskViewController.cpp" line="456"/>
         <source>Time</source>
         <translation>Время выполнения</translation>
+    </message>
+    <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="471"/>
+        <source>Path doesn&apos;t exist: </source>
+        <translation type="unfinished">Путь не существует: </translation>
+    </message>
+    <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="473"/>
+        <source>File is empty: </source>
+        <translation type="unfinished">Файл пуст: </translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="543"/>

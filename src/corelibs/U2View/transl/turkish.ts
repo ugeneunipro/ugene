@@ -7349,6 +7349,21 @@ Basit bir genel bakış kullanılamaz.</translation>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation type="unfinished">Sıralar eklenirken bir sorun oluştu. Çoklu hizalama artık mevcut değil.</translation>
     </message>
+    <message>
+        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="123"/>
+        <source>All alphabets</source>
+        <translation type="unfinished">Tüm alfabeler</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="124"/>
+        <source>Amino acid alphabet</source>
+        <translation type="unfinished">Amino asit alfabesi</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="125"/>
+        <source>Nucleotide alphabet</source>
+        <translation type="unfinished">Nükleotid alfabesi</translation>
+    </message>
 </context>
 <context>
     <name>U2::MsaEditorAlignmentDependentWidget</name>
@@ -8146,6 +8161,11 @@ Basit bir genel bakış kullanılamaz.</translation>
         <translation>aralık değişikliği isteği: [%1, %2]</translation>
     </message>
     <message>
+        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="258"/>
+        <source>[%1 %2]</source>
+        <translation type="unfinished">[%1 %2]</translation>
+    </message>
+    <message>
         <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="415"/>
         <source>empty</source>
         <translation>boş</translation>
@@ -8154,9 +8174,8 @@ Basit bir genel bakış kullanılamaz.</translation>
 <context>
     <name>U2::PanViewRenderer</name>
     <message>
-        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="258"/>
         <source>[%1 %2]</source>
-        <translation>[%1 %2]</translation>
+        <translation type="vanished">[%1 %2]</translation>
     </message>
 </context>
 <context>
@@ -8193,19 +8212,16 @@ Basit bir genel bakış kullanılamaz.</translation>
 <context>
     <name>U2::Registry</name>
     <message>
-        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="123"/>
         <source>All alphabets</source>
-        <translation>Tüm alfabeler</translation>
+        <translation type="vanished">Tüm alfabeler</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="124"/>
         <source>Amino acid alphabet</source>
-        <translation>Amino asit alfabesi</translation>
+        <translation type="vanished">Amino asit alfabesi</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="125"/>
         <source>Nucleotide alphabet</source>
-        <translation>Nükleotid alfabesi</translation>
+        <translation type="vanished">Nükleotid alfabesi</translation>
     </message>
 </context>
 <context>

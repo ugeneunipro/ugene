@@ -468,9 +468,9 @@ static void checkPathAndShowErrorOrOpen(const QString& url, QWidget* parent) {
     QFileInfo finfo(url);
     QString error;
     if (!finfo.exists()) {
-        error = QT_TR_NOOP("Path doesn't exist: ");
+        error = TVReportWindow::tr("Path doesn't exist: ");
     } else if (finfo.isFile() && finfo.size() == 0) {
-        error = QT_TR_NOOP("File is empty: ");
+        error = TVReportWindow::tr("File is empty: ");
     }
 
     if (!error.isEmpty()) {

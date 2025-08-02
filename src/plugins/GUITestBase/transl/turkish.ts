@@ -119,12 +119,4 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
-<context>
-    <name>U2::GUITest_regression_scenarios</name>
-    <message>
-        <location filename="../src/tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.cpp" line="230"/>
-        <source>Editing of &quot;comment&quot; annotation is not allowed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
 </TS>

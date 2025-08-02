@@ -651,19 +651,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>U2</name>
-    <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="471"/>
-        <source>Path doesn&apos;t exist: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="473"/>
-        <source>File is empty: </source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::AboutDialogController</name>
     <message>
         <location filename="../src/main_window/AboutDialogController.cpp" line="74"/>
@@ -2363,6 +2350,16 @@ veya çevrimiçi belgeleri görüntüleyin.
         <location filename="../src/task_view/TaskViewController.cpp" line="456"/>
         <source>Time</source>
         <translation>Zaman</translation>
+    </message>
+    <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="471"/>
+        <source>Path doesn&apos;t exist: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="473"/>
+        <source>File is empty: </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="543"/>

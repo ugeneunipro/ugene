@@ -52,6 +52,7 @@ protected:
  * Base class for all text (non-binary) document formats that can be opened in a usual text editor.
  */
 class U2FORMATS_EXPORT TextDocumentFormat : public DocumentFormat {
+    Q_OBJECT
 public:
     TextDocumentFormat(QObject* p, const DocumentFormatId& id, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
 
