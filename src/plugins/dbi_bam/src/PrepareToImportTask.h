@@ -29,6 +29,7 @@ namespace U2 {
 namespace BAM {
 
 class PrepareToImportTask : public Task {
+    Q_OBJECT
 public:
     PrepareToImportTask(const GUrl& assemblyUrl, bool sam, const QString& refUrl, const QString& _workDir);
     void run() override;

@@ -6238,6 +6238,21 @@ Simple overview is unavailable.</source>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>Возникла проблема при добавлении последовательностей. Множественное выравнивание больше недоступно.</translation>
     </message>
+    <message>
+        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="123"/>
+        <source>All alphabets</source>
+        <translation type="unfinished">Все алфавиты</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="124"/>
+        <source>Amino acid alphabet</source>
+        <translation type="unfinished">Аминокислотный алфавит</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="125"/>
+        <source>Nucleotide alphabet</source>
+        <translation type="unfinished">Нуклеотидный алфавит</translation>
+    </message>
 </context>
 <context>
     <name>U2::MsaEditorAlignmentDependentWidget</name>
@@ -7011,6 +7026,11 @@ Simple overview is unavailable.</source>
         <translation>Изменён видимый диапазон: [%1, %2]</translation>
     </message>
     <message>
+        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="258"/>
+        <source>[%1 %2]</source>
+        <translation type="unfinished">[%1 %2]</translation>
+    </message>
+    <message>
         <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="415"/>
         <source>empty</source>
         <translation>&lt;пусто&gt;</translation>
@@ -7019,9 +7039,8 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::PanViewRenderer</name>
     <message>
-        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="258"/>
         <source>[%1 %2]</source>
-        <translation>[%1 %2]</translation>
+        <translation type="vanished">[%1 %2]</translation>
     </message>
 </context>
 <context>
@@ -7051,19 +7070,16 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::Registry</name>
     <message>
-        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="123"/>
         <source>All alphabets</source>
-        <translation>Все алфавиты</translation>
+        <translation type="vanished">Все алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="124"/>
         <source>Amino acid alphabet</source>
-        <translation>Аминокислотный алфавит</translation>
+        <translation type="vanished">Аминокислотный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/highlighting/MsaSchemeComboBoxController.h" line="125"/>
         <source>Nucleotide alphabet</source>
-        <translation>Нуклеотидный алфавит</translation>
+        <translation type="vanished">Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>

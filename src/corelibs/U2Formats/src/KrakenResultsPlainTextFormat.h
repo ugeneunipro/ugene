@@ -28,6 +28,7 @@
 namespace U2 {
 
 class U2FORMATS_EXPORT KrakenResultsPlainTextFormat : public TextDocumentFormat {
+    Q_OBJECT
 public:
     KrakenResultsPlainTextFormat(QObject* p);
 

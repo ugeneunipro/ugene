@@ -37,6 +37,7 @@ class RegionSelector;
  * which allows one to set one uncut region or two different regions to process the task in.
  */
 class RegionSelectorWithExclude : public QWidget {
+  Q_OBJECT
 public:
     /**
      * @brief Constructor.
