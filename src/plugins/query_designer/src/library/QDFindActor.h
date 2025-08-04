@@ -52,7 +52,7 @@ public:
         return new QDFindActor(this);
     }
     IconRef getIconRef() const override {
-        return IconRef("core", "orf_mfind_dialogarker.png");
+        return IconRef("core", "find_dialog.png");
     }
 };
 
