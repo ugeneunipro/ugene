@@ -426,7 +426,7 @@ static QPair<QString, QStringList> getScreenRecorderCommand(const QString& testN
         int height = rec.height();
         int width = rec.width();
         QString display = qgetenv("DISPLAY");
-        args << QString("-video_size %1x%2 -framerate 5 -f x11grab -i %3.0").arg(width).arg(height).arg(display).split(" ") << videoFilePath;
+        args << QString("-video_size %1x%2 -framerate 24 -f x11grab -i %3.0").arg(width).arg(height).arg(display).split(" ") << videoFilePath;
     } else if (isOsMac()) {
         command = qgetenv("UGENE_VIDEO_RECORDER_COMMAND");
         args << videoFilePath;
