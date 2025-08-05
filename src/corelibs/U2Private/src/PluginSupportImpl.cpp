@@ -200,13 +200,7 @@ QStringList getCmdlinePlugins() {
     CMDLineRegistry* reg = AppContext::getCMDLineRegistry();
     if (reg->hasParameter(CMDLineRegistry::PLUGINS_ARG)) {
         QString pluginsToLoad = reg->getParameterValue(CMDLineRegistry::PLUGINS_ARG);
-        auto result = pluginsToLoad.split(";");
-#ifdef _DEBUG
-        for (auto& plugin : result) {
-            plugin += "d";
-        }
-#endif
-        return result;
+        return pluginsToLoad.split(";");
     }
     return QStringList();
 }
