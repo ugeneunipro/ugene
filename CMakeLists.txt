@@ -94,6 +94,8 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/dist)
 endif ()
 
+include(${CMAKE_SOURCE_DIR}/cmake/Environment.cmake)
+
 # 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)
 add_subdirectory(src/libs_3rdparty/breakpad)
@@ -178,8 +180,6 @@ foreach (LANG IN LISTS LANGUAGES)
     )
     add_custom_target(${LANG}_translation ALL DEPENDS ${QM_FILE})
 endforeach ()
-
-include(${CMAKE_SOURCE_DIR}/cmake/Environment.cmake)
 
 # UGENE shell script
 if (NOT WIN32)
