@@ -1175,6 +1175,11 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Ошибка парсинга веса: %1</translation>
     </message>
     <message>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="324"/>
+        <source>Tree branch is too long, %1 or more nodes. Unable display it correctly.</source>
+        <translation>Ветвь дерева содержит более %1 узлов. Невозможно отобразить его корректно.</translation>
+    </message>
+    <message>
         <location filename="../src/util/DatatypeSerializeUtils.cpp" line="321"/>
         <source>Tree node stack is empty</source>
         <translation>Стек узлов дерева пуст</translation>
