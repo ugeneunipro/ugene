@@ -109,10 +109,10 @@ public:
     return result;
 
 /**
-    FAIL_CONTINUE utility. Same as FAIL, but uses unconditional fail and continues execution.
+    FAIL_AND_CONTINUE utility. Same as FAIL, but uses unconditional fail and continues execution.
     Can be used in the loop statements which must be unreachable
 */
-#define FAIL_CONTINUE(message) \
+#define FAIL_AND_CONTINUE(message) \
     U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
     continue;
 

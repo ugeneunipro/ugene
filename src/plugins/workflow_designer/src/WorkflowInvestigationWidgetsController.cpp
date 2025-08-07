@@ -69,7 +69,7 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
 
     copyToClipboardAction = new QAction(tr(COPY_TO_CLIPBOARD_ACTION_NAME),
                                         this);
-    GUIUtils::setIcon(copyToClipboardAction, IconRef("core", "paste.png"));
+    GUIUtils::setThemedIcon<QAction>(copyToClipboardAction, IconRef("core", "paste.png"));
     connect(copyToClipboardAction, SIGNAL(triggered()), SLOT(sl_copyToClipboard()));
 
     hideThisColumnAction = new QAction(tr(HIDE_SELECTED_COLUMN_ACTION_NAME), this);

@@ -27,6 +27,7 @@
 #include <QList>
 #include <QMenu>
 #include <QTreeWidgetItem>
+#include <QToolButton>
 
 #include <U2Core/IconRef.h>
 #include <U2Core/global.h>
@@ -80,10 +81,23 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
-    // Sets icon for the object
+private:
+    static void setThemedIconProperty(QObject* object, const IconRef& iconRef);
+
+public:
+    // Sets themed icon for the object
     // object - the object to set icon for
     // iconRef - icon reference
-    static void setIcon(QObject* object, const IconRef& iconRef);
+    template<typename T>
+    static void setThemedIcon(T* object, const IconRef& iconRef) {
+        object->setIcon(GUIUtils::getIconResource(iconRef));
+        setThemedIconProperty(object, iconRef);
+    }
+
+    // Sets themed icon for the object
+    // object - the object to set icon for
+    // iconRef - icon reference
+    static void setThemedIcon(QLabel* label, const IconRef& iconRef);
 
     // Sets movie for the label
     // label - the label to set movie for

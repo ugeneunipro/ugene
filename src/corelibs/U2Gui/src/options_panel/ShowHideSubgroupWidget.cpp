@@ -113,7 +113,7 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
     } else {
         iconRef.iconName = "arrow_right.png";
     }
-    GUIUtils::setIcon(arrow, iconRef);
+    GUIUtils::setThemedIcon(arrow, iconRef);
 
     arrow->setMaximumSize(10, 10);
 
@@ -173,7 +173,7 @@ void ArrowHeaderWidget::setOpened(bool _isOpened) {
             iconRef.iconName = "arrow_down.png";
             isOpened = true;
         }
-        GUIUtils::setIcon(arrow, iconRef);
+        GUIUtils::setThemedIcon(arrow, iconRef);
         emit si_arrowHeaderPressed(isOpened);
     }
 }

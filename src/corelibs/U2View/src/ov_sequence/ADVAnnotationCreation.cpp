@@ -80,7 +80,7 @@ ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView* c)
     : QObject(c) {
     ctx = c;
     createAction = new QAction(tr("New annotation..."), this);
-    GUIUtils::setIcon(createAction, IconRef("core", "create_annotation_icon.png"));
+    GUIUtils::setThemedIcon<QAction>(createAction, IconRef("core", "create_annotation_icon.png"));
     createAction->setObjectName("create_annotation_action");
     createAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     createAction->setShortcutContext(Qt::WindowShortcut);

@@ -53,7 +53,7 @@ DNAExportPlugin::DNAExportPlugin()
     if (AppContext::getMainWindow()) {
         services.push_back(new DNAExportService());
         auto a = new QAction(QIcon(":/core/images/add_sequence.png"), tr("Random sequence generator..."), this);
-        GUIUtils::setIcon(a, IconRef("core", "add_sequence.png"));
+        GUIUtils::setThemedIcon<QAction>(a, IconRef("core", "add_sequence.png"));
         a->setObjectName(ToolsMenu::GENERATE_SEQUENCE);
         connect(a, SIGNAL(triggered()), SLOT(sl_generateSequence()));
         ToolsMenu::addAction(ToolsMenu::TOOLS, a);

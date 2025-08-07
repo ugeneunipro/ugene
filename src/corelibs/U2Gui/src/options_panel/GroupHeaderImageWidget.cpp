@@ -44,7 +44,7 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
 
 GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const IconRef& _iconRef)
     : groupId(_groupId), iconRef(_iconRef) {
-    GUIUtils::setIcon(this, iconRef);
+    GUIUtils::setThemedIcon(this, iconRef);
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 

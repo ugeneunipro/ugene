@@ -255,7 +255,7 @@ void MaEditorWgt::initActions() {
     addAction(copySelectionAction);
 
     copyFormattedSelectionAction = new QAction(tr("Copy (custom format)"), this);
-    GUIUtils::setIcon(copyFormattedSelectionAction, IconRef("core", "copy_sequence.png"));
+    GUIUtils::setThemedIcon<QAction>(copyFormattedSelectionAction, IconRef("core", "copy_sequence.png"));
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);

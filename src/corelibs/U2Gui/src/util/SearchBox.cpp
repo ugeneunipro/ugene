@@ -48,7 +48,7 @@ SearchBox::SearchBox(QWidget* p)
 
     clearButton = new QToolButton(this);
     clearButton->setStyleSheet(CLEAR_BUTTON_STYLE_SHEET);
-    GUIUtils::setIcon(clearButton, IconRef("core", "close_small"));
+    GUIUtils::setThemedIcon<QToolButton>(clearButton, IconRef("core", "close_small"));
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setVisible(false);
     clearButton->setObjectName("project filter clear button");

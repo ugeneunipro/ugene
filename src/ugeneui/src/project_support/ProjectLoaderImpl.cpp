@@ -111,7 +111,7 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     connect(newDocumentFromTextAction, SIGNAL(triggered()), SLOT(sl_newDocumentFromText()));
 
     pasteAction = new QAction(tr("Open from clipboard..."), this);
-    GUIUtils::setIcon(pasteAction, IconRef("core", "paste.png"));
+    GUIUtils::setThemedIcon<QAction>(pasteAction, IconRef("core", "paste.png"));
     pasteAction->setObjectName(ACTION_PROJECTSUPPORT__PASTE);
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
     connect(pasteAction, SIGNAL(triggered()), SLOT(sl_paste()));

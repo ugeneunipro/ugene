@@ -131,8 +131,8 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMa
     connect(upperButton, SIGNAL(clicked()), SLOT(sl_onMoveUp()));
     connect(bottomButton, SIGNAL(clicked()), SLOT(sl_onMoveDown()));
 
-    GUIUtils::setIcon(upperButton, IconRef("U2Designer", "up.png"));
-    GUIUtils::setIcon(bottomButton, IconRef("U2Designer", "down.png"));
+    GUIUtils::setThemedIcon<QPushButton>(upperButton, IconRef("U2Designer", "up.png"));
+    GUIUtils::setThemedIcon<QPushButton>(bottomButton, IconRef("U2Designer", "down.png"));
 
     for (int i = 0; i < urls.size(); ++i) {
         listDocuments->addItem(new QListWidgetItem(QString("%1. ").arg(i + 1) + urls.at(i).fileName(), listDocuments));

@@ -95,7 +95,7 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(ui->cutSelectionAction, SIGNAL(triggered()), SLOT(sl_cutSelection()));
 
     delColAction = new QAction(tr("Remove columns of gaps..."), this);
-    GUIUtils::setIcon(delColAction, IconRef("core", "msaed_remove_columns_with_gaps.png"));
+    GUIUtils::setThemedIcon<QAction>(delColAction, IconRef("core", "msaed_remove_columns_with_gaps.png"));
     delColAction->setObjectName("remove_columns_of_gaps");
     delColAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Delete));
     delColAction->setShortcutContext(Qt::WidgetShortcut);
@@ -107,7 +107,7 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubalignment()));
 
     removeAllGapsAction = new QAction(tr("Remove all gaps"), this);
-    GUIUtils::setIcon(removeAllGapsAction, IconRef("core", "msaed_remove_all_gaps.png"));
+    GUIUtils::setThemedIcon<QAction>(removeAllGapsAction, IconRef("core", "msaed_remove_all_gaps.png"));
     removeAllGapsAction->setObjectName("Remove all gaps");
     connect(removeAllGapsAction, SIGNAL(triggered()), SLOT(sl_removeAllGaps()));
 
@@ -120,13 +120,13 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(addSeqFromProjectAction, SIGNAL(triggered()), SLOT(sl_addSeqFromProject()));
 
     toggleSequenceRowOrderAction = new QAction(tr("Switch on/off collapsing"), this);
-    GUIUtils::setIcon(toggleSequenceRowOrderAction, IconRef("core", "collapse.png"));
+    GUIUtils::setThemedIcon<QAction>(toggleSequenceRowOrderAction, IconRef("core", "collapse.png"));
     toggleSequenceRowOrderAction->setObjectName("toggle_sequence_row_order_action");
     toggleSequenceRowOrderAction->setCheckable(true);
     connect(toggleSequenceRowOrderAction, SIGNAL(toggled(bool)), SLOT(sl_toggleSequenceRowOrder(bool)));
 
     refreshSequenceRowOrder = new QAction(tr("Update collapsed groups"), this);
-    GUIUtils::setIcon(refreshSequenceRowOrder, IconRef("core", "collapse_update.png"));
+    GUIUtils::setThemedIcon<QAction>(refreshSequenceRowOrder, IconRef("core", "collapse_update.png"));
     refreshSequenceRowOrder->setObjectName("refresh_sequence_row_order_action");
     refreshSequenceRowOrder->setEnabled(false);
     connect(refreshSequenceRowOrder, SIGNAL(triggered()), SLOT(sl_groupSequencesByContent()));

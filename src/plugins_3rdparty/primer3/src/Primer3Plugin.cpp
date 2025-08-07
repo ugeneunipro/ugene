@@ -63,7 +63,7 @@ Primer3Plugin::Primer3Plugin()
         viewCtx->init();
 
         auto noTargetSequencePrimer3 = new QAction(tr("Primer3 (no target sequence)..."), this);
-        GUIUtils::setIcon(noTargetSequencePrimer3, IconRef("primer3", "primer3.png"));
+        GUIUtils::setThemedIcon<QAction>(noTargetSequencePrimer3, IconRef("primer3", "primer3.png"));
         noTargetSequencePrimer3->setObjectName(ToolsMenu::PRIMER3);
         connect(noTargetSequencePrimer3, &QAction::triggered, viewCtx, &Primer3ADVContext::sl_showDialog);
         ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, noTargetSequencePrimer3);

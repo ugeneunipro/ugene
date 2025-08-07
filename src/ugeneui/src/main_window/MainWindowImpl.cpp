@@ -615,20 +615,20 @@ void MainWindowImpl::sl_colorThemeSwitched() {
                 continue;
             }
 
-            FAIL_CONTINUE(QString("Cannot set icon for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
+            FAIL_AND_CONTINUE(QString("Cannot set icon for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
         } else if (windowIconRefVariant.canConvert<IconRef>()) {
             auto windowIconRef = windowIconRefVariant.value<IconRef>();
             widget->setWindowIcon(GUIUtils::getIconResource(windowIconRef));
         } else if (movieRefVariant.canConvert<IconRef>()) {
             auto movieRef = movieRefVariant.value<IconRef>();
             if (auto target = qobject_cast<QLabel*>(widget)) {
-                auto tmpProgressMovie = target->movie();
-                auto progressMovie = new QMovie(GUIUtils::getResourceName(movieRef), QByteArray(), target);
-                target->setMovie(progressMovie);
-                delete tmpProgressMovie;
+                auto tmpMovie = target->movie();
+                auto movie = new QMovie(GUIUtils::getResourceName(movieRef), QByteArray(), target);
+                target->setMovie(movie);
+                delete tmpMovie;
                 continue;
             }
-            FAIL_CONTINUE(QString("Cannot set movie for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
+            FAIL_AND_CONTINUE(QString("Cannot set movie for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
         }
     }
 }

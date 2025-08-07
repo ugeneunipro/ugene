@@ -118,7 +118,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
 
     addActionToLocalToolbar(showQVAction);
     QToolButton* traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
-    GUIUtils::setIcon(traceButton, IconRef("chroma_view", "traces.png"));
+    GUIUtils::setThemedIcon<QToolButton>(traceButton, IconRef("chroma_view", "traces.png"));
     traceButton->setPopupMode(QToolButton::InstantPopup);
 }
 

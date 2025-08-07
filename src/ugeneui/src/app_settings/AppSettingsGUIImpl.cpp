@@ -44,7 +44,7 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
     QMenu* m = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_SETTINGS);
 
     auto settingsDialogAction = new QAction(tr("Preferences..."), this);
-    GUIUtils::setIcon(settingsDialogAction, IconRef("ugene", "preferences.png"));
+    GUIUtils::setThemedIcon<QAction>(settingsDialogAction, IconRef("ugene", "preferences.png"));
     connect(settingsDialogAction, SIGNAL(triggered()), SLOT(sl_showSettingsDialog()));
     settingsDialogAction->setObjectName("action__settings");
 #ifdef Q_OS_DARWIN

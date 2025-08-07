@@ -111,7 +111,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     createAnnotationAction = (new ADVAnnotationCreation(this))->getCreateAnnotationAction();
 
     posSelectorAction = new QAction(tr("Go to position..."), this);
-    GUIUtils::setIcon(posSelectorAction, IconRef("core", "goto.png"));
+    GUIUtils::setThemedIcon<QAction>(posSelectorAction, IconRef("core", "goto.png"));
     posSelectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     posSelectorAction->setShortcutContext(Qt::WindowShortcut);
     posSelectorAction->setObjectName(ADV_GOTO_ACTION);

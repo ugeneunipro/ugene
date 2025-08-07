@@ -98,12 +98,12 @@ WorkspaceService::WorkspaceService()
     tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
 
     loginAction = new QAction(tr("Login to Workspace"));
-    GUIUtils::setIcon(loginAction, IconRef("ugene", "login.svg"));
+    GUIUtils::setThemedIcon<QAction>(loginAction, IconRef("ugene", "login.svg"));
     loginAction->setObjectName("loginToWorkspaceAction");
     connect(loginAction, &QAction::triggered, this, &WorkspaceService::login);
 
     logoutAction = new QAction(tr("Logout from Workspace"));
-    GUIUtils::setIcon(logoutAction, IconRef("ugene", "logout.svg"));
+    GUIUtils::setThemedIcon<QAction>(logoutAction, IconRef("ugene", "logout.svg"));
     logoutAction->setObjectName("logoutFromWorkspaceAction");
     connect(logoutAction, &QAction::triggered, this, &WorkspaceService::logout);
 

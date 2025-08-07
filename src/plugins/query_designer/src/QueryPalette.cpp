@@ -195,9 +195,9 @@ QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setCheckable(true);
     if (!item->getIconRef().isEmpty()) {
-        GUIUtils::setIcon(a, item->getIconRef());
+        GUIUtils::setThemedIcon<QAction>(a, item->getIconRef());
     } else {
-        GUIUtils::setIcon(a, IconRef("query_designer", "green_circle.png"));
+        GUIUtils::setThemedIcon<QAction>(a, IconRef("query_designer", "green_circle.png"));
     }
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
@@ -208,7 +208,7 @@ QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
 QAction* QueryPalette::createItemAction(const QString& constraintId) {
     auto a = new QAction(constraintId, this);
     a->setCheckable(true);
-    GUIUtils::setIcon(a, IconRef("query_designer", "green_circle.png"));
+    GUIUtils::setThemedIcon<QAction>(a, IconRef("query_designer", "green_circle.png"));
     a->setData(QVariant::fromValue(constraintId));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));

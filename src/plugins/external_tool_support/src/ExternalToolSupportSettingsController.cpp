@@ -162,7 +162,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     clearToolPathButton = new QToolButton(widget);
     clearToolPathButton->setObjectName("ClearToolPathButton");
     clearToolPathButton->setVisible(true);
-    GUIUtils::setIcon(clearToolPathButton, IconRef("external_tool_support", "cancel.png"));
+    GUIUtils::setThemedIcon<QToolButton>(clearToolPathButton, IconRef("external_tool_support", "cancel.png"));
     clearToolPathButton->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
     clearToolPathButton->setEnabled(!path.isEmpty());
 

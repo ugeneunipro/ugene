@@ -159,7 +159,7 @@ void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStri
     }
     tb->setMenu(m);
     tb->setPopupMode(QToolButton::InstantPopup);
-    GUIUtils::setIcon(tb, IconRef("core", "predefined_annotation_groups.png"));
+    GUIUtils::setThemedIcon<QToolButton>(tb, IconRef("core", "predefined_annotation_groups.png"));
 }
 
 QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {

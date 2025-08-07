@@ -415,7 +415,7 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
         item->setIconRef(IconRef("workflow_designer", "green_circle.png"));
     }
     protoActionsName.insert(item, a);
-    GUIUtils::setIcon(a, item->getIconRef());
+    GUIUtils::setThemedIcon<QAction>(a, item->getIconRef());
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));

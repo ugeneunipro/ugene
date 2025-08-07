@@ -118,8 +118,8 @@ void MsaGeneralTab::reInitializeParameters() {
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 
     IconRef iconRef("core", "goto.png");
-    GUIUtils::setIcon(convertNucleicAlphabetButton, iconRef);
-    GUIUtils::setIcon(convertAminoAlphabetButton, iconRef);
+    GUIUtils::setThemedIcon<QToolButton>(convertNucleicAlphabetButton, iconRef);
+    GUIUtils::setThemedIcon<QToolButton>(convertAminoAlphabetButton, iconRef);
 }
 
 void MsaGeneralTab::initializeParameters() {

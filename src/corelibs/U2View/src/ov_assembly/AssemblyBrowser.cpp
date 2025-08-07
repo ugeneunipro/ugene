@@ -636,11 +636,11 @@ void AssemblyBrowser::initFont() {
 
 void AssemblyBrowser::setupActions() {
     zoomInAction = new QAction(tr("Zoom in"), this);
-    GUIUtils::setIcon(zoomInAction, IconRef("core", "zoom_in.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomInAction, IconRef("core", "zoom_in.png"));
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
     zoomOutAction = new QAction(tr("Zoom out"), this);
-    GUIUtils::setIcon(zoomInAction, IconRef("core", "zoom_out.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomInAction, IconRef("core", "zoom_out.png"));
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
     auto linearScaleAction = new QAction(tr("Linear"), this);
@@ -652,12 +652,12 @@ void AssemblyBrowser::setupActions() {
     overviewScaleTypeActions << linearScaleAction << logScaleAction;
 
     showCoordsOnRulerAction = new QAction(tr("Show coordinates on ruler"), this);
-    GUIUtils::setIcon(showCoordsOnRulerAction, IconRef("core", "notch.png"));
+    GUIUtils::setThemedIcon<QAction>(showCoordsOnRulerAction, IconRef("core", "notch.png"));
     showCoordsOnRulerAction->setCheckable(true);
     connect(showCoordsOnRulerAction, SIGNAL(toggled(bool)), SLOT(sl_onShowCoordsOnRulerChanged(bool)));
 
     showCoverageOnRulerAction = new QAction(QIcon(":core/images/ruler_coverage.png"), tr("Show coverage under ruler cursor"), this);
-    GUIUtils::setIcon(showCoverageOnRulerAction, IconRef("core", "ruler_coverage.png"));
+    GUIUtils::setThemedIcon<QAction>(showCoverageOnRulerAction, IconRef("core", "ruler_coverage.png"));
     showCoverageOnRulerAction->setCheckable(true);
     connect(showCoverageOnRulerAction, SIGNAL(toggled(bool)), SLOT(sl_onShowCoverageOnRulerChanged(bool)));
 
@@ -667,20 +667,20 @@ void AssemblyBrowser::setupActions() {
     connect(readHintEnabledAction, SIGNAL(toggled(bool)), SLOT(sl_onReadHintEnabledChanged(bool)));
 
     saveScreenShotAction = new QAction(tr("Export as image"), this);
-    GUIUtils::setIcon(saveScreenShotAction, IconRef("core", "cam2.png"));
+    GUIUtils::setThemedIcon<QAction>(saveScreenShotAction, IconRef("core", "cam2.png"));
     connect(saveScreenShotAction, SIGNAL(triggered()), SLOT(sl_saveScreenshot()));
 
     exportToSamAction = new QAction(tr("Export assembly to SAM format"), this);
-    GUIUtils::setIcon(exportToSamAction, IconRef("core", "sam.png"));
+    GUIUtils::setThemedIcon<QAction>(exportToSamAction, IconRef("core", "sam.png"));
     connect(exportToSamAction, SIGNAL(triggered()), SLOT(sl_exportToSam()));
 
     setReferenceAction = new QAction(tr("Set reference"), this);
-    GUIUtils::setIcon(setReferenceAction, IconRef("core", "set_reference.png"));
+    GUIUtils::setThemedIcon<QAction>(setReferenceAction, IconRef("core", "set_reference.png"));
     setReferenceAction->setObjectName("setReferenceAction");
     connect(setReferenceAction, SIGNAL(triggered()), SLOT(sl_setReference()));
 
     extractAssemblyRegionAction = new QAction(tr("Export assembly region"), this);
-    GUIUtils::setIcon(extractAssemblyRegionAction, IconRef("core", "extract_assembly_region.png"));
+    GUIUtils::setThemedIcon<QAction>(extractAssemblyRegionAction, IconRef("core", "extract_assembly_region.png"));
     extractAssemblyRegionAction->setObjectName("ExtractAssemblyRegion");
     connect(extractAssemblyRegionAction, SIGNAL(triggered()), SLOT(sl_extractAssemblyRegion()));
 }

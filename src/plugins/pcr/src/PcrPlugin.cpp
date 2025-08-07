@@ -59,7 +59,7 @@ PcrPlugin::PcrPlugin()
 
         if (library != nullptr) {
             auto libraryAction = new QAction(tr("Primer library"), this);
-            GUIUtils::setIcon(libraryAction, IconRef("core", "database_with_arrow.png"));
+            GUIUtils::setThemedIcon<QAction>(libraryAction, IconRef("core", "database_with_arrow.png"));
             libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
             connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));
             ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, libraryAction);

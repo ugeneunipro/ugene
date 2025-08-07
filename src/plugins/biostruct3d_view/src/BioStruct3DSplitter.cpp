@@ -399,16 +399,16 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
 
     zoomInAction = new QAction(this);
     zoomInAction->setText(tr("Zoom In"));
-    GUIUtils::setIcon(zoomInAction, IconRef("core", "zoom_in.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomInAction, IconRef("core", "zoom_in.png"));
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
     zoomOutAction = new QAction(this);
-    GUIUtils::setIcon(zoomOutAction, IconRef("core", "zoom_out.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomOutAction, IconRef("core", "zoom_out.png"));
     zoomOutAction->setText(tr("Zoom Out"));
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
     syncLockAction = new QAction(this);
-    GUIUtils::setIcon(syncLockAction, IconRef("core", "sync_lock.png"));
+    GUIUtils::setThemedIcon<QAction>(syncLockAction, IconRef("core", "sync_lock.png"));
     syncLockAction->setText(tr("Synchronize 3D Structure Views"));
     syncLockAction->setCheckable(true);
     connect(syncLockAction, SIGNAL(triggered(bool)), SLOT(sl_toggleSyncLock(bool)));

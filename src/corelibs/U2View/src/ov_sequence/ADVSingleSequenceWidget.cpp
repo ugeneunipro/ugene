@@ -84,19 +84,19 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
     togglePanViewAction = new QAction(this);
     togglePanViewAction->setCheckable(true);
     togglePanViewAction->setObjectName("show_hide_zoom_view");
-    GUIUtils::setIcon(togglePanViewAction, IconRef("core", "zoom_view.png"));
+    GUIUtils::setThemedIcon<QAction>(togglePanViewAction, IconRef("core", "zoom_view.png"));
     connect(togglePanViewAction, SIGNAL(triggered(bool)), SLOT(sl_togglePanView(bool)));
 
     toggleDetViewAction = new QAction(this);
     toggleDetViewAction->setCheckable(true);
     toggleDetViewAction->setObjectName("show_hide_details_view");
-    GUIUtils::setIcon(toggleDetViewAction, IconRef("core", "details_view.png"));
+    GUIUtils::setThemedIcon<QAction>(toggleDetViewAction, IconRef("core", "details_view.png"));
     connect(toggleDetViewAction, SIGNAL(triggered(bool)), SLOT(sl_toggleDetView(bool)));
 
     toggleOverviewAction = new QAction(this);
     toggleOverviewAction->setCheckable(true);
     toggleOverviewAction->setObjectName("show_hide_overview");
-    GUIUtils::setIcon(toggleOverviewAction, IconRef("core", "overview.png"));
+    GUIUtils::setThemedIcon<QAction>(toggleOverviewAction, IconRef("core", "overview.png"));
     connect(toggleOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_toggleOverview(bool)));
 
     connect(seqCtx->getAnnotatedDNAView()->getAnnotationsSelection(),
@@ -104,14 +104,14 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
             SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)));
 
     selectRangeAction1 = new QAction(tr("Select sequence region..."), this);
-    GUIUtils::setIcon(selectRangeAction1, IconRef("core", "select_region.png"));
+    GUIUtils::setThemedIcon<QAction>(selectRangeAction1, IconRef("core", "select_region.png"));
     selectRangeAction1->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
     selectRangeAction1->setObjectName("select_range_action");
     selectRangeAction1->setShortcutContext(Qt::WidgetShortcut);
     connect(selectRangeAction1, SIGNAL(triggered()), SLOT(sl_onSelectRange()));
 
     selectRangeAction2 = new QAction(tr("Sequence region..."), this);
-    GUIUtils::setIcon(selectRangeAction2, IconRef("core", "select_region.png"));
+    GUIUtils::setThemedIcon<QAction>(selectRangeAction2, IconRef("core", "select_region.png"));
     selectRangeAction2->setObjectName("Sequence region");
     connect(selectRangeAction2, SIGNAL(triggered()), SLOT(sl_onSelectRange()));
 
@@ -207,7 +207,7 @@ void ADVSingleSequenceWidget::init() {
     buttonTabOrederedNames->append(selectRangeAction1->objectName());
 
     auto exportImageAction = new QAction(tr("Export image"), this);
-    GUIUtils::setIcon(exportImageAction, IconRef("core", "cam2.png"));
+    GUIUtils::setThemedIcon<QAction>(exportImageAction, IconRef("core", "cam2.png"));
     exportImageAction->setObjectName("export_image");
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
 
@@ -225,7 +225,7 @@ void ADVSingleSequenceWidget::init() {
 
     closeViewAction = new QAction(tr("Remove sequence"), this);
     closeViewAction->setObjectName("remove_sequence");
-    GUIUtils::setIcon(closeViewAction, IconRef("core", "close_small.png"));
+    GUIUtils::setThemedIcon<QAction>(closeViewAction, IconRef("core", "close_small.png"));
     addButtonWithActionToToolbar(closeViewAction, hViewsBar);
     connect(closeViewAction, SIGNAL(triggered()), SLOT(sl_closeView()));
 
@@ -301,7 +301,7 @@ void ADVSingleSequenceWidget::setViewCollapsed(bool collapsed) {
 
 void ADVSingleSequenceWidget::updateViewButtonState() {
     toggleViewAction->setText(isViewCollapsed() ? tr("Show all views") : tr("Hide all views"));
-    GUIUtils::setIcon(toggleViewAction, IconRef("core", isViewCollapsed() ? "show_all_views.png" : "hide_all_views.png"));\
+    GUIUtils::setThemedIcon<QAction>(toggleViewAction, IconRef("core", isViewCollapsed() ? "show_all_views.png" : "hide_all_views.png"));
 }
 
 void ADVSingleSequenceWidget::setPanViewCollapsed(bool collapsed) {

@@ -119,7 +119,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->setSpacing(0);
 
     prevAnnotationButton = new QPushButton("");
-    GUIUtils::setIcon(prevAnnotationButton, IconRef("core", "backward.png"));
+    GUIUtils::setThemedIcon<QPushButton>(prevAnnotationButton, IconRef("core", "backward.png"));
     prevAnnotationButton->setFixedSize(32, 32);
     prevAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Previous annotation"));
     prevAnnotationButton->setDisabled(true);
@@ -128,7 +128,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     nextAnnotationButton = new QPushButton("");
-    GUIUtils::setIcon(prevAnnotationButton, IconRef("core", "forward.png"));
+    GUIUtils::setThemedIcon<QPushButton>(prevAnnotationButton, IconRef("core", "forward.png"));
     nextAnnotationButton->setFixedSize(32, 32);
     nextAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Next annotation"));
     nextAnnotationButton->setObjectName("nextAnnotationButton");

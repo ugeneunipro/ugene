@@ -120,7 +120,7 @@ Task* TreeViewer::updateViewTask(const QString& stateName, const QVariantMap& st
 void TreeViewer::createActions() {
     // Tree Settings
     treeSettingsAction = new QAction(tr("Tree Settings..."), ui);
-    GUIUtils::setIcon(treeSettingsAction, IconRef("core", "phylip.png"));
+    GUIUtils::setThemedIcon<QAction>(treeSettingsAction, IconRef("core", "phylip.png"));
 
     // Layout
     layoutActionGroup = new QActionGroup(ui);
@@ -142,10 +142,10 @@ void TreeViewer::createActions() {
     collapseAction = new QAction(QIcon(":/core/images/collapse_tree.png"), tr("Collapse"), ui);
     collapseAction->setObjectName("Collapse");
     rerootAction = new QAction(tr("Reroot tree"), ui);
-    GUIUtils::setIcon(rerootAction, IconRef("core", "reroot.png"));
+    GUIUtils::setThemedIcon<QAction>(rerootAction, IconRef("core", "reroot.png"));
     rerootAction->setObjectName("Reroot tree");
     swapAction = new QAction(tr("Swap Siblings"), ui);
-    GUIUtils::setIcon(swapAction, IconRef("core", "swap.png"));
+    GUIUtils::setThemedIcon<QAction>(swapAction, IconRef("core", "swap.png"));
     swapAction->setObjectName("Swap Siblings");
 
     // Show Labels
@@ -165,35 +165,35 @@ void TreeViewer::createActions() {
 
     // Formatting
     textSettingsAction = new QAction(tr("Formatting..."), ui);
-    GUIUtils::setIcon(textSettingsAction, IconRef("core", "font.png"));
+    GUIUtils::setThemedIcon<QAction>(textSettingsAction, IconRef("core", "font.png"));
 
     // Align Labels
     // Note: the icon is truncated to 15 px height to look properly in the main menu when it is checked
     alignTreeLabelsAction = new QAction(tr("Align Labels"), ui);
-    GUIUtils::setIcon(alignTreeLabelsAction, IconRef("core", "align_tree_labels.png"));
+    GUIUtils::setThemedIcon<QAction>(alignTreeLabelsAction, IconRef("core", "align_tree_labels.png"));
     alignTreeLabelsAction->setCheckable(true);
     alignTreeLabelsAction->setObjectName("Align Labels");
 
     // Zooming
     zoomInAction = new QAction(tr("Zoom In"), ui);
-    GUIUtils::setIcon(zoomInAction, IconRef("core", "zoom_in_tree.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomInAction, IconRef("core", "zoom_in_tree.png"));
     zoomInAction->setObjectName("zoomInTreeViewerAction");
     zoomOutAction = new QAction(tr("Zoom Out"), ui);
-    GUIUtils::setIcon(zoomOutAction, IconRef("core", "zoom_out_tree.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomOutAction, IconRef("core", "zoom_out_tree.png"));
     zoomOutAction->setObjectName("zoomOutTreeViewerAction");
 
     zoom100Action = new QAction(tr("Reset Zoom"), ui);
-    GUIUtils::setIcon(zoom100Action, IconRef("core", "sync_scales.png"));
+    GUIUtils::setThemedIcon<QAction>(zoom100Action, IconRef("core", "sync_scales.png"));
     zoom100Action->setObjectName("zoom100Action");
 
     zoomFitAction = new QAction(tr("Fit Zoom to Window"), ui);
-    GUIUtils::setIcon(zoomFitAction, IconRef("core", "zoom_fit.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomFitAction, IconRef("core", "zoom_fit.png"));
     zoomFitAction->setObjectName("zoomFitAction");
     zoomFitAction->setCheckable(true);
 
     // Print Tree
     printAction = new QAction(tr("Print Tree..."), ui);
-    GUIUtils::setIcon(printAction, IconRef("core", "printer.png"));
+    GUIUtils::setThemedIcon<QAction>(printAction, IconRef("core", "printer.png"));
 
     copyWholeTreeImageToClipboardAction = new QAction(tr("Copy to clipboard"));
     copyWholeTreeImageToClipboardAction->setObjectName("copyWholeTreeImageToClipboardAction");
@@ -228,7 +228,7 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     setupLayoutSettingsMenu(layoutMenu);
     layoutButton->setDefaultAction(layoutMenu->menuAction());
     layoutButton->setPopupMode(QToolButton::InstantPopup);
-    GUIUtils::setIcon(layoutButton, IconRef("core", "tree_layout.png"));
+    GUIUtils::setThemedIcon<QToolButton>(layoutButton, IconRef("core", "tree_layout.png"));
     layoutButton->setObjectName("Layout");
     tb->addWidget(layoutButton);
 
@@ -240,7 +240,7 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     setupShowLabelsMenu(showLabelsMenu);
     showLabelsButton->setDefaultAction(showLabelsMenu->menuAction());
     showLabelsButton->setPopupMode(QToolButton::InstantPopup);
-    GUIUtils::setIcon(showLabelsButton, IconRef("core", "text_ab.png"));
+    GUIUtils::setThemedIcon<QToolButton>(showLabelsButton, IconRef("core", "text_ab.png"));
     tb->addWidget(showLabelsButton);
 
     tb->addAction(textSettingsAction);
@@ -255,7 +255,7 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     exportTreeImageButtonMenu->menuAction()->setObjectName("treeImageActionsButtonMenuAction");
     treeImageActionsButton->setDefaultAction(exportTreeImageButtonMenu->menuAction());
     treeImageActionsButton->setPopupMode(QToolButton::InstantPopup);
-    GUIUtils::setIcon(treeImageActionsButton, IconRef("core", "cam2.png"));
+    GUIUtils::setThemedIcon<QToolButton>(treeImageActionsButton, IconRef("core", "cam2.png"));
 
     tb->addWidget(treeImageActionsButton);
     tb->addAction(printAction);
@@ -1515,10 +1515,10 @@ void TreeViewerUI::updateActions() {
 
     if (isSelectedCollapsed()) {
         treeViewer->collapseAction->setText(QObject::tr("Expand"));
-        GUIUtils::setIcon(treeViewer->collapseAction, IconRef("core", "expand_tree.png"));
+        GUIUtils::setThemedIcon<QAction>(treeViewer->collapseAction, IconRef("core", "expand_tree.png"));
     } else {
         treeViewer->collapseAction->setText(QObject::tr("Collapse"));
-        GUIUtils::setIcon(treeViewer->collapseAction, IconRef("core", "expand_tree.png"));
+        GUIUtils::setThemedIcon<QAction>(treeViewer->collapseAction, IconRef("core", "expand_tree.png"));
     }
 
     QList<QGraphicsItem*> updatingItems = scene()->selectedItems();

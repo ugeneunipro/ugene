@@ -276,7 +276,7 @@ void WorkflowDesignerService::sl_startWorkflowPlugin() {
 
 void WorkflowDesignerService::initDesignerAction() {
     designerAction = new QAction(tr("Workflow Designer..."), this);
-    GUIUtils::setIcon(designerAction, IconRef("workflow_designer", "wd.png"));
+    GUIUtils::setThemedIcon<QAction>(designerAction, IconRef("workflow_designer", "wd.png"));
     designerAction->setObjectName(ToolsMenu::WORKFLOW_DESIGNER);
 #ifdef _DEBUG
     designerAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
@@ -287,7 +287,7 @@ void WorkflowDesignerService::initDesignerAction() {
 
 void WorkflowDesignerService::initNewWorkflowAction() {
     newWorkflowAction = new QAction(tr("New workflow..."), this);
-    GUIUtils::setIcon(newWorkflowAction, IconRef("workflow_designer", "wd.png"));
+    GUIUtils::setThemedIcon<QAction>(newWorkflowAction, IconRef("workflow_designer", "wd.png"));
     newWorkflowAction->setObjectName("New workflow");
     connect(newWorkflowAction, SIGNAL(triggered()), SLOT(sl_showDesignerWindow()));
 

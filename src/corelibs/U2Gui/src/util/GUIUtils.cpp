@@ -232,18 +232,12 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
 }
 
-void GUIUtils::setIcon(QObject* object, const IconRef& iconRef) {
-    if (auto action = qobject_cast<QAction*>(object)) {
-        action->setIcon(GUIUtils::getIconResource(iconRef));
-    } else if (auto button = qobject_cast<QAbstractButton*>(object)) {
-        button->setIcon(GUIUtils::getIconResource(iconRef));
-    } else if (auto menu = qobject_cast<QMenu*>(object)) {
-        menu->setIcon(GUIUtils::getIconResource(iconRef));
-    } else if (auto label = qobject_cast<QLabel*>(object)) {
-        label->setPixmap(GUIUtils::getIconResource(iconRef).pixmap(MainWindow::PIXMAP_SIZE, MainWindow::PIXMAP_SIZE));
-    } else {
-        FAIL(QString("Cannot set icon for object %1 of type %2").arg(object->objectName(), object->metaObject()->className()), );
-    }
+void GUIUtils::setThemedIcon(QLabel* label, const IconRef& iconRef) {
+    label->setPixmap(GUIUtils::getIconResource(iconRef).pixmap(MainWindow::PIXMAP_SIZE, MainWindow::PIXMAP_SIZE));
+    setThemedIconProperty(label, iconRef);
+}
+
+void GUIUtils::setThemedIconProperty(QObject* object, const IconRef& iconRef) {
     object->setProperty(MainWindow::ICON_REF_PROPERTY_NAME, QVariant::fromValue(iconRef));
 }
 
