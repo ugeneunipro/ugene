@@ -27,6 +27,7 @@
 #include <QTextEdit>
 #include <QTreeWidget>
 
+#include <U2Core/IconRef.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ProjectModel.h>
 
@@ -58,10 +59,10 @@ public:
 
     int countAvailableReports() const;
 
-    QIcon waitingIcon;
-    QIcon activeIcon;
-    QIcon finishedIcon;
-    QIcon wasErrorIcon;
+    IconRef waitingIp;
+    IconRef activeIp;
+    IconRef finishedIp;
+    IconRef wasErrorIp;
 
 signals:
     void si_reportsCountChanged();
@@ -82,6 +83,7 @@ private slots:
     void sl_activateReportByButton();
     void sl_itemDoubleClicked(QTreeWidgetItem* item, int column);
     void sl_itemExpanded(QTreeWidgetItem* i);
+    void si_colorThemeSwitched();
 
 private:
     void activateReport(TVTreeItem* i);
@@ -94,6 +96,8 @@ private:
 
     TVTreeItem* findItem(Task* t, bool topLevelOnly) const;
     TVTreeItem* findChildItem(TVTreeItem* i, Task* t) const;
+
+    void recurciveColorThemeUpdate(TVTreeItem* item);
 
     // actual widget
     QTreeWidget* tree;
@@ -157,4 +161,3 @@ public:
 };
 
 }  // namespace U2
-

@@ -27,7 +27,9 @@
 #include <QList>
 #include <QMenu>
 #include <QTreeWidgetItem>
+#include <QToolButton>
 
+#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -79,6 +81,44 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
+private:
+    static void setThemedIconProperty(QObject* object, const IconRef& iconRef);
+
+public:
+    // Sets themed icon for the object
+    // object - the object to set icon for
+    // iconRef - icon reference
+    template<typename T>
+    static void setThemedIcon(T* object, const IconRef& iconRef) {
+        object->setIcon(GUIUtils::getIconResource(iconRef));
+        setThemedIconProperty(object, iconRef);
+    }
+
+    // Sets themed icon for the object
+    // object - the object to set icon for
+    // iconRef - icon reference
+    static void setThemedIcon(QLabel* label, const IconRef& iconRef);
+
+    // Sets movie for the label
+    // label - the label to set movie for
+    // iconRef - icon reference
+    static void setMovie(QLabel* label, const IconRef& iconRef);
+
+    // Sets icon for the window
+    // widget - the widget to set icon for
+    // iconRef - icon reference
+    static void setWindowIcon(QWidget* widget, const IconRef& iconRef);
+
+    // Returns resource as icon
+    // iconRef - icon reference
+    // returns - the corresponding icon
+    static QIcon getIconResource(const IconRef& iconRef);
+
+    // Returns path to the corresponding resource
+    // iconRef - icon reference
+    // returns - path to the resource
+    static QString getResourceName(const IconRef& iconRef);
+
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 
     /** Returns map of fieldName -> fieldValue. If the map is empty the dialog was rejected. */
@@ -94,6 +134,7 @@ public:
      */
     static constexpr int MAX_SAFE_PIXMAP_WIDTH = 10 * 1000;
     static constexpr int MAX_SAFE_PIXMAP_HEIGHT = 10 * 1000;
+
 };
 
 /** Resets QSlider value on double clicks. Uses the slider as a parent and is auto-deleted with a slider. */

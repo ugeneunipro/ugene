@@ -36,18 +36,6 @@ void CustomExternalTool::setName(const QString& _name) {
     name = _name;
 }
 
-void CustomExternalTool::setIcon(const QIcon& _icon) {
-    icon = _icon;
-}
-
-void CustomExternalTool::setGrayIcon(const QIcon& _icon) {
-    grayIcon = _icon;
-}
-
-void CustomExternalTool::setWarnIcon(const QIcon& _icon) {
-    warnIcon = _icon;
-}
-
 void CustomExternalTool::setDescription(const QString& _description) {
     description = _description;
 }

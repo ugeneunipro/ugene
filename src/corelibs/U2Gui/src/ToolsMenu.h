@@ -23,6 +23,7 @@
 
 #include <QStringList>
 
+#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 class QAction;
@@ -116,7 +117,7 @@ private:
 
 private:
     static QMap<QString, QString> actionText;
-    static QMap<QString, QString> actionIcon;
+    static QMap<QString, IconRef> actionIcon;
     static QMap<QString, QStringList> subMenuAction;  // subMenuObjectName -> List(actionObjectName)
 };
 

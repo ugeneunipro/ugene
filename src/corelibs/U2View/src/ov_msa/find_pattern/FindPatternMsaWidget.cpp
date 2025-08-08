@@ -150,13 +150,12 @@ FindPatternMsaWidget::FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSear
         isSearchInNamesMode = isSearchInNamesModeTriState == TriState_Yes;
     }
 
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
+    GUIUtils::setMovie(progressLabel, IconRef("core", "progress.gif"));
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
     savableWidget.setRegionWidgetIds(QStringList() << editStart->objectName()
                                                    << editEnd->objectName());
-    progressLabel->setMovie(progressMovie);
 
     setContentsMargins(0, 0, 0, 0);
 
@@ -190,7 +189,7 @@ void FindPatternMsaWidget::setSearchInNamesMode(bool flag) {
 }
 
 void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
-    progressMovie->stop();
+    progressLabel->movie()->stop();
     progressLabel->hide();
     resultLabel->show();
     updateCurrentResultLabel();
@@ -961,7 +960,7 @@ void FindPatternMsaWidget::setUpTabOrder() const {
 void FindPatternMsaWidget::startProgressAnimation() {
     resultLabel->setText(tr("Results:"));
     progressLabel->show();
-    progressMovie->start();
+    progressLabel->movie()->start();
 }
 
 struct SearchResultsComparator {

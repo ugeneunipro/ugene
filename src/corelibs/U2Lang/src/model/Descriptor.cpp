@@ -70,24 +70,16 @@ void Descriptor::setDisplayName(const QString& n) {
 /**************************
  * VisualDescriptor
  **************************/
-VisualDescriptor::VisualDescriptor(const Descriptor& d, const QString& _iconPath)
-    : Descriptor(d), iconPath(_iconPath) {
+VisualDescriptor::VisualDescriptor(const Descriptor& d, IconRef _ref)
+    : Descriptor(d), ref(_ref) {
 }
 
-void VisualDescriptor::setIconPath(const QString& ip) {
-    iconPath = ip;
+void VisualDescriptor::setIconRef(const IconRef& _ref) {
+    ref = _ref;
 }
 
-QIcon VisualDescriptor::getIcon() {
-    if (icon.isNull() && !iconPath.isEmpty()) {
-        icon = QIcon(iconPath);
-    }
-    return icon;
-}
-
-void VisualDescriptor::setIcon(QIcon i) {
-    assert(iconPath.isEmpty());
-    icon = i;
+const IconRef& VisualDescriptor::getIconRef() const {
+    return ref;
 }
 
 }  // namespace U2

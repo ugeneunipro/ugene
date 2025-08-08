@@ -36,11 +36,6 @@ static QString getBowtieToolNameById(const QString& id) {
 
 BowtieSupport::BowtieSupport(const QString& id)
     : ExternalTool(id, "bowtie1", getBowtieToolNameById(id)) {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
     if (id == ET_BOWTIE_ID) {
 #ifdef Q_OS_WIN
         executableFileName = "bowtie-align-s.exe";

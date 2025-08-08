@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QMovie>
 #include <QPainter>
 #include <QPainterPath>
 #include <QProcess>
@@ -229,6 +230,45 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
+}
+
+void GUIUtils::setThemedIcon(QLabel* label, const IconRef& iconRef) {
+    label->setPixmap(GUIUtils::getIconResource(iconRef).pixmap(MainWindow::PIXMAP_SIZE, MainWindow::PIXMAP_SIZE));
+    setThemedIconProperty(label, iconRef);
+}
+
+void GUIUtils::setThemedIconProperty(QObject* object, const IconRef& iconRef) {
+    object->setProperty(MainWindow::ICON_REF_PROPERTY_NAME, QVariant::fromValue(iconRef));
+}
+
+void GUIUtils::setMovie(QLabel* label, const IconRef& iconRef) {
+    auto movie = new QMovie(GUIUtils::getResourceName(iconRef), QByteArray(), label);
+    label->setMovie(movie);
+    movie->setProperty(MainWindow::MOVIE_REF_PROPERTY_NAME, iconRef.toVariant());
+}
+
+void GUIUtils::setWindowIcon(QWidget* widget, const IconRef& iconRef) {
+    widget->setWindowIcon(GUIUtils::getIconResource(iconRef));
+    widget->setProperty(MainWindow::WINDOWS_ICON_REF_PROPERTY_NAME, iconRef.toVariant());
+}
+
+QString GUIUtils::getResourceName(const IconRef& iconRef) {
+    QString inner;
+    if (!iconRef.innerDirName.isEmpty()) {
+        inner = iconRef.innerDirName + "/";
+    }
+    QString resourceName = QString(":%1/images/%2%3").arg(iconRef.iconModule).arg(inner).arg(iconRef.iconName);
+    return resourceName;
+}
+
+QIcon GUIUtils::getIconResource(const IconRef& iconRef) {
+    CHECK((!iconRef.iconModule.isEmpty() && !iconRef.iconName.isEmpty()), QIcon());
+
+    QString resourceName = GUIUtils::getResourceName(iconRef);
+    QPixmap pixmap = QPixmap(resourceName);
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(iconRef.iconModule).arg(iconRef.iconName), QIcon());
+
+    return QIcon(pixmap);
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {
