@@ -622,10 +622,10 @@ void MainWindowImpl::sl_colorThemeSwitched() {
         } else if (movieRefVariant.canConvert<IconRef>()) {
             auto movieRef = movieRefVariant.value<IconRef>();
             if (auto target = qobject_cast<QLabel*>(widget)) {
-                auto tmpMovie = target->movie();
+                auto oldMovie = target->movie();
                 auto movie = new QMovie(GUIUtils::getResourceName(movieRef), QByteArray(), target);
                 target->setMovie(movie);
-                delete tmpMovie;
+                delete oldMovie;
                 continue;
             }
             FAIL_AND_CONTINUE(QString("Cannot set movie for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
