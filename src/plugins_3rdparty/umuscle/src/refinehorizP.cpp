@@ -138,14 +138,14 @@ void RefineTask::RefineHeightPartsP(bool* ptrbAnyChanges) {
     *(workpool->ptrbOscillating) = false;
     workpool->bAnyAccepted = false;
     // run workers
-#if TRACE
-    algoLog.trace(QString("Refine: Start workers. Wait..."));
-#endif
+//#if TRACE
+    algoLog.trace(QString("Refine: Start workers. Wait... %1").arg(workpool->nThreads));
+//#endif
     workpool->mainSem.release(workpool->nThreads);
     workpool->childSem.acquire(workpool->nThreads);
-#if TRACE
+//#if TRACE
     algoLog.trace(QString("Refine: Iteration done. Workers waits."));
-#endif
+//#endif
     *ptrbAnyChanges = workpool->bAnyAccepted;
 #ifdef DEBUG
     // Validate node statuses
