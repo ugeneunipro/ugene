@@ -456,8 +456,7 @@ void LoadDataFromEntrezTask::run() {
     ioLog.trace("Download finished.");
 
     QByteArray result = downloadReply->readAll();
-    if ((result.size() < 100) && ((result.contains("Nothing has been found")) || result.contains("ID list is empty! In it there are neither IDs nor accessions")
-        || result.contains("Error: F a i l e d  t o  u n d e r s t a n d  i d"))) {
+    if (result.startsWith("Error")) {
         setError(tr("Sequence with ID=%1 is not found.").arg(accNumber));
         return;
     }
