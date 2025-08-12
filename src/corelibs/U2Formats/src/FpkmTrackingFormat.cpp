@@ -573,9 +573,9 @@ void FpkmTrackingFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus&
                             }
 
                             columnValue += ":";
-                            columnValue += region.startPos;
+                            columnValue += QString::number(region.startPos + 1);
                             columnValue += "-";
-                            columnValue += region.endPos();
+                            columnValue += QString::number(region.endPos());
                         }
                         // Otherwise verify the qualifier
                         else {
