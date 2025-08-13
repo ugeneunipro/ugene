@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru" sourcelanguage="en">
 <context>
+    <name>AppContextImpl</name>
+    <message>
+        <location filename="../src/UgeneContextWrapper.cpp" line="101"/>
+        <source>Added path: %1</source>
+        <translation type="unfinished">Добавленный путь: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/UgeneContextWrapper.cpp" line="151"/>
+        <source>UGENE script environment initialization started</source>
+        <translation type="unfinished">UGENE script environment initialization started</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../src/CommonDbi.cpp" line="84"/>
@@ -32,14 +45,12 @@
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/UgeneContextWrapper.cpp" line="101"/>
         <source>Added path: %1</source>
-        <translation>Добавленный путь: %1</translation>
+        <translation type="vanished">Добавленный путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/UgeneContextWrapper.cpp" line="151"/>
         <source>UGENE script environment initialization started</source>
-        <translation>UGENE script environment initialization started</translation>
+        <translation type="vanished">UGENE script environment initialization started</translation>
     </message>
 </context>
 </TS>

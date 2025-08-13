@@ -120,9 +120,9 @@ void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
     commonSchemesFactories.removeAll(emptySchemeFactory);
     commonSchemesFactories.prepend(emptySchemeFactory);
 
-    createAndFillGroup(commonSchemesFactories, tr("All alphabets"));
-    createAndFillGroup(aminoSchemesFactories, tr("Amino acid alphabet"));
-    createAndFillGroup(nucleotideSchemesFactories, tr("Nucleotide alphabet"));
+    createAndFillGroup(commonSchemesFactories, MsaEditor::tr("All alphabets"));
+    createAndFillGroup(aminoSchemesFactories, MsaEditor::tr("Amino acid alphabet"));
+    createAndFillGroup(nucleotideSchemesFactories, MsaEditor::tr("Nucleotide alphabet"));
 }
 
 template<class Factory, class Registry>

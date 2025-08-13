@@ -160,7 +160,7 @@ void GSequenceLineView::mousePressEvent(QMouseEvent* me) {
     }
 
     Qt::CursorShape shape = cursor().shape();
-    if (shape != Qt::ArrowCursor) {
+    if (shape != Qt::ArrowCursor && (me->buttons() & Qt::LeftButton)) {
         moveBorder(me->pos());
         QWidget::mousePressEvent(me);
         return;
@@ -170,6 +170,7 @@ void GSequenceLineView::mousePressEvent(QMouseEvent* me) {
     SAFE_POINT(lastPressPos >= visibleRange.startPos && lastPressPos <= visibleRange.endPos(), "Last mouse press position is out of visible range!", );
 
     if (me->button() == Qt::RightButton) {
+        setCursor(Qt::ArrowCursor);
         QWidget::mousePressEvent(me);
         return;
     }

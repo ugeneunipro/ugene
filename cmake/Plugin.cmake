@@ -26,7 +26,7 @@ include_directories(src)
 include_directories(../../include)
 
 add_definitions(
-        -DPLUGIN_ID="${UGENE_PLUGIN_ID}"
+        -DPLUGIN_ID="${UGENE_PLUGIN_ID}${UGENE_BUILD_MODE_SUFFIX}"
 )
 
 if (NOT DEFINED SRCS)

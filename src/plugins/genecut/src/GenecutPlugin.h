@@ -26,6 +26,7 @@
 namespace U2 {
 
 class GenecutPlugin : public Plugin {
+  Q_OBJECT
 public:
     GenecutPlugin();
 

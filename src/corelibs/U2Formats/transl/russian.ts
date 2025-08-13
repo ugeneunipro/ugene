@@ -40,27 +40,27 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="89"/>
+        <location filename="../src/BAMUtils.cpp" line="90"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="93"/>
+        <location filename="../src/BAMUtils.cpp" line="94"/>
         <source>Fail to read the header from the file, probably, not an assembly format: &quot;%1&quot;</source>
         <translation>Не удалось считать заголовок из файла, вероятно, это не формат сборки: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="97"/>
+        <location filename="../src/BAMUtils.cpp" line="98"/>
         <source>Fail to write the header to the file: &quot;%1&quot;</source>
         <translation>Не удалось записать заголовок в файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="101"/>
+        <location filename="../src/BAMUtils.cpp" line="102"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="699"/>
+        <location filename="../src/BAMUtils.cpp" line="707"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Не удается открыть файл по указанному URL: %1.</translation>
     </message>
@@ -387,52 +387,52 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="169"/>
+        <location filename="../src/BAMUtils.cpp" line="170"/>
         <source>Wrong line in a SAM file: &quot;%1&quot;. Skipped</source>
         <translation>Неверная строка в SAM файле: &quot;%1&quot;. Пропущена</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="176"/>
+        <location filename="../src/BAMUtils.cpp" line="177"/>
         <source>Wrong left base position format: &quot;%1&quot;. Line has been skipped.</source>
         <translation>Неверный формат позиции левого символа: &quot;%1&quot;. Строка была пропущена.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="239"/>
+        <location filename="../src/BAMUtils.cpp" line="240"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="243"/>
+        <location filename="../src/BAMUtils.cpp" line="244"/>
         <source>No reference data in the file: %1</source>
         <translation>Файл не содержит референсных данныз: %1</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="377"/>
+        <location filename="../src/BAMUtils.cpp" line="378"/>
         <source>Sorting &quot;%1&quot; and saving the result to &quot;%2&quot;</source>
         <translation>Сортировка &quot;%1&quot; и сохранение результата в &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="381"/>
+        <location filename="../src/BAMUtils.cpp" line="382"/>
         <source>Cannot sort &quot;%1&quot;, abort</source>
         <translation>Невозможно провести сортировку &quot;%1&quot;, отмена</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="387"/>
+        <location filename="../src/BAMUtils.cpp" line="388"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="400"/>
+        <location filename="../src/BAMUtils.cpp" line="401"/>
         <source>Failed to merge BAM files: %1 into %2</source>
         <translation>Не удалось объединить файлы BAM: %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="436"/>
+        <location filename="../src/BAMUtils.cpp" line="437"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="438"/>
+        <location filename="../src/BAMUtils.cpp" line="439"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
     </message>
@@ -1096,12 +1096,12 @@
 <context>
     <name>U2::ExportAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="52"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="48"/>
         <source>Export alignment to %1</source>
         <translation>Экспортировать выравнивание в %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="56"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="52"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
@@ -1109,7 +1109,7 @@
 <context>
     <name>U2::ExportDNAChromatogramTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="204"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="200"/>
         <source>Export chromatogram to SCF</source>
         <translation>Экспортировать хроматограмму а SCF</translation>
     </message>
@@ -1117,12 +1117,12 @@
 <context>
     <name>U2::ExportMSA2MSATask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="137"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="133"/>
         <source>Export alignment as alignment to %1</source>
         <translation>Экспортировать выравнивание в выравнивание в %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="143"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="139"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
@@ -1130,7 +1130,7 @@
 <context>
     <name>U2::ExportMSA2SequencesTask</name>
     <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="87"/>
+        <location filename="../src/tasks/ExportTasks.cpp" line="83"/>
         <source>Export alignment as sequence to %1</source>
         <translation>Экспортировать выравнивание в последовательность в %1</translation>
     </message>
@@ -1665,6 +1665,110 @@
         <location filename="../src/util/SnpeffInfoParser.cpp" line="131"/>
         <source>Too many values in the entry &apos;%1&apos;, extra entries are ignored</source>
         <translation>Too many values in the entry &apos;%1&apos;, extra entries are ignored</translation>
+    </message>
+</context>
+<context>
+    <name>U2::KrakenResultsPlainTextFormat</name>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="57"/>
+        <source>Kraken results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="58"/>
+        <source>Kraken classification results text format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="116"/>
+        <source>Error on line %1, line contains paired results opposite of previous lines in file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="120"/>
+        <source>Error on line %1, line contains single results opposite of previous lines in file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="126"/>
+        <source>Error on line %1, 1st word should be &quot;C&quot; or &quot;U&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="133"/>
+        <source>Error on line %1, 3rd word should be number.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="135"/>
+        <source>Error on line %1, 3rd word should be number greater or equal zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="142"/>
+        <source>Error on line %1, 4th word should be number.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="144"/>
+        <source>Error on line %1, 4th word should be number greater than zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="151"/>
+        <source>Error on line %1, 4th word not match format &quot;&lt;number&gt;|&lt;number&gt;&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="154"/>
+        <source>Error on line %1, 4th word, first element of the pair should be a number.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="156"/>
+        <source>Error on line %1, 4th, first element of the pair should be number greater than zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="160"/>
+        <source>Error on line %1, 4th word, second element of the pair should be a number.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="162"/>
+        <source>Error on line %1, 4th, second element of the pair should be number greater than zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="182"/>
+        <source>Error on line %1, %2th word not match format &quot;&lt;string_or_number&gt;:&lt;number&gt;&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="185"/>
+        <source>Error on line %1, %2th word second element of the pair is not a number.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="186"/>
+        <source>Error on line %1, %2th word second element of the pair should be number greater than zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="202"/>
+        <source>Summary fragment length %1 should be less or equal sequence length %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="221"/>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="225"/>
+        <source>Sequence %1 skipped, because no classified result found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/KrakenResultsPlainTextFormat.cpp" line="239"/>
+        <source>Two or more classification results with same sequence name &quot;%1&quot; were found.They will be merged in one annotation table</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

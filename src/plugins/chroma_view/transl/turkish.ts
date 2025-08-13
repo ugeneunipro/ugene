@@ -25,43 +25,43 @@
 <context>
     <name>U2::ChromatogramView</name>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="73"/>
+        <location filename="../src/ChromatogramView.cpp" line="71"/>
         <source>Show all</source>
         <translation>Tümünü göster</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="76"/>
+        <location filename="../src/ChromatogramView.cpp" line="74"/>
         <source>Show/hide trace</source>
         <translation>İzi göster / gizle</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="106"/>
+        <location filename="../src/ChromatogramView.cpp" line="104"/>
         <source>Edit new sequence</source>
         <translation>Yeni diziyi düzenleyin</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="109"/>
+        <location filename="../src/ChromatogramView.cpp" line="107"/>
         <source>Edit existing sequence</source>
         <translation>Mevcut sıralamayı düzenleyin</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="112"/>
+        <location filename="../src/ChromatogramView.cpp" line="110"/>
         <source>Remove edited sequence</source>
         <translation>Düzenlenen diziyi kaldır</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="115"/>
+        <location filename="../src/ChromatogramView.cpp" line="113"/>
         <source>Undo changes</source>
         <translation>Değişiklikleri geri al</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="211"/>
-        <location filename="../src/ChromatogramView.cpp" line="351"/>
+        <location filename="../src/ChromatogramView.cpp" line="209"/>
+        <location filename="../src/ChromatogramView.cpp" line="348"/>
         <source>The sequence is locked</source>
         <translation>Sıra kilitlendi</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="66"/>
+        <location filename="../src/ChromatogramView.cpp" line="64"/>
         <source>Show quality bars</source>
         <translation>Kaliteli çubukları göster</translation>
     </message>
@@ -69,12 +69,12 @@
 <context>
     <name>U2::ChromatogramViewRenderArea</name>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="500"/>
+        <location filename="../src/ChromatogramView.cpp" line="498"/>
         <source>Chromatogram view (zoom in to see base calls)</source>
         <translation>Kromatogram görünümü (baz aramaları görmek için yakınlaştırın)</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="707"/>
+        <location filename="../src/ChromatogramView.cpp" line="700"/>
         <source>original sequence</source>
         <translation>orijinal sıra</translation>
     </message>

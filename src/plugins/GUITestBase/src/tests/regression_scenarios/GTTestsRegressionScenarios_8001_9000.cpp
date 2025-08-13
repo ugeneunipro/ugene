@@ -89,6 +89,8 @@
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -1142,6 +1144,41 @@ GUI_TEST_CLASS_DEFINITION(test_8111) {
     CHECK_SET_ERR(initialSize != nameLabel->size(), "Sequence name label size should change!");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8114) {
+    /*  
+     *  1. Select "Tools>Sanger data analysis>Map reads to reference..."
+     *  2. Set reference file with ";" in path, and correct reads path. Press OK.
+     *  Expected state: message box with error appears
+     *  3. Set correct reference file, and reads with ";" in path. Press OK.
+     *  Expected state: message box with error appears
+     */
+    QDir(sandBoxDir).mkdir("8114");
+    QDir(sandBoxDir).mkdir("8114/bad;path");
+    GTFile::copy(testDir + "_common_data/sanger/sanger_01.ab1", sandBoxDir + "8114/bad;path/sanger_01.ab1");
+    GTFile::copy(testDir + "_common_data/sanger/reference.gb", sandBoxDir + "8114/bad;path/reference.gb");
+
+    class CheckBadPaths : public CustomScenario {
+        void run() override {
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), sandBoxDir + "8114/bad;path/reference.gb");           
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/sanger/sanger_01.ab1"));
+            GTWidget::click(GTWidget::findPushButton("addReadButton"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, 
+                                            "Reference sequence path should not contain \";\" character."));
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");           
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir + "8114/bad;path/sanger_01.ab1"));
+            GTWidget::click(GTWidget::findPushButton("addReadButton"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, 
+                                            "Read sequence path should not contain \";\" character."));
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
+        }
+    };    
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(new CheckBadPaths()));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8116) {
     /*
      * 1. Open COI.aln
@@ -1555,6 +1592,33 @@ GUI_TEST_CLASS_DEFINITION(test_8170) {
     GTUtilsDialog::waitForDialog(new PopupChecker({"Restriction Sites"}, PopupChecker::CheckOptions(PopupChecker::CheckOption::IsUnchecked)));
     GTWidget::click(GTWidget::findWidget("AutoAnnotationUpdateAction", parent));
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8174) {
+    GTFile::copy(dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "/human_T1.fa");
+    GTUtilsDialog::waitForDialog(new DotPlotFiller());
+    GTUtilsDialog::waitForDialog(
+        new BuildDotPlotFiller(
+            sandBoxDir + "/human_T1.fa",
+            "", false, true));
+    GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
+    //GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
+
+    QFile::remove(sandBoxDir + "/human_T1.fa");
+    GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
+    GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8175) {
+    /*
+     *1. Open _common_data/scenarios/tree_view/deep_tree_412.nwk
+     *Expected state: no crash, corresponding message 
+     **/
+    
+    GTLogTracer lt;
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/tree_view/deep_tree_412.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished();    
+    CHECK_SET_ERR(lt.hasError("Tree branch is too long"), "Expected no errors");
 }
 
 }  // namespace GUITest_regression_scenarios
