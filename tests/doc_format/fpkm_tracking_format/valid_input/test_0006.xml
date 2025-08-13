@@ -1,0 +1,21 @@
+<!-- UGENE-5122 -->
+
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!fpkm_tracking_format/valid/export_annotations_as_fpkm.uwl"
+            in="!common_data_dir!genbank/murine_cut.gb"
+            out="!tmp_data_dir!murine_annotations.fpkm_tracking"
+    />
+
+    <load-document index="doc" dir="temp" url="murine_annotations.fpkm_tracking" io="local_file" format="fpkm-tracking"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="unknown_genome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="2..590" complement="false"/>
+    <find-annotation-by-location index="ann2" obj="ATO" location="1042..2658" complement="false"/>
+    <find-annotation-by-location index="ann3" obj="ATO" location="2970..3413" complement="false"/>
+    <find-annotation-by-location index="ann4" obj="ATO" location="3412..3873" complement="false"/>
+    <find-annotation-by-location index="ann5" obj="ATO" location="3875..4999" complement="false"/>
+
+</multi-test>
