@@ -51,8 +51,8 @@ public:
     virtual QDActor* createInstance() const {
         return new QDFindActor(this);
     }
-    IconRef getIconRef() const override {
-        return IconRef("core", "find_dialog.png");
+    QString getIconPath() const override {
+        return ":core/images/find_dialog.png";
     }
 };
 

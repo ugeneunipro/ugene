@@ -114,7 +114,7 @@ void GetFileListWorkerFactory::init() {
     proto->setPrompter(new GetFileListPrompter());
     proto->setValidator(new DatasetValidator());
     if (AppContext::isGUIMode()) {
-        proto->setIconRef(IconRef("U2Designer", "blue_circle.png"));
+        proto->setIconPath(":/U2Designer/images/blue_circle.png");
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);

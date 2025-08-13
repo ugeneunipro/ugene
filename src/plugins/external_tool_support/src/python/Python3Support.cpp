@@ -30,9 +30,9 @@ const QString Python3Support::ET_PYTHON_ID = "USUPP_PYTHON3";
 Python3Support::Python3Support()
     : RunnerTool(QStringList(), Python3Support::ET_PYTHON_ID, "python3", "Python 3") {
     if (AppContext::getMainWindow() != nullptr) {
-        icon = IconRef("external_tool_support", "python.png");
-        grayIcon = IconRef("external_tool_support", "python_gray.png");
-        warnIcon = IconRef("external_tool_support", "python_warn.png");
+        iconPath = ":external_tool_support/images/python.png";
+        grayIconPath = ":external_tool_support/images/python_gray.png";
+        warnIconPath = ":external_tool_support/images/python_warn.png";
     }
     executableFileName = isOsWindows() ? "python.exe" : "python3";
 

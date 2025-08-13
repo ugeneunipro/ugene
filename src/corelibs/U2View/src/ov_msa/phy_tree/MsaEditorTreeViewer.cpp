@@ -70,7 +70,7 @@ QWidget* MsaEditorTreeViewer::createViewWidget(QWidget* parent) {
     connect(syncModeAction, SIGNAL(triggered()), SLOT(sl_syncModeActionTriggered()));
 
     refreshTreeAction = new QAction(tr("Refresh tree"), ui);
-    GUIUtils::setThemedIcon<QAction>(refreshTreeAction, IconRef("core", "refresh.png"));
+    GUIUtils::setThemedIcon<QAction>(refreshTreeAction, ":core/images/refresh.png");
     refreshTreeAction->setObjectName("Refresh tree");
     refreshTreeAction->setEnabled(false);
     connect(refreshTreeAction, SIGNAL(triggered()), SLOT(sl_refreshTree()));
@@ -119,7 +119,7 @@ void MsaEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
     bool isChecked = isEnabled && isSyncModeOn;  // Override 'isSyncModeOn' with a safer option.
     syncModeAction->setChecked(isChecked);
     syncModeAction->setText(isChecked ? tr("Disable Tree and Alignment synchronization") : tr("Enable Tree and Alignment synchronization"));
-    GUIUtils::setThemedIcon<QAction>(syncModeAction, IconRef("core", isChecked ? "sync-msa-on.png" : "sync-msa-off.png"));
+    GUIUtils::setThemedIcon<QAction>(syncModeAction, isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png");
 }
 
 MsaEditor* MsaEditorTreeViewer::getMsaEditor() const {

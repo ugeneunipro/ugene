@@ -119,7 +119,7 @@ void ClustalOWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClustalOPrompter());
-    proto->setIconRef(IconRef("external_tool_support", "clustalo.png"));
+    proto->setIconPath(":external_tool_support/images/clustalo.png");
     proto->addExternalTool(ClustalOSupport::ET_CLUSTALO_ID, EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 

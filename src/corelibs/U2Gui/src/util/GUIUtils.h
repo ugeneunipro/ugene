@@ -29,7 +29,6 @@
 #include <QTreeWidgetItem>
 #include <QToolButton>
 
-#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -82,42 +81,42 @@ public:
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
 private:
-    static void setThemedIconProperty(QObject* object, const IconRef& iconRef);
+    static void setThemedIconProperty(QObject* object, const QString& iconPath);
 
 public:
     // Sets themed icon for the object
     // object - the object to set icon for
     // iconRef - icon reference
     template<typename T>
-    static void setThemedIcon(T* object, const IconRef& iconRef) {
-        object->setIcon(GUIUtils::getIconResource(iconRef));
-        setThemedIconProperty(object, iconRef);
+    static void setThemedIcon(T* object, const QString& iconPath) {
+        object->setIcon(GUIUtils::getIconResource(iconPath));
+        setThemedIconProperty(object, iconPath);
     }
 
     // Sets themed icon for the object
     // object - the object to set icon for
     // iconRef - icon reference
-    static void setThemedIcon(QLabel* label, const IconRef& iconRef);
+    static void setThemedIcon(QLabel* label, const QString& iconPath);
 
     // Sets movie for the label
     // label - the label to set movie for
     // iconRef - icon reference
-    static void setMovie(QLabel* label, const IconRef& iconRef);
+    static void setMovie(QLabel* label, const QString& iconPath);
 
     // Sets icon for the window
     // widget - the widget to set icon for
     // iconRef - icon reference
-    static void setWindowIcon(QWidget* widget, const IconRef& iconRef);
+    static void setWindowIcon(QWidget* widget, const QString& iconPath);
 
     // Returns resource as icon
     // iconRef - icon reference
     // returns - the corresponding icon
-    static QIcon getIconResource(const IconRef& iconRef);
+    static QIcon getIconResource(const QString& iconPath);
 
     // Returns path to the corresponding resource
     // iconRef - icon reference
     // returns - path to the resource
-    static QString getResourceName(const IconRef& iconRef);
+    static QString getResourceName(const QString& iconPath);
 
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 

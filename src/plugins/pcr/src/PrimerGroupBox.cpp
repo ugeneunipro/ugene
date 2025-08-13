@@ -53,8 +53,8 @@ PrimerGroupBox::PrimerGroupBox(QWidget* parent)
       annotatedDnaView(nullptr) {
     setupUi(this);
 
-    GUIUtils::setThemedIcon<QToolButton>(reverseComplementButton, IconRef("core", "show_compl.png"));
-    GUIUtils::setThemedIcon<QToolButton>(browseButton, IconRef("core", "database_with_arrow.png"));
+    GUIUtils::setThemedIcon<QToolButton>(reverseComplementButton, ":/core/images/show_compl.png");
+    GUIUtils::setThemedIcon<QToolButton>(browseButton, ":/core/images/database_with_arrow.png");
 
     connect(primerEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onPrimerChanged(const QString&)));
     connect(reverseComplementButton, SIGNAL(clicked()), SLOT(sl_translate()));

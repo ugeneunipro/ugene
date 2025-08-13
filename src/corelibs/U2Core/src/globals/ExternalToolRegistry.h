@@ -28,7 +28,6 @@
 #include <QStringList>
 #include <QVariant>
 
-#include <U2Core/IconRef.h>
 #include <U2Core/StrPackUtils.h>
 #include <U2Core/U2OpStatus.h>
 
@@ -73,17 +72,17 @@ public:
     const QString& getName() const;
     const QString& getPath() const;
     // Set icon reference for normal icon
-    const IconRef& getIconRef() const;
+    const QString& getIconPath() const;
     // Set icon reference for grey icon (ET not set)
-    const IconRef& getGrayIconRef() const;
+    const QString& getGrayIconPath() const;
     // Set icon reference for warn icon (ET set, but there are some problems)
-    const IconRef& getWarnIconRef() const;
+    const QString& getWarnIconPath() const;
     const QString& getDescription() const;
     const QString& getToolRunnerProgramId() const;
     virtual QStringList getToolRunnerAdditionalOptions() const;
     const QString& getExecutableFileName() const;
     const QString& getVersion() const;
-    /** Returns the tool version for the tool located by the specified path without running the tool. 
+    /** Returns the tool version for the tool located by the specified path without running the tool.
       * Returns an empty string if can't derive the tool version by the path. */
     virtual const QString getVersionFromToolPath(const QString& toolPath) const;
     const QString& getPredefinedVersion() const;
@@ -135,9 +134,9 @@ protected:
     /** Visual name of the tool. */
     QString name;
     QString path;  // tool path
-    IconRef icon;  // valid tool icon
-    IconRef grayIcon;  // not set tool icon
-    IconRef warnIcon;  // invalid tool icon
+    QString iconPath;  // valid tool icon
+    QString grayIconPath;  // not set tool icon
+    QString warnIconPath;  // invalid tool icon
     QString description;  // tool description
     QString toolRunnerProgram;  // starter program (e.g. python for scripts)
     QString executableFileName;  // executable file name (without path)

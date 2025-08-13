@@ -128,7 +128,7 @@ void CoveredRegionsLabel::sl_updateContent() {
 // AssemblyNavigationWidgetFactory
 ////////////////////////////////////
 const QString AssemblyNavigationWidgetFactory::GROUP_ID = "OP_ASS_NAVIGATION";
-const IconRef AssemblyNavigationWidgetFactory::GROUP_ICON_PAR = IconRef("core", "goto.png");
+const QString AssemblyNavigationWidgetFactory::GROUP_ICON_STR = ":core/images/goto.png";
 const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "65929859";
 
 AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
@@ -149,7 +149,7 @@ QWidget* AssemblyNavigationWidgetFactory::createWidget(GObjectViewController* ob
 }
 
 OPGroupParameters AssemblyNavigationWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Navigation"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Navigation"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

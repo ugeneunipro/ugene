@@ -151,7 +151,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSear
     }
 
     progressLabel->setObjectName("progressLabel");
-    GUIUtils::setMovie(progressLabel, IconRef("core", "progress.gif"));
+    GUIUtils::setMovie(progressLabel, ":/core/images/progress.gif");
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
     savableWidget.setRegionWidgetIds(QStringList() << editStart->objectName()

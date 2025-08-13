@@ -233,7 +233,7 @@ void AminoTranslationWorkerFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
 
-    proto->setIconRef(IconRef("core", "show_trans.png"));
+    proto->setIconPath(":core/images/show_trans.png");
     proto->setPrompter(new AminoTranslationPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 

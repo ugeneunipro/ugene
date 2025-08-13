@@ -24,7 +24,6 @@
 #include <QEvent>
 #include <QWidget>
 
-#include <U2Core/IconRef.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/global.h>
@@ -136,9 +135,9 @@ public:
 
     virtual void registerAction(QAction* action) = 0;
 
-    static constexpr char* ICON_REF_PROPERTY_NAME = "icon-ref";
-    static constexpr char* MOVIE_REF_PROPERTY_NAME = "icon-ref-movie";
-    static constexpr char* WINDOWS_ICON_REF_PROPERTY_NAME = "icon-ref-movie";
+    static constexpr char* ICON_PATH_PROPERTY_NAME = "icon-path";
+    static constexpr char* MOVIE_PATH_PROPERTY_NAME = "icon-path-movie";
+    static constexpr char* WINDOWS_ICON_PATH_PROPERTY_NAME = "icon-path-movie";
     static constexpr int PIXMAP_SIZE = 16;
 
 signals:
@@ -226,7 +225,7 @@ public:
         : QObject(p) {
     }
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const IconRef& iconRef, const QKeySequence& ks = QKeySequence()) = 0;
+    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QString& iconPath, const QKeySequence& ks = QKeySequence()) = 0;
 
     virtual QWidget* findWidget(const QString& widgetObjName) = 0;
 

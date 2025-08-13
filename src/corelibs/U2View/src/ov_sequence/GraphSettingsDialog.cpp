@@ -86,7 +86,7 @@ GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer* d, const U2Region
 
     setLayout(l);
     setWindowTitle(tr("Graph Settings"));
-    GUIUtils::setWindowIcon(this, IconRef("core", "graphs.png"));
+    GUIUtils::setWindowIcon(this, ":core/images/graphs.png");
 
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);

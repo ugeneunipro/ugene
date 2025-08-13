@@ -494,7 +494,7 @@ void ProjectViewImpl::enable() {
     MainWindow* mw = AppContext::getMainWindow();
     MWDockManager* dm = mw->getDockManager();
     projectViewWidget->setObjectName("project_view");  // TODO: must be DOCK_PROJECT_VIEW (as set in the constructor) but requires fixes across many files.
-    dm->registerDock(MWDockArea_Left, projectViewWidget, IconRef("ugene", "project.png"), QKeySequence(Qt::ALT | Qt::Key_1));
+    dm->registerDock(MWDockArea_Left, projectViewWidget, ":ugene/images/project.png", QKeySequence(Qt::ALT | Qt::Key_1));
     if (AppContext::getSettings()->getValue(SETTINGS_ROOT + "firstShow", true).toBool()) {
         dm->activateDock(projectViewWidget->objectName());
         AppContext::getSettings()->setValue(SETTINGS_ROOT + "firstShow", false);

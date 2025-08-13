@@ -65,41 +65,41 @@ ADVClipboard::ADVClipboard(AnnotatedDNAView* c)
     }
 
     copySequenceAction = new QAction(tr("Copy selected sequence"), this);
-    GUIUtils::setThemedIcon<QAction>(copySequenceAction, IconRef("core", "copy_sequence.png"));
+    GUIUtils::setThemedIcon<QAction>(copySequenceAction, ":/core/images/copy_sequence.png");
     copySequenceAction->setObjectName("Copy sequence");
     copySequenceAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
     connect(copySequenceAction, SIGNAL(triggered()), SLOT(sl_copySequence()));
 
     copyComplementSequenceAction = new QAction(tr("Copy selected complementary 5'-3' sequence"), this);
-    GUIUtils::setThemedIcon<QAction>(copyComplementSequenceAction, IconRef("core", "copy_complement_sequence.png"));
+    GUIUtils::setThemedIcon<QAction>(copyComplementSequenceAction, ":/core/images/copy_complement_sequence.png");
     copyComplementSequenceAction->setObjectName("Copy reverse complement sequence");
     copyComplementSequenceAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     connect(copyComplementSequenceAction, SIGNAL(triggered()), SLOT(sl_copyComplementSequence()));
 
     copyTranslationAction = new QAction(tr("Copy amino acids"), this);
-    GUIUtils::setThemedIcon<QAction>(copyTranslationAction, IconRef("core", "copy_translation.png"));
+    GUIUtils::setThemedIcon<QAction>(copyTranslationAction, ":/core/images/copy_translation.png");
     copyTranslationAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
     copyTranslationAction->setObjectName(ADV_COPY_TRANSLATION_ACTION);
     connect(copyTranslationAction, SIGNAL(triggered()), SLOT(sl_copyTranslation()));
 
     copyComplementTranslationAction = new QAction(tr("Copy amino acids of complementary 5'-3' strand"), this);
-    GUIUtils::setThemedIcon<QAction>(copyComplementTranslationAction, IconRef("core", "copy_complement_translation.png"));
+    GUIUtils::setThemedIcon<QAction>(copyComplementTranslationAction, ":/core/images/copy_complement_translation.png");
     copyComplementTranslationAction->setObjectName("Copy reverse complement translation");
     copyComplementTranslationAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
     connect(copyComplementTranslationAction, SIGNAL(triggered()), SLOT(sl_copyComplementTranslation()));
 
     copyAnnotationSequenceAction = new QAction(tr("Copy annotation sequence"), this);
-    GUIUtils::setThemedIcon<QAction>(copyAnnotationSequenceAction, IconRef("core", "copy_annotation_sequence.png"));
+    GUIUtils::setThemedIcon<QAction>(copyAnnotationSequenceAction, ":/core/images/copy_annotation_sequence.png");
     copyAnnotationSequenceAction->setObjectName("action_copy_annotation_sequence");
     connect(copyAnnotationSequenceAction, SIGNAL(triggered()), SLOT(sl_copyAnnotationSequence()));
 
     copyAnnotationSequenceTranslationAction = new QAction(tr("Copy annotation amino acids"), this);
-    GUIUtils::setThemedIcon<QAction>(copyAnnotationSequenceTranslationAction, IconRef("core", "copy_annotation_translation.png"));
+    GUIUtils::setThemedIcon<QAction>(copyAnnotationSequenceTranslationAction, ":/core/images/copy_annotation_translation.png");
     copyAnnotationSequenceTranslationAction->setObjectName("Copy annotation sequence translation");
     connect(copyAnnotationSequenceTranslationAction, SIGNAL(triggered()), SLOT(sl_copyAnnotationSequenceTranslation()));
 
     copyQualifierAction = new QAction(tr("Copy qualifier text"), this);
-    GUIUtils::setThemedIcon<QAction>(copyQualifierAction, IconRef("core", "copy_qualifier.png"));
+    GUIUtils::setThemedIcon<QAction>(copyQualifierAction, ":/core/images/copy_qualifier.png");
     copyQualifierAction->setEnabled(false);
 
     pasteSequenceAction = createPasteSequenceAction(this);
@@ -356,7 +356,7 @@ void ADVClipboard::addCopyMenu(QMenu* m) {
 
 QAction* ADVClipboard::createPasteSequenceAction(QObject* parent) {
     auto action = new QAction(tr("Paste sequence"), parent);
-    GUIUtils::setThemedIcon<QAction>(action, IconRef("core", "paste.png"));
+    GUIUtils::setThemedIcon<QAction>(action, ":/core/images/paste.png");
     action->setObjectName("Paste sequence");
     action->setShortcuts(QKeySequence::Paste);
     action->setShortcutContext(Qt::WidgetWithChildrenShortcut);

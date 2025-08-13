@@ -410,12 +410,12 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setToolTip(item->getDocumentation());
     a->setCheckable(true);
-    const auto& iconRef = item->getIconRef();
-    if (iconRef.isEmpty()) {
-        item->setIconRef(IconRef("workflow_designer", "green_circle.png"));
+    const auto& iconPath = item->getIconPath();
+    if (iconPath.isEmpty()) {
+        item->setIconPath(":workflow_designer/images/green_circle.png");
     }
     protoActionsName.insert(item, a);
-    GUIUtils::setThemedIcon<QAction>(a, item->getIconRef());
+    GUIUtils::setThemedIcon<QAction>(a, item->getIconPath());
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));
@@ -612,7 +612,7 @@ void WorkflowPaletteElements::sl_colorThemeSwitched() {
     auto protos = protoActionsName.keys();
     for (const auto& proto : qAsConst(protos)) {
         auto action = protoActionsName.value(proto);
-        action->setIcon(GUIUtils::getIconResource(proto->getIconRef()));
+        action->setIcon(GUIUtils::getIconResource(proto->getIconPath()));
     }
 }
 

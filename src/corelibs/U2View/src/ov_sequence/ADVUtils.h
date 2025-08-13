@@ -24,7 +24,6 @@
 #include <QSet>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/IconRef.h>
 #include <U2Core/global.h>
 
 #include <U2Gui/ObjectViewModel.h>
@@ -47,7 +46,7 @@ class U2VIEW_EXPORT ADVGlobalAction : public GObjectViewAction {
     Q_OBJECT
 public:
     ADVGlobalAction(AnnotatedDNAView* v,
-                    const IconRef& iconRef,
+                    const QString& iconPath,
                     const QString& text,
                     int pos = 1000 * 1000,
                     const ADVGlobalActionFlags& flags = ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_AddToAnalyseMenu | ADVGlobalActionFlag_SingleSequenceOnly);

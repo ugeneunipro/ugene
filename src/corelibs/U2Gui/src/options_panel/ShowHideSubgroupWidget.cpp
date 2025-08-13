@@ -106,14 +106,13 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
 
     arrow = new QLabel();
     arrow->setObjectName("ArrowHeader_" + caption);
-    IconRef iconRef;
-    iconRef.iconModule = "core";
+    QString iconPath;
     if (isOpened) {
-        iconRef.iconName = "arrow_down.png";
+        iconPath = ":core/images/arrow_down.png";
     } else {
-        iconRef.iconName = "arrow_right.png";
+        iconPath = ":core/images/arrow_right.png";
     }
-    GUIUtils::setThemedIcon(arrow, iconRef);
+    GUIUtils::setThemedIcon(arrow, iconPath);
 
     arrow->setMaximumSize(10, 10);
 
@@ -121,7 +120,7 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
     captionLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     progressMovieLabel = new QLabel();
-    GUIUtils::setMovie(progressMovieLabel, IconRef("core", "progress.gif"));
+    GUIUtils::setMovie(progressMovieLabel, ":/core/images/progress.gif");
     auto progressMovie = progressMovieLabel->movie();
     if (progressMovie->isValid()) {
         progressMovie->start();
@@ -164,16 +163,15 @@ void ArrowHeaderWidget::hideProgress() {
 
 void ArrowHeaderWidget::setOpened(bool _isOpened) {
     if (_isOpened != isOpened) {
-        IconRef iconRef;
-        iconRef.iconModule = "core";
+        QString iconPath;
         if (isOpened) {
-            iconRef.iconName = "arrow_right.png";
+            iconPath = ":core/images/arrow_right.png";
             isOpened = false;
         } else {
-            iconRef.iconName = "arrow_down.png";
+            iconPath = ":core/images/arrow_down.png";
             isOpened = true;
         }
-        GUIUtils::setThemedIcon(arrow, iconRef);
+        GUIUtils::setThemedIcon(arrow, iconPath);
         emit si_arrowHeaderPressed(isOpened);
     }
 }

@@ -111,7 +111,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     createAnnotationAction = (new ADVAnnotationCreation(this))->getCreateAnnotationAction();
 
     posSelectorAction = new QAction(tr("Go to position..."), this);
-    GUIUtils::setThemedIcon<QAction>(posSelectorAction, IconRef("core", "goto.png"));
+    GUIUtils::setThemedIcon<QAction>(posSelectorAction, ":core/images/goto.png");
     posSelectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     posSelectorAction->setShortcutContext(Qt::WindowShortcut);
     posSelectorAction->setObjectName(ADV_GOTO_ACTION);
@@ -130,7 +130,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
         addObject(dnaObj);
     }
 
-    findPatternAction = new ADVGlobalAction(this, IconRef("core", "find_dialog.png"), tr("Find pattern..."), 10);
+    findPatternAction = new ADVGlobalAction(this, ":core/images/find_dialog.png", tr("Find pattern..."), 10);
     findPatternAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     findPatternAction->setShortcutContext(Qt::WindowShortcut);
     connect(findPatternAction, SIGNAL(triggered()), SLOT(sl_onFindPatternClicked()));
@@ -257,7 +257,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     mainSplitter->addAction(removeAnnsAndQsAction);
 
-    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconRef);
+    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconPath);
     mainSplitter->setWindowIcon(windowIcon);
 
     // Init the Options Panel
@@ -1145,7 +1145,7 @@ void AnnotatedDNAView::finishSeqWidgetMove() {
 }
 
 void AnnotatedDNAView::createCodonTableAction() {
-    QAction* showCodonTableAction = new ADVGlobalAction(this, IconRef("core", "codon_table.png"), tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
+    QAction* showCodonTableAction = new ADVGlobalAction(this, ":core/images/codon_table.png", tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
     showCodonTableAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
     showCodonTableAction->setShortcutContext(Qt::WindowShortcut);
     connect(showCodonTableAction, SIGNAL(triggered()), codonTableView, SLOT(sl_setVisible()));

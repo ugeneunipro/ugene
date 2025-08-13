@@ -191,7 +191,7 @@ WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget* p, const U2Region& w
 
     setLayout(l);
     setWindowTitle(tr("Graph Settings"));
-    GUIUtils::setWindowIcon(this, IconRef("core", "graphs.png"));
+    GUIUtils::setWindowIcon(this, ":core/images/graphs.png");
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     setMinimumWidth(400);

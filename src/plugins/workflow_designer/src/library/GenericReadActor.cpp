@@ -66,7 +66,7 @@ GenericReadDocProto::GenericReadDocProto(const Descriptor& desc)
     setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
 
     if (AppContext::isGUIMode()) {
-        setIconRef(IconRef("U2Designer", "blue_circle.png"));
+        setIconPath(":/U2Designer/images/blue_circle.png");
     }
 
     setValidator(new DatasetValidator());
@@ -167,7 +167,7 @@ GenericMAActorProto::GenericMAActorProto()
     setPrompter(new ReadDocPrompter(U2::Workflow::CoreLib::tr("Reads MSA(s) from <u>%1</u>.")));
 
     if (AppContext::isGUIMode()) {
-        setIconRef(IconRef("U2Designer", "blue_circle.png"));
+        setIconPath(":/U2Designer/images/blue_circle.png");
     }
 }
 

@@ -416,7 +416,7 @@ void ImportToDatabaseDialog::addObject(GObject* object, QTreeWidgetItem* parent)
     }
 
     auto gObjTypeInfo = GObjectTypes::getTypeInfo(object->getGObjectType());
-    newItem->setIcon(COLUMN_ITEM_TEXT, GUIUtils::getIconResource(gObjTypeInfo.iconRef));
+    newItem->setIcon(COLUMN_ITEM_TEXT, GUIUtils::getIconResource(gObjTypeInfo.iconPath));
     newItem->setFlags(Qt::ItemIsEditable | newItem->flags());
 
     parent->addChild(newItem);

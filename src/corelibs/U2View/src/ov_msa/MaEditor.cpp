@@ -95,37 +95,37 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
     // SANGER_TODO: move to separate method
     // do that in createWidget along with initActions?
     saveAlignmentAction = new QAction(tr("Save alignment"), this);
-    GUIUtils::setThemedIcon<QAction>(saveAlignmentAction, IconRef("core", "msa_save.png"));
+    GUIUtils::setThemedIcon<QAction>(saveAlignmentAction, ":core/images/msa_save.png");
     saveAlignmentAction->setObjectName("Save alignment");
     connect(saveAlignmentAction, SIGNAL(triggered()), SLOT(sl_saveAlignment()));
 
     saveAlignmentAsAction = new QAction(tr("Save alignment as"), this);
-    GUIUtils::setThemedIcon<QAction>(saveAlignmentAsAction, IconRef("core", "msa_save_as.png"));
+    GUIUtils::setThemedIcon<QAction>(saveAlignmentAsAction, ":core/images/msa_save_as.png");
     saveAlignmentAsAction->setObjectName("Save alignment as");
     connect(saveAlignmentAsAction, SIGNAL(triggered()), SLOT(sl_saveAlignmentAs()));
 
     zoomInAction = new QAction(tr("Zoom In"), this);
-    GUIUtils::setThemedIcon<QAction>(zoomInAction, IconRef("core", "zoom_in.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomInAction, ":core/images/zoom_in.png");
     zoomInAction->setObjectName("Zoom In");
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
     zoomOutAction = new QAction(tr("Zoom Out"), this);
-    GUIUtils::setThemedIcon<QAction>(zoomOutAction, IconRef("core", "zoom_out.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomOutAction, ":core/images/zoom_out.png");
     zoomOutAction->setObjectName("Zoom Out");
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
     zoomToSelectionAction = new QAction(tr("Zoom To Selection"), this);
-    GUIUtils::setThemedIcon<QAction>(zoomToSelectionAction, IconRef("core", "zoom_reg.png"));
+    GUIUtils::setThemedIcon<QAction>(zoomToSelectionAction, ":core/images/zoom_reg.png");
     zoomToSelectionAction->setObjectName("Zoom To Selection");
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
     resetZoomAction = new QAction(tr("Reset Zoom"), this);
-    GUIUtils::setThemedIcon<QAction>(resetZoomAction, IconRef("core", "zoom_whole.png"));
+    GUIUtils::setThemedIcon<QAction>(resetZoomAction, ":core/images/zoom_whole.png");
     resetZoomAction->setObjectName("Reset Zoom");
     connect(resetZoomAction, SIGNAL(triggered()), SLOT(sl_resetZoom()));
 
     changeFontAction = new QAction(tr("Change Font"), this);
-    GUIUtils::setThemedIcon<QAction>(changeFontAction, IconRef("core", "font.png"));
+    GUIUtils::setThemedIcon<QAction>(changeFontAction, ":core/images/font.png");
     changeFontAction->setObjectName("Change Font");
     connect(changeFontAction, SIGNAL(triggered()), SLOT(sl_changeFont()));
 
@@ -146,7 +146,7 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
     connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
 
     multilineViewAction = new QAction(QIcon(":core/images/multiline_view.png"), tr("Wrap mode"), this);
-    GUIUtils::setThemedIcon<QAction>(multilineViewAction, IconRef("core", "multiline_view.png"));
+    GUIUtils::setThemedIcon<QAction>(multilineViewAction, ":core/images/multiline_view.png");
     multilineViewAction->setObjectName("multilineView");
     multilineViewAction->setCheckable(true);
     multilineViewAction->setChecked(false);

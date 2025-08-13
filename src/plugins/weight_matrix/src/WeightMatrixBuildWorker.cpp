@@ -108,7 +108,7 @@ void PWMatrixBuildWorker::registerProto() {
 
     proto->setPrompter(new PWMatrixBuildPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconRef(IconRef("weight_matrix", "weight_matrix.png"));
+    proto->setIconPath(":weight_matrix/images/weight_matrix.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 
@@ -195,7 +195,7 @@ void PFMatrixBuildWorker::registerProto() {
 
     proto->setPrompter(new PFMatrixBuildPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconRef(IconRef("weight_matrix", "weight_matrix.png"));
+    proto->setIconPath(":weight_matrix/images/weight_matrix.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 
@@ -296,7 +296,7 @@ void PFMatrixConvertWorker::registerProto() {
 
     proto->setPrompter(new PFMatrixConvertPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconRef(IconRef("weight_matrix", "weight_matrix.png"));
+    proto->setIconPath(":weight_matrix/images/weight_matrix.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 

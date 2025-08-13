@@ -34,7 +34,7 @@
 namespace U2 {
 
 const QString GenecutOPWidgetFactory::GROUP_ID = "OP_GENECUT";
-const IconRef GenecutOPWidgetFactory::GROUP_ICON_PAR = IconRef("genecut", "genecut.png");
+const QString GenecutOPWidgetFactory::GROUP_ICON_STR = ":genecut/images/genecut.png";
 const QString GenecutOPWidgetFactory::GROUP_DOC_PAGE = "88080434";
 
 GenecutOPWidgetFactory::GenecutOPWidgetFactory()
@@ -52,7 +52,7 @@ QWidget* GenecutOPWidgetFactory::createWidget(GObjectViewController* objView, co
 }
 
 OPGroupParameters GenecutOPWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, tr("Genecut desktop"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, tr("Genecut desktop"), GROUP_DOC_PAGE);
 }
 
 bool GenecutOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {

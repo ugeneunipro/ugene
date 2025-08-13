@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString FindPatternMsaWidgetFactory::GROUP_ID = "OP_MSA_FIND_PATTERN_WIDGET";
-const IconRef FindPatternMsaWidgetFactory::GROUP_ICON_PAR = IconRef("core", "find_dialog.png");
+const QString FindPatternMsaWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
 const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = "65929651";
 
 FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
@@ -57,7 +57,7 @@ QWidget* FindPatternMsaWidgetFactory::createWidget(GObjectViewController* objVie
 }
 
 OPGroupParameters FindPatternMsaWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Search in Alignment"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Search in Alignment"), GROUP_DOC_PAGE);
 }
 
 void FindPatternMsaWidgetFactory::applyOptionsToWidget(QWidget* widget, const QVariantMap& options) {

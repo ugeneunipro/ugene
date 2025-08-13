@@ -27,7 +27,6 @@
 #include <QTextEdit>
 #include <QTreeWidget>
 
-#include <U2Core/IconRef.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ProjectModel.h>
 
@@ -60,10 +59,10 @@ public:
 
     int countAvailableReports() const;
 
-    IconRef waitingIp;
-    IconRef activeIp;
-    IconRef finishedIp;
-    IconRef wasErrorIp;
+    QString waitingIconPath;
+    QString activeIconPath;
+    QString finishedIconPath;
+    QString wasErrorIconPath;
 
 signals:
     void si_reportsCountChanged();

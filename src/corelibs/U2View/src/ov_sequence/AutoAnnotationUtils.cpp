@@ -50,7 +50,7 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
     addToBar = true;
 
     menu = new QMenu();
-    GUIUtils::setThemedIcon<ADVSequenceWidgetAction>(this, IconRef("core", "predefined_annotation_groups.png"));
+    GUIUtils::setThemedIcon<ADVSequenceWidgetAction>(this, ":core/images/predefined_annotation_groups.png");
     setMenu(menu);
 
     connect(aaObj, SIGNAL(si_updateStarted()), SLOT(sl_autoAnnotationUpdateStarted()));

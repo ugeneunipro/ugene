@@ -62,8 +62,8 @@ private:
 class QDRepeatActorPrototype : public QDActorPrototype {
 public:
     QDRepeatActorPrototype();
-    IconRef getIconRef() const override {
-        return IconRef("repeat_finder", "repeats.png");
+    QString getIconPath() const override {
+        return ":repeat_finder/images/repeats.png";
     }
     QDActor* createInstance() const {
         return new QDRepeatActor(this);

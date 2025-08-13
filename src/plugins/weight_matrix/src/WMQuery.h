@@ -65,8 +65,8 @@ private slots:
 class QDWMActorPrototype : public QDActorPrototype {
 public:
     QDWMActorPrototype();
-    IconRef getIconRef() const override {
-        return IconRef("weight_matrix", "weight_matrix.png");
+    QString getIconPath() const override {
+        return ":weight_matrix/images/weight_matrix.png";
     }
     virtual QDActor* createInstance() const {
         return new QDWMActor(this);

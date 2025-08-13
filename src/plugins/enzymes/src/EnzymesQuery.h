@@ -66,8 +66,8 @@ private:
 class QDEnzymesActorPrototype : public QDActorPrototype {
 public:
     QDEnzymesActorPrototype();
-    IconRef getIconRef() const override {
-        return IconRef("enzymes", "enzymes.png");
+    QString getIconPath() const override {
+        return ":enzymes/images/enzymes.png";
     }
     QDActor* createInstance() const override {
         return new QDEnzymesActor(this);

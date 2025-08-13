@@ -40,7 +40,7 @@ SearchBox::SearchBox(QWidget* p)
 
     progressLabel = new QLabel(this);
     progressLabel->setStyleSheet(LABEL_STYLE_SHEET);
-    GUIUtils::setMovie(progressLabel, IconRef("core", "progress.gif"));
+    GUIUtils::setMovie(progressLabel, ":/core/images/progress.gif");
 
     searchIconLabel = new QLabel(this);
     searchIconLabel->setStyleSheet(LABEL_STYLE_SHEET);
@@ -48,7 +48,7 @@ SearchBox::SearchBox(QWidget* p)
 
     clearButton = new QToolButton(this);
     clearButton->setStyleSheet(CLEAR_BUTTON_STYLE_SHEET);
-    GUIUtils::setThemedIcon<QToolButton>(clearButton, IconRef("core", "close_small"));
+    GUIUtils::setThemedIcon<QToolButton>(clearButton, ":/core/images/close_small.png");
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setVisible(false);
     clearButton->setObjectName("project filter clear button");

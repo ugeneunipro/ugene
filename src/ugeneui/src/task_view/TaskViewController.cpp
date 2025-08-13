@@ -48,10 +48,10 @@ namespace U2 {
 #define SETTINGS_ROOT QString("task_view/")
 
 TaskViewDockWidget::TaskViewDockWidget() {
-    waitingIp = IconRef("ugene", "hourglass.png");
-    activeIp = IconRef("ugene", "hourglass_go.png");
-    wasErrorIp = IconRef("ugene", "hourglass_err.png");
-    finishedIp = IconRef("ugene", "hourglass_ok.png");
+    waitingIconPath = ":ugene/images/hourglass.png";
+    activeIconPath = ":ugene/images/hourglass_go.png";
+    wasErrorIconPath = ":ugene/images/hourglass_err.png";
+    finishedIconPath = ":ugene/images/hourglass_ok.png";
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));
@@ -622,9 +622,9 @@ void TVTreeItem::updateVisual() {
     setText(TVColumns_Name, taskName);
 
     if (task == nullptr || task->isFinished()) {
-        setIcon(TVColumns_Name, GUIUtils::getIconResource(wasError ? w->wasErrorIp : w->finishedIp));
+        setIcon(TVColumns_Name, GUIUtils::getIconResource(wasError ? w->wasErrorIconPath : w->finishedIconPath));
     } else {
-        setIcon(TVColumns_Name, GUIUtils::getIconResource(task->isRunning() ? w->activeIp : w->waitingIp));
+        setIcon(TVColumns_Name, GUIUtils::getIconResource(task->isRunning() ? w->activeIconPath : w->waitingIconPath));
         setChildIndicatorPolicy(task->getSubtasks().isEmpty() ? QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
     }
 

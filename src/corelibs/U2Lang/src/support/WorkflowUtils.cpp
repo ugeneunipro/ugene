@@ -305,11 +305,11 @@ bool WorkflowUtils::validate(const Schema& schema, QList<QListWidgetItem*>& info
             item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(notification.message));
         }
         if (notification.type == WorkflowNotification::U2_ERROR) {
-            item->setData(ICON_DATA_REF, QVariant::fromValue<IconRef>(IconRef("U2Lang", "error.png")));
+            item->setData(ICON_DATA_REF, ":U2Lang/images/error.png");
         } else if (notification.type == WorkflowNotification::U2_WARNING) {
-            item->setData(ICON_DATA_REF, QVariant::fromValue<IconRef>(IconRef("U2Lang", "warning.png")));
+            item->setData(ICON_DATA_REF, ":U2Lang/images/warning.png");
         } else if (a != nullptr) {
-            item->setData(ICON_DATA_REF, QVariant::fromValue<IconRef>(a->getProto()->getIconRef()));
+            item->setData(ICON_DATA_REF, a->getProto()->getIconPath());
         }
 
         item->setData(ACTOR_ID_REF, notification.actorId);

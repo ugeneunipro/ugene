@@ -90,7 +90,7 @@ void ChromaViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
     }
 
     auto action = new ChromaViewAction();
-    GUIUtils::setThemedIcon<ChromaViewAction>(action, IconRef("chroma_view", "cv.png"));
+    GUIUtils::setThemedIcon<ChromaViewAction>(action, ":chroma_view/images/cv.png");
     action->setCheckable(true);
     action->setChecked(false);
     action->addToMenu = true;

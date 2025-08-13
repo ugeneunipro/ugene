@@ -114,7 +114,7 @@ void SiteconBuildWorker::registerProto() {
 
     proto->setPrompter(new SiteconBuildPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconRef(IconRef("sitecon", "sitecon.png"));
+    proto->setIconPath(":sitecon/images/sitecon.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 

@@ -317,7 +317,7 @@ void HmmerAdvContext::initViewContext(GObjectViewController* view) {
     auto adv = qobject_cast<AnnotatedDNAView*>(view);
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
 
-    auto searchAction = new ADVGlobalAction(adv, IconRef("external_tool_support", "hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
+    auto searchAction = new ADVGlobalAction(adv, ":/external_tool_support/images/hmmer.png", tr("Find HMM signals with HMMER3..."), 70);
     searchAction->setObjectName("Find HMM signals with HMMER3");
     connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
 }

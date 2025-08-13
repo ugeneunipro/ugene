@@ -72,7 +72,7 @@ public:
 
 private:
     static const QString GROUP_ID;
-    static const IconRef GROUP_ICON_PAR;
+    static const QString GROUP_ICON_STR;
     static const QString GROUP_DOC_PAGE;
 };
 

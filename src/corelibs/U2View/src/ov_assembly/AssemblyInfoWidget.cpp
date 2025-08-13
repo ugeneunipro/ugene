@@ -119,7 +119,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser* browser, QWidget* p)
 // AssemblyInfoWidgetFactory
 ////////////////////////////////////
 const QString AssemblyInfoWidgetFactory::GROUP_ID = "OP_ASS_INFO";
-const IconRef AssemblyInfoWidgetFactory::GROUP_ICON_PAR = IconRef("core", "chart_bar.png");
+const QString AssemblyInfoWidgetFactory::GROUP_ICON_STR = ":core/images/chart_bar.png";
 const QString AssemblyInfoWidgetFactory::GROUP_DOC_PAGE = "65929861";
 
 AssemblyInfoWidgetFactory::AssemblyInfoWidgetFactory() {
@@ -140,7 +140,7 @@ QWidget* AssemblyInfoWidgetFactory::createWidget(GObjectViewController* objView,
 }
 
 OPGroupParameters AssemblyInfoWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Assembly Statistics"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Assembly Statistics"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

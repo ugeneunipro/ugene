@@ -117,9 +117,9 @@ void MsaGeneralTab::reInitializeParameters() {
     QString currentCopyFormattedID = msaEditor->getLineWidget(0)->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 
-    IconRef iconRef("core", "goto.png");
-    GUIUtils::setThemedIcon<QToolButton>(convertNucleicAlphabetButton, iconRef);
-    GUIUtils::setThemedIcon<QToolButton>(convertAminoAlphabetButton, iconRef);
+    QString iconPath(":core/images/goto.png");
+    GUIUtils::setThemedIcon<QToolButton>(convertNucleicAlphabetButton, iconPath);
+    GUIUtils::setThemedIcon<QToolButton>(convertAminoAlphabetButton, iconPath);
 }
 
 void MsaGeneralTab::initializeParameters() {

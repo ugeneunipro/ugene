@@ -111,7 +111,7 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     connect(newDocumentFromTextAction, SIGNAL(triggered()), SLOT(sl_newDocumentFromText()));
 
     pasteAction = new QAction(tr("Open from clipboard..."), this);
-    GUIUtils::setThemedIcon<QAction>(pasteAction, IconRef("core", "paste.png"));
+    GUIUtils::setThemedIcon<QAction>(pasteAction, ":ugene/images/paste.png");
     pasteAction->setObjectName(ACTION_PROJECTSUPPORT__PASTE);
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
     connect(pasteAction, SIGNAL(triggered()), SLOT(sl_paste()));
@@ -860,7 +860,7 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget* w)
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    GUIUtils::setWindowIcon(this, IconRef("ugene", "project_save.png"));
+    GUIUtils::setWindowIcon(this, ":ugene/images/project_save.png");
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(sl_clicked(QAbstractButton*)));
 }

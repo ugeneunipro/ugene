@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString MsaGeneralTabFactory::GROUP_ID = "OP_MSA_GENERAL";
-const IconRef MsaGeneralTabFactory::GROUP_ICON_PAR = IconRef("core", "settings2.png");
+const QString MsaGeneralTabFactory::GROUP_ICON_STR = ":core/images/settings2.png";
 const QString MsaGeneralTabFactory::GROUP_DOC_PAGE = "65929634";
 
 MsaGeneralTabFactory::MsaGeneralTabFactory() {
@@ -59,7 +59,7 @@ const QString& MsaGeneralTabFactory::getGroupId() {
 }
 
 OPGroupParameters MsaGeneralTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("General"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("General"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

@@ -76,12 +76,12 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     connect(syncByAnnSelAction, SIGNAL(triggered()), SLOT(sl_sync()));
 
     lockMenu = new QMenu(tr("Lock scales"));
-    GUIUtils::setThemedIcon<QMenu>(lockMenu, IconRef("core", "lock_scales.png"));
+    GUIUtils::setThemedIcon<QMenu>(lockMenu, ":core/images/lock_scales.png");
     lockMenu->addActions(lockActionGroup->actions());
     connect(lockMenu, &QMenu::aboutToShow, this, &ADVSyncViewManager::sl_setUpLockMenuActions);
 
     syncMenu = new QMenu(tr("Adjust scales"));
-    GUIUtils::setThemedIcon<QMenu>(syncMenu, IconRef("core", "sync_scales.png"));
+    GUIUtils::setThemedIcon<QMenu>(syncMenu, ":core/images/sync_scales.png");
     syncMenu->addAction(syncByStartPosAction);
     syncMenu->addAction(syncBySeqSelAction);
     syncMenu->addAction(syncByAnnSelAction);
@@ -104,7 +104,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     // auto-annotations highlighting ops
 
     toggleAutoAnnotationsMenu = new QMenu("Global automatic annotation highlighting");
-    GUIUtils::setThemedIcon<QMenu>(toggleAutoAnnotationsMenu, IconRef("core", "predefined_annotation_groups.png"));
+    GUIUtils::setThemedIcon<QMenu>(toggleAutoAnnotationsMenu, ":core/images/predefined_annotation_groups.png");
     connect(toggleAutoAnnotationsMenu, SIGNAL(aboutToShow()), SLOT(sl_updateAutoAnnotationsMenu()));
 
     toggleAutoAnnotationsButton = new QToolButton();

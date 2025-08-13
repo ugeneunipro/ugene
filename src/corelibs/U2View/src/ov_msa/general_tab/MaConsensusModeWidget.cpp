@@ -43,7 +43,7 @@ MaConsensusModeWidget::MaConsensusModeWidget(QWidget* parent)
       consArea(nullptr),
       maObject(nullptr) {
     setupUi(this);
-    GUIUtils::setThemedIcon<QToolButton>(thresholdResetButton, IconRef("core", "arrow_rotate_clockwise.png"));
+    GUIUtils::setThemedIcon<QToolButton>(thresholdResetButton, ":core/images/arrow_rotate_clockwise.png");
 }
 
 void MaConsensusModeWidget::reInit(MsaObject* _maObject, MaEditorConsensusArea* _consArea) {
