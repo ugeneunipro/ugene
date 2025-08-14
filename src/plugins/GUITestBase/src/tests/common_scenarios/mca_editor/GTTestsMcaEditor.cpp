@@ -3764,7 +3764,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     QString fileName = "alignment.ugenedb";
 
     // 1. Copy to 'sandbox' and open alignment.ugenedb
-    GTFile::copy(filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(filePath, sandBoxDir + fileName);
     GTFileDialog::openFile(sandBoxDir, fileName);
 
     // 2. Click "Zoom out" until it's disabled
