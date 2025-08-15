@@ -42,24 +42,24 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_updateState()));
 
     minusAction = new QAction(tr("Decrease peaks height"), this);
-    GUIUtils::setThemedIcon<QAction>(minusAction, ":core/images/minus.png");
+    GUIUtils::setThemedIcon(minusAction, ":core/images/minus.png");
     connect(minusAction, SIGNAL(triggered()), SLOT(sl_minusButtonClicked()));
 
     minusButton = new QToolButton();
     minusButton->setText(QString(tr("Decrease peaks height")));
-    GUIUtils::setThemedIcon<QToolButton>(minusButton, ":core/images/minus.png");
+    GUIUtils::setThemedIcon(minusButton, ":core/images/minus.png");
     minusButton->setFixedSize(20, 20);
     minusButton->setAutoRepeat(true);
     minusButton->setAutoRepeatInterval(20);
     connect(minusButton, SIGNAL(clicked()), minusAction, SLOT(trigger()));
 
     plusAction = new QAction(tr("Increase peaks height"), this);
-    GUIUtils::setThemedIcon<QAction>(plusAction, ":core/images/plus.png");
+    GUIUtils::setThemedIcon(plusAction, ":core/images/plus.png");
     connect(plusAction, SIGNAL(triggered()), SLOT(sl_plusButtonClicked()));
 
     plusButton = new QToolButton(this);
     plusButton->setText(QString(tr("Increase peaks height")));
-    GUIUtils::setThemedIcon<QToolButton>(plusButton, ":core/images/plus.png");
+    GUIUtils::setThemedIcon(plusButton, ":core/images/plus.png");
     plusButton->setAutoRepeat(true);
     plusButton->setAutoRepeatInterval(20);
     plusButton->setFixedSize(20, 20);

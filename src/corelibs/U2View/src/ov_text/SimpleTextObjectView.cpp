@@ -117,7 +117,7 @@ QWidget* SimpleTextObjectView::createViewWidget(QWidget* parent) {
     connect(textEdit, SIGNAL(textChanged()), SLOT(sl_onTextEditTextChanged()));
     connect(textObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_onTextObjStateLockChanged()));
     textEdit->installEventFilter(this);
-    auto windowsIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::TEXT).iconPath);
+    auto windowsIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::TEXT).iconPath);
     textEdit->setWindowIcon(windowsIcon);
     return textEdit;
 }

@@ -111,7 +111,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     createAnnotationAction = (new ADVAnnotationCreation(this))->getCreateAnnotationAction();
 
     posSelectorAction = new QAction(tr("Go to position..."), this);
-    GUIUtils::setThemedIcon<QAction>(posSelectorAction, ":core/images/goto.png");
+    GUIUtils::setThemedIcon(posSelectorAction, ":core/images/goto.png");
     posSelectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     posSelectorAction->setShortcutContext(Qt::WindowShortcut);
     posSelectorAction->setObjectName(ADV_GOTO_ACTION);
@@ -257,7 +257,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     mainSplitter->addAction(removeAnnsAndQsAction);
 
-    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconPath);
+    auto windowIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconPath);
     mainSplitter->setWindowIcon(windowIcon);
 
     // Init the Options Panel

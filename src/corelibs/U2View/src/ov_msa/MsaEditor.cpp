@@ -130,17 +130,17 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
 
     saveScreenshotAction = new QAction(tr("Export as image"), this);
-    GUIUtils::setThemedIcon<QAction>(saveScreenshotAction, ":/core/images/cam2.png");
+    GUIUtils::setThemedIcon(saveScreenshotAction, ":/core/images/cam2.png");
     saveScreenshotAction->setObjectName("export_msa_as_image_action");
     connect(saveScreenshotAction, &QAction::triggered, this, &MsaEditor::sl_exportImage);
 
     buildTreeAction = new QAction(tr("Build Tree"), this);
-    GUIUtils::setThemedIcon<QAction>(buildTreeAction, ":/core/images/phylip.png");
+    GUIUtils::setThemedIcon(buildTreeAction, ":/core/images/phylip.png");
     buildTreeAction->setObjectName("Build Tree");
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
     alignSelectedSequencesToAlignmentAction = new QAction(tr("Realign sequence(s) to other sequences"), this);
-    GUIUtils::setThemedIcon<QAction>(alignSelectedSequencesToAlignmentAction, ":/core/images/realign_some_sequences.png");
+    GUIUtils::setThemedIcon(alignSelectedSequencesToAlignmentAction, ":/core/images/realign_some_sequences.png");
     alignSelectedSequencesToAlignmentAction->setObjectName("align_selected_sequences_to_alignment");
 
     pairwiseAlignmentWidgetsSettings = new PairwiseAlignmentWidgetsSettings;
@@ -536,7 +536,7 @@ void MsaEditor::initActions() {
     MaEditor::initActions();
 
     searchInSequencesAction = new QAction(tr("Search in sequences…"), this);
-    GUIUtils::setThemedIcon<QAction>(searchInSequencesAction, ":core/images/find_dialog.png");
+    GUIUtils::setThemedIcon(searchInSequencesAction, ":core/images/find_dialog.png");
     searchInSequencesAction->setObjectName("search_in_sequences");
     searchInSequencesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     searchInSequencesAction->setShortcutContext(Qt::WindowShortcut);
@@ -544,7 +544,7 @@ void MsaEditor::initActions() {
     connect(searchInSequencesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequences()));
 
     searchInSequenceNamesAction = new QAction(tr("Search in sequence names…"), this);
-    GUIUtils::setThemedIcon<QAction>(searchInSequenceNamesAction, ":core/images/find_dialog.png");
+    GUIUtils::setThemedIcon(searchInSequenceNamesAction, ":core/images/find_dialog.png");
     searchInSequenceNamesAction->setObjectName("search_in_sequence_names");
     searchInSequenceNamesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
     searchInSequenceNamesAction->setShortcutContext(Qt::WindowShortcut);

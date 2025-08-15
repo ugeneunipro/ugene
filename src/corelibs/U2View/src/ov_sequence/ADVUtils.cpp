@@ -32,7 +32,7 @@ namespace U2 {
 ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QString& _iconPath, const QString& text, int ps, const ADVGlobalActionFlags& fl)
     : GObjectViewAction(v, v, text), pos(ps), flags(fl) {
     if (!_iconPath.isEmpty()) {
-        GUIUtils::setThemedIcon<ADVGlobalAction>(this, _iconPath);
+        GUIUtils::setThemedIcon(this, _iconPath);
     }
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
     connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVGlobalAction::sl_colorThemeSwitched);

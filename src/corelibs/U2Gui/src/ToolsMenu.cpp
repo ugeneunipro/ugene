@@ -236,7 +236,7 @@ QMenu* ToolsMenu::createMenu(QMenu* tools, const QString& menuName) {
     SAFE_POINT(actionText.contains(menuName), "Unknown tool sub menu " + menuName, nullptr);
     auto result = new QMenu(actionText[menuName], tools);
     if (actionIcon.contains(menuName)) {
-        result->setIcon(GUIUtils::getIconResource(actionIcon[menuName]));
+        result->setIcon(GUIUtils::getThemedIcon(actionIcon[menuName]));
     }
     result->setObjectName(menuName);
 

@@ -96,6 +96,8 @@ MWDockManagerImpl::MWDockManagerImpl(MainWindowImpl* _mw)
 
     mainWindowIsHidden = false;
     mw->installEventFilter(this);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MWDockManagerImpl::sl_colorThemeSwitched);
 }
 
 MWDockManagerImpl::~MWDockManagerImpl() {
@@ -420,12 +422,6 @@ void MWDockManagerImpl::dontActivateNextTime(MWDockArea a) {
     lastActiveDocksState[a] = "";
 }
 
-void MWDockManagerImpl::colorThemeSwitched() {
-    for (auto doc : qAsConst(docks)) {
-        DockWidgetPainter::updateLabel(doc, doc->isActive);
-    }
-}
-
 void MWDockManagerImpl::saveDockGeometry(DockData* dd) {
     const QString& id = dd->wrapWidget->w->objectName();
     const QSize& size = dd->wrapWidget->w->size();
@@ -458,6 +454,12 @@ void MWDockManagerImpl::sl_toggleDocks() {
                 openDock(toggleDockState[i]);
             }
         }
+    }
+}
+
+void MWDockManagerImpl::sl_colorThemeSwitched() {
+    for (auto doc : qAsConst(docks)) {
+        DockWidgetPainter::updateLabel(doc, doc->isActive);
     }
 }
 

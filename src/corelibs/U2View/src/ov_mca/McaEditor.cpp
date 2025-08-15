@@ -217,7 +217,7 @@ void McaEditor::initActions() {
     ui->addAction(resetZoomAction);
 
     showChromatogramsAction = new QAction(tr("Show chromatograms"), this);
-    GUIUtils::setThemedIcon<QAction>(showChromatogramsAction, ":/core/images/graphs.png");
+    GUIUtils::setThemedIcon(showChromatogramsAction, ":/core/images/graphs.png");
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));

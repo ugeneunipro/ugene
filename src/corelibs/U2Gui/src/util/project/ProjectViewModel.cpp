@@ -1040,7 +1040,7 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnab
 
     bool locked = obj->getGObjectModLock(GObjectModLock_IO) != nullptr;
     const GObjectTypeInfo& ti = GObjectTypes::getTypeInfo(obj->getGObjectType());
-    QIcon icon = GUIUtils::getIconResource(locked ? ti.lockedIconPath : ti.iconPath);
+    QIcon icon = GUIUtils::getThemedIcon(locked ? ti.lockedIconPath : ti.iconPath);
     return getIcon(icon, itemIsEnabled);
 }
 

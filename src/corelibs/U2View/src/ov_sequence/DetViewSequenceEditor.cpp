@@ -54,7 +54,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
       animationTimer(this),
       view(view) {
     editAction = new QAction(tr("Switch on the editing mode"), this);
-    GUIUtils::setThemedIcon<QAction>(editAction, ":core/images/edit.png");
+    GUIUtils::setThemedIcon(editAction, ":core/images/edit.png");
     editAction->setObjectName("edit_sequence_action");
     editAction->setCheckable(true);
     editAction->setDisabled(view->getSequenceObject()->isStateLocked());

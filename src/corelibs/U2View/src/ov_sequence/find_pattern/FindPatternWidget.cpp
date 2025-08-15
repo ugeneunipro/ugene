@@ -255,7 +255,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
                                                    << editEnd->objectName());
 
     ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
-    GUIUtils::setMovie(progressLabel, ":/core/images/progress.gif");
+    GUIUtils::setThemedMovie(progressLabel, ":/core/images/progress.gif");
     if (activeContext != nullptr) {
         // Initializing the annotation model
         CreateAnnotationModel annotModel;

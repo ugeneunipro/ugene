@@ -71,11 +71,11 @@ public:
 
     const QString& getName() const;
     const QString& getPath() const;
-    // Set icon reference for normal icon
+    // Set icon path for normal icon
     const QString& getIconPath() const;
-    // Set icon reference for grey icon (ET not set)
+    // Set icon path for grey icon (ET not set)
     const QString& getGrayIconPath() const;
-    // Set icon reference for warn icon (ET set, but there are some problems)
+    // Set icon path for warn icon (ET set, but there are some problems)
     const QString& getWarnIconPath() const;
     const QString& getDescription() const;
     const QString& getToolRunnerProgramId() const;

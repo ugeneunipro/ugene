@@ -129,7 +129,7 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus* initDebugInfo,
 
 void BreakpointManagerView::createActions() {
     newBreakpointAction = new QAction(tr("&Break at element..."), this);
-    GUIUtils::setThemedIcon<QAction>(newBreakpointAction, ":workflow_designer/images/breakpoint.png");
+    GUIUtils::setThemedIcon(newBreakpointAction, ":workflow_designer/images/breakpoint.png");
     newBreakpointAction->setShortcut(QKeySequence("Ctrl+B"));
     connect(newBreakpointAction, SIGNAL(triggered()), SLOT(sl_newBreakpoint()));
     connect(newBreakpointAction, SIGNAL(triggered()), scene, SLOT(update()));
@@ -158,7 +158,7 @@ void BreakpointManagerView::createActions() {
     disableAllBreakpointsAction->setEnabled(false);
 
     highlightItemWithBreakpoint = new QAction(tr("H&ighlight selected item"), this);
-    GUIUtils::setThemedIcon<QAction>(highlightItemWithBreakpoint, ":workflow_designer/images/highlight_item.png");
+    GUIUtils::setThemedIcon(highlightItemWithBreakpoint, ":workflow_designer/images/highlight_item.png");
     highlightItemWithBreakpoint->setShortcut(QKeySequence("Ctrl+H"));
     connect(highlightItemWithBreakpoint, SIGNAL(triggered()), SLOT(sl_highlightItem()));
     highlightItemWithBreakpoint->setEnabled(false);

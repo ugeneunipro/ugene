@@ -37,13 +37,13 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
     SAFE_POINT(maObject != nullptr, "NULL MSA Object!", );
 
     undoAction = new QAction(tr("Undo"), this);
-    GUIUtils::setThemedIcon<QAction>(undoAction, ":core/images/undo.png");
+    GUIUtils::setThemedIcon(undoAction, ":core/images/undo.png");
     undoAction->setObjectName("msa_action_undo");
     undoAction->setShortcut(QKeySequence::Undo);
     GUIUtils::updateActionToolTip(undoAction);
 
     redoAction = new QAction(tr("Redo"), this);
-    GUIUtils::setThemedIcon<QAction>(redoAction, ":core/images/redo.png");
+    GUIUtils::setThemedIcon(redoAction, ":core/images/redo.png");
     redoAction->setObjectName("msa_action_redo");
     redoAction->setShortcut(QKeySequence::Redo);
     GUIUtils::updateActionToolTip(redoAction);

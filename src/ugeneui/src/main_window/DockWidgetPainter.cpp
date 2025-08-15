@@ -41,7 +41,7 @@ const int DockWidgetPaintData::ICON_TEXT_DIST = 6;
 const int DockWidgetPaintData::ICON_SIZE = 16;
 
 void DockWidgetPainter::updateLabel(DockData* d, bool active) {
-    const QIcon icon = GUIUtils::getIconResource(d->wrapWidget->iconPath);
+    const QIcon icon = GUIUtils::getThemedIcon(d->wrapWidget->iconPath);
     const QString text = d->wrapWidget->windowTitle();
     const QString keyPrefix = findKeyPrefix(d->keySequenceAction);
     const DockWidgetPaintData paintData(icon, keyPrefix + text, d->area);

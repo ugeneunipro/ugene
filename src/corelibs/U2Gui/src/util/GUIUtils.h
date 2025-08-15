@@ -83,40 +83,52 @@ public:
 private:
     static void setThemedIconProperty(QObject* object, const QString& iconPath);
 
-public:
-    // Sets themed icon for the object
-    // object - the object to set icon for
-    // iconRef - icon reference
     template<typename T>
-    static void setThemedIcon(T* object, const QString& iconPath) {
-        object->setIcon(GUIUtils::getIconResource(iconPath));
+    static void setThemedIconPrivate(T* object, const QString& iconPath) {
+        object->setIcon(GUIUtils::getThemedIcon(iconPath));
         setThemedIconProperty(object, iconPath);
     }
+
+public:
+    // Sets themed icon for the object
+    // action - the action to set icon for
+    // iconRef - icon path
+    static void setThemedIcon(QAction* action, const QString& iconPath);
+
+    // Sets themed icon for the object
+    // button - the button to set icon for
+    // iconRef - icon path
+    static void setThemedIcon(QAbstractButton* button, const QString& iconPath);
+
+    // Sets themed icon for the object
+    // menu - the menu to set icon for
+    // iconRef - icon path
+    static void setThemedIcon(QMenu* menu, const QString& iconPath);
 
     // Sets themed icon for the object
     // object - the object to set icon for
     // iconRef - icon reference
     static void setThemedIcon(QLabel* label, const QString& iconPath);
 
-    // Sets movie for the label
+    // Sets themed movie for the label
     // label - the label to set movie for
-    // iconRef - icon reference
-    static void setMovie(QLabel* label, const QString& iconPath);
+    // iconRef - icon path
+    static void setThemedMovie(QLabel* label, const QString& iconPath);
 
-    // Sets icon for the window
+    // Sets themed icon for the window
     // widget - the widget to set icon for
-    // iconRef - icon reference
-    static void setWindowIcon(QWidget* widget, const QString& iconPath);
+    // iconRef - icon path
+    static void setThemedWindowIcon(QWidget* widget, const QString& iconPath);
 
-    // Returns resource as icon
-    // iconRef - icon reference
+    // Returns themed icon
+    // iconRef - icon path
     // returns - the corresponding icon
-    static QIcon getIconResource(const QString& iconPath);
+    static QIcon getThemedIcon(const QString& iconPath);
 
-    // Returns path to the corresponding resource
-    // iconRef - icon reference
+    // Returns path to the corresponding themed resource
+    // iconRef - icon path
     // returns - path to the resource
-    static QString getResourceName(const QString& iconPath);
+    static QString getThemedPath(const QString& iconPath);
 
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 

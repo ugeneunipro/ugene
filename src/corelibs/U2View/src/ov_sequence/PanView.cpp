@@ -149,22 +149,22 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
     zoomUsing = 0;
 
     zoomInAction = new QAction(tr("Zoom In"), this);
-    GUIUtils::setThemedIcon<QAction>(zoomInAction, ":/core/images/zoom_in.png");
+    GUIUtils::setThemedIcon(zoomInAction, ":/core/images/zoom_in.png");
     zoomInAction->setObjectName("action_zoom_in_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomInAction()));
 
     zoomOutAction = new QAction(tr("Zoom Out"), this);
-    GUIUtils::setThemedIcon<QAction>(zoomOutAction, ":/core/images/zoom_out.png");
+    GUIUtils::setThemedIcon(zoomOutAction, ":/core/images/zoom_out.png");
     zoomOutAction->setObjectName("action_zoom_out_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOutAction()));
 
     zoomToSelectionAction = new QAction(tr("Zoom to Selection"), this);
-    GUIUtils::setThemedIcon<QAction>(zoomToSelectionAction, ":/core/images/zoom_sel.png");
+    GUIUtils::setThemedIcon(zoomToSelectionAction, ":/core/images/zoom_sel.png");
     zoomToSelectionAction->setObjectName("action_zoom_to_selection_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
     zoomToSequenceAction = new QAction(tr("Zoom to Whole Sequence"), this);
-    GUIUtils::setThemedIcon<QAction>(zoomToSequenceAction, ":/core/images/zoom_whole.png");
+    GUIUtils::setThemedIcon(zoomToSequenceAction, ":/core/images/zoom_whole.png");
     zoomToSequenceAction->setObjectName("action_zoom_to_sequence_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSequenceAction, SIGNAL(triggered()), SLOT(sl_zoomToSequence()));
 

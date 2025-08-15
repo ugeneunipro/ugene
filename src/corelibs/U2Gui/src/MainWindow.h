@@ -236,8 +236,6 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName) = 0;
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
-
-    virtual void colorThemeSwitched() = 0;
 };
 
 }  // namespace U2

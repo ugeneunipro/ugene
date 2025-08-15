@@ -589,7 +589,6 @@ void MainWindowImpl::sl_crashUgene() {
 }
 
 void MainWindowImpl::sl_colorThemeSwitched() {
-    dockManager->colorThemeSwitched();
     const auto& allWidgets = QApplication::allWidgets();
     for (auto widget : qAsConst(allWidgets)) {
         auto actions = widget->actions();
@@ -597,7 +596,7 @@ void MainWindowImpl::sl_colorThemeSwitched() {
             auto actionIconPathVariant = action->property(ICON_PATH_PROPERTY_NAME);
             CHECK_CONTINUE(!actionIconPathVariant.isNull());
 
-            action->setIcon(GUIUtils::getIconResource(actionIconPathVariant.toString()));
+            action->setIcon(GUIUtils::getThemedIcon(actionIconPathVariant.toString()));
         }
         auto wgtIconPathVariant = widget->property(ICON_PATH_PROPERTY_NAME);
         auto windowIconPathVariant = widget->property(WINDOWS_ICON_PATH_PROPERTY_NAME);
@@ -605,23 +604,23 @@ void MainWindowImpl::sl_colorThemeSwitched() {
         if (!wgtIconPathVariant.isNull()) {
             auto iconPath = wgtIconPathVariant.toString();
             if (auto target = qobject_cast<QAbstractButton*>(widget)) {
-                target->setIcon(GUIUtils::getIconResource(iconPath));
+                target->setIcon(GUIUtils::getThemedIcon(iconPath));
                 continue;
             } else if (auto menu = qobject_cast<QMenu*>(widget)) {
-                menu->setIcon(GUIUtils::getIconResource(iconPath));
+                menu->setIcon(GUIUtils::getThemedIcon(iconPath));
                 continue;
             } else if (auto target = qobject_cast<QLabel*>(widget)) {
-                target->setPixmap(GUIUtils::getIconResource(iconPath).pixmap(PIXMAP_SIZE, PIXMAP_SIZE));
+                target->setPixmap(GUIUtils::getThemedIcon(iconPath).pixmap(PIXMAP_SIZE, PIXMAP_SIZE));
                 continue;
             }
 
             FAIL_AND_CONTINUE(QString("Cannot set icon for widget %1 of type %2").arg(widget->objectName(), widget->metaObject()->className()));
         } else if (!windowIconPathVariant.isNull()) {
-            widget->setWindowIcon(GUIUtils::getIconResource(windowIconPathVariant.toString()));
+            widget->setWindowIcon(GUIUtils::getThemedIcon(windowIconPathVariant.toString()));
         } else if (!moviePathVariant.isNull()) {
             if (auto target = qobject_cast<QLabel*>(widget)) {
                 auto oldMovie = target->movie();
-                auto movie = new QMovie(GUIUtils::getResourceName(moviePathVariant.toString()), QByteArray(), target);
+                auto movie = new QMovie(GUIUtils::getThemedPath(moviePathVariant.toString()), QByteArray(), target);
                 target->setMovie(movie);
                 delete oldMovie;
                 continue;

@@ -122,7 +122,7 @@ BioStruct3DGLWidget::BioStruct3DGLWidget(BioStruct3DObject* obj, const Annotated
     QString currentModelID = obj->getBioStruct3D().pdbId;
     setObjectName(QString("%1-%2").arg(++widgetCount).arg(currentModelID));
 
-    auto windowsIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::BIOSTRUCTURE_3D).iconPath);
+    auto windowsIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::BIOSTRUCTURE_3D).iconPath);
     setWindowIcon(windowsIcon);
 
     connectExternalSignals();

@@ -95,7 +95,7 @@ public:
         if (!secondaryIconPath.isEmpty()) {
             QSize iconSize(16, 16);
             QRect secondaryIconRect(rect.left(), rect.top() + (rect.height() - iconSize.height()) / 2, iconSize.width(), iconSize.height());
-            GUIUtils::getIconResource(secondaryIconPath).paint(painter, secondaryIconRect);
+            GUIUtils::getThemedIcon(secondaryIconPath).paint(painter, secondaryIconRect);
         }
     }
 
@@ -127,7 +127,7 @@ static void updateModel(QTreeView* tree,
                               ? ":ugene/images/folder_shared.svg"
                               : ":ugene/images/folder.svg")
                        : ":ugene/images/document.svg";
-        QIcon icon = GUIUtils::getIconResource(iconPath);
+        QIcon icon = GUIUtils::getThemedIcon(iconPath);
         auto childEntryKey = childEntry->sessionLocalId;
         QStandardItem* nameItem;
         if (childrenMap.contains(childEntryKey)) {
@@ -243,7 +243,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     : workspaceService(_workspaceService) {
     setObjectName(DOCK_CLOUD_STORAGE_VIEW);
     setWindowTitle(tr("Cloud Storage"));
-    GUIUtils::setWindowIcon(this, ":ugene/images/cloud_storage.svg");
+    GUIUtils::setThemedWindowIcon(this, ":ugene/images/cloud_storage.svg");
 
     stateLabel = new QLabel();
     stateLabel->setTextFormat(Qt::RichText);
@@ -292,7 +292,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     });
 
     createDirAction = new QAction(tr("New Folder"), this);
-    GUIUtils::setThemedIcon<QAction>(createDirAction, ":ugene/images/new_folder.svg");
+    GUIUtils::setThemedIcon(createDirAction, ":ugene/images/new_folder.svg");
     createDirAction->setObjectName("cloudStorageCreateDirAction");
     createDirAction->setShortcut(QKeySequence(Qt::Key_Insert));
     createDirAction->setToolTip(tr("Create New Folder on Cloud Storage"));
@@ -300,7 +300,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->addAction(createDirAction);
 
     deleteAction = new QAction(tr("Delete"), this);
-    GUIUtils::setThemedIcon<QAction>(deleteAction, ":ugene/images/trash.svg");
+    GUIUtils::setThemedIcon(deleteAction, ":ugene/images/trash.svg");
     deleteAction->setObjectName("cloudStorageDeleteAction");
     deleteAction->setShortcut(QKeySequence::Delete);
     deleteAction->setToolTip(tr("Delete selected file from Cloud Storage"));
@@ -308,7 +308,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->addAction(deleteAction);
 
     renameAction = new QAction(tr("Rename"), this);
-    GUIUtils::setThemedIcon<QAction>(renameAction, ":ugene/images/file_rename.svg");
+    GUIUtils::setThemedIcon(renameAction, ":ugene/images/file_rename.svg");
     renameAction->setObjectName("cloudStorageRenameAction");
     renameAction->setToolTip(tr("Rename File on Cloud Storage"));
     renameAction->setShortcut(QKeySequence(Qt::Key_F2));
@@ -316,28 +316,28 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     treeView->addAction(renameAction);
 
     downloadAction = new QAction(tr("Download"), this);
-    GUIUtils::setThemedIcon<QAction>(downloadAction, ":ugene/images/file_download.svg");
+    GUIUtils::setThemedIcon(downloadAction, ":ugene/images/file_download.svg");
     downloadAction->setObjectName("cloudStorageDownloadAction");
     downloadAction->setToolTip(tr("Download File from Cloud Storage"));
     connect(downloadAction, &QAction::triggered, this, &CloudStorageDockWidget::downloadItem);
     treeView->addAction(downloadAction);
 
     uploadAction = new QAction(tr("Upload"), this);
-    GUIUtils::setThemedIcon<QAction>(uploadAction, ":ugene/images/file_upload.svg");
+    GUIUtils::setThemedIcon(uploadAction, ":ugene/images/file_upload.svg");
     uploadAction->setObjectName("cloudStorageUploadAction");
     uploadAction->setToolTip(tr("Upload File to Cloud Storage"));
     connect(uploadAction, &QAction::triggered, this, &CloudStorageDockWidget::uploadItem);
     treeView->addAction(uploadAction);
 
     shareAction = new QAction(tr("Share"), this);
-    GUIUtils::setThemedIcon<QAction>(shareAction, ":ugene/images/file_share.svg");
+    GUIUtils::setThemedIcon(shareAction, ":ugene/images/file_share.svg");
     shareAction->setObjectName("cloudStorageShareAction");
     shareAction->setToolTip(tr("Share file or folder with other users"));
     connect(shareAction, &QAction::triggered, this, &CloudStorageDockWidget::shareItem);
     treeView->addAction(shareAction);
 
     openWebWorkspaceAction = new QAction(tr("Open web interface"));
-    GUIUtils::setThemedIcon<QAction>(openWebWorkspaceAction, ":ugene/images/web_link.svg");
+    GUIUtils::setThemedIcon(openWebWorkspaceAction, ":ugene/images/web_link.svg");
     openWebWorkspaceAction->setToolTip(tr("Open Cloud Storage Web Interface in Browser"));
     connect(openWebWorkspaceAction, &QAction::triggered, this, [this] {
         QDesktopServices::openUrl(workspaceService->getWebWorkspaceUrl() + "/storage");
@@ -385,7 +385,7 @@ void CloudStorageDockWidget::updateTreeViewIconsRecursively(QStandardItem* item)
     SAFE_POINT_NN(item, );
 
     auto iconPath = item->data(USER_DATA_ICON).toString();
-    auto icon = GUIUtils::getIconResource(iconPath);
+    auto icon = GUIUtils::getThemedIcon(iconPath);
     item->setIcon(icon);
     for (int i = 0; i < item->rowCount(); i++) {
         updateTreeViewIconsRecursively(item->child(i));

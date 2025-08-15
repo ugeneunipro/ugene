@@ -59,7 +59,7 @@ Overview::Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
     detView = p->getDetView();
 
     auto densityGraphAction = new QAction("", this);
-    GUIUtils::setThemedIcon<QAction>(densityGraphAction, ":core/images/sum.png");
+    GUIUtils::setThemedIcon(densityGraphAction, ":core/images/sum.png");
     densityGraphAction->setObjectName("density_graph_action");
     densityGraphAction->setCheckable(true);
     densityGraphAction->setToolTip(tr("Toggle annotation density graph"));

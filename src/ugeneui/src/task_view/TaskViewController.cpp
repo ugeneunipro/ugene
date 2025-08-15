@@ -622,9 +622,9 @@ void TVTreeItem::updateVisual() {
     setText(TVColumns_Name, taskName);
 
     if (task == nullptr || task->isFinished()) {
-        setIcon(TVColumns_Name, GUIUtils::getIconResource(wasError ? w->wasErrorIconPath : w->finishedIconPath));
+        setIcon(TVColumns_Name, GUIUtils::getThemedIcon(wasError ? w->wasErrorIconPath : w->finishedIconPath));
     } else {
-        setIcon(TVColumns_Name, GUIUtils::getIconResource(task->isRunning() ? w->activeIconPath : w->waitingIconPath));
+        setIcon(TVColumns_Name, GUIUtils::getThemedIcon(task->isRunning() ? w->activeIconPath : w->waitingIconPath));
         setChildIndicatorPolicy(task->getSubtasks().isEmpty() ? QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
     }
 

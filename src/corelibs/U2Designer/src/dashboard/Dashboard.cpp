@@ -177,7 +177,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     tabButtonsLayout->addStretch(INT_MAX);  // Push the last button to the end.
 
     auto loadSchemaButton = new QToolButton(tabButtonsRow);
-    GUIUtils::setThemedIcon<QToolButton>(loadSchemaButton, ":U2Designer/images/load_schema.png");
+    GUIUtils::setThemedIcon(loadSchemaButton, ":U2Designer/images/load_schema.png");
     loadSchemaButton->setObjectName("loadSchemaButton");
     loadSchemaButton->setToolTip(tr("Open workflow schema"));
     //    loadSchemaButton->setText(tr("Open schema"));

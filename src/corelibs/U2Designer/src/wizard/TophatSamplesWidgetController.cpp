@@ -512,7 +512,7 @@ QListWidget* TophatSamples::getListWidget(int pos) const {
 
 QToolButton* TophatSamples::createButton(QWidget* parent, const QString& iconPath, bool addIconPathAsProperty) const {
     auto result = new QToolButton(parent);
-    result->setIcon(GUIUtils::getIconResource(iconPath));
+    result->setIcon(GUIUtils::getThemedIcon(iconPath));
     if (addIconPathAsProperty) {
         result->setProperty(MainWindow::ICON_PATH_PROPERTY_NAME, iconPath);
     }

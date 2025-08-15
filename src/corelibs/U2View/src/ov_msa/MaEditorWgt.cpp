@@ -103,7 +103,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 100);
 
-    auto windowIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconPath);
+    auto windowIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconPath);
     setWindowIcon(windowIcon);
 
     auto horizontalSequenceScrollBar = new GScrollBar(Qt::Horizontal);
@@ -255,7 +255,7 @@ void MaEditorWgt::initActions() {
     addAction(copySelectionAction);
 
     copyFormattedSelectionAction = new QAction(tr("Copy (custom format)"), this);
-    GUIUtils::setThemedIcon<QAction>(copyFormattedSelectionAction, ":core/images/copy_sequence.png");
+    GUIUtils::setThemedIcon(copyFormattedSelectionAction, ":core/images/copy_sequence.png");
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);

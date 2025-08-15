@@ -701,13 +701,13 @@ void ProjectTreeController::setupActions() {
     connect(addObjectToDocumentAction, SIGNAL(triggered()), SLOT(sl_onAddObjectToSelectedDocument()));
 
     importToDatabaseAction = new QAction(tr("Import..."), this);
-    GUIUtils::setThemedIcon<QAction>(importToDatabaseAction, ":core/images/database_copy.png");
+    GUIUtils::setThemedIcon(importToDatabaseAction, ":core/images/database_copy.png");
     importToDatabaseAction->setObjectName(ACTION_PROJECT__IMPORT_TO_DATABASE);
     tree->addAction(importToDatabaseAction);
     connect(importToDatabaseAction, SIGNAL(triggered()), SLOT(sl_onImportToDatabase()));
 
     loadSelectedDocumentsAction = new QAction(tr("Load selected document(s)"), this);
-    GUIUtils::setThemedIcon<QAction>(loadSelectedDocumentsAction, ":core/images/load_selected_documents.png");
+    GUIUtils::setThemedIcon(loadSelectedDocumentsAction, ":core/images/load_selected_documents.png");
     loadSelectedDocumentsAction->setObjectName("action_load_selected_documents");
     loadSelectedDocumentsAction->setShortcuts(QList<QKeySequence>() << Qt::Key_Enter << Qt::Key_Return);
     loadSelectedDocumentsAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
@@ -715,7 +715,7 @@ void ProjectTreeController::setupActions() {
     connect(loadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onLoadSelectedDocuments()));
 
     unloadSelectedDocumentsAction = new QAction(tr("Unload selected document(s)"), this);
-    GUIUtils::setThemedIcon<QAction>(unloadSelectedDocumentsAction, ":core/images/unload_document.png");
+    GUIUtils::setThemedIcon(unloadSelectedDocumentsAction, ":core/images/unload_document.png");
     unloadSelectedDocumentsAction->setObjectName(ACTION_PROJECT__UNLOAD_SELECTED);
     connect(unloadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onUnloadSelectedDocuments()));
 

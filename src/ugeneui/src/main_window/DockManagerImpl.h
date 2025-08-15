@@ -77,8 +77,6 @@ public:
 
     virtual void dontActivateNextTime(MWDockArea a);
 
-    virtual void colorThemeSwitched() override;
-
 protected:
     bool eventFilter(QObject* obj, QEvent* event);
 
@@ -87,6 +85,7 @@ private slots:
     void sl_widgetDestroyed();
     void sl_toggleDock();
     void sl_toggleDocks();
+    void sl_colorThemeSwitched();
 
 private:
     QToolBar* getDockBar(MWDockArea a) const;

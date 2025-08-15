@@ -63,7 +63,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     editor = new DetViewSequenceEditor(this);
 
     showComplementAction = new QAction(tr("Show complementary strand"), this);
-    GUIUtils::setThemedIcon<QAction>(showComplementAction, ":core/images/show_compl.png");
+    GUIUtils::setThemedIcon(showComplementAction, ":core/images/show_compl.png");
     showComplementAction->setObjectName("complement_action");
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));
 
@@ -97,7 +97,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     showAllFramesAction->setCheckable(true);
 
     wrapSequenceAction = new QAction(tr("Wrap sequence"), this);
-    GUIUtils::setThemedIcon<QAction>(wrapSequenceAction, ":core/images/wrap_sequence.png");
+    GUIUtils::setThemedIcon(wrapSequenceAction, ":core/images/wrap_sequence.png");
     wrapSequenceAction->setObjectName("wrap_sequence_action");
     connect(wrapSequenceAction, SIGNAL(triggered(bool)), SLOT(sl_wrapSequenceToggle(bool)));
 

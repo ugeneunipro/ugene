@@ -37,8 +37,8 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MsaEditor* _m
     setupUi(this);
     filler = new MSACompletionFiller();
 
-    GUIUtils::setThemedIcon<QToolButton>(addSeq, ":core/images/navi_right.png");
-    GUIUtils::setThemedIcon<QToolButton>(deleteSeq, ":core/images/close_small.png");
+    GUIUtils::setThemedIcon(addSeq, ":core/images/navi_right.png");
+    GUIUtils::setThemedIcon(deleteSeq, ":core/images/close_small.png");
 
     seqLineEdit->setText(msa->getReferenceRowName());
     seqLineEdit->setCursorPosition(CURSOR_START_POSITION);

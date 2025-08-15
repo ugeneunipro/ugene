@@ -76,17 +76,17 @@ void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
         (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty())) {
         isConfiguredToolFont.setItalic(true);
         const auto& grayIconPath = tool->getGrayIconPath();
-        auto grayIcon = GUIUtils::getIconResource(grayIconPath);
+        auto grayIcon = GUIUtils::getThemedIcon(grayIconPath);
         setIcon(grayIcon);
     } else {
         isConfiguredToolFont.setItalic(false);
         if (AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->isValid()) {
             const auto& iconPath = tool->getIconPath();
-            auto icon = GUIUtils::getIconResource(iconPath);
+            auto icon = GUIUtils::getThemedIcon(iconPath);
             setIcon(icon);
         } else {
             const auto& warnIiconPath = tool->getWarnIconPath();
-            auto warnIcon = GUIUtils::getIconResource(warnIiconPath);
+            auto warnIcon = GUIUtils::getThemedIcon(warnIiconPath);
             setIcon(warnIcon);
         }
     }

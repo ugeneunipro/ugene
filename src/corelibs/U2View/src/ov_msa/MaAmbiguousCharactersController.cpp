@@ -52,14 +52,14 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* ma
     SAFE_POINT(maEditor != nullptr, "maEditor is NULL", );
 
     nextAction = new QAction(tr("Jump to next ambiguous character"), this);
-    GUIUtils::setThemedIcon<QAction>(nextAction, ":core/images/amb_forward.png");
+    GUIUtils::setThemedIcon(nextAction, ":core/images/amb_forward.png");
     nextAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_A));
     nextAction->setObjectName("next_ambiguous");
     GUIUtils::updateActionToolTip(nextAction);
     connect(nextAction, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
     previousAction = new QAction(tr("Jump to previous ambiguous character"), this);
-    GUIUtils::setThemedIcon<QAction>(previousAction, ":core/images/amb_backward.png");
+    GUIUtils::setThemedIcon(previousAction, ":core/images/amb_backward.png");
     previousAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_A));
     previousAction->setObjectName("prev_ambiguous");
     GUIUtils::updateActionToolTip(previousAction);

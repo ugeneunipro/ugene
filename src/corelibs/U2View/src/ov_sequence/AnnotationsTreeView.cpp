@@ -207,7 +207,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     connect(toggleQualifierColumnAction, SIGNAL(triggered()), SLOT(sl_onToggleQualifierColumn()));
 
     removeColumnByHeaderClickAction = new QAction(tr("Hide column"), this);
-    GUIUtils::setThemedIcon<QAction>(removeColumnByHeaderClickAction, ":core/images/remove_column.png");
+    GUIUtils::setThemedIcon(removeColumnByHeaderClickAction, ":core/images/remove_column.png");
     connect(removeColumnByHeaderClickAction, SIGNAL(triggered()), SLOT(sl_onRemoveColumnByHeaderClick()));
 
     searchQualifierAction = new QAction(tr("Find qualifier..."), this);
@@ -1178,7 +1178,7 @@ void AnnotationsTreeView::updateState() {
     bool hasColumn = qColumns.contains(qName);
     toggleQualifierColumnAction->setText(!hasOnly1QualifierSelected ? tr("Toggle column") : (qColumns.contains(qName) ? tr("Hide '%1' column") : tr("Add '%1' column")).arg(qName));
 
-    GUIUtils::setThemedIcon<QAction>(toggleQualifierColumnAction, hasOnly1QualifierSelected ? (hasColumn ? ":core/images/remove_column.png" : ":core/images/add_column.png") : "");
+    GUIUtils::setThemedIcon(toggleQualifierColumnAction, hasOnly1QualifierSelected ? (hasColumn ? ":core/images/remove_column.png" : ":core/images/add_column.png") : "");
 
     QTreeWidgetItem* ciBase = tree->currentItem();
     auto ci = static_cast<AVItem*>(ciBase);
