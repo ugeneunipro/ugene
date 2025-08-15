@@ -3760,7 +3760,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045_4) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0046) {
-    QString filePath = dataDir + "samples/sanger/alignment.ugenedb";
+    QString filePath = dataDir + "samples/Sanger/alignment.ugenedb";
     QString fileName = "alignment.ugenedb";
 
     // 1. Copy to 'sandbox' and open alignment.ugenedb
