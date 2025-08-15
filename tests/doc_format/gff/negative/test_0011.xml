@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-broken-document index="doc" url="gff/10_annotation_tables.gff" io="local_file" format="gff" hints="max-objects-in-doc:10" message="contains too many"/>
+
+</multi-test>
