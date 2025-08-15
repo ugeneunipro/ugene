@@ -53,9 +53,10 @@ RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
 }
 
 U2Region RegionSelectorSettings::getOneRegionFromSelection() const {
-    U2Region region = selection->getSelectedRegions().isEmpty() ? U2Region(0, maxLen) : selection->getSelectedRegions().first();
-    if (selection->getSelectedRegions().size() == 2) {
-        U2Region secondReg = selection->getSelectedRegions().last();
+    const auto& selectedRegions = selection->getSelectedRegions();
+    U2Region region = selectedRegions.isEmpty() ? U2Region(0, maxLen) : selectedRegions.first();
+    if (selectedRegions.size() == 2) {
+        U2Region secondReg = selectedRegions.last();
         bool circularSelection = (region.startPos == 0 && secondReg.endPos() == maxLen) || (region.endPos() == maxLen && secondReg.startPos == 0);
         if (circularSelection) {
             if (secondReg.startPos == 0) {
@@ -139,22 +140,20 @@ void RegionSelectorController::setRegion(const U2Region& region) {
 
     qint64 end = region.endPos();
     if (end > settings.maxLen) {
-        if (settings.circular) {
-            end = region.endPos() % settings.maxLen;
-        } else {
-            end = settings.maxLen;
-        }
+        SAFE_POINT(settings.circular, "Region end position is out of range, but circular mode is not enabled", );
+
+        end = region.endPos() % settings.maxLen;
     }
 
     gui.startLineEdit->setText(QString::number(region.startPos + 1));
     gui.endLineEdit->setText(QString::number(end));
 
-    emit si_regionChanged(region);
+    emitRegionChanged(region);
 }
 
 U2Location RegionSelectorController::getLocation(bool* ok) const {
     U2Location res;
-    if (gui.presetsComboBox->currentText() == RegionPreset::getLocationModeDisplayName ()) {
+    if (gui.presetsComboBox->currentText() == RegionPreset::getLocationModeDisplayName()) {
         qint64 circularSequenceLength = settings.circular ? settings.maxLen : -1;
         const QByteArray qb = gui.locationLineEdit->text().toLatin1();
         *ok = Genbank::LocationParser::parseLocation(qb.constData(), qb.length(), res, circularSequenceLength) == Genbank::LocationParser::Success;
@@ -165,11 +164,10 @@ U2Location RegionSelectorController::getLocation(bool* ok) const {
 }
 
 void RegionSelectorController::setLocation(const U2Location& location) {
-    if (gui.presetsComboBox->currentText() == RegionPreset::getLocationModeDisplayName ()) {
-        gui.locationLineEdit->setText(U1AnnotationUtils::buildLocationString(location->regions));
-    } else {
-        setRegion(location.data()->regions.isEmpty() ? U2Region() : location.data()->regions.first());
-    }
+    SAFE_POINT_NN(gui.locationLineEdit, );
+    SAFE_POINT(gui.presetsComboBox->currentText() == RegionPreset::getLocationModeDisplayName(), "Incorrect preset type", );
+
+    gui.locationLineEdit->setText(U1AnnotationUtils::buildLocationString(location->regions));
 }
 
 QString RegionSelectorController::getPresetName() const {
@@ -185,7 +183,7 @@ void RegionSelectorController::setPreset(const QString& preset) {
 void RegionSelectorController::removePreset(const QString& preset) {
     gui.presetsComboBox->removeItem(gui.presetsComboBox->findText(preset));
     RegionPreset settingsPreset;
-    foreach (const RegionPreset& r, settings.presetRegions) {
+    for (const RegionPreset& r : qAsConst(settings.presetRegions)) {
         if (r.text == preset) {
             settingsPreset = r;
             break;
@@ -225,59 +223,52 @@ QString RegionSelectorController::getErrorMessage() const {
     return {};
 }
 
-void RegionSelectorController::sl_onPresetChanged(int index) {
-    //emit si_presetChanged(index);
-    blockSignals(true);
+void RegionSelectorController::sl_onRegionChanged() {
+    SAFE_POINT_NN(gui.startLineEdit, );
+    SAFE_POINT_NN(gui.endLineEdit, );
 
-    // set the region
-    if (index == gui.presetsComboBox->findText(RegionPreset::getCustomRegionModeDisplayName())) {
-        connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged()));
+    auto startLineEditText = gui.startLineEdit->text();
+    auto endLineEditText = gui.endLineEdit->text();
+    if (startLineEditText.isEmpty() || endLineEditText.isEmpty()) {
+        GUIUtils::setWidgetWarningStyle(gui.startLineEdit, startLineEditText.isEmpty());
+        GUIUtils::setWidgetWarningStyle(gui.endLineEdit, endLineEditText.isEmpty());
         return;
     }
 
-    if (index == gui.presetsComboBox->findText(RegionPreset::getSelectedRegionDisplayName())) {
-        setRegion(settings.getOneRegionFromSelection());
-    } else if(index == gui.presetsComboBox->findText(RegionPreset::getLocationModeDisplayName ())) {
-        setLocation(gui.presetsComboBox->itemData(index).value<U2Location>());
-    } else{
-        const U2Location location = gui.presetsComboBox->itemData(index).value<U2Location>();
-        setRegion(location.data()->regions.first());
-    }
-    blockSignals(false);
-}
-
-void RegionSelectorController::sl_regionChanged() {
-    gui.presetsComboBox->blockSignals(true);
+    SAFE_POINT_NN(gui.presetsComboBox, );
     gui.presetsComboBox->setCurrentIndex(gui.presetsComboBox->findText(RegionPreset::getCustomRegionModeDisplayName()));
-    gui.presetsComboBox->blockSignals(false);
-}
-
-void RegionSelectorController::sl_onRegionChanged() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
 
     bool ok = false;
+    const U2Region region = getRegion(&ok);
+    GUIUtils::setWidgetWarningStyle(gui.startLineEdit, !ok);
+    GUIUtils::setWidgetWarningStyle(gui.endLineEdit, !ok);
+    CHECK(ok, );
 
-    int v1 = gui.startLineEdit->text().toInt(&ok);
-    if (!ok || v1 < 1 || v1 > settings.maxLen) {
+    emitRegionChanged(region);
+}
+
+void RegionSelectorController::sl_onPresetChanged(int index) {
+    if (index == gui.presetsComboBox->findText(RegionPreset::getLocationModeDisplayName())) {
+        // This is a special case, because combobox isn't affected on location lineedit editing
+        setLocation(gui.presetsComboBox->itemData(index).value<U2Location>());
         return;
     }
 
-    int v2 = gui.endLineEdit->text().toInt(&ok);
-    if (!ok || v2 < 1 || v2 > settings.maxLen) {
-        return;
-    }
-    if (!settings.circular && v2 < v1) {
+    if (index == gui.presetsComboBox->findText(RegionPreset::getCustomRegionModeDisplayName())) {
         return;
     }
 
-    U2Region r;
-    if (v1 <= v2) {
-        r = U2Region(v1 - 1, v2 - (v1 - 1));
+    U2Region newRegion;
+    if (index == gui.presetsComboBox->findText(RegionPreset::getSelectedRegionDisplayName())) {
+        newRegion = settings.getOneRegionFromSelection();
+    } else if (index == gui.presetsComboBox->findText(RegionPreset::getWholeSequenceModeDisplayName())) {
+        const U2Location location = gui.presetsComboBox->itemData(index).value<U2Location>();
+        newRegion = location.data()->regions.first();
     } else {
-        r = U2Region(v1 - 1, v2 + settings.maxLen - (v1 - 1));
+        FAIL("Unexpected selection preset", );
     }
 
-    emit si_regionChanged(r);
+    setRegion(newRegion);
 }
 
 void RegionSelectorController::sl_onSelectionChanged(GSelection* selection) {
@@ -300,24 +291,13 @@ void RegionSelectorController::sl_onSelectionChanged(GSelection* selection) {
     }
 }
 
-void RegionSelectorController::sl_onValueEdited() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
-
-    if (gui.startLineEdit->text().isEmpty() || gui.endLineEdit->text().isEmpty()) {
-        GUIUtils::setWidgetWarningStyle(gui.startLineEdit, gui.startLineEdit->text().isEmpty());
-        GUIUtils::setWidgetWarningStyle(gui.endLineEdit, gui.endLineEdit->text().isEmpty());
-        return;
-    }
-
-    const U2Region region = getRegion();
-    GUIUtils::setWidgetWarningStyle(gui.startLineEdit, region.isEmpty());
-    GUIUtils::setWidgetWarningStyle(gui.endLineEdit, region.isEmpty());
-}
-
 void RegionSelectorController::init() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
+    SAFE_POINT_NN(gui.startLineEdit, );
+    SAFE_POINT_NN(gui.endLineEdit, );
 
-    int w = qMax(((int)log10((double)settings.maxLen)) * 10, 50);
+    const int BASE_WIDTH = 10;
+    const int MIN_FIELD_WIDTH = 50;
+    int w = qMax(((int)log10((double)settings.maxLen)) * BASE_WIDTH, MIN_FIELD_WIDTH);
 
     gui.startLineEdit->setValidator(new U2LongLongValidator(1, settings.maxLen, gui.startLineEdit));
     gui.startLineEdit->setMinimumWidth(w);
@@ -345,31 +325,29 @@ void RegionSelectorController::setupPresets() {
     }
 
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);
-    const U2Region region = gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions.isEmpty() ? 
-                            U2Region() : 
-                            gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions.first();
+    auto defaultPresetRegions = gui.presetsComboBox->itemData(gui.presetsComboBox->findText(settings.defaultPreset)).value<U2Location>().data()->regions;
+    const U2Region region = defaultPresetRegions.isEmpty() ?
+                            U2Region() :
+                            defaultPresetRegions.first();
     setRegion(region);
 }
 
 void RegionSelectorController::connectSlots() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
+    SAFE_POINT_NN(gui.startLineEdit, );
+    SAFE_POINT_NN(gui.endLineEdit, );
+    SAFE_POINT_NN(gui.presetsComboBox, );
 
-    connect(gui.startLineEdit, SIGNAL(editingFinished()), SLOT(sl_onRegionChanged()));
-    connect(gui.startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_onValueEdited()));
-    connect(gui.startLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_onRegionChanged()));
-
-    connect(gui.endLineEdit, SIGNAL(editingFinished()), SLOT(sl_onRegionChanged()));
-    connect(gui.endLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_onValueEdited()));
-    connect(gui.endLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_onRegionChanged()));
-
-    if (gui.presetsComboBox != nullptr) {
-        connect(gui.presetsComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
-        connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged()));
-    }
+    connect(gui.startLineEdit, &QLineEdit::textEdited, this, &RegionSelectorController::sl_onRegionChanged);
+    connect(gui.endLineEdit, &QLineEdit::textEdited, this, &RegionSelectorController::sl_onRegionChanged);
+    connect(gui.presetsComboBox, &QComboBox::activated, this, &RegionSelectorController::sl_onPresetChanged);
 
     if (settings.selection != nullptr) {
         connect(settings.selection, SIGNAL(si_onSelectionChanged(GSelection*)), SLOT(sl_onSelectionChanged(GSelection*)));
     }
+}
+
+void RegionSelectorController::emitRegionChanged(const U2Region& newRegion) {
+    emit si_regionChanged(newRegion);
 }
 
 }  // namespace U2
