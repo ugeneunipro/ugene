@@ -3759,6 +3759,26 @@ GUI_TEST_CLASS_DEFINITION(test_0045_4) {
     CHECK_SET_ERR(ch == 'A', QString("Incorrect chararcter (read 2, pos 308), expected: A, current: %1").arg(ch));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0046) {
+    QString filePath = dataDir + "samples/Sanger/alignment.ugenedb";
+    QString fileName = "alignment.ugenedb";
+
+    // 1. Copy to 'sandbox' and open alignment.ugenedb
+    GTFile::copy(filePath, sandBoxDir + fileName);
+    GTFileDialog::openFile(sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive();
+
+    // 2. Click "Zoom out" until it's disabled
+    auto zoomOutButton = GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Zoom Out");
+    while (zoomOutButton->isEnabled()) {
+        GTWidget::click(zoomOutButton);
+    }
+
+    // Expected: Right mouse button->Appearance->Change characters font is enabled
+    GTUtilsDialog::waitForDialog(new PopupCheckerByText({"Appearance", "Change characters font..."}, PopupChecker::IsEnabled));
+    GTUtilsMcaEditorSequenceArea::callContextMenu();
+}
+
 }  // namespace GUITest_common_scenarios_mca_editor
 
 }  // namespace U2
