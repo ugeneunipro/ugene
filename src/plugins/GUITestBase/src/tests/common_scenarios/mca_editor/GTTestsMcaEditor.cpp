@@ -3766,6 +3766,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     // 1. Copy to 'sandbox' and open alignment.ugenedb
     GTFile::copy(filePath, sandBoxDir + fileName);
     GTFileDialog::openFile(sandBoxDir, fileName);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive();
 
     // 2. Click "Zoom out" until it's disabled
     auto zoomOutButton = GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Zoom Out");
