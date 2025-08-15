@@ -37,6 +37,8 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "TaskViewController.h"
 
 // TODO: do not create subtask items until not expanded
@@ -46,14 +48,13 @@ namespace U2 {
 #define SETTINGS_ROOT QString("task_view/")
 
 TaskViewDockWidget::TaskViewDockWidget() {
-    waitingIcon = QIcon(":ugene/images/hourglass.png");
-    activeIcon = QIcon(":ugene/images/hourglass_go.png");
-    wasErrorIcon = QIcon(":ugene/images/hourglass_err.png");
-    finishedIcon = QIcon(":ugene/images/hourglass_ok.png");
+    waitingIconPath = ":ugene/images/hourglass.png";
+    activeIconPath = ":ugene/images/hourglass_go.png";
+    wasErrorIconPath = ":ugene/images/hourglass_err.png";
+    finishedIconPath = ":ugene/images/hourglass_ok.png";
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));
-    setWindowIcon(QIcon(":ugene/images/clock.png"));
 
     auto l = new QVBoxLayout();
     l->setSpacing(0);
@@ -102,6 +103,7 @@ void TaskViewDockWidget::initActions() {
     connect(s, SIGNAL(si_topLevelTaskRegistered(Task*)), SLOT(sl_onTopLevelTaskRegistered(Task*)));
     connect(s, SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(sl_onTopLevelTaskUnregistered(Task*)));
     connect(s, SIGNAL(si_stateChanged(Task*)), SLOT(sl_onStateChanged(Task*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TaskViewDockWidget::si_colorThemeSwitched);
 }
 
 void TaskViewDockWidget::updateState() {
@@ -246,6 +248,19 @@ TVTreeItem* TaskViewDockWidget::findChildItem(TVTreeItem* ti, Task* t) const {
         }
     }
     return nullptr;
+}
+
+void TaskViewDockWidget::recurciveColorThemeUpdate(TVTreeItem* item) {
+    for (int i = 0, n = item->childCount(); i < n; i++) {
+        QTreeWidgetItem* child = item->child(i);
+        SAFE_POINT_NN(child, );
+
+        auto cti = dynamic_cast<TVTreeItem*>(child);
+        SAFE_POINT_NN(cti, );
+
+        cti->updateVisual();
+        recurciveColorThemeUpdate(cti);
+    }
 }
 
 void TaskViewDockWidget::sl_onTopLevelTaskRegistered(Task* t) {
@@ -404,6 +419,19 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem* qi) {
     }
     ti->addChildren(newSubtaskItems);
     ti->updateVisual();
+}
+
+void TaskViewDockWidget::si_colorThemeSwitched() {
+    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
+        QTreeWidgetItem* item = tree->topLevelItem(i);
+        SAFE_POINT_NN(item, );
+
+        auto ti = static_cast<TVTreeItem*>(item);
+        SAFE_POINT_NN(item, );
+
+        ti->updateVisual();
+        recurciveColorThemeUpdate(ti);
+    }
 }
 
 void TaskViewDockWidget::selectTask(Task* t) {
@@ -594,9 +622,9 @@ void TVTreeItem::updateVisual() {
     setText(TVColumns_Name, taskName);
 
     if (task == nullptr || task->isFinished()) {
-        setIcon(TVColumns_Name, wasError ? w->wasErrorIcon : w->finishedIcon);
+        setIcon(TVColumns_Name, GUIUtils::getThemedIcon(wasError ? w->wasErrorIconPath : w->finishedIconPath));
     } else {
-        setIcon(TVColumns_Name, task->isRunning() ? w->activeIcon : w->waitingIcon);
+        setIcon(TVColumns_Name, GUIUtils::getThemedIcon(task->isRunning() ? w->activeIconPath : w->waitingIconPath));
         setChildIndicatorPolicy(task->getSubtasks().isEmpty() ? QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
     }
 

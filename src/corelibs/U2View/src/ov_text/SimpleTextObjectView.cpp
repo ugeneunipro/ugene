@@ -32,6 +32,8 @@
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/TextObject.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "SimpleTextObjectViewTasks.h"
 
 namespace U2 {
@@ -115,7 +117,8 @@ QWidget* SimpleTextObjectView::createViewWidget(QWidget* parent) {
     connect(textEdit, SIGNAL(textChanged()), SLOT(sl_onTextEditTextChanged()));
     connect(textObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_onTextObjStateLockChanged()));
     textEdit->installEventFilter(this);
-    textEdit->setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::TEXT).icon);
+    auto windowsIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::TEXT).iconPath);
+    textEdit->setWindowIcon(windowsIcon);
     return textEdit;
 }
 

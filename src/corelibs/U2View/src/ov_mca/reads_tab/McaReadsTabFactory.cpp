@@ -68,7 +68,7 @@ QWidget* McaReadsTabFactory::createWidget(GObjectViewController* objView, const 
 }
 
 OPGroupParameters McaReadsTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Reads"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Reads"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

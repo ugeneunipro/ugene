@@ -25,6 +25,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "WindowStepSelectorWidget.h"
 
 namespace U2 {
@@ -189,7 +191,7 @@ WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget* p, const U2Region& w
 
     setLayout(l);
     setWindowTitle(tr("Graph Settings"));
-    setWindowIcon(QIcon(":core/images/graphs.png"));
+    GUIUtils::setThemedWindowIcon(this, ":core/images/graphs.png");
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     setMinimumWidth(400);

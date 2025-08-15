@@ -29,6 +29,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
@@ -104,7 +105,8 @@ void ImportPrimersDialog::sl_addObjectClicked() {
     }
 
     foreach (GObject* object, objects) {
-        auto item = new QListWidgetItem(GObjectTypes::getTypeInfo(object->getGObjectType()).icon, object->getDocument()->getName() + ": " + object->getGObjectName());
+        auto icon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(object->getGObjectType()).iconPath);
+        auto item = new QListWidgetItem(icon, object->getDocument()->getName() + ": " + object->getGObjectName());
         item2object.insert(item, object);
         lwObjects->addItem(item);
     }

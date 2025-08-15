@@ -75,7 +75,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
 
     // Toggles exclude list view in MSA editor. See MsaExcludeList for details.
     auto toggleExcludeListAction = new GObjectViewAction(this, view, tr("Show Exclude List"));
-    toggleExcludeListAction->setIcon(QIcon(":core/images/inbox-minus.png"));
+    GUIUtils::setThemedIcon(toggleExcludeListAction, ":core/images/inbox-minus.png");
     toggleExcludeListAction->setCheckable(true);
     toggleExcludeListAction->setObjectName(TOGGLE_EXCLUDE_LIST_ACTION_NAME);
     toggleExcludeListAction->setToolTip(tr("Show/Hide Exclude List view visibility"));
@@ -84,7 +84,7 @@ void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     addViewAction(toggleExcludeListAction);
 
     auto moveFromMsaAction = new GObjectViewAction(this, view, tr("Move to Exclude List"));
-    moveFromMsaAction->setIcon(QIcon(":core/images/arrow-move-down.png"));
+    GUIUtils::setThemedIcon(moveFromMsaAction, ":core/images/arrow-move-down.png");
     moveFromMsaAction->setObjectName(MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME);
     moveFromMsaAction->setToolTip(tr("Move selected MSA sequences to Exclude List"));
     connect(moveFromMsaAction, &QAction::triggered, this, [this, msaEditor, toggleExcludeListAction]() {
@@ -249,7 +249,7 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MsaEditor* _msaEdito
 
     moveToMsaAction = new QAction(tr("Move to alignment"), this);
     moveToMsaAction->setToolTip(tr("Move selected Exclude List sequences to MSA"));
-    moveToMsaAction->setIcon(QIcon(":core/images/arrow-move-up.png"));
+    GUIUtils::setThemedIcon(moveToMsaAction, ":core/images/arrow-move-up.png");
     connect(moveToMsaAction, &QAction::triggered, this, &MsaExcludeListWidget::moveExcludeListSelectionToMaObject);
 
     auto moveToMsaButton = new QToolButton();

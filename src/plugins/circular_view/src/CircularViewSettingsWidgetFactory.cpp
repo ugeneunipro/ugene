@@ -55,7 +55,7 @@ QWidget* CircularViewSettingsWidgetFactory::createWidget(GObjectViewController* 
 }
 
 OPGroupParameters CircularViewSettingsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Circular View Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Circular View Settings"), GROUP_DOC_PAGE);
 }
 
 bool CircularViewSettingsWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {

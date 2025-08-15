@@ -20,20 +20,21 @@
  */
 
 #include "GenecutOPWidgetFactory.h"
-#include "GenecutOPWidget.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2View/AnnotatedDNAView.h>
+
+#include "GenecutOPWidget.h"
 
 namespace U2 {
 
 const QString GenecutOPWidgetFactory::GROUP_ID = "OP_GENECUT";
-const QString GenecutOPWidgetFactory::GROUP_ICON_STR = ":genecut/icon/genecut.png";
+const QString GenecutOPWidgetFactory::GROUP_ICON_STR = ":genecut/images/genecut.png";
 const QString GenecutOPWidgetFactory::GROUP_DOC_PAGE = "88080434";
 
 GenecutOPWidgetFactory::GenecutOPWidgetFactory()
@@ -51,7 +52,7 @@ QWidget* GenecutOPWidgetFactory::createWidget(GObjectViewController* objView, co
 }
 
 OPGroupParameters GenecutOPWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), tr("Genecut desktop"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, tr("Genecut desktop"), GROUP_DOC_PAGE);
 }
 
 bool GenecutOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {

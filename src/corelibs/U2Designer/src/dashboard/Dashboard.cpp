@@ -41,6 +41,7 @@
 
 #include <U2Designer/DashboardInfoRegistry.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include <U2Lang/WorkflowUtils.h>
@@ -176,7 +177,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     tabButtonsLayout->addStretch(INT_MAX);  // Push the last button to the end.
 
     auto loadSchemaButton = new QToolButton(tabButtonsRow);
-    loadSchemaButton->setIcon(QIcon(":U2Designer/images/load_schema.png"));
+    GUIUtils::setThemedIcon(loadSchemaButton, ":U2Designer/images/load_schema.png");
     loadSchemaButton->setObjectName("loadSchemaButton");
     loadSchemaButton->setToolTip(tr("Open workflow schema"));
     //    loadSchemaButton->setText(tr("Open schema"));

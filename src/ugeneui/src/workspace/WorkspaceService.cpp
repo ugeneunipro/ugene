@@ -97,11 +97,13 @@ WorkspaceService::WorkspaceService()
     logoutUrl = workspaceHttpProtocolPrefix + webDomainAndPort + "/logout";
     tokenUrl = "https://auth.ugene.net/realms/ugene-" + stage + "/protocol/openid-connect/token";
 
-    loginAction = new QAction(QIcon(":ugene/images/login.svg"), tr("Login to Workspace"));
+    loginAction = new QAction(tr("Login to Workspace"));
+    GUIUtils::setThemedIcon(loginAction, ":ugene/images/login.svg");
     loginAction->setObjectName("loginToWorkspaceAction");
     connect(loginAction, &QAction::triggered, this, &WorkspaceService::login);
 
-    logoutAction = new QAction(QIcon(":ugene/images/logout.svg"), tr("Logout from Workspace"));
+    logoutAction = new QAction(tr("Logout from Workspace"));
+    GUIUtils::setThemedIcon(logoutAction, ":ugene/images/logout.svg");
     logoutAction->setObjectName("logoutFromWorkspaceAction");
     connect(logoutAction, &QAction::triggered, this, &WorkspaceService::logout);
 
@@ -197,7 +199,7 @@ void WorkspaceService::enable() {
     updateMainMenuActions();
     cloudStorageService = new CloudStorageService(this);
     auto dockWidget = new CloudStorageDockWidget(this);
-    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Left, dockWidget, QKeySequence(Qt::ALT | Qt::Key_4));
+    AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Left, dockWidget, ":ugene/images/cloud_storage.svg", QKeySequence(Qt::ALT | Qt::Key_4));
 }
 
 void WorkspaceService::updateMainMenuActions() {

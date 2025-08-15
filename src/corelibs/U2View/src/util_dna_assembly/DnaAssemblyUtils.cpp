@@ -52,6 +52,7 @@
 #include <U2Formats/FastqFormat.h>
 #include <U2Formats/PairedFastqComparator.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ToolsMenu.h>
 
@@ -65,19 +66,19 @@ namespace U2 {
 DnaAssemblySupport::DnaAssemblySupport() {
     auto convertAssemblyToSamAction = new QAction(tr("Convert UGENE assembly database to SAM..."), this);
     convertAssemblyToSamAction->setObjectName(ToolsMenu::NGS_CONVERT_SAM);
-    convertAssemblyToSamAction->setIcon(QIcon(":core/images/align.png"));
+    GUIUtils::setThemedIcon(convertAssemblyToSamAction, ":core/images/align.png");
     connect(convertAssemblyToSamAction, SIGNAL(triggered()), SLOT(sl_showConvertToSamDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, convertAssemblyToSamAction);
 
     auto dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this);
     dnaAssemblyAction->setObjectName(ToolsMenu::NGS_MAP);
-    dnaAssemblyAction->setIcon(QIcon(":core/images/align.png"));
+    GUIUtils::setThemedIcon(dnaAssemblyAction, ":core/images/align.png");
     connect(dnaAssemblyAction, SIGNAL(triggered()), SLOT(sl_showDnaAssemblyDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, dnaAssemblyAction);
 
     auto buildIndexAction = new QAction(tr("Build index for reads mapping..."), this);
     buildIndexAction->setObjectName(ToolsMenu::NGS_INDEX);
-    buildIndexAction->setIcon(QIcon(":core/images/align.png"));
+    GUIUtils::setThemedIcon(buildIndexAction, ":core/images/align.png");
     connect(buildIndexAction, SIGNAL(triggered()), SLOT(sl_showBuildIndexDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, buildIndexAction);
 }

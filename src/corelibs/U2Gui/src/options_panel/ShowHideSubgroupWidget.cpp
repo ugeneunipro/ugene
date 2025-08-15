@@ -29,6 +29,9 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
 
 ShowHideSubgroupWidget::ShowHideSubgroupWidget(QWidget* parent)
@@ -103,11 +106,13 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
 
     arrow = new QLabel();
     arrow->setObjectName("ArrowHeader_" + caption);
+    QString iconPath;
     if (isOpened) {
-        arrow->setPixmap(QPixmap(":core/images/arrow_down.png"));
+        iconPath = ":core/images/arrow_down.png";
     } else {
-        arrow->setPixmap(QPixmap(":core/images/arrow_right.png"));
+        iconPath = ":core/images/arrow_right.png";
     }
+    GUIUtils::setThemedIcon(arrow, iconPath);
 
     arrow->setMaximumSize(10, 10);
 
@@ -115,9 +120,8 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
     captionLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     progressMovieLabel = new QLabel();
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressMovieLabel);
-    progressMovieLabel->setMovie(progressMovie);
-
+    GUIUtils::setThemedMovie(progressMovieLabel, ":/core/images/progress.gif");
+    auto progressMovie = progressMovieLabel->movie();
     if (progressMovie->isValid()) {
         progressMovie->start();
         progressMovie->setPaused(true);
@@ -134,7 +138,7 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
 }
 
 ArrowHeaderWidget::~ArrowHeaderWidget() {
-    delete progressMovie;
+    delete progressMovieLabel->movie();
 }
 
 void ArrowHeaderWidget::showProgressWithTimeout() {
@@ -146,7 +150,7 @@ void ArrowHeaderWidget::showProgressWithTimeout() {
 
 void ArrowHeaderWidget::sl_showProgress() {
     if (canStartProgress) {
-        progressMovie->setPaused(false);
+        progressMovieLabel->movie()->setPaused(false);
         progressMovieLabel->show();
     }
 }
@@ -154,18 +158,20 @@ void ArrowHeaderWidget::sl_showProgress() {
 void ArrowHeaderWidget::hideProgress() {
     canStartProgress = false;
     progressMovieLabel->hide();
-    progressMovie->setPaused(true);
+    progressMovieLabel->movie()->setPaused(true);
 }
 
 void ArrowHeaderWidget::setOpened(bool _isOpened) {
     if (_isOpened != isOpened) {
+        QString iconPath;
         if (isOpened) {
-            arrow->setPixmap(QPixmap(":core/images/arrow_right.png"));
+            iconPath = ":core/images/arrow_right.png";
             isOpened = false;
         } else {
-            arrow->setPixmap(QPixmap(":core/images/arrow_down.png"));
+            iconPath = ":core/images/arrow_down.png";
             isOpened = true;
         }
+        GUIUtils::setThemedIcon(arrow, iconPath);
         emit si_arrowHeaderPressed(isOpened);
     }
 }

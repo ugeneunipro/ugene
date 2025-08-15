@@ -27,15 +27,25 @@
 
 namespace U2 {
 
-GObjectTypeInfo::GObjectTypeInfo(const GObjectType& _type, const QString& _name, const QString& _pluralName, const QString& _treeSign, const QString _iconURL, const QString& _lockedIconUrl)
-    : type(_type), name(_name), pluralName(_pluralName), treeSign(_treeSign), iconURL(_iconURL), lockedIconUrl(_lockedIconUrl) {
+GObjectTypeInfo::GObjectTypeInfo(const GObjectType& _type,
+                                 const QString& _name,
+                                 const QString& _pluralName,
+                                 const QString& _treeSign,
+                                 const QString& _iconPath,
+                                 const QString& _lockedIconPath)
+    : type(_type),
+      name(_name),
+      pluralName(_pluralName),
+      treeSign(_treeSign),
+      iconPath(_iconPath),
+      lockedIconPath(_lockedIconPath) {
 }
 
 #define REGISTER_TYPE_EX(VAR, ID, NAME, P_NAME, SIGN, ICON_URI, LOCKED_ICON_URI) \
     const GObjectType GObjectTypes::VAR = registerTypeInfo(GObjectTypeInfo(ID, NAME, P_NAME, SIGN, ICON_URI, LOCKED_ICON_URI))
 
 #define REGISTER_TYPE(VAR, ID, NAME, P_NAME, SIGN) \
-    REGISTER_TYPE_EX(VAR, ID, NAME, P_NAME, SIGN, "", "")
+    REGISTER_TYPE_EX(VAR, ID, NAME, P_NAME, SIGN, QString(), QString())
 
 ///            variable             id                  visual name                     plural name                    sign     icon                            locked icon
 REGISTER_TYPE(UNKNOWN, "OT_UNKNOWN", GObject::tr("Unknown"), GObject::tr("Unknown"), "?");
@@ -85,14 +95,12 @@ void GObjectTypes::initTypeTranslations() {
 
 void GObjectTypes::initTypeIcons() {
     QHash<GObjectType, GObjectTypeInfo>& map = getTypeMap();
-    foreach (GObjectType t, map.keys()) {
-        GObjectTypeInfo& info = map[t];
-        if (!info.iconURL.isEmpty()) {
-            info.icon = QIcon(info.iconURL);
-            info.lockedIcon = QIcon(info.lockedIconUrl);
-        } else {
-            info.icon = QIcon(":/core/images/gobject.png");
-            info.lockedIcon = QIcon(":/core/images/ro_gobject.png");
+    const auto& types = map.keys();
+    for (const auto& type : qAsConst(types)) {
+        GObjectTypeInfo& info = map[type];
+        if (info.iconPath.isEmpty()) {
+            info.iconPath = ":/core/images/gobject.png";
+            info.lockedIconPath = ":/core/images/ro_gobject.png";
         }
     }
 }

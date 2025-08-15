@@ -33,6 +33,7 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
@@ -130,8 +131,8 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMa
     connect(upperButton, SIGNAL(clicked()), SLOT(sl_onMoveUp()));
     connect(bottomButton, SIGNAL(clicked()), SLOT(sl_onMoveDown()));
 
-    upperButton->setIcon(QIcon(":ugene/images/up.png"));
-    bottomButton->setIcon(QIcon(":ugene/images/down.png"));
+    GUIUtils::setThemedIcon(upperButton, ":U2Designer/images/up.png");
+    GUIUtils::setThemedIcon(bottomButton, ":U2Designer/images/down.png");
 
     for (int i = 0; i < urls.size(); ++i) {
         listDocuments->addItem(new QListWidgetItem(QString("%1. ").arg(i + 1) + urls.at(i).fileName(), listDocuments));

@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 namespace U2 {
@@ -235,7 +236,7 @@ QMenu* ToolsMenu::createMenu(QMenu* tools, const QString& menuName) {
     SAFE_POINT(actionText.contains(menuName), "Unknown tool sub menu " + menuName, nullptr);
     auto result = new QMenu(actionText[menuName], tools);
     if (actionIcon.contains(menuName)) {
-        result->setIcon(QIcon(actionIcon[menuName]));
+        result->setIcon(GUIUtils::getThemedIcon(actionIcon[menuName]));
     }
     result->setObjectName(menuName);
 

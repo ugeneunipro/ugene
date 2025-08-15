@@ -39,6 +39,7 @@
 
 #include <U2Gui/CreateAnnotationDialog.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/GUIUtils.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "AnnotatedDNAView.h"
@@ -78,7 +79,8 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
 ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView* c)
     : QObject(c) {
     ctx = c;
-    createAction = new QAction(QIcon(":core/images/create_annotation_icon.png"), tr("New annotation..."), this);
+    createAction = new QAction(tr("New annotation..."), this);
+    GUIUtils::setThemedIcon(createAction, ":core/images/create_annotation_icon.png");
     createAction->setObjectName("create_annotation_action");
     createAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     createAction->setShortcutContext(Qt::WindowShortcut);

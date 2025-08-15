@@ -25,6 +25,7 @@
 
 #include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/PositionSelector.h>
 
 #include <U2View/BaseWidthController.h>
@@ -458,7 +459,8 @@ void MsaEditorMultilineWgt::initWidgets() {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 200);
 
-    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
+    auto windowIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconPath);
+    setWindowIcon(windowIcon);
 
     auto cvBar = new GScrollBar(Qt::Vertical);
     cvBar->setObjectName("multiline_vertical_sequence_scroll");

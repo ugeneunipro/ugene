@@ -31,6 +31,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 
 #include "ADVGraphModel.h"
@@ -85,7 +86,7 @@ GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer* d, const U2Region
 
     setLayout(l);
     setWindowTitle(tr("Graph Settings"));
-    setWindowIcon(QIcon(":core/images/graphs.png"));
+    GUIUtils::setThemedWindowIcon(this, ":core/images/graphs.png");
 
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);

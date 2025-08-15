@@ -33,7 +33,7 @@ namespace U2 {
 class U2GUI_EXPORT GroupHeaderImageWidget : public QLabel {
     Q_OBJECT
 public:
-    GroupHeaderImageWidget(const QString& groupId, const QPixmap& image);
+    GroupHeaderImageWidget(const QString& groupId, const QString& iconPath);
 
     inline const QString& getGroupId() {
         return groupId;
@@ -55,6 +55,7 @@ protected:
 
 private:
     QString groupId;
+    QString iconPath;
 
     static const QString HEADER_COMMON_STYLE;
 };

@@ -53,7 +53,7 @@ QWidget* MSATreeOptionsWidgetFactory::createWidget(GObjectViewController* objVie
 }
 
 OPGroupParameters MSATreeOptionsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 const QString TreeOptionsWidgetFactory::GROUP_ID = "OP_TREES_WIDGET";
@@ -78,7 +78,7 @@ QWidget* TreeOptionsWidgetFactory::createWidget(GObjectViewController* objView, 
 }
 
 OPGroupParameters TreeOptionsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 const QString AddTreeWidgetFactory::GROUP_ID = "OP_MSA_ADD_TREE_WIDGET";
@@ -103,7 +103,7 @@ QWidget* AddTreeWidgetFactory::createWidget(GObjectViewController* objView, cons
 }
 
 OPGroupParameters AddTreeWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

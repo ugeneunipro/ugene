@@ -58,7 +58,7 @@ QWidget* MsaExportConsensusTabFactory::createWidget(GObjectViewController* objVi
 }
 
 OPGroupParameters MsaExportConsensusTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Export Consensus"), GROUP_DOC_PAGE_MSA);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Export Consensus"), GROUP_DOC_PAGE_MSA);
 }
 
 McaExportConsensusTabFactory::McaExportConsensusTabFactory() {
@@ -94,7 +94,7 @@ QWidget* McaExportConsensusTabFactory::createWidget(GObjectViewController* objVi
 }
 
 OPGroupParameters McaExportConsensusTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Consensus"), GROUP_DOC_PAGE_MCA);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Consensus"), GROUP_DOC_PAGE_MCA);
 }
 
 const QString& McaExportConsensusTabFactory::getGroupId() {

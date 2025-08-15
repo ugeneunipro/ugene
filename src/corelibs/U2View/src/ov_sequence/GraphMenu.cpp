@@ -121,7 +121,7 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a)
     : ADVSequenceWidgetAction(ACTION_NAME, tr("Graphs")) {
     menu = new QMenu();
     menu->setObjectName("graph_menu");
-    this->setIcon(QIcon(":core/images/graphs.png"));
+    GUIUtils::setThemedIcon(this, ":core/images/graphs.png");
     this->setMenu(menu);
     addToBar = true;
 

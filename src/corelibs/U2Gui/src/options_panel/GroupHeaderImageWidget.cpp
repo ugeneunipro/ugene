@@ -21,7 +21,11 @@
 
 #include "GroupHeaderImageWidget.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -38,13 +42,13 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
                                                             "QToolTip {background: palette(window);"
                                                             "border-left-width: 0px;}";
 
-GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const QPixmap& image)
-    : groupId(_groupId) {
-    this->setPixmap(image);
+GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const QString& _iconPath)
+    : groupId(_groupId), iconPath(_iconPath) {
+    GUIUtils::setThemedIcon(static_cast<QLabel*>(this), iconPath);
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    int HEADER_MIN_SIZE = 32;
+    static constexpr int HEADER_MIN_SIZE = 32;
     setMinimumSize(HEADER_MIN_SIZE, HEADER_MIN_SIZE);
 
     setHeaderDeselected();

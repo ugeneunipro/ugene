@@ -57,7 +57,7 @@ QWidget* FindPatternMsaWidgetFactory::createWidget(GObjectViewController* objVie
 }
 
 OPGroupParameters FindPatternMsaWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Alignment"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Search in Alignment"), GROUP_DOC_PAGE);
 }
 
 void FindPatternMsaWidgetFactory::applyOptionsToWidget(QWidget* widget, const QVariantMap& options) {

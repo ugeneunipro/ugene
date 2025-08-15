@@ -207,7 +207,7 @@ ReadAnnotationsProto::ReadAnnotationsProto()
 
     setPrompter(new ReadDocPrompter(ReadAnnotationsWorker::tr("Reads annotations from <u>%1</u>.")));
     if (AppContext::isGUIMode()) {
-        setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
+        setIconPath(":/U2Designer/images/blue_circle.png");
     }
 }
 

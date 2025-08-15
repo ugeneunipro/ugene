@@ -134,6 +134,14 @@ public:
     virtual void addNotification(const QString& message, NotificationType type) = 0;
 
     virtual void registerAction(QAction* action) = 0;
+
+    static constexpr char* ICON_PATH_PROPERTY_NAME = "icon-path";
+    static constexpr char* MOVIE_PATH_PROPERTY_NAME = "icon-path-movie";
+    static constexpr char* WINDOWS_ICON_PATH_PROPERTY_NAME = "icon-path-movie";
+    static constexpr int PIXMAP_SIZE = 16;
+
+signals:
+    void si_colorThemeSwitched();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -217,7 +225,7 @@ public:
         : QObject(p) {
     }
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks = QKeySequence()) = 0;
+    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QString& iconPath, const QKeySequence& ks = QKeySequence()) = 0;
 
     virtual QWidget* findWidget(const QString& widgetObjName) = 0;
 

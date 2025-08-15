@@ -74,9 +74,9 @@ const QString BlastSupport::ET_MAKEBLASTDB_ID = "USUPP_MAKE_BLAST_DB";
 BlastSupport::BlastSupport(const QString& id)
     : ExternalTool(id, "blast", getProgramNameByToolId(id)) {
     if (AppContext::getMainWindow()) {
-        icon = QIcon(":external_tool_support/images/ncbi.png");
-        grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/ncbi_warn.png");
+        iconPath = ":external_tool_support/images/ncbi.png";
+        grayIconPath = ":external_tool_support/images/ncbi_gray.png";
+        warnIconPath = ":external_tool_support/images/ncbi_warn.png";
     }
     validationArguments << "-h";
 

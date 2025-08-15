@@ -361,7 +361,7 @@ void RemoteDBFetcherFactory::init() {
     proto->setPrompter(new RemoteDBFetcherPrompter());
 
     if (AppContext::isGUIMode()) {
-        proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
+        proto->setIconPath(":/U2Designer/images/blue_circle.png");
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
@@ -561,10 +561,6 @@ void FetchSequenceByIdFromAnnotationFactory::init() {
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FetchSequenceByIdFromAnnotationPrompter());
-
-    if (AppContext::isGUIMode()) {
-        proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
-    }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 

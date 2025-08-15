@@ -30,6 +30,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/PositionSelector.h>
 
 #include <U2View/MaEditorNameList.h>
@@ -102,7 +103,8 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 100);
 
-    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
+    auto windowIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconPath);
+    setWindowIcon(windowIcon);
 
     auto horizontalSequenceScrollBar = new GScrollBar(Qt::Horizontal);
     horizontalSequenceScrollBar->setObjectName("horizontal_sequence_scroll");
@@ -252,7 +254,8 @@ void MaEditorWgt::initActions() {
     copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
     addAction(copySelectionAction);
 
-    copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy (custom format)"), this);
+    copyFormattedSelectionAction = new QAction(tr("Copy (custom format)"), this);
+    GUIUtils::setThemedIcon(copyFormattedSelectionAction, ":core/images/copy_sequence.png");
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);

@@ -52,8 +52,8 @@ private slots:
 class QDPrimerActorPrototype : public QDActorPrototype {
 public:
     QDPrimerActorPrototype();
-    QIcon getIcon() const {
-        return QIcon(":primer3/images/primer3.png");
+    QString getIconPath() const override {
+        return ":/primer3/images/primer3.png";
     }
     QDActor* createInstance() const {
         return new QDPrimerActor(this);

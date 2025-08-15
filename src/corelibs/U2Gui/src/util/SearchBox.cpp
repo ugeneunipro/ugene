@@ -26,6 +26,9 @@
 #include <QStyle>
 #include <QToolButton>
 
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 static const QString LABEL_STYLE_SHEET = "border: 0px; padding: 0px;";
 static const QString CLEAR_BUTTON_STYLE_SHEET = "border: 0px; padding: 1px 0px 0px 0px;";
 
@@ -36,9 +39,8 @@ SearchBox::SearchBox(QWidget* p)
     setObjectName("nameFilterEdit");
 
     progressLabel = new QLabel(this);
-    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setStyleSheet(LABEL_STYLE_SHEET);
-    progressLabel->setMovie(progressMovie);
+    GUIUtils::setThemedMovie(progressLabel, ":/core/images/progress.gif");
 
     searchIconLabel = new QLabel(this);
     searchIconLabel->setStyleSheet(LABEL_STYLE_SHEET);
@@ -46,7 +48,7 @@ SearchBox::SearchBox(QWidget* p)
 
     clearButton = new QToolButton(this);
     clearButton->setStyleSheet(CLEAR_BUTTON_STYLE_SHEET);
-    clearButton->setIcon(QIcon(":/core/images/close_small.png"));
+    GUIUtils::setThemedIcon(clearButton, ":/core/images/close_small.png");
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setVisible(false);
     clearButton->setObjectName("project filter clear button");
@@ -62,12 +64,12 @@ SearchBox::SearchBox(QWidget* p)
 
 void SearchBox::sl_filteringStarted() {
     progressLabel->setVisible(true);
-    progressMovie->start();
+    progressLabel->movie()->start();
     updateInternalControlsPosition();
 }
 
 void SearchBox::sl_filteringFinished() {
-    progressMovie->stop();
+    progressLabel->movie()->stop();
     progressLabel->setVisible(false);
     updateInternalControlsPosition();
 }

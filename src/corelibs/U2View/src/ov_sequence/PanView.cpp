@@ -38,6 +38,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/GUIUtils.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -147,19 +148,23 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
 
     zoomUsing = 0;
 
-    zoomInAction = new QAction(QIcon(":/core/images/zoom_in.png"), tr("Zoom In"), this);
+    zoomInAction = new QAction(tr("Zoom In"), this);
+    GUIUtils::setThemedIcon(zoomInAction, ":/core/images/zoom_in.png");
     zoomInAction->setObjectName("action_zoom_in_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomInAction()));
 
-    zoomOutAction = new QAction(QIcon(":/core/images/zoom_out.png"), tr("Zoom Out"), this);
+    zoomOutAction = new QAction(tr("Zoom Out"), this);
+    GUIUtils::setThemedIcon(zoomOutAction, ":/core/images/zoom_out.png");
     zoomOutAction->setObjectName("action_zoom_out_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOutAction()));
 
-    zoomToSelectionAction = new QAction(QIcon(":/core/images/zoom_sel.png"), tr("Zoom to Selection"), this);
+    zoomToSelectionAction = new QAction(tr("Zoom to Selection"), this);
+    GUIUtils::setThemedIcon(zoomToSelectionAction, ":/core/images/zoom_sel.png");
     zoomToSelectionAction->setObjectName("action_zoom_to_selection_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
-    zoomToSequenceAction = new QAction(QIcon(":/core/images/zoom_whole.png"), tr("Zoom to Whole Sequence"), this);
+    zoomToSequenceAction = new QAction(tr("Zoom to Whole Sequence"), this);
+    GUIUtils::setThemedIcon(zoomToSequenceAction, ":/core/images/zoom_whole.png");
     zoomToSequenceAction->setObjectName("action_zoom_to_sequence_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSequenceAction, SIGNAL(triggered()), SLOT(sl_zoomToSequence()));
 

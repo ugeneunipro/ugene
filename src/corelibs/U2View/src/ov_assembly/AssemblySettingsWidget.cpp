@@ -249,7 +249,7 @@ QWidget* AssemblySettingsWidgetFactory::createWidget(GObjectViewController* objV
 }
 
 OPGroupParameters AssemblySettingsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Assembly Browser Settings"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Assembly Browser Settings"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2
