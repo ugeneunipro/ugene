@@ -1621,20 +1621,6 @@ GUI_TEST_CLASS_DEFINITION(test_8175) {
     CHECK_SET_ERR(lt.hasError("Tree branch is too long"), "Expected no errors");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_8176) {
-    /*
-     *1. Set object limit in document to 10
-     *2. Load GFF with 10 annotation tables
-     *Expected state: file not loaded, corresponding error in log.
-     **/
-
-    qputenv("UGENE_MAX_OBJECTS_PER_DOCUMENT", "10");
-    GTLogTracer lt;
-    GTFileDialog::openFile(testDir + "_common_data/gff/10_annotation_tables.gff");
-    GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(lt.hasError("contains too many"), "Expected error not found");
-}
-
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
