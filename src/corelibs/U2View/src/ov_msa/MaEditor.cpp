@@ -594,8 +594,6 @@ void MaEditor::updateActions() {
     bool isDefaultZoomAndFontSize = getFont().pointSize() == MOBJECT_DEFAULT_FONT_SIZE && zoomFactor == MOBJECT_DEFAULT_ZOOM_FACTOR;
     resetZoomAction->setEnabled(!isDefaultZoomAndFontSize);
 
-    changeFontAction->setEnabled(resizeMode == ResizeMode_FontAndContent);
-
     MaEditorSelection selection = getSelection();
     gotoSelectedReadAction->setEnabled(!selection.isEmpty());
 
