@@ -258,6 +258,19 @@ void GTest_LoadBrokenDocument::init(XMLTestFormat*, const QDomElement& el) {
         }
     }
 
+    if (el.attribute("hints") != nullptr) {
+        const QStringList hintsList = el.attribute("hints").split(",", Qt::SkipEmptyParts);
+        for (const QString& item : qAsConst(hintsList)) {
+            const QStringList hintsElement = item.split(":", Qt::SkipEmptyParts);
+            if (hintsElement.size() == 2) {
+                hints[hintsElement[0]] = hintsElement[1];
+            } else {
+                stateInfo.setError("Unable to parse 'hints' attribute");
+                return;
+            }
+        }
+    }
+
     loadTask = new LoadDocumentTask(format, url, iof, hints);
     addSubTask(loadTask);
 }
