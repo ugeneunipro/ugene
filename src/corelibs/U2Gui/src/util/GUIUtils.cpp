@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QMovie>
 #include <QPainter>
 #include <QPainterPath>
 #include <QProcess>
@@ -229,6 +230,52 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
+}
+
+void GUIUtils::setThemedIcon(QAction* action, const QString& iconPath) {
+    setThemedIconPrivate<QAction>(action, iconPath);
+}
+
+void GUIUtils::setThemedIcon(QAbstractButton* button, const QString& iconPath) {
+    setThemedIconPrivate<QAbstractButton>(button, iconPath);
+}
+
+void GUIUtils::setThemedIcon(QMenu* menu, const QString& iconPath) {
+    setThemedIconPrivate<QMenu>(menu, iconPath);
+}
+
+void GUIUtils::setThemedIcon(QLabel* label, const QString& iconPath) {
+    label->setPixmap(GUIUtils::getThemedIcon(iconPath).pixmap(MainWindow::PIXMAP_SIZE, MainWindow::PIXMAP_SIZE));
+    setThemedIconProperty(label, iconPath);
+}
+
+void GUIUtils::setThemedIconProperty(QObject* object, const QString& iconPath) {
+    object->setProperty(MainWindow::ICON_PATH_PROPERTY_NAME, iconPath);
+}
+
+void GUIUtils::setThemedMovie(QLabel* label, const QString& iconPath) {
+    auto movie = new QMovie(GUIUtils::getThemedPath(iconPath), QByteArray(), label);
+    label->setMovie(movie);
+    movie->setProperty(MainWindow::MOVIE_PATH_PROPERTY_NAME, iconPath);
+}
+
+void GUIUtils::setThemedWindowIcon(QWidget* widget, const QString& iconPath) {
+    widget->setWindowIcon(GUIUtils::getThemedIcon(iconPath));
+    widget->setProperty(MainWindow::WINDOWS_ICON_PATH_PROPERTY_NAME, iconPath);
+}
+
+QString GUIUtils::getThemedPath(const QString& iconPath) {
+    return iconPath;
+}
+
+QIcon GUIUtils::getThemedIcon(const QString& iconPath) {
+    CHECK(!iconPath.isEmpty(), QIcon());
+
+    QString resourceName = GUIUtils::getThemedPath(iconPath);
+    QPixmap pixmap = QPixmap(resourceName);
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1").arg(iconPath), QIcon());
+
+    return QIcon(pixmap);
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {

@@ -78,16 +78,8 @@ void VisualDescriptor::setIconPath(const QString& ip) {
     iconPath = ip;
 }
 
-QIcon VisualDescriptor::getIcon() {
-    if (icon.isNull() && !iconPath.isEmpty()) {
-        icon = QIcon(iconPath);
-    }
-    return icon;
-}
-
-void VisualDescriptor::setIcon(QIcon i) {
-    assert(iconPath.isEmpty());
-    icon = i;
+const QString& VisualDescriptor::getIconPath() const {
+    return iconPath;
 }
 
 }  // namespace U2

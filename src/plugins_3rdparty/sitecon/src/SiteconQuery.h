@@ -55,8 +55,8 @@ public:
     virtual QDActor* createInstance() const {
         return new QDSiteconActor(this);
     }
-    virtual QIcon getIcon() const {
-        return QIcon(":sitecon/images/sitecon.png");
+    QString getIconPath() const override {
+        return ":sitecon/images/sitecon.png";
     }
 };
 

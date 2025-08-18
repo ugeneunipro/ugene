@@ -355,7 +355,7 @@ Task* AminoTranslationWorker::tick() {
         DbiDataStorage* storage = context->getDataStorage();
         SAFE_POINT(storage != nullptr, "Invalid workflow data storage!", nullptr);
         auto transTask = new TranslateSequence2AminoTask(config,
-                                                                                 storage->getDbiRef());
+                                                         storage->getDbiRef());
 
         connect(transTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return transTask;

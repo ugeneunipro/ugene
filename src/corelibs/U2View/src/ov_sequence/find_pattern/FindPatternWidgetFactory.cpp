@@ -55,7 +55,7 @@ QWidget* FindPatternWidgetFactory::createWidget(GObjectViewController* objView, 
 }
 
 OPGroupParameters FindPatternWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Sequence"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Search in Sequence"), GROUP_DOC_PAGE);
 }
 
 const QString& FindPatternWidgetFactory::getGroupId() {

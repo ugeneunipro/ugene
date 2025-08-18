@@ -95,10 +95,10 @@ void DNAFlexViewContext::initViewContext(GObjectViewController* view) {
 
     // Adding the action to the Analyze menu, but not to the toolbar
     auto action = new ADVGlobalAction(annotView,
-                                                  QIcon(":dna_flexibility/images/flexibility.png"),
-                                                  tr("Find high DNA flexibility regions..."),
-                                                  2000,
-                                                  ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu));
+                                      ":dna_flexibility/images/flexibility.png",
+                                      tr("Find high DNA flexibility regions..."),
+                                      2000,
+                                      ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu));
     action->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(action, SIGNAL(triggered()), SLOT(sl_showDNAFlexDialog()));
 }

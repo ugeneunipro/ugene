@@ -38,11 +38,6 @@ const QString IQTreeSupport::ET_IQTREE_ALGORITHM_NAME_AND_KEY("IQ-TREE");
 
 IQTreeSupport::IQTreeSupport()
     : ExternalTool(IQTreeSupport::IQTREE_ID, "iqtree", "IQ-TREE") {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
     executableFileName = isOsWindows() ? "iqtree.exe" : "iqtree";
     validationArguments << "--version";

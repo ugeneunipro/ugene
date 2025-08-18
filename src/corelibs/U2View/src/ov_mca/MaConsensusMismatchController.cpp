@@ -50,13 +50,15 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
     connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int, char)), SLOT(sl_updateItem(int, char)));
     connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
 
-    nextMismatch = new QAction(QIcon(":core/images/mismatch-forward.png"), tr("Jump to next variation"), this);
+    nextMismatch = new QAction(tr("Jump to next variation"), this);
+    GUIUtils::setThemedIcon(nextMismatch, ":core/images/mismatch-forward.png");
     nextMismatch->setObjectName("next_mismatch");
     nextMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_V);
     GUIUtils::updateActionToolTip(nextMismatch);
     connect(nextMismatch, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
-    prevMismatch = new QAction(QIcon(":core/images/mismatch-backward.png"), tr("Jump to previous variation"), this);
+    prevMismatch = new QAction(tr("Jump to previous variation"), this);
+    GUIUtils::setThemedIcon(prevMismatch, ":core/images/mismatch-backward.png");
     prevMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_V);
     prevMismatch->setObjectName("prev_mismatch");
     GUIUtils::updateActionToolTip(prevMismatch);

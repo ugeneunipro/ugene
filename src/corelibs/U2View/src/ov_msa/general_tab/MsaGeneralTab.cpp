@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -115,6 +116,10 @@ void MsaGeneralTab::reInitializeParameters() {
 
     QString currentCopyFormattedID = msaEditor->getLineWidget(0)->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
+
+    QString iconPath(":core/images/goto.png");
+    GUIUtils::setThemedIcon(convertNucleicAlphabetButton, iconPath);
+    GUIUtils::setThemedIcon(convertAminoAlphabetButton, iconPath);
 }
 
 void MsaGeneralTab::initializeParameters() {

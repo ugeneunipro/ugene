@@ -33,11 +33,6 @@ const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID = "USUPP_SAMTOOLS";
 
 SamToolsExtToolSupport::SamToolsExtToolSupport()
     : ExternalTool(SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID, "samtools", SamToolsExtToolSupport::ET_SAMTOOLS_EXT) {
-    if (AppContext::getMainWindow()) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
 
 #ifdef Q_OS_WIN
     executableFileName = "samtools.exe";

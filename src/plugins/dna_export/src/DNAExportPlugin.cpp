@@ -25,6 +25,7 @@
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
@@ -51,7 +52,8 @@ DNAExportPlugin::DNAExportPlugin()
     : Plugin(tr("DNA export"), tr("Export and import support for DNA & protein sequences")) {
     if (AppContext::getMainWindow()) {
         services.push_back(new DNAExportService());
-        auto a = new QAction(QIcon(":/core/images/add_sequence.png"), tr("Random sequence generator..."), this);
+        auto a = new QAction(tr("Random sequence generator..."), this);
+        GUIUtils::setThemedIcon(a, ":/core/images/add_sequence.png");
         a->setObjectName(ToolsMenu::GENERATE_SEQUENCE);
         connect(a, SIGNAL(triggered()), SLOT(sl_generateSequence()));
         ToolsMenu::addAction(ToolsMenu::TOOLS, a);

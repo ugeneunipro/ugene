@@ -23,14 +23,15 @@
 
 #include <U2Core/GObjectTypes.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/SharedDbUrlUtils.h>
 
 namespace U2 {
 
 DbObjectItem::DbObjectItem(const QString& url, QListWidget* parent)
     : FileItem(url, parent) {
-    QIcon fileIcon = GObjectTypes::getTypeInfo(SharedDbUrlUtils::getDbObjectTypeByUrl(url)).icon;
-    setIcon(fileIcon);
+    QIcon fileIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(SharedDbUrlUtils::getDbObjectTypeByUrl(url)).iconPath);
 
     const QString objectName = SharedDbUrlUtils::getDbObjectNameByUrl(url);
     setText(objectName);

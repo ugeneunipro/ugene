@@ -28,6 +28,7 @@
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ObjectViewModel.h>
 
@@ -49,7 +50,7 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
     addToBar = true;
 
     menu = new QMenu();
-    setIcon(QIcon(":core/images/predefined_annotation_groups.png"));
+    GUIUtils::setThemedIcon(this, ":core/images/predefined_annotation_groups.png");
     setMenu(menu);
 
     connect(aaObj, SIGNAL(si_updateStarted()), SLOT(sl_autoAnnotationUpdateStarted()));

@@ -59,7 +59,7 @@ void OptionsPanelController::instantiateGroups() {
         // Create a widget with icon at the right side
         OPGroupParameters groupParameters = factory->getOPGroupParameters();
         const QString& groupId = groupParameters.getGroupId();
-        GroupHeaderImageWidget* headerImageWidget = widget->createHeaderImageWidget(groupId, groupParameters.getIcon());
+        GroupHeaderImageWidget* headerImageWidget = widget->createHeaderImageWidget(groupId, groupParameters.getHeaderImagePath());
         headerImageWidget->setToolTip(groupParameters.getTitle());
         headerImageWidget->setObjectName(groupId);
 

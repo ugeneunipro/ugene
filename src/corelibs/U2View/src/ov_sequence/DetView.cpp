@@ -40,6 +40,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/GUIUtils.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -62,7 +63,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     editor = new DetViewSequenceEditor(this);
 
     showComplementAction = new QAction(tr("Show complementary strand"), this);
-    showComplementAction->setIcon(QIcon(":core/images/show_compl.png"));
+    GUIUtils::setThemedIcon(showComplementAction, ":core/images/show_compl.png");
     showComplementAction->setObjectName("complement_action");
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));
 
@@ -96,7 +97,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     showAllFramesAction->setCheckable(true);
 
     wrapSequenceAction = new QAction(tr("Wrap sequence"), this);
-    wrapSequenceAction->setIcon(QIcon(":core/images/wrap_sequence.png"));
+    GUIUtils::setThemedIcon(wrapSequenceAction, ":core/images/wrap_sequence.png");
     wrapSequenceAction->setObjectName("wrap_sequence_action");
     connect(wrapSequenceAction, SIGNAL(triggered(bool)), SLOT(sl_wrapSequenceToggle(bool)));
 

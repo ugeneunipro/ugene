@@ -26,6 +26,8 @@
 #include <QStack>
 #include <QVBoxLayout>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MsaEditorSequenceArea.h>
 #include <U2View/TvNodeItem.h>
@@ -67,7 +69,8 @@ QWidget* MsaEditorTreeViewer::createViewWidget(QWidget* parent) {
     updateSyncModeActionState(false);
     connect(syncModeAction, SIGNAL(triggered()), SLOT(sl_syncModeActionTriggered()));
 
-    refreshTreeAction = new QAction(QIcon(":core/images/refresh.png"), tr("Refresh tree"), ui);
+    refreshTreeAction = new QAction(tr("Refresh tree"), ui);
+    GUIUtils::setThemedIcon(refreshTreeAction, ":core/images/refresh.png");
     refreshTreeAction->setObjectName("Refresh tree");
     refreshTreeAction->setEnabled(false);
     connect(refreshTreeAction, SIGNAL(triggered()), SLOT(sl_refreshTree()));
@@ -116,7 +119,7 @@ void MsaEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
     bool isChecked = isEnabled && isSyncModeOn;  // Override 'isSyncModeOn' with a safer option.
     syncModeAction->setChecked(isChecked);
     syncModeAction->setText(isChecked ? tr("Disable Tree and Alignment synchronization") : tr("Enable Tree and Alignment synchronization"));
-    syncModeAction->setIcon(QIcon(isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png"));
+    GUIUtils::setThemedIcon(syncModeAction, isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png");
 }
 
 MsaEditor* MsaEditorTreeViewer::getMsaEditor() const {

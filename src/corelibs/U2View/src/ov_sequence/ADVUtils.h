@@ -46,7 +46,7 @@ class U2VIEW_EXPORT ADVGlobalAction : public GObjectViewAction {
     Q_OBJECT
 public:
     ADVGlobalAction(AnnotatedDNAView* v,
-                    const QIcon& icon,
+                    const QString& iconPath,
                     const QString& text,
                     int pos = 1000 * 1000,
                     const ADVGlobalActionFlags& flags = ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_AddToAnalyseMenu | ADVGlobalActionFlag_SingleSequenceOnly);
@@ -67,6 +67,7 @@ public:
 private slots:
     /** Calls updateState() on every active sequence widget change. */
     void sl_activeSequenceChanged();
+    void sl_colorThemeSwitched();
 
 private:
     void updateState();

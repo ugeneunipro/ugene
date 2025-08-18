@@ -116,7 +116,6 @@ void Kalign3WorkerFactory::init() {
 
     actorPrototype->setEditor(new DelegateEditor(delegates));
     actorPrototype->setPrompter(new Kalign3Prompter());
-    actorPrototype->setIconPath(":kalign/images/kalign_16.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), actorPrototype);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

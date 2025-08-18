@@ -32,16 +32,16 @@ class U2CORE_EXPORT GObjectTypeInfo {
 public:
     GObjectTypeInfo() {
     }
-    GObjectTypeInfo(const GObjectType& _type, const QString& _name, const QString& _pluralName, const QString& treeSign, const QString iconURL, const QString& lockedIconUrl);
+    GObjectTypeInfo(const GObjectType& _type, const QString& _name, const QString& _pluralName, const QString& treeSign, const QString& iconPath, const QString& lockedIconPath);
 
     GObjectType type;
     QString name;
     QString pluralName;
     QString treeSign;
-    QString iconURL;
-    QString lockedIconUrl;
-    QIcon icon;
-    QIcon lockedIcon;
+    // Icon path for normal object
+    QString iconPath;
+    // Icon path for locked object
+    QString lockedIconPath;
 };
 
 class U2CORE_EXPORT GObjectTypes {

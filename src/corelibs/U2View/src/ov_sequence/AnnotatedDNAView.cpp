@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "AnnotatedDNAView.h"
+
 #include <QAction>
 #include <QApplication>
 #include <QMenu>
@@ -35,6 +37,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/ClipboardController.h>
+#include <U2Core/CollectionUtils.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectUtils.h>
@@ -72,7 +75,6 @@
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "ADVSyncViewManager.h"
-#include "AnnotatedDNAView.h"
 #include "AnnotatedDNAViewFactory.h"
 #include "AnnotatedDNAViewState.h"
 #include "AnnotatedDNAViewTasks.h"
@@ -81,7 +83,6 @@
 #include "DetView.h"
 #include "DetViewSequenceEditor.h"
 #include "GraphMenu.h"
-#include <U2Core/CollectionUtils.h>
 
 namespace U2 {
 
@@ -109,7 +110,8 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     createCodonTableAction();
     createAnnotationAction = (new ADVAnnotationCreation(this))->getCreateAnnotationAction();
 
-    posSelectorAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position..."), this);
+    posSelectorAction = new QAction(tr("Go to position..."), this);
+    GUIUtils::setThemedIcon(posSelectorAction, ":core/images/goto.png");
     posSelectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     posSelectorAction->setShortcutContext(Qt::WindowShortcut);
     posSelectorAction->setObjectName(ADV_GOTO_ACTION);
@@ -128,7 +130,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
         addObject(dnaObj);
     }
 
-    findPatternAction = new ADVGlobalAction(this, QIcon(":core/images/find_dialog.png"), tr("Find pattern..."), 10);
+    findPatternAction = new ADVGlobalAction(this, ":core/images/find_dialog.png", tr("Find pattern..."), 10);
     findPatternAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     findPatternAction->setShortcutContext(Qt::WindowShortcut);
     connect(findPatternAction, SIGNAL(triggered()), SLOT(sl_onFindPatternClicked()));
@@ -255,7 +257,8 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     mainSplitter->addAction(removeAnnsAndQsAction);
 
-    mainSplitter->setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).icon);
+    auto windowIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconPath);
+    mainSplitter->setWindowIcon(windowIcon);
 
     // Init the Options Panel
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
@@ -1142,7 +1145,7 @@ void AnnotatedDNAView::finishSeqWidgetMove() {
 }
 
 void AnnotatedDNAView::createCodonTableAction() {
-    QAction* showCodonTableAction = new ADVGlobalAction(this, QIcon(":core/images/codon_table.png"), tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
+    QAction* showCodonTableAction = new ADVGlobalAction(this, ":core/images/codon_table.png", tr("Show codon table"), INT_MAX - 1, ADVGlobalActionFlag_AddToToolbar);
     showCodonTableAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
     showCodonTableAction->setShortcutContext(Qt::WindowShortcut);
     connect(showCodonTableAction, SIGNAL(triggered()), codonTableView, SLOT(sl_setVisible()));

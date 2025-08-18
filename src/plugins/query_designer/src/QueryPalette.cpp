@@ -28,6 +28,7 @@
 #include <QItemDelegate>
 #include <QMouseEvent>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Core/AppContext.h>
 
 #include <U2Lang/QueryDesignerRegistry.h>
@@ -193,11 +194,10 @@ void QueryPalette::setContent() {
 QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setCheckable(true);
-    if (!item->getIcon().isNull()) {
-        a->setIcon(item->getIcon());
+    if (!item->getIconPath().isEmpty()) {
+        GUIUtils::setThemedIcon(a, item->getIconPath());
     } else {
-        QIcon icon(":query_designer/images/green_circle.png");
-        a->setIcon(icon);
+        GUIUtils::setThemedIcon(a, ":query_designer/images/green_circle.png");
     }
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
@@ -208,8 +208,7 @@ QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
 QAction* QueryPalette::createItemAction(const QString& constraintId) {
     auto a = new QAction(constraintId, this);
     a->setCheckable(true);
-    QIcon icon(":query_designer/images/green_circle.png");
-    a->setIcon(icon);
+    GUIUtils::setThemedIcon(a, ":query_designer/images/green_circle.png");
     a->setData(QVariant::fromValue(constraintId));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));

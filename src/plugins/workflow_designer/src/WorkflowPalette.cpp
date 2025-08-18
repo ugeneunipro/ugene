@@ -28,6 +28,8 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/IncludedProtoFactory.h>
@@ -41,6 +43,7 @@
 #include "library/ScriptWorker.h"
 #include "library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h"
 #include "util/CustomWorkerUtils.h"
+
 namespace U2 {
 
 const QString WorkflowPalette::MIME_TYPE("application/x-ugene-workflow-id");
@@ -218,6 +221,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, Sc
     connect(reg, SIGNAL(si_registryModified()), SLOT(rebuild()));
     connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)));
     this->setObjectName("WorkflowPaletteElements");
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WorkflowPaletteElements::sl_colorThemeSwitched);
 }
 
 QMenu* WorkflowPaletteElements::createMenu(const QString& name) {
@@ -406,10 +410,12 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setToolTip(item->getDocumentation());
     a->setCheckable(true);
-    if (item->getIcon().isNull()) {
+    const auto& iconPath = item->getIconPath();
+    if (iconPath.isEmpty()) {
         item->setIconPath(":workflow_designer/images/green_circle.png");
     }
-    a->setIcon(item->getIcon());
+    protoActionsName.insert(item, a);
+    GUIUtils::setThemedIcon(a, item->getIconPath());
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));
@@ -600,6 +606,14 @@ void WorkflowPaletteElements::sl_prototypeIsAboutToBeRemoved(ActorPrototype* pro
     }
 
     actionMap.remove(action);
+}
+
+void WorkflowPaletteElements::sl_colorThemeSwitched() {
+    auto protos = protoActionsName.keys();
+    for (const auto& proto : qAsConst(protos)) {
+        auto action = protoActionsName.value(proto);
+        action->setIcon(GUIUtils::getThemedIcon(proto->getIconPath()));
+    }
 }
 
 void WorkflowPaletteElements::contextMenuEvent(QContextMenuEvent* e) {

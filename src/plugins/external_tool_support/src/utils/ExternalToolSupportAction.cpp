@@ -25,6 +25,8 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 ExternalToolSupportAction::ExternalToolSupportAction(QObject* p, GObjectViewController* v, const QString& _text, int order, const QStringList& _toolIds)
@@ -69,16 +71,23 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
 void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
     QFont isConfiguredToolFont;
 
+    auto tool = AppContext::getExternalToolRegistry()->getById(toolIds.at(0));
     if (!isAnyToolConfigured ||
         (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty())) {
         isConfiguredToolFont.setItalic(true);
-        setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getGrayIcon());
+        const auto& grayIconPath = tool->getGrayIconPath();
+        auto grayIcon = GUIUtils::getThemedIcon(grayIconPath);
+        setIcon(grayIcon);
     } else {
         isConfiguredToolFont.setItalic(false);
         if (AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->isValid()) {
-            setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getIcon());
+            const auto& iconPath = tool->getIconPath();
+            auto icon = GUIUtils::getThemedIcon(iconPath);
+            setIcon(icon);
         } else {
-            setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getWarnIcon());
+            const auto& warnIiconPath = tool->getWarnIconPath();
+            auto warnIcon = GUIUtils::getThemedIcon(warnIiconPath);
+            setIcon(warnIcon);
         }
     }
 

@@ -101,10 +101,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="../../../../U2Gui/U2Gui.qrc">
-          <normaloff>:/core/images/goto.png</normaloff>:/core/images/goto.png</iconset>
-        </property>
         <property name="toolButtonStyle">
          <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
@@ -143,10 +139,6 @@
        <widget class="QToolButton" name="convertAminoAlphabetButton">
         <property name="text">
          <string>Amino</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../U2Gui/U2Gui.qrc">
-          <normaloff>:/core/images/goto.png</normaloff>:/core/images/goto.png</iconset>
         </property>
         <property name="toolButtonStyle">
          <enum>Qt::ToolButtonTextBesideIcon</enum>

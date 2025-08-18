@@ -60,9 +60,6 @@ SpideySupport::SpideySupport()
     : ExternalTool(SpideySupport::ET_SPIDEY_ID, "spidey", SpideySupport::ET_SPIDEY) {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new SpideySupportContext(this);
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
 #ifdef Q_OS_WIN
     executableFileName = "Spidey.exe";
@@ -116,7 +113,7 @@ void SpideySupportContext::initViewContext(GObjectViewController* view) {
 
     // add spidey action
     QString spideyTitle = tr("Align sequence to mRNA");
-    auto alignAction = new ADVGlobalAction(dnaView, QIcon(), spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
+    auto alignAction = new ADVGlobalAction(dnaView, "", spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
     alignAction->setObjectName("Align sequence to mRNA");
     addViewAction(alignAction);
 

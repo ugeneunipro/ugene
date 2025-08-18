@@ -35,14 +35,16 @@ class MainWindowImpl;
 // used to save/restore geometry of the dock
 class DockWrapWidget : public QWidget {
 public:
-    DockWrapWidget(QWidget* w);
+    DockWrapWidget(QWidget* w, const QString& iconPath);
     ~DockWrapWidget();
 
     virtual QSize sizeHint() const {
         return hint.isNull() ? w->sizeHint() : hint;
     }
+
     QWidget* w;
     QSize hint;
+    QString iconPath;
 };
 
 class DockData {
@@ -52,6 +54,7 @@ public:
     QDockWidget* dock = nullptr;
     DockWrapWidget* wrapWidget = nullptr;
     QIcon dockIcon;
+    bool isActive = false;
     QAction* keySequenceAction = nullptr;
     QAction* toolBarAction = nullptr;
 };
@@ -62,7 +65,7 @@ public:
     MWDockManagerImpl(MainWindowImpl* _mw);
     ~MWDockManagerImpl();
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence = QKeySequence());
+    virtual QAction* registerDock(MWDockArea area, QWidget* dockWidget, const QString& iconPath, const QKeySequence& keySequence = QKeySequence());
 
     virtual QWidget* findWidget(const QString& widgetObjName);
 
@@ -82,6 +85,7 @@ private slots:
     void sl_widgetDestroyed();
     void sl_toggleDock();
     void sl_toggleDocks();
+    void sl_colorThemeSwitched();
 
 private:
     QToolBar* getDockBar(MWDockArea a) const;

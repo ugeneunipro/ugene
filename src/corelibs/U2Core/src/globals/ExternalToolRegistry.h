@@ -71,15 +71,18 @@ public:
 
     const QString& getName() const;
     const QString& getPath() const;
-    const QIcon& getIcon() const;
-    const QIcon& getGrayIcon() const;
-    const QIcon& getWarnIcon() const;
+    // Set icon path for normal icon
+    const QString& getIconPath() const;
+    // Set icon path for grey icon (ET not set)
+    const QString& getGrayIconPath() const;
+    // Set icon path for warn icon (ET set, but there are some problems)
+    const QString& getWarnIconPath() const;
     const QString& getDescription() const;
     const QString& getToolRunnerProgramId() const;
     virtual QStringList getToolRunnerAdditionalOptions() const;
     const QString& getExecutableFileName() const;
     const QString& getVersion() const;
-    /** Returns the tool version for the tool located by the specified path without running the tool. 
+    /** Returns the tool version for the tool located by the specified path without running the tool.
       * Returns an empty string if can't derive the tool version by the path. */
     virtual const QString getVersionFromToolPath(const QString& toolPath) const;
     const QString& getPredefinedVersion() const;
@@ -131,9 +134,9 @@ protected:
     /** Visual name of the tool. */
     QString name;
     QString path;  // tool path
-    QIcon icon;  // valid tool icon
-    QIcon grayIcon;  // not set tool icon
-    QIcon warnIcon;  // invalid tool icon
+    QString iconPath;  // valid tool icon
+    QString grayIconPath;  // not set tool icon
+    QString warnIconPath;  // invalid tool icon
     QString description;  // tool description
     QString toolRunnerProgram;  // starter program (e.g. python for scripts)
     QString executableFileName;  // executable file name (without path)

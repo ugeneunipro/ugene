@@ -85,19 +85,13 @@ protected:
  */
 class U2LANG_EXPORT VisualDescriptor : public Descriptor {
 public:
-    VisualDescriptor(const Descriptor& d, const QString& _iconPath = QString());
+    VisualDescriptor(const Descriptor& d, const QString& path = QString());
 
-    // getIcon will create icon from its path (if path exists) on the first call.
-    // This is compatibility issue for congene.
-    QIcon getIcon();
-    void setIcon(QIcon icon_);
-    void setIconPath(const QString& iconPath_);
+    void setIconPath(const QString& path);
+    const QString& getIconPath() const;
 
 private:
-    // full path to the icon
     QString iconPath;
-    // user defined or taken from iconPath icon
-    QIcon icon;
 
 };  // VisualDescriptor
 

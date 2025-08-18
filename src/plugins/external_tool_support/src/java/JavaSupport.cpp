@@ -33,11 +33,6 @@ const QStringList JavaSupport::RUN_PARAMETERS = {"-jar"};
 
 JavaSupport::JavaSupport()
     : RunnerTool(RUN_PARAMETERS, JavaSupport::ET_JAVA_ID, "java", "java") {
-    if (AppContext::getMainWindow() != nullptr) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
     executableFileName = isOsWindows() ? "java.exe" : "java";
     validationMessageRegExp = "version \"\\d+.\\d+.\\d+(_\\d+)?";
     validationArguments << "-version";

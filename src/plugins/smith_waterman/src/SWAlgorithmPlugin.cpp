@@ -120,7 +120,7 @@ SWAlgorithmADVContext::SWAlgorithmADVContext(QObject* p)
 void SWAlgorithmADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     assert(av != nullptr);
-    auto a = new ADVGlobalAction(av, QIcon(":core/images/sw.png"), tr("Find pattern [Smith-Waterman]..."), 15);
+    auto a = new ADVGlobalAction(av, ":core/images/sw.png", tr("Find pattern [Smith-Waterman]..."), 15);
     a->setObjectName("find_pattern_smith_waterman_action");
 
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));

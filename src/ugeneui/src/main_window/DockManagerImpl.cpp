@@ -39,15 +39,14 @@ namespace U2 {
 
 #define DOCK_SETTINGS QString("mwdockview/")
 
-DockWrapWidget::DockWrapWidget(QWidget* _w)
-    : w(_w) {
+DockWrapWidget::DockWrapWidget(QWidget* _w, const QString& _iconPath)
+    : w(_w), iconPath(_iconPath) {
     auto l = new QVBoxLayout();
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     setLayout(l);
     l->addWidget(w);
     setWindowTitle(w->windowTitle());
-    setWindowIcon(w->windowIcon());
     //    setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -97,6 +96,8 @@ MWDockManagerImpl::MWDockManagerImpl(MainWindowImpl* _mw)
 
     mainWindowIsHidden = false;
     mw->installEventFilter(this);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MWDockManagerImpl::sl_colorThemeSwitched);
 }
 
 MWDockManagerImpl::~MWDockManagerImpl() {
@@ -143,7 +144,7 @@ static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     return false;
 }
 
-QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QKeySequence& keySequence) {
+QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QString& iconPath, const QKeySequence& keySequence) {
     bool showDock = dockWidget->objectName() == lastActiveDocksState[area];
 
     QToolBar* toolBar = getDockBar(area);
@@ -151,7 +152,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     auto data = new DockData();
     data->area = area;
     data->label = new QLabel(toolBar);
-    data->wrapWidget = new DockWrapWidget(dockWidget);
+    data->wrapWidget = new DockWrapWidget(dockWidget, iconPath);
     data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
     data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
@@ -282,7 +283,6 @@ void MWDockManagerImpl::openDock(DockData* d) {
     d->dock->setFeatures(QDockWidget::DockWidgetClosable);
     d->dock->setWidget(d->wrapWidget);
     d->dock->setWindowTitle(d->wrapWidget->windowTitle());
-    d->dock->setWindowIcon(d->wrapWidget->windowIcon());
     activeDocks[d->area] = d;
     connect(d->dock, SIGNAL(visibilityChanged(bool)), SLOT(sl_dockVisibilityChanged(bool)));
 
@@ -312,7 +312,7 @@ void MWDockManagerImpl::destroyDockData(DockData* d) {
     if (d->dock != nullptr) {
         saveDockGeometry(d);
     }
-    QToolBar* toolBar= getDockBar(d->area);
+    QToolBar* toolBar = getDockBar(d->area);
     toolBar->removeAction(d->toolBarAction);
 
     delete d->label;
@@ -454,6 +454,12 @@ void MWDockManagerImpl::sl_toggleDocks() {
                 openDock(toggleDockState[i]);
             }
         }
+    }
+}
+
+void MWDockManagerImpl::sl_colorThemeSwitched() {
+    for (auto doc : qAsConst(docks)) {
+        DockWidgetPainter::updateLabel(doc, doc->isActive);
     }
 }
 
