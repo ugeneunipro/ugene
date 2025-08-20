@@ -1553,6 +1553,24 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8164) {
+    /*
+     * 1. Open COI.aln
+     * 2. Select any row
+     * 3. Call context menu Export->Move selected rows to another alignment->Create a new document
+     * 4. In opened dialog add unsupported file: "file.pdb"
+     * Expected state: message box unsupported type appeared
+     **/
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file which support multiple alignment."));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, "file.pdb", GTFileDialogUtils::Save, GTGlobals::UseMouse));
+    GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8170) {
     // Open any sequence (e.g. murine.gb)
     // Enable Restriction Sites auto annotations

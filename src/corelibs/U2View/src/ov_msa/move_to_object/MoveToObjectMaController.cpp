@@ -150,6 +150,8 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     if (format == nullptr) {
         format = formatRegistry->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
     }
+    CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), 
+              QMessageBox::critical(ui, L10N::errorTitle(), tr("Please select a file which support multiple alignment.")), );
     QStringList extensions = format->getSupportedDocumentFileExtensions();
     if (!extensions.isEmpty() && !extensions.contains(fileExtension)) {
         url += "." + extensions.first();
