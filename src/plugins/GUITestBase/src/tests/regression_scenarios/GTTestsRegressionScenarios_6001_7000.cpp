@@ -1318,10 +1318,14 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6246) {
-    // 1. Open "data/samples/Genbank/murine.gb".
-    // 2. Select a region (a very short one, 2 bases long)
-    // 3. Export as image to the sandbox
-    // Expect: exported image has a large width
+    // Open "murine.gb".
+    // Select a region.
+    // Click on the "Export image" button on the SV toolbar.
+    // In the "Export Image" dialog:
+    // Select "Zoomed annotations".
+    // Select "Whole sequence" region.
+    // Click "Export".
+    // Expected state: there is a zoom view image for the whole sequence.
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
 
