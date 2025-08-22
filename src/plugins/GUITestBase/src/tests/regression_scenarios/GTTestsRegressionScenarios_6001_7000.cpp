@@ -100,6 +100,7 @@
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -1316,6 +1317,39 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(second), QString("The second sequence '%1' is absent in the project tree view").arg(second));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6246) {
+    // Open "murine.gb".
+    // Select a region.
+    // Click on the "Export image" button on the SV toolbar.
+    // In the "Export Image" dialog:
+    // Select "Zoomed annotations".
+    // Select "Whole sequence" region.
+    // Click "Export".
+    // Expected state: there is a zoom view image for the whole sequence.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsSequenceView::selectSequenceRegion(5, 7);
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTRadioButton::click("zoomButton", dialog);
+            GTComboBox::selectItemByText("region_type_combo", dialog, "Whole sequence");
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_6246.png", dialog);
+
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new ExportImage(new Scenario));
+    GTWidget::click(GTAction::button("export_image"));
+
+    QImage img(sandBoxDir + "test_6246.png");
+    CHECK_SET_ERR(img.width() > 100, "Width is too low to be a width of a whole sequence image");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6247) {
     class Scenario : public CustomScenario {
         void run() override {
@@ -2327,7 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(test_6485) {
     GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::algorithms);
     QTreeWidgetItem* treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms);
     CHECK_SET_ERR(treeItem != nullptr, "Element not found");
-    
+
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "The element with external tool is used in other Workflow Designer window(s). Please remove these instances to be able to remove the element configuration."));
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "", "Remove element"));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove"}));

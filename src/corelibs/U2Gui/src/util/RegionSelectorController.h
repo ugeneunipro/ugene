@@ -25,6 +25,7 @@
 #include <QLineEdit>
 
 #include <U2Core/U2Location.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -33,19 +34,12 @@ class DNASequenceSelection;
 class GSelection;
 
 struct RegionSelectorGui {
-    RegionSelectorGui()
-        : startLineEdit(nullptr),
-          endLineEdit(nullptr),
-          locationLineEdit(nullptr),
-          presetsComboBox(nullptr) {
-    }
 
-    RegionSelectorGui(QLineEdit* start, QLineEdit* end, QLineEdit* location,  QComboBox* presets = nullptr)
+    RegionSelectorGui(QLineEdit* start, QLineEdit* end, QLineEdit* location,  QComboBox* presets)
         : startLineEdit(start),
           endLineEdit(end),
           locationLineEdit(location),
-          presetsComboBox(presets) {
-    }
+          presetsComboBox(presets) {}
 
     QLineEdit* startLineEdit;
     QLineEdit* endLineEdit;
@@ -125,17 +119,15 @@ signals:
     void si_regionChanged(const U2Region& newRegion);
 
 private slots:
-    //! rename
-    void sl_regionChanged();
-    void sl_onPresetChanged(int index);
     void sl_onRegionChanged();
+    void sl_onPresetChanged(int index);
     void sl_onSelectionChanged(GSelection* selection);
-    void sl_onValueEdited();
 
 private:
     void init();
     void setupPresets();
     void connectSlots();
+    void emitRegionChanged(const U2Region& newRegion);
 
 private:
     RegionSelectorGui gui;

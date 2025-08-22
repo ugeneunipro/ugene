@@ -40,10 +40,6 @@ RegionSelectorWithExclude::RegionSelectorWithExclude(QWidget* parent, const QPoi
     U2Region customRegion = searchLocation.data()->regions.isEmpty() ? U2Region() : searchLocation.data()->regions.first();
 
     QList<RegionPreset> searchPresets = {RegionPreset(RegionPreset::RegionPreset::getLocationModeDisplayName(), searchLocation)};
-    const QVector<U2Region> selectedRegions = advSequenceContext->getSequenceSelection()->getSelectedRegions();
-    if (!selectedRegions.isEmpty()) {
-        searchPresets << RegionPreset(RegionPreset::RegionPreset::getSelectedRegionDisplayName(), U2Location({selectedRegions.first()}));
-    }
 
     auto widgetLayout = new QVBoxLayout(this);
     auto groupBox = new QGroupBox(tr("Select sequence region"), this);
@@ -59,6 +55,7 @@ RegionSelectorWithExclude::RegionSelectorWithExclude(QWidget* parent, const QPoi
         regionSelector->setCustomRegion(customRegion);
     }
 
+    const QVector<U2Region> selectedRegions = advSequenceContext->getSequenceSelection()->getSelectedRegions();
     if (!selectedRegions.isEmpty()) {
         regionSelector->setCurrentPreset(RegionPreset::RegionPreset::getSelectedRegionDisplayName());
     }
