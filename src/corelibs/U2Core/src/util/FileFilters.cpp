@@ -114,7 +114,7 @@ QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QSt
     return withAllFilesFilter(filters);
 }
 
-QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats) {
+QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats, bool excludeAllFilesIfNotEmpty) {
     SAFE_POINT(!objectTypes.isEmpty(), "createFileFilterByObjectTypes with no object types", withAllFilesFilter({}));
 
     QStringList filters;
@@ -132,7 +132,12 @@ QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& obj
             }
         }
     }
-    return withAllFilesFilter(filters);
+    if (excludeAllFilesIfNotEmpty) {
+        filters.sort();
+        return filters.join(FILTER_SEPARATOR);
+    } else {
+        return withAllFilesFilter(filters);
+    }
 }
 
 }  // namespace U2

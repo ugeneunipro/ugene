@@ -82,7 +82,7 @@ void BuildIndexDialog::sl_onAddRefButtonClicked() {
     QString filter;
 
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        lod.url = U2FileDialog::getOpenFileName(this, tr("Open reference sequence"), lod.dir, filter, 0, QFileDialog::DontUseNativeDialog);
+        lod.url = U2FileDialog::getOpenFileName(this, tr("Open reference sequence"), lod.dir, filter, QString(), QFileDialog::DontUseNativeDialog);
     } else {
         lod.url = U2FileDialog::getOpenFileName(this, tr("Open reference sequence"), lod.dir, filter);
     }

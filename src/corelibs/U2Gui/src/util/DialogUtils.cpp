@@ -66,7 +66,7 @@ void FileLineEdit::sl_onBrowse() {
             lod.url = lst.first();
         }
     } else {
-        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select file(s)"), lod.dir, FileFilter, nullptr, options);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select file(s)"), lod.dir, FileFilter, QString(), options);
     }
     if (!name.isEmpty()) {
         setText(name);

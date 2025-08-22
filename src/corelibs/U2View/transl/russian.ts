@@ -6002,12 +6002,7 @@ Simple overview is unavailable.</source>
         <translation>Пожалуйста выберите файл с не пустым именем.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/move_to_object/MoveToObjectMaController.cpp" line="154"/>
-        <source>Please select a file which support multiple alignment.</source>
-        <translation>Пожалуйста выбирите файл который поддерживает множественные выравнивания.</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/move_to_object/MoveToObjectMaController.cpp" line="177"/>
+        <location filename="../src/ov_msa/move_to_object/MoveToObjectMaController.cpp" line="175"/>
         <source>Export alignment rows to a new file</source>
         <translation>Экспортировать строки выравнивания в новый файл</translation>
     </message>
