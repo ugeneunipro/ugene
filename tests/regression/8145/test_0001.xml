@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!/regression/8145/test.uwl"
+                 in="!common_data_dir!/Sitecon/Algorithm/human_T1.fa"
+                 uql="!common_data_dir!regression/8145/gr.uql"
+    />
+</multi-test>

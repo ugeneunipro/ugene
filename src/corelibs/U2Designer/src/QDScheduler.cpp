@@ -620,7 +620,7 @@ void QDResultLinker::createMergedAnnotations(const QString& groupPrefix) {
         endPos = qMin(seqRange.endPos(), endPos + offset);
         U2Region r(startPos, endPos - startPos);
 
-        SharedAnnotationData ad;
+        SharedAnnotationData ad(new AnnotationData);
         ad->name = groupPrefix;
         ad->location->regions.append(r);
         anns.append(ad);
