@@ -21,6 +21,9 @@
 
 #include "SortBamWorker.h"
 
+#include <QDir>
+#include <QFileInfo>
+
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>

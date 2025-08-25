@@ -4,136 +4,132 @@
 <context>
     <name>FindRepeatsDialog</name>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="17"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Find Repeats</source>
         <translation>Tekrarları Bul</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="87"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="239"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="299"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="115"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Tekrar uzunluğunun sezgisel temelli seçimi, böylece dizideki tekrar sayısı 1000&apos;i aşmaz</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="118"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>1k</source>
         <translation>1k</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="49"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Number of bases in a sliding window that is moved along the sequence</source>
         <translation>Sıra boyunca hareket ettirilen bir kayan penceredeki baz sayısı</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="52"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Window size</source>
         <translation>Pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="125"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>How similar the two windows of the sequence</source>
         <translation>Sıranın iki penceresi ne kadar benzer</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="128"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Minimum indentity per window</source>
         <translation>Pencere başına minimum girinti</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="163"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="185"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Yinelemeleri % 100&apos;e sıfırlar</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="188"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="211"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Minimum distance between repeats</source>
         <translation>Tekrarlar arasındaki minimum mesafe</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="258"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Maximum distance between repeats</source>
         <translation>Tekrarlar arasındaki maksimum mesafe</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="363"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Advanced</source>
         <translation>Gelişmiş</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="369"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Advanced parameters</source>
         <translation>Gelişmiş parametreler</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="375"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Custom algorithm</source>
         <translation>Özel algoritma</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="402"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search only for repeats that lie inside of an annotated region</source>
         <translation>Yalnızca ek açıklamalı bir bölgenin içinde bulunan tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="451"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search only for repeats that have an annotated region inside</source>
         <translation>Yalnızca içinde ek açıklamalı bir bölge olan tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="500"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Filter repeats that have an annotated region inside</source>
         <translation>İçinde açıklamalı bir bölge olan tekrarları filtrele</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="609"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Nested repeats filter algorithm</source>
         <translation>İç içe geçmiş tekrarlar filtre algoritması</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="569"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Exclude tandems areas</source>
         <translation>Tandem alanlarını hariç tut</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="444"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="493"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="542"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="549"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Search for inverted repeats</source>
         <translation>Tersine çevrilmiş tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="321"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Region to process</source>
         <translation>İşlenecek bölge</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="31"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Base</source>
         <translation>Temel</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="37"/>
+        <location filename="../src/FindRepeatsDialog.ui"/>
         <source>Repeat finder parameters</source>
         <translation>Bulucu parametrelerini tekrar et</translation>
     </message>
@@ -141,73 +137,72 @@
 <context>
     <name>FindTandemsDialog</name>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="248"/>
-        <location filename="../src/FindTandemsDialog.ui" line="267"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source> n</source>
         <translation> n</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="62"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="17"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Find Tandem Repeats</source>
         <translation>Tandem Tekrarlarını Bul</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="31"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>General</source>
         <translation>Genel</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="37"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="55"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Preset settings</source>
         <translation>Ön ayar ayarları</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="69"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min length of repeated sequence</source>
         <translation>Minimum tekrarlanan dizi uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="76"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Max length of repeated sequence</source>
         <translation>Maksimum tekrarlanan dizi uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="83"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min length of tandem repeat</source>
         <translation>Minimum tandem tekrar uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="90"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Min number of repeats</source>
         <translation>Minimum tekrar sayısı</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="308"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="328"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Show overlapped tandems</source>
         <translation>Çakışan tandemleri göster</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="340"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Search in</source>
         <translation>Araştır</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="366"/>
+        <location filename="../src/FindTandemsDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>
@@ -223,94 +218,93 @@
 <context>
     <name>U2::FindRepeatsDialog</name>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="82"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="79"/>
         <source>Start</source>
         <translation>Başlangıç</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="83"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="80"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="102"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="99"/>
         <source>Auto</source>
         <translation>Otomatik</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="103"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="100"/>
         <source>Suffix index</source>
         <translation>Son ek dizini</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="104"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="101"/>
         <source>Diagonals</source>
         <translation>Çapraz</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="106"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="103"/>
         <source>Disjoint repeats</source>
         <translation>Ayrık tekrarlar</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="107"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="104"/>
         <source>No filtering</source>
         <translation>Filtresiz</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="108"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="105"/>
         <source>Unique repeats</source>
         <translation>Benzersiz tekrarlar</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="239"/>
-        <location filename="../src/FindRepeatsDialog.cpp" line="249"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="233"/>
         <source>Sequence size is too large!</source>
         <translation>Sıra boyutu çok büyük!</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="295"/>
-        <location filename="../src/FindRepeatsDialog.cpp" line="302"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="282"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="289"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="222"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="219"/>
         <source>No annotations found: %1</source>
         <translation>Ek açıklama bulunamadı: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="295"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="282"/>
         <source>Not enough memory error ocurred while preparing data. Try to set smaller region.</source>
         <translation>Veriler hazırlanırken yeterli hafıza hatası oluşmadı. Daha küçük bir bölge ayarlamaya çalışın.</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="302"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="289"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="310"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="297"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="310"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="297"/>
         <source>Search with given identity %1% and length more then 80m bps can take very long time. Approximate repeat searching time for 80m bp with 95% identity is 40 minutes on Intel Core 2 Quad Q9500. Do you want to continue?</source>
         <translation>Belirtilen %1% kimliği ve 80m bps&apos;den fazla uzunluktaki arama çok uzun sürebilir. Intel Core 2 Quad Q9500&apos;de % 95 kimlik ile 80m bp için yaklaşık tekrar arama süresi 40 dakikadır. Devam etmek istiyor musun?</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="317"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="304"/>
         <source>A problem occurred during finding repeats. The sequence is no more available.</source>
         <translation>Tekrarları bulurken bir sorun oluştu. Sıra artık mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="396"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="383"/>
         <source>Estimated repeats count: %1</source>
         <translation>Tahmini tekrar sayısı: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="397"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="384"/>
         <source>Estimated repeats count hint is based on the active settings and random sequence model</source>
         <translation>Tahmini tekrar sayısı ipucu, etkin ayarlara ve rastgele sıra modeline dayanır</translation>
     </message>
@@ -374,67 +368,66 @@
 <context>
     <name>U2::FindTandemsDialog</name>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="67"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="68"/>
         <source>Start</source>
         <translation>Başlangıç</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="68"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="69"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="87"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="88"/>
         <source>Suffix array</source>
         <translation>Sonek dizisi</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="88"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="89"/>
         <source>Suffix array (optimized)</source>
         <translation>Sonek dizisi (optimize edilmiş)</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="91"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="92"/>
         <source>All</source>
         <translation>Tümü</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="92"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="93"/>
         <source>Micro-satellites</source>
         <translation>Mikro uydular</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="93"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="94"/>
         <source>Mini-satellites</source>
         <translation>Mini uydular</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="94"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="95"/>
         <source>Big-period tandems</source>
         <translation>Büyük dönem tandemleri</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="95"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="96"/>
         <source>Custom</source>
         <translation>Özel</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="173"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="174"/>
         <source>No annotations found: %1</source>
         <translation>Ek açıklama bulunamadı: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="206"/>
         <source>Sequence size is too large!</source>
-        <translation>Sıra boyutu çok büyük!</translation>
+        <translation type="vanished">Sıra boyutu çok büyük!</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="215"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="208"/>
         <source>Not enough memory error ocurred while preparing data. Try to set smaller region.</source>
         <translation>Veriler hazırlanırken yeterli hafıza hatası oluşmadı. Daha küçük bir bölge ayarlamaya çalışın.</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.cpp" line="220"/>
+        <location filename="../src/FindTandemsDialog.cpp" line="213"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
     </message>
@@ -464,27 +457,27 @@
 <context>
     <name>U2::LocalWorkflow::RepeatPrompter</name>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="189"/>
+        <location filename="../src/RepeatWorker.cpp" line="190"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="190"/>
+        <location filename="../src/RepeatWorker.cpp" line="191"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="194"/>
+        <location filename="../src/RepeatWorker.cpp" line="195"/>
         <source>inverted</source>
         <translation>tersine çevrilmiş</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="194"/>
+        <location filename="../src/RepeatWorker.cpp" line="195"/>
         <source>direct</source>
         <translation>doğrudan</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="196"/>
+        <location filename="../src/RepeatWorker.cpp" line="197"/>
         <source>For each sequence%1, find &lt;u&gt;%2&lt;/u&gt; repeats.&lt;br&gt;Detect &lt;u&gt;%3% identical&lt;/u&gt; repeats &lt;u&gt;not shorter than %4 bps&lt;/u&gt;.&lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%5&lt;/u&gt;.</source>
         <translation>Her %1 dizisi için &lt;u&gt;%2&lt;/u&gt; tekrarı bulun. &lt;br&gt; &lt;u&gt;%3% özdeş&lt;/u&gt; yinelemeleri &lt;u&gt;%4 bps&apos;den kısa değil&lt;/u&gt; algıla. &lt;br&gt;Bulunan bölgelerin listesini &lt;u&gt;%5&lt;/u&gt; olarak açıklayarak çıktı alın.</translation>
     </message>
@@ -492,184 +485,184 @@
 <context>
     <name>U2::LocalWorkflow::RepeatWorker</name>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="77"/>
+        <location filename="../src/RepeatWorker.cpp" line="78"/>
         <source>Input sequences</source>
         <translation>Giriş dizileri</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="77"/>
+        <location filename="../src/RepeatWorker.cpp" line="78"/>
         <source>A nucleotide sequence to search repeats in.</source>
         <translation>Aramanın tekrarlanacağı bir nükleotid dizisi.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="78"/>
+        <location filename="../src/RepeatWorker.cpp" line="79"/>
         <source>Repeat annotations</source>
         <translation>Ek açıklamaları tekrarlayın</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="78"/>
+        <location filename="../src/RepeatWorker.cpp" line="79"/>
         <source>A set of annotations marking repeats found in the sequence.</source>
         <translation>Dizide bulunan tekrarları işaretleyen bir dizi ek açıklama.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="87"/>
+        <location filename="../src/RepeatWorker.cpp" line="88"/>
         <source>Annotate as</source>
         <translation>Olarak ek açıklama</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="87"/>
+        <location filename="../src/RepeatWorker.cpp" line="88"/>
         <source>Name of the result annotations marking found repeats.</source>
         <translation>Bulunan tekrarları işaretleyen sonuç ek açıklamalarının adı.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="88"/>
+        <location filename="../src/RepeatWorker.cpp" line="89"/>
         <source>Identity</source>
         <translation>Kimlik</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="88"/>
+        <location filename="../src/RepeatWorker.cpp" line="89"/>
         <source>Repeats identity.</source>
         <translation>Kimliği tekrar eder.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="89"/>
+        <location filename="../src/RepeatWorker.cpp" line="90"/>
         <source>Min length</source>
         <translation>Min uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="89"/>
+        <location filename="../src/RepeatWorker.cpp" line="90"/>
         <source>Minimum length of repeats.</source>
         <translation>Minimum tekrar uzunluğu.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="90"/>
+        <location filename="../src/RepeatWorker.cpp" line="91"/>
         <source>Min distance</source>
         <translation>Min mesafe</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="90"/>
+        <location filename="../src/RepeatWorker.cpp" line="91"/>
         <source>Minimum distance between repeats.</source>
         <translation>Tekrarlar arasındaki minimum mesafe.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="91"/>
+        <location filename="../src/RepeatWorker.cpp" line="92"/>
         <source>Max distance</source>
         <translation>Maksimum uzaklık</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="91"/>
+        <location filename="../src/RepeatWorker.cpp" line="92"/>
         <source>Maximum distance between repeats.</source>
         <translation>Tekrarlar arasındaki maksimum mesafe.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="92"/>
+        <location filename="../src/RepeatWorker.cpp" line="93"/>
         <source>Inverted</source>
         <translation>Ters Çevrilmiş</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="92"/>
+        <location filename="../src/RepeatWorker.cpp" line="93"/>
         <source>Search for inverted repeats.</source>
         <translation>Tersine çevrilmiş tekrarları arayın.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="93"/>
+        <location filename="../src/RepeatWorker.cpp" line="94"/>
         <source>Filter algorithm</source>
         <translation>Filtreleme algoritması</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="93"/>
+        <location filename="../src/RepeatWorker.cpp" line="94"/>
         <source>Filter repeats algorithm.</source>
         <translation>Filtre tekrarlama algoritması.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="94"/>
+        <location filename="../src/RepeatWorker.cpp" line="95"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="94"/>
+        <location filename="../src/RepeatWorker.cpp" line="95"/>
         <source>Control over variations of algorithm.</source>
         <translation>Algoritma varyasyonları üzerinde kontrol.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="95"/>
+        <location filename="../src/RepeatWorker.cpp" line="96"/>
         <source>Parallel threads</source>
         <translation>Paralel işler</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="95"/>
+        <location filename="../src/RepeatWorker.cpp" line="96"/>
         <source>Number of parallel threads used for the task.</source>
         <translation>Görev için kullanılan paralel iş parçacığı sayısı.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="96"/>
+        <location filename="../src/RepeatWorker.cpp" line="97"/>
         <source>Exclude tandems</source>
         <translation>Tandemleri hariç tut</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="96"/>
+        <location filename="../src/RepeatWorker.cpp" line="97"/>
         <source>Exclude tandems areas before find repeat task is run.</source>
         <translation>Bul tekrar görevini çalıştırmadan önce tandem alanlarını hariç tutun.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="97"/>
+        <location filename="../src/RepeatWorker.cpp" line="98"/>
         <source>Apply &apos;Max distance&apos; attribute</source>
         <translation>&apos;Maksimum mesafe&apos; özelliğini uygulayın</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="97"/>
+        <location filename="../src/RepeatWorker.cpp" line="98"/>
         <source>Apply &apos;Max distance&apos; attribute.</source>
         <translation>&apos;Maksimum mesafe&apos; özelliğini uygulayın.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="98"/>
+        <location filename="../src/RepeatWorker.cpp" line="99"/>
         <source>Apply &apos;Min distance&apos; attribute</source>
         <translation>&apos;Minimum mesafe&apos; özelliğini uygula</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="98"/>
+        <location filename="../src/RepeatWorker.cpp" line="99"/>
         <source>Apply &apos;Min distance&apos; attribute.</source>
         <translation>&apos;Minimum mesafe&apos; özelliğini uygulayın.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="127"/>
+        <location filename="../src/RepeatWorker.cpp" line="128"/>
         <source>Find Repeats</source>
         <translation>Tekrarları Bul</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="127"/>
+        <location filename="../src/RepeatWorker.cpp" line="128"/>
         <source>Finds repeats in each supplied sequence, stores found regions as annotations.</source>
         <translation>Verilen her dizideki tekrarları bulur, bulunan bölgeleri açıklama olarak depolar.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="149"/>
+        <location filename="../src/RepeatWorker.cpp" line="150"/>
         <source>Any</source>
         <translation>Herhangi biri</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="248"/>
+        <location filename="../src/RepeatWorker.cpp" line="249"/>
         <source>result name is empty, default name used</source>
         <translation>sonuç adı boş, varsayılan ad kullanıldı</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="251"/>
         <location filename="../src/RepeatWorker.cpp" line="252"/>
+        <location filename="../src/RepeatWorker.cpp" line="253"/>
         <source>Incorrect value: identity value must be between 0 and 100</source>
         <translation>Yanlış değer: kimlik değeri 0 ile 100 arasında olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="265"/>
         <location filename="../src/RepeatWorker.cpp" line="266"/>
+        <location filename="../src/RepeatWorker.cpp" line="267"/>
         <source>Incorrect value: minimal distance must be greater then zero</source>
         <translation>Yanlış değer: minimum mesafe sıfırdan büyük olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="270"/>
+        <location filename="../src/RepeatWorker.cpp" line="271"/>
         <source>Sequence alphabet is not nucleic!</source>
         <translation>Sıra alfabesi nükleik değildir!</translation>
     </message>
     <message>
-        <location filename="../src/RepeatWorker.cpp" line="293"/>
+        <location filename="../src/RepeatWorker.cpp" line="294"/>
         <source>Found %1 repeats</source>
         <translation>%1 tekrar bulundu</translation>
     </message>
@@ -677,117 +670,117 @@
 <context>
     <name>U2::QDRepeatActor</name>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="179"/>
+        <location filename="../src/RepeatQuery.cpp" line="178"/>
         <source>inverted</source>
         <translation>tersine çevrilmiş</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="180"/>
+        <location filename="../src/RepeatQuery.cpp" line="178"/>
         <source>direct</source>
         <translation>doğrudan</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="190"/>
+        <location filename="../src/RepeatQuery.cpp" line="188"/>
         <source>Finds &lt;u&gt;%1&lt;/u&gt; repeats.&lt;br&gt;Detects &lt;u&gt;%2 identical&lt;/u&gt; repeats &lt;u&gt;not shorter than %3 bps&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; tekrarı bulur. &lt;br&gt; &lt;u&gt;%2 özdeş&lt;/u&gt; yinelemeleri &lt;u&gt;%3 bps&apos;den kısa olmayan&lt;/u&gt; algılar.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="220"/>
+        <location filename="../src/RepeatQuery.cpp" line="218"/>
         <source>Sequence should be nucleic</source>
         <translation>Sıra nükleik olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="223"/>
+        <location filename="../src/RepeatQuery.cpp" line="221"/>
         <source>RepeatQDTask</source>
         <translation>RepeatQDTask</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="266"/>
+        <location filename="../src/RepeatQuery.cpp" line="264"/>
         <source>Repeats</source>
         <translation>Tekrarla</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="267"/>
+        <location filename="../src/RepeatQuery.cpp" line="265"/>
         <source>Finds repeats in supplied sequence, stores found regions as annotations.</source>
         <translation>Verilen sırayla tekrarları bulur, bulunan bölgeleri açıklama olarak depolar.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="269"/>
+        <location filename="../src/RepeatQuery.cpp" line="267"/>
         <source>Identity</source>
         <translation>Kimlik</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="269"/>
+        <location filename="../src/RepeatQuery.cpp" line="267"/>
         <source>Repeats identity.</source>
         <translation>Kimliği tekrar eder.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="270"/>
+        <location filename="../src/RepeatQuery.cpp" line="268"/>
         <source>Min length</source>
         <translation>Min uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="270"/>
+        <location filename="../src/RepeatQuery.cpp" line="268"/>
         <source>Minimum length of repeats.</source>
         <translation>Minimum tekrar uzunluğu.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="271"/>
+        <location filename="../src/RepeatQuery.cpp" line="269"/>
         <source>Inverted</source>
         <translation>Ters Çevrilmiş</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="271"/>
+        <location filename="../src/RepeatQuery.cpp" line="269"/>
         <source>Search for inverted repeats.</source>
         <translation>Tersine çevrilmiş tekrarları arayın.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="272"/>
+        <location filename="../src/RepeatQuery.cpp" line="270"/>
         <source>Filter algorithm</source>
         <translation>Filtreleme algoritması</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="272"/>
+        <location filename="../src/RepeatQuery.cpp" line="270"/>
         <source>Filter nested repeats algorithm.</source>
         <translation>İç içe geçmiş tekrarlar algoritmasını filtreleyin.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="273"/>
+        <location filename="../src/RepeatQuery.cpp" line="271"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="273"/>
+        <location filename="../src/RepeatQuery.cpp" line="271"/>
         <source>Control over variations of algorithm.</source>
         <translation>Algoritma varyasyonları üzerinde kontrol.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="274"/>
+        <location filename="../src/RepeatQuery.cpp" line="272"/>
         <source>Parallel threads</source>
         <translation>Paralel işler</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="274"/>
+        <location filename="../src/RepeatQuery.cpp" line="272"/>
         <source>Number of parallel threads used for the task.</source>
         <translation>Görev için kullanılan paralel iş parçacığı sayısı.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="275"/>
+        <location filename="../src/RepeatQuery.cpp" line="273"/>
         <source>Max length</source>
         <translation>Maksimum uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="275"/>
+        <location filename="../src/RepeatQuery.cpp" line="273"/>
         <source>Maximum length of repeats.</source>
         <translation>Maksimum tekrar uzunluğu.</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="276"/>
+        <location filename="../src/RepeatQuery.cpp" line="274"/>
         <source>Exclude tandems</source>
         <translation>Tandemleri hariç tut</translation>
     </message>
     <message>
-        <location filename="../src/RepeatQuery.cpp" line="276"/>
+        <location filename="../src/RepeatQuery.cpp" line="274"/>
         <source>Exclude tandems areas before find repeat task is run.</source>
         <translation>Bul tekrar görevini çalıştırmadan önce tandem alanlarını hariç tutun.</translation>
     </message>
@@ -899,12 +892,12 @@
 <context>
     <name>U2::RFAlgorithmBase</name>
     <message>
-        <location filename="../src/RFBase.cpp" line="85"/>
+        <location filename="../src/RFBase.cpp" line="86"/>
         <source>Find Repeats</source>
         <translation>Tekrarları Bul</translation>
     </message>
     <message>
-        <location filename="../src/RFBase.cpp" line="140"/>
+        <location filename="../src/RFBase.cpp" line="141"/>
         <source>Repeat length is too large: %1, sequence size: %2</source>
         <translation>Tekrar uzunluğu çok büyük: %1, sıra boyutu: %2</translation>
     </message>
@@ -936,7 +929,7 @@
 <context>
     <name>U2::RFSArrayWSubtask</name>
     <message>
-        <location filename="../src/RFSArray.cpp" line="399"/>
+        <location filename="../src/RFSArray.cpp" line="404"/>
         <source>Find repeats subtask (suffix)</source>
         <translation>Yinelenen alt görevi bul (sonek)</translation>
     </message>
@@ -997,7 +990,7 @@
 <context>
     <name>U2::TandemFinder_Region</name>
     <message>
-        <location filename="../src/RF_SArray_TandemFinder.h" line="137"/>
+        <location filename="../src/RF_SArray_TandemFinder.h" line="136"/>
         <source>Find tandems in %1 region</source>
         <translation>%1 bölgesinde tandemleri bulun</translation>
     </message>

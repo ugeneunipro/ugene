@@ -34,7 +34,7 @@
 namespace U2 {
 
 const QString McaReadsTabFactory::GROUP_ID = "OP_MCA_READS";
-const IconParameters McaReadsTabFactory::GROUP_ICON_PAR = IconParameters("core", "graphs.png");
+const QString McaReadsTabFactory::GROUP_ICON_STR = ":core/images/graphs.png";
 const QString McaReadsTabFactory::GROUP_DOC_PAGE = "66814020";
 
 McaReadsTabFactory::McaReadsTabFactory() {
@@ -68,7 +68,7 @@ QWidget* McaReadsTabFactory::createWidget(GObjectViewController* objView, const 
 }
 
 OPGroupParameters McaReadsTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Reads"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Reads"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

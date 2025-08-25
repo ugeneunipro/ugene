@@ -131,10 +131,9 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMa
     connect(join2alignmentMode, SIGNAL(toggled(bool)), SLOT(sl_optionChanged()));
     connect(upperButton, SIGNAL(clicked()), SLOT(sl_onMoveUp()));
     connect(bottomButton, SIGNAL(clicked()), SLOT(sl_onMoveDown()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MultipleDocumentsReadingModeDialog::sl_colorThemeSwitched);
 
-    upperButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
-    bottomButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
+    GUIUtils::setThemedIcon(upperButton, ":U2Designer/images/up.png");
+    GUIUtils::setThemedIcon(bottomButton, ":U2Designer/images/down.png");
 
     for (int i = 0; i < urls.size(); ++i) {
         listDocuments->addItem(new QListWidgetItem(QString("%1. ").arg(i + 1) + urls.at(i).fileName(), listDocuments));
@@ -221,11 +220,6 @@ void MultipleDocumentsReadingModeDialog::sl_optionChanged() {
     } else {
         return;
     }
-}
-
-void MultipleDocumentsReadingModeDialog::sl_colorThemeSwitched() {
-    upperButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
-    bottomButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }
 
 void MultipleDocumentsReadingModeDialog::initSequenceSaveController() {

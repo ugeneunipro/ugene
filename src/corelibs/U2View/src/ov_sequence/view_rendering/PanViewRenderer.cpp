@@ -258,7 +258,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize& canvasSize
         unitType = "bp";
     }
 
-    QString rangePattern = " " + panView->tr("[%1 %2]") + " ";
+    QString rangePattern = " " + PanView::tr("[%1 %2]") + " ";
     foreach (const U2Region& r, selection) {
         if (!visibleRange.intersects(r)) {
             continue;

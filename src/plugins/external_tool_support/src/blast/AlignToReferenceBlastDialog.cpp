@@ -231,7 +231,7 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
     if (hasError()) {
         reportString = "<br><table><tr><td><b>" + tr("Error: ") + "</b></td><td>" + stateInfo.getError() + "</td></tr></table>";
         return ReportResult_Finished;
-    } 
+    }
     SAFE_POINT_NN(cmdlineTask, ReportResult_Finished);
     if (cmdlineTask->hasError()) {
         reportString = cmdlineTask->getProcessErrorsLog();
@@ -292,21 +292,23 @@ AlignToReferenceBlastCmdlineTask::Settings AlignToReferenceBlastDialog::getSetti
 }
 
 void AlignToReferenceBlastDialog::accept() {
-    if (referenceLineEdit->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), tr("Reference sequence is not set."));
-        return;
-    }
+    const QString refText = referenceLineEdit->text();
+    CHECK_EXT(!refText.isEmpty(), QMessageBox::warning(this, L10N::errorTitle(),
+                tr("Reference sequence is not set.")), )
+    CHECK_EXT(!refText.contains(";"), QMessageBox::warning(this, L10N::errorTitle(),
+                tr("Reference sequence path should not contain \";\" character.")), )
+
     settings.referenceUrl = referenceLineEdit->text();
 
-    if (readsListWidget->count() == 0) {
-        QMessageBox::warning(this, tr("Error"), tr("No reads provided."));
-        return;
-    }
+    CHECK_EXT(readsListWidget->count() != 0, QMessageBox::warning(this, L10N::errorTitle(),
+                tr("No reads provided.")), )
     QStringList readUrls;
     for (int i = 0; i < readsListWidget->count(); i++) {
         QListWidgetItem* item = readsListWidget->item(i);
         SAFE_POINT(item != nullptr, "Item is NULL", );
         QString s = item->text();
+        CHECK_EXT(!s.contains(";"), QMessageBox::warning(this, L10N::errorTitle(),
+                    tr("Read sequence path should not contain \";\" character.")), )
         readUrls.append(s);
     }
     settings.readUrls = readUrls;
@@ -316,10 +318,8 @@ void AlignToReferenceBlastDialog::accept() {
     settings.qualityThreshold = qualitySpinBox->value();
     settings.rowNaming = static_cast<AlignToReferenceBlastCmdlineTask::Settings::RowNaming>(cbRowNaming->currentData().toInt());
 
-    if (outputLineEdit->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), tr("Output file is not set."));
-        return;
-    }
+    CHECK_EXT(!outputLineEdit->text().isEmpty(), QMessageBox::warning(this, L10N::errorTitle(), tr("Output file is not set.")), )
+
     settings.resultAlignmentFile = outputLineEdit->text();
     settings.addResultToProject = addToProjectCheckbox->isChecked();
 
@@ -335,10 +335,7 @@ void AlignToReferenceBlastDialog::accept() {
         messageBox->setIcon(QMessageBox::Question);
         messageBox->exec();
         CHECK(!messageBox.isNull() && messageBox->result() == QMessageBox::Yes, );
-        if (!outFile.remove()) {
-            QMessageBox::critical(this, tr("Error"), tr("Unable to delete the file."));
-            return;
-        }
+        CHECK_EXT(outFile.remove(), QMessageBox::critical(this, L10N::errorTitle(), tr("Unable to delete the file.")), )
     }
 
     QDialog::accept();

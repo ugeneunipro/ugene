@@ -41,6 +41,7 @@ public:
 };
 
 class NeighborJoinCalculateTreeTask : public PhyTreeGeneratorTask {
+    Q_OBJECT
 public:
     NeighborJoinCalculateTreeTask(const Msa& ma, const CreatePhyTreeSettings& s);
     void run() override;

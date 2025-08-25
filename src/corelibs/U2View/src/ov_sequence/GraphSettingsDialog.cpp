@@ -86,7 +86,7 @@ GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer* d, const U2Region
 
     setLayout(l);
     setWindowTitle(tr("Graph Settings"));
-    setWindowIcon(GUIUtils::getIconResource("core", "graphs.png"));
+    GUIUtils::setThemedWindowIcon(this, ":core/images/graphs.png");
 
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
@@ -136,10 +136,6 @@ void GraphSettingsDialog::sl_onOkClicked() {
         return;
     }
     QMessageBox::critical(this, windowTitle(), err.append(' ').append(mmerr));
-}
-
-void GraphSettingsDialog::sl_colorThemeSwitched() {
-    setWindowIcon(GUIUtils::getIconResource("core", "graphs.png"));
 }
 
 }  // namespace U2

@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QMovie>
 #include <QPainter>
 #include <QPainterPath>
 #include <QProcess>
@@ -228,60 +229,64 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
 }
-namespace {
 
-QPixmap getPixmapResource(const QString& category, const QString& iconName) {
-    QString resourceName = GUIUtils::getResourceName(category, iconName);
+void GUIUtils::setThemedIcon(QAction* action, const QString& iconPath) {
+    setThemedIconPrivate<QAction>(action, iconPath);
+}
+
+void GUIUtils::setThemedIcon(QAbstractButton* button, const QString& iconPath) {
+    setThemedIconPrivate<QAbstractButton>(button, iconPath);
+}
+
+void GUIUtils::setThemedIcon(QMenu* menu, const QString& iconPath) {
+    setThemedIconPrivate<QMenu>(menu, iconPath);
+}
+
+void GUIUtils::setThemedIcon(QLabel* label, const QString& iconPath) {
+    label->setPixmap(GUIUtils::getThemedIcon(iconPath).pixmap(MainWindow::PIXMAP_SIZE, MainWindow::PIXMAP_SIZE));
+    setThemedIconProperty(label, iconPath);
+}
+
+void GUIUtils::setThemedIconProperty(QObject* object, const QString& iconPath) {
+    object->setProperty(MainWindow::ICON_PATH_PROPERTY_NAME, iconPath);
+}
+
+void GUIUtils::setThemedMovie(QLabel* label, const QString& iconPath) {
+    auto movie = new QMovie(GUIUtils::getThemedPath(iconPath), QByteArray(), label);
+    label->setMovie(movie);
+    movie->setProperty(MainWindow::MOVIE_PATH_PROPERTY_NAME, iconPath);
+}
+
+void GUIUtils::setThemedWindowIcon(QWidget* widget, const QString& iconPath) {
+    widget->setWindowIcon(GUIUtils::getThemedIcon(iconPath));
+    widget->setProperty(MainWindow::WINDOWS_ICON_PATH_PROPERTY_NAME, iconPath);
+}
+
+QString GUIUtils::getThemedPath(const QString& iconPath) {
+    auto result = iconPath;
+    if (!QFile::exists(iconPath)) {
+        result = result.insert(result.indexOf("/"), AppContext::getMainWindow()->isDarkTheme() ? "dark/" : "light/");
+    }
+    return iconPath;
+}
+
+QIcon GUIUtils::getThemedIcon(const QString& iconPath) {
+    CHECK(!iconPath.isEmpty(), QIcon());
+
+    QString resourceName = GUIUtils::getThemedPath(iconPath);
     QPixmap pixmap = QPixmap(resourceName);
-    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1 named %2").arg(category).arg(iconName), QPixmap());
+    SAFE_POINT(!pixmap.isNull(), QString("Can't find icon from %1").arg(iconPath), QIcon());
 
-    return pixmap;
-}
-
-}
-
-QString GUIUtils::getResourceName(const QString& category, const QString& iconName, const QString& innerDirName) {
-    QString colorCategory;
-    QString inner;
-    if (!innerDirName.isEmpty()) {
-        inner = innerDirName + "/";
-    }
-    QString resourceName = QString(":%1/images/%2%3%4").arg(category).arg(inner).arg(colorCategory).arg(iconName);
-    if (!QFile::exists(resourceName)) {
-        bool isDark = AppContext::getMainWindow()->isDarkTheme();
-        if (isDark) {
-            colorCategory = "dark/";
-        } else {
-            colorCategory = "light/";
-        }
-        resourceName = QString(":%1/images/%2%3%4").arg(category).arg(inner).arg(colorCategory).arg(iconName);
-    }
-    return resourceName;
-}
-
-QIcon GUIUtils::getIconResource(const QString& category, const QString& iconName) {
-    CHECK((!category.isEmpty() && !iconName.isEmpty()), QIcon());
-
-    QIcon icon;
-    QPixmap pixmap = getPixmapResource(category, iconName);
-    icon.addPixmap(pixmap);
+    QIcon icon(pixmap);
     if (AppContext::getMainWindow()->isDarkTheme()) {
         // automatic disabled icon is no good for dark theme
-        // paint transparent black to get disabled look
+        // to get icon looks disabled paint it in transparent black
         QPainter p(&pixmap);
         p.fillRect(pixmap.rect(), QColor(48, 47, 47, 128));
         icon.addPixmap(pixmap, QIcon::Disabled);
     }
 
     return icon;
-}
-
-QIcon GUIUtils::getIconResource(const IconParameters& parameters) {
-    return getIconResource(parameters.iconCategory, parameters.iconName);
-}
-
-QString GUIUtils::getResourceName(const IconParameters& parameters) {
-    return getResourceName(parameters.iconCategory, parameters.iconName);
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {

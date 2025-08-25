@@ -91,7 +91,6 @@ protected slots:
     void sl_translateAnnotationsOrSelection();
     void sl_setUpFramesManually();
     void sl_showAllFrames();
-    void sl_colorThemeSwitched() override;
 
 protected:
     void pack() override;

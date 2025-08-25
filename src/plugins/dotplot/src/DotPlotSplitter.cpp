@@ -284,10 +284,8 @@ void DotPlotSplitter::sl_toggleHand() {
 }
 
 void DotPlotSplitter::sl_dotPlotChanged(ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY, float shiftX, float shiftY, QPointF zoom) {
-    SAFE_POINT(sequenceX != nullptr && sequenceY != nullptr, "One of the sequences in dotplot is NULL", );
-
     checkLockButtonState();
-
+    CHECK(!(sequenceX == nullptr || sequenceY == nullptr), )
     if (locked) {
         foreach (DotPlotWidget* w, dotPlotList) {
             w->setShiftZoom(sequenceX, sequenceY, shiftX, shiftY, zoom);

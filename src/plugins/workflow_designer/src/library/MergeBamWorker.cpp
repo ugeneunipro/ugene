@@ -52,6 +52,8 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include <QFileInfo>
+
 namespace U2 {
 namespace LocalWorkflow {
 

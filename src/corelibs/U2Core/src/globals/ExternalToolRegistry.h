@@ -28,7 +28,6 @@
 #include <QStringList>
 #include <QVariant>
 
-#include <U2Core/IconParameters.h>
 #include <U2Core/StrPackUtils.h>
 #include <U2Core/U2OpStatus.h>
 
@@ -72,12 +71,12 @@ public:
 
     const QString& getName() const;
     const QString& getPath() const;
-    // Set icon parameters for normal icon
-    const IconParameters& getIconParameters() const;
-    // Set icon parameters for grey icon (ET not set)
-    const IconParameters& getGrayIconParameters() const;
-    // Set icon parameters for warn icon (ET set, but there are some problems)
-    const IconParameters& getWarnIconParameters() const;
+    // Set icon path for normal icon
+    const QString& getIconPath() const;
+    // Set icon path for grey icon (ET not set)
+    const QString& getGrayIconPath() const;
+    // Set icon path for warn icon (ET set, but there are some problems)
+    const QString& getWarnIconPath() const;
     const QString& getDescription() const;
     const QString& getToolRunnerProgramId() const;
     virtual QStringList getToolRunnerAdditionalOptions() const;
@@ -135,9 +134,9 @@ protected:
     /** Visual name of the tool. */
     QString name;
     QString path;  // tool path
-    IconParameters icon;  // valid tool icon
-    IconParameters grayIcon;  // not set tool icon
-    IconParameters warnIcon;  // invalid tool icon
+    QString iconPath;  // valid tool icon
+    QString grayIconPath;  // not set tool icon
+    QString warnIconPath;  // invalid tool icon
     QString description;  // tool description
     QString toolRunnerProgram;  // starter program (e.g. python for scripts)
     QString executableFileName;  // executable file name (without path)

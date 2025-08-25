@@ -28,11 +28,8 @@
 #include <QItemDelegate>
 #include <QMouseEvent>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/U2SafePoints.h>
-
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
+#include <U2Core/AppContext.h>
 
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -156,7 +153,6 @@ QueryPalette::QueryPalette(QWidget* parent /* =NULL */)
     setMouseTracking(true);
     setContent();
     setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &QueryPalette::sl_colorThemeSwitched);
 }
 
 void QueryPalette::setContent() {
@@ -198,10 +194,10 @@ void QueryPalette::setContent() {
 QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
     auto a = new QAction(item->getDisplayName(), this);
     a->setCheckable(true);
-    if (!item->getIcon().isNull()) {
-        a->setIcon(item->getIcon());
+    if (!item->getIconPath().isEmpty()) {
+        GUIUtils::setThemedIcon(a, item->getIconPath());
     } else {
-        a->setIcon(GUIUtils::getIconResource("query_designer", "green_circle.png"));
+        GUIUtils::setThemedIcon(a, ":query_designer/images/green_circle.png");
     }
     a->setData(QVariant::fromValue(item));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
@@ -212,7 +208,7 @@ QAction* QueryPalette::createItemAction(QDActorPrototype* item) {
 QAction* QueryPalette::createItemAction(const QString& constraintId) {
     auto a = new QAction(constraintId, this);
     a->setCheckable(true);
-    a->setIcon(GUIUtils::getIconResource("query_designer", "green_circle.png"));
+    GUIUtils::setThemedIcon(a, ":query_designer/images/green_circle.png");
     a->setData(QVariant::fromValue(constraintId));
     connect(a, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
     connect(a, SIGNAL(toggled(bool)), SLOT(sl_selectProcess(bool)));
@@ -305,30 +301,6 @@ void QueryPalette::leaveEvent(QEvent*) {
         QModelIndex index = indexFromItem(prev);
         update(index);
     };
-}
-
-void QueryPalette::sl_colorThemeSwitched() {
-    QDActorPrototypeRegistry* qpr = AppContext::getQDActorProtoRegistry();
-    const auto& dbEntries = qpr->getAllEntries();
-    const auto actions = actionMap.keys();
-    for (auto action : qAsConst(actions)) {
-        bool found = false;
-        for (auto entry : qAsConst(dbEntries)) {
-            CHECK_CONTINUE(entry->getDisplayName() == action->text());
-
-            auto icon = entry->getIcon();
-            if (!icon.isNull()) {
-                action->setIcon(icon);
-            } else {
-                action->setIcon(GUIUtils::getIconResource("query_designer", "green_circle.png"));
-            }
-            found = true;
-            break;
-        }
-        CHECK_CONTINUE(!found);
-
-        action->setIcon(GUIUtils::getIconResource("query_designer", "green_circle.png"));
-    }
 }
 
 QVariant QueryPalette::saveState() const {

@@ -160,8 +160,8 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
 
     tabButtonsLayout->addStretch(INT_MAX);  // Push the last button to the end.
 
-    loadSchemaButton = new QToolButton(tabButtonsRow);
-    loadSchemaButton->setIcon(GUIUtils::getIconResource("U2Designer", "load_schema.png"));
+    auto loadSchemaButton = new QToolButton(tabButtonsRow);
+    GUIUtils::setThemedIcon(loadSchemaButton, ":U2Designer/images/load_schema.png");
     loadSchemaButton->setObjectName("loadSchemaButton");
     loadSchemaButton->setToolTip(tr("Open workflow schema"));
     //    loadSchemaButton->setText(tr("Open schema"));
@@ -243,7 +243,6 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
 }
 
 void Dashboard::sl_colorThemeSwitched() {
-    loadSchemaButton->setIcon(GUIUtils::getIconResource("U2Designer", "load_schema.png"));
     updateStyleSheets();
 }
 
@@ -357,11 +356,11 @@ void Dashboard::saveReportFile() {
 }
 
 void Dashboard::updateStyleSheets() {
-    QString bmResourcePath = GUIUtils::getResourceName("U2Designer", "background-menu.png");
+    QString bmResourcePath = GUIUtils::getThemedPath(":U2Designer/images/background-menu.png");
     tabButtonsRow->setStyleSheet(QString(
         "#tabButtonsRow {background: url('%1') repeat scroll 0 0 transparent;}").arg(bmResourcePath));
 
-    QString bmbResourcePath = GUIUtils::getResourceName("U2Designer", "background-menu-button.png");
+    QString bmbResourcePath = GUIUtils::getThemedPath(":U2Designer/images/background-menu-button.png");
     QString tabButtonStyleSheet = QString("QToolButton {"
                                   "  color: white;"
                                   "  border-radius: 6px;"

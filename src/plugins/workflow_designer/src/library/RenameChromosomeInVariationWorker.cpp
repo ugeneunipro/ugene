@@ -21,6 +21,8 @@
 
 #include "RenameChromosomeInVariationWorker.h"
 
+#include <QFileInfo>
+
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>

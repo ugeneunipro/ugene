@@ -29,6 +29,7 @@
 
 #include <U2Gui/LogView.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
 
 #include "styles/StyleFactory.h"

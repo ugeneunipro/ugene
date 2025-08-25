@@ -228,7 +228,7 @@ GUI_TEST_CLASS_DEFINITION(test_6045) {
 
     // 2. Select annotation comment and press f2.
     // Expected state: message box about not allowed editing is appear.
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, tr("Editing of \"comment\" annotation is not allowed!")));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Editing of \"comment\" annotation is not allowed!"));
     QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem("comment");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
     GTMouseDriver::click();

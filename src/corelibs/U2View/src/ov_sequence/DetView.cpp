@@ -63,7 +63,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     editor = new DetViewSequenceEditor(this);
 
     showComplementAction = new QAction(tr("Show complementary strand"), this);
-    showComplementAction->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
+    GUIUtils::setThemedIcon(showComplementAction, ":core/images/show_compl.png");
     showComplementAction->setObjectName("complement_action");
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));
 
@@ -97,7 +97,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     showAllFramesAction->setCheckable(true);
 
     wrapSequenceAction = new QAction(tr("Wrap sequence"), this);
-    wrapSequenceAction->setIcon(GUIUtils::getIconResource("core", "wrap_sequence.png"));
+    GUIUtils::setThemedIcon(wrapSequenceAction, ":core/images/wrap_sequence.png");
     wrapSequenceAction->setObjectName("wrap_sequence_action");
     connect(wrapSequenceAction, SIGNAL(triggered(bool)), SLOT(sl_wrapSequenceToggle(bool)));
 
@@ -391,19 +391,6 @@ void DetView::sl_setUpFramesManually() {
 
 void DetView::sl_showAllFrames() {
     updateSelectedTranslations(SequenceObjectContext::TS_ShowAllFrames);
-}
-
-void DetView::sl_colorThemeSwitched() {
-    wrapSequenceAction->setIcon(GUIUtils::getIconResource("core", "wrap_sequence.png"));
-    showComplementAction->setIcon(GUIUtils::getIconResource("core", "show_compl.png"));
-    if (translationsMenu != nullptr) {
-        translationsMenu->setIcon(GUIUtils::getIconResource("core", "show_trans.png"));
-    }
-    if (ttMenu != nullptr) {
-        ttMenu->setIcon(GUIUtils::getIconResource("core", "tt_switch.png"));
-    }
-
-    GSequenceLineViewAnnotated::sl_colorThemeSwitched();
 }
 
 void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState& state) {
@@ -748,7 +735,7 @@ void DetView::updateVerticalScrollBarPosition() {
 }
 
 void DetView::setupTranslationsMenu() {
-    translationsMenu = ctx->createTranslationFramesMenu(QList<QAction*>() << doNotTranslateAction << translateAnnotationsOrSelectionAction << setUpFramesManuallyAction << showAllFramesAction);
+    QMenu* translationsMenu = ctx->createTranslationFramesMenu(QList<QAction*>() << doNotTranslateAction << translateAnnotationsOrSelectionAction << setUpFramesManuallyAction << showAllFramesAction);
     CHECK(translationsMenu != nullptr, );
     QToolButton* button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
@@ -756,7 +743,7 @@ void DetView::setupTranslationsMenu() {
 }
 
 void DetView::setupGeneticCodeMenu() {
-    ttMenu = ctx->createGeneticCodeMenu();
+    QMenu* ttMenu = ctx->createGeneticCodeMenu();
     CHECK(ttMenu != nullptr, );
     QToolButton* button = addActionToLocalToolbar(ttMenu->menuAction());
     SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );

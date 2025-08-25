@@ -50,7 +50,7 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
     addToBar = true;
 
     menu = new QMenu();
-    setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
+    GUIUtils::setThemedIcon(this, ":core/images/predefined_annotation_groups.png");
     setMenu(menu);
 
     connect(aaObj, SIGNAL(si_updateStarted()), SLOT(sl_autoAnnotationUpdateStarted()));
@@ -61,7 +61,6 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
 
     deselectAllAction = new QAction(tr("Deselect all"), this);
     connect(deselectAllAction, SIGNAL(triggered()), SLOT(sl_onDeselectAll()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AutoAnnotationsADVAction::sl_colorThemeSwitched);
 
     updateMenu();
 
@@ -147,10 +146,6 @@ void AutoAnnotationsADVAction::sl_onDeselectAll() {
             action->trigger();
         }
     }
-}
-
-void AutoAnnotationsADVAction::sl_colorThemeSwitched() {
-    setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
 }
 
 AutoAnnotationsADVAction::~AutoAnnotationsADVAction() {

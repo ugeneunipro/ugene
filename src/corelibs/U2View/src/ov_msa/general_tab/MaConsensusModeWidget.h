@@ -50,9 +50,6 @@ public slots:
     void sl_thresholdResetClicked(bool newState);
     void sl_thresholdChanged(int value);
 
-private slots:
-    void sl_colorThemeSwitched();
-
 private:
     void initConsensusTypeCombo();
 

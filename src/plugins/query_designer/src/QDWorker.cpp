@@ -21,6 +21,8 @@
 
 #include "QDWorker.h"
 
+#include <QDir>
+#include <QFileInfo>
 #include <QScopedPointer>
 
 #include <U2Core/AnnotationData.h>

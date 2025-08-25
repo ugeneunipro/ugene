@@ -40,6 +40,7 @@
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/URLAttribute.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "CoreLib.h"
 #include "DocActors.h"
@@ -65,7 +66,7 @@ GenericReadDocProto::GenericReadDocProto(const Descriptor& desc)
     setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
 
     if (AppContext::isGUIMode()) {
-        setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
+        setIconPath(GUIUtils::getThemedPath(":/U2Designer/images/blue_circle.png"));
     }
 
     setValidator(new DatasetValidator());
@@ -166,7 +167,7 @@ GenericMAActorProto::GenericMAActorProto()
     setPrompter(new ReadDocPrompter(U2::Workflow::CoreLib::tr("Reads MSA(s) from <u>%1</u>.")));
 
     if (AppContext::isGUIMode()) {
-        setIconParameters(IconParameters("U2Designer", "blue_circle.png"));
+        setIconPath(GUIUtils::getThemedPath(":/U2Designer/images/blue_circle.png"));
     }
 }
 

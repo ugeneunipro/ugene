@@ -38,6 +38,7 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/URLAttribute.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "../util/DatasetValidator.h"
 

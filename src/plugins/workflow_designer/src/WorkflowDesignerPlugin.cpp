@@ -275,7 +275,8 @@ void WorkflowDesignerService::sl_startWorkflowPlugin() {
 }
 
 void WorkflowDesignerService::initDesignerAction() {
-    designerAction = new QAction(GUIUtils::getIconResource("workflow_designer", "wd.png"), tr("Workflow Designer..."), this);
+    designerAction = new QAction(tr("Workflow Designer..."), this);
+    GUIUtils::setThemedIcon(designerAction, ":/workflow_designer/images/wd.png");
     designerAction->setObjectName(ToolsMenu::WORKFLOW_DESIGNER);
 #ifdef _DEBUG
     designerAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
@@ -285,7 +286,8 @@ void WorkflowDesignerService::initDesignerAction() {
 }
 
 void WorkflowDesignerService::initNewWorkflowAction() {
-    newWorkflowAction = new QAction(GUIUtils::getIconResource("workflow_designer", "wd.png"), tr("New workflow..."), this);
+    newWorkflowAction = new QAction(tr("New workflow..."), this);
+    GUIUtils::setThemedIcon(newWorkflowAction, ":/workflow_designer/images/wd.png");
     newWorkflowAction->setObjectName("New workflow");
     connect(newWorkflowAction, SIGNAL(triggered()), SLOT(sl_showDesignerWindow()));
 
@@ -298,7 +300,6 @@ void WorkflowDesignerService::initNewWorkflowAction() {
         }
     }
     fileMenu->insertAction(beforeAction, newWorkflowAction);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WorkflowDesignerService::sl_colorThemeSwitched);
 }
 
 bool WorkflowDesignerService::closeViews() {
@@ -313,11 +314,6 @@ bool WorkflowDesignerService::closeViews() {
         }
     }
     return true;
-}
-
-void WorkflowDesignerService::sl_colorThemeSwitched() {
-    designerAction->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
-    newWorkflowAction->setIcon(GUIUtils::getIconResource("workflow_designer", "wd.png"));
 }
 
 bool WorkflowDesignerService::checkServiceState() const {

@@ -23,7 +23,6 @@
 
 #include <QScrollArea>
 
-#include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
 
 class QVBoxLayout;
@@ -61,7 +60,7 @@ public:
     OptionsPanelWidget(QWidget* parent);
 
     /** Creates a new header image widget and owns it by putting it into the layout. */
-    GroupHeaderImageWidget* createHeaderImageWidget(const QString& groupId, const IconParameters& iconParameters);
+    GroupHeaderImageWidget* createHeaderImageWidget(const QString& groupId, const QString& iconPath);
 
     /**
      * Creates a new options widget and owns it by putting into the layout.

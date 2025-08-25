@@ -55,10 +55,6 @@ public:
 
 protected:
     void initViewContext(GObjectViewController* view) override;
-    void disconnectView(GObjectViewController* view) override;
-
-private slots:
-    void sl_colorThemeSwitched();
 
 private:
     void toggleExcludeListView(MsaEditor* msaEditor);
@@ -111,9 +107,6 @@ public:
 
     /** Returns preferred size hint used on instantiation. This size defines initial widget height in the MSA splitter. */
     QSize sizeHint() const override;
-
-private slots:
-    void sl_colorThemeSwitched();
 
 private:
     /** Updates state of all child widgets. */

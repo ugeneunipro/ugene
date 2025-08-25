@@ -51,13 +51,15 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* ma
     SAFE_POINT(maEditorWgt != nullptr, "maEditorWgt is NULL", );
     SAFE_POINT(maEditor != nullptr, "maEditor is NULL", );
 
-    nextAction = new QAction(GUIUtils::getIconResource("core", "amb_forward.png"), tr("Jump to next ambiguous character"), this);
+    nextAction = new QAction(tr("Jump to next ambiguous character"), this);
+    GUIUtils::setThemedIcon(nextAction, ":core/images/amb_forward.png");
     nextAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_A));
     nextAction->setObjectName("next_ambiguous");
     GUIUtils::updateActionToolTip(nextAction);
     connect(nextAction, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
-    previousAction = new QAction(GUIUtils::getIconResource("core", "amb_backward.png"), tr("Jump to previous ambiguous character"), this);
+    previousAction = new QAction(tr("Jump to previous ambiguous character"), this);
+    GUIUtils::setThemedIcon(previousAction, ":core/images/amb_backward.png");
     previousAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_A));
     previousAction->setObjectName("prev_ambiguous");
     GUIUtils::updateActionToolTip(previousAction);
@@ -65,7 +67,6 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* ma
 
     connect(maEditor->getMaObject(), &MsaObject::si_alignmentChanged, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
     connect(maEditor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaAmbiguousCharactersController::sl_resetCachedIterator);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaAmbiguousCharactersController::sl_colorThemeSwitched);
 }
 
 QAction* MaAmbiguousCharactersController::getPreviousAction() const {
@@ -88,11 +89,6 @@ void MaAmbiguousCharactersController::sl_previous() {
 
 void MaAmbiguousCharactersController::sl_resetCachedIterator() {
     cachedIterator.reset();
-}
-
-void MaAmbiguousCharactersController::sl_colorThemeSwitched() {
-    nextAction->setIcon(GUIUtils::getIconResource("core", "amb_forward.png"));
-    previousAction->setIcon(GUIUtils::getIconResource("core", "amb_backward.png"));
 }
 
 void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection direction) const {

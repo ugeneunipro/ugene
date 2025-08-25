@@ -4,93 +4,92 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="20"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Compare sequences using Dotplot</source>
         <translation>Dotplot kullanarak dizileri karşılaştırın</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="33"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="55"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Custom algorithm</source>
         <translation>Özel algoritma</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="102"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>X axis sequence</source>
         <translation>X ekseni dizisi</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="115"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Minimum repeat length</source>
         <translation>Minimum tekrar uzunluğu</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="122"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Y axis sequence</source>
         <translation>Y ekseni dizisi</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="129"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Repeats  identity</source>
         <translation>Kimliği  tekrar eder</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="154"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="182"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Tekrar uzunluğunun sezgisel temelli seçimi, böylece dizideki tekrar sayısı 1000&apos;i aşmaz</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="185"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>1k</source>
         <translation>1k</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="210"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="232"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Yinelemeleri % 100&apos;e sıfırlar</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="235"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="290"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search inverted repeats</source>
         <translation>Tersine çevrilmiş tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="297"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search direct repeats</source>
         <translation>Doğrudan tekrarları ara</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="336"/>
-        <location filename="../src/DotPlotDialog.ui" line="343"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>default</source>
         <translation>öntanımlı</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="368"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</source>
         <translation>Dosya sisteminden bir sıra yüklemek için tıklayın. Sıra, projeye yüklendiğinde açılan kutulara eklenecektir</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="371"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Load Sequence</source>
         <translation>Yükleme Sırası</translation>
     </message>
@@ -98,40 +97,37 @@
 <context>
     <name>DotPlotFilesDialog</name>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="38"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="23"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Build Dotplot from Sequences</source>
         <translation>Dizilerden Dotplot Oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with first sequence</source>
         <translation>İlk sıralı dosya</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="45"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="96"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Join all sequences found in the file</source>
         <translation>Dosyada bulunan tüm dizileri birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="62"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="130"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Gap size:</source>
         <translation>Boşluk boyutu:</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="79"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Compare sequence against itself</source>
         <translation>Sırayı kendisiyle karşılaştırın</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with second sequence</source>
         <translation>İkinci sıralı dosya</translation>
     </message>
@@ -139,92 +135,92 @@
 <context>
     <name>DotPlotFilterDialog</name>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="17"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="30"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="42"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No filtration applied</source>
         <translation>Filtreleme uygulanmadı</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="45"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No Filtration</source>
         <translation>Filtrereme Yok</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Show results that intersect the features</source>
         <translation>Unsurlarla kesişen sonuçları göster</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="58"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Intersection</source>
         <translation>Kesişme Özellikleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="65"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Intersection Parameters</source>
         <translation>Kesişim Parametreleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Feature Name</source>
         <translation>Özellik Adı</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="80"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select all names</source>
         <translation>Tüm isimleri seçin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="83"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select All</source>
         <translation>Tümünü Seç</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="90"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert the current selection</source>
         <translation>Mevcut seçimi tersine çevirin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="93"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert Selection</source>
         <translation>Seçimi Tersine Çevir</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="100"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear the current selection</source>
         <translation>Mevcut seçimi temizle</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear Selection</source>
         <translation>Seçimi Temizle</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="110"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select names of the features to intersection</source>
         <translation>Kesişecek unsurların adlarını seçin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="113"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Selection</source>
         <translation>Özellik Seçimi</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="139"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select only different names</source>
         <translation>Yalnızca farklı isimler seçin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="142"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Different Only</source>
         <translation>Sadece Farklı</translation>
     </message>
@@ -232,42 +228,42 @@
 <context>
     <name>U2::DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="55"/>
+        <location filename="../src/DotPlotDialog.cpp" line="56"/>
         <source>OK</source>
         <translation>TAMAM</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="56"/>
+        <location filename="../src/DotPlotDialog.cpp" line="57"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="66"/>
+        <location filename="../src/DotPlotDialog.cpp" line="72"/>
         <source>Auto</source>
         <translation>Otomatik</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="67"/>
+        <location filename="../src/DotPlotDialog.cpp" line="73"/>
         <source>Suffix index</source>
         <translation>Son ek dizini</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="68"/>
+        <location filename="../src/DotPlotDialog.cpp" line="74"/>
         <source>Diagonals</source>
         <translation>Çapraz</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="315"/>
+        <location filename="../src/DotPlotDialog.cpp" line="317"/>
         <source>Open file</source>
         <translation>Dosya aç</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="344"/>
+        <location filename="../src/DotPlotDialog.cpp" line="346"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="344"/>
+        <location filename="../src/DotPlotDialog.cpp" line="346"/>
         <source>Error opening files</source>
         <translation>Dosyaları açma hatası</translation>
     </message>
@@ -275,50 +271,50 @@
 <context>
     <name>U2::DotPlotFilesDialog</name>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="43"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="41"/>
         <source>Next</source>
         <translation>Sonraki</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="44"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="42"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="75"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="73"/>
         <source>Open first file</source>
         <translation>İlk dosyayı aç</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="106"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="104"/>
         <source>Open second file</source>
         <translation>İkinci dosyayı aç</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="143"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="140"/>
         <source>Select a file with a sequence to build dotplot!</source>
         <translation>Dotplot oluşturmak için sıralı bir dosya seçin!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="145"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="140"/>
         <source>Select first file with a sequence to build dotplot!</source>
         <translation>Dotplot oluşturmak için sıralı ilk dosyayı seçin!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="146"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="141"/>
         <source>Input the second sequence or check the &apos;Compare sequence against itself&apos; option.</source>
         <translation>İkinci sırayı girin veya &apos;Sırayı kendisiyle karşılaştır&apos; seçeneğini işaretleyin.</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="155"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="163"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="150"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="158"/>
         <source>Unable to detect file format %1.</source>
         <translation>%1 dosya biçimi algılanamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="147"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="155"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="163"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="142"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="150"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="158"/>
         <source>Select files</source>
         <translation>Dosyaları seçin</translation>
     </message>
@@ -349,7 +345,7 @@
 <context>
     <name>U2::DotPlotFilterTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="311"/>
+        <location filename="../src/DotPlotTasks.cpp" line="306"/>
         <source>Applying filter to dotplot</source>
         <translation>Dotplot&apos;a filtre uygulama</translation>
     </message>
@@ -357,9 +353,8 @@
 <context>
     <name>U2::DotPlotImageExportController</name>
     <message>
-        <location filename="../src/DotPlotImageExportTask.cpp" line="60"/>
         <source>Dotplot widget is NULL</source>
-        <translation>Dotplot widget&apos;ı BOŞ</translation>
+        <translation type="vanished">Dotplot widget&apos;ı BOŞ</translation>
     </message>
     <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="61"/>
@@ -380,20 +375,19 @@
 <context>
     <name>U2::DotPlotImageExportToBitmapTask</name>
     <message>
-        <location filename="../src/DotPlotImageExportTask.cpp" line="49"/>
         <source>Incorrect DPI parameter</source>
-        <translation>Yanlış DPI parametresi</translation>
+        <translation type="vanished">Yanlış DPI parametresi</translation>
     </message>
 </context>
 <context>
     <name>U2::DotPlotLoadDocumentsTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="218"/>
+        <location filename="../src/DotPlotTasks.cpp" line="213"/>
         <source>DotPlot loading</source>
         <translation>DotPlot yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="260"/>
+        <location filename="../src/DotPlotTasks.cpp" line="255"/>
         <source>Detecting format error for file %1</source>
         <translation>%1 dosyası için biçim hatası tespit ediliyor</translation>
     </message>
@@ -449,15 +443,14 @@
         <translation>El aracı (&lt;b&gt;H&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotSplitter.cpp" line="279"/>
         <source>One of the sequences in dotplot is NULL</source>
-        <translation>Nokta grafiğindeki dizilerden biri NULL</translation>
+        <translation type="vanished">Nokta grafiğindeki dizilerden biri NULL</translation>
     </message>
 </context>
 <context>
     <name>U2::DotPlotViewAction</name>
     <message>
-        <location filename="../src/DotPlotPlugin.h" line="82"/>
+        <location filename="../src/DotPlotPlugin.h" line="81"/>
         <source>Show dot plot</source>
         <translation>Nokta grafiğini göster</translation>
     </message>
@@ -466,7 +459,7 @@
     <name>U2::DotPlotViewContext</name>
     <message>
         <location filename="../src/DotPlotPlugin.cpp" line="72"/>
-        <location filename="../src/DotPlotPlugin.cpp" line="218"/>
+        <location filename="../src/DotPlotPlugin.cpp" line="221"/>
         <source>Build dotplot...</source>
         <translation>Dotplot oluşturun...</translation>
     </message>
@@ -484,131 +477,136 @@
 <context>
     <name>U2::DotPlotWidget</name>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="119"/>
+        <location filename="../src/DotPlotWidget.cpp" line="113"/>
         <source>Parameters</source>
         <translation>Parametreler</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="122"/>
+        <location filename="../src/DotPlotWidget.cpp" line="116"/>
         <source>Save as image</source>
         <translation>Görüntü olarak kaydet</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="126"/>
+        <location filename="../src/DotPlotWidget.cpp" line="120"/>
         <source>Save</source>
         <translation>Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="130"/>
+        <location filename="../src/DotPlotWidget.cpp" line="124"/>
         <source>Load</source>
         <translation>Yükle</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="133"/>
+        <location filename="../src/DotPlotWidget.cpp" line="127"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="137"/>
+        <location filename="../src/DotPlotWidget.cpp" line="131"/>
         <source>Filter Results</source>
         <translation>Sonuçları Filtrele</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="207"/>
+        <location filename="../src/DotPlotWidget.cpp" line="201"/>
         <source>Save/Load</source>
         <translation>Kaydet/Yükle</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="384"/>
+        <location filename="../src/DotPlotWidget.cpp" line="378"/>
         <source>Too many results</source>
         <translation>Çok fazla sonuç</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="384"/>
+        <location filename="../src/DotPlotWidget.cpp" line="378"/>
         <source>Too many results. Try to increase minimum repeat length</source>
         <translation>Çok fazla sonuç. Minimum tekrar uzunluğunu artırmaya çalışın</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="533"/>
-        <location filename="../src/DotPlotWidget.cpp" line="590"/>
+        <location filename="../src/DotPlotWidget.cpp" line="529"/>
+        <location filename="../src/DotPlotWidget.cpp" line="585"/>
         <source>File opening error</source>
         <translation>Dosya açma hatası</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="533"/>
-        <location filename="../src/DotPlotWidget.cpp" line="590"/>
+        <location filename="../src/DotPlotWidget.cpp" line="529"/>
+        <location filename="../src/DotPlotWidget.cpp" line="585"/>
         <source>Error opening file %1</source>
         <translation>%1 dosyası açılırken hata oluştu</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="541"/>
-        <location filename="../src/DotPlotWidget.cpp" line="572"/>
-        <location filename="../src/DotPlotWidget.cpp" line="640"/>
+        <location filename="../src/DotPlotWidget.cpp" line="537"/>
+        <location filename="../src/DotPlotWidget.cpp" line="567"/>
+        <location filename="../src/DotPlotWidget.cpp" line="635"/>
         <source>Task is already running</source>
         <translation>Görev zaten çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="541"/>
-        <location filename="../src/DotPlotWidget.cpp" line="572"/>
-        <location filename="../src/DotPlotWidget.cpp" line="640"/>
+        <location filename="../src/DotPlotWidget.cpp" line="537"/>
+        <location filename="../src/DotPlotWidget.cpp" line="567"/>
+        <location filename="../src/DotPlotWidget.cpp" line="635"/>
         <source>Build or Load DotPlot task is already running</source>
         <translation>DotPlot Oluştur veya Yükle görevi zaten çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="594"/>
+        <location filename="../src/DotPlotWidget.cpp" line="589"/>
         <source>Sequences are different</source>
         <translation>Sıralar farklı</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="594"/>
+        <location filename="../src/DotPlotWidget.cpp" line="589"/>
         <source>Current and loading sequences are different. Continue loading dot-plot anyway?</source>
         <translation>Mevcut ve yükleme sıraları farklıdır. Yine de nokta grafiği yüklemeye devam edilsin mi?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="671"/>
-        <source>Sequence size is too large!</source>
-        <translation>Sıra boyutu çok büyük!</translation>
+        <location filename="../src/DotPlotWidget.cpp" line="973"/>
+        <source>Dotplot widget is too small</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="705"/>
-        <location filename="../src/DotPlotWidget.cpp" line="710"/>
+        <source>Sequence size is too large!</source>
+        <translation type="vanished">Sıra boyutu çok büyük!</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="690"/>
+        <location filename="../src/DotPlotWidget.cpp" line="695"/>
         <source>Invalid sequence</source>
         <translation>Geçersiz sıra</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="705"/>
+        <location filename="../src/DotPlotWidget.cpp" line="690"/>
         <source>First selected sequence is invalid</source>
         <translation>İlk seçilen sıra geçersiz</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="710"/>
+        <location filename="../src/DotPlotWidget.cpp" line="695"/>
         <source>Second selected sequence is invalid</source>
         <translation>İkinci seçilen sıra geçersiz</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="718"/>
+        <location filename="../src/DotPlotWidget.cpp" line="703"/>
         <source>Wrong alphabet types</source>
         <translation>Yanlış alfabe türleri</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="718"/>
+        <location filename="../src/DotPlotWidget.cpp" line="703"/>
         <source>Both sequence must have the same alphabet</source>
         <translation>Her iki sıra da aynı alfabeye sahip olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="795"/>
+        <location filename="../src/DotPlotWidget.cpp" line="782"/>
+        <location filename="../src/DotPlotWidget.cpp" line="784"/>
         <source>Save dot-plot</source>
         <translation>Nokta grafiğini kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="795"/>
+        <location filename="../src/DotPlotWidget.cpp" line="782"/>
+        <location filename="../src/DotPlotWidget.cpp" line="784"/>
         <source>Save dot-plot data before closing?</source>
         <translation>Kapatmadan önce nokta çizimi verileri kaydedilsin mi?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="933"/>
         <source>Invalid weight and height parameters!</source>
-        <translation>Geçersiz ağırlık ve boy parametreleri!</translation>
+        <translation type="vanished">Geçersiz ağırlık ve boy parametreleri!</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="984"/>
@@ -616,38 +614,38 @@
         <translation>Dotplot hesaplıyor...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1031"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1028"/>
         <source> (min length %1, identity %2%)</source>
         <translation> (minimum uzunluk %1, kimlik %2%)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="205"/>
+        <location filename="../src/DotPlotWidget.cpp" line="199"/>
         <source>Dotplot</source>
         <translation>Dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="518"/>
+        <location filename="../src/DotPlotWidget.cpp" line="514"/>
         <source>Error Saving Dotplot</source>
         <translation>Dotplot Kaydedilirken Hata Oluştu</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="518"/>
+        <location filename="../src/DotPlotWidget.cpp" line="514"/>
         <source>The dotplot can&apos;t be saved as it is empty.</source>
         <translation>Nokta grafiği boş olduğu için kaydedilemez.</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="522"/>
+        <location filename="../src/DotPlotWidget.cpp" line="518"/>
         <source>Save Dotplot</source>
         <translation>Dotplot&apos;u Kaydet</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="522"/>
-        <location filename="../src/DotPlotWidget.cpp" line="565"/>
+        <location filename="../src/DotPlotWidget.cpp" line="518"/>
+        <location filename="../src/DotPlotWidget.cpp" line="560"/>
         <source>Dotplot files (*.dpt)</source>
         <translation>Dotplot dosyaları (*.dpt)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="565"/>
+        <location filename="../src/DotPlotWidget.cpp" line="560"/>
         <source>Load Dotplot</source>
         <translation>Dotplot Yükle</translation>
     </message>
@@ -655,7 +653,7 @@
 <context>
     <name>U2::LoadDotPlotTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="59"/>
+        <location filename="../src/DotPlotTasks.cpp" line="57"/>
         <source>Wrong dotplot format</source>
         <translation>Yanlış nokta grafiği biçimi</translation>
     </message>
@@ -668,7 +666,7 @@
 <context>
     <name>U2::SaveDotPlotTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.h" line="50"/>
+        <location filename="../src/DotPlotTasks.h" line="49"/>
         <source>DotPlot saving</source>
         <translation>DotPlot kaydedildi</translation>
     </message>

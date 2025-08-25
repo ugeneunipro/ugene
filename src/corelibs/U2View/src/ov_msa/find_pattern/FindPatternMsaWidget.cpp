@@ -150,13 +150,12 @@ FindPatternMsaWidget::FindPatternMsaWidget(MsaEditor* msaEditor, TriState isSear
         isSearchInNamesMode = isSearchInNamesModeTriState == TriState_Yes;
     }
 
-    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
+    GUIUtils::setThemedMovie(progressLabel, ":/core/images/progress.gif");
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
     savableWidget.setRegionWidgetIds(QStringList() << editStart->objectName()
                                                    << editEnd->objectName());
-    progressLabel->setMovie(progressMovie);
 
     setContentsMargins(0, 0, 0, 0);
 
@@ -190,7 +189,7 @@ void FindPatternMsaWidget::setSearchInNamesMode(bool flag) {
 }
 
 void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
-    progressMovie->stop();
+    progressLabel->movie()->stop();
     progressLabel->hide();
     resultLabel->show();
     updateCurrentResultLabel();
@@ -337,7 +336,6 @@ void FindPatternMsaWidget::connectSlots() {
             SLOT(sl_onSelectedRegionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &FindPatternMsaWidget::sl_colorThemeSwitched);
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index) {
@@ -526,14 +524,6 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     } else {
         startFindPatternInMsaTask(newPatterns);
     }
-}
-
-void FindPatternMsaWidget::sl_colorThemeSwitched() {
-    updateErrorLabelState();
-    auto tmpProgressMovie = progressMovie;
-    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
-    progressLabel->setMovie(progressMovie);
-    delete tmpProgressMovie;
 }
 
 void FindPatternMsaWidget::clearResults() {
@@ -970,7 +960,7 @@ void FindPatternMsaWidget::setUpTabOrder() const {
 void FindPatternMsaWidget::startProgressAnimation() {
     resultLabel->setText(tr("Results:"));
     progressLabel->show();
-    progressMovie->start();
+    progressLabel->movie()->start();
 }
 
 struct SearchResultsComparator {

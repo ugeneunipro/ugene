@@ -27,8 +27,8 @@
 #include <QList>
 #include <QMenu>
 #include <QTreeWidgetItem>
+#include <QToolButton>
 
-#include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
 
 #include "U2FileDialog.h"
@@ -80,28 +80,55 @@ public:
 
     static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
-    // Returns path to the corresponding resource
-    // category - category of the image. This is the prefix, defined in .qrc file
-    // iconName - icon name
-    // innerDirName - if image is in some inner directory (e.g. welcome_page in ugeneui)
-    // returns - path to the resource
-    static QString getResourceName(const QString& category, const QString& iconName, const QString& innerDirName = QString());
+private:
+    static void setThemedIconProperty(QObject* object, const QString& iconPath);
 
-    // Returns resource as icon
-    // category - category of the image. This is the prefix, defined in .qrc file
-    // iconName - icon name
+    template<typename T>
+    static void setThemedIconPrivate(T* object, const QString& iconPath) {
+        object->setIcon(GUIUtils::getThemedIcon(iconPath));
+        setThemedIconProperty(object, iconPath);
+    }
+
+public:
+    // Sets themed icon for the object
+    // action - the action to set icon for
+    // iconRef - icon path
+    static void setThemedIcon(QAction* action, const QString& iconPath);
+
+    // Sets themed icon for the object
+    // button - the button to set icon for
+    // iconRef - icon path
+    static void setThemedIcon(QAbstractButton* button, const QString& iconPath);
+
+    // Sets themed icon for the object
+    // menu - the menu to set icon for
+    // iconRef - icon path
+    static void setThemedIcon(QMenu* menu, const QString& iconPath);
+
+    // Sets themed icon for the object
+    // object - the object to set icon for
+    // iconRef - icon reference
+    static void setThemedIcon(QLabel* label, const QString& iconPath);
+
+    // Sets themed movie for the label
+    // label - the label to set movie for
+    // iconRef - icon path
+    static void setThemedMovie(QLabel* label, const QString& iconPath);
+
+    // Sets themed icon for the window
+    // widget - the widget to set icon for
+    // iconRef - icon path
+    static void setThemedWindowIcon(QWidget* widget, const QString& iconPath);
+
+    // Returns themed icon
+    // iconRef - icon path
     // returns - the corresponding icon
-    static QIcon getIconResource(const QString& category, const QString& iconName);
+    static QIcon getThemedIcon(const QString& iconPath);
 
-    // Returns resource as icon
-    // parameters - icon parameters
-    // returns - the corresponding icon
-    static QIcon getIconResource(const IconParameters& parameters);
-
-    // Returns path to the corresponding resource
-    // parameters - icon parameters
+    // Returns path to the corresponding themed resource
+    // iconRef - icon path
     // returns - path to the resource
-    static QString getResourceName(const IconParameters& parameters);
+    static QString getThemedPath(const QString& iconPath);
 
     static QString getTextWithDialog(const QString& title, const QString& label, const QString& defaultText, bool& ok, QWidget* parent = nullptr);
 
@@ -118,6 +145,7 @@ public:
      */
     static constexpr int MAX_SAFE_PIXMAP_WIDTH = 10 * 1000;
     static constexpr int MAX_SAFE_PIXMAP_HEIGHT = 10 * 1000;
+
 };
 
 /** Resets QSlider value on double clicks. Uses the slider as a parent and is auto-deleted with a slider. */

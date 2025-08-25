@@ -105,7 +105,7 @@ WeightMatrixADVContext::WeightMatrixADVContext(QObject* p)
 
 void WeightMatrixADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    auto a = new ADVGlobalAction(av, IconParameters("weight_matrix", "weight_matrix.png"), tr("Find TFBS with matrices..."), 80);
+    auto a = new ADVGlobalAction(av, ":weight_matrix/images/weight_matrix.png", tr("Find TFBS with matrices..."), 80);
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));
 }

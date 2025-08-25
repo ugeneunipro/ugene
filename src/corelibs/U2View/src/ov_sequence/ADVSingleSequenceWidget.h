@@ -170,7 +170,6 @@ signals:
     void si_updateGraphView(const QStringList&, const QVariantMap&);
 private slots:
     void sl_saveScreenshot();
-    void sl_colorThemeSwitched();
 
 protected:
     void init();

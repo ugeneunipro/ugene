@@ -57,7 +57,6 @@ private slots:
     void sl_saveAs();
     void sl_closeProject();
     void sl_exportProject();
-    void sl_colorThemeSwitched();
 
 private:
     QAction* saveAction;

@@ -100,7 +100,6 @@ private slots:
      * and runs a new search if the were no validation errors.
      */
     void sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges = false);
-    void sl_colorThemeSwitched();
 
 private:
     void updateActions();
@@ -227,7 +226,6 @@ private:
     Task* searchTask;
     int previousMaxResult;
     QStringList currentSearchPatternList;
-    QMovie* progressMovie;
     bool setSelectionToTheFirstResult;
     bool isSearchInNamesMode;
 

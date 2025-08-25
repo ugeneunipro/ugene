@@ -54,7 +54,6 @@ private slots:
 
     /** Updates group box state to match the new active sequence. */
     void sl_activeSequenceChanged();
-    void sl_colorThemeSwitched();
 
 private:
     QString getTmString(const QString& sequence);

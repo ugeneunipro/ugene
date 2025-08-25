@@ -31,8 +31,7 @@ namespace U2 {
 
 DbObjectItem::DbObjectItem(const QString& url, QListWidget* parent)
     : FileItem(url, parent) {
-    QIcon fileIcon = GUIUtils::getIconResource(GObjectTypes::getTypeInfo(SharedDbUrlUtils::getDbObjectTypeByUrl(url)).iconParameters);
-    setIcon(fileIcon.pixmap(16, 16));
+    QIcon fileIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(SharedDbUrlUtils::getDbObjectTypeByUrl(url)).iconPath);
 
     const QString objectName = SharedDbUrlUtils::getDbObjectNameByUrl(url);
     setText(objectName);

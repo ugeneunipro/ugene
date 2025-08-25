@@ -93,9 +93,6 @@ private:
 /************************************************************************/
 AnnotationsTreeWidget::AnnotationsTreeWidget(QWidget* parent)
     : QTreeWidget(parent) {
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, [this]() {
-        //update();
-    });
 }
 
 QTreeWidgetItem* AnnotationsTreeWidget::itemFromIndex(const QModelIndex& index) const {
@@ -207,12 +204,12 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     connect(toggleQualifierColumnAction, SIGNAL(triggered()), SLOT(sl_onToggleQualifierColumn()));
 
     removeColumnByHeaderClickAction = new QAction(tr("Hide column"), this);
-    removeColumnByHeaderClickAction->setIcon(GUIUtils::getIconResource("core", "remove_column.png"));
+    GUIUtils::setThemedIcon(removeColumnByHeaderClickAction, ":core/images/remove_column.png");
     connect(removeColumnByHeaderClickAction, SIGNAL(triggered()), SLOT(sl_onRemoveColumnByHeaderClick()));
 
     searchQualifierAction = new QAction(tr("Find qualifier..."), this);
     searchQualifierAction->setObjectName("find_qualifier_action");
-    searchQualifierAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
+    searchQualifierAction->setIcon(QIcon(":core/images/zoom_whole.png"));
     connect(searchQualifierAction, SIGNAL(triggered()), SLOT(sl_searchQualifier()));
 
     invertAnnotationSelectionAction = new QAction(tr("Invert annotation selection"), this);
@@ -1180,7 +1177,7 @@ void AnnotationsTreeView::updateState() {
     bool hasColumn = qColumns.contains(qName);
     toggleQualifierColumnAction->setText(!hasOnly1QualifierSelected ? tr("Toggle column") : (qColumns.contains(qName) ? tr("Hide '%1' column") : tr("Add '%1' column")).arg(qName));
 
-    toggleQualifierColumnAction->setIcon(hasOnly1QualifierSelected ? (hasColumn ? GUIUtils::getIconResource("core", "remove_column.png") : GUIUtils::getIconResource("core", "add_column.png")) : QIcon());
+    GUIUtils::setThemedIcon(toggleQualifierColumnAction, hasOnly1QualifierSelected ? (hasColumn ? ":core/images/remove_column.png" : ":core/images/add_column.png") : "");
 
     QTreeWidgetItem* ciBase = tree->currentItem();
     auto ci = static_cast<AVItem*>(ciBase);
@@ -1762,7 +1759,6 @@ void AnnotationsTreeView::sl_colorThemeSwitched() {
     for (int i = 0; i < tree->topLevelItemCount(); i++) {
         updateColorThemeRecursively(static_cast<AVItem*>(tree->topLevelItem(i)));
     }
-    removeColumnByHeaderClickAction->setIcon(GUIUtils::getIconResource("core", "remove_column.png"));
 }
 
 // TODO: refactoring of annotationClicked and annotationDoubleClicked methods.
@@ -2375,7 +2371,7 @@ const QIcon& AVGroupItem::getGroupIcon() {
 }
 
 const QIcon& AVGroupItem::getDocumentIcon() {
-    static QIcon groupIcon = GUIUtils::getIconResource("core", "gobject.png").pixmap(16, 16);
+    static QIcon groupIcon(":/core/images/gobject.png");
     return groupIcon;
 }
 

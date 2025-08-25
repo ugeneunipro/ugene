@@ -79,16 +79,12 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
 ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView* c)
     : QObject(c) {
     ctx = c;
-    createAction = new QAction(GUIUtils::getIconResource("core", "create_annotation_icon.png"), tr("New annotation..."), this);
+    createAction = new QAction(tr("New annotation..."), this);
+    GUIUtils::setThemedIcon(createAction, ":core/images/create_annotation_icon.png");
     createAction->setObjectName("create_annotation_action");
     createAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     createAction->setShortcutContext(Qt::WindowShortcut);
     connect(createAction, SIGNAL(triggered()), SLOT(sl_createAnnotation()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVAnnotationCreation::sl_colorThemeSwitched);
-}
-
-void ADVAnnotationCreation::sl_colorThemeSwitched() {
-    createAction->setIcon(GUIUtils::getIconResource("core", "create_annotation_icon.png"));
 }
 
 void ADVAnnotationCreation::sl_createAnnotation() {

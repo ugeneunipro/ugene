@@ -4,52 +4,52 @@
 <context>
     <name>DNAFlexDialog</name>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="26"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>DNA Flexibility</source>
         <translation>DNA Esnekliği</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="32"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>The DNA Flexibility plugin allows searching for high DNA flexibility regions.</source>
         <translation>DNA Esnekliği eklentisi, yüksek DNA esneklik bölgelerinin aranmasına izin verir.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="51"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Search Settings</source>
         <translation>Arama Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="63"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>High DNA Flexibility Regions Settings</source>
         <translation>Yüksek DNA Esnekliği Bölgeleri Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="71"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Window size</source>
         <translation>Pencere boyutu</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="94"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Window step</source>
         <translation>Pencere adımı</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="114"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Threshold</source>
         <translation>Eşik</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="140"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Remember Settings</source>
         <translation>Ayarları hatırla</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="147"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Restore Defaults</source>
         <translation>Varsayılanları Geri Yükle</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="160"/>
+        <location filename="../src/DNAFlexDialog.ui"/>
         <source>Output</source>
         <translation>Çıktı</translation>
     </message>
@@ -99,7 +99,7 @@
 <context>
     <name>U2::DNAFlexGraphFactory</name>
     <message>
-        <location filename="../src/DNAFlexGraph.cpp" line="42"/>
+        <location filename="../src/DNAFlexGraph.cpp" line="40"/>
         <source>DNA Flexibility</source>
         <translation>DNA Esnekliği</translation>
     </message>
@@ -117,19 +117,16 @@
         <translation>Yüksek DNA sarmal esnekliğine sahip bölgeler için bir DNA dizisi arar.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="68"/>
         <source>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</source>
-        <translation>DNA esnekliği hesaplaması sırasında UGENE&apos;nin belleği doldu. 32 bit UGENE sürümünün bellek tüketiminde bir kısıtlaması vardır. Bunun yerine 64 bit sürümü kullanmayı deneyin.</translation>
+        <translation type="vanished">DNA esnekliği hesaplaması sırasında UGENE&apos;nin belleği doldu. 32 bit UGENE sürümünün bellek tüketiminde bir kısıtlaması vardır. Bunun yerine 64 bit sürümü kullanmayı deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="71"/>
         <source>Out of memory during the DNA flexibility calculating.</source>
-        <translation>DNA esnekliği hesaplanırken bellek yetersiz.</translation>
+        <translation type="vanished">DNA esnekliği hesaplanırken bellek yetersiz.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="74"/>
         <source>Internal error occurred during the DNA flexibility calculating.</source>
-        <translation>DNA esnekliği hesaplaması sırasında dahili hata oluştu.</translation>
+        <translation type="vanished">DNA esnekliği hesaplaması sırasında dahili hata oluştu.</translation>
     </message>
 </context>
 <context>

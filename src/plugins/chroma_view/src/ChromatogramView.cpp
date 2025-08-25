@@ -63,7 +63,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     dnaView = v->getAnnotatedDNAView();
 
     showQVAction = new QAction(tr("Show quality bars"), this);
-    showQVAction->setIcon(GUIUtils::getIconResource("chroma_view", "bars.png"));
+    GUIUtils::setThemedIcon(showQVAction, ":chroma_view/images/bars.png");
     showQVAction->setCheckable(true);
     showQVAction->setChecked(chromatogram->hasQV);
     showQVAction->setEnabled(chromatogram->hasQV);
@@ -118,11 +118,9 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     pack();
 
     addActionToLocalToolbar(showQVAction);
-    traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
-    traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png"));
+    QToolButton* traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
+    GUIUtils::setThemedIcon(traceButton, ":chroma_view/images/traces.png");
     traceButton->setPopupMode(QToolButton::InstantPopup);
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ChromatogramView::sl_colorThemeSwitched);
 }
 
 void ChromatogramView::pack() {
@@ -416,13 +414,8 @@ void ChromatogramView::sl_showAllTraces() {
     completeUpdate();
 }
 
-void ChromatogramView::sl_colorThemeSwitched() {
-    traceButton->setIcon(GUIUtils::getIconResource("chroma_view", "traces.png"));
-}
-
 //////////////////////////////////////
 ////render area
-
 ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, const Chromatogram& _chroma)
     : GSequenceLineViewRenderArea(p),
       linePen(Qt::gray, 1, Qt::DotLine),

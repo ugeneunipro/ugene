@@ -24,7 +24,6 @@
 #include <QIcon>
 
 #include <U2Core/global.h>
-#include <U2Core/IconParameters.h>
 #include <U2Core/U2IdTypes.h>
 
 namespace U2 {
@@ -33,16 +32,16 @@ class U2CORE_EXPORT GObjectTypeInfo {
 public:
     GObjectTypeInfo() {
     }
-    GObjectTypeInfo(const GObjectType& _type, const QString& _name, const QString& _pluralName, const QString& treeSign, const IconParameters& iconParameters, const IconParameters& lockedIconParameters);
+    GObjectTypeInfo(const GObjectType& _type, const QString& _name, const QString& _pluralName, const QString& treeSign, const QString& iconPath, const QString& lockedIconPath);
 
     GObjectType type;
     QString name;
     QString pluralName;
     QString treeSign;
-    // Icon parameters for normal object
-    IconParameters iconParameters;
-    // Icon parameters for locked object
-    IconParameters lockedIconParameters;
+    // Icon path for normal object
+    QString iconPath;
+    // Icon path for locked object
+    QString lockedIconPath;
 };
 
 class U2CORE_EXPORT GObjectTypes {

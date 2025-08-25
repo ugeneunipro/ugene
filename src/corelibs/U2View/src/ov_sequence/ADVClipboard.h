@@ -76,9 +76,6 @@ public slots:
 
     void sl_setCopyQualifierActionStatus(bool isEnabled, QString text);
 
-private slots:
-    void sl_colorThemeSwitched();
-
 private:
     void updateActions();
     void copySequenceSelection(bool complement, bool amino);

@@ -38,6 +38,8 @@
 #include <U2Lang/ConfigurationEditor.h>
 #include <U2Lang/WorkflowEnv.h>
 
+#include <QFileInfo>
+
 namespace U2 {
 namespace LocalWorkflow {
 

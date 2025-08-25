@@ -21,12 +21,10 @@
 
 #include "SequenceSelectorWidgetController.h"
 
-#include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 #include "MaEditorSelection.h"
 
@@ -37,11 +35,10 @@ namespace U2 {
 SequenceSelectorWidgetController::SequenceSelectorWidgetController(MsaEditor* _msa)
     : msa(_msa), defaultSeqName(""), seqId(U2MsaRow::INVALID_ROW_ID) {
     setupUi(this);
-
-    addSeq->setIcon(GUIUtils::getIconResource("core", "navi_right.png"));
-    deleteSeq->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
-
     filler = new MSACompletionFiller();
+
+    GUIUtils::setThemedIcon(addSeq, ":core/images/navi_right.png");
+    GUIUtils::setThemedIcon(deleteSeq, ":core/images/close_small.png");
 
     seqLineEdit->setText(msa->getReferenceRowName());
     seqLineEdit->setCursorPosition(CURSOR_START_POSITION);
@@ -58,7 +55,6 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MsaEditor* _m
     connect(completer, SIGNAL(si_editingFinished()), SLOT(sl_seqLineEditEditingFinished()));
 
     connect(completer, SIGNAL(si_completerClosed()), SLOT(sl_setDefaultLineEditValue()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SequenceSelectorWidgetController::sl_colorThemeSwitched);
 }
 
 SequenceSelectorWidgetController::~SequenceSelectorWidgetController() {
@@ -156,11 +152,6 @@ void SequenceSelectorWidgetController::sl_deleteSeqClicked() {
 void SequenceSelectorWidgetController::sl_setDefaultLineEditValue() {
     seqLineEdit->setText(defaultSeqName);
     seqLineEdit->clearFocus();
-}
-
-void SequenceSelectorWidgetController::sl_colorThemeSwitched() {
-    addSeq->setIcon(GUIUtils::getIconResource("core", "navi_right.png"));
-    deleteSeq->setIcon(GUIUtils::getIconResource("core", "close_small.png"));
 }
 
 }  // namespace U2

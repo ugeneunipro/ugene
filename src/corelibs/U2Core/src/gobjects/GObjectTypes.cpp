@@ -23,8 +23,6 @@
 
 #include <U2Core/GObject.h>
 
-
-
 /* TRANSLATOR U2::GObject */
 
 namespace U2 {
@@ -33,34 +31,35 @@ GObjectTypeInfo::GObjectTypeInfo(const GObjectType& _type,
                                  const QString& _name,
                                  const QString& _pluralName,
                                  const QString& _treeSign,
-                                 const IconParameters& _iconParameters,
-                                 const IconParameters& _lockedIconParameters)
+                                 const QString& _iconPath,
+                                 const QString& _lockedIconPath)
     : type(_type),
       name(_name),
       pluralName(_pluralName),
       treeSign(_treeSign),
-      iconParameters(_iconParameters),
-      lockedIconParameters(_lockedIconParameters) {}
+      iconPath(_iconPath),
+      lockedIconPath(_lockedIconPath) {
+}
 
 #define REGISTER_TYPE_EX(VAR, ID, NAME, P_NAME, SIGN, ICON_URI, LOCKED_ICON_URI) \
     const GObjectType GObjectTypes::VAR = registerTypeInfo(GObjectTypeInfo(ID, NAME, P_NAME, SIGN, ICON_URI, LOCKED_ICON_URI))
 
 #define REGISTER_TYPE(VAR, ID, NAME, P_NAME, SIGN) \
-    REGISTER_TYPE_EX(VAR, ID, NAME, P_NAME, SIGN, IconParameters(), IconParameters())
+    REGISTER_TYPE_EX(VAR, ID, NAME, P_NAME, SIGN, QString(), QString())
 
 ///            variable             id                  visual name                     plural name                    sign     icon                            locked icon
 REGISTER_TYPE(UNKNOWN, "OT_UNKNOWN", GObject::tr("Unknown"), GObject::tr("Unknown"), "?");
 REGISTER_TYPE(UNLOADED, "OT_UNLOADED", GObject::tr("Unloaded"), GObject::tr("Unloaded"), "u");
-REGISTER_TYPE_EX(TEXT, "OT_TEXT", GObject::tr("Text"), GObject::tr("Text"), "t", IconParameters("core", "texto.png"), IconParameters("core", "ro_texto.png"));
-REGISTER_TYPE_EX(SEQUENCE, "OT_SEQUENCE", GObject::tr("Sequence"), GObject::tr("Sequences"), "s", IconParameters("core", "dna.png"), IconParameters("core", "ro_dna.png"));
+REGISTER_TYPE_EX(TEXT, "OT_TEXT", GObject::tr("Text"), GObject::tr("Text"), "t", ":core/images/texto.png", ":core/images/ro_texto.png");
+REGISTER_TYPE_EX(SEQUENCE, "OT_SEQUENCE", GObject::tr("Sequence"), GObject::tr("Sequences"), "s", ":core/images/dna.png", ":core/images/ro_dna.png");
 REGISTER_TYPE(ANNOTATION_TABLE, "OT_ANNOTATIONS", GObject::tr("Annotation"), GObject::tr("Annotations"), "a");
 REGISTER_TYPE(VARIANT_TRACK, "OT_VARIATIONS", GObject::tr("Variation"), GObject::tr("Variations"), "v");
 REGISTER_TYPE(CHROMATOGRAM, "OT_CHROMATOGRAM", GObject::tr("Chromatogram"), GObject::tr("Chromatograms"), "c");
 // SANGER_TODO: icons!!
-REGISTER_TYPE_EX(MULTIPLE_CHROMATOGRAM_ALIGNMENT, "OT_MCA", GObject::tr("Alignment"), GObject::tr("Alignments"), "mc", IconParameters("core", "msa.png"), IconParameters("core", "ro_msa.png"));
-REGISTER_TYPE_EX(MULTIPLE_SEQUENCE_ALIGNMENT, "OT_MSA", GObject::tr("Alignment"), GObject::tr("Alignments"), "m", IconParameters("core", "msa.png"), IconParameters("core", "ro_msa.png"));
-REGISTER_TYPE_EX(PHYLOGENETIC_TREE, "OT_PTREE", GObject::tr("Tree"), GObject::tr("Trees"), "tr", IconParameters("core", "tree.png"), IconParameters("core", "ro_tree.png"));
-REGISTER_TYPE_EX(BIOSTRUCTURE_3D, "OT_BIOSTRUCT3D", GObject::tr("3D model"), GObject::tr("3D models"), "3d", IconParameters("core", "biostruct3d.png"), IconParameters("core", "ro_biostruct3d.png"));
+REGISTER_TYPE_EX(MULTIPLE_CHROMATOGRAM_ALIGNMENT, "OT_MCA", GObject::tr("Alignment"), GObject::tr("Alignments"), "mc", ":core/images/msa.png", ":core/images/ro_msa.png");
+REGISTER_TYPE_EX(MULTIPLE_SEQUENCE_ALIGNMENT, "OT_MSA", GObject::tr("Alignment"), GObject::tr("Alignments"), "m", ":core/images/msa.png", ":core/images/ro_msa.png");
+REGISTER_TYPE_EX(PHYLOGENETIC_TREE, "OT_PTREE", GObject::tr("Tree"), GObject::tr("Trees"), "tr", ":core/images/tree.png", ":core/images/ro_tree.png");
+REGISTER_TYPE_EX(BIOSTRUCTURE_3D, "OT_BIOSTRUCT3D", GObject::tr("3D model"), GObject::tr("3D models"), "3d", ":core/images/biostruct3d.png", ":core/images/ro_biostruct3d.png");
 REGISTER_TYPE(ASSEMBLY, "OT_ASSEMBLY", GObject::tr("Assembly"), GObject::tr("Assemblies"), "as");
 
 static QHash<GObjectType, GObjectTypeInfo>& getTypeMap() {
@@ -99,9 +98,9 @@ void GObjectTypes::initTypeIcons() {
     const auto& types = map.keys();
     for (const auto& type : qAsConst(types)) {
         GObjectTypeInfo& info = map[type];
-        if (info.iconParameters.isEmpty()) {
-            info.iconParameters = IconParameters("core", "gobject.png");
-            info.lockedIconParameters = IconParameters("core", "ro_gobject.png");
+        if (info.iconPath.isEmpty()) {
+            info.iconPath = ":/core/images/gobject.png";
+            info.lockedIconPath = ":/core/images/ro_gobject.png";
         }
     }
 }

@@ -143,11 +143,10 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
     connect(maxDistBox, SIGNAL(valueChanged(int)), SLOT(sl_maxDistChanged(int)));
     connect(minDistCheck, SIGNAL(toggled(bool)), SLOT(sl_minMaxToggle(bool)));
     connect(maxDistCheck, SIGNAL(toggled(bool)), SLOT(sl_minMaxToggle(bool)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &FindRepeatsDialog::sl_colorThemeSwitched);
 
     updateStatus();
 
-    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png"));
+    setWindowIcon(QIcon(":/ugene/images/ugene.png"));
 }
 
 void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStringList& names) {
@@ -160,7 +159,7 @@ void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStri
     }
     tb->setMenu(m);
     tb->setPopupMode(QToolButton::InstantPopup);
-    tb->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
+    GUIUtils::setThemedIcon(tb, ":/core/images/predefined_annotation_groups.png");
 }
 
 QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
@@ -377,12 +376,6 @@ void FindRepeatsDialog::sl_repeatParamsChanged(int) {
 
 void FindRepeatsDialog::sl_minMaxToggle(bool) {
     updateStatus();
-}
-
-void FindRepeatsDialog::sl_colorThemeSwitched() {
-    annotationFitButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
-    annotationAroundKeepButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
-    annotationAroundFilterButton->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
 }
 
 void FindRepeatsDialog::updateStatus() {

@@ -60,8 +60,13 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent)
     filterComboBox->addItem(tr("name"), FILTER_BY_NAME);
     filterComboBox->addItem(tr("sequence"), FILTER_BY_SEQUENCE);
 
-    splitter->setStretchFactor(0, 3);
-    splitter->setStretchFactor(1, 2);
+    selectionSplitter->setStretchFactor(0, 1);
+    selectionSplitter->setStretchFactor(1, 1);
+
+    enzymesSplitter->setStretchFactor(0, 3);
+    enzymesSplitter->setStretchFactor(1, 2);
+
+    checkedEnzymesEdit->setWordWrapMode(QTextOption::WrapAnywhere);
 
     tree->setSortingEnabled(true);
     tree->sortByColumn(0, Qt::AscendingOrder);
@@ -108,11 +113,9 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent)
     connect(saveEnzymesButton, SIGNAL(clicked()), SLOT(sl_saveEnzymesFile()));
     connect(selectAllButton, SIGNAL(clicked()), SLOT(sl_selectAll()));
     connect(selectNoneButton, SIGNAL(clicked()), SLOT(sl_selectNone()));
-    connect(selectByLengthButton, SIGNAL(clicked()), SLOT(sl_selectByLength()));
     connect(invertSelectionButton, SIGNAL(clicked()), SLOT(sl_inverseSelection()));
     connect(loadSelectionButton, SIGNAL(clicked()), SLOT(sl_loadSelectionFromFile()));
     connect(saveSelectionButton, SIGNAL(clicked()), SLOT(sl_saveSelectionToFile()));
-    connect(enzymeInfo, SIGNAL(clicked()), SLOT(sl_openDBPage()));
     connect(enzymesFilterEdit, &QLineEdit::textChanged, this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
     connect(filterComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EnzymesSelectorWidget::sl_filterConditionsChanged);
     connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &EnzymesSelectorWidget::sl_colorThemeSwitched);
@@ -642,29 +645,6 @@ void EnzymesSelectorWidget::sl_selectNone() {
     updateStatus();
 }
 
-void EnzymesSelectorWidget::sl_selectByLength() {
-    bool ok;
-    int len = QInputDialog::getInt(this, tr("Minimum length"), tr("Enter minimum length of recognition sites"), minLength, 1, 20, 1, &ok);
-    if (ok) {
-        minLength = len;
-        ignoreItemChecks = true;
-        for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-            auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
-            for (int j = 0, m = gi->childCount(); j < m; j++) {
-                auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
-                if (item->enzyme->seq.length() < len) {
-                    item->setCheckState(0, Qt::Unchecked);
-                } else {
-                    item->setCheckState(0, Qt::Checked);
-                }
-            }
-            gi->updateVisual();
-        }
-        ignoreItemChecks = false;
-    }
-    updateStatus();
-}
-
 void EnzymesSelectorWidget::sl_inverseSelection() {
     ignoreItemChecks = true;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
@@ -700,21 +680,6 @@ void EnzymesSelectorWidget::sl_saveSelectionToFile() {
         QTextStream out(&data);
         out << selectionData;
     }
-}
-
-void EnzymesSelectorWidget::sl_openDBPage() {
-    QTreeWidgetItem* ci = tree->currentItem();
-    EnzymeTreeItem* item = ci == nullptr || ci->parent() == 0 ? nullptr : static_cast<EnzymeTreeItem*>(tree->currentItem());
-    if (item == nullptr) {
-        QMessageBox::critical(this, tr("Error!"), tr("No enzyme selected!"));
-        return;
-    }
-    QString id = item->enzyme->id;
-    if (id.isEmpty()) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Selected enzyme has no ID!"));
-        return;
-    }
-    GUIUtils::runWebBrowser("http://rebase.neb.com/cgi-bin/reb_get.pl?enzname=" + id);
 }
 
 void EnzymesSelectorWidget::sl_itemChanged(QTreeWidgetItem* item, int col) {

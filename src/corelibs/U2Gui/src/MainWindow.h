@@ -24,7 +24,6 @@
 #include <QEvent>
 #include <QWidget>
 
-#include <U2Core/IconParameters.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/global.h>
@@ -140,6 +139,11 @@ public:
 
     virtual void setNewStyle(const QString& style, int colorThemeIndex) = 0;
 
+    static constexpr char* ICON_PATH_PROPERTY_NAME = "icon-path";
+    static constexpr char* MOVIE_PATH_PROPERTY_NAME = "icon-path-movie";
+    static constexpr char* WINDOWS_ICON_PATH_PROPERTY_NAME = "icon-path-movie";
+    static constexpr int PIXMAP_SIZE = 16;
+
 signals:
     void si_colorThemeSwitched();
 };
@@ -225,7 +229,7 @@ public:
         : QObject(p) {
     }
 
-    virtual QAction* registerDock(MWDockArea area, QWidget* w, const IconParameters& iconParameters, const QKeySequence& ks = QKeySequence()) = 0;
+    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QString& iconPath, const QKeySequence& ks = QKeySequence()) = 0;
 
     virtual QWidget* findWidget(const QString& widgetObjName) = 0;
 

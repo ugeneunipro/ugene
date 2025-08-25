@@ -31,22 +31,17 @@
 
 namespace U2 {
 
-ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const IconParameters& _iconParameters, const QString& text, int ps, const ADVGlobalActionFlags& fl)
-    : GObjectViewAction(v, v, text), pos(ps), flags(fl), iconParameters(_iconParameters) {
-    if (!iconParameters.isEmpty()) {
-        setIcon(GUIUtils::getIconResource(iconParameters));
+ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QString& _iconPath, const QString& text, int ps, const ADVGlobalActionFlags& fl)
+    : GObjectViewAction(v, v, text), pos(ps), flags(fl) {
+    if (!_iconPath.isEmpty()) {
+        GUIUtils::setThemedIcon(this, _iconPath);
     }
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVGlobalAction::sl_colorThemeSwitched);
     updateState();
     v->addADVAction(this);
 }
 
 void ADVGlobalAction::sl_activeSequenceChanged() {
-    updateState();
-}
-
-void ADVGlobalAction::sl_colorThemeSwitched() {
     updateState();
 }
 
@@ -62,9 +57,6 @@ void ADVGlobalAction::updateState() {
         enabled = alphabetFilter.contains(t);
     }
     setEnabled(enabled);
-    if (!iconParameters.isEmpty()) {
-        setIcon(GUIUtils::getIconResource(iconParameters));
-    }
 }
 
 }  // namespace U2

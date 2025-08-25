@@ -68,9 +68,8 @@ private:
 class QDEnzymesActorPrototype : public QDActorPrototype {
 public:
     QDEnzymesActorPrototype();
-
-    QIcon getIcon() const override {
-        return GUIUtils::getIconResource("enzymes", "enzymes.png");
+    QString getIconPath() const override {
+        return ":enzymes/images/enzymes.png";
     }
 
     QDActor* createInstance() const override {

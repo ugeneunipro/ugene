@@ -113,7 +113,7 @@ void SpideySupportContext::initViewContext(GObjectViewController* view) {
 
     // add spidey action
     QString spideyTitle = tr("Align sequence to mRNA");
-    auto alignAction = new ADVGlobalAction(dnaView, IconParameters(), spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
+    auto alignAction = new ADVGlobalAction(dnaView, "", spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
     alignAction->setObjectName("Align sequence to mRNA");
     addViewAction(alignAction);
 

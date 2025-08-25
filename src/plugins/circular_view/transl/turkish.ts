@@ -4,97 +4,97 @@
 <context>
     <name>CircularViewSettingsWidget</name>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="20"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="38"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show title</source>
         <translation>Başlığı göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="48"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show length</source>
         <translation>Uzunluğu göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="64"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Font</source>
         <translation>Yazı Tipi</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="84"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Size</source>
         <translation>Boyut</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="104"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Attribute</source>
         <translation>Öznitelik</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="150"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Bold</source>
         <translation>Kalın</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="153"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="193"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Inside</source>
         <translation>İçinde</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="198"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Outside</source>
         <translation>Dışında</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="203"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Inside/Outside</source>
         <translation>İçeri/Dışarı</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="208"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>None</source>
         <translation>Hiçbiri</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="292"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Label font size</source>
         <translation>Etiket yazı tipi boyutu</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="270"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show ruler line</source>
         <translation>Cetvel çizgisini göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="222"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Font size</source>
         <translation>Yazı tipi boyutu</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="254"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Label position</source>
         <translation>Etiket konumu</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="280"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Show coordinates</source>
         <translation>Koordinatları göster</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="335"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>There are no displayed Circular Views, so settings are hidden.</source>
         <translation>Görüntülenen Dairesel Görünüm yoktur, bu nedenle ayarlar gizlidir.</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.ui" line="363"/>
+        <location filename="../src/CircularViewSettingsWidget.ui"/>
         <source>Open Circular View(s)</source>
         <translation>Dairesel Görünümleri Aç</translation>
     </message>
@@ -126,17 +126,17 @@
 <context>
     <name>SetSequenceOriginDialog</name>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="32"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>Set sequence origin</source>
         <translation>Sekans kaynağını ayarla</translation>
     </message>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="40"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>New origin:</source>
         <translation>Yeni köken:</translation>
     </message>
     <message>
-        <location filename="../src/SetSequenceOriginDialog.ui" line="47"/>
+        <location filename="../src/SetSequenceOriginDialog.ui"/>
         <source>New sequence origin point. All annotations will be shifted relative to new origin point.</source>
         <translation>Yeni sekans başlangıç noktası. Tüm açıklamalar yeni başlangıç noktasına göre kaydırılacaktır.</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>U2::CircularViewAction</name>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="346"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="347"/>
         <source>Show circular view</source>
         <translation>Dairesel görünümü göster</translation>
     </message>
@@ -152,27 +152,27 @@
 <context>
     <name>U2::CircularViewContext</name>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="100"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="101"/>
         <source>Save circular view as image...</source>
         <translation>Dairesel görünümü resim olarak kaydet...</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="105"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="106"/>
         <source>Set new sequence origin...</source>
         <translation>Yeni sıralama kaynağı belirle...</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="117"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="118"/>
         <source>Toggle circular views</source>
         <translation>Dairesel görünümler arasında geçiş yap</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="272"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="273"/>
         <source>Remove circular view</source>
         <translation>Dairesel görünümü kaldır</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="282"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="283"/>
         <source>Show circular view</source>
         <translation>Dairesel görünümü göster</translation>
     </message>
@@ -180,9 +180,8 @@
 <context>
     <name>U2::CircularViewImageExportController</name>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="120"/>
         <source>List of Circular Views is empty!</source>
-        <translation>Dairesel Görünümler Listesi boş!</translation>
+        <translation type="vanished">Dairesel Görünümler Listesi boş!</translation>
     </message>
     <message>
         <location filename="../src/CircularViewImageExportTask.cpp" line="143"/>
@@ -190,14 +189,12 @@
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="146"/>
         <source>Sequence context is NULL!</source>
-        <translation>Sıra bağlamı BOŞ!</translation>
+        <translation type="vanished">Sıra bağlamı BOŞ!</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="147"/>
         <source>Sequence Gobject is NULL</source>
-        <translation>Sequence Gobject BOŞ</translation>
+        <translation type="vanished">Sequence Gobject BOŞ</translation>
     </message>
 </context>
 <context>
@@ -213,25 +210,22 @@
         <translation>Dairesel gösterimi kullanarak DNA dizilerinin çizilmesini sağlar</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="79"/>
         <source>OPWidgetFactoryRegistry is NULL</source>
-        <translation>OP Widget Fabrika Kaydı BOŞ</translation>
+        <translation type="vanished">OP Widget Fabrika Kaydı BOŞ</translation>
     </message>
 </context>
 <context>
     <name>U2::CircularViewRenderArea</name>
     <message>
-        <location filename="../src/CircularView.cpp" line="370"/>
         <source>CircularView is NULL</source>
-        <translation>CircularView NULL</translation>
+        <translation type="vanished">CircularView NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularView.cpp" line="372"/>
         <source>Circular view settings are NULL</source>
-        <translation>Dairesel görünüm ayarları BOŞ</translation>
+        <translation type="vanished">Dairesel görünüm ayarları BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/CircularView.cpp" line="383"/>
+        <location filename="../src/CircularView.cpp" line="384"/>
         <source>circular view size %1 %2</source>
         <translation>dairesel görünüm boyutu %1 %2</translation>
     </message>
@@ -239,9 +233,8 @@
 <context>
     <name>U2::CircularViewSettingsWidget</name>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="41"/>
         <source>Circular view settings is NULL</source>
-        <translation>Dairesel görünüm ayarları BOŞ</translation>
+        <translation type="vanished">Dairesel görünüm ayarları BOŞ</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="64"/>
@@ -286,72 +279,65 @@
 <context>
     <name>U2::CircularViewSettingsWidgetFactory</name>
     <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="39"/>
         <source>Circular view context is NULL</source>
-        <translation>Dairesel görünüm bağlamı BOŞ</translation>
+        <translation type="vanished">Dairesel görünüm bağlamı BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="44"/>
         <source>Object view is NULL</source>
-        <translation>Nesne görünümü BOŞ</translation>
+        <translation type="vanished">Nesne görünümü BOŞ</translation>
     </message>
 </context>
 <context>
     <name>U2::CircularViewSplitter</name>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="57"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="59"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="49"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="51"/>
         <source>Zoom In</source>
         <translation>Yakınlaş</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="62"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="64"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="54"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="56"/>
         <source>Zoom Out</source>
         <translation>Uzaklaş</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="66"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="68"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="58"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="60"/>
         <source>Fit To Full View</source>
         <translation>Tam Görünüme Sığdır</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="70"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="72"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="62"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="64"/>
         <source>Save circular view as image</source>
         <translation>Dairesel görünümü resim olarak kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="74"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="76"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="66"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="68"/>
         <source>Show/hide restriction sites map</source>
         <translation>Kısıtlama siteleri haritasını göster / gizle</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="166"/>
         <source>Circular View is NULL</source>
-        <translation>Dairesel Görünüm BOŞ</translation>
+        <translation type="vanished">Dairesel Görünüm BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="168"/>
         <source>Circular View viewport is NULL</source>
-        <translation>Dairesel Görünüm görünüm alanı BOŞ</translation>
+        <translation type="vanished">Dairesel Görünüm görünüm alanı BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="170"/>
         <source>Scroll area is NULL</source>
-        <translation>Kaydırma alanı BOŞ</translation>
+        <translation type="vanished">Kaydırma alanı BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="225"/>
         <source>Sequence context is NULL</source>
-        <translation>Sıra bağlamı BOŞ</translation>
+        <translation type="vanished">Sıra bağlamı BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="227"/>
         <source>Sequence obejct is NULL</source>
-        <translation>Sıra nesnesi BOŞ</translation>
+        <translation type="vanished">Sıra nesnesi BOŞ</translation>
     </message>
 </context>
 <context>

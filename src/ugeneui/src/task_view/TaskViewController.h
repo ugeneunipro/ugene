@@ -36,7 +36,6 @@
 namespace U2 {
 
 class Task;
-class TaskViewController;
 
 //////////////////////////////////////////////////////////////////////////
 // controller
@@ -60,10 +59,10 @@ public:
 
     int countAvailableReports() const;
 
-    IconParameters waitingIp;
-    IconParameters activeIp;
-    IconParameters finishedIp;
-    IconParameters wasErrorIp;
+    QString waitingIconPath;
+    QString activeIconPath;
+    QString finishedIconPath;
+    QString wasErrorIconPath;
 
 signals:
     void si_reportsCountChanged();

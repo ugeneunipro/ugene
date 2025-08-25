@@ -248,7 +248,6 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
     delete textPattern;
     textPattern = findPatternTextEdit;
 
-    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
     resultLabel->setFixedHeight(progressLabel->height());
@@ -256,7 +255,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
                                                    << editEnd->objectName());
 
     ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
-    progressLabel->setMovie(progressMovie);
+    GUIUtils::setThemedMovie(progressLabel, ":/core/images/progress.gif");
     if (activeContext != nullptr) {
         // Initializing the annotation model
         CreateAnnotationModel annotModel;
@@ -303,7 +302,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
 }
 
 void FindPatternWidget::showCurrentResultAndStopProgress() const {
-    progressMovie->stop();
+    progressLabel->movie()->stop();
     progressLabel->hide();
     resultLabel->show();
     updateResultLabelText();
@@ -1434,10 +1433,6 @@ void FindPatternWidget::sl_usePatternNamesCbClicked() {
 
 void FindPatternWidget::sl_colorThemeSwitched() {
     updateErrorLabelState();
-    auto tmpProgressMovie = progressMovie;
-    progressMovie = new QMovie(GUIUtils::getResourceName("core", "progress.gif"), QByteArray(), progressLabel);
-    progressLabel->setMovie(progressMovie);
-    delete tmpProgressMovie;
 }
 
 bool FindPatternWidget::isSearchPatternsDifferent(const QList<NamePattern>& newPatterns) const {
@@ -1491,7 +1486,7 @@ int FindPatternWidget::getTargetSequenceLength() const {
 void FindPatternWidget::startProgressAnimation() {
     resultLabel->setText(tr("Results:"));
     progressLabel->show();
-    progressMovie->start();
+    progressLabel->movie()->start();
 }
 
 void FindPatternWidget::startTrackingFocusedSequenceSelection() {

@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString AnnotHighlightWidgetFactory::GROUP_ID = "OP_ANNOT_HIGHLIGHT";
-const IconParameters AnnotHighlightWidgetFactory::GROUP_ICON_PAR = IconParameters("core", "annotation_settings.png");
+const QString AnnotHighlightWidgetFactory::GROUP_ICON_STR = ":core/images/annotation_settings.png";
 const QString AnnotHighlightWidgetFactory::GROUP_DOC_PAGE = "65929473";
 
 AnnotHighlightWidgetFactory::AnnotHighlightWidgetFactory() {
@@ -55,7 +55,7 @@ QWidget* AnnotHighlightWidgetFactory::createWidget(GObjectViewController* objVie
 }
 
 OPGroupParameters AnnotHighlightWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Annotations Highlighting"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Annotations Highlighting"), GROUP_DOC_PAGE);
 }
 
 }  // namespace U2

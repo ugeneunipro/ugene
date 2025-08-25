@@ -37,7 +37,6 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/GScrollBar.h>
 #include <U2Gui/GUIUtils.h>
 
@@ -149,19 +148,23 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
 
     zoomUsing = 0;
 
-    zoomInAction = new QAction(GUIUtils::getIconResource("core", "zoom_in.png"), tr("Zoom In"), this);
+    zoomInAction = new QAction(tr("Zoom In"), this);
+    GUIUtils::setThemedIcon(zoomInAction, ":/core/images/zoom_in.png");
     zoomInAction->setObjectName("action_zoom_in_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomInAction()));
 
-    zoomOutAction = new QAction(GUIUtils::getIconResource("core", "zoom_out.png"), tr("Zoom Out"), this);
+    zoomOutAction = new QAction(tr("Zoom Out"), this);
+    GUIUtils::setThemedIcon(zoomOutAction, ":/core/images/zoom_out.png");
     zoomOutAction->setObjectName("action_zoom_out_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOutAction()));
 
-    zoomToSelectionAction = new QAction(GUIUtils::getIconResource("core", "zoom_sel.png"), tr("Zoom to Selection"), this);
+    zoomToSelectionAction = new QAction(tr("Zoom to Selection"), this);
+    GUIUtils::setThemedIcon(zoomToSelectionAction, ":/core/images/zoom_sel.png");
     zoomToSelectionAction->setObjectName("action_zoom_to_selection_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
-    zoomToSequenceAction = new QAction(GUIUtils::getIconResource("core", "zoom_whole.png"), tr("Zoom to Whole Sequence"), this);
+    zoomToSequenceAction = new QAction(tr("Zoom to Whole Sequence"), this);
+    GUIUtils::setThemedIcon(zoomToSequenceAction, ":/core/images/zoom_whole.png");
     zoomToSequenceAction->setObjectName("action_zoom_to_sequence_" + ctx->getSequenceObject()->getGObjectName());
     connect(zoomToSequenceAction, SIGNAL(triggered()), SLOT(sl_zoomToSequence()));
 
@@ -191,7 +194,6 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
     }
 
     connect(this, SIGNAL(si_updateRows()), SLOT(sl_updateRows()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PanView::sl_colorThemeSwitched);
 
     updateActions();
     updateRowBar();
@@ -304,15 +306,6 @@ void PanView::sl_onAnnotationsModified(const QList<AnnotationModification>& anno
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
     GSequenceLineViewAnnotated::sl_onAnnotationsModified(annotationModifications);
-}
-
-void PanView::sl_colorThemeSwitched() {
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
-    zoomToSelectionAction->setIcon(GUIUtils::getIconResource("core", "zoom_sel.png"));
-    zoomToSequenceAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
-
-    GSequenceLineViewAnnotated::sl_colorThemeSwitched();
 }
 
 void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings) {

@@ -4,17 +4,17 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../src/main_window/AboutDialog.ui" line="23"/>
+        <location filename="../src/main_window/AboutDialog.ui"/>
         <source>About UGENE</source>
         <translation>UGENE Hakkında</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialog.ui" line="60"/>
+        <location filename="../src/main_window/AboutDialog.ui"/>
         <source>Web Page</source>
         <translation>Web Sayfası</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialog.ui" line="80"/>
+        <location filename="../src/main_window/AboutDialog.ui"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -30,17 +30,17 @@
 <context>
     <name>AppSettingsDialog</name>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialog.ui" line="14"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui"/>
         <source>Application Settings</source>
         <translation>Uygulama Ayarları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialog.ui" line="50"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialog.ui" line="58"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui"/>
         <source>GroupBox</source>
         <translation>GrupKutusu</translation>
     </message>
@@ -48,22 +48,22 @@
 <context>
     <name>CreateNewProjectDialog</name>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="20"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>Create New Project</source>
         <translation>Yeni Proje Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="28"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>Project name</source>
         <translation>Proje ismi</translation>
     </message>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="38"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>Save project to file</source>
         <translation>Projeyi dosyaya kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="50"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -79,39 +79,37 @@
 <context>
     <name>DirectoriesSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="48"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="86"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="130"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="28"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Downloaded data</source>
         <translation>İndirilen veriler</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="60"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Temporary files</source>
         <translation>Geçici dosyalar</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="104"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>File storage</source>
         <translation>Dosya saklama</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="160"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Cleanup storage</source>
         <translation>Temizleme deposu</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="172"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Build indexes</source>
         <translation>Dizinler oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="195"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Documents</source>
         <translation>Dökümanlar</translation>
     </message>
@@ -119,17 +117,17 @@
 <context>
     <name>DocumentFormatSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="14"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui"/>
         <source>Select Correct Document Format</source>
         <translation>Doğru Belge Biçimini Seçin</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="32"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui"/>
         <source>Options</source>
         <translation>Seçenekler</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="39"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui"/>
         <source>File preview</source>
         <translation>Dosya önizleme</translation>
     </message>
@@ -137,12 +135,12 @@
 <context>
     <name>DocumentProviderSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui" line="20"/>
+        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui"/>
         <source>Select Document Format</source>
         <translation>Belge Biçimini Seçin</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui" line="35"/>
+        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui"/>
         <source>Document Format</source>
         <translation>Belge Biçimi</translation>
     </message>
@@ -150,12 +148,12 @@
 <context>
     <name>ExportProjectDialog</name>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="20"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>Export Project</source>
         <translation>Projeyi Dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="64"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -168,12 +166,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#a6392e;&quot;&gt;Uyarı! Aktif projedeki tüm bekleyen değişiklikler kaydedilecek!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="51"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="34"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>Project file name</source>
         <translation>Proje dosyası adı</translation>
     </message>
@@ -185,17 +183,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FormatSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui"/>
         <source>Format settings</source>
         <translation>Biçim ayarları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="20"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui"/>
         <source>Sequence annotations</source>
         <translation>Sıra ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="32"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui"/>
         <source>Create annotations for case switchings:</source>
         <translation>Servis talebi geçişleri için ek açıklamalar oluşturun:</translation>
     </message>
@@ -203,47 +201,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LogSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>LogSettingsWidget</source>
         <translation>Günlük Ayarları Aracı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="47"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Log format</source>
         <translation>Günlük biçimi</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="53"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Show date</source>
         <translation>Tarihi göster</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="60"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Date format:</source>
         <translation>Tarih biçimi:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="83"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Show log level</source>
         <translation>Günlük seviyesini göster</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="90"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Show log category</source>
         <translation>Günlük kategorisini göster</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="97"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Enable colored log output</source>
         <translation>Renkli günlük çıktısını etkinleştir</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="106"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Save output to file:</source>
         <translation>Çıktıyı dosyaya kaydedin:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="116"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -251,42 +249,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MultipleDocumentsReadingModeSelectorController</name>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="14"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Multiple Sequence Reading Mode</source>
         <translation>Çoklu Sıralı Okuma Modu</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="26"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Separate sequence mode</source>
         <translation>Ayrı sıra modu</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="36"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Merge sequence mode</source>
         <translation>Sıra modunu birleştirme</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="51"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Number of unknown symbols (&apos;N &apos;for nucleic acid or &apos;X&apos; for amino acid) between sequences</source>
         <translation>Diziler arasında bilinmeyen sembollerin sayısı (nükleik asit için &apos;N&apos; veya amino asit için &apos;X&apos;)</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="75"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>New document name</source>
         <translation>Yeni belge adı</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="92"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="109"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Save document</source>
         <translation>Belgeyi kaydet</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="207"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Join sequences into alignment</source>
         <translation>Dizileri hizalamaya birleştirin</translation>
     </message>
@@ -294,97 +292,97 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NetworkSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="47"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Preferred Web browser</source>
         <translation>Tercih edilen Web tarayıcısı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="67"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>System default browser</source>
         <translation>Sistem varsayılan tarayıcısı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="77"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Custom browser</source>
         <translation>Özel tarayıcı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="100"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="187"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Proxy</source>
         <translation>Vekil</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="198"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Type:</source>
         <translation>Tür:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="205"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Server:</source>
         <translation>Sunucu:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="212"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Port:</source>
         <translation>Bağlantı Noktası:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="225"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="334"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Do not use proxy on following addresses (separate line for each):</source>
         <translation>Aşağıdaki adreslerde proxy kullanmayın (her biri için ayrı satır):</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="266"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Use authentication with HTTP proxy:</source>
         <translation>HTTP proxy ile kimlik doğrulama kullanın:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="278"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Login</source>
         <translation>Giriş</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="288"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Password</source>
         <translation>Parola</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="353"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>SSL settings</source>
         <translation>SSL ayarları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="364"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Secure Socket protocol:</source>
         <translation>Güvenli Soket protokolü:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="121"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Remote request settings</source>
         <translation>Uzaktan istek ayarları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="26"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Network settings</source>
         <translation>Ağ ayarları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="130"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Remote request timeout</source>
         <translation>Uzaktan istek zaman aşımı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="143"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source> sec</source>
         <translation> saniye</translation>
     </message>
@@ -392,47 +390,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PluginViewWidget</name>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="14"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Plugin Viewer</source>
         <translation>Eklenti Görüntüleyici</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="24"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Pugin info:</source>
         <translation>Pugin bilgisi:</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="38"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Plugin license:</source>
         <translation>Eklenti lisansı:</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="63"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Accept</source>
         <translation>Onayla</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="70"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Show License</source>
         <translation>Lisansı Göster</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="94"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Type</source>
         <translation>Tür</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="99"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Name</source>
         <translation>Ad</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="104"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>State</source>
         <translation>Durum</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="109"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Description</source>
         <translation>Açıklama</translation>
     </message>
@@ -440,17 +438,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ProjectViewWidget</name>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="14"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui"/>
         <source>Form</source>
         <translation>Şekil</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="113"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui"/>
         <source>Bookmarks</source>
         <translation>Yer imleri</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="65"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui"/>
         <source>Objects</source>
         <translation>Nesneler</translation>
     </message>
@@ -480,32 +478,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ResourceSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Resource settings</source>
         <translation>Kaynak ayarları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="20"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Application resources</source>
         <translation>Uygulama kaynakları</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="32"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Optimize for CPU count</source>
         <translation>CPU sayısını optimize edin</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="64"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Tasks memory limit</source>
         <translation>Görevler hafıza sınırı</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="83"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Mb</source>
         <translation>Mb</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="105"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Threads limit</source>
         <translation>Konu sınırı</translation>
     </message>
@@ -513,17 +511,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SaveProjectDialog</name>
     <message>
-        <location filename="../src/project_support/SaveProjectDialog.ui" line="26"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui"/>
         <source>UGENE</source>
         <translation>UGENE</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SaveProjectDialog.ui" line="38"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui"/>
         <source>Save current project?</source>
         <translation>Mevcut proje kaydedilsin mi?</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SaveProjectDialog.ui" line="71"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui"/>
         <source>don&apos;t ask again</source>
         <translation>bir daha sorma</translation>
     </message>
@@ -531,12 +529,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SequenceReadingModeSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="14"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Sequence Reading Options</source>
         <translation>Sıralı Okuma Seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="20"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -553,17 +551,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Lütfen UGENE&apos;nin bu dizileri okuyacağı yolu seçin:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="39"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source> As separate sequences in sequence viewer</source>
         <translation> Sıra görüntüleyicide ayrı diziler olarak</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="65"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Merge sequences into a single sequence to show in sequence viewer</source>
         <translation>Sıralı görüntüleyicide göstermek için dizileri tek bir dizide birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="90"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -576,22 +574,22 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;&apos;Bilinmeyen&apos; sembollerin sayısı&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;(Nükleik için &apos;N&apos; veya amino için &apos;X&apos;)&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; bölümler arasında:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="110"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source> bases</source>
         <translation> üsler</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="141"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Join sequences into alignment and open in multiple alignment viewer</source>
         <translation>Dizileri hizalamak için birleştirin ve birden çok hizalama görüntüleyicide açın</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="167"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Map reads to a reference sequence</source>
         <translation>Harita bir referans sırasına okur</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="193"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>File preview:</source>
         <translation>Dosya önizleme:</translation>
     </message>
@@ -599,27 +597,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>StatisticalReport</name>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="20"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Welcome to UGENE 1.16</source>
         <translation>UGENE 1.16&apos;ya hoş geldiniz</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="26"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="29"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Allow collection of usage data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="39"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Enables experimental features hidden by default. May require restart for some features to be activated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="42"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Enable experimental features</source>
         <translation type="unfinished"></translation>
     </message>
@@ -627,42 +625,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TmpDirChangeDialog</name>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="20"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>Dialog</source>
         <translation>İletişim</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="39"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>Path for temporary files</source>
         <translation>Geçici dosyaların yolu</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="72"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="99"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>Exit UGENE</source>
         <translation>UGENE&apos;den çık</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="119"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>OK</source>
         <translation>TAMAM</translation>
-    </message>
-</context>
-<context>
-    <name>U2</name>
-    <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="471"/>
-        <source>Path doesn&apos;t exist: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="473"/>
-        <source>File is empty: </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2367,6 +2352,16 @@ veya çevrimiçi belgeleri görüntüleyin.
         <translation>Zaman</translation>
     </message>
     <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="471"/>
+        <source>Path doesn&apos;t exist: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/task_view/TaskViewController.cpp" line="473"/>
+        <source>File is empty: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="543"/>
         <source>Open containing folder</source>
         <translation>Dosyayı içeren klasörü açınız</translation>
@@ -2602,8 +2597,9 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
+        <location filename="../src/Main.cpp" line="561"/>
         <source>UGENE initialization started</source>
-        <translation type="vanished">UGENE başlatma başladı</translation>
+        <translation>UGENE başlatma başladı</translation>
     </message>
 </context>
 <context>
@@ -2765,62 +2761,62 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
 <context>
     <name>UserApplicationsSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="41"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="69"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Open last project at startup</source>
         <translation>Başlangıçta son projeyi aç</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="99"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="102"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Share usage metrics with UGENE team</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="109"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Do not check and ask about UGENE updates during UGENE startup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="119"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enable scaling for high-resolution (HiDPI) displays. Improves UI clarity on 4K and Retina screens. Requires restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="122"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enable auto scaling in HDPI mode (requires restart)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="129"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enables experimental features hidden by default. May require restart for some features to be activated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="132"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enable experimental features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="139"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Resets all UGENE settings to default. Requires restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="63"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Project</source>
         <translation>Proje</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="26"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Language</source>
         <translation>Dil</translation>
     </message>
@@ -2829,7 +2825,7 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <translation type="vanished">Güncellemeler</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="112"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Check for updates when UGENE starts</source>
         <translation>UGENE başladığında güncellemeleri kontrol edin</translation>
     </message>
@@ -2838,7 +2834,7 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <translation type="vanished">Öntanımlı ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="142"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Reset settings to default on the next run</source>
         <translation>Bir sonraki çalıştırmada ayarları varsayılana sıfırlayın</translation>
     </message>
@@ -2851,7 +2847,7 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
         <translation type="vanished">İstatistiksel rapor toplamayı etkinleştirin</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="51"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Appearance</source>
         <translation>Görünüm</translation>
     </message>
@@ -2859,9 +2855,8 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
 <context>
     <name>UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="561"/>
         <source>UGENE initialization started</source>
-        <translation type="unfinished">UGENE başlatma başladı</translation>
+        <translation type="obsolete">UGENE başlatma başladı</translation>
     </message>
 </context>
 </TS>

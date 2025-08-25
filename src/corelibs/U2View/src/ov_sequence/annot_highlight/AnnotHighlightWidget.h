@@ -77,7 +77,6 @@ private slots:
     void sl_onNextAnnotationClick();
     void sl_onPrevAnnotationClick();
     void sl_onAnnotationSelectionChanged();
-    void sl_colorThemeSwitched();
 
 private:
     void initLayout();

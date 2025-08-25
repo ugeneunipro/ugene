@@ -41,6 +41,7 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "BlastNTask.h"
 #include "BlastPTask.h"

@@ -39,8 +39,8 @@ namespace U2 {
 
 #define DOCK_SETTINGS QString("mwdockview/")
 
-DockWrapWidget::DockWrapWidget(QWidget* _w, const IconParameters& _iconParameters)
-    : w(_w), iconParameters(_iconParameters) {
+DockWrapWidget::DockWrapWidget(QWidget* _w, const QString& _iconPath)
+    : w(_w), iconPath(_iconPath) {
     auto l = new QVBoxLayout();
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
@@ -96,6 +96,8 @@ MWDockManagerImpl::MWDockManagerImpl(MainWindowImpl* _mw)
 
     mainWindowIsHidden = false;
     mw->installEventFilter(this);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MWDockManagerImpl::sl_colorThemeSwitched);
 }
 
 MWDockManagerImpl::~MWDockManagerImpl() {
@@ -142,7 +144,7 @@ static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     return false;
 }
 
-QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const IconParameters& iconParameters, const QKeySequence& keySequence) {
+QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, const QString& iconPath, const QKeySequence& keySequence) {
     bool showDock = dockWidget->objectName() == lastActiveDocksState[area];
 
     QToolBar* toolBar = getDockBar(area);
@@ -150,7 +152,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* dockWidget, c
     auto data = new DockData();
     data->area = area;
     data->label = new QLabel(toolBar);
-    data->wrapWidget = new DockWrapWidget(dockWidget, iconParameters);
+    data->wrapWidget = new DockWrapWidget(dockWidget, iconPath);
     data->wrapWidget->setObjectName("wrap_widget_" + dockWidget->objectName());
     data->label->setObjectName("doc_label__" + dockWidget->objectName());
     data->label->installEventFilter(this);
@@ -458,6 +460,12 @@ void MWDockManagerImpl::sl_toggleDocks() {
                 openDock(toggleDockState[i]);
             }
         }
+    }
+}
+
+void MWDockManagerImpl::sl_colorThemeSwitched() {
+    for (auto doc : qAsConst(docks)) {
+        DockWidgetPainter::updateLabel(doc, doc->isActive);
     }
 }
 

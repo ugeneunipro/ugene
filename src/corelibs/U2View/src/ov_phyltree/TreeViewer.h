@@ -90,9 +90,6 @@ protected:
     QWidget* createViewWidget(QWidget* parent) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
-protected slots:
-    virtual void sl_colorThemeSwitched();
-
 public:
     QMenu* layoutMenu = nullptr;
     QMenu* labelsMenu = nullptr;

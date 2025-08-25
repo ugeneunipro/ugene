@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <U2Gui/GUIUtils.h>
-
 #include "U2Lang/QDScheme.h"
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -56,8 +54,8 @@ private:
 class HMM2QDActorPrototype : public QDActorPrototype {
 public:
     HMM2QDActorPrototype();
-    QIcon getIcon() const {
-        return GUIUtils::getIconResource("hmm2", "hmmer2.png");
+    QString getIconPath() const override {
+        return ":hmm2/images/hmmer_16.png";
     }
     QDActor* createInstance() const {
         return new HMM2QDActor(this);

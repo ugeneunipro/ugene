@@ -129,15 +129,18 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     sortGroupsBySizeDescendingAction->setToolTip(tr("Sort groups by number of sequences in the group, descending"));
     connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
 
-    saveScreenshotAction = new QAction(GUIUtils::getIconResource("core", "cam2.png"), tr("Export as image"), this);
+    saveScreenshotAction = new QAction(tr("Export as image"), this);
+    GUIUtils::setThemedIcon(saveScreenshotAction, ":/core/images/cam2.png");
     saveScreenshotAction->setObjectName("export_msa_as_image_action");
     connect(saveScreenshotAction, &QAction::triggered, this, &MsaEditor::sl_exportImage);
 
-    buildTreeAction = new QAction(GUIUtils::getIconResource("core", "phylip.png"), tr("Build Tree"), this);
+    buildTreeAction = new QAction(tr("Build Tree"), this);
+    GUIUtils::setThemedIcon(buildTreeAction, ":/core/images/phylip.png");
     buildTreeAction->setObjectName("Build Tree");
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
-    alignSelectedSequencesToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "realign_some_sequences.png"), tr("Realign sequence(s) to other sequences"), this);
+    alignSelectedSequencesToAlignmentAction = new QAction(tr("Realign sequence(s) to other sequences"), this);
+    GUIUtils::setThemedIcon(alignSelectedSequencesToAlignmentAction, ":/core/images/realign_some_sequences.png");
     alignSelectedSequencesToAlignmentAction->setObjectName("align_selected_sequences_to_alignment");
 
     pairwiseAlignmentWidgetsSettings = new PairwiseAlignmentWidgetsSettings;
@@ -164,12 +167,6 @@ MsaEditor::MsaEditor(const QString& viewName, MsaObject* obj)
     convertRawToAminoAction->setObjectName("convertRawToAminoAction");
     convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
     connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
-
-    gotoAction = new QAction(GUIUtils::getIconResource("core", "goto.png"), tr("Go to position…"), this);
-    gotoAction->setObjectName("action_go_to_position");
-    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
-    gotoAction->setShortcutContext(Qt::WindowShortcut);
-    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
 
     initZoom();
     initFont();
@@ -366,7 +363,7 @@ void MsaEditor::addSortMenu(QMenu* m) {
 
 void MsaEditor::addAlignMenu(QMenu* m) {
     QMenu* alignMenu = m->addMenu(tr("Align"));
-    alignMenu->setIcon(GUIUtils::getIconResource("core", "align.png"));
+    alignMenu->setIcon(QIcon(":core/images/align.png"));
     alignMenu->menuAction()->setObjectName(MSAE_MENU_ALIGN);
 
     buildActionMenu(alignMenu,
@@ -488,16 +485,6 @@ void MsaEditor::addStatisticsMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
 }
 
-void MsaEditor::sl_colorThemeSwitched() {
-    searchInSequencesAction->setIcon(GUIUtils::getIconResource("core", "find_dialog.png"));
-    searchInSequenceNamesAction->setIcon(GUIUtils::getIconResource("core", "find_dialog.png"));
-    saveScreenshotAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
-    buildTreeAction->setIcon(GUIUtils::getIconResource("core", "phylip.png"));
-    alignSelectedSequencesToAlignmentAction->setIcon(GUIUtils::getIconResource("core", "realign_some_sequences.png"));
-
-    MaEditor::sl_colorThemeSwitched();
-}
-
 QWidget* MsaEditor::createViewWidget(QWidget* parent) {
     SAFE_POINT(ui == nullptr, "UI is already created", ui);
 
@@ -548,25 +535,27 @@ void MsaEditor::initChildrenActionsAndSignals() {
 void MsaEditor::initActions() {
     MaEditor::initActions();
 
-    searchInSequencesAction = new QAction(GUIUtils::getIconResource("core", "find_dialog.png"), tr("Search in sequences…"), this);
+    searchInSequencesAction = new QAction(tr("Search in sequences…"), this);
+    GUIUtils::setThemedIcon(searchInSequencesAction, ":core/images/find_dialog.png");
     searchInSequencesAction->setObjectName("search_in_sequences");
     searchInSequencesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     searchInSequencesAction->setShortcutContext(Qt::WindowShortcut);
     searchInSequencesAction->setToolTip(QString("%1 (%2)").arg(searchInSequencesAction->text()).arg(searchInSequencesAction->shortcut().toString()));
     connect(searchInSequencesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequences()));
 
-    searchInSequenceNamesAction = new QAction(GUIUtils::getIconResource("core", "find_dialog.png"), tr("Search in sequence names…"), this);
+    searchInSequenceNamesAction = new QAction(tr("Search in sequence names…"), this);
+    GUIUtils::setThemedIcon(searchInSequenceNamesAction, ":core/images/find_dialog.png");
     searchInSequenceNamesAction->setObjectName("search_in_sequence_names");
     searchInSequenceNamesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
     searchInSequenceNamesAction->setShortcutContext(Qt::WindowShortcut);
     searchInSequenceNamesAction->setToolTip(QString("%1 (%2)").arg(searchInSequenceNamesAction->text()).arg(searchInSequenceNamesAction->shortcut().toString()));
     connect(searchInSequenceNamesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequenceNames()));
 
-    alignAction = new QAction(GUIUtils::getIconResource("core", "align.png"), tr("Align"), this);
+    alignAction = new QAction(QIcon(":core/images/align.png"), tr("Align"), this);
     alignAction->setObjectName("Align");
     connect(alignAction, SIGNAL(triggered()), this, SLOT(sl_align()));
 
-    alignNewSequencesToAlignmentAction = new QAction(GUIUtils::getIconResource("core", "add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
+    alignNewSequencesToAlignmentAction = new QAction(QIcon(":/core/images/add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
     alignNewSequencesToAlignmentAction->setObjectName("align_new_sequences_to_alignment_action");
     connect(alignNewSequencesToAlignmentAction, &QAction::triggered, this, &MsaEditor::sl_alignNewSequencesToAlignment);
 

@@ -48,10 +48,10 @@ namespace U2 {
 #define SETTINGS_ROOT QString("task_view/")
 
 TaskViewDockWidget::TaskViewDockWidget() {
-    waitingIp = IconParameters("ugene", "hourglass.png");
-    activeIp = IconParameters("ugene", "hourglass_go.png");
-    wasErrorIp = IconParameters("ugene", "hourglass_err.png");
-    finishedIp = IconParameters("ugene", "hourglass_ok.png");
+    waitingIconPath = ":ugene/images/hourglass.png";
+    activeIconPath = ":ugene/images/hourglass_go.png";
+    wasErrorIconPath = ":ugene/images/hourglass_err.png";
+    finishedIconPath = ":ugene/images/hourglass_ok.png";
 
     setObjectName(DOCK_TASK_VIEW);
     setWindowTitle(tr("Tasks"));
@@ -88,15 +88,15 @@ TaskViewDockWidget::~TaskViewDockWidget() {
 void TaskViewDockWidget::initActions() {
     cancelTaskAction = new QAction(tr("Cancel task"), this);
     cancelTaskAction->setObjectName("Cancel task");
-    cancelTaskAction->setIcon(GUIUtils::getIconResource("ugene", "cancel.png"));
+    cancelTaskAction->setIcon(QIcon(":ugene/images/cancel.png"));
     connect(cancelTaskAction, SIGNAL(triggered()), SLOT(sl_onCancelTask()));
 
     viewReportAction = new QAction(tr("View report"), this);
-    viewReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png"));
+    viewReportAction->setIcon(QIcon(":ugene/images/task_report.png"));
     connect(viewReportAction, SIGNAL(triggered()), SLOT(sl_onViewTaskReport()));
 
     removeReportAction = new QAction(tr("Remove report"), this);
-    removeReportAction->setIcon(GUIUtils::getIconResource("ugene", "task_report.png"));
+    removeReportAction->setIcon(QIcon(":ugene/images/bin_empty.png"));
     connect(removeReportAction, SIGNAL(triggered()), SLOT(sl_onRemoveTaskReport()));
 
     TaskScheduler* s = AppContext::getTaskScheduler();
@@ -496,9 +496,9 @@ static void checkPathAndShowErrorOrOpen(const QString& url, QWidget* parent) {
     QFileInfo finfo(url);
     QString error;
     if (!finfo.exists()) {
-        error = QT_TR_NOOP("Path doesn't exist: ");
+        error = TVReportWindow::tr("Path doesn't exist: ");
     } else if (finfo.isFile() && finfo.size() == 0) {
-        error = QT_TR_NOOP("File is empty: ");
+        error = TVReportWindow::tr("File is empty: ");
     }
 
     if (!error.isEmpty()) {
@@ -571,7 +571,7 @@ QAction* TVReportWindow::createDirAction(const QString& url, QObject* parent) {
         tr("Open containing folder"),
         info.dir().absolutePath(),
         parent,
-        GUIUtils::getResourceName("ugene", "project_open.png"));
+        ":ugene/images/project_open.png");
 }
 
 QAction* TVReportWindow::createFileAction(const QString& url, QObject* parent) {
@@ -622,9 +622,9 @@ void TVTreeItem::updateVisual() {
     setText(TVColumns_Name, taskName);
 
     if (task == nullptr || task->isFinished()) {
-        setIcon(TVColumns_Name, GUIUtils::getIconResource(wasError ? w->wasErrorIp : w->finishedIp));
+        setIcon(TVColumns_Name, GUIUtils::getThemedIcon(wasError ? w->wasErrorIconPath : w->finishedIconPath));
     } else {
-        setIcon(TVColumns_Name, GUIUtils::getIconResource(task->isRunning() ? w->activeIp : w->waitingIp));
+        setIcon(TVColumns_Name, GUIUtils::getThemedIcon(task->isRunning() ? w->activeIconPath : w->waitingIconPath));
         setChildIndicatorPolicy(task->getSubtasks().isEmpty() ? QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
     }
 

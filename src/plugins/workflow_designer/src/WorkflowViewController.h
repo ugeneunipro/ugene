@@ -279,8 +279,6 @@ private slots:
     void sl_breakpointDisabled(const ActorId& actor);
     void sl_convertMessages2Documents(const Workflow::Link* bus, const QString& messageType, int messageNumber);
 
-    void sl_colorThemeSwitched();
-
 protected:
     bool onCloseEvent();
     virtual void paintEvent(QPaintEvent* event);

@@ -45,12 +45,7 @@ private slots:
     void sl_showGenomeAssemblyDialog();
     void sl_showBuildIndexDialog();
     void sl_showConvertToSamDialog();
-    void sl_colorThemeSwitched();
 
-private:
-    QAction* convertAssemblyToSamAction = nullptr;
-    QAction* dnaAssemblyAction = nullptr;
-    QAction* buildIndexAction = nullptr;
 };
 
 class FilterUnpairedReadsTask : public Task {

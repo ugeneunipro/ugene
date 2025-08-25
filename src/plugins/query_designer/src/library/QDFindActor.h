@@ -23,8 +23,6 @@
 
 #include <U2Algorithm/FindAlgorithmTask.h>
 
-#include <U2Gui/GUIUtils.h>
-
 #include <U2Lang/QueryDesignerRegistry.h>
 
 namespace U2 {
@@ -53,8 +51,8 @@ public:
     virtual QDActor* createInstance() const {
         return new QDFindActor(this);
     }
-    virtual QIcon getIcon() const {
-        return GUIUtils::getIconResource("core", "find_dialog.png");
+    QString getIconPath() const override {
+        return ":core/images/find_dialog.png";
     }
 };
 

@@ -16,6 +16,7 @@ Qt 5.15.x with the following components installed via the Qt installer:
 2. Run the following commands based on your operating system:
     - **Linux & macOS**:
       ```
+      sudo apt install libgl1-mesa-dev zlib1g-dev libxtst-dev sudo libglu1-mesa-dev
       cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -S . -B "../build-ugene-release"
       cmake --build "../build-ugene-release" -- -j 4
       ```

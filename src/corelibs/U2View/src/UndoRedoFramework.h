@@ -46,7 +46,6 @@ private slots:
     void sl_completeStateChanged(bool _stateComplete);
     void sl_undo();
     void sl_redo();
-    void sl_colorThemeSwitched();
 
 private:
     void checkUndoRedoEnabled();

@@ -23,7 +23,6 @@
 
 #include <QLabel>
 
-#include <U2Core/IconParameters.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -34,7 +33,7 @@ namespace U2 {
 class U2GUI_EXPORT GroupHeaderImageWidget : public QLabel {
     Q_OBJECT
 public:
-    GroupHeaderImageWidget(const QString& groupId, const IconParameters& iconParameters);
+    GroupHeaderImageWidget(const QString& groupId, const QString& iconPath);
 
     inline const QString& getGroupId() {
         return groupId;
@@ -54,15 +53,11 @@ signals:
 protected:
     void mousePressEvent(QMouseEvent*) override;
 
-private slots:
-    void sl_colorThemeSwitched();
-
 private:
     QString groupId;
-    IconParameters iconParameters;
+    QString iconPath;
 
     static const QString HEADER_COMMON_STYLE;
-    static constexpr int ICON_SIZE = 16;
 };
 
 }  // namespace U2

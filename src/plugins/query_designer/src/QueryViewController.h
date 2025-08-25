@@ -199,7 +199,6 @@ private slots:
     void sl_setGlobalStrand(QAction* a);
     void sl_itemAdded();
     void sl_scrollUp();
-    void sl_colorThemeSwitched();
 
 private:
     void createActions();
@@ -237,11 +236,6 @@ private:
     QString inFile_, outFile_;
     QString schemeUri;
     QDActor* currentActor;
-
-    QMenu* viewModeMenu = nullptr;
-    QToolButton* viewModeToolButton = nullptr;
-    QMenu* querySequenceModeMenu = nullptr;
-    QToolButton* querySequenceModeToolButton = nullptr;
 };
 
 class AddConstraintDialog : public QDialog, public Ui_AddConstraintDialog {

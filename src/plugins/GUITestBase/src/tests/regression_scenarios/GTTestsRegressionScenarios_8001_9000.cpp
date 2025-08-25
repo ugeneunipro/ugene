@@ -43,6 +43,7 @@
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
+#include <utils/GTUtilsToolTip.h>
 
 #include <QClipboard>
 #include <QDir>
@@ -88,6 +89,8 @@
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -1141,6 +1144,61 @@ GUI_TEST_CLASS_DEFINITION(test_8111) {
     CHECK_SET_ERR(initialSize != nameLabel->size(), "Sequence name label size should change!");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8114) {
+    /*
+     *  1. Select "Tools>Sanger data analysis>Map reads to reference..."
+     *  2. Set reference file with ";" in path, and correct reads path. Press OK.
+     *  Expected state: message box with error appears
+     *  3. Set correct reference file, and reads with ";" in path. Press OK.
+     *  Expected state: message box with error appears
+     */
+    QDir(sandBoxDir).mkdir("8114");
+    QDir(sandBoxDir).mkdir("8114/bad;path");
+    GTFile::copy(testDir + "_common_data/sanger/sanger_01.ab1", sandBoxDir + "8114/bad;path/sanger_01.ab1");
+    GTFile::copy(testDir + "_common_data/sanger/reference.gb", sandBoxDir + "8114/bad;path/reference.gb");
+
+    class CheckBadPaths : public CustomScenario {
+        void run() override {
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), sandBoxDir + "8114/bad;path/reference.gb");
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/sanger/sanger_01.ab1"));
+            GTWidget::click(GTWidget::findPushButton("addReadButton"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok,
+                                            "Reference sequence path should not contain \";\" character."));
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir + "8114/bad;path/sanger_01.ab1"));
+            GTWidget::click(GTWidget::findPushButton("addReadButton"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok,
+                                            "Read sequence path should not contain \";\" character."));
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(new CheckBadPaths()));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8116) {
+    /*
+     * 1. Open COI.aln
+     * 2. Check tooltips for option panel tabs
+     * Expected state: they're present and the same as tabs headers
+     */
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("OP_MSA_GENERAL")));
+    GTUtilsToolTip::checkExistingToolTip("General");
+
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("OP_PAIRALIGN")));
+    GTUtilsToolTip::checkExistingToolTip("Pairwise Alignment");
+
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget("OP_MSA_TREES_WIDGET")));
+    GTUtilsToolTip::checkExistingToolTip("Tree Settings");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8118) {
     /*
     * 1. Open Mca alignment
@@ -1475,6 +1533,92 @@ GUI_TEST_CLASS_DEFINITION(test_8161) {
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
     GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), true);
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8163) {
+    /*
+     * 1. Open COI.aln
+     * 2. Select any row
+     * 3. Call context menu Export->Move selected rows to another alignment->Create a new document
+     * 4. In opened dialog add fasta file without name: ".fasta"
+     * Expected state: message box about empty name appeared
+     **/
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file with a non-empty name."));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, ".fasta", GTFileDialogUtils::Save, GTGlobals::UseMouse));
+    GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8170) {
+    // Open any sequence (e.g. murine.gb)
+    // Enable Restriction Sites auto annotations
+    // Expected: Restriction Sites auto annotations are enabled
+    // Open the "Find restriction enzymes" dialog
+    // Click "Select none"
+    // Click "OK"
+    // Expected: the messagebox "No enzymes are selected! Do you want to turn off enzymes annotations highlighting?" appeared
+    // Click No
+    // Expected: the messagebox dissapeared, but the "Find restriction enzymes" dialog is still opened
+    // Click Yes
+    // Expected: the "Find restriction enzymes" dialog is closed, Restriction Sites auto annotations are disabled
+    GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    auto parent = GTWidget::findWidget("ADV_single_sequence_widget_0");
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
+    GTWidget::click(GTWidget::findWidget("AutoAnnotationUpdateAction", parent));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTWidget::click(GTWidget::findWidget("selectNoneButton", dialog));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No, "No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?"));
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?"));
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{} , new Scenario));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::waitForDialog(new PopupChecker({"Restriction Sites"}, PopupChecker::CheckOptions(PopupChecker::CheckOption::IsUnchecked)));
+    GTWidget::click(GTWidget::findWidget("AutoAnnotationUpdateAction", parent));
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8174) {
+    GTFile::copy(dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "/human_T1.fa");
+    GTUtilsDialog::waitForDialog(new DotPlotFiller());
+    GTUtilsDialog::waitForDialog(
+        new BuildDotPlotFiller(
+            sandBoxDir + "/human_T1.fa",
+            "", false, true));
+    GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
+    //GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
+
+    QFile::remove(sandBoxDir + "/human_T1.fa");
+    GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
+    GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8175) {
+    /*
+     *1. Open _common_data/scenarios/tree_view/deep_tree_412.nwk
+     *Expected state: no crash, corresponding message
+     **/
+
+    GTLogTracer lt;
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/tree_view/deep_tree_412.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Tree branch is too long"), "Expected no errors");
 }
 
 }  // namespace GUITest_regression_scenarios

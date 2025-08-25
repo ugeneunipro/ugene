@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <U2Core/IconParameters.h>
-
 #include <U2Lang/SupportStructures.h>
 #include <U2Lang/WizardWidget.h>
 
@@ -79,7 +77,7 @@ private:
     QWidget* initSample(const QString& sampleName, const QStringList& datasets);
     QListWidget* getListWidget(int pos) const;
     QScrollArea* createScrollArea();
-    QToolButton* createButton(QWidget* parent, const IconParameters& iconPrameters) const;
+    QToolButton* createButton(QWidget* parent, const QString& iconPath, bool addIconPathAsProperty) const;
     QVBoxLayout* createControlButtonsLayout();
     QVBoxLayout* createControlButtons();
     enum Direction { UP,
@@ -97,7 +95,6 @@ private slots:
     void sl_selectionChanged();
     void sl_up();
     void sl_down();
-    void sl_colorThemeSwitched();
 
 private:
     TophatSamplesWidgetController* ctrl;

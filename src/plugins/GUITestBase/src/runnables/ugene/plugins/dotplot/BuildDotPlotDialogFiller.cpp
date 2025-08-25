@@ -47,6 +47,10 @@ BuildDotPlotFiller::BuildDotPlotFiller(
       secondGapSize(_gapSecondValue), cancel(_cancel) {
 }
 
+BuildDotPlotFiller::BuildDotPlotFiller(CustomScenario* customScenario)
+    : Filler("DotPlotFilesDialog", customScenario) {
+}
+
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 void BuildDotPlotFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -66,9 +70,11 @@ void BuildDotPlotFiller::commonScenario() {
             GTSpinBox::setValue("gapSecond", secondGapSize, dialog);
         }
     }
-    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+
     if (cancel) {
         GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+    } else {
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     }
 }
 #undef GT_CLASS_NAME

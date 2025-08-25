@@ -21,7 +21,6 @@
 
 #include "UndoRedoFramework.h"
 
-#include <U2Core/AppContext.h>
 #include <U2Core/MsaObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -29,7 +28,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -38,12 +36,14 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
       maObject(_maObject) {
     SAFE_POINT(maObject != nullptr, "NULL MSA Object!", );
 
-    undoAction = new QAction(GUIUtils::getIconResource("core", "undo.png"), tr("Undo"), this);
+    undoAction = new QAction(tr("Undo"), this);
+    GUIUtils::setThemedIcon(undoAction, ":core/images/undo.png");
     undoAction->setObjectName("msa_action_undo");
     undoAction->setShortcut(QKeySequence::Undo);
     GUIUtils::updateActionToolTip(undoAction);
 
-    redoAction = new QAction(GUIUtils::getIconResource("core", "redo.png"), tr("Redo"), this);
+    redoAction = new QAction(tr("Redo"), this);
+    GUIUtils::setThemedIcon(redoAction, ":core/images/redo.png");
     redoAction->setObjectName("msa_action_redo");
     redoAction->setShortcut(QKeySequence::Redo);
     GUIUtils::updateActionToolTip(redoAction);
@@ -55,7 +55,6 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MsaObject* _maObject)
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateUndoRedoState()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(sl_redo()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaUndoRedoFramework::sl_colorThemeSwitched);
 }
 
 void MaUndoRedoFramework::sl_completeStateChanged(bool _stateComplete) {
@@ -138,11 +137,6 @@ void MaUndoRedoFramework::sl_redo() {
     MaModificationInfo modInfo;
     modInfo.type = MaModificationType_Redo;
     maObject->updateCachedMultipleAlignment(modInfo);
-}
-
-void MaUndoRedoFramework::sl_colorThemeSwitched() {
-    undoAction->setIcon(GUIUtils::getIconResource("core", "undo.png"));
-    redoAction->setIcon(GUIUtils::getIconResource("core", "redo.png"));
 }
 
 QAction* MaUndoRedoFramework::getUndoAction() const {

@@ -23,7 +23,7 @@
 
 #include <U2Designer/PrompterBase.h>
 
-#include <U2Lang/WorkflowUtils.h>
+#include <U2Lang/LocalDomain.h>
 
 namespace U2 {
 namespace LocalWorkflow {

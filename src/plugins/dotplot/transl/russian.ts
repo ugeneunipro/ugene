@@ -4,93 +4,92 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="20"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Compare sequences using Dotplot</source>
         <translation>Сравнение последовательностей при помощи Dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="33"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot параметры</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="55"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Custom algorithm</source>
         <translation>Алгоритм по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="102"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>X axis sequence</source>
         <translation>Последовательность оси X</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="115"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Minimum repeat length</source>
         <translation>Мин длина повторов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="122"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Y axis sequence</source>
         <translation>Последовательность оси Y</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="129"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Repeats  identity</source>
         <translation>Идентичность повторов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="158"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>bp</source>
         <translation>нк</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="186"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Эвристический подбор длины повторов, с тем чтобы кол-во повторов в последовательности не превысило 1000</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="189"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>1k</source>
         <translation>1к</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="218"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="240"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Сбросить к 100%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="243"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="298"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search inverted repeats</source>
         <translation>Искать инвертированные повторы</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="305"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Search direct repeats</source>
         <translation>Искать прямые повторы</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="344"/>
-        <location filename="../src/DotPlotDialog.ui" line="351"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>default</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="376"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</source>
         <translation>Нажмите, чтобы загрузить последовательности из файловой системы. Последовательности будут добавлены в комбо-боксы, когда они будут загружены в проект</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="379"/>
+        <location filename="../src/DotPlotDialog.ui"/>
         <source>Load Sequence</source>
         <translation>Загрузить</translation>
     </message>
@@ -98,40 +97,37 @@
 <context>
     <name>DotPlotFilesDialog</name>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="38"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="23"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Build Dotplot from Sequences</source>
         <translation>Построить dotplot последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with first sequence</source>
         <translation>Файл с первой последовательностью</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="45"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="96"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Join all sequences found in the file</source>
         <translation>Соединить последовательности</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="62"/>
-        <location filename="../src/DotPlotFilesDialog.ui" line="130"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Gap size:</source>
         <translation>Длина пробела:</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="79"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>Compare sequence against itself</source>
         <translation>Саму с собой</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilesDialog.ui"/>
         <source>File with second sequence</source>
         <translation>Файл со второй последовательностью</translation>
     </message>
@@ -139,92 +135,92 @@
 <context>
     <name>DotPlotFilterDialog</name>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="17"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="30"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Dotplot parameters</source>
         <translation>Параметры фильтрации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="42"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No filtration applied</source>
         <translation>Фильтрация не применяется</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="45"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>No Filtration</source>
         <translation>Без фильтрации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Show results that intersect the features</source>
         <translation>показывать результаты, которые пересекают аннотации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="58"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Intersection</source>
         <translation>Пересечение аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="65"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Intersection Parameters</source>
         <translation>Параметры пересечения</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Feature Name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="80"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select all names</source>
         <translation>Выбрать все имена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="83"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="90"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert the current selection</source>
         <translation>Инвертировать текущее выделение</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="93"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Invert Selection</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="100"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear the current selection</source>
         <translation>Очистить текущее выделение</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Clear Selection</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="110"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select names of the features to intersection</source>
         <translation>Выберете имена аннотаций для пересечения</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="113"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Features Selection</source>
         <translation>Выбор аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="139"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Select only different names</source>
         <translation>Выбрать только различные имена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.ui" line="142"/>
+        <location filename="../src/DotPlotFilterDialog.ui"/>
         <source>Different Only</source>
         <translation>Различные</translation>
     </message>
@@ -349,7 +345,7 @@
 <context>
     <name>U2::DotPlotFilterTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="308"/>
+        <location filename="../src/DotPlotTasks.cpp" line="306"/>
         <source>Applying filter to dotplot</source>
         <translation>Применение фильтра к dotplot</translation>
     </message>
@@ -375,12 +371,12 @@
 <context>
     <name>U2::DotPlotLoadDocumentsTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="215"/>
+        <location filename="../src/DotPlotTasks.cpp" line="213"/>
         <source>DotPlot loading</source>
         <translation>Dotplot загружается</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="257"/>
+        <location filename="../src/DotPlotTasks.cpp" line="255"/>
         <source>Detecting format error for file %1</source>
         <translation>Ошибка определения формата файла %1</translation>
     </message>
@@ -466,167 +462,167 @@
 <context>
     <name>U2::DotPlotWidget</name>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="120"/>
+        <location filename="../src/DotPlotWidget.cpp" line="113"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="123"/>
+        <location filename="../src/DotPlotWidget.cpp" line="116"/>
         <source>Save as image</source>
         <translation>Сохранить как изображение</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="127"/>
+        <location filename="../src/DotPlotWidget.cpp" line="120"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="131"/>
+        <location filename="../src/DotPlotWidget.cpp" line="124"/>
         <source>Load</source>
         <translation>Загрузить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="134"/>
+        <location filename="../src/DotPlotWidget.cpp" line="127"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="138"/>
+        <location filename="../src/DotPlotWidget.cpp" line="131"/>
         <source>Filter Results</source>
         <translation>Фильтрация результатов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="208"/>
+        <location filename="../src/DotPlotWidget.cpp" line="201"/>
         <source>Save/Load</source>
         <translation>Сохранить/Загрузить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="385"/>
+        <location filename="../src/DotPlotWidget.cpp" line="378"/>
         <source>Too many results</source>
         <translation>Слишком много результатов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="385"/>
+        <location filename="../src/DotPlotWidget.cpp" line="378"/>
         <source>Too many results. Try to increase minimum repeat length</source>
         <translation>Слишком много результатов. Попробуйте уменьшить минимальную длину повтора</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="536"/>
-        <location filename="../src/DotPlotWidget.cpp" line="592"/>
+        <location filename="../src/DotPlotWidget.cpp" line="529"/>
+        <location filename="../src/DotPlotWidget.cpp" line="585"/>
         <source>File opening error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="536"/>
-        <location filename="../src/DotPlotWidget.cpp" line="592"/>
+        <location filename="../src/DotPlotWidget.cpp" line="529"/>
+        <location filename="../src/DotPlotWidget.cpp" line="585"/>
         <source>Error opening file %1</source>
         <translation>Ошибка открытия файла %1</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="544"/>
-        <location filename="../src/DotPlotWidget.cpp" line="574"/>
-        <location filename="../src/DotPlotWidget.cpp" line="642"/>
+        <location filename="../src/DotPlotWidget.cpp" line="537"/>
+        <location filename="../src/DotPlotWidget.cpp" line="567"/>
+        <location filename="../src/DotPlotWidget.cpp" line="635"/>
         <source>Task is already running</source>
         <translation>Задача уже запущена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="544"/>
-        <location filename="../src/DotPlotWidget.cpp" line="574"/>
-        <location filename="../src/DotPlotWidget.cpp" line="642"/>
+        <location filename="../src/DotPlotWidget.cpp" line="537"/>
+        <location filename="../src/DotPlotWidget.cpp" line="567"/>
+        <location filename="../src/DotPlotWidget.cpp" line="635"/>
         <source>Build or Load DotPlot task is already running</source>
         <translation>Задача построения или загрузки dotplot уже запущена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="596"/>
+        <location filename="../src/DotPlotWidget.cpp" line="589"/>
         <source>Sequences are different</source>
         <translation>Последовательности отличаются</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="596"/>
+        <location filename="../src/DotPlotWidget.cpp" line="589"/>
         <source>Current and loading sequences are different. Continue loading dot-plot anyway?</source>
         <translation>Текущая и загружаемая последовательность различаются. Продолжить загрузку?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="697"/>
-        <location filename="../src/DotPlotWidget.cpp" line="702"/>
+        <location filename="../src/DotPlotWidget.cpp" line="690"/>
+        <location filename="../src/DotPlotWidget.cpp" line="695"/>
         <source>Invalid sequence</source>
         <translation>Некорректная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="697"/>
+        <location filename="../src/DotPlotWidget.cpp" line="690"/>
         <source>First selected sequence is invalid</source>
         <translation>Первая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="702"/>
+        <location filename="../src/DotPlotWidget.cpp" line="695"/>
         <source>Second selected sequence is invalid</source>
         <translation>Вторая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="710"/>
+        <location filename="../src/DotPlotWidget.cpp" line="703"/>
         <source>Wrong alphabet types</source>
         <translation>Неправильные типы алфавитов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="710"/>
+        <location filename="../src/DotPlotWidget.cpp" line="703"/>
         <source>Both sequence must have the same alphabet</source>
         <translation>Обе последовательности должны иметь одинаковый алфавит</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="789"/>
-        <location filename="../src/DotPlotWidget.cpp" line="791"/>
+        <location filename="../src/DotPlotWidget.cpp" line="782"/>
+        <location filename="../src/DotPlotWidget.cpp" line="784"/>
         <source>Save dot-plot</source>
         <translation>Сохранить dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="789"/>
-        <location filename="../src/DotPlotWidget.cpp" line="791"/>
+        <location filename="../src/DotPlotWidget.cpp" line="782"/>
+        <location filename="../src/DotPlotWidget.cpp" line="784"/>
         <source>Save dot-plot data before closing?</source>
         <translation>Сохранить данные dotplot перед закрытием?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="980"/>
+        <location filename="../src/DotPlotWidget.cpp" line="973"/>
         <source>Dotplot widget is too small</source>
         <translation>Виджет точечной диаграммы слишком маленький</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="991"/>
+        <location filename="../src/DotPlotWidget.cpp" line="984"/>
         <source>Dotplot is calculating...</source>
         <translation>Выполняется расчёт...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1035"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1028"/>
         <source> (min length %1, identity %2%)</source>
         <translation> (мин. длина %1, идентичность %2%)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="206"/>
+        <location filename="../src/DotPlotWidget.cpp" line="199"/>
         <source>Dotplot</source>
         <translation>Dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="521"/>
+        <location filename="../src/DotPlotWidget.cpp" line="514"/>
         <source>Error Saving Dotplot</source>
         <translation>Ошибка сохранения</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="521"/>
+        <location filename="../src/DotPlotWidget.cpp" line="514"/>
         <source>The dotplot can&apos;t be saved as it is empty.</source>
         <translation>Дотплот не может быть сохранён, т.к. он пуст.</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="525"/>
+        <location filename="../src/DotPlotWidget.cpp" line="518"/>
         <source>Save Dotplot</source>
         <translation>Сохранить dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="525"/>
-        <location filename="../src/DotPlotWidget.cpp" line="567"/>
+        <location filename="../src/DotPlotWidget.cpp" line="518"/>
+        <location filename="../src/DotPlotWidget.cpp" line="560"/>
         <source>Dotplot files (*.dpt)</source>
         <translation>Файлы dotplot (*.dpt)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="567"/>
+        <location filename="../src/DotPlotWidget.cpp" line="560"/>
         <source>Load Dotplot</source>
         <translation>Загрузить dotplot</translation>
     </message>
@@ -634,7 +630,7 @@
 <context>
     <name>U2::LoadDotPlotTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="59"/>
+        <location filename="../src/DotPlotTasks.cpp" line="57"/>
         <source>Wrong dotplot format</source>
         <translation>Неправильный формат файла dotplot</translation>
     </message>

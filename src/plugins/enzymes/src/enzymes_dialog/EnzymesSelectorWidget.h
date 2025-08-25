@@ -110,11 +110,9 @@ private slots:
     void sl_saveEnzymesFile();
     void sl_selectAll();
     void sl_selectNone();
-    void sl_selectByLength();
     void sl_inverseSelection();
     void sl_saveSelectionToFile();
     void sl_loadSelectionFromFile();
-    void sl_openDBPage();
     void sl_itemChanged(QTreeWidgetItem* item, int col);
     void sl_filterConditionsChanged();
     void sl_findSingleEnzymeTaskStateChanged();

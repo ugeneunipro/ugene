@@ -58,6 +58,8 @@
 
 #include <U2View/DnaAssemblyUtils.h>
 
+#include <QDir>
+
 namespace U2 {
 namespace LocalWorkflow {
 

@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-const IconParameters GROUP_ICON_PAR = IconParameters("core", "consensus.png");
+const QString GROUP_ICON_STR = ":core/images/consensus.png";
 const QString GROUP_DOC_PAGE_MSA = "20880299";
 const QString GROUP_DOC_PAGE_MCA = "20880557";
 const QString MsaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";
@@ -58,7 +58,7 @@ QWidget* MsaExportConsensusTabFactory::createWidget(GObjectViewController* objVi
 }
 
 OPGroupParameters MsaExportConsensusTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Export Consensus"), GROUP_DOC_PAGE_MSA);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Export Consensus"), GROUP_DOC_PAGE_MSA);
 }
 
 McaExportConsensusTabFactory::McaExportConsensusTabFactory() {
@@ -94,7 +94,7 @@ QWidget* McaExportConsensusTabFactory::createWidget(GObjectViewController* objVi
 }
 
 OPGroupParameters McaExportConsensusTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, GROUP_ICON_PAR, QObject::tr("Consensus"), GROUP_DOC_PAGE_MCA);
+    return OPGroupParameters(GROUP_ID, GROUP_ICON_STR, QObject::tr("Consensus"), GROUP_DOC_PAGE_MCA);
 }
 
 const QString& McaExportConsensusTabFactory::getGroupId() {

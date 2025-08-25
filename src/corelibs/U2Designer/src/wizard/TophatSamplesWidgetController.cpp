@@ -30,14 +30,12 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -315,8 +313,6 @@ void TophatSamples::init(const QList<TophatSample>& samples) {
 #endif
 
     updateArrows();
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TophatSamples::sl_colorThemeSwitched);
 }
 
 void TophatSamples::appendSample(const TophatSample& sample) {
@@ -333,7 +329,7 @@ QWidget* TophatSamples::initSample(const QString& sampleName, const QStringList&
     auto hl = new QHBoxLayout();
     {  // header
         hl->setContentsMargins(0, 0, 0, 0);
-        QToolButton* removeButton = createButton(this, IconParameters("U2Designer", "exit.png"));
+        QToolButton* removeButton = createButton(this, ":U2Designer/images/exit.png", false);
         connect(removeButton, SIGNAL(clicked()), SLOT(sl_remove()));
         hl->addWidget(new SampleNameEdit(this, sampleName, this));
         hl->addWidget(removeButton);
@@ -507,20 +503,18 @@ void TophatSamples::sl_down() {
     move(DOWN);
 }
 
-void TophatSamples::sl_colorThemeSwitched() {
-    upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
-    downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
-}
-
 QListWidget* TophatSamples::getListWidget(int pos) const {
     CHECK((pos > -1) && (pos < order.size()), nullptr);
     QWidget* first = order[pos];
     return first->findChild<QListWidget*>();
 }
 
-QToolButton* TophatSamples::createButton(QWidget* parent, const IconParameters& iconPrameters) const {
+QToolButton* TophatSamples::createButton(QWidget* parent, const QString& iconPath, bool addIconPathAsProperty) const {
     auto result = new QToolButton(parent);
-    result->setIcon(GUIUtils::getIconResource(iconPrameters));
+    result->setIcon(GUIUtils::getThemedIcon(iconPath));
+    if (addIconPathAsProperty) {
+        result->setProperty(MainWindow::ICON_PATH_PROPERTY_NAME, iconPath);
+    }
     result->setAutoRaise(true);
     return result;
 }
@@ -551,9 +545,9 @@ QVBoxLayout* TophatSamples::createControlButtons() {
     auto result = new QVBoxLayout();
     result->setContentsMargins(0, 0, 0, 0);
 
-    QToolButton* addButton = createButton(this, IconParameters("core", "plus.png"));
-    upButton = createButton(this, IconParameters("U2Designer", "up.png"));
-    downButton = createButton(this, IconParameters("U2Designer", "down.png"));
+    QToolButton* addButton = createButton(this, ":U2Designer/images/add.png", false);
+    upButton = createButton(this, ":U2Designer/images/up.png", true);
+    downButton = createButton(this, ":U2Designer/images/down.png", true);
     result->addWidget(addButton);
     result->addWidget(upButton);
     result->addWidget(downButton);

@@ -371,8 +371,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     if (f.pixelSize() > HEADER_HEIGHT) {
         f.setPixelSize(HEADER_HEIGHT - 8);
     }
-    QPixmap pix = GUIUtils::getIconResource("core", "biostruct3d.png").pixmap(16, 16);
-    pixLabel->setPixmap(pix);
+    GUIUtils::setThemedIcon(pixLabel, ":core/images/biostruct3d.png");
     pixLabel->setFont(f);
 
     layout->addWidget(pixLabel);
@@ -392,21 +391,21 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
 
     restoreDefaultsAction = new QAction(this);
     restoreDefaultsAction->setText(tr("Restore Default View"));
-    restoreDefaultsAction->setIcon(GUIUtils::getIconResource("biostruct3d_view", "restore.png"));
+    restoreDefaultsAction->setIcon(QIcon(":biostruct3d_view/images/restore.png"));
     connect(restoreDefaultsAction, SIGNAL(triggered()), SLOT(sl_restoreDefaults()));
 
     zoomInAction = new QAction(this);
     zoomInAction->setText(tr("Zoom In"));
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
+    GUIUtils::setThemedIcon(zoomInAction, ":/core/images/zoom_in.png");
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
     zoomOutAction = new QAction(this);
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
+    GUIUtils::setThemedIcon(zoomOutAction, ":/core/images/zoom_out.png");
     zoomOutAction->setText(tr("Zoom Out"));
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
     syncLockAction = new QAction(this);
-    syncLockAction->setIcon(GUIUtils::getIconResource("core", "sync_lock.png"));
+    GUIUtils::setThemedIcon(syncLockAction, ":/core/images/sync_lock.png");
     syncLockAction->setText(tr("Synchronize 3D Structure Views"));
     syncLockAction->setCheckable(true);
     connect(syncLockAction, SIGNAL(triggered(bool)), SLOT(sl_toggleSyncLock(bool)));
@@ -424,7 +423,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     }
 
     addModelAction = new QAction(this);
-    addModelAction->setIcon(GUIUtils::getIconResource("core", "add_gobject.png"));
+    addModelAction->setIcon(QIcon(":core/images/add_gobject.png"));
     addModelAction->setText(tr("Add"));
     connect(addModelAction, SIGNAL(triggered()), SLOT(sl_addModel()));
 
@@ -435,7 +434,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     // toolbar->addWidget(settingsMenuButton);
 
     widgetStateMenuAction = new QAction(this);
-    widgetStateMenuAction->setIcon(GUIUtils::getIconResource("core", "adv_widget_menu.png"));
+    widgetStateMenuAction->setIcon(QIcon(":core/images/adv_widget_menu.png"));
     widgetStateMenuAction->setText(tr("Toggle view"));
     widgetStateMenuAction->setToolTip(tr("Toggle view"));
     connect(widgetStateMenuAction, SIGNAL(triggered()), this, SLOT(sl_showStateMenu()));
@@ -446,8 +445,6 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     splitter->addActionToLocalToolBar(restoreDefaultsAction);
     splitter->addActionToLocalToolBar(addModelAction);
     splitter->addActionToLocalToolBar(syncLockAction);
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SplitterHeaderWidget::sl_colorThemeSwitched);
 }
 
 void SplitterHeaderWidget::sl_showStateMenu() {
@@ -694,10 +691,6 @@ void SplitterHeaderWidget::sl_openBioStructUrl() {
     QString urlName = urlHeader.arg(pdbId);
     QUrl url(urlName);
     QDesktopServices::openUrl(urlName);
-}
-
-void SplitterHeaderWidget::sl_colorThemeSwitched() {
-    syncLockAction->setIcon(GUIUtils::getIconResource("core", "sync_lock.png"));
 }
 
 void SplitterHeaderWidget::setActiveView(BioStruct3DGLWidget* glWidget) {

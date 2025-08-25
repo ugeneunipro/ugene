@@ -4,12 +4,12 @@
 <context>
     <name>ExcludeReasonDialog</name>
     <message>
-        <location filename="../src/ExcludeReasonDialog.ui" line="20"/>
+        <location filename="../src/ExcludeReasonDialog.ui"/>
         <source>exclude reason</source>
         <translation>Exclude reason</translation>
     </message>
     <message>
-        <location filename="../src/ExcludeReasonDialog.ui" line="35"/>
+        <location filename="../src/ExcludeReasonDialog.ui"/>
         <source>Set exclude reason</source>
         <translation>Set exclude reason</translation>
     </message>
@@ -17,27 +17,27 @@
 <context>
     <name>TestView</name>
     <message>
-        <location filename="../src/TestView.ui" line="14"/>
+        <location filename="../src/TestView.ui"/>
         <source>Test Runner</source>
         <translation>Test Runner</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="28"/>
+        <location filename="../src/TestView.ui"/>
         <source>testColumn</source>
         <translation>Tests</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="33"/>
+        <location filename="../src/TestView.ui"/>
         <source>stateColumn</source>
         <translation>State</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="65"/>
+        <location filename="../src/TestView.ui"/>
         <source>info_label</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../src/TestView.ui" line="112"/>
+        <location filename="../src/TestView.ui"/>
         <source>Save test</source>
         <translation>Save test</translation>
     </message>
@@ -93,43 +93,43 @@
     <message>
         <location filename="../src/TestViewController.cpp" line="432"/>
         <location filename="../src/TestViewController.cpp" line="471"/>
-        <location filename="../src/TestViewController.cpp" line="775"/>
-        <location filename="../src/TestViewController.cpp" line="793"/>
+        <location filename="../src/TestViewController.cpp" line="778"/>
+        <location filename="../src/TestViewController.cpp" line="796"/>
         <source>error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="913"/>
+        <location filename="../src/TestViewController.cpp" line="918"/>
         <source>info</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1136"/>
+        <location filename="../src/TestViewController.cpp" line="1141"/>
         <source>passed</source>
         <translation>Passed</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1139"/>
+        <location filename="../src/TestViewController.cpp" line="1144"/>
         <source>failed</source>
         <translation>Failed</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1141"/>
+        <location filename="../src/TestViewController.cpp" line="1146"/>
         <source>not_run</source>
         <translation>Not run</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1174"/>
+        <location filename="../src/TestViewController.cpp" line="1179"/>
         <source>state: </source>
         <translation>Состояние: </translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1176"/>
+        <location filename="../src/TestViewController.cpp" line="1181"/>
         <source>fail_desc: </source>
         <translation>Причина падения: </translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1179"/>
+        <location filename="../src/TestViewController.cpp" line="1184"/>
         <source>source_file:</source>
         <translation>Test file:</translation>
     </message>
@@ -223,18 +223,18 @@
         <translation>Error reading test suite: %1</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="775"/>
-        <location filename="../src/TestViewController.cpp" line="793"/>
+        <location filename="../src/TestViewController.cpp" line="778"/>
+        <location filename="../src/TestViewController.cpp" line="796"/>
         <source>Not all environment variables set</source>
         <translation>Not all environment variables set</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="913"/>
+        <location filename="../src/TestViewController.cpp" line="918"/>
         <source>No environment variables found</source>
         <translation>No environment variables found</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="920"/>
+        <location filename="../src/TestViewController.cpp" line="925"/>
         <source>Set Environment</source>
         <translation>Выбрать окружение</translation>
     </message>

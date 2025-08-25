@@ -4,43 +4,42 @@
 <context>
     <name>HMMBuildDialog</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="32"/>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="49"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="14"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>HMM Build</source>
         <translation>HMM Yapısı</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="22"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Multiple alignment file:</source>
         <translation>Çoklu hizalama dosyası:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="39"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>File to save HMM profile:</source>
         <translation>HMM profilini kaydetmek için dosya:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="58"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="70"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Name can be any string of non-whitespace characters (e.g. one ”word”).</source>
         <translation>Ad, boşluk olmayan herhangi bir karakter dizisi olabilir (ör. Bir &quot;kelime&quot;).</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="73"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Name this HMM:</source>
         <translation>Bu HMM&apos;yi adlandırın:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="84"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              By default, the model is configured to find one or more nonoverlapping alignments to the complete model:
              multiple global alignments with respect to the model, and local with respect to the sequence
@@ -51,12 +50,12 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="90"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Default (hmmls) behaviour:</source>
         <translation>Varsayılan (hmmls) davranış:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="120"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              Configure the model for finding multiple domains per sequence, where each domain can be a local (fragmentary) alignment.
              This is analogous to the old hmmfs program of HMMER 1.
@@ -67,12 +66,12 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="126"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Emulate hmmfs behaviour:</source>
         <translation>Hmmfs davranışını taklit edin:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="153"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              Configure the model for finding a single global alignment to a target sequence,
              analogous to the old hmms program of HMMER 1.
@@ -83,12 +82,12 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="159"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Emulate hmms behaviour:</source>
         <translation>Hmms davranışını taklit edin:</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="186"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>
              Configure the model for finding a single local alignment per target sequence.
              This is analogous to the standard Smith/Waterman algorithm or the hmmsw program of HMMER 1.
@@ -99,7 +98,7 @@
          </translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialog.ui" line="192"/>
+        <location filename="../src/u_build/HMMBuildDialog.ui"/>
         <source>Emulate hmmsw behaviour:</source>
         <translation>Hmmsw davranışını taklit edin:</translation>
     </message>
@@ -135,23 +134,22 @@
 <context>
     <name>HMMCalibrateDialog</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="22"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>HMM file: </source>
         <translation>HMM dosyası: </translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="32"/>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="297"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="41"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="53"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              Fix the length of the random sequences to n
                  , where n is a positive (and reasonably sized) integer. 
@@ -162,17 +160,17 @@ The default is instead to generate sequences with a variety of different lengths
 Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşitli farklı uzunluklarda diziler oluşturmaktır.</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="59"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Fix the length of the random sequences to:</source>
         <translation>Rastgele dizilerin uzunluğunu şu şekilde sabitleyin:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="104"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Mean length of the synthetic sequences:</source>
         <translation>Sentetik dizilerin ortalama uzunluğu:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="146"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              Number of synthetic sequences.
              If n is less than about 1000, the fit to the EVD may fail
@@ -185,12 +183,12 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
              Varsayılan değer 5000&apos;dir; doğruluk ve hesaplama zamanı arasında bir değiş tokuş olarak deneysel olarak seçilmiştir.</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="153"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Number of synthetic sequences:</source>
         <translation>Sentetik dizi sayısı:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="195"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              Standard deviation of the synthetic sequence length.
              A positive number. The default is 200.
@@ -203,12 +201,12 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
          </translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="202"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Standard deviation:</source>
         <translation>Standart sapma:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="238"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>
              The random seed, where n is a positive integer. 
              The default is to use time() to generate a different seed for each run, 
@@ -221,27 +219,27 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
              Aynı HMM üzerindeki farklı hmmkalibre çalışmaları için tekrarlanabilir sonuçlar oluşturmak için bu seçeneği kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="245"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Random seed:</source>
         <translation>Rastgele parçacık:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="278"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Save calibrated profile to file</source>
         <translation>Kalibre edilmiş profili dosyaya kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="290"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Save calibrated profile to file:</source>
         <translation>Kalibre edilmiş profili dosyaya kaydedin:</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="14"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>HMM Calibrate</source>
         <translation>HMM Kalibre Et</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="101"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialog.ui"/>
         <source>Mean length of the synthetic sequences, positive real number. The default value is 325.</source>
         <translation>Sentetik dizilerin ortalama uzunluğu, pozitif gerçek sayı. Varsayılan değer 325&apos;tir.</translation>
     </message>
@@ -249,91 +247,74 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>HMMSearchDialog</name>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="23"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>HMM Search</source>
         <translation>HMM Araması</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="37"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>File with HMM profile:</source>
         <translation>HMM profiline sahip dosya:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="47"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="62"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="77"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="80"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="83"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="226"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="229"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="232"/>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="93"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="92"/>
         <source>E-value filtering can be used to exclude low-probability hits from result.</source>
         <translation>E-değer filtreleme, düşük olasılıklı isabetleri sonuçtan hariç tutmak için kullanılabilir.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="86"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Filter results with E-value greater then:</source>
         <translation>E-değeri daha büyük olan sonuçları filtreleyin:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="119"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="122"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="125"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="135"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="138"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="141"/>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="94"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="93"/>
         <source>Score based filtering is an alternative to E-value filtering to exclude low-probability hits from result.</source>
         <translation>Puan tabanlı filtreleme, sonuçtan düşük olasılıklı isabetleri hariç tutmak için E-değer filtrelemeye bir alternatiftir.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="128"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Filter results with Score lower than:</source>
         <translation>Şundan düşük Puanı olan sonuçları filtrele:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="188"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="191"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="194"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="210"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="213"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="216"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Calculate the E-value scores as if we had seen a sequence database of &lt;n&gt; sequences.</source>
         <translation>E-değeri puanlarını, &lt;n&gt; dizilerinin bir dizi veritabanı görmüş gibi hesaplayın.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="219"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Number of sequences in dababase:</source>
         <translation>Veritabanındaki dizi sayısı:</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="277"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="280"/>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="283"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Variants of algorithm</source>
         <translation>Algoritmanın çeşitleri</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="241"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>1E</source>
         <translation>1E</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialog.ui" line="257"/>
+        <location filename="../src/u_search/HMMSearchDialog.ui"/>
         <source>Algorithm</source>
         <translation>Algoritma</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="92"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="91"/>
         <source>Calculate the E-value scores as if we had seen a sequence database of &amp;lt;n&amp;gt; sequences.</source>
         <translation>E-değeri puanlarını, bir &amp;lt;n&amp;gt; diziler.</translation>
     </message>
@@ -341,7 +322,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="69"/>
+        <location filename="../src/HMMIOWorker.cpp" line="70"/>
         <source>HMM Profile</source>
         <translation>HMM Profili</translation>
     </message>
@@ -349,7 +330,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::GTest_uHMMERCalibrate</name>
     <message>
-        <location filename="../src/u_tests/uhmmerTests.cpp" line="579"/>
+        <location filename="../src/u_tests/uhmmerTests.cpp" line="569"/>
         <source>uhmmer-calibrate-subtask</source>
         <translation>uhmmer-kalibre-alt görev</translation>
     </message>
@@ -357,83 +338,83 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMM2QDActor</name>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="67"/>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="152"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="66"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="151"/>
         <source>HMM2</source>
         <translation>HMM2</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="78"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="77"/>
         <source>QD HMM2 search</source>
         <translation>QD HMM2 araması</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="84"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="83"/>
         <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
         <translation>E-değerin gücü sıfırdan küçük veya eşit olmalıdır. Varsayılan değeri kullanma: 1e-1</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="153"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="152"/>
         <source>Searches HMM signals in a sequence with one or more profile HMM2 and saves the results as annotations.</source>
         <translation>HMM sinyallerini bir veya daha fazla profil HMM2 ile sırayla arar ve sonuçları açıklama olarak kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="159"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="158"/>
         <source>Profile HMM</source>
         <translation>Profil HMM</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="160"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="159"/>
         <source>Semicolon-separated list of input HMM files.</source>
         <translation>Giriş HMM dosyalarının noktalı virgülle ayrılmış listesi.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="163"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="162"/>
         <source>Min Length</source>
         <translation>Min Uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="164"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="163"/>
         <source>Minimum length of a result region.</source>
         <translation>Sonuç bölgesinin minimum uzunluğu.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="167"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="166"/>
         <source>Max Length</source>
         <translation>Mak uzunluk</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="168"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="167"/>
         <source>Maximum length of a result region.</source>
         <translation>Sonuç bölgesinin maksimum uzunluğu.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="171"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="170"/>
         <source>Filter by High E-value</source>
         <translation>Yüksek E-değerine göre filtreleyin</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="172"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="171"/>
         <source>Reports domains &amp;lt;= this E-value threshold in output.</source>
         <translation>Rapor alanları &amp;lt;= çıktıdaki bu E-değeri eşiği.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="176"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="175"/>
         <source>Filter by Low Score</source>
         <translation>Düşük Puana Göre Filtrele</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="177"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="176"/>
         <source>Reports domains &amp;gt;= this score cutoff in output.</source>
         <translation>Rapor alanları &amp; gt; = çıktıdaki bu puan kesintisi.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="180"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="179"/>
         <source>Number of Sequences</source>
         <translation>Dizi Sayısı</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="181"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="180"/>
         <source>Specifies number of significant sequences. It is used for domain E-value calculations.</source>
         <translation>Önemli dizi sayısını belirtir. Etki alanı E-değeri hesaplamaları için kullanılır.</translation>
     </message>
@@ -441,17 +422,17 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMADVContext</name>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="250"/>
+        <location filename="../src/uHMMPlugin.cpp" line="248"/>
         <source>Find HMM signals with HMMER2...</source>
         <translation>HMMER2 ile HMM sinyallerini bulun...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="267"/>
+        <location filename="../src/uHMMPlugin.cpp" line="265"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="267"/>
+        <location filename="../src/uHMMPlugin.cpp" line="265"/>
         <source>No sequences found</source>
         <translation>Dizi bulunamadı</translation>
     </message>
@@ -459,24 +440,24 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMBuildDialogController</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="55"/>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="163"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="56"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="162"/>
         <source>Build</source>
         <translation>Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="56"/>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="164"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="57"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="163"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="77"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="78"/>
         <source>Select file with alignment</source>
         <translation>Hizalamalı dosyayı seçin</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="183"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="181"/>
         <source>Select file with HMM profile</source>
         <translation>HMM profiline sahip dosyayı seçin</translation>
     </message>
@@ -511,27 +492,27 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="157"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="156"/>
         <source>HMM build finished with errors: %1</source>
         <translation>HMM derlemesi şu hatalarla tamamlandı: %1</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="159"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="158"/>
         <source>HMM build canceled</source>
         <translation>HMM derlemesi iptal edildi</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="161"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="160"/>
         <source>HMM build finished successfully!</source>
         <translation>HMM derlemesi başarıyla tamamlandı!</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="173"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="171"/>
         <source>Progress: %1%</source>
         <translation>İlerleme: %1%</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="186"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="184"/>
         <source>HMM models</source>
         <translation>HMM modelleri</translation>
     </message>
@@ -539,27 +520,27 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMBuildTask</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="331"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="328"/>
         <source>Build HMM profile &apos;%1&apos;</source>
         <translation>&apos;%1&apos; HMM profilini oluştur</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="348"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="345"/>
         <source>Multiple alignment is empty</source>
         <translation>Çoklu hizalama boş</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="352"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="349"/>
         <source>Multiple alignment is of 0 length</source>
         <translation>Çoklu hizalama 0 uzunluktadır</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="357"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="354"/>
         <source>Invalid alphabet! Only amino and nucleic alphabets are supported</source>
         <translation>Geçersiz alfabe! Yalnızca amino ve nükleik alfabeler desteklenir</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="365"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="362"/>
         <source>Error creating MSA structure</source>
         <translation>MSA yapısı oluşturulurken hata meydana geldi</translation>
     </message>
@@ -567,57 +548,57 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMBuildToFileTask</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="316"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="310"/>
         <source>none</source>
         <translation>hiçbiri</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="202"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="198"/>
         <source>Build HMM profile &apos;%1&apos; -&gt; &apos;%2&apos;</source>
         <translation>HMM profilini oluştur &apos;%1&apos; -&gt; &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="215"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="211"/>
         <source>Error reading alignment file</source>
         <translation>Hizalama dosyası okunurken hata oluştu</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="232"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="224"/>
         <source>Build HMM profile to &apos;%1&apos;</source>
         <translation>HMM profilini &apos;%1&apos; olarak oluşturun</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="257"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="248"/>
         <source>Incorrect input file</source>
         <translation>Yanlış girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="262"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="253"/>
         <source>Alignment object not found!</source>
         <translation>Hizalama nesnesi bulunamadı!</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="304"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="295"/>
         <source>Source alignment</source>
         <translation>Kaynak hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="305"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="296"/>
         <source>Profile name</source>
         <translation>Profil adı</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="307"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="298"/>
         <source>Task was not finished</source>
         <translation>Görev tamamlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="312"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="303"/>
         <source>Profile file</source>
         <translation>Profil dosyası</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="313"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="304"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
@@ -625,55 +606,55 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMCalibrateDialogController</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="46"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="47"/>
         <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="145"/>
         <source>Calibrate</source>
         <translation>Kalibre et</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="47"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="48"/>
         <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="146"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="59"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="60"/>
         <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="163"/>
         <source>Select file with HMM model</source>
         <translation>HMM modeliyle dosya seçin</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="80"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="81"/>
         <source>Incorrect HMM file!</source>
         <translation>Yanlış HMM dosyası!</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="86"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="87"/>
         <source>Illegal fixed length value!</source>
         <translation>Geçersiz sabit uzunluk değeri!</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="103"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="104"/>
         <source>Invalid output file name</source>
         <translation>Geçersiz çıktı dosyası adı</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="109"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="110"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="119"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="120"/>
         <source>Starting calibration process</source>
         <translation>Kalibrasyon işleminin başlatılması</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="122"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="123"/>
         <source>Hide</source>
         <translation>Gizle</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="123"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="124"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
@@ -706,7 +687,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMCalibrateParallelSubTask</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="137"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="130"/>
         <source>Parallel HMM calibration subtask</source>
         <translation>Paralel HMM kalibrasyon alt görevi</translation>
     </message>
@@ -714,7 +695,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMCalibrateParallelTask</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="35"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="32"/>
         <source>HMM calibrate &apos;%1&apos;</source>
         <translation>HMM kalibre &apos;%1&apos;</translation>
     </message>
@@ -722,7 +703,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMCalibrateTask</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="17"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="15"/>
         <source>HMM calibrate &apos;%1&apos;</source>
         <translation>HMM kalibre &apos;%1&apos;</translation>
     </message>
@@ -730,57 +711,57 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMCalibrateToFileTask</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="161"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="150"/>
         <source>HMM calibrate &apos;%1&apos;</source>
         <translation>HMM kalibre &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="184"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="172"/>
         <source>HMMReadTask didn&apos;t generate &quot;hmm&quot; object, stop.</source>
         <translation>HMMReadTask &quot;hmm&quot; nesnesi oluşturmadı, dur.</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="204"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="192"/>
         <source>Source profile</source>
         <translation>Kaynak profil</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="207"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="195"/>
         <source>Task was not finished</source>
         <translation>Görev tamamlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="212"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="200"/>
         <source>Result profile</source>
         <translation>Sonuç profili</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="213"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="201"/>
         <source>Expert options</source>
         <translation>Uzman seçenekleri</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="215"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="203"/>
         <source>Number of random sequences to sample</source>
         <translation>Örneklenecek rastgele dizilerin sayısı</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="216"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="204"/>
         <source>Random number seed</source>
         <translation>Rastgele sayı tohumu</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="217"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="205"/>
         <source>Mean of length distribution</source>
         <translation>Uzunluk dağılımının ortalaması</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="218"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="206"/>
         <source>Standard deviation of length distribution</source>
         <translation>Uzunluk dağılımının standart sapması</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="220"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="208"/>
         <source>Calculated evidence (mu , lambda)</source>
         <translation>Hesaplanan kanıt (mu, lambda)</translation>
     </message>
@@ -788,7 +769,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMCreateWPoolTask</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="98"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="93"/>
         <source>Initialize parallel context</source>
         <translation>Paralel bağlamı başlatın</translation>
     </message>
@@ -796,60 +777,60 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMIO</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="214"/>
-        <location filename="../src/HMMIO.cpp" line="234"/>
-        <location filename="../src/HMMIO.cpp" line="394"/>
-        <location filename="../src/HMMIO.cpp" line="400"/>
-        <location filename="../src/HMMIO.cpp" line="426"/>
-        <location filename="../src/HMMIO.cpp" line="457"/>
-        <location filename="../src/HMMIO.cpp" line="482"/>
+        <location filename="../src/HMMIO.cpp" line="221"/>
+        <location filename="../src/HMMIO.cpp" line="241"/>
+        <location filename="../src/HMMIO.cpp" line="410"/>
+        <location filename="../src/HMMIO.cpp" line="416"/>
+        <location filename="../src/HMMIO.cpp" line="442"/>
+        <location filename="../src/HMMIO.cpp" line="473"/>
+        <location filename="../src/HMMIO.cpp" line="498"/>
         <source>Illegal line</source>
         <translation>Yasadışı hat</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="221"/>
+        <location filename="../src/HMMIO.cpp" line="228"/>
         <source>File format is not supported</source>
         <translation>Dosya biçimi desteklenmiyor</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="280"/>
-        <location filename="../src/HMMIO.cpp" line="285"/>
-        <location filename="../src/HMMIO.cpp" line="292"/>
-        <location filename="../src/HMMIO.cpp" line="297"/>
-        <location filename="../src/HMMIO.cpp" line="304"/>
-        <location filename="../src/HMMIO.cpp" line="309"/>
-        <location filename="../src/HMMIO.cpp" line="316"/>
-        <location filename="../src/HMMIO.cpp" line="322"/>
-        <location filename="../src/HMMIO.cpp" line="331"/>
-        <location filename="../src/HMMIO.cpp" line="336"/>
-        <location filename="../src/HMMIO.cpp" line="348"/>
-        <location filename="../src/HMMIO.cpp" line="357"/>
-        <location filename="../src/HMMIO.cpp" line="362"/>
-        <location filename="../src/HMMIO.cpp" line="406"/>
-        <location filename="../src/HMMIO.cpp" line="411"/>
-        <location filename="../src/HMMIO.cpp" line="415"/>
-        <location filename="../src/HMMIO.cpp" line="432"/>
-        <location filename="../src/HMMIO.cpp" line="436"/>
-        <location filename="../src/HMMIO.cpp" line="441"/>
+        <location filename="../src/HMMIO.cpp" line="296"/>
+        <location filename="../src/HMMIO.cpp" line="301"/>
+        <location filename="../src/HMMIO.cpp" line="308"/>
+        <location filename="../src/HMMIO.cpp" line="313"/>
+        <location filename="../src/HMMIO.cpp" line="320"/>
+        <location filename="../src/HMMIO.cpp" line="325"/>
+        <location filename="../src/HMMIO.cpp" line="332"/>
+        <location filename="../src/HMMIO.cpp" line="338"/>
+        <location filename="../src/HMMIO.cpp" line="347"/>
+        <location filename="../src/HMMIO.cpp" line="352"/>
+        <location filename="../src/HMMIO.cpp" line="364"/>
+        <location filename="../src/HMMIO.cpp" line="373"/>
+        <location filename="../src/HMMIO.cpp" line="378"/>
+        <location filename="../src/HMMIO.cpp" line="422"/>
+        <location filename="../src/HMMIO.cpp" line="427"/>
+        <location filename="../src/HMMIO.cpp" line="431"/>
         <location filename="../src/HMMIO.cpp" line="448"/>
-        <location filename="../src/HMMIO.cpp" line="463"/>
-        <location filename="../src/HMMIO.cpp" line="472"/>
+        <location filename="../src/HMMIO.cpp" line="452"/>
+        <location filename="../src/HMMIO.cpp" line="457"/>
+        <location filename="../src/HMMIO.cpp" line="464"/>
+        <location filename="../src/HMMIO.cpp" line="479"/>
         <location filename="../src/HMMIO.cpp" line="488"/>
-        <location filename="../src/HMMIO.cpp" line="496"/>
-        <location filename="../src/HMMIO.cpp" line="502"/>
-        <location filename="../src/HMMIO.cpp" line="507"/>
+        <location filename="../src/HMMIO.cpp" line="504"/>
+        <location filename="../src/HMMIO.cpp" line="512"/>
+        <location filename="../src/HMMIO.cpp" line="519"/>
+        <location filename="../src/HMMIO.cpp" line="524"/>
         <source>Invalid file structure near %1</source>
         <translation>%1 yakınında geçersiz dosya yapısı</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="342"/>
+        <location filename="../src/HMMIO.cpp" line="358"/>
         <source>ALPH must precede NULE in HMM save files</source>
         <translation>ALPH, HMM kaydetme dosyalarında NULE&apos;den önce gelmelidir</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="251"/>
-        <location filename="../src/HMMIO.cpp" line="377"/>
-        <location filename="../src/HMMIO.cpp" line="381"/>
+        <location filename="../src/HMMIO.cpp" line="265"/>
+        <location filename="../src/HMMIO.cpp" line="393"/>
+        <location filename="../src/HMMIO.cpp" line="397"/>
         <source>Value is illegal: %1</source>
         <translation>Değer yasa dışı: %1</translation>
     </message>
@@ -859,22 +840,22 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
         <translation>Alfabe ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="219"/>
+        <location filename="../src/HMMIO.cpp" line="226"/>
         <source>Model &quot;%1&quot; is a HMMER3 model, it can&apos;t be used with HMMER2.</source>
         <translation>&quot;%1&quot; modeli bir HMMER3 modelidir, HMMER2 ile kullanılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="385"/>
+        <location filename="../src/HMMIO.cpp" line="401"/>
         <source>Value is not set for &apos;%1&apos;</source>
         <translation>&apos;%1&apos; için değer ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="521"/>
+        <location filename="../src/HMMIO.cpp" line="538"/>
         <source>No &apos;//&apos; symbol found</source>
         <translation>&apos;//&apos; sembolü bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="639"/>
+        <location filename="../src/HMMIO.cpp" line="656"/>
         <source>HMM models</source>
         <translation>HMM modelleri</translation>
     </message>
@@ -882,7 +863,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMMSAEditorContext</name>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="209"/>
+        <location filename="../src/uHMMPlugin.cpp" line="208"/>
         <source>Build HMMER2 profile</source>
         <translation>HMMER2 profili oluştur</translation>
     </message>
@@ -890,7 +871,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMReadTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="654"/>
+        <location filename="../src/HMMIO.cpp" line="670"/>
         <source>Read HMM profile &apos;%1&apos;.</source>
         <translation>&apos;%1&apos; HMM profilini okuyun.</translation>
     </message>
@@ -974,32 +955,32 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMSearchTask</name>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="46"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="44"/>
         <source>HMM Search</source>
         <translation>HMM Araması</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="259"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="257"/>
         <source>Invalid HMM alphabet!</source>
         <translation>Geçersiz HMM alfabesi!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="263"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="261"/>
         <source>Invalid sequence alphabet!</source>
         <translation>Geçersiz sıra alfabesi!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="291"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="289"/>
         <source>Amino translation is not available for the sequence alphabet!</source>
         <translation>Sıralı alfabe için amino çevirisi mevcut değil!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="324"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="322"/>
         <source>Parallel HMM search</source>
         <translation>Paralel HMM araması</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchTask.cpp" line="39"/>
+        <location filename="../src/u_search/HMMSearchTask.cpp" line="37"/>
         <source>HMM search with &apos;%1&apos;</source>
         <translation>&apos;%1&apos; ile HMM araması</translation>
     </message>
@@ -1055,7 +1036,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::HMMWriteTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="674"/>
+        <location filename="../src/HMMIO.cpp" line="689"/>
         <source>Write HMM profile &apos;%1&apos;</source>
         <translation>HMM profilini &apos;%1&apos; yazın</translation>
     </message>
@@ -1091,12 +1072,12 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMBuildWorker</name>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="327"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="328"/>
         <source>Built HMM profile</source>
         <translation>HMM profili oluştur</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="333"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="334"/>
         <source>Calibrated HMM profile</source>
         <translation>Kalibre edilmiş HMM profili</translation>
     </message>
@@ -1171,13 +1152,12 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
         <translation>Öntanımlı</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="247"/>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="248"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="249"/>
         <source>Incorrect value for seed parameter</source>
         <translation>Parçacık parametresi için yanlış değer</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="266"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="267"/>
         <source>Schema name not specified. Using default value: &apos;%1&apos;</source>
         <translation>Şema adı belirtilmedi. Varsayılan değer kullanılıyor: &apos;%1&apos;</translation>
     </message>
@@ -1215,58 +1195,58 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMLib</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="70"/>
+        <location filename="../src/HMMIOWorker.cpp" line="73"/>
         <source>HMMER2 Tools</source>
         <translation>HMMER2 Araçları</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="62"/>
+        <location filename="../src/HMMIOWorker.cpp" line="63"/>
         <source>HMM Profile</source>
         <translation>HMM Profili</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="132"/>
-        <location filename="../src/HMMIOWorker.cpp" line="149"/>
+        <location filename="../src/HMMIOWorker.cpp" line="133"/>
+        <location filename="../src/HMMIOWorker.cpp" line="151"/>
         <source>HMM profile</source>
         <translation>HMM profili</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="133"/>
+        <location filename="../src/HMMIOWorker.cpp" line="134"/>
         <source>Location</source>
         <translation>Konum</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="156"/>
+        <location filename="../src/HMMIOWorker.cpp" line="159"/>
         <source>Read HMM2 Profile</source>
         <translation>HMM2 Profilini Oku</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="143"/>
+        <location filename="../src/HMMIOWorker.cpp" line="145"/>
         <source>Write HMM2 Profile</source>
         <translation>HMM2 Profili Yaz</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="132"/>
+        <location filename="../src/HMMIOWorker.cpp" line="133"/>
         <source>Input HMM profile</source>
         <translation>HMM profilini girin</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="133"/>
+        <location filename="../src/HMMIOWorker.cpp" line="134"/>
         <source>Location hint for the target file.</source>
         <translation>Hedef dosya için konum ipucu.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="143"/>
+        <location filename="../src/HMMIOWorker.cpp" line="145"/>
         <source>Saves all input HMM profiles to specified location.</source>
         <translation>Tüm giriş HMM profillerini belirtilen konuma kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="156"/>
+        <location filename="../src/HMMIOWorker.cpp" line="159"/>
         <source>Reads HMM profiles from file(s). The files can be local or Internet URLs.</source>
         <translation>HMM profillerini dosyalardan okur. Dosyalar yerel veya İnternet URL&apos;leri olabilir.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="149"/>
+        <location filename="../src/HMMIOWorker.cpp" line="151"/>
         <source>Loaded HMM profile</source>
         <translation>Yüklü HMM profili</translation>
     </message>
@@ -1274,7 +1254,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMReadPrompter</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="168"/>
+        <location filename="../src/HMMIOWorker.cpp" line="171"/>
         <source>Read HMM profile(s) from %1.</source>
         <translation>%1&apos;den HMM profillerini okuyun.</translation>
     </message>
@@ -1282,7 +1262,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMReader</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="235"/>
+        <location filename="../src/HMMIOWorker.cpp" line="240"/>
         <source>Loaded HMM profile from %1</source>
         <translation>%1&apos;den HMM profili yüklendi</translation>
     </message>
@@ -1290,27 +1270,27 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMSearchPrompter</name>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="144"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="147"/>
         <source>For each sequence from &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den her bir dizi için,</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="148"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="151"/>
         <source>Use &lt;u&gt;default&lt;/u&gt; settings.</source>
         <translation>&lt;u&gt;Varsayılan&lt;/u&gt;ayarları kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="148"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="151"/>
         <source>Use &lt;u&gt;custom&lt;/u&gt; settings.</source>
         <translation>&lt;u&gt;Özel&lt;/u&gt;ayarları kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="150"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="153"/>
         <source>%1 HMM signals%2. %3&lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%4&lt;/u&gt;.</source>
         <translation>%1 HMM sinyalleri %2. %3&lt;br&gt;Bulunan bölgelerin listesini &lt;u&gt;%4&lt;/u&gt; ek açıklamalı olarak yazdırın.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="145"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="148"/>
         <source>using all profiles provided by &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; tarafından sağlanan tüm profilleri kullanarak,</translation>
     </message>
@@ -1318,22 +1298,22 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMSearchWorker</name>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="232"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="236"/>
         <source>Bad sequence supplied to input: %1</source>
         <translation>Girişe hatalı sıra sağlandı: %1</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="255"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="260"/>
         <source>Found %1 HMM signals</source>
         <translation>%1 HMM sinyali bulundu</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="73"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="74"/>
         <source>HMM profile</source>
         <translation>HMM profili</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="74"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="75"/>
         <source>Input sequence</source>
         <translation>Giriş sırası</translation>
     </message>
@@ -1343,47 +1323,47 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
         <translation>HMM ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="91"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="90"/>
         <source>Result annotation</source>
         <translation>Sonuç ek açıklaması</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="92"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="91"/>
         <source>Number of seqs</source>
         <translation>Sıra sayısı</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="93"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="92"/>
         <source>Filter by high E-value</source>
         <translation>Yüksek E-değerine göre filtreleyin</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="94"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="93"/>
         <source>Filter by low score</source>
         <translation>Düşük puana göre filtrele</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="102"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="101"/>
         <source>HMM2 Search</source>
         <translation>HMM2 Arama</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="175"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="179"/>
         <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
         <translation>E-değerin gücü sıfırdan küçük veya eşit olmalıdır. Varsayılan değeri kullanma: 1e-1</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="184"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="188"/>
         <source>Value for attribute name is empty, default name used</source>
         <translation>Öznitelik adı değeri boş, varsayılan ad kullanıldı</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="228"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="232"/>
         <source>Find HMM signals in %1</source>
         <translation>%1&apos;de HMM sinyallerini bulun</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="73"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="74"/>
         <source>HMM profile(s) to search with.</source>
         <translation>Aranacak HMM profil (ler) i.</translation>
     </message>
@@ -1393,17 +1373,17 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
         <translation>Aranacak bir girdi dizisi (nükleotid veya protein).</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="77"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="76"/>
         <source>Annotations marking found similar sequence regions.</source>
         <translation>İşaretleme notları, benzer dizi bölgeleri buldu.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="91"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="90"/>
         <source>A name of the result annotations.</source>
         <translation>Sonuç ek açıklamalarının adı.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchWorker.cpp" line="103"/>
+        <location filename="../src/u_search/HMMSearchWorker.cpp" line="101"/>
         <source>Searches each input sequence for significantly similar sequence matches to all specified HMM profiles. In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence.</source>
         <translation>Belirtilen tüm HMM profilleriyle önemli ölçüde benzer dizi eşleşmeleri için her giriş sırasını arar. Birkaç profilin sağlanması durumunda, tüm profilleri tek tek arar ve her bir sekans için birleşik açıklama kümeleri çıkarır.</translation>
     </message>
@@ -1411,12 +1391,12 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMWritePrompter</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="174"/>
+        <location filename="../src/HMMIOWorker.cpp" line="177"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="178"/>
+        <location filename="../src/HMMIOWorker.cpp" line="181"/>
         <source>Save HMM profile(s) from &lt;u&gt;%1&lt;/u&gt; to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt;&apos;den&lt;u&gt;%2&lt;/u&gt;&apos; ye HMM profillerini kaydedin.</translation>
     </message>
@@ -1424,17 +1404,17 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::LocalWorkflow::HMMWriter</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="259"/>
+        <location filename="../src/HMMIOWorker.cpp" line="264"/>
         <source>Empty HMM passed for writing to %1</source>
         <translation>%1&apos;e yazmak için boş HMM geçti</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="259"/>
+        <location filename="../src/HMMIOWorker.cpp" line="264"/>
         <source>Unspecified URL for writing HMM</source>
         <translation>HMM yazmak için belirtilmemiş URL</translation>
     </message>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="270"/>
+        <location filename="../src/HMMIOWorker.cpp" line="275"/>
         <source>Writing HMM profile to %1</source>
         <translation>HMM profili %1&apos;e yazılıyor</translation>
     </message>
@@ -1442,7 +1422,7 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::UHMMBuild</name>
     <message>
-        <location filename="../src/u_build/uhmmbuild.cpp" line="184"/>
+        <location filename="../src/u_build/uhmmbuild.cpp" line="196"/>
         <source>bogus configuration choice</source>
         <translation>sahte yapılandırma seçimi</translation>
     </message>
@@ -1450,27 +1430,27 @@ Bunun yerine varsayılan, bir Gauss (normal) dağılımla kontrol edilen çeşit
 <context>
     <name>U2::uHMMPlugin</name>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="73"/>
+        <location filename="../src/uHMMPlugin.cpp" line="75"/>
         <source>HMM2</source>
         <translation>HMM2</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="73"/>
+        <location filename="../src/uHMMPlugin.cpp" line="75"/>
         <source>Based on HMMER 2.3.2 package. Biological sequence analysis using profile hidden Markov models</source>
         <translation>HMMER 2.3.2 paketine dayanmaktadır. Profil gizli Markov modellerini kullanarak biyolojik sekans analizi</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="76"/>
+        <location filename="../src/uHMMPlugin.cpp" line="77"/>
         <source>Build HMM2 profile...</source>
         <translation>HMM2 profili oluştur...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="81"/>
+        <location filename="../src/uHMMPlugin.cpp" line="82"/>
         <source>Calibrate profile with HMMER2...</source>
         <translation>Profili HMMER2 ile kalibre edin...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="86"/>
+        <location filename="../src/uHMMPlugin.cpp" line="87"/>
         <source>Search with HMMER2...</source>
         <translation>HMMER2 ile ara...</translation>
     </message>

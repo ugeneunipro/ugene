@@ -23,8 +23,6 @@
 
 #include "Descriptor.h"
 
-#include <U2Core/U2SafePoints.h>
-
 namespace U2 {
 
 /**************************
@@ -72,16 +70,16 @@ void Descriptor::setDisplayName(const QString& n) {
 /**************************
  * VisualDescriptor
  **************************/
-VisualDescriptor::VisualDescriptor(const Descriptor& d, IconParameters _parameters)
-    : Descriptor(d), parameters(_parameters) {
+VisualDescriptor::VisualDescriptor(const Descriptor& d, const QString& _iconPath)
+    : Descriptor(d), iconPath(_iconPath) {
 }
 
-void VisualDescriptor::setIconParameters(const IconParameters& _parameters) {
-    parameters = _parameters;
+void VisualDescriptor::setIconPath(const QString& ip) {
+    iconPath = ip;
 }
 
-const IconParameters& VisualDescriptor::getIconParameters() const {
-    return parameters;
+const QString& VisualDescriptor::getIconPath() const {
+    return iconPath;
 }
 
 }  // namespace U2

@@ -59,7 +59,8 @@ Overview::Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
     panView = p->getPanView();
     detView = p->getDetView();
 
-    densityGraphAction = new QAction(GUIUtils::getIconResource("core", "sum.png"), "", this);
+    auto densityGraphAction = new QAction("", this);
+    GUIUtils::setThemedIcon(densityGraphAction, ":core/images/sum.png");
     densityGraphAction->setObjectName("density_graph_action");
     densityGraphAction->setCheckable(true);
     densityGraphAction->setToolTip(tr("Toggle annotation density graph"));
@@ -74,7 +75,6 @@ Overview::Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
         connectAnnotationTableObject(at);
     }
     connect(AppContext::getAnnotationsSettingsRegistry(), SIGNAL(si_annotationSettingsChanged(const QStringList&)), SLOT(sl_onAnnotationSettingsChanged(const QStringList&)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &Overview::sl_colorThemeSwitched);
 
     sl_visibleRangeChanged();
     bool graphState = AppContext::getSettings()->getValue(ANNOTATION_GRAPH_STATE, QVariant(false)).toBool();
@@ -135,12 +135,6 @@ void Overview::sl_sequenceChanged() {
     seqLen = ctx->getSequenceLength();
     visibleRange = U2Region(0, seqLen);
     completeUpdate();
-}
-
-void Overview::sl_colorThemeSwitched() {
-    densityGraphAction->setIcon(GUIUtils::getIconResource("core", "sum.png"));
-
-    GSequenceLineView::sl_colorThemeSwitched();
 }
 
 void Overview::pack() {

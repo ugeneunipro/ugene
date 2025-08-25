@@ -62,10 +62,10 @@ Primer3Plugin::Primer3Plugin()
         viewCtx = new Primer3ADVContext(this);
         viewCtx->init();
 
-        noTargetSequencePrimer3 = new QAction(GUIUtils::getIconResource("primer3", "primer3.png"), tr("Primer3 (no target sequence)..."), this);
+        auto noTargetSequencePrimer3 = new QAction(tr("Primer3 (no target sequence)..."), this);
+        GUIUtils::setThemedIcon(noTargetSequencePrimer3, ":/primer3/images/primer3.png");
         noTargetSequencePrimer3->setObjectName(ToolsMenu::PRIMER3);
         connect(noTargetSequencePrimer3, &QAction::triggered, viewCtx, &Primer3ADVContext::sl_showDialog);
-        connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &Primer3Plugin::sl_colorThemeSwitched);
         ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, noTargetSequencePrimer3);
     }
 
@@ -89,17 +89,13 @@ Primer3Plugin::Primer3Plugin()
     }
 }
 
-void Primer3Plugin::sl_colorThemeSwitched() {
-    noTargetSequencePrimer3->setIcon(GUIUtils::getIconResource("primer3", "primer3.png"));
-}
-
 Primer3ADVContext::Primer3ADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
 void Primer3ADVContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    auto a = new ADVGlobalAction(av, IconParameters("primer3", "primer3.png"), tr("Primer3..."), 95);
+    auto a = new ADVGlobalAction(av, ":/primer3/images/primer3.png", tr("Primer3..."), 95);
     a->setObjectName("primer3_action");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, &ADVGlobalAction::triggered, this, &Primer3ADVContext::sl_showDialog);

@@ -48,11 +48,6 @@ void ExternalToolSupportAction::sl_pathChanged() {
     setState(isAnyToolConfigured);
 }
 
-void ExternalToolSupportAction::sl_colorThemeSwitched() {
-    bool isAnyToolConfigured = checkTools();
-    setState(isAnyToolConfigured);
-}
-
 bool ExternalToolSupportAction::checkTools(bool connectSignals) {
     bool result = false;
     foreach (QString toolId, toolIds) {
@@ -68,7 +63,6 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
 
     if (connectSignals) {
         connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_temporaryPathChanged()), SLOT(sl_pathChanged()));
-        connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ExternalToolSupportAction::sl_colorThemeSwitched);
     }
 
     return result;
@@ -81,19 +75,16 @@ void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
     if (!isAnyToolConfigured ||
         (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty())) {
         isConfiguredToolFont.setItalic(true);
-        const auto& grayIconParameters = tool->getGrayIconParameters();
-        auto grayIcon = GUIUtils::getIconResource(grayIconParameters);
-        setIcon(GUIUtils::getIconResource(grayIconParameters));
+        const auto& grayIconPath = tool->getGrayIconPath();
+        GUIUtils::setThemedIcon(this, grayIconPath);
     } else {
         isConfiguredToolFont.setItalic(false);
         if (AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->isValid()) {
-            const auto& iconParameters = tool->getIconParameters();
-            auto icon = GUIUtils::getIconResource(iconParameters);
-            setIcon(icon);
+            const auto& iconPath = tool->getIconPath();
+            GUIUtils::setThemedIcon(this, iconPath);
         } else {
-            const auto& warnIiconParameters = tool->getWarnIconParameters();
-            auto warnIcon = GUIUtils::getIconResource(warnIiconParameters);
-            setIcon(warnIcon);
+            const auto& warnIiconPath = tool->getWarnIconPath();
+            GUIUtils::setThemedIcon(this, warnIiconPath);
         }
     }
 

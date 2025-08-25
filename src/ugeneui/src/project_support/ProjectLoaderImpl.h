@@ -99,7 +99,6 @@ private slots:
 
     void sl_downloadRemoteFile();
     void sl_searchGenbankEntry();
-    void sl_colorThemeSwitched();
 
 private:
     QAction* addExistingDocumentAction;
@@ -147,9 +146,6 @@ public:
 
 public slots:
     void sl_clicked(QAbstractButton* button);
-
-private slots:
-    void sl_colorThemeSwitched();
 };
 
 class ProjectDialogController : public QDialog, public Ui_CreateNewProjectDialog {

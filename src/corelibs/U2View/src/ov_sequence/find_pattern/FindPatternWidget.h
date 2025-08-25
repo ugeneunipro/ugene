@@ -268,7 +268,6 @@ private:
     QStringList patternList;
     QStringList nameList;
     bool usePatternNames;
-    QMovie* progressMovie;
 
     FindPatternWidgetSavableTab savableWidget;
 };

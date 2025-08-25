@@ -95,7 +95,7 @@ void DNAFlexViewContext::initViewContext(GObjectViewController* view) {
 
     // Adding the action to the Analyze menu, but not to the toolbar
     auto action = new ADVGlobalAction(annotView,
-                                      IconParameters("dna_flexibility", "flexibility.png"),
+                                      ":dna_flexibility/images/flexibility.png",
                                       tr("Find high DNA flexibility regions..."),
                                       2000,
                                       ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu));

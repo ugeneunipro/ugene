@@ -43,7 +43,8 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
     registerBuiltinPages();
     QMenu* m = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_SETTINGS);
 
-    settingsDialogAction = new QAction(GUIUtils::getIconResource("ugene", "preferences.png"), tr("Preferences..."), this);
+    auto settingsDialogAction = new QAction(tr("Preferences..."), this);
+    GUIUtils::setThemedIcon(settingsDialogAction, ":ugene/images/preferences.png");
     connect(settingsDialogAction, SIGNAL(triggered()), SLOT(sl_showSettingsDialog()));
     settingsDialogAction->setObjectName("action__settings");
 #ifdef Q_OS_DARWIN
@@ -53,8 +54,6 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
 #endif
     m->addAction(settingsDialogAction);
     AppContext::getMainWindow()->registerAction(settingsDialogAction);
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AppSettingsGUIImpl::sl_colorThemeSwitched);
 }
 
 AppSettingsGUIImpl::~AppSettingsGUIImpl() {
@@ -102,10 +101,6 @@ AppSettingsGUIPageController* AppSettingsGUIImpl::findPageById(const QString& pa
         }
     }
     return nullptr;
-}
-
-void AppSettingsGUIImpl::sl_colorThemeSwitched() {
-    settingsDialogAction->setIcon(GUIUtils::getIconResource("ugene", "preferences.png"));
 }
 
 void AppSettingsGUIImpl::registerBuiltinPages() {

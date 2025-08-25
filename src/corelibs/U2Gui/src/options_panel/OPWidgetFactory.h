@@ -23,8 +23,6 @@
 
 #include <QPixmap>
 
-#include <U2Core/IconParameters.h>
-
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -39,13 +37,13 @@ enum ObjectViewType {
 
 struct U2GUI_EXPORT OPGroupParameters {
 public:
-    OPGroupParameters(QString groupId, IconParameters headerImageParameters, QString title, QString documentationPage);
+    OPGroupParameters(QString groupId, const QString& headerImagePath, QString title, QString documentationPage);
 
     inline QString getGroupId() {
         return groupId;
     }
-    inline IconParameters getIconParmeters() {
-        return groupIconParameters;
+    inline const QString& getHeaderImagePath() {
+        return headerImagePath;
     }
     inline QString getTitle() {
         return groupTitle;
@@ -56,7 +54,7 @@ public:
 
 private:
     QString groupId;
-    IconParameters groupIconParameters;
+    QString headerImagePath;
     QString groupTitle;
     QString groupDocumentationPage;
 };

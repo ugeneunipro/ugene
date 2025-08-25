@@ -67,7 +67,6 @@ void ChromaViewContext::initViewContext(GObjectViewController* v) {
         sl_sequenceWidgetAdded(w);
     }
     connect(av, SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget*)));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ChromaViewContext::sl_colorThemeSwitched);
 }
 
 static ChromatogramObject* findChromaObj(ADVSingleSequenceWidget* sw) {
@@ -90,17 +89,17 @@ void ChromaViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
         return;
     }
 
-    chromaViewAction = new ChromaViewAction();
-    chromaViewAction->setIcon(GUIUtils::getIconResource("chroma_view", "cv.png"));
-    chromaViewAction->setCheckable(true);
-    chromaViewAction->setChecked(false);
-    chromaViewAction->addToMenu = true;
-    chromaViewAction->addToBar = true;
-    connect(chromaViewAction, SIGNAL(triggered()), SLOT(sl_showChromatogram()));
+    auto action = new ChromaViewAction();
+    GUIUtils::setThemedIcon(action, ":chroma_view/images/cv.png");
+    action->setCheckable(true);
+    action->setChecked(false);
+    action->addToMenu = true;
+    action->addToBar = true;
+    connect(action, SIGNAL(triggered()), SLOT(sl_showChromatogram()));
 
-    sw->addADVSequenceWidgetActionToViewsToolbar(chromaViewAction);
+    sw->addADVSequenceWidgetActionToViewsToolbar(action);
 
-    chromaViewAction->trigger();
+    action->trigger();
 }
 
 void ChromaViewContext::sl_showChromatogram() {
@@ -129,12 +128,6 @@ void ChromaViewContext::sl_showChromatogram() {
         delete a->view;
         a->view = nullptr;
     }
-}
-
-void ChromaViewContext::sl_colorThemeSwitched() {
-    CHECK(chromaViewAction != nullptr, );
-
-    chromaViewAction->setIcon(GUIUtils::getIconResource("chroma_view", "cv.png"));
 }
 
 bool ChromaViewContext::canHandle(GObjectViewController* v, GObject* o) {

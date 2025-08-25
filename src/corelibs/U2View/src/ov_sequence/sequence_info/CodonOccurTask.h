@@ -38,6 +38,7 @@ class Annotation;
 
 /** Computes map of codon counts for the given sequence in the current set of regions. */
 class U2VIEW_EXPORT CodonOccurTask : public BackgroundTask<QMap<QByteArray, qint64>>, public SequenceDbiWalkerCallback {
+  Q_OBJECT
 public:
     /** Create a task to count codons in all 6 frames (3 direct and 3 complement) in the whole sequence. */
     CodonOccurTask(DNATranslation* complementTranslation,

@@ -54,7 +54,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
       animationTimer(this),
       view(view) {
     editAction = new QAction(tr("Switch on the editing mode"), this);
-    editAction->setIcon(GUIUtils::getIconResource("core", "edit.png"));
+    GUIUtils::setThemedIcon(editAction, ":core/images/edit.png");
     editAction->setObjectName("edit_sequence_action");
     editAction->setCheckable(true);
     editAction->setDisabled(view->getSequenceObject()->isStateLocked());
@@ -63,7 +63,6 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
 
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_cursorAnimationTimerCallback()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DetViewSequenceEditor::sl_colorThemeSwitched);
     setParent(view);
 }
 
@@ -395,10 +394,6 @@ void DetViewSequenceEditor::sl_paste(Task* task) {
     modifySequence(seqObj, U2Region(cursor, 0), seq);
 
     setCursor(cursor + seq.length());
-}
-
-void DetViewSequenceEditor::sl_colorThemeSwitched() {
-    editAction->setIcon(GUIUtils::getIconResource("core", "edit.png"));
 }
 
 }  // namespace U2

@@ -92,8 +92,6 @@ private slots:
 
     void sl_filterGroupAdded(const QModelIndex& groupIndex);
 
-    void sl_colorThemeSwitched();
-
 signals:
     void si_onPopupMenuRequested(QMenu& popup);
     void si_doubleClicked(GObject* obj);

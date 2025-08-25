@@ -49,8 +49,6 @@ private slots:
         showSettingsDialog();
     }
 
-    void sl_colorThemeSwitched();
-
 private:
     void registerBuiltinPages();
 

@@ -58,10 +58,10 @@ PcrPlugin::PcrPlugin()
         opRegistry->registerFactory(new InSilicoPcrOPWidgetFactory());
 
         if (library != nullptr) {
-            libraryAction = new QAction(GUIUtils::getIconResource("core", "database_with_arrow.png"), tr("Primer library"), this);
+            auto libraryAction = new QAction(tr("Primer library"), this);
+            GUIUtils::setThemedIcon(libraryAction, ":/core/images/database_with_arrow.png");
             libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
             connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));
-            connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PcrPlugin::sl_colorThemeSwitched);
             ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, libraryAction);
         }
     }
@@ -76,10 +76,6 @@ PcrPlugin::~PcrPlugin() {
 
 void PcrPlugin::sl_primerLibrary() {
     PrimerLibraryMdiWindow::showLibrary();
-}
-
-void PcrPlugin::sl_colorThemeSwitched() {
-    libraryAction->setIcon(GUIUtils::getIconResource("core", "database_with_arrow.png"));
 }
 
 }  // namespace U2

@@ -42,6 +42,7 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "DocActors.h"
 

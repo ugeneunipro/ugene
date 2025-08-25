@@ -53,7 +53,6 @@
 #include <U2Formats/PairedFastqComparator.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ToolsMenu.h>
 
@@ -65,25 +64,23 @@
 namespace U2 {
 
 DnaAssemblySupport::DnaAssemblySupport() {
-    convertAssemblyToSamAction = new QAction(tr("Convert UGENE assembly database to SAM..."), this);
+    auto convertAssemblyToSamAction = new QAction(tr("Convert UGENE assembly database to SAM..."), this);
     convertAssemblyToSamAction->setObjectName(ToolsMenu::NGS_CONVERT_SAM);
-    convertAssemblyToSamAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
+    GUIUtils::setThemedIcon(convertAssemblyToSamAction, ":core/images/align.png");
     connect(convertAssemblyToSamAction, SIGNAL(triggered()), SLOT(sl_showConvertToSamDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, convertAssemblyToSamAction);
 
-    dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this);
+    auto dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this);
     dnaAssemblyAction->setObjectName(ToolsMenu::NGS_MAP);
-    dnaAssemblyAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
+    GUIUtils::setThemedIcon(dnaAssemblyAction, ":core/images/align.png");
     connect(dnaAssemblyAction, SIGNAL(triggered()), SLOT(sl_showDnaAssemblyDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, dnaAssemblyAction);
 
-    buildIndexAction = new QAction(tr("Build index for reads mapping..."), this);
+    auto buildIndexAction = new QAction(tr("Build index for reads mapping..."), this);
     buildIndexAction->setObjectName(ToolsMenu::NGS_INDEX);
-    buildIndexAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
+    GUIUtils::setThemedIcon(buildIndexAction, ":core/images/align.png");
     connect(buildIndexAction, SIGNAL(triggered()), SLOT(sl_showBuildIndexDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, buildIndexAction);
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DnaAssemblySupport::sl_colorThemeSwitched);
 }
 
 void DnaAssemblySupport::sl_showDnaAssemblyDialog() {
@@ -171,13 +168,6 @@ void DnaAssemblySupport::sl_showConvertToSamDialog() {
         Task* convertTask = new ConvertAssemblyToSamTask(dlg->getDbFileUrl(), dlg->getSamFileUrl());
         AppContext::getTaskScheduler()->registerTopLevelTask(convertTask);
     }
-}
-
-void DnaAssemblySupport::sl_colorThemeSwitched() {
-    convertAssemblyToSamAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
-    dnaAssemblyAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
-    buildIndexAction->setIcon(GUIUtils::getIconResource("core", "align.png"));
-    ToolsMenu::colorThemeSwitched(ToolsMenu::NGS_MENU);
 }
 
 namespace {

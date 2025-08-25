@@ -44,47 +44,46 @@
 <context>
     <name>U2::AddPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="336"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="342"/>
         <source>Add plugin task: %1</source>
         <translation>Eklenti görevi ekle: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="350"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="356"/>
         <source>Plugin is already loaded: %1</source>
         <translation>Eklenti zaten yüklendi: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="358"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="364"/>
         <source>Plugin %1 depends on %2 which is not loaded</source>
         <translation>Eklenti %1, yüklenmemiş %2&apos;ye bağlıdır</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="362"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="368"/>
         <source>Plugin %1 depends on %2 which is available, but the version is too old</source>
         <translation>Eklenti %1, mevcut olan %2&apos;ye bağlıdır, ancak sürüm çok eski</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="373"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="379"/>
         <source>Plugin loading error: %1, Error string %2</source>
         <translation>Eklenti yükleme hatası: %1, Hata dizesi %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="379"/>
         <source>Settings is NULL</source>
-        <translation>Ayarlar BOŞ</translation>
+        <translation type="vanished">Ayarlar BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="434"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="440"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation>Eklenti yükleme hatası: %1. Doğrulama başarısız oldu.</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="454"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="460"/>
         <source>Plugin initialization routine was not found: %1</source>
         <translation>Eklenti başlatma rutini bulunamadı: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="460"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="466"/>
         <source>Plugin initialization failed: %1</source>
         <translation>Eklenti başlatılamadı: %1</translation>
     </message>
@@ -152,27 +151,27 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::DisableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="275"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="280"/>
         <source>Disable &apos;%1&apos; service</source>
         <translation>&apos;%1&apos; hizmetini devre dışı bırakın</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="288"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="293"/>
         <source>Service is not registered</source>
         <translation>Hizmet kayıtlı değil</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="289"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="294"/>
         <source>Service is not enabled</source>
         <translation>Hizmet etkinleştirilmedi</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="295"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="300"/>
         <source>Active top-level task name: %1</source>
         <translation>Etkin üst düzey görev adı: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="297"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="302"/>
         <source>Active task was found</source>
         <translation>Aktif görev bulundu</translation>
     </message>
@@ -180,7 +179,7 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::DocumentFormatRegistryImpl</name>
     <message>
-        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="235"/>
+        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="171"/>
         <source>UGENE Database</source>
         <translation>UGENE Veritabanı</translation>
     </message>
@@ -188,33 +187,33 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::EnableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="214"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="219"/>
         <source>Service is enabled</source>
         <translation>Hizmet etkinleştirildi</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="215"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="220"/>
         <source>Service is not registered</source>
         <translation>Hizmet kayıtlı değil</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="220"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="225"/>
         <source>Circular service dependency: %1</source>
         <translation>Döngüsel hizmet bağımlılığı: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="226"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="231"/>
         <source>Required services are not enabled: %1</source>
         <translation>Gerekli hizmetler etkinleştirilmedi: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="174"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="179"/>
         <source>Enable &apos;%1&apos; service</source>
         <translation>&apos;%1&apos; hizmetini etkinleştir</translation>
     </message>
     <message>
         <source>Required service is not enabled: %1</source>
-        <translation>Gerekli hizmet etkinleştirilmedi: %1</translation>
+        <translation type="vanished">Gerekli hizmet etkinleştirilmedi: %1</translation>
     </message>
 </context>
 <context>
@@ -238,22 +237,22 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::LogCategories</name>
     <message>
-        <location filename="../src/LogSettings.cpp" line="37"/>
+        <location filename="../src/LogSettings.cpp" line="50"/>
         <source>TRACE</source>
         <translation>İZLEME</translation>
     </message>
     <message>
-        <location filename="../src/LogSettings.cpp" line="38"/>
+        <location filename="../src/LogSettings.cpp" line="51"/>
         <source>DETAILS</source>
         <translation>AYRINTILAR</translation>
     </message>
     <message>
-        <location filename="../src/LogSettings.cpp" line="39"/>
+        <location filename="../src/LogSettings.cpp" line="52"/>
         <source>INFO</source>
         <translation>BİLGİ</translation>
     </message>
     <message>
-        <location filename="../src/LogSettings.cpp" line="40"/>
+        <location filename="../src/LogSettings.cpp" line="53"/>
         <source>ERROR</source>
         <translation>HATA</translation>
     </message>
@@ -309,22 +308,22 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::RegisterServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="147"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="152"/>
         <source>Register &apos;%1&apos; service</source>
         <translation>&apos;%1&apos; hizmetini kaydet</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="152"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="157"/>
         <source>Service has already registered</source>
         <translation>Hizmet zaten kayıtlı</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="153"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="158"/>
         <source>Illegal service state: %1</source>
         <translation>Yasadışı hizmet durumu: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="157"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="162"/>
         <source>Only one service of specified type is allowed: %1</source>
         <translation>Belirtilen türde yalnızca bir hizmete izin verilir: %1</translation>
     </message>
@@ -332,121 +331,135 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::TaskSchedulerImpl</name>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="694"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="710"/>
         <source>New</source>
         <translation>Yeni</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="696"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="712"/>
         <source>Prepared</source>
         <translation>Hazırlanmış</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="698"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="714"/>
         <source>Running</source>
         <translation>Çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="700"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="716"/>
         <source>Finished</source>
         <translation>Tamamlandı</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="96"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="98"/>
         <source>Canceling task: %1</source>
         <translation>Görev iptal ediliyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="113"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="116"/>
         <source>There is not enough memory to finish the task.</source>
         <translation>Görevi bitirmek için yeterli hafıza yok.</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="135"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="155"/>
         <source>Subtask {%1} is failed: %2</source>
         <translation>{%1} alt görevi başarısız oldu: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="376"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="482"/>
+        <source>Waiting for resource &apos;%1&apos;, count: 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="500"/>
+        <source>Task resource not found: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="508"/>
+        <source>Not enough resources for the task, resource: &apos;%1&apos; max: %2%3 requested: %4%5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="518"/>
+        <source>Waiting for the resource: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Waiting for resource &apos;%1&apos;, count: %2</source>
-        <translation>&apos;%1&apos; kaynağı bekleniyor, sayı: %2</translation>
+        <translation type="vanished">&apos;%1&apos; kaynağı bekleniyor, sayı: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="401"/>
         <source>Not enough resources for the task, resource name: &apos;%1&apos; max: %2%3 requested: %4%5</source>
-        <translation>Görev için yeterli kaynak yok, kaynak adı: &apos;%1&apos; maks: %2%3 talep edildi: %4%5</translation>
+        <translation type="vanished">Görev için yeterli kaynak yok, kaynak adı: &apos;%1&apos; maks: %2%3 talep edildi: %4%5</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="413"/>
         <source>Waiting for resource &apos;%1&apos;, count: %2%3</source>
-        <translation>&apos;%1&apos; kaynağı bekleniyor, sayı: %2%3</translation>
+        <translation type="vanished">&apos;%1&apos; kaynağı bekleniyor, sayı: %2%3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="547"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="619"/>
         <source>Registering new task: %1</source>
         <translation>Yeni görev kaydediliyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="704"/>
         <source>Invalid name</source>
-        <translation>Geçersiz ad</translation>
+        <translation type="vanished">Geçersiz ad</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="926"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="929"/>
         <source>Deleting task: %1</source>
         <translation>Görev siliniyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="778"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="779"/>
         <source>Promoting task {%1} to &apos;%2&apos;</source>
         <translation>{%1} görevi &apos;%2&apos; olarak yükseltiliyor</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="127"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="147"/>
         <source>Subtask {%1} is canceled %2</source>
         <translation>Alt görev {%1} iptal edildi %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="393"/>
         <source>No required resources for the task, resource id: &apos;%1&apos;</source>
-        <translation>Görev için gerekli kaynak yok, kaynak kimliği: &apos;%1&apos;</translation>
+        <translation type="vanished">Görev için gerekli kaynak yok, kaynak kimliği: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="394"/>
         <source>Unable to run test because required resource not found</source>
-        <translation>Gerekli kaynak bulunamadığı için test çalıştırılamıyor</translation>
+        <translation type="vanished">Gerekli kaynak bulunamadığı için test çalıştırılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="613"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="661"/>
         <source>Unregistering task: %1</source>
         <translation>Kaydı iptal edilen görev: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="780"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="781"/>
         <source>Promoting task {%1} to &apos;%2&apos;, error &apos;%3&apos;</source>
         <translation>{%1} görevi &apos;%2&apos; olarak yükseltiliyor, &apos;%3&apos; hatası</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="790"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="792"/>
         <source>Starting {%1} task</source>
         <translation>{%1} görev başlatılıyor</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="818"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="820"/>
         <source>Task {%1} finished with error: %2</source>
         <translation>{%1} görevi şu hatayla tamamlandı: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="821"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="823"/>
         <source>Task {%1} canceled</source>
         <translation>{%1} görevi iptal edildi</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="824"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="826"/>
         <source>Task {%1} finished</source>
         <translation>{%1} görevi tamamlandı</translation>
     </message>
@@ -454,12 +467,12 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::UnregisterServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="250"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="255"/>
         <source>Unregister &apos;%1&apos; service</source>
         <translation>&apos;%1&apos; hizmetinin kaydını sil</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="255"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="260"/>
         <source>Service is not registered</source>
         <translation>Hizmet kayıtlı değil</translation>
     </message>
@@ -467,7 +480,7 @@ Varsayılan olarak, loglevel = &quot;HATA&quot;.</translation>
 <context>
     <name>U2::VerifyPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="487"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="486"/>
         <source>Verify plugin task: %1</source>
         <translation>Eklenti görevini doğrulayın: %1</translation>
     </message>

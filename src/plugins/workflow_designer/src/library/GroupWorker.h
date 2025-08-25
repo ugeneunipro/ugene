@@ -26,7 +26,6 @@
 #include <U2Lang/Datatype.h>
 #include <U2Lang/GrouperOutSlot.h>
 #include <U2Lang/LocalDomain.h>
-#include <U2Lang/WorkflowUtils.h>
 
 #include "util/GrouperActionUtils.h"
 

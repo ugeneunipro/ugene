@@ -183,7 +183,7 @@ const QString INSERT_RESTRICTION_SITE_NAME = "insert_restriction_site";
 
 void EnzymesADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    auto a = new ADVGlobalAction(av, IconParameters("enzymes", "enzymes.png"), tr("Find restriction sites..."), 50);
+    auto a = new ADVGlobalAction(av, ":enzymes/images/enzymes.png", tr("Find restriction sites..."), 50);
     a->setObjectName("Find restriction sites");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));

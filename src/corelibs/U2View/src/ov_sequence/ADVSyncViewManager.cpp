@@ -28,7 +28,6 @@
 #include <U2Core/DNASequenceSelection.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -79,12 +78,12 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     connect(syncByAnnSelAction, SIGNAL(triggered()), SLOT(sl_sync()));
 
     lockMenu = new QMenu(tr("Lock scales"));
-    lockMenu->setIcon(GUIUtils::getIconResource("core", "lock_scales.png"));
+    GUIUtils::setThemedIcon(lockMenu, ":core/images/lock_scales.png");
     lockMenu->addActions(lockActionGroup->actions());
     connect(lockMenu, &QMenu::aboutToShow, this, &ADVSyncViewManager::sl_setUpLockMenuActions);
 
     syncMenu = new QMenu(tr("Adjust scales"));
-    syncMenu->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));
+    GUIUtils::setThemedIcon(syncMenu, ":core/images/sync_scales.png");
     syncMenu->addAction(syncByStartPosAction);
     syncMenu->addAction(syncBySeqSelAction);
     syncMenu->addAction(syncByAnnSelAction);
@@ -107,7 +106,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
     // auto-annotations highlighting ops
 
     toggleAutoAnnotationsMenu = new QMenu("Global automatic annotation highlighting");
-    toggleAutoAnnotationsMenu->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
+    GUIUtils::setThemedIcon(toggleAutoAnnotationsMenu, ":core/images/predefined_annotation_groups.png");
     connect(toggleAutoAnnotationsMenu, SIGNAL(aboutToShow()), SLOT(sl_updateAutoAnnotationsMenu()));
 
     toggleAutoAnnotationsButton = new QToolButton();
@@ -447,9 +446,6 @@ void ADVSyncViewManager::sl_updateVisualMode() {
 }
 
 void ADVSyncViewManager::sl_colorThemeSwitched() {
-    toggleAutoAnnotationsMenu->setIcon(GUIUtils::getIconResource("core", "predefined_annotation_groups.png"));
-    lockMenu->setIcon(GUIUtils::getIconResource("core", "lock_scales.png"));
-    syncMenu->setIcon(GUIUtils::getIconResource("core", "sync_scales.png"));
     updateEnabledState();
 }
 
