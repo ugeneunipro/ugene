@@ -104,7 +104,7 @@ static const char *pr_program_name = "TMP";
  * undeclared functions; only those with non-int return types.)
  */
 #ifndef __cplusplus
-extern double strtod();
+/* extern double strtod(); */
 #endif
 
 /* 
