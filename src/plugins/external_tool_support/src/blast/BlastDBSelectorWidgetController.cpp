@@ -84,7 +84,7 @@ void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
     LastUsedDirHelper lod("Database Folder");
 
     QFileDialog::Options options = {};
-    QString name = U2FileDialog::getOpenFileName(nullptr, tr("Select a database file"), lod.dir, "", nullptr, options);
+    QString name = U2FileDialog::getOpenFileName(nullptr, tr("Select a database file"), lod.dir, "", QString(), options);
     if (!name.isEmpty()) {
         QFileInfo fileInfo(name);
         isNuclDB = !fileInfo.suffix().isEmpty() && fileInfo.suffix().at(0) == 'n';
