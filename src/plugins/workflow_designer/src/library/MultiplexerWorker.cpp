@@ -27,6 +27,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseTypes.h>
@@ -327,7 +329,7 @@ QString MultiplexerPrompter::composeRichDoc() {
     auto input1 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_1));
     auto input2 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_2));
 
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString inputName1 = unsetStr;
     if (input1->getLinks().size() > 0) {
         Port* p = input1->getLinks().keys().first();

@@ -135,6 +135,10 @@ public:
 
     virtual void registerAction(QAction* action) = 0;
 
+    virtual bool isDarkTheme() const = 0;
+
+    virtual void setNewStyle(const QString& style, int colorThemeIndex) = 0;
+
     static constexpr char* ICON_PATH_PROPERTY_NAME = "icon-path";
     static constexpr char* MOVIE_PATH_PROPERTY_NAME = "icon-path-movie";
     static constexpr char* WINDOWS_ICON_PATH_PROPERTY_NAME = "icon-path-movie";
@@ -236,6 +240,8 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName) = 0;
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
+
+    virtual void colorThemeSwitched(bool isDark) = 0;
 };
 
 }  // namespace U2

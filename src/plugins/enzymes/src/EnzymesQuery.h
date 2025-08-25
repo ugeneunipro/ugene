@@ -27,6 +27,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -69,6 +71,7 @@ public:
     QString getIconPath() const override {
         return ":enzymes/images/enzymes.png";
     }
+
     QDActor* createInstance() const override {
         return new QDEnzymesActor(this);
     }

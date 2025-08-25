@@ -40,18 +40,34 @@ public:
     }
 
     /** Render pixmaps into cache */
-    virtual void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) = 0;
+    virtual void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font);
 
     /** @returns cached cell pixmap */
     virtual QPixmap cellImage(char c) = 0;
     virtual QPixmap cellImage(const U2AssemblyRead& read, char c) = 0;
     virtual QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) = 0;
 
+    // Call this function to update all assembly from scratch
+    void makeForceRenderUpdate();
+
 protected:
     static void drawCell(QPixmap& img, const QSize& size, const QColor& topColor, const QColor& bottomColor, bool text, char c, const QFont& font, const QColor& textColor);
     static void drawCell(QPixmap& img, const QSize& size, const QColor& color, bool text, char c, const QFont& font, const QColor& textColor) {
         drawCell(img, size, color, color, text, c, font, textColor);
     }
+
+    virtual void update() = 0;
+
+    // images cache
+    QPixmap unknownChar;
+
+    // cached cells parameters
+    QSize size;
+    int devicePixelRatio = 0;
+    bool text = false;
+    QFont font;
+
+    bool forceRenderUpdate = false;
 };
 
 class AssemblyCellRendererFactory {

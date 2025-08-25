@@ -2,80 +2,126 @@
     <qresource prefix="/ugene">
         <file>html/version_news_en.html</file>
         <file>html/version_news_ru.html</file>
+
         <file>images/about.png</file>
-        <file>images/add_existing_document.png</file>
-        <file>images/add_new_document.png</file>
         <file>images/advanced_open.png</file>
-        <file>images/bin_empty.png</file>
         <file>images/book_open.png</file>
         <file>images/cancel.png</file>
         <file>images/clock.png</file>
-        <file>images/cloud_connected.svg</file>
-        <file>images/cloud_connecting.svg</file>
-        <file>images/cloud_disabled.svg</file>
-        <file>images/cloud_storage.svg</file>
+        <file>images/color_theme_pic.png</file>
         <file>images/create_new_project.png</file>
-        <file>images/document.svg</file>
-        <file>images/down.png</file>
+        <file>images/hourglass_go.png</file>
+        <file>images/hourglass_ok.png</file>
+        <file>images/relocate.png</file>
+        <file>images/save_copy.png</file>
+        <file>images/save_selected_documents.png</file>
+        <file>images/window_next.png</file>
+        <file>images/window_prev.png</file>
         <file>images/empty_notification.png</file>
-        <file>images/file_download.svg</file>
-        <file>images/file_rename.svg</file>
-        <file>images/file_share.svg</file>
-        <file>images/file_upload.svg</file>
-        <file>images/folder.svg</file>
-        <file>images/folder_shared.svg</file>
-        <file>images/group.svg</file>
         <file>images/has_error.png</file>
         <file>images/has_report.png</file>
         <file>images/hourglass.png</file>
         <file>images/hourglass_err.png</file>
-        <file>images/hourglass_go.png</file>
-        <file>images/hourglass_ok.png</file>
         <file>images/lightbulb.png</file>
         <file>images/lightbulb_off.png</file>
         <file>images/log_settings.png</file>
-        <file>images/login.svg</file>
-        <file>images/logout.svg</file>
-        <file>images/net_settings.png</file>
-        <file>images/new_folder.svg</file>
         <file>images/originals/ugene_128.png</file>
-        <file>images/paste.png</file>
         <file>images/plugins.png</file>
-        <file>images/preferences.png</file>
         <file>images/project.png</file>
-        <file>images/project_filter.png</file>
         <file>images/project_new.png</file>
         <file>images/project_open.png</file>
-        <file>images/project_save.png</file>
-        <file>images/relocate.png</file>
-        <file>images/save_copy.png</file>
-        <file>images/save_selected_documents.png</file>
-        <file>images/script_registry.png</file>
-        <file>images/service.png</file>
+        <file>images/save.png</file>
         <file>images/task_report.png</file>
-        <file>images/trash.svg</file>
         <file>images/ugene.ico</file>
-        <file>images/ugene_16.png</file>
+        <file>images/ugene.png</file>
         <file>images/ugene_splash.gif</file>
-        <file>images/ugene_splash.png</file>
-        <file>images/up.png</file>
-        <file>images/web_link.svg</file>
-        <file>images/welcome_page/line.png</file>
-        <file>images/welcome_page/social_icon_facebook.png</file>
-        <file>images/welcome_page/social_icon_linkedin.png</file>
-        <file>images/welcome_page/social_icon_patreon.png</file>
-        <file>images/welcome_page/social_icon_rss.png</file>
-        <file>images/welcome_page/social_icon_twitter.png</file>
-        <file>images/welcome_page/social_icon_vkontakte.png</file>
-        <file>images/welcome_page/social_icon_youtube.png</file>
-        <file>images/welcome_page/welcome_btn_create_seq.png</file>
-        <file>images/welcome_page/welcome_btn_help.png</file>
-        <file>images/welcome_page/welcome_btn_open.png</file>
-        <file>images/welcome_page/welcome_btn_workflow.png</file>
         <file>images/window_cascade.png</file>
-        <file>images/window_next.png</file>
-        <file>images/window_prev.png</file>
         <file>images/window_tile.png</file>
         <file>images/world_go.png</file>
+        <file>images/welcome_page/welcome_btn_workflow.png</file>
+        <file>images/welcome_page/welcome_btn_open.png</file>
+        <file>images/welcome_page/welcome_btn_help.png</file>
+        <file>images/welcome_page/welcome_btn_create_seq.png</file>
+        <file>images/welcome_page/social_icon_youtube.png</file>
+        <file>images/welcome_page/social_icon_vkontakte.png</file>
+        <file>images/welcome_page/social_icon_twitter.png</file>
+        <file>images/welcome_page/social_icon_rss.png</file>
+        <file>images/welcome_page/social_icon_linkedin.png</file>
+        <file>images/welcome_page/social_icon_facebook.png</file>
+
+        <file>images/dark/color_theme_pic.png</file>
+        <file>images/dark/preferences.png</file>
+        <file>images/dark/ugene_splash.png</file>
+        <file>images/welcome_page/dark/line.png</file>
+        <file>images/welcome_page/dark/social_icon_patreon.png</file>
+
+        <file>images/dark/cloud_connected.svg</file>
+        <file>images/dark/cloud_connecting.svg</file>
+        <file>images/dark/cloud_disabled.svg</file>
+        <file>images/dark/cloud_storage.svg</file>
+        <file>images/dark/document.svg</file>
+        <file>images/dark/file_download.svg</file>
+        <file>images/dark/file_rename.svg</file>
+        <file>images/dark/file_share.svg</file>
+        <file>images/dark/file_upload.svg</file>
+        <file>images/dark/folder.svg</file>
+        <file>images/dark/folder_shared.svg</file>
+        <file>images/dark/group.svg</file>
+        <file>images/dark/login.svg</file>
+        <file>images/dark/logout.svg</file>
+        <file>images/dark/new_folder.svg</file>
+        <file>images/dark/trash.svg</file>
+        <file>images/dark/web_link.svg</file>
+
+        <file>images/light/color_theme_pic.png</file>
+        <file>images/light/preferences.png</file>
+        <file>images/light/ugene_splash.png</file>
+        <file>images/welcome_page/light/line.png</file>
+        <file>images/welcome_page/light/social_icon_patreon.png</file>
+
+        <file>images/light/cloud_connected.svg</file>
+        <file>images/light/cloud_connecting.svg</file>
+        <file>images/light/cloud_disabled.svg</file>
+        <file>images/light/cloud_storage.svg</file>
+        <file>images/light/document.svg</file>
+        <file>images/light/file_download.svg</file>
+        <file>images/light/file_rename.svg</file>
+        <file>images/light/file_share.svg</file>
+        <file>images/light/file_upload.svg</file>
+        <file>images/light/folder.svg</file>
+        <file>images/light/folder_shared.svg</file>
+        <file>images/light/group.svg</file>
+        <file>images/light/login.svg</file>
+        <file>images/light/logout.svg</file>
+        <file>images/light/new_folder.svg</file>
+        <file>images/light/trash.svg</file>
+        <file>images/light/web_link.svg</file>
+
     </qresource>
+	<qresource prefix="/dark">
+		<file>dark/darkstyle/darkstyle.qss</file>
+		<file>dark/darkstyle/icon_close.png</file>
+		<file>dark/darkstyle/icon_restore.png</file>
+		<file>dark/darkstyle/icon_undock.png</file>
+		<file>dark/darkstyle/icon_branch_closed.png</file>
+		<file>dark/darkstyle/icon_branch_end.png</file>
+		<file>dark/darkstyle/icon_branch_more.png</file>
+		<file>dark/darkstyle/icon_branch_open.png</file>
+		<file>dark/darkstyle/icon_vline.png</file>
+		<file>dark/darkstyle/icon_checkbox_checked.png</file>
+		<file>dark/darkstyle/icon_checkbox_indeterminate.png</file>
+		<file>dark/darkstyle/icon_checkbox_unchecked.png</file>
+		<file>dark/darkstyle/icon_checkbox_checked_pressed.png</file>
+		<file>dark/darkstyle/icon_checkbox_indeterminate_pressed.png</file>
+		<file>dark/darkstyle/icon_checkbox_unchecked_pressed.png</file>
+		<file>dark/darkstyle/icon_checkbox_checked_disabled.png</file>
+		<file>dark/darkstyle/icon_checkbox_indeterminate_disabled.png</file>
+		<file>dark/darkstyle/icon_checkbox_unchecked_disabled.png</file>
+		<file>dark/darkstyle/icon_radiobutton_checked.png</file>
+		<file>dark/darkstyle/icon_radiobutton_unchecked.png</file>
+		<file>dark/darkstyle/icon_radiobutton_checked_pressed.png</file>
+		<file>dark/darkstyle/icon_radiobutton_unchecked_pressed.png</file>
+		<file>dark/darkstyle/icon_radiobutton_checked_disabled.png</file>
+		<file>dark/darkstyle/icon_radiobutton_unchecked_disabled.png</file>
+	</qresource>
 </RCC>

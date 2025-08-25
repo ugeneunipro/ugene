@@ -161,6 +161,8 @@ private slots:
     void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
 
+    void sl_colorThemeSwitched();
+
 protected:
     bool eventFilter(QObject* o, QEvent* e) override;
 
@@ -213,6 +215,8 @@ private:
     void clearSelectedNotAnnotations();
     void emitAnnotationActivated(Annotation* annotation);
 
+    void updateColorThemeRecursively(AVItem* item);
+
     AnnotationsTreeWidget* tree;
 
     AnnotatedDNAView* ctx;
@@ -236,8 +240,6 @@ private:
     QStringList headerLabels;
     QStringList qColumns;
     int lastClickedColumn;
-    QIcon addColumnIcon;
-    QIcon removeColumnIcon;
     QTimer sortTimer;
     QPoint dragStartPos;
     QMap<AVAnnotationItem*, QList<U2Region>> selectedAnnotation;

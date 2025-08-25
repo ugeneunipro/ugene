@@ -35,6 +35,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/SaveDocumentController.h>
 
 namespace U2 {

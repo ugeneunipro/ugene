@@ -42,9 +42,12 @@ class ShowAllAnnotTypesLabel : public QLabel {
     Q_OBJECT
 public:
     ShowAllAnnotTypesLabel();
+
     inline bool isShowAllSelected() {
         return showAllIsSelected;
     }
+
+    void colorThemeSwitched();
 
 signals:
     void si_showAllStateChanged();

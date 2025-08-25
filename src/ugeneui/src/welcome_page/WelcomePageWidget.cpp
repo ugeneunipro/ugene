@@ -37,12 +37,29 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HoverQLabel.h>
 #include <U2Gui/WelcomePageAction.h>
 
 #include "main_window/MainWindowImpl.h"
 
 namespace U2 {
+
+const QString WelcomePageWidget::BACKGROUND_QLINEARGRADIENT = "background: qlineargradient(x1:0 y1:0, x2:1 y2:0, stop:0 %1, stop:1 %2);";
+const QString WelcomePageWidget::PADDING_LEFT = "padding-left: 25px; color: %1; font-size: 34px;";
+const QString WelcomePageWidget::NORMAL_STYLE = "text-decoration: none; color: %1; font-size: 18px;";
+const QString WelcomePageWidget::HOVERED_STYLE = "text-decoration: underline; color: %1; font-size: 18px;";
+const QString WelcomePageWidget::MIDDLE_RIGHT_WIDGET = QString("#middleRightWidget {%1 border-radius: 25px;}").arg(BACKGROUND_QLINEARGRADIENT);
+const QString WelcomePageWidget::RECENT_HEADER_STYLE = "color: %1; font-size: 20px; background: transparent;";
+const QString WelcomePageWidget::BACKGROUND_COLOR = "background-color: %1;";
+const QString WelcomePageWidget::BACKGROUND_URL = "background: url('%1')";
+const QString WelcomePageWidget::COLOR_FONT_SIZE = "color: %1; font-size: 16px;";
+const QString WelcomePageWidget::FOOTER_SUPPORT_LABEL_STRING = "<b>%1</b>"
+                                                               "<table cellspacing=7><tr>"
+                                                               "<td width=30></td>"
+                                                               "<td><a href='https://patreon.com/uniprougene'><img src='%2'></a></td>"
+                                                               "</tr></table>";
+const QString WelcomePageWidget::RECENT_ITEM_STYLE = "color: %1; font-size: 18px; padding-top: 0; padding-bottom: 0; padding-left: 5px; background: transparent;";
 
 static QString newImageAndTextHtml(const QString& image, const QString& text) {
     return QString("<center>") +
@@ -68,25 +85,27 @@ WelcomePageWidget::WelcomePageWidget(QWidget* parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     installEventFilter(this);
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &WelcomePageWidget::sl_colorThemeSwitched);
 }
 
 QWidget* WelcomePageWidget::createHeaderWidget() {
-    auto headerWidget = new QWidget();
+    headerWidget = new QWidget();
     headerWidget->setContentsMargins(0, 0, 0, 0);
-    headerWidget->setStyleSheet("background: qlineargradient(x1:0 y1:0, x2:1 y2:0, stop:0 #E0E7E9, stop:1 white);");
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    headerWidget->setStyleSheet(BACKGROUND_QLINEARGRADIENT.arg(isDark ? "#494561" : "#E0E7E9").arg(QPalette().base().color().name()));
     headerWidget->setFixedHeight(110);
     auto headerWidgetLayout = new QHBoxLayout();
     headerWidgetLayout->setContentsMargins(0, 0, 0, 0);
     headerWidget->setLayout(headerWidgetLayout);
-    auto topLevelWidgetLabel = new QLabel(tr("Welcome to UGENE"));
-    topLevelWidgetLabel->setStyleSheet("padding-left: 25px; color: #145774; font-size: 34px;");
+    topLevelWidgetLabel = new QLabel(tr("Welcome to UGENE"));
+    topLevelWidgetLabel->setStyleSheet(PADDING_LEFT.arg(isDark ? "#2BB6F2" : "#145774"));
     headerWidgetLayout->addWidget(topLevelWidgetLabel);
     return headerWidget;
 }
 
 QWidget* WelcomePageWidget::createMiddleWidget() {
-    auto middleWidget = new QWidget();
-    middleWidget->setStyleSheet("background: white;");
+    middleWidget = new QWidget();
+    middleWidget->setStyleSheet(QString("background: %1;").arg(QPalette().base().color().name()));
     auto middleWidgetVCenteringLayout = new QVBoxLayout();
     middleWidget->setLayout(middleWidgetVCenteringLayout);
 
@@ -107,25 +126,27 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
     QString createSequenceText = tr("Create Sequence");
     QString createWorkflowText = tr("Run or Create Workflow");
     QString quickStartText = tr("Quick Start Guide");
-    QString normalStyle = "QLabel {text-decoration: none; color: #145774; font-size: 18px;}";
-    QString hoveredStyle = "QLabel {text-decoration: underline; color: #145774; font-size: 18px;}";
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    QString normalStyle = NORMAL_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
+    QString hoveredStyle = HOVERED_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
 
-    auto openFilesButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_open.png", openFilesText), normalStyle, hoveredStyle);
+    openFilesButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_open.png", openFilesText), normalStyle, hoveredStyle);
+    openFilesButton->updateStyles(normalStyle, hoveredStyle);
     openFilesButton->setObjectName("openFilesButton");
     connect(openFilesButton, SIGNAL(clicked()), SLOT(sl_openFiles()));
     buttonsGridLayout->addWidget(openFilesButton, 0, 0);
 
-    auto createSequenceButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_create_seq.png", createSequenceText), normalStyle, hoveredStyle);
+    createSequenceButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_create_seq.png", createSequenceText), normalStyle, hoveredStyle);
     createSequenceButton->setObjectName("createSequenceButton");
     connect(createSequenceButton, SIGNAL(clicked()), SLOT(sl_createSequence()));
     buttonsGridLayout->addWidget(createSequenceButton, 0, 1);
 
-    auto createWorkflowButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_workflow.png", createWorkflowText), normalStyle, hoveredStyle);
+    createWorkflowButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_workflow.png", createWorkflowText), normalStyle, hoveredStyle);
     createWorkflowButton->setObjectName("createWorkflowButton");
     connect(createWorkflowButton, SIGNAL(clicked()), SLOT(sl_createWorkflow()));
     buttonsGridLayout->addWidget(createWorkflowButton, 1, 0);
 
-    auto quickStartButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_help.png", quickStartText), normalStyle, hoveredStyle);
+    quickStartButton = new HoverQLabel(newImageAndTextHtml("welcome_btn_help.png", quickStartText), normalStyle, hoveredStyle);
     quickStartButton->setObjectName("quickStartButton");
     connect(quickStartButton, SIGNAL(clicked()), SLOT(sl_openQuickStart()));
     buttonsGridLayout->addWidget(quickStartButton, 1, 1);
@@ -136,22 +157,22 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
 
     middleWidgetLayout->addWidget(middleLeftWidget, 3);
 
-    auto middleRightWidget = new QWidget();
+    middleRightWidget = new QWidget();
     middleRightWidget->setObjectName("middleRightWidget");
-    middleRightWidget->setStyleSheet("#middleRightWidget {background: qlineargradient(x1:0 y1:0, x2:1 y2:0, stop:0 #E0E7E9, stop:1 white); border-radius: 25px;}");
+    middleRightWidget->setStyleSheet(MIDDLE_RIGHT_WIDGET.arg(isDark ? "#494561" : "#E0E7E9").arg(QPalette().base().color().name()));
     middleRightWidget->setContentsMargins(8, 8, 8, 8);
     middleWidgetLayout->addWidget(middleRightWidget, 2);
 
     auto middleRightWidgetLayout = new QVBoxLayout();
     middleRightWidget->setLayout(middleRightWidgetLayout);
-    QString recentHeaderStyle = "color: #145774; font-size: 20px; background: transparent;";
-    auto recentHeaderLabel = new QLabel(tr("Recent files"));
+    QString recentHeaderStyle = RECENT_HEADER_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
+    recentHeaderLabel = new QLabel(tr("Recent files"));
     recentHeaderLabel->setStyleSheet(recentHeaderStyle);
     middleRightWidgetLayout->addWidget(recentHeaderLabel);
     middleRightWidgetLayout->setSpacing(0);
     recentFilesLayout = new QVBoxLayout();
     middleRightWidgetLayout->addLayout(recentFilesLayout);
-    auto recentProjectsLabel = new QLabel(tr("Recent projects"));
+    recentProjectsLabel = new QLabel(tr("Recent projects"));
     recentProjectsLabel->setStyleSheet(recentHeaderStyle);
     middleRightWidgetLayout->addSpacing(15);
     middleRightWidgetLayout->addWidget(recentProjectsLabel);
@@ -163,22 +184,23 @@ QWidget* WelcomePageWidget::createMiddleWidget() {
 }
 
 QWidget* WelcomePageWidget::createFooterWidget() {
-    auto footerWidget = new QWidget();
-    footerWidget->setStyleSheet("background-color: #B2C4C9;");
+    footerWidget = new QWidget();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    footerWidget->setStyleSheet(BACKGROUND_COLOR.arg(isDark ? "#3F4547" : "#B2C4C9"));
     footerWidget->setFixedHeight(150);
     auto footerWidgetLayout = new QVBoxLayout();
     footerWidgetLayout->setContentsMargins(0, 0, 0, 0);
     footerWidget->setLayout(footerWidgetLayout);
 
-    auto footerStrippedLineWidget = new QWidget();
+    footerStrippedLineWidget = new QWidget();
     footerStrippedLineWidget->setFixedHeight(31);
-    footerStrippedLineWidget->setStyleSheet("background: url(':/ugene/images/welcome_page/line.png')");
+    footerStrippedLineWidget->setStyleSheet(BACKGROUND_URL.arg(GUIUtils::getThemedPath(":/ugene/images/welcome_page/line.png")));
     footerWidgetLayout->addWidget(footerStrippedLineWidget);
 
-    auto footerBottomWidget = new QWidget();
+    footerBottomWidget = new QWidget();
     footerBottomWidget->setFixedHeight(footerWidget->height() - footerStrippedLineWidget->height());
     footerWidgetLayout->addWidget(footerBottomWidget);
-    footerBottomWidget->setStyleSheet("color: #145774; font-size: 16px;");
+    footerBottomWidget->setStyleSheet(COLOR_FONT_SIZE.arg(isDark ? "#2BB6F2" : "#145774"));
     auto footerBottomWidgetLayout = new QHBoxLayout();
     footerBottomWidget->setLayout(footerBottomWidgetLayout);
     footerBottomWidgetLayout->setContentsMargins(25, 10, 25, 0);
@@ -207,11 +229,8 @@ QWidget* WelcomePageWidget::createFooterWidget() {
     footerBottomWidgetLayout->addWidget(footerFollowLabel);
     footerBottomWidgetLayout->addStretch(1);
 
-    auto footerSupportLabel = new QLabel("<b>" + tr("Support UGENE:") + "</b>" +
-                                        "<table cellspacing=7><tr>"
-                                        "<td width=30></td>"
-                                        "<td><a href='https://patreon.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_patreon.png'></a></td>"
-                                        "</tr></table>");
+    QString supportUgene = tr("Support UGENE:");
+    footerSupportLabel = new QLabel(FOOTER_SUPPORT_LABEL_STRING.arg(supportUgene).arg(GUIUtils::getThemedPath(":/ugene/images/welcome_page/social_icon_patreon.png")));
     footerSupportLabel->setOpenExternalLinks(true);
     footerSupportLabel->setAlignment(Qt::AlignTop);
     footerBottomWidgetLayout->addWidget(footerSupportLabel);
@@ -236,7 +255,8 @@ void WelcomePageWidget::updateRecent(const QStringList& recentProjects, const QS
     }
 
     // Add new items.
-    QString recentItemStyle = "color: #1B769D; font-size: 18px; padding-top: 0; padding-bottom: 0; padding-left: 5px; background: transparent;";
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    QString recentItemStyle = RECENT_ITEM_STYLE.arg(isDark ? "#2DC0FF" : "#1B769D");
     QString normalStyle = recentItemStyle + " text-decoration: none;";
     QString hoveredStyle = recentItemStyle + " text-decoration: underline;";
 
@@ -310,6 +330,53 @@ void WelcomePageWidget::sl_openRecentFile() {
     SAFE_POINT(label != nullptr, "sl_openRecentFile sender is not HoverQLabel", );
     QString url = label->property(PATH_PROPERTY).toString();
     AppContext::getProjectLoader()->runOpenRecentFileOrProjectTask(url);
+}
+
+void WelcomePageWidget::sl_colorThemeSwitched() {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    headerWidget->setStyleSheet(BACKGROUND_QLINEARGRADIENT.arg(isDark ? "#494561" : "#E0E7E9").arg(QPalette().base().color().name()));
+    topLevelWidgetLabel->setStyleSheet(PADDING_LEFT.arg(isDark ? "#2BB6F2" : "#145774"));
+
+    middleWidget->setStyleSheet(QString("background: %1;").arg(QPalette().base().color().name()));
+    QString normalStyle = NORMAL_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
+    QString hoveredStyle = HOVERED_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
+    openFilesButton->updateStyles(normalStyle, hoveredStyle);
+    createSequenceButton->updateStyles(normalStyle, hoveredStyle);
+    createWorkflowButton->updateStyles(normalStyle, hoveredStyle);
+    quickStartButton->updateStyles(normalStyle, hoveredStyle);
+    middleRightWidget->setStyleSheet(MIDDLE_RIGHT_WIDGET.arg(isDark ? "#494561" : "#E0E7E9").arg(QPalette().base().color().name()));
+    QString recentHeaderStyle = RECENT_HEADER_STYLE.arg(isDark ? "#2BB6F2" : "#145774");
+    recentHeaderLabel->setStyleSheet(recentHeaderStyle);
+    recentProjectsLabel->setStyleSheet(recentHeaderStyle);
+
+    footerWidget->setStyleSheet(BACKGROUND_COLOR.arg(isDark ? "#3F4547" : "#B2C4C9"));
+    footerStrippedLineWidget->setStyleSheet(BACKGROUND_URL.arg(GUIUtils::getThemedPath(":/ugene/images/welcome_page/line.png")));
+    footerBottomWidget->setStyleSheet(COLOR_FONT_SIZE.arg(isDark ? "#2BB6F2" : "#145774"));
+    QString supportUgene = tr("Support UGENE:");
+    footerSupportLabel->setText(FOOTER_SUPPORT_LABEL_STRING.arg(supportUgene).arg(GUIUtils::getThemedPath(":/ugene/images/welcome_page/social_icon_patreon.png")));
+
+    QString recentItemStyle = RECENT_ITEM_STYLE.arg(isDark ? "#2DC0FF" : "#1B769D");
+    normalStyle = recentItemStyle + " text-decoration: none;";
+    hoveredStyle = recentItemStyle + " text-decoration: underline;";
+
+    auto updateRecent = [&normalStyle, &hoveredStyle, &recentItemStyle](QVBoxLayout* recentLayout) {
+        for (int i = 0; i < recentLayout->count(); i++) {
+            auto item = recentLayout->itemAt(i);
+            auto hoverQlabel = qobject_cast<HoverQLabel*>(item->widget());
+            if (hoverQlabel != nullptr) {
+                hoverQlabel->updateStyles(normalStyle, hoveredStyle);
+                continue;
+            }
+            auto qlabel = qobject_cast<QLabel*>(item->widget());
+            CHECK_CONTINUE(qlabel != nullptr);
+
+            qlabel->setStyleSheet(recentItemStyle);
+        }
+
+    };
+
+    updateRecent(recentFilesLayout);
+    updateRecent(recentProjectsLayout);
 }
 
 bool WelcomePageWidget::eventFilter(QObject* watched, QEvent* event) {

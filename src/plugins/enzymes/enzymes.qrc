@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="enzymes/" >
-        <file>images/enzymes.png</file>
+        <file>images/dark/enzymes.png</file>
+
+        <file>images/light/enzymes.png</file>
     </qresource>
 </RCC>

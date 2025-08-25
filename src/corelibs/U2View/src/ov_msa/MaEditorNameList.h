@@ -63,6 +63,7 @@ public slots:
 protected slots:
     void sl_completeRedraw();
     void sl_editSequenceName();
+    void sl_colorThemeSwitched();
 
 private slots:
     /** Copies whole selected row content into clipboard without any formatting. */

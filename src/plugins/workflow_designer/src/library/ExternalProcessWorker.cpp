@@ -48,6 +48,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseSlots.h>
@@ -762,7 +764,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
             }
             Actor* producer = input->getProducer(WorkflowUtils::getSlotDescOfDatatype(dataType).getId());
-            QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+            QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
             QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
             doc.replace("$" + dataCfg.attributeId, producerName);
         }
@@ -777,7 +779,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
             }
             QString destinations;
-            QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+            QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
             if (!output->getLinks().isEmpty()) {
                 QList<Port*> ports = output->getLinks().keys();
                 for (Port* p : qAsConst(ports)) {

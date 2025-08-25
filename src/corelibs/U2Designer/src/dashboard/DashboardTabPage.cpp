@@ -23,14 +23,16 @@
 
 #include "DashboardWidget.h"
 
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
 
 DashboardTabPage::DashboardTabPage(const QString& tabObjectName) {
     setObjectName(tabObjectName);
-    setStyleSheet("QWidget#tabPageStyleRoot {"
-                  " background: url(':U2Designer/images/background.png') repeat scroll 0 0 transparent; "
-                  " padding: 10px;"
-                  "}");
+    sl_colorThemeSwitched();
 
     auto mainWidget = new QWidget();
 
@@ -74,6 +76,8 @@ DashboardTabPage::DashboardTabPage(const QString& tabObjectName) {
 
     setWidget(mainWidget);
     setWidgetResizable(true);  // make the widget to fill whole available space
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DashboardTabPage::sl_colorThemeSwitched);
 }
 
 DashboardWidget* DashboardTabPage::addDashboardWidget(const QString& title, QWidget* contentWidget) {
@@ -81,6 +85,15 @@ DashboardWidget* DashboardTabPage::addDashboardWidget(const QString& title, QWid
     auto dashboardWidget = new DashboardWidget(title, contentWidget);
     layout->insertWidget(layout->count() - 1, dashboardWidget);  // the last is stretch.
     return dashboardWidget;
+}
+
+void DashboardTabPage::sl_colorThemeSwitched() {
+    QString backgroundImagePath = GUIUtils::getThemedPath(":U2Designer/images/background.png");
+    setStyleSheet(QString("QWidget#tabPageStyleRoot {"
+                  " background: url('%1') repeat scroll 0 0 transparent; "
+                  " padding: 10px;"
+                  "}").arg(backgroundImagePath));
+
 }
 
 }  // namespace U2

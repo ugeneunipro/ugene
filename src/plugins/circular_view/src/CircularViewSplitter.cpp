@@ -35,6 +35,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ExportImageDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/OrderedToolbar.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
@@ -60,11 +61,11 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
     fitInViewAction->setToolTip(tr("Fit To Full View"));
 
     exportAction = new QAction(tr("Save circular view as image"), this);
-    exportAction->setIcon(QIcon(":/core/images/cam2.png"));
+    GUIUtils::setThemedIcon(exportAction, ":/core/images/cam2.png");
     exportAction->setToolTip(tr("Save circular view as image"));
 
     toggleRestrictionMapAction = new QAction(tr("Show/hide restriction sites map"), this);
-    toggleRestrictionMapAction->setIcon(QIcon(":/circular_view/images/side_list.png"));
+    GUIUtils::setThemedIcon(toggleRestrictionMapAction, ":/circular_view/images/side_list.png");
     toggleRestrictionMapAction->setToolTip(tr("Show/hide restriction sites map"));
     toggleRestrictionMapAction->setCheckable(true);
     toggleRestrictionMapAction->setChecked(true);

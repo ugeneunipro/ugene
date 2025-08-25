@@ -747,7 +747,7 @@ void WorkflowView::createActions() {
     connect(deleteAction, SIGNAL(triggered()), scene, SLOT(sl_deleteItem()));
 
     dmAction = new QAction(tr("Dashboards manager"), this);
-    GUIUtils::setThemedIcon(dmAction, ":workflow_designer/images/settings.png");
+    GUIUtils::setThemedIcon(dmAction, ":core/images/settings2.png");
     dmAction->setObjectName("Dashboards manager");
     new DashboardManagerHelper(dmAction, this);
 
@@ -2790,7 +2790,7 @@ void WorkflowScene::setModified() {
 void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
     if (WorkflowSettings::showGrid()) {
         int step = GRID_STEP;
-        painter->setPen(QPen(QColor(200, 200, 255, 125)));
+        painter->setPen(QPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
         // draw horizontal grid
         qreal start = round(rect.top(), step);
         if (start > rect.top()) {
@@ -2813,7 +2813,6 @@ void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
 
     if (items().empty()) {
         // draw a hint on empty scene
-        painter->setPen(Qt::darkGray);
         QFont f = painter->font();
         if (hint == SamplesTab) {
         } else {
@@ -2821,9 +2820,10 @@ void WorkflowScene::drawBackground(QPainter* painter, const QRectF& rect) {
             f.setFamily("Courier New");
             f.setPointSizeF(f.pointSizeF() * 2. / trans.m11());
             painter->setFont(f);
+            painter->setPen(QPalette().text().color());
             QRectF res;
             painter->drawText(sceneRect(), Qt::AlignCenter, tr("Drop an element from the palette here"), &res);
-            QPixmap pix(":workflow_designer/images/leftarrow.png");
+            QPixmap pix(GUIUtils::getThemedPath(":workflow_designer/images/leftarrow.png"));
             QPointF pos(res.left(), res.center().y());
             pos.rx() -= pix.width() + GRID_STEP;
             pos.ry() -= pix.height() / 2;

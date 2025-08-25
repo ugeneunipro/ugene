@@ -128,6 +128,7 @@ public slots:
     void sl_refresh();
 private slots:
     void sl_onHoverLink(const QString& link);
+    void si_colorThemeSwitched();
 
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event);

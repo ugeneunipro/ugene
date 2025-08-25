@@ -307,7 +307,9 @@ public:
         return !nothingToVisualize;
     }
 
-    QColor getCoverageColor(double grayCoeff);
+    QColor getCoverageColor(double grayCoeff, bool isDarkTheme);
+
+    void colorThemeSwitched();
 
 private:
     AssemblyBrowser* browser;

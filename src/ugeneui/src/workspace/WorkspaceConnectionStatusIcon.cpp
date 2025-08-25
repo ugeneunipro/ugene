@@ -24,6 +24,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "WebSocketClientService.h"
 #include "WorkspaceService.h"
 
@@ -71,7 +73,7 @@ void WorkspaceConnectionStatusIcon::updateIcon() {
     if (workspaceService != nullptr && workspaceService->isLoggedIn()) {
         auto webSocketService = workspaceService->getWebSocketService();
         auto isConnected = webSocketService != nullptr && webSocketService->isConnected();
-        iconName = isConnected ? ":/ugene/images/cloud_connected.svg" : ":/ugene/images/cloud_connecting.svg";
+        iconName = isConnected ? GUIUtils::getThemedPath(":/ugene/images/cloud_connected.svg") : GUIUtils::getThemedPath(":/ugene/images/cloud_connecting.svg");
         tooltip = isConnected ? tr("Connected to Workspace") : tr("Connecting to workspace...");
     }
     setPixmap(QIcon(iconName).pixmap(20, 20));

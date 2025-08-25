@@ -29,6 +29,7 @@
 #include <QWidgetAction>
 
 #include <U2Algorithm/CreateSubalignmentTask.h>
+#include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
@@ -85,7 +86,6 @@ MsaEditorSequenceArea::MsaEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor, &GObjectViewController::si_buildMenu, this, &MsaEditorSequenceArea::sl_buildMenu);
     connect(editor, &GObjectViewController::si_buildStaticToolbar, this, &MsaEditorSequenceArea::sl_buildStaticToolbar);
 
-    selectionColor = Qt::black;
     editingEnabled = true;
 
     connect(ui->copySelectionAction, SIGNAL(triggered()), SLOT(sl_copySelection()));
@@ -392,6 +392,28 @@ void MsaEditorSequenceArea::sl_updateActions() {
     reverseAction->setEnabled(canEditSelectedArea);
     complementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
     removeAllGapsAction->setEnabled(canEditAlignment && maObj->hasNonTrailingGap());
+}
+
+void MsaEditorSequenceArea::sl_colorThemeSwitched() {
+    QString colorId;
+    QString unused;
+    getColorAndHighlightingIds(colorId, unused);
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    bool csChanged = false;
+    if (isDark && (colorId == MsaColorScheme::UGENE_NUCL_LIGHT)) {
+        colorId = MsaColorScheme::UGENE_NUCL_DARK;
+        csChanged = true;
+    } else if (!isDark && (colorId == MsaColorScheme::UGENE_NUCL_DARK)) {
+        colorId = MsaColorScheme::UGENE_NUCL_LIGHT;
+        csChanged = true;
+    }
+    if (csChanged) {
+        MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
+        MsaColorSchemeFactory* csf = csr->getSchemeFactoryById(colorId);
+        initColorSchemes(csf);
+    }
+
+    MaEditorSequenceArea::sl_colorThemeSwitched();
 }
 
 void MsaEditorSequenceArea::sl_delCol() {
