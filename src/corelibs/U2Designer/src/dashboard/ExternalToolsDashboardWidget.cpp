@@ -493,7 +493,7 @@ BadgeLabel::BadgeLabel(int kind, const QString& text, bool isImportant)
     if (isCopyButtonVisible) {
         QString copyButtonStyle = style + ";border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 1px solid #eee;";
         copyButton = new HoverQLabel("", "QLabel {" + copyButtonStyle + "}", "QLabel {" + copyButtonStyle + "; color: black; background: #777;}");
-        copyButton->setPixmap(QPixmap(GUIUtils::getResourceName("U2Designer", "copy.png")));
+        copyButton->setPixmap(QPixmap(":U2Designer/images/copy.png"));
         copyButton->setObjectName("copyButton");
         copyButton->setToolTip(tr("Copy command line"));
         layout->addWidget(copyButton);

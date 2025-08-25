@@ -652,7 +652,7 @@ void WidgetCreator::visit(LogoWidget* lw) {
     auto label = new QLabel(result);
     QPixmap pix;
     if (lw->isDefault()) {
-        pix = QPixmap(GUIUtils::getResourceName("U2Designer", "logo.png"));
+        pix = QPixmap(QString(":U2Designer/images/logo.png"));
     } else {
         pix = QPixmap(lw->getLogoPath());
     }

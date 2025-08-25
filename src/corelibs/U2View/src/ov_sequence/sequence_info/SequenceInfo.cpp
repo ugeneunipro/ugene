@@ -708,7 +708,7 @@ QString SequenceInfo::formTableRow(const QString& caption, const QString& value,
     if (addSettingsButton) {
         settingsLink = QString(R"(&nbsp;&nbsp;<a href="%1"><img src="%2" width=16 height=16;"></a>)")
                            .arg(caption)
-                           .arg(GUIUtils::getResourceName("core", "gear.svg"));
+                           .arg(GUIUtils::getThemedPath(":core/images/gear.svg"));
     }
     result = "<tr><td>" + tr("%1").arg(caption) + ": </td><td" + (addSettingsButton ? " style=\"vertical-align:top;\">" : ">") +
              metrics.elidedText(value, Qt::ElideRight, availableSpace) + settingsLink + "</td></tr>";

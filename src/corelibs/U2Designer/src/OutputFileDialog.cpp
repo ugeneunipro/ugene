@@ -42,9 +42,9 @@ static const QString BAD_CHARS = "\\*\\?\\|\\\"\\:";
 OutputFileDialog::OutputFileDialog(RunFileSystem* _rfs, bool _saveDir, CompletionFiller* filler, QWidget* parent)
     : QDialog(parent), rfs(_rfs), saveDir(_saveDir), saveToFileSystem(false) {
     setupUi(this);
-    addDirButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_directory.png"));
-    absolutePathButton->setIcon(GUIUtils::getIconResource("U2Designer", "outside.png"));
-    settingsButton->setIcon(GUIUtils::getIconResource("core", "settings2.png"));
+    addDirButton->setIcon(QIcon(":U2Designer/images/add_directory.png"));
+    GUIUtils::setThemedIcon(absolutePathButton, ":U2Designer/images/outside.png");
+    GUIUtils::setThemedIcon(settingsButton, ":core/images/settings2.png");
     QPushButton* saveButton = buttonBox->button(QDialogButtonBox::Save);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     saveButton->setText(tr("Save"));
@@ -264,15 +264,15 @@ QVariant RFSTreeModel::data(const QModelIndex& index, int role) const {
         return item->name();
     } else if (Qt::DecorationRole == role) {
         FSItem* root = superRootItem->child(0);
-        QIcon res;
+        QString iconStr;
         if (root == item) {
-            res = GUIUtils::getIconResource("U2Designer", "hard_disk.png");
+            iconStr = ":U2Designer/images/hard_disk.png";
         } else if (item->isDir()) {
-            res = GUIUtils::getIconResource("U2Designer", "directory.png");
+            iconStr = ":U2Designer/images/directory.png";
         } else {
-            res = GUIUtils::getIconResource("core", "document.png");
+            iconStr = ":core/images/document.png";
         }
-        return res;
+        return QIcon(iconStr);
     }
 
     return QVariant();

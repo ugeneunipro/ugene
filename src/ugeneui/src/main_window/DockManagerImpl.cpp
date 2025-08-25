@@ -465,7 +465,7 @@ void MWDockManagerImpl::sl_toggleDocks() {
 
 void MWDockManagerImpl::sl_colorThemeSwitched() {
     for (auto doc : qAsConst(docks)) {
-        DockWidgetPainter::updateLabel(doc, doc->isActive);
+        DockWidgetPainter::updateLabel(doc, doc->isActive, AppContext::getMainWindow()->isDarkTheme());
     }
 }
 

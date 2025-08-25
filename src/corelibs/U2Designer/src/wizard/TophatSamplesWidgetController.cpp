@@ -36,6 +36,7 @@
 #include <U2Designer/WizardController.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/WorkflowUtils.h>

@@ -117,7 +117,7 @@ QWidget* SimpleTextObjectView::createViewWidget(QWidget* parent) {
     connect(textEdit, SIGNAL(textChanged()), SLOT(sl_onTextEditTextChanged()));
     connect(textObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_onTextObjStateLockChanged()));
     textEdit->installEventFilter(this);
-    GUIUtils::setThemedWindowIcon(this, GObjectTypes::getTypeInfo(GObjectTypes::TEXT).iconPath);
+    GUIUtils::setThemedWindowIcon(textEdit, GObjectTypes::getTypeInfo(GObjectTypes::TEXT).iconPath);
     return textEdit;
 }
 

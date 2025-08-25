@@ -71,7 +71,7 @@ void LogViewWidget::init() {
     settings.reinitAll();
 
     showSettingsAction = new QAction(tr("Settings..."), this);
-    showSettingsAction->setIcon(GUIUtils::getIconResource("ugene", "log_settings.png"));
+    showSettingsAction->setIcon(QIcon(":ugene/images/log_settings.png"));
     connect(showSettingsAction, SIGNAL(triggered()), SLOT(sl_openSettingsDialog()));
 
     dumpCountersAction = new QAction(tr("Dump performance counters"), this);

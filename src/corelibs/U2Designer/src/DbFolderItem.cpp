@@ -35,7 +35,8 @@ DbFolderItem::DbFolderItem(const QString& url, QListWidget* parent)
     : UrlItem(url, parent), options(new DbFolderOptions()) {
     connect(options, SIGNAL(si_dataChanged()), SIGNAL(si_dataChanged()));
 
-    setIcon(GUIUtils::getIconResource("U2Designer", "database_folder.png").pixmap(16, 16));
+    QIcon dirIcon = QIcon(QString(":U2Designer/images/database_folder.png"));
+    setIcon(dirIcon);
 
     const QString folderPath = SharedDbUrlUtils::getDbFolderPathByUrl(url);
     setToolTip("<p><b>" + SharedDbUrlUtils::getDbShortNameFromEntityUrl(url) + "</b>: " + folderPath + "</p><p>" + tr("Use <i>right click</i> to set advanced options") + "</p>");

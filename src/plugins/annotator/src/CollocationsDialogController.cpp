@@ -81,7 +81,7 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
     connect(timer, SIGNAL(timeout()), SLOT(sl_onTimer()));
 
     updateState();
-    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png"));
+    setWindowIcon(QIcon(":/ugene/images/ugene.png"));
 
     rbBoth->setChecked(true);
 }

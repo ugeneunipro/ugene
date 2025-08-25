@@ -138,7 +138,7 @@ void ORFWorkerFactory::init() {
 
     proto->setPrompter(new ORFPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconParameters(IconParameters("orf_marker", "orf_marker.png"));
+    proto->setIconPath(":orf_marker/images/orf_marker.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

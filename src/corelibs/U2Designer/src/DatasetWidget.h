@@ -54,7 +54,6 @@ private slots:
     void sl_itemChecked();
     void sl_selectAll();
     void sl_dataChanged();
-    void si_colorThemeSwitched();
 
 private:
     void addUrl(const QString& url);

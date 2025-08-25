@@ -57,11 +57,11 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     popup = new OptionsPopup(this);
 
     reset();
-    ui->addFileButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_file.png"));
-    ui->addDirButton->setIcon(GUIUtils::getIconResource("U2Designer", "add_directory.png"));
-    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png"));
-    ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
-    ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
+    ui->addFileButton->setIcon(QIcon(":U2Designer/images/add_file.png"));
+    ui->addDirButton->setIcon(QIcon(":U2Designer/images/add_directory.png"));
+    ui->deleteButton->setIcon(QIcon(":U2Designer/images/exit.png"));
+    GUIUtils::setThemedIcon(ui->upButton, ":U2Designer/images/up.png");
+    GUIUtils::setThemedIcon(ui->downButton, ":U2Designer/images/down.png");
 
     connect(ui->addFileButton, SIGNAL(clicked()), SLOT(sl_addFileButton()));
     connect(ui->addDirButton, SIGNAL(clicked()), SLOT(sl_addDirButton()));
@@ -84,8 +84,6 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     ui->itemsArea->addAction(selectAction);
 
     ui->itemsArea->installEventFilter(this);
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &URLListWidget::si_colorThemeSwitched);
 }
 
 URLListWidget::~URLListWidget() {
@@ -189,12 +187,6 @@ void URLListWidget::sl_selectAll() {
 
 void URLListWidget::sl_dataChanged() {
     ctrl->updateUrl(dynamic_cast<UrlItem*>(sender()));
-}
-
-void URLListWidget::si_colorThemeSwitched() {
-    ui->deleteButton->setIcon(GUIUtils::getIconResource("U2Designer", "exit.png"));
-    ui->upButton->setIcon(GUIUtils::getIconResource("U2Designer", "up.png"));
-    ui->downButton->setIcon(GUIUtils::getIconResource("U2Designer", "down.png"));
 }
 
 bool URLListWidget::eventFilter(QObject* obj, QEvent* event) {

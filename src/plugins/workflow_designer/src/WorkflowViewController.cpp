@@ -747,7 +747,7 @@ void WorkflowView::createActions() {
     connect(deleteAction, SIGNAL(triggered()), scene, SLOT(sl_deleteItem()));
 
     dmAction = new QAction(tr("Dashboards manager"), this);
-    GUIUtils::setThemedIcon(dmAction, ":workflow_designer/images/settings.png");
+    GUIUtils::setThemedIcon(dmAction, ":core/images/settings2.png");
     dmAction->setObjectName("Dashboards manager");
     new DashboardManagerHelper(dmAction, this);
 

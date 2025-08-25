@@ -48,31 +48,30 @@ namespace U2 {
 CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
     : ADVSplitWidget(view) {
     zoomInAction = new QAction(tr("Zoom In"), this);
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
+    zoomInAction->setIcon(QIcon(":/core/images/zoom_in.png"));
     zoomInAction->setToolTip(tr("Zoom In"));
     zoomInAction->setObjectName("tbZoomIn_" + view->getName());
 
     zoomOutAction = new QAction(tr("Zoom Out"), this);
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
+    zoomOutAction->setIcon(QIcon(":/core/images/zoom_out.png"));
     zoomOutAction->setToolTip(tr("Zoom Out"));
 
     fitInViewAction = new QAction(tr("Fit To Full View"), this);
-    fitInViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
+    fitInViewAction->setIcon(QIcon(":/core/images/zoom_whole.png"));
     fitInViewAction->setToolTip(tr("Fit To Full View"));
 
     exportAction = new QAction(tr("Save circular view as image"), this);
-    exportAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
+    GUIUtils::setThemedIcon(exportAction, ":/core/images/cam2.png");
     exportAction->setToolTip(tr("Save circular view as image"));
 
     toggleRestrictionMapAction = new QAction(tr("Show/hide restriction sites map"), this);
-    toggleRestrictionMapAction->setIcon(GUIUtils::getIconResource("circular_view", "side_list.png"));
+    GUIUtils::setThemedIcon(toggleRestrictionMapAction, ":/circular_view/images/side_list.png");
     toggleRestrictionMapAction->setToolTip(tr("Show/hide restriction sites map"));
     toggleRestrictionMapAction->setCheckable(true);
     toggleRestrictionMapAction->setChecked(true);
     connect(toggleRestrictionMapAction, SIGNAL(triggered(bool)), SLOT(sl_toggleRestrictionMap(bool)));
 
     connect(exportAction, SIGNAL(triggered()), SLOT(sl_export()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &CircularViewSplitter::sl_colorThemeSwtiched);
 
     splitter = new QSplitter(Qt::Horizontal);
 
@@ -298,14 +297,6 @@ void CircularViewSplitter::sl_toggleRestrictionMap(bool toggle) {
     foreach (QWidget* w, restrictionMapWidgets) {
         w->setVisible(toggle);
     }
-}
-
-void CircularViewSplitter::sl_colorThemeSwtiched() {
-    zoomInAction->setIcon(GUIUtils::getIconResource("core", "zoom_in.png"));
-    zoomOutAction->setIcon(GUIUtils::getIconResource("core", "zoom_out.png"));
-    fitInViewAction->setIcon(GUIUtils::getIconResource("core", "zoom_whole.png"));
-    exportAction->setIcon(GUIUtils::getIconResource("core", "cam2.png"));
-    toggleRestrictionMapAction->setIcon(GUIUtils::getIconResource("circular_view", "side_list.png"));
 }
 
 }  // namespace U2

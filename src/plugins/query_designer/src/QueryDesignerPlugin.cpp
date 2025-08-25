@@ -35,6 +35,7 @@
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
 
+#include <QDir>
 #include "QDDocumentFormat.h"
 #include "QDRunDialog.h"
 #include "QDSamples.h"

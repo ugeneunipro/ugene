@@ -61,6 +61,8 @@
         <file>images/light/align_tree_labels.png</file>
         <file>images/light/amb_backward.png</file>
         <file>images/light/amb_forward.png</file>
+        <file>images/light/arrow_down.png</file>
+        <file>images/light/arrow_right.png</file>
         <file>images/light/arrow_rotate_clockwise.png</file>
         <file>images/light/arrow-move-left.png</file>
         <file>images/light/arrow-move-right.png</file>
@@ -157,6 +159,8 @@
         <file>images/dark/align_tree_labels.png</file>
         <file>images/dark/amb_backward.png</file>
         <file>images/dark/amb_forward.png</file>
+        <file>images/dark/arrow_down.png</file>
+        <file>images/dark/arrow_right.png</file>
         <file>images/dark/arrow_rotate_clockwise.png</file>
         <file>images/dark/arrow-move-left.png</file>
         <file>images/dark/arrow-move-right.png</file>

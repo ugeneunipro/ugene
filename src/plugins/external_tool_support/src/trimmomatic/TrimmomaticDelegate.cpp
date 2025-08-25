@@ -175,8 +175,8 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
                                                      QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
-    buttonUp->setIcon(GUIUtils::getIconResource("external_tool_support", "up.png"));
-    buttonDown->setIcon(GUIUtils::getIconResource("external_tool_support", "down.png"));
+    GUIUtils::setThemedIcon(buttonUp, ":/external_tool_support/images/up.png");
+    GUIUtils::setThemedIcon(buttonDown, ":/external_tool_support/images/down.png");
     new HelpButton(this, buttonBox, "65930159");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
@@ -234,8 +234,6 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
 }
 
 void TrimmomaticPropertyDialog::si_colorThemeSwitched() {
-    buttonUp->setIcon(GUIUtils::getIconResource("external_tool_support", "up.png"));
-    buttonDown->setIcon(GUIUtils::getIconResource("external_tool_support", "down.png"));
     for (int i = 0; i < steps.size(); i++) {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);

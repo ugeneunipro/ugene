@@ -236,8 +236,8 @@ QDTandemActorPrototype::QDTandemActorPrototype() {
     }
 }
 
-QIcon QDTandemActorPrototype::getIcon() const {
-    return GUIUtils::getIconResource("repeat_finder", "repeats_tandem.png");
+QString QDTandemActorPrototype::getIconPath() const {
+    return ":repeat_finder/images/repeats_tandem.png";
 }
 
 QDActor* QDTandemActorPrototype::createInstance() const {

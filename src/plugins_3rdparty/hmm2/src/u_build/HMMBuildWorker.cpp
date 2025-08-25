@@ -186,7 +186,7 @@ void HMMBuildWorkerFactory::init() {
     delegates[MODE_ATTR] = new ComboBoxDelegate(modeMap);
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconParameters(IconParameters("hmm2", "hmmer2.png"));
+    proto->setIconPath(":hmm2/images/hmmer2.png");
     proto->setPrompter(new HMMBuildPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(HMMLib::HMM_CATEGORY(), proto);
 

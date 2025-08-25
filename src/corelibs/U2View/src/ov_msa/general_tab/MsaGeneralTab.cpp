@@ -74,12 +74,6 @@ void MsaGeneralTab::sl_convertNucleicAlphabetButtonClicked() {
     }
 }
 
-void MsaGeneralTab::sl_colorThemeSwitched() {
-    QIcon icon(GUIUtils::getIconResource("core", "goto.png"));
-    convertNucleicAlphabetButton->setIcon(icon);
-    convertAminoAlphabetButton->setIcon(icon);
-}
-
 void MsaGeneralTab::sl_alignmentChanged() {
     updateState();
 }
@@ -111,8 +105,6 @@ void MsaGeneralTab::connectSignals() {
         reInitializeParameters();
         updateState();
     });
-
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MsaGeneralTab::sl_colorThemeSwitched);
 }
 
 void MsaGeneralTab::reInitializeParameters() {
@@ -159,10 +151,6 @@ void MsaGeneralTab::initializeParameters() {
 
     QString currentCopyFormattedID = msaEditor->getLineWidget(0)->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
-
-    QIcon icon(GUIUtils::getIconResource("core", "goto.png"));
-    convertNucleicAlphabetButton->setIcon(icon);
-    convertAminoAlphabetButton->setIcon(icon);
 }
 
 void MsaGeneralTab::updateState() {

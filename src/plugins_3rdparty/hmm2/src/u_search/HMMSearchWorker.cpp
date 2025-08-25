@@ -125,7 +125,7 @@ void HMMSearchWorkerFactory::init() {
     }
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconParameters(IconParameters("hmm2", "hmmer2.png"));
+    proto->setIconPath(":hmm2/images/hmmer2.png");
     proto->setPrompter(new HMMSearchPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(HMMLib::HMM_CATEGORY(), proto);
 

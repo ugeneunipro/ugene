@@ -93,7 +93,7 @@ void PluginViewerController::connectStaticActions() {
     MainWindow* mw = AppContext::getMainWindow();
     QMenu* pluginsMenu = mw->getTopLevelMenu(MWMENU_SETTINGS);
 
-    auto viewPluginsAction = new QAction(GUIUtils::getIconResource("ugene", "plugins.png"), tr("Plugins..."), this);
+    auto viewPluginsAction = new QAction(QIcon(":ugene/images/plugins.png"), tr("Plugins..."), this);
     connect(viewPluginsAction, SIGNAL(triggered()), SLOT(sl_show()));
     viewPluginsAction->setObjectName(ACTION__PLUGINS_VIEW);
     pluginsMenu->addAction(viewPluginsAction);
@@ -363,7 +363,7 @@ void PlugViewPluginItem::updateVisual() {
     QString desc = QString(plugin->getDescription()).replace("\n", " ");
     setData(3, Qt::DisplayRole, desc);
 
-    setIcon(showServices ? 0 : 1, GUIUtils::getIconResource("ugene", "plugins.png"));
+    setIcon(showServices ? 0 : 1, QIcon(":ugene/images/plugins.png"));
     GUIUtils::setMutedLnF(this, false);
     if (!plugin->getDescription().contains("\n") && desc.length() > 80) {
         for (int i = 80; i < desc.length();) {
@@ -400,7 +400,7 @@ void PlugViewServiceItem::updateVisual() {
     setData(1, Qt::DisplayRole, service->getName());
     setData(2, Qt::DisplayRole, service->isEnabled() ? PluginViewerController::tr("On") : PluginViewerController::tr("Off"));
     setData(3, Qt::DisplayRole, service->getDescription());
-    setIcon(0, GUIUtils::getIconResource("core", "settings2.png"));
+    setIcon(0, GUIUtils::getThemedIcon(":ugene/images/service.png"));
 }
 
 }  // namespace U2

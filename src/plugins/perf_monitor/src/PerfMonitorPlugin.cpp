@@ -45,12 +45,11 @@ PerfMonitorPlugin::PerfMonitorPlugin()
     windowId = 0;
     openWindowAction = new QAction(tr("Show counters"), this);
     openWindowAction->setObjectName("Show counters");
-    openWindowAction->setIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
+    GUIUtils::setThemedIcon(openWindowAction, ":/perf_monitor/images/mon.png");
     connect(openWindowAction, SIGNAL(triggered()), SLOT(sl_openWindow()));
 
     QMenu* toolsMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
     toolsMenu->addAction(openWindowAction);
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PerfMonitorPlugin::sl_colorThemeSwtiched);
 }
 
 void PerfMonitorPlugin::sl_openWindow() {
@@ -58,22 +57,11 @@ void PerfMonitorPlugin::sl_openWindow() {
     MWMDIWindow* mdiWindow = mdi->getWindowById(windowId);
     if (mdiWindow == nullptr) {
         mdiWindow = new PerfMonitorView();
-        mdiWindow->setWindowIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
+        GUIUtils::setThemedWindowIcon(mdiWindow , ":/perf_monitor/images/mon.png");
         windowId = mdiWindow->getId();
         mdi->addMDIWindow(mdiWindow);
     }
     mdi->activateWindow(mdiWindow);
-}
-
-void PerfMonitorPlugin::sl_colorThemeSwtiched() {
-    openWindowAction->setIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
-    MWMDIManager* mdi = AppContext::getMainWindow()->getMDIManager();
-    MWMDIWindow* mdiWindow = mdi->getWindowById(windowId);
-    if (mdiWindow != nullptr) {
-        mdiWindow->setWindowIcon(GUIUtils::getIconResource("perf_monitor", "mon.png"));
-        mdi->closeMDIWindow(mdiWindow);
-        mdi->addMDIWindow(mdiWindow);
-    }
 }
 
 }  // namespace U2

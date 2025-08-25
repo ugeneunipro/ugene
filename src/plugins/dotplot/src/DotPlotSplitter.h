@@ -57,12 +57,8 @@ public:
 protected:
     bool onCloseEvent() override;
 
-private slots:
-    void sl_colorThemeSwitched();
-
 private:
-    QAction* createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable = true);
-    QAction* createAction(const QIcon& ic, const QString& toolTip, const char* slot, bool checkable = true);
+    QAction* createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable = true, bool switchable = false);
 
     QSplitter* splitter;
     QList<DotPlotWidget*> dotPlotList;

@@ -30,7 +30,8 @@ DirectoryItem::DirectoryItem(const QString& url, QListWidget* parent)
     options = new DirectoryOptions();
     connect(options, SIGNAL(si_dataChanged()), SIGNAL(si_dataChanged()));
 
-    this->setIcon(GUIUtils::getIconResource("U2Designer", "directory.png").pixmap(16, 16));
+    QIcon dirIcon = QIcon(QString(":U2Designer/images/directory.png"));
+    this->setIcon(dirIcon);
 
     setToolTip(
         "<p>" + url + "</p><p>" +

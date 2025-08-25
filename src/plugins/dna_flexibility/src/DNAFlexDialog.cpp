@@ -67,7 +67,7 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext* _ctx)
     tabOutput->layout()->addWidget(annotWidget);
 
     // Setting the dialog icon to the standard UGENE icon
-    setWindowIcon(GUIUtils::getIconResource("ugene", "ugene.png"));
+    setWindowIcon(QIcon(":/ugene/images/ugene.png"));
 
     // Setting the bounds for the parameters
     spinBoxWindowSize->setMaximum(sequenceLength);

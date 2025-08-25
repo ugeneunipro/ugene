@@ -876,7 +876,7 @@ void WorkflowPortItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
         if (event->modifiers() & portRotationModifier) {
             rotating = true;
             // setCursor(portRotationCursor);
-            setCursor(QCursor(QPixmap(GUIUtils::getResourceName("workflow_designer", "rot_cur.png"))));
+            setCursor(QCursor(QPixmap(GUIUtils::getThemedPath(":workflow_designer/images/rot_cur.png"))));
         } else {
             dragging = true;
             setCursor(Qt::ClosedHandCursor);
@@ -921,7 +921,7 @@ void WorkflowPortItem::mousePressEvent(QGraphicsSceneMouseEvent* event) {
         dragPoint = event->pos();
         if ((event->modifiers() & portRotationModifier) && !dragging) {
             rotating = true;
-            setCursor(QCursor(QPixmap(GUIUtils::getResourceName("workflow_designer", "rot_cur.png"))));
+            setCursor(QCursor(QPixmap(GUIUtils::getThemedPath(":workflow_designer/images/rot_cur.png"))));
         } else {
             setCursor(Qt::ClosedHandCursor);
         }
@@ -971,7 +971,7 @@ void WorkflowPortItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
     if (getWorkflowScene()->isLocked()) {
         return;
     }
-    setCursor((event->modifiers() & portRotationModifier) ? QCursor(QPixmap(GUIUtils::getResourceName("workflow_designer", "rot_cur.png"))) : QCursor(Qt::OpenHandCursor));
+    setCursor((event->modifiers() & portRotationModifier) ? QCursor(QPixmap(GUIUtils::getThemedPath(":workflow_designer/images/rot_cur.png"))) : QCursor(Qt::OpenHandCursor));
 }
 
 void WorkflowPortItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*) {

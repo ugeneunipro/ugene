@@ -102,7 +102,7 @@ ReadHMMProto::ReadHMMProto(const Descriptor& _desc, const QList<PortDescriptor*>
     QMap<QString, PropertyDelegate*> delegateMap;
     delegateMap[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(HMMIO::getHMMFileFilter(), HMMIO::HMM_ID, true, false, false);
     setEditor(new DelegateEditor(delegateMap));
-    setIconParameters(IconParameters("hmm2", "hmmer2.png"));
+    setIconPath(":hmm2/images/hmmer2.png");
 }
 
 bool ReadHMMProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
@@ -119,7 +119,7 @@ WriteHMMProto::WriteHMMProto(const Descriptor& _desc, const QList<PortDescriptor
     delegateMap[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(false);
 
     setEditor(new DelegateEditor(delegateMap));
-    setIconParameters(IconParameters("hmm2", "hmmer2.png"));
+    setIconPath(":hmm2/images/hmmer2.png");
     setValidator(new ScreenedParamValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), ports.first()->getId(), BaseSlots::URL_SLOT().getId()));
     setPortValidator(HMM_IN_PORT_ID, new ScreenedSlotValidator(BaseSlots::URL_SLOT().getId()));
 }

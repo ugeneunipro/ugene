@@ -88,7 +88,7 @@ DashboardWidget* DashboardTabPage::addDashboardWidget(const QString& title, QWid
 }
 
 void DashboardTabPage::sl_colorThemeSwitched() {
-    QString backgroundImagePath = GUIUtils::getResourceName("U2Designer", "background.png");
+    QString backgroundImagePath = GUIUtils::getThemedPath(":U2Designer/images/background.png");
     setStyleSheet(QString("QWidget#tabPageStyleRoot {"
                   " background: url('%1') repeat scroll 0 0 transparent; "
                   " padding: 10px;"

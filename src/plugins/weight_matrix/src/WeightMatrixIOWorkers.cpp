@@ -107,7 +107,7 @@ ReadPWMatrixProto::ReadPWMatrixProto(const Descriptor& _desc, const QList<PortDe
     QMap<QString, PropertyDelegate*> delegateMap;
     delegateMap[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(WeightMatrixIO::getPWMFileFilter(), WeightMatrixIO::WEIGHT_MATRIX_ID, true, false, false);
     setEditor(new DelegateEditor(delegateMap));
-    setIconParameters(IconParameters("weight_matrix", "weight_matrix.png"));
+    setIconPath(":weight_matrix/images/weight_matrix.png");
 }
 
 bool ReadPWMatrixProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
@@ -124,7 +124,7 @@ WritePWMatrixProto::WritePWMatrixProto(const Descriptor& _desc, const QList<Port
     delegateMap[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(false);
 
     setEditor(new DelegateEditor(delegateMap));
-    setIconParameters(IconParameters("weight_matrix", "weight_matrix.png"));
+    setIconPath(":weight_matrix/images/weight_matrix.png");
     setValidator(new ScreenedParamValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), ports.first()->getId(), BaseSlots::URL_SLOT().getId()));
     setPortValidator(WMATRIX_IN_PORT_ID, new ScreenedSlotValidator(BaseSlots::URL_SLOT().getId()));
 }
@@ -329,7 +329,7 @@ ReadPFMatrixProto::ReadPFMatrixProto(const Descriptor& _desc, const QList<PortDe
     QMap<QString, PropertyDelegate*> delegateMap;
     delegateMap[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(WeightMatrixIO::getPFMFileFilter(), WeightMatrixIO::FREQUENCY_MATRIX_ID, true, false, false);
     setEditor(new DelegateEditor(delegateMap));
-    setIconParameters(IconParameters("weight_matrix", "weight_matrix.png"));
+    setIconPath(":weight_matrix/images/weight_matrix.png");
 }
 
 bool ReadPFMatrixProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
@@ -346,7 +346,7 @@ WritePFMatrixProto::WritePFMatrixProto(const Descriptor& _desc, const QList<Port
     delegateMap[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(false);
 
     setEditor(new DelegateEditor(delegateMap));
-    setIconParameters(IconParameters("weight_matrix", "weight_matrix.png"));
+    setIconPath(":weight_matrix/images/weight_matrix.png");
     setValidator(new ScreenedParamValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), ports.first()->getId(), BaseSlots::URL_SLOT().getId()));
     setPortValidator(FMATRIX_IN_PORT_ID, new ScreenedSlotValidator(BaseSlots::URL_SLOT().getId()));
 }

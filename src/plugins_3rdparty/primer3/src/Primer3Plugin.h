@@ -41,9 +41,6 @@ class Primer3Plugin : public Plugin {
 public:
     Primer3Plugin();
 
-private slots:
-    void sl_colorThemeSwitched();
-
 private:
     Primer3ADVContext* viewCtx = nullptr;
     QAction* noTargetSequencePrimer3 = nullptr;

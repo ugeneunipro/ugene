@@ -68,12 +68,12 @@ void WorkspaceConnectionStatusIcon::reconnectToWorkspace() {
 }
 
 void WorkspaceConnectionStatusIcon::updateIcon() {
-    QString iconName = GUIUtils::getResourceName("ugene", "cloud_disabled.svg");
+    QString iconName = ":/ugene/images/cloud_disabled.svg";
     QString tooltip = tr("Workspace is disconnected.\nUse 'File->Login to Workspace' to login.");
     if (workspaceService != nullptr && workspaceService->isLoggedIn()) {
         auto webSocketService = workspaceService->getWebSocketService();
         auto isConnected = webSocketService != nullptr && webSocketService->isConnected();
-        iconName = isConnected ? GUIUtils::getResourceName("ugene", "cloud_connected.svg") : GUIUtils::getResourceName("ugene", "cloud_connecting.svg");
+        iconName = isConnected ? GUIUtils::getThemedPath(":/ugene/images/cloud_connected.svg") : GUIUtils::getThemedPath(":/ugene/images/cloud_connecting.svg");
         tooltip = isConnected ? tr("Connected to Workspace") : tr("Connecting to workspace...");
     }
     setPixmap(QIcon(iconName).pixmap(20, 20));
