@@ -208,7 +208,8 @@ QString generateMainPart(const QByteArray& seq, int cut, bool forward, int enzym
         QString ch(seq.at(i));
         if (ch != "N") {
             ch = QString("<span style=\"color: %1; \">%2</span>")
-                .arg(AppContext::getMainWindow()->isDarkTheme() ? ENZYME_TOOLTIP_DARK : ENZYME_TOOLTIP_DARK).arg(ch);
+                     .arg(AppContext::getMainWindow()->isDarkTheme() ? ENZYME_TOOLTIP_DARK : ENZYME_TOOLTIP_LIGHT)
+                     .arg(ch);
         }
         append2Result(ch);
         append2Result(TOOLTIP_SPACE);
