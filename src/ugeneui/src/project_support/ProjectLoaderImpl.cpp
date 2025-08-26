@@ -860,7 +860,7 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget* w)
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    GUIUtils::setThemedWindowIcon(this, ":ugene/images/project_save.png");
+    GUIUtils::setThemedWindowIcon(this, ":ugene/images/save.png");
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(sl_clicked(QAbstractButton*)));
 }
