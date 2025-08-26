@@ -650,12 +650,16 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
         if (par == itemWid) {  // may be no good method for check QTreeWidgetItem
             emit si_setLockState(true);
             QString toolId = item->data(0, Qt::ItemDataRole::UserRole).toString();
-            if (path.isEmpty()) {
+            bool isEmptyPath = path.isEmpty();
+            if (isEmptyPath) {
                 auto tool = AppContext::getExternalToolRegistry()->getById(toolId);
                 const auto& iconPath = tool->getIconPath();
                 item->setIcon(0, GUIUtils::getThemedIcon(iconPath));
             }
+            QToolButton* clearToolPathButton = itemWid->findChild<QToolButton*>("ClearToolPathButton");
+            SAFE_POINT_NN(clearToolPathButton, );
 
+            clearToolPathButton->setDisabled(isEmptyPath);
             ExternalToolManager* etManager = AppContext::getExternalToolRegistry()->getManager();
             SAFE_POINT(etManager != nullptr, "External tool manager is null", );
 
