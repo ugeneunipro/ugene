@@ -27,7 +27,6 @@
 #include <QTextEdit>
 #include <QTreeWidget>
 
-#include <U2Core/IconParameters.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/ProjectModel.h>
 

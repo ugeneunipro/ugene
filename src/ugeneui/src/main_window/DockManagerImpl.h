@@ -24,8 +24,6 @@
 
 #include <QIcon>
 
-#include <U2Core/IconParameters.h>
-
 #include <U2Gui/MainWindow.h>
 
 class QLabel;

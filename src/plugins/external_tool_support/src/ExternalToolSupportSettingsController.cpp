@@ -311,10 +311,10 @@ void ExternalToolSupportSettingsPageWidget::updateColorThemeRecursively(QTreeWid
     }
 
     const ExternalToolInfo& toolInfo = externalToolsInfo.value(id);
-    auto iconParameters = toolInfo.path.isEmpty() ? tool->getGrayIconPath()
+    auto iconPath = toolInfo.path.isEmpty() ? tool->getGrayIconPath()
                                                   : (toolInfo.isValid ? tool->getIconPath()
                                                                       : tool->getWarnIconPath());
-    item->setIcon(0, GUIUtils::getThemedIcon(iconParameters));
+    item->setIcon(0, GUIUtils::getThemedIcon(iconPath));
 
     for (int i = 0; i < item->childCount(); i++) {
         updateColorThemeRecursively(item->child(i));
