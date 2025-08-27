@@ -227,7 +227,7 @@ bool GTFile::equals(const QString& path1) {
 qint64 GTFile::getSize(const QString& path) {
     QFile file(path);
     bool ok = file.open(QIODevice::ReadOnly);
-    GT_CHECK_RESULT(ok, "file '" + path + "' is not found", -1);
+    GT_CHECK_RESULT(ok, QString("file '%1' could not be opened, reason: %2, error code: %3").arg(path).arg(file.errorString()).arg(file.error()), -1);
     return file.size();
 }
 
