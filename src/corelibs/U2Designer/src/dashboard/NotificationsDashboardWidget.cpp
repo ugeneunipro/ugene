@@ -21,7 +21,10 @@
 
 #include "./NotificationsDashboardWidget.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/WorkflowUtils.h>
 
@@ -76,6 +79,8 @@ NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement& do
         }
         connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)));
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &NotificationsDashboardWidget::sl_colorThemeSwitched);
 }
 
 void NotificationsDashboardWidget::setDashboardWidget(QWidget* dashboardWidgetParent) {
@@ -104,6 +109,10 @@ void NotificationsDashboardWidget::sl_newNotification(const WorkflowNotification
     notificationList << NotificationsDashboardInfo(wdNotification.actorId, actorName, wdNotification.type, wdNotification.message, count);
     updateVisibility();
     updateNotificationRow(notificationList.size() - 1);
+}
+
+void NotificationsDashboardWidget::sl_colorThemeSwitched() {
+    colorThemeSwitched(tableGridLayout);
 }
 
 void NotificationsDashboardWidget::updateNotificationRow(int workerIndex) {

@@ -41,6 +41,8 @@ private:
     GObjectViewWindowContext* viewCtx;
 };
 
+class ChromaViewAction;
+
 class ChromaViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
@@ -53,6 +55,8 @@ protected slots:
 
 protected:
     void initViewContext(GObjectViewController* view) override;
+
+    ChromaViewAction* chromaViewAction {nullptr};
 };
 
 class ChromaViewAction : public ADVSequenceWidgetAction {

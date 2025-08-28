@@ -68,6 +68,9 @@ private:
     MsaExcludeListWidget* openExcludeList(MsaEditor* msaEditor);
 
     void updateMsaEditorSplitterStyle(MsaEditor* msaEditor);
+
+    QList<GObjectViewAction*> toggleExcludeListActionList;
+    QList<GObjectViewAction*> moveFromMsaActionList;
 };
 
 /** Stores per step (Undo or Redo) information used by Exclude List to keep synchronized state with MSA Editor during Undo/Redo ops. */

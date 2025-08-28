@@ -38,6 +38,7 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -485,6 +486,8 @@ void SequenceInfo::connectSlots() {
     connect(dinuclWidget,    &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
     connect(codonWidget,     &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
     connect(aminoAcidWidget, &ShowHideSubgroupWidget::si_subgroupStateChanged, this, &SequenceInfo::sl_subgroupStateChanged);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &SequenceInfo::sl_colorThemeSwitched);
 }
 
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection*,
@@ -538,6 +541,10 @@ void SequenceInfo::sl_subgroupStateChanged(const QString& subgroupId) {
     } else if (subgroupId == CODON_OCCUR_GROUP_ID || subgroupId == AMINO_ACID_OCCUR_GROUP_ID) {
         updateCodonsOccurrenceData();
     }
+}
+
+void SequenceInfo::sl_colorThemeSwitched() {
+    updateCommonStatisticsData();
 }
 
 bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
@@ -699,8 +706,9 @@ QString SequenceInfo::formTableRow(const QString& caption, const QString& value,
     QFontMetrics metrics = statisticLabel->fontMetrics();
     QString settingsLink;
     if (addSettingsButton) {
-        settingsLink = QString(R"(&nbsp;&nbsp;<a href="%1"><img src=":core/images/gear.svg" width=16 height=16;"></a>)")
-                           .arg(caption);
+        settingsLink = QString(R"(&nbsp;&nbsp;<a href="%1"><img src="%2" width=16 height=16;"></a>)")
+                           .arg(caption)
+                           .arg(GUIUtils::getThemedPath(":core/images/gear.svg"));
     }
     result = "<tr><td>" + tr("%1").arg(caption) + ": </td><td" + (addSettingsButton ? " style=\"vertical-align:top;\">" : ">") +
              metrics.elidedText(value, Qt::ElideRight, availableSpace) + settingsLink + "</td></tr>";

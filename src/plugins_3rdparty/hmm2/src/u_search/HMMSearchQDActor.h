@@ -55,7 +55,7 @@ class HMM2QDActorPrototype : public QDActorPrototype {
 public:
     HMM2QDActorPrototype();
     QString getIconPath() const override {
-        return ":hmm2/images/hmmer_16.png";
+        return ":hmm2/images/hmmer2.png";
     }
     QDActor* createInstance() const {
         return new HMM2QDActor(this);

@@ -27,6 +27,8 @@
 #include "ADVSingleSequenceWidget.h"
 #include "AnnotatedDNAView.h"
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QString& _iconPath, const QString& text, int ps, const ADVGlobalActionFlags& fl)
@@ -35,16 +37,11 @@ ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QString& _iconPath, 
         GUIUtils::setThemedIcon(this, _iconPath);
     }
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
-    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVGlobalAction::sl_colorThemeSwitched);
     updateState();
     v->addADVAction(this);
 }
 
 void ADVGlobalAction::sl_activeSequenceChanged() {
-    updateState();
-}
-
-void ADVGlobalAction::sl_colorThemeSwitched() {
     updateState();
 }
 

@@ -40,7 +40,7 @@ const int DockWidgetPaintData::MIN_LABEL_EXTRA_HEIGHT = 6;
 const int DockWidgetPaintData::ICON_TEXT_DIST = 6;
 const int DockWidgetPaintData::ICON_SIZE = 16;
 
-void DockWidgetPainter::updateLabel(DockData* d, bool active) {
+void DockWidgetPainter::updateLabel(DockData* d, bool active, bool isDarkTheme) {
     const QIcon icon = GUIUtils::getThemedIcon(d->wrapWidget->iconPath);
     const QString text = d->wrapWidget->windowTitle();
     const QString keyPrefix = findKeyPrefix(d->keySequenceAction);
@@ -56,7 +56,7 @@ void DockWidgetPainter::updateLabel(DockData* d, bool active) {
     // Paint
     QPainter painter;
     painter.begin(&pixmap);
-    drawBorder(active, widgetSize, getBackgroundColor(), painter);
+    drawBorder(active, widgetSize, getBackgroundColor(), painter, isDarkTheme);
     setupOrientation(d->area, painter);
     QPoint textPoint = paintData.calculateTextPoint(widgetSize);
     drawText(keyPrefix, text, textPoint, painter);
@@ -69,6 +69,7 @@ void DockWidgetPainter::updateLabel(DockData* d, bool active) {
     // Save results
     d->label->resize(widgetSize);
     d->label->setPixmap(pixmap);
+    d->isActive = active;
 }
 
 QString DockWidgetPainter::findKeyPrefix(const QAction* action) {
@@ -91,24 +92,32 @@ QColor DockWidgetPainter::getBackgroundColor() {
 #endif
 }
 
-QColor DockWidgetPainter::getInnerColor(bool active, const QColor& backgroundColor) {
+QColor DockWidgetPainter::getInnerColor(bool active, const QColor& backgroundColor, bool isDarkTheme) {
 #ifdef Q_OS_WIN
     Q_UNUSED(active);
     Q_UNUSED(backgroundColor);
+    if (isDarkTheme) {
+        return QColor(255, 255, 255, active ? 30 : 5);
+    } else {
         return QColor(0, 0, 0, active ? 30 : 5);
+    }
 #else
     QColor innerColor = backgroundColor;
     if (active) {
+        if (isDarkTheme) {
+            innerColor = backgroundColor.lighter();
+        } else {
             innerColor = backgroundColor.darker(115);
         }
+    }
     return innerColor;
 #endif
 }
 
-void DockWidgetPainter::drawBorder(bool active, const QSize& widgetSize, const QColor& backgroundColor, QPainter& painter) {
+void DockWidgetPainter::drawBorder(bool active, const QSize& widgetSize, const QColor& backgroundColor, QPainter& painter, bool isDarkTheme) {
     const QRectF roundedRect(2, 2, widgetSize.width() - 4, widgetSize.height() - 4);
-    const QColor innerColor = getInnerColor(active, backgroundColor);
-    painter.setPen(Qt::black);
+    const QColor innerColor = getInnerColor(active, backgroundColor, isDarkTheme);
+    painter.setPen(isDarkTheme ?  Qt::white : Qt::black);
     painter.fillRect(roundedRect, innerColor);
     painter.drawLine((int)roundedRect.left() + 1, (int)roundedRect.top(), (int)roundedRect.right() - 1, (int)roundedRect.top());
     painter.drawLine((int)roundedRect.left() + 1, (int)roundedRect.bottom(), (int)roundedRect.right() - 1, (int)roundedRect.bottom());

@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
@@ -102,6 +103,8 @@ void PluginViewerController::connectStaticActions() {
 
     disableServiceAction = new QAction(tr("Disable service"), this);
     connect(disableServiceAction, SIGNAL(triggered()), SLOT(sl_disableService()));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PluginViewerController::sl_colorThemeSwitched);
 }
 
 void PluginViewerController::connectVisualActions() {
@@ -306,6 +309,19 @@ void PluginViewerController::sl_acceptLicense() {
     hideLicense();
 }
 
+void PluginViewerController::sl_colorThemeSwitched() {
+    CHECK(mdiWindow != nullptr, );
+
+    int topLevelCount = ui.treeWidget->topLevelItemCount();
+    for (int i = 0; i < topLevelCount; i++) {
+        auto item = ui.treeWidget->topLevelItem(i);
+        auto pvpi = static_cast<PlugViewPluginItem*>(item);
+        CHECK_CONTINUE(pvpi != nullptr);
+
+        pvpi->updateTextColor();
+    }
+}
+
 void PluginViewerController::showLicense() const {
     ui.showLicenseButton->setText(tr("Hide License"));
     ui.licenseView->show();
@@ -348,7 +364,6 @@ void PlugViewPluginItem::updateVisual() {
     setData(3, Qt::DisplayRole, desc);
 
     setIcon(showServices ? 0 : 1, QIcon(":ugene/images/plugins.png"));
-
     GUIUtils::setMutedLnF(this, false);
     if (!plugin->getDescription().contains("\n") && desc.length() > 80) {
         for (int i = 80; i < desc.length();) {
@@ -364,6 +379,15 @@ void PlugViewPluginItem::updateVisual() {
         setToolTip(2, plugin->getDescription());
         setToolTip(3, plugin->getDescription());
     }
+    updateTextColor();
+}
+
+void PlugViewPluginItem::updateTextColor() {
+    auto textColor = QPalette().text().color();
+    setForeground(0, textColor);
+    setForeground(1, textColor);
+    setForeground(2, textColor);
+    setForeground(3, textColor);
 }
 
 PlugViewServiceItem::PlugViewServiceItem(PlugViewPluginItem* parent, Service* s)
@@ -376,7 +400,7 @@ void PlugViewServiceItem::updateVisual() {
     setData(1, Qt::DisplayRole, service->getName());
     setData(2, Qt::DisplayRole, service->isEnabled() ? PluginViewerController::tr("On") : PluginViewerController::tr("Off"));
     setData(3, Qt::DisplayRole, service->getDescription());
-    setIcon(0, QIcon(":ugene/images/service.png"));
+    setIcon(0, GUIUtils::getThemedIcon(":ugene/images/service.png"));
 }
 
 }  // namespace U2

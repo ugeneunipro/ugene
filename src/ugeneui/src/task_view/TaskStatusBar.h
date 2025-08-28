@@ -53,6 +53,7 @@ private slots:
 
     void sl_showReport();
     void sl_notificationChanged();
+    void sl_colorThemeSwitched();
 
 protected:
     bool eventFilter(QObject* o, QEvent* e);

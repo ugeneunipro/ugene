@@ -31,6 +31,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HoverQLabel.h>
+#include <U2Gui/MainWindow.h>
 
 #include <U2Lang/Dataset.h>
 #include <U2Lang/URLContainer.h>
@@ -184,46 +185,55 @@ ParametersDashboardWidget::ParametersDashboardWidget(const QString& _dashboardDi
         workerNameLabels << workerNameLabel;
     }
     nameListWidgetLayout->addStretch();
-    showWorkerParameters(0);
+    showWorkerParameters();
 
     if (monitor != nullptr) {
         connect(monitor, &WorkflowMonitor::si_dirSet, this, [&](const QString& newDashboardDir) { dashboardDir = newDashboardDir; });
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ParametersDashboardWidget::sl_colorThemeSwitched);
 }
 
 void ParametersDashboardWidget::sl_workerLabelClicked() {
     auto label = qobject_cast<HoverQLabel*>(sender());
     CHECK(label != nullptr, );
+
     bool ok = false;
     int index = label->property("worker-index").toInt(&ok);
     CHECK(ok && index >= 0 && index <= workers.size(), );
-    showWorkerParameters(index);
+
+    selectedIndex = index;
+    showWorkerParameters();
 }
 
-void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
-    CHECK(workerIndex >= 0 && workerIndex <= workers.size(), );
+static const QString TABLE_BORDER_COLOR_LIGHT = "#ddd";
+static const QString TABLE_BORDER_COLOR_DARK = "#525252";
+static const QString COMMON_WORKER_NAME_LABEL_STYLE = "padding: 0.7em;";
+static const QString ACTIVE_WORKER_NAME_LABEL_STYLE = COMMON_WORKER_NAME_LABEL_STYLE + "border-top: 1px solid %1; border-bottom: 1px solid %1; border-left: 1px solid %1; border-top-left-radius: 6px; border-bottom-left-radius: 6px;";
+static const QString NOT_ACTIVE_WORKER_NAME_LABEL_STYLE = COMMON_WORKER_NAME_LABEL_STYLE + "border-right: 1px solid %1;";
+
+
+void ParametersDashboardWidget::sl_colorThemeSwitched() {
+    colorThemeSwitched(parametersGridLayout);
+    updateStyleSheet();
+}
+
+void ParametersDashboardWidget::showWorkerParameters() {
+    CHECK(selectedIndex >= 0 && selectedIndex <= workers.size(), );
+
     QLayoutItem* item;
     while ((item = parametersGridLayout->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
     }
-    if (workerIndex >= workers.size()) {
+    if (selectedIndex >= workers.size()) {
         return;
     }
-    QString commonWorkerNameLabelStyle("padding: 0.7em;");
-    QString activeWorkerNameLabelStyle = commonWorkerNameLabelStyle + "border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-top-left-radius: 6px; border-bottom-left-radius: 6px;";
-    QString notActiveWorkerNameLabelStyle = commonWorkerNameLabelStyle + "border-right: 1px solid #ddd;";
-    for (int i = 0; i < workerNameLabels.size(); i++) {
-        if (i == workerIndex) {
-            workerNameLabels[i]->updateStyles(activeWorkerNameLabelStyle, activeWorkerNameLabelStyle);
-        } else {
-            workerNameLabels[i]->updateStyles(notActiveWorkerNameLabelStyle + "background: white;", notActiveWorkerNameLabelStyle + "background: #eee;");
-        }
-    }
+    updateStyleSheet();
 
     // Parameters table.
     addTableHeadersRow(parametersGridLayout, QStringList() << tr("Parameter") << tr("Value"));
-    QList<WorkerParameterInfo>& parameters = workers[workerIndex].parameters;
+    QList<WorkerParameterInfo>& parameters = workers[selectedIndex].parameters;
     for (int parameterIndex = 0; parameterIndex < parameters.size(); parameterIndex++) {
         auto parameter = parameters[parameterIndex];
         bool isLastRow = parameterIndex == parameters.size() - 1;
@@ -253,6 +263,20 @@ void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
         }
         valueWidgetLayout->addStretch();
         addTableCell(parametersGridLayout, parameter.name, valueWidget, rowIndex, 1, isLastRow, true);
+    }
+}
+
+void ParametersDashboardWidget::updateStyleSheet() {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    QString borderColor = isDark ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT;
+    QString activeWorkerNameLabelStyle = ACTIVE_WORKER_NAME_LABEL_STYLE.arg(borderColor);
+    QString notActiveWorkerNameLabelStyle = NOT_ACTIVE_WORKER_NAME_LABEL_STYLE.arg(borderColor);
+    for (int i = 0; i < workerNameLabels.size(); i++) {
+        if (i == selectedIndex) {
+            workerNameLabels[i]->updateStyles(activeWorkerNameLabelStyle, activeWorkerNameLabelStyle);
+        } else {
+            workerNameLabels[i]->updateStyles(notActiveWorkerNameLabelStyle + "background: palette(base);", notActiveWorkerNameLabelStyle + "background: palette(alternate-base);");
+        }
     }
 }
 

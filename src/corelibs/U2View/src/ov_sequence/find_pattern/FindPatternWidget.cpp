@@ -42,7 +42,6 @@
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -55,6 +54,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2LongLongValidator.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -493,6 +493,8 @@ void FindPatternWidget::connectSlots() {
 
     connect(useAmbiguousBasesBox, SIGNAL(toggled(bool)), SLOT(sl_toggleExtendedAlphabet()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &FindPatternWidget::sl_colorThemeSwitched);
 }
 
 void FindPatternWidget::updatePatternSourceControlsUiState() {
@@ -1427,6 +1429,10 @@ void FindPatternWidget::sl_usePatternNamesCbClicked() {
     createAnnotationController->setEnabledNameEdit(!usePatternNames);
     updateNamePatterns();
     checkState();
+}
+
+void FindPatternWidget::sl_colorThemeSwitched() {
+    updateErrorLabelState();
 }
 
 bool FindPatternWidget::isSearchPatternsDifferent(const QList<NamePattern>& newPatterns) const {

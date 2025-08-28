@@ -26,9 +26,12 @@
 #include <QHBoxLayout>
 #include <QPainter>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HoverQLabel.h>
+#include <U2Gui/MainWindow.h>
 
 #include "DomUtils.h"
 
@@ -55,6 +58,10 @@ static QString fixOldStyleOpenFileJs(const QString& html) {
     return QString(html).replace("onclick=\"openLog('", "href=\"file://").replace("/logs')", "/logs").replace("_log.txt')", "_log.txt");
 }
 
+static const QString FRAME_WIDGET_BORDER_COLOR_LIGHT = "#ddd";
+static const QString FRAME_WIDGET_BORDER_COLOR_DARK = "#525252";
+static const QString FRAME_WIDGET_STYLE_SHEET = "#frameWidget {border: 1px solid %1; padding: 8px; border-radius: 6px;}";
+
 ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor)
     : monitor(monitor) {
     setMinimumWidth(1100);  // TODO: make it expanding.
@@ -63,9 +70,10 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement& do
     auto frameLayout = new QVBoxLayout();
     frameLayout->setContentsMargins(12, 12, 12, 12);
     setLayout(frameLayout);
-    auto frameWidget = new QWidget();
+    frameWidget = new QWidget();
     frameWidget->setObjectName("frameWidget");
-    frameWidget->setStyleSheet("#frameWidget {border: 1px solid #ddd; padding: 8px; border-radius: 6px;}");
+    QString frameWidgetBorderColor = AppContext::getMainWindow()->isDarkTheme() ? FRAME_WIDGET_BORDER_COLOR_DARK : FRAME_WIDGET_BORDER_COLOR_LIGHT;
+    frameWidget->setStyleSheet(FRAME_WIDGET_STYLE_SHEET.arg(frameWidgetBorderColor));
     frameLayout->addWidget(frameWidget);
 
     // Vertical layout with all nodes.
@@ -126,10 +134,17 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement& do
     if (!actorElementList.isEmpty()) {
         addLimitationWarningIfNeeded(nullptr, DomUtils::findParentByTag(actorElementList.first(), "ul"));
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ExternalToolsDashboardWidget::sl_colorThemeSwitched);
 }
 
 bool ExternalToolsDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findElementById(dom, TREE_ID).isNull();
+}
+
+void ExternalToolsDashboardWidget::sl_colorThemeSwitched() {
+    QString frameWidgetBorderColor = AppContext::getMainWindow()->isDarkTheme() ? FRAME_WIDGET_BORDER_COLOR_DARK : FRAME_WIDGET_BORDER_COLOR_LIGHT;
+    frameWidget->setStyleSheet(FRAME_WIDGET_STYLE_SHEET.arg(frameWidgetBorderColor));
 }
 
 void ExternalToolsDashboardWidget::addLimitationWarningIfNeeded(ExternalToolsTreeNode* parentNode, const QDomElement& listHeadElement) {
@@ -445,7 +460,7 @@ static QString getBadgeLabelStyle(int kind, bool isImportant) {
         case NODE_KIND_OUTPUT:
             return style + QString("background-color: ") + (isImportant ? RUN_NODE_IMPORTANT_COLOR : "#6699CC") + ";";
         case NODE_KIND_LOG_CONTENT:
-            return style + "font-size: 16px; background-color: #F0F0F0; color: black;";
+            return style + "font-size: 16px; background-color: palette(alternate-base); color: palette(text);";
     }
     return style;
 };

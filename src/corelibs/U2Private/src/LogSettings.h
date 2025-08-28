@@ -73,6 +73,8 @@ public:
     void reinitAll();
     void reinitCategories();
 
+    void colorThemeSwitched(bool isDark);
+
     QVector<QString> levelColors;
     QVector<bool> activeLevelGlobalFlag;
     QString logPattern;
@@ -86,6 +88,10 @@ public:
 
     // private:
     QHash<QString, LoggerSettings> categories;
+
+private:
+    static QVector<QString> LIGHT_LEVEL_COLORS;
+    static QVector<QString> DARK_LEVEL_COLORS;
 };
 
 class U2PRIVATE_EXPORT LogSettingsHolder {

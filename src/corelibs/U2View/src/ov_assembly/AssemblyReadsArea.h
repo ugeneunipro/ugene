@@ -71,6 +71,8 @@ public:
         return optimizeRenderAction;
     }
 
+    void sl_colorThemeSwitched();
+
     static const QString ZOOM_LINK;
 
 protected:

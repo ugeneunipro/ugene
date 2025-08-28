@@ -29,12 +29,12 @@
 #include <U2Algorithm/MsaDistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MsaEditor.h>
@@ -146,7 +146,8 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
         case BRANCH_CURVATURE:
             curvatureSlider->setValue(value.toInt());
             break;
-        case LABEL_COLOR:
+        case LABEL_COLOR_DARK:
+        case LABEL_COLOR_LIGHT:
         case LABEL_FONT_FAMILY:
         case LABEL_FONT_SIZE:
         case LABEL_FONT_BOLD:
@@ -154,7 +155,8 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
         case LABEL_FONT_UNDERLINE:
             updateFormatSettings();
             break;
-        case BRANCH_COLOR:
+        case BRANCH_COLOR_DARK:
+        case BRANCH_COLOR_LIGHT:
             updateButtonColor(branchesColorButton, qvariant_cast<QColor>(value));
             break;
         case BRANCH_THICKNESS:
@@ -191,6 +193,16 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
         default:
             break;
     }
+}
+
+void TreeOptionsWidget::sl_colorThemeSwitched() {
+    auto treeViewer = getTreeViewer();
+    auto labelColorOption = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+    auto newLabelColor = qvariant_cast<QColor>(treeViewer->getOption(labelColorOption));
+    updateButtonColor(labelsColorButton, newLabelColor);
+    auto branchColorOption = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto newBranchColor = qvariant_cast<QColor>(treeViewer->getOption(branchColorOption));
+    updateButtonColor(branchesColorButton, newBranchColor);
 }
 
 QStringList TreeOptionsWidget::getSaveDisabledWidgets() const {
@@ -267,6 +279,8 @@ void TreeOptionsWidget::connectSlots() {
         SAFE_POINT(multiTreeViewer != nullptr, "Tree options widget is instantiated with no active tree view", );
         connect(multiTreeViewer, &MsaEditorMultiTreeViewer::si_activeTreeViewChanged, this, [this] { updateAllWidgets(); });
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TreeOptionsWidget::sl_colorThemeSwitched);
 }
 
 void TreeOptionsWidget::sl_valueChanged() {
@@ -292,7 +306,8 @@ void TreeOptionsWidget::updateFormatSettings() {
     auto treeViewerUi = getTreeViewer();
     QMap<TreeViewOption, QVariant> settings = treeViewerUi->getSelectionSettings();
 
-    updateButtonColor(labelsColorButton, qvariant_cast<QColor>(settings[LABEL_COLOR]));
+    auto buttonColor = qvariant_cast<QColor>(settings[AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT]);
+    updateButtonColor(labelsColorButton, buttonColor);
 
     QFont font = TreeViewerUtils::getFontFromSettings(settings);
     if (fontComboBox->currentFont().family() != font.family()) {
@@ -339,21 +354,23 @@ void TreeOptionsWidget::sl_fontUnderlineChanged() {
 
 void TreeOptionsWidget::sl_labelsColorButton() {
     auto treeViewerUi = getTreeViewer();
-    auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(LABEL_COLOR));
+    auto labelColorOption = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+    auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(labelColorOption));
     auto newColor = U2ColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
     if (newColor.isValid()) {
         updateButtonColor(labelsColorButton, newColor);
-        treeViewerUi->updateOption(LABEL_COLOR, newColor);
+        treeViewerUi->updateOption(labelColorOption, newColor);
     }
 }
 
 void TreeOptionsWidget::sl_branchesColorButton() {
     auto treeViewerUi = getTreeViewer();
-    auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(BRANCH_COLOR));
+    auto branchColor = AppContext::getMainWindow()->isDarkTheme() ? BRANCH_COLOR_DARK : BRANCH_COLOR_LIGHT;
+    auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(branchColor));
     auto newColor = U2ColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
     if (newColor.isValid()) {
         updateButtonColor(branchesColorButton, newColor);
-        treeViewerUi->updateOption(BRANCH_COLOR, newColor);
+        treeViewerUi->updateOption(branchColor, newColor);
     }
 }
 

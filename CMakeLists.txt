@@ -10,9 +10,13 @@ project(ugene)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12")
 
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+if (APPLE)
+    message(STATUS "Deployment target: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
+endif ()
 
 add_definitions(
         -DQT_FATAL_ASSERT

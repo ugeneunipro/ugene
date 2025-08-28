@@ -99,7 +99,7 @@ void CircularViewContext::initViewContext(GObjectViewController* v) {
     viewSettings.insert(av, new CircularViewSettings());
 
     auto exportAction = new GObjectViewAction(this, v, tr("Save circular view as image..."));
-    exportAction->setIcon(QIcon(":/core/images/cam2.png"));
+    GUIUtils::setThemedIcon(exportAction, ":/core/images/cam2.png");
     exportAction->setObjectName(EXPORT_ACTION_NAME);
     addViewAction(exportAction);
 
@@ -131,7 +131,7 @@ void CircularViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
     }
 
     auto action = new CircularViewAction();
-    action->setIcon(QIcon(":circular_view/images/circular.png"));
+    GUIUtils::setThemedIcon(action, ":/circular_view/images/circular.png");
     action->setCheckable(true);
     action->setChecked(false);
     action->addToMenu = true;

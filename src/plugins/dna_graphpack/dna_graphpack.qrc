@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="dna_graphpack/" >
-        <file>images/graphs.png</file>
-    </qresource>
-</RCC>

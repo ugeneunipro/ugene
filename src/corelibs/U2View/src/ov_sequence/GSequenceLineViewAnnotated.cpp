@@ -223,7 +223,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent* me) {
                     const U2Region r = as->getRegions().first();
                     const QString text = aData->name + QString(" [%1, %2]").arg(r.startPos + 1).arg(r.endPos());
                     AnnotationSettings* asettings = asr->getAnnotationSettings(aData);
-                    const QIcon icon = GUIUtils::createSquareIcon(asettings->color, 10);
+                    const QIcon icon = GUIUtils::createSquareIcon(asettings->getActiveColor(), 10);
                     popup.addAction(icon, text);
                 }
                 QAction* a = popup.exec(QCursor::pos());
@@ -390,7 +390,7 @@ QString GSequenceLineViewAnnotated::createToolTip(const QPoint& renderAreaPoint)
             break;
         }
         AnnotationSettingsRegistry* registry = AppContext::getAnnotationsSettingsRegistry();
-        const QColor acl = registry->getAnnotationSettings(ad->name)->color;
+        const QColor acl = registry->getAnnotationSettings(ad->name)->getActiveColor();
         tip += "<tr><td bgcolor=" + acl.name() + " bordercolor=black width=15></td><td><big>" + ad->name + "</big></td></tr>";
 
         if (skipDetails) {

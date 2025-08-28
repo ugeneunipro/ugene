@@ -54,7 +54,7 @@ private:
 class QDTandemActorPrototype : public QDActorPrototype {
 public:
     QDTandemActorPrototype();
-    QIcon getIcon() const;
+    QString getIconPath() const override;
     virtual QDActor* createInstance() const;
 };
 

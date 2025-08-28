@@ -81,7 +81,7 @@ public:
     virtual AppSettingsGUIPageState* getState(QString& err) const override;
 
 private:
-    QWidget* createPathEditor(QWidget* parent, const QString& path);
+    QWidget* createPathEditor(QWidget* parent, const QString& path) const;
     QTreeWidgetItem* createToolkitItem(QTreeWidget* treeWidget, const QString& toolkitName, const QIcon& icon);
     /** Appends tool tree item to the tree and registers the tool in 'externalToolsItems' map. */
     QTreeWidgetItem* appendToolItem(QTreeWidgetItem* rootItem, const ExternalTool* tool, bool isModule = false);

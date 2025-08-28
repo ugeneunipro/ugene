@@ -30,7 +30,6 @@
 #include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -38,6 +37,7 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "custom_tools/ImportCustomToolsTask.h"
@@ -89,7 +89,7 @@ QList<ExternalTool*> ExternalToolSupportSettingsPageState::getExternalTools() co
 
 const QString ExternalToolSupportSettingsPageWidget::INSTALLED = QObject::tr("Installed");
 const QString ExternalToolSupportSettingsPageWidget::NOT_INSTALLED = QObject::tr("Not installed");
-const QString ExternalToolSupportSettingsPageWidget::ET_DOWNLOAD_INFO = QObject::tr("<html><head/><body><p>Download <a href=\"http://ugene.net/download-all.html\"><span style=\" text-decoration: underline; color:#1866af;\">tools executables</span></a> and configure the tools paths. </p></body></html>");
+const QString ExternalToolSupportSettingsPageWidget::ET_DOWNLOAD_INFO = QObject::tr("<html><head/><body><p>Download <a href=\"http://ugene.net/download-all.html\" style=\"color:%1\"><span style=\" text-decoration: underline; color:#1866af;\">tools executables</span></a> and configure the tools paths. </p></body></html>");
 
 const QString ExternalToolSupportSettingsPageWidget::SUPPORTED_ID = "integrated tools";
 const QString ExternalToolSupportSettingsPageWidget::CUSTOM_ID = "custom tools";
@@ -101,7 +101,7 @@ ExternalToolSupportSettingsPageWidget::ExternalToolSupportSettingsPageWidget(Ext
     setupUi(this);
     defaultDescriptionText = descriptionTextBrowser->toPlainText();
 
-    selectToolPackLabel->setText(ET_DOWNLOAD_INFO);
+    selectToolPackLabel->setText(ET_DOWNLOAD_INFO.arg(Theme::hyperlinkColorLabelHtmlStr()));
     versionLabel->hide();
     binaryPathLabel->hide();
 
@@ -137,7 +137,7 @@ ExternalToolSupportSettingsPageWidget::~ExternalToolSupportSettingsPageWidget() 
     saveShowHideSubgroupsState();
 }
 
-QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) {
+QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent, const QString& path) const {
     auto widget = new QWidget(parent);
 
     auto toolPathEdit = new PathLineEdit("", "executable", false, widget);
@@ -159,7 +159,7 @@ QWidget* ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget* parent
     connect(selectToolPathButton, SIGNAL(clicked()), this, SLOT(sl_onPathEditWidgetClick()));
     connect(selectToolPathButton, SIGNAL(clicked()), toolPathEdit, SLOT(sl_onBrowse()));
 
-    clearToolPathButton = new QToolButton(widget);
+    auto clearToolPathButton = new QToolButton(widget);
     clearToolPathButton->setObjectName("ClearToolPathButton");
     clearToolPathButton->setVisible(true);
     GUIUtils::setThemedIcon(clearToolPathButton, ":external_tool_support/images/cancel.png");
@@ -311,10 +311,10 @@ void ExternalToolSupportSettingsPageWidget::updateColorThemeRecursively(QTreeWid
     }
 
     const ExternalToolInfo& toolInfo = externalToolsInfo.value(id);
-    auto iconParameters = toolInfo.path.isEmpty() ? tool->getGrayIconPath()
+    auto iconPath = toolInfo.path.isEmpty() ? tool->getGrayIconPath()
                                                   : (toolInfo.isValid ? tool->getIconPath()
                                                                       : tool->getWarnIconPath());
-    item->setIcon(0, GUIUtils::getThemedIcon(iconParameters));
+    item->setIcon(0, GUIUtils::getThemedIcon(iconPath));
 
     for (int i = 0; i < item->childCount(); i++) {
         updateColorThemeRecursively(item->child(i));

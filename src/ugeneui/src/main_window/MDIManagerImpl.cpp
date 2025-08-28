@@ -34,6 +34,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 #define SETTINGS_DIR QString("main_window/mdi/")
@@ -239,7 +241,7 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
     qw->setWindowTitle(w->windowTitle());
     QIcon icon = w->windowIcon();
     if (icon.isNull()) {
-        icon = QIcon(":/ugene/images/ugene_16.png");
+        icon = QIcon(":/ugene/images/ugene.png");
     }
     qw->setWindowIcon(icon);
     if (isOsMac()) {

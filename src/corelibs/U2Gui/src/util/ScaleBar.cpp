@@ -27,7 +27,6 @@
 #include <QVBoxLayout>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 

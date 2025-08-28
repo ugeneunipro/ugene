@@ -21,11 +21,9 @@
 
 #include "GroupHeaderImageWidget.h"
 
-#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -38,9 +36,7 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
                                                             "border-top-right-radius: 3px;"
                                                             "padding: 5px;"
                                                             "margin-top: 4px;"
-                                                            "margin-right: 3px;}"
-                                                            "QToolTip {background: palette(window);"
-                                                            "border-left-width: 0px;}";
+                                                            "margin-right: 3px;";
 
 GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const QString& _iconPath)
     : groupId(_groupId), iconPath(_iconPath) {
@@ -64,14 +60,14 @@ void GroupHeaderImageWidget::mousePressEvent(QMouseEvent* /*event*/) {
 
 void GroupHeaderImageWidget::setHeaderSelected() {
     setStyleSheet(QString(
-                      "QLabel { background: palette(window);"
+                      "background: palette(window);"
                       "border-left-width: 0px;")
                       .append(HEADER_COMMON_STYLE));
 }
 
 void GroupHeaderImageWidget::setHeaderDeselected() {
     setStyleSheet(QString(
-                      "QLabel { background: qlineargradient(x1:0, y1:0.5, x2:0.4, y2:0.5, stop:0 palette(mid), stop:1 palette(button));"
+                      "background: qlineargradient(x1:0, y1:0.5, x2:0.4, y2:0.5, stop:0 palette(mid), stop:1 palette(button));"
                       "border-left-width: 1px;")
                       .append(HEADER_COMMON_STYLE));
 }
