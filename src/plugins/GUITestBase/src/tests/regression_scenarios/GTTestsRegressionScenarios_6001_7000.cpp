@@ -1838,6 +1838,56 @@ GUI_TEST_CLASS_DEFINITION(test_6350) {
                       .arg(list.first()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6363) {
+    // 1. Open the "External tools" tab in the "Preferences" dialod
+    // 2. Choose any validated tool, select the path to it in the line edit, cut and click to another line (the last action starts a validation task)
+    // Expected state: The "Remove tool" button became disabled
+    // 3. Paste the path to the tool from the clipboard to this line edit again and click to another line
+    // Expected state: The "Remove tool" button became enabled
+    // Current state: The "Remove tool" button still disabled
+
+    class Scenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
+
+            auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
+            QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
+            QLineEdit* blastdbcmdLineEdit = nullptr;
+            QToolButton* blastdbcmdClearButton = nullptr;
+            QLineEdit* blastnLineEdit = nullptr;
+            for (QTreeWidgetItem* item : qAsConst(listOfItems)) {
+                if (item->text(0) == "blastdbcmd") {
+                    QWidget* itemWid = treeWidget->itemWidget(item, 1);
+                    blastdbcmdLineEdit = GTWidget::findLineEdit("PathLineEdit", itemWid);
+                    blastdbcmdClearButton = itemWid->findChild<QToolButton*>("ClearToolPathButton");
+                } else if (item->text(0) == "blastn") {
+                    blastnLineEdit = GTWidget::findLineEdit("PathLineEdit", treeWidget->itemWidget(item, 1));
+                }
+                if (blastdbcmdLineEdit != nullptr && blastnLineEdit != nullptr) {
+                    break;
+                }
+            }
+            QString blastdirPath = AppSettingsDialogFiller::getExternalToolPath("blastdbcmd");
+            GTLineEdit::clear(blastdbcmdLineEdit);
+            GTWidget::click(blastnLineEdit);
+            CHECK_SET_ERR(!blastdbcmdClearButton->isEnabled(), "Button is enabled");
+
+            GTLineEdit::setText(blastdbcmdLineEdit, blastdirPath, true, true);
+            GTWidget::click(blastnLineEdit);
+            GTUtilsTaskTreeView::waitTaskFinished();
+            CHECK_SET_ERR(blastdbcmdClearButton->isEnabled(), "Button is disabled");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new Scenario()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6397) {
     // 1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
