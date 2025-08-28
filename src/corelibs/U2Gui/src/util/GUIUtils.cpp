@@ -264,12 +264,13 @@ void GUIUtils::setThemedWindowIcon(QWidget* widget, const QString& iconPath) {
 
 QString GUIUtils::getThemedPath(const QString& iconPath) {
     auto result = iconPath;
-    if (!QFile::exists(iconPath)) {
-        result = result.insert(result.lastIndexOf("/"), AppContext::getMainWindow()->isDarkTheme() ? "/dark" : "/light");
+    auto coloredPath = result.insert(result.lastIndexOf("/"), AppContext::getMainWindow()->isDarkTheme() ? "/dark" : "/light");
+    if (QFile::exists(coloredPath)) {
+        return coloredPath;
     }
-    SAFE_POINT(QFile::exists(result), QString("Can't find path from %1").arg(iconPath), "");
+    SAFE_POINT(QFile::exists(iconPath), QString("Can't find path from %1").arg(iconPath), "");
 
-    return result;
+    return iconPath;
 }
 
 QIcon GUIUtils::getThemedIcon(const QString& iconPath) {
