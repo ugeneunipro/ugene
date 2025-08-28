@@ -82,10 +82,6 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
     connect(showAllColumnsAction, SIGNAL(triggered()), SLOT(sl_showAllColumns()));
 }
 
-WorkflowInvestigationWidgetsController::~WorkflowInvestigationWidgetsController() {
-    deleteBusInvestigations();
-}
-
 bool WorkflowInvestigationWidgetsController::eventFilter(QObject* watched, QEvent* event) {
     if (QEvent::Paint == event->type() && investigationView != nullptr && watched == dynamic_cast<QObject*>(investigationView->viewport())) {
         if (investigationView->model() == nullptr && investigatedLink != nullptr) {
@@ -138,7 +134,7 @@ void WorkflowInvestigationWidgetsController::resetInvestigations() {
 }
 
 void WorkflowInvestigationWidgetsController::createNewInvestigation() {
-    investigationView = new QTableView();
+    investigationView = new QTableView(qobject_cast<QWidget*>(parent()));
     investigationView->viewport()->installEventFilter(this);
     investigationView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(investigationView, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_contextMenuRequested(const QPoint&)));
