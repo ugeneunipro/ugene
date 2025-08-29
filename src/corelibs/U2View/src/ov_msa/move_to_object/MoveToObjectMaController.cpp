@@ -136,24 +136,26 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
 
     // Get the file name to move rows to first.
     LastUsedDirHelper lod;
-    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, true, true);
     QString selectedFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::CLUSTAL_ALN);
-    lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, selectedFilter);
-    CHECK(!lod.url.isEmpty(), );
+    QPair<QString, QString> nameAndFilter = U2FileDialog::getFileNameAndSelectedFilter(ui, tr("Select a new file to move selected rows"), 
+                                                                                       lod, filter, selectedFilter, {0}, QFileDialog::AcceptSave, 
+                                                                                       QFileDialog::AnyFile);
+    CHECK(!(nameAndFilter.first.isEmpty() || nameAndFilter.second.isEmpty()), );
+    lod.url = nameAndFilter.first;
+    selectedFilter = nameAndFilter.second;
 
     QString url = lod.url;
     QFileInfo urlInfo(url);
     CHECK_EXT(!urlInfo.baseName().isEmpty(), QMessageBox::critical(ui, L10N::errorTitle(), tr("Please select a file with a non-empty name.")), );
     QString fileExtension = urlInfo.suffix();
-    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
-    DocumentFormat* format = formatRegistry->selectFormatByFileExtension(fileExtension);
-    if (format == nullptr) {
-        format = formatRegistry->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
+    DocumentFormatRegistry* dfReg = AppContext::getDocumentFormatRegistry();
+    DocumentFormat* format = nullptr;
+    const QList<DocumentFormatId> idList = dfReg->getRegisteredFormats();
+    for (const DocumentFormatId &id : qAsConst(idList)) {
+        CHECK_EXT_BREAK(FileFilters::createSingleFileFilterByDocumentFormatId(id) != selectedFilter, format = dfReg->getFormatById(id));
     }
-    QStringList extensions = format->getSupportedDocumentFileExtensions();
-    if (!extensions.isEmpty() && !extensions.contains(fileExtension)) {
-        url += "." + extensions.first();
-    }
+    SAFE_POINT(format != nullptr, "Unknown format selected", );
 
     // Create a sub-alignment from moved rows.
     QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
