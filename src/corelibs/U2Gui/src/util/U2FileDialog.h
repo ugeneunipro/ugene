@@ -29,12 +29,11 @@ namespace U2 {
 
 class U2GUI_EXPORT U2FileDialog {
 public:
-    /* Returns filename to open and set selectedFilter to chosen in dialog */
     static QString getOpenFileName(QWidget* parent = nullptr,
                                    const QString& caption = QString(),
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
-                                   QString& selectedFilter = QString(),
+                                   const QString& selectedFilter = QString(),
                                    const QFileDialog::Options& options = {0});
 
     static QStringList getOpenFileNames(QWidget* parent = nullptr,
@@ -48,13 +47,22 @@ public:
                                         const QString& caption = QString(),
                                         const QString& dir = QString(),
                                         const QFileDialog::Options& options = QFileDialog::ShowDirsOnly);
-    /* Returns filename to save and set selectedFilter to chosen in dialog */
+
     static QString getSaveFileName(QWidget* parent = nullptr,
                                    const QString& caption = QString(),
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
-                                   QString& selectedFilter = QString(),
+                                   const QString& selectedFilter = QString(),
                                    const QFileDialog::Options& options = {0});
+    /* Returns pair of filename and selected file filter in file dialog */
+    static QPair<QString, QString> getFileNameAndSelectedFilter(QWidget* parent,
+                                                         const QString& caption,
+                                                         const QString& dir,
+                                                         const QString& filter,
+                                                         const QString& selectedFilter,
+                                                         QFileDialog::Options options,
+                                                         QFileDialog::AcceptMode acceptMode,
+                                                         QFileDialog::FileMode fileMode);
 };
 
 }  // namespace U2

@@ -34,11 +34,11 @@
 
 namespace U2 {
 
-static QStringList getFileNames(QWidget* parent,
+static QPair<QStringList, QString> getFileNamesAndSelectedFilter(QWidget* parent,
                                 const QString& caption,
                                 const QString& dir,
                                 const QString& filter,
-                                QString& selectedFilter,
+                                const QString& selectedFilter,
                                 const QFileDialog::Options& options,
                                 const QFileDialog::AcceptMode& acceptMode,
                                 const QFileDialog::FileMode& fileMode) {
@@ -50,27 +50,7 @@ static QStringList getFileNames(QWidget* parent,
     fileDialog->setFileMode(fileMode);
     fileDialog->setAcceptMode(acceptMode);
     CHECK(fileDialog->exec() == QFileDialog::Accepted && !fileDialog.isNull(), {});
-    selectedFilter = fileDialog->selectedNameFilter();
-    return fileDialog->selectedFiles();
-}
-
-static QString getFileName(QWidget* parent,
-                           const QString& caption,
-                           const QString& dir,
-                           const QString& filter,
-                           QString& selectedFilter,
-                           QFileDialog::Options options,
-                           QFileDialog::AcceptMode acceptMode,
-                           QFileDialog::FileMode fileMode) {
-    auto names = getFileNames(parent,
-                              caption,
-                              dir,
-                              filter,
-                              selectedFilter,
-                              options,
-                              acceptMode,
-                              fileMode);
-    return !names.isEmpty() ? names.first() : QString();
+    return QPair<QStringList, QString>(fileDialog->selectedFiles(), fileDialog->selectedNameFilter());
 }
 
 static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options& options) {
@@ -103,18 +83,18 @@ QString U2FileDialog::getOpenFileName(QWidget* parent,
                                       const QString& caption,
                                       const QString& dir,
                                       const QString& filter,
-                                      QString& selectedFilter,
+                                      const QString& selectedFilter,
                                       const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return getFileName(parent,
+    return getFileNameAndSelectedFilter(parent,
                        caption,
                        dir,
                        filter,
                        selectedFilter,
                        effectiveOptions,
                        QFileDialog::AcceptOpen,
-                       QFileDialog::ExistingFile);
+                       QFileDialog::ExistingFile).first;
 }
 
 QStringList U2FileDialog::getOpenFileNames(QWidget* parent,
@@ -125,14 +105,14 @@ QStringList U2FileDialog::getOpenFileNames(QWidget* parent,
                                            const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return getFileNames(parent,
+    return getFileNamesAndSelectedFilter(parent,
                         caption,
                         dir,
                         filter,
-                        QString(selectedFilter),
+                        selectedFilter,
                         effectiveOptions,
                         QFileDialog::AcceptOpen,
-                        QFileDialog::ExistingFiles);
+                        QFileDialog::ExistingFiles).first;
 }
 
 QString U2FileDialog::getExistingDirectory(QWidget* parent,
@@ -148,18 +128,37 @@ QString U2FileDialog::getSaveFileName(QWidget* parent,
                                       const QString& caption,
                                       const QString& dir,
                                       const QString& filter,
-                                      QString& selectedFilter,
+                                      const QString& selectedFilter,
                                       const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return getFileName(parent,
+    return getFileNameAndSelectedFilter(parent,
                        caption,
                        dir,
                        filter,
                        selectedFilter,
                        effectiveOptions,
                        QFileDialog::AcceptSave,
-                       QFileDialog::AnyFile);
+                       QFileDialog::AnyFile).first;
+}
+
+QPair<QString, QString> U2FileDialog::getFileNameAndSelectedFilter(QWidget* parent,
+                                                                   const QString& caption,
+                                                                   const QString& dir,
+                                                                   const QString& filter,
+                                                                   const QString& selectedFilter,
+                                                                   QFileDialog::Options options,
+                                                                   QFileDialog::AcceptMode acceptMode,
+                                                                   QFileDialog::FileMode fileMode) {
+    auto names = getFileNamesAndSelectedFilter(parent,
+                                               caption,
+                                               dir,
+                                               filter,
+                                               selectedFilter,
+                                               options,
+                                               acceptMode,
+                                               fileMode);
+    return QPair<QString, QString>(!names.first.first().isEmpty() ? names.first.first() : QString(), names.second);
 }
 
 }  // namespace U2

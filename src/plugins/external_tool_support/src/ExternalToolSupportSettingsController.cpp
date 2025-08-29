@@ -873,9 +873,9 @@ void PathLineEdit::sl_onBrowse() {
 
     QString name;
     if (text().isEmpty()) {
-        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lod.dir, FileFilter, QString(), QFileDialog::DontConfirmOverwrite);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lod.dir, FileFilter, 0, QFileDialog::DontConfirmOverwrite);
     } else {
-        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), text(), FileFilter, QString(), QFileDialog::DontConfirmOverwrite);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), text(), FileFilter, 0, QFileDialog::DontConfirmOverwrite);
     }
     if (!name.isEmpty()) {
         setText(QDir::toNativeSeparators(name));

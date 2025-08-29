@@ -251,7 +251,7 @@ void URLLineEdit::browse(bool addFiles) {
         }
     } else {
         if (saveFile) {
-            lod.url = name = U2FileDialog::getSaveFileName(nullptr, tr("Select a file"), lastDir, FileFilter, QString(), QFileDialog::DontConfirmOverwrite);
+            lod.url = name = U2FileDialog::getSaveFileName(nullptr, tr("Select a file"), lastDir, FileFilter, nullptr, QFileDialog::DontConfirmOverwrite);
             this->checkExtension(name);
         } else {
             lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
