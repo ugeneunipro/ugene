@@ -82,10 +82,6 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
     connect(showAllColumnsAction, SIGNAL(triggered()), SLOT(sl_showAllColumns()));
 }
 
-WorkflowInvestigationWidgetsController::~WorkflowInvestigationWidgetsController() {
-    deleteBusInvestigations();
-}
-
 bool WorkflowInvestigationWidgetsController::eventFilter(QObject* watched, QEvent* event) {
     if (QEvent::Paint == event->type() && investigationView != nullptr && watched == dynamic_cast<QObject*>(investigationView->viewport())) {
         if (investigationView->model() == nullptr && investigatedLink != nullptr) {
@@ -106,8 +102,7 @@ void WorkflowInvestigationWidgetsController::setCurrentInvestigation(const Workf
         container->removeTab(tabNumberForInvestigation);
     }
     investigatedLink = bus;
-    createNewInvestigation();
-    investigationView->setParent(container);
+    createNewInvestigation(container);
     investigatorName = tr("Messages from '") + bus->source()->owner()->getLabel() + tr("' to '") + bus->destination()->owner()->getLabel() + tr("'");
     container->addTab(investigationView, investigatorName);
     container->setCurrentWidget(investigationView);
@@ -137,8 +132,8 @@ void WorkflowInvestigationWidgetsController::resetInvestigations() {
     columnWidths.clear();
 }
 
-void WorkflowInvestigationWidgetsController::createNewInvestigation() {
-    investigationView = new QTableView();
+void WorkflowInvestigationWidgetsController::createNewInvestigation(QWidget* investigationWidgetParent) {
+    investigationView = new QTableView(investigationWidgetParent);
     investigationView->viewport()->installEventFilter(this);
     investigationView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(investigationView, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_contextMenuRequested(const QPoint&)));
@@ -185,8 +180,7 @@ void WorkflowInvestigationWidgetsController::setInvestigationWidgetsVisible(bool
             container->hide();
         }
     } else if (visible && investigatedLink != nullptr) {
-        createNewInvestigation();
-        investigationView->setParent(container);
+        createNewInvestigation(container);
         container->addTab(investigationView, investigatorName);
         if (wasDisplayed) {
             container->show();
