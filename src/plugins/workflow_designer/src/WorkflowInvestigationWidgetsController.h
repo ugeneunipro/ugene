@@ -72,7 +72,7 @@ private slots:
     void sl_columnsVisibilityResponse();
 
 private:
-    void createNewInvestigation();
+    void createNewInvestigation(QWidget *investigationWidgetParent);
     void createInvestigationModel();
     void adjustInvestigationColumnWidth(WorkflowInvestigationWidget* investigator);
 
