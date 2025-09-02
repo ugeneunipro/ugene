@@ -126,6 +126,8 @@ QString StyleFactory::getNewVisualStyleName(int newColorThemeIndex) const {
     if (newColorThemeIndex == 1) {
         visualStyleName = "fusion";
     }
+#else
+    Q_UNUSED(newColorThemeIndex)
 #endif
     return visualStyleName;
 }
