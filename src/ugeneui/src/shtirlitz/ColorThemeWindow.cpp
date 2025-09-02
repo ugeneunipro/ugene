@@ -56,11 +56,9 @@ ColorThemeWindow::ColorThemeWindow(QWidget* parent)
 
     QStringList colorThemes = {tr("Light"),
                               tr("Dark")};
-#if defined(Q_OS_WIN) | defined(Q_OS_DARWIN)
-    if (StyleFactory::isDarkStyleAvaliable()) {
+    if (StyleFactory::isAutoStyleAvaliable()) {
         colorThemes.append(tr("Auto"));
     }
-#endif
 
     static const QStringList interfixes = {"/light",
                                            "/dark",

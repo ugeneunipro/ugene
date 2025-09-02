@@ -133,12 +133,10 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
     colorThemeCombo->addItem(lightSign);
     darkSign = tr("Dark");
     colorThemeCombo->addItem(darkSign);
-#if defined(Q_OS_WIN) | defined(Q_OS_DARWIN)
-    if (StyleFactory::isDarkStyleAvaliable()) {
+    if (StyleFactory::isAutoStyleAvaliable()) {
         autoSign = tr("Auto");
         colorThemeCombo->addItem(autoSign);
     }
-#endif
     errorLabel->setStyleSheet(QString("color: %1;").arg(Theme::errorColorLabelColor().name()));
     connect(styleCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
     connect(colorThemeCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
@@ -209,7 +207,7 @@ void UserApplicationsSettingsPageWidget::sl_updateState() {
     if (isOsWindows()) {
         if (styleCombo->currentText() == WINDOWS_VISTA_STYLE) {
             removeItemFromComboBox(colorThemeCombo, darkSign);
-            if (StyleFactory::isDarkStyleAvaliable()) {
+            if (StyleFactory::isAutoStyleAvaliable()) {
                 removeItemFromComboBox(colorThemeCombo, autoSign);
             }
             errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color theme. We suggest using Fusion"));
@@ -218,7 +216,7 @@ void UserApplicationsSettingsPageWidget::sl_updateState() {
             errorLabel->setText("");
         } else {
             addItemToComboBox(colorThemeCombo, darkSign);
-            if (StyleFactory::isDarkStyleAvaliable()) {
+            if (StyleFactory::isAutoStyleAvaliable()) {
                 addItemToComboBox(colorThemeCombo, autoSign);
             }
             addItemToComboBox(styleCombo, WINDOWS_VISTA_STYLE);

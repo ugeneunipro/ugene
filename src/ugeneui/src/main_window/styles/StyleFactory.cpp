@@ -154,7 +154,7 @@ bool windowsIsInDarkTheme() {
 }  // namespace
 #endif
 
-bool StyleFactory::isDarkStyleAvaliable() {
+bool StyleFactory::isAutoStyleAvaliable() {
 #ifdef Q_OS_DARWIN
     return MacStyleFactory::macDarkThemeAvailable();
 #elif defined(Q_OS_WIN32)

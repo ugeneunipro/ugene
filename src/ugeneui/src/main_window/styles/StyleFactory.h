@@ -64,7 +64,7 @@ public:
     // True if auto style avaliable
     // Not avaliable on macOS early than 10.14 and
     // Windows early than 10 1809 10.0.17763
-    static bool isDarkStyleAvaliable();
+    static bool isAutoStyleAvaliable();
 
 private:
     void applyAutomaticallyChangedColorScheme();
