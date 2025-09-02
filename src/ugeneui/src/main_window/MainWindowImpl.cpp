@@ -218,20 +218,12 @@ bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
     CHECK(mw == object, false);
     CHECK(event != nullptr, false);
 
+    // macOS triggers PaletteChange event when the system color scheme is changed
+    // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
     if (event->type() == QEvent::PaletteChange) {
-        styleFactory->applyNewColorScheme();
+        styleFactory->applyAutomaticallyChangedColorSchemeForMacOs();
         return MainWindow::eventFilter(object, event);
     }
-
-//#ifdef Q_OS_DARWIN
-//    if (!colorIsChangedByUser && event->type() == QEvent::PaletteChange) {
-//        auto newStyle = StyleFactory::create(QApplication::style()->objectName(), 0);
-//        QApplication::setStyle(newStyle);
-//        isDark = !isDark;
-//        emit si_colorThemeSwitched();
-//        return MainWindow::eventFilter(object, event);
-//    }
-//#endif
 
     CHECK(event->type() == QEvent::KeyPress, false);
 

@@ -50,26 +50,15 @@ StyleFactory::StyleFactory(MainWindowImpl* parent)
     : QObject(parent) {
 
 #ifdef Q_OS_WIN
-    // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
     // Now the only way to track system color theme changed on Windows is
     // to periodically check the corresponding registry value.
+    // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
     connect(&colorThemeTimer, &QTimer::timeout, this, [this]() {
-        auto s = AppContext::getAppSettings()->getUserAppsSettings();
-        auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
-        CHECK(cm == StyleFactory::ColorTheme::Auto, );
-
-        auto mwi = qobject_cast<MainWindowImpl*>(this->parent());
-        SAFE_POINT_NN(mwi, );
-
-        mwi->setNewStyle(s->getVisualStyle(), (int)cm);
+        applyAutomaticallyChangedColorScheme();
     });
     colorThemeTimer.start(5000);
 #endif
 }
-
-//QStringList StyleFactory::keys() {
-//    return QStyleFactory::keys();
-//}
 
 QStyle* StyleFactory::createNewStyle(const QString& styleName, int colorThemeIndex) {
     auto cm = static_cast<StyleFactory::ColorTheme>(colorThemeIndex);
@@ -106,21 +95,13 @@ QStyle* StyleFactory::createNewStyle(const QString& styleName, int colorThemeInd
     }
 #endif
     return StyleFactory::create(styleName, cm);
-    //QApplication::setStyle(newStyle);
 }
 
-void StyleFactory::applyNewColorScheme() {
+void StyleFactory::applyAutomaticallyChangedColorSchemeForMacOs() {
 #ifdef Q_OS_DARWIN
     CHECK(!colorIsChangedByUser, );
 
-    auto s = AppContext::getAppSettings()->getUserAppsSettings();
-    auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
-    CHECK(cm == StyleFactory::ColorTheme::Auto, );
-
-    auto mwi = qobject_cast<MainWindowImpl*>(this->parent());
-    SAFE_POINT_NN(mwi, );
-
-    mwi->setNewStyle(s->getVisualStyle(), (int)cm);
+    applyAutomaticallyChangedColorScheme();
 #endif
 }
 
@@ -181,6 +162,17 @@ bool StyleFactory::isDarkStyleAvaliable() {
 #else
     return false;
 #endif
+}
+
+void StyleFactory::applyAutomaticallyChangedColorScheme() {
+    auto s = AppContext::getAppSettings()->getUserAppsSettings();
+    auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
+    CHECK(cm == StyleFactory::ColorTheme::Auto, );
+
+    auto mwi = qobject_cast<MainWindowImpl*>(this->parent());
+    SAFE_POINT_NN(mwi, );
+
+    mwi->setNewStyle(s->getVisualStyle(), (int)cm);
 }
 
 bool StyleFactory::isDarkStyleEnabled() {

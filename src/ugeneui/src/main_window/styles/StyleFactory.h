@@ -34,9 +34,6 @@ class StyleFactory : public QObject {
 public:
     StyleFactory(MainWindowImpl* parent);
 
-    // Get all possible styles
-    //static QStringList keys();
-
     // Supported color themes
     enum class ColorTheme {
         Light,
@@ -44,14 +41,24 @@ public:
         Auto
     };
 
+    // Create style by style name and color theme
+    // styleName - name of the style, e.g. "Fusion", "Windows", "Macintosh"
+    // colorThemeIndex - index of color theme, e.g. 0 - Light, 1 - Dark, 2 - Auto
     QStyle* createNewStyle(const QString& styleName, int colorThemeIndex);
 
-    void applyNewColorScheme();
+    // Apply color scheme if it was changed by system
+    // This function is called for macOS only because this is the only system
+    // which triggers the event when system color scheme is changed
+    // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
+    void applyAutomaticallyChangedColorSchemeForMacOs();
 
+    // Returns true if current theme is dark
     bool isDarkTheme() const;
 
+    // Returns the index of color theme which should be used now
     int getNewColorThemeIndex() const;
 
+    // Returns the name of visual style which should be used now
     QString getNewVisualStyleName(int newColorThemeIndex) const;
 
     // True if auto style avaliable
@@ -60,6 +67,8 @@ public:
     static bool isDarkStyleAvaliable();
 
 private:
+    void applyAutomaticallyChangedColorScheme();
+
     // True if dark style enabled
     static bool isDarkStyleEnabled();
 
