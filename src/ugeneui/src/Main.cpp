@@ -499,18 +499,6 @@ int main(int argc, char** argv) {
         GApplication::setWindowIcon(pixmap);
     }
 
-    QMainWindow window;
-    auto splashScreen = new SplashScreen(&window);
-    splashScreen->adjustSize();
-    splashScreen->setGeometry(
-        QStyle::alignedRect(
-            Qt::LeftToRight,
-            Qt::AlignCenter,
-            splashScreen->size(),
-            QGuiApplication::primaryScreen()->availableGeometry()));
-
-    splashScreen->show();
-
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
 
     // add some extra paths used during development
@@ -600,9 +588,6 @@ int main(int argc, char** argv) {
 
     qInstallMessageHandler(guiTestMessageOutput);
 
-    QString styleName = userAppSettings->getVisualStyle();
-    int colorThemeIndex = userAppSettings->getColorThemeId();
-
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
 
@@ -628,9 +613,12 @@ int main(int argc, char** argv) {
     }
 
     auto mw = new MainWindowImpl;
-    mw->setNewStyle(styleName, colorThemeIndex);
     appContext->setMainWindow(mw);
     mw->prepare();
+
+    QString styleName = userAppSettings->getVisualStyle();
+    int colorThemeIndex = userAppSettings->getColorThemeId();
+    mw->setNewStyle(styleName, colorThemeIndex);
 
     // Do not use native menu bar in GUI tests mode on Mac or when asked via command line.
     bool dontUseNativeMenuBar = (isOsMac() && qEnvironmentVariableIntValue(ENV_GUI_TEST) == 1) ||
@@ -639,6 +627,18 @@ int main(int argc, char** argv) {
         mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
     }
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));
+
+    QMainWindow window;
+    auto splashScreen = new SplashScreen(&window);
+    splashScreen->adjustSize();
+    splashScreen->setGeometry(
+        QStyle::alignedRect(
+            Qt::LeftToRight,
+            Qt::AlignCenter,
+            splashScreen->size(),
+            QGuiApplication::primaryScreen()->availableGeometry()));
+
+    splashScreen->show();
 
     auto appSettingsGUI = new AppSettingsGUIImpl();
     appContext->setAppSettingsGUI(appSettingsGUI);

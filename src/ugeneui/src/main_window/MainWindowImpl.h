@@ -92,8 +92,6 @@ public:
     virtual void setWindowTitle(const QString& title);
     void registerAction(QAction* action);
 
-    // Set true to enable dark theme
-    void setDarkTheme(bool isDark);
     // Dark theme is enabled if true
     bool isDarkTheme() const override;
 
@@ -131,6 +129,7 @@ private slots:
     void sl_viewOnlineDocumentation();
     void sl_showWhatsNew();
     void sl_crashUgene();
+    void sl_switchColorTheme();
     void sl_colorThemeSwitched();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
@@ -168,15 +167,8 @@ private:
     QAction* installToPathAction = nullptr;
 #endif
     bool shutDownInProcess = false;
-    StyleFactory::ColorTheme colorTheme = StyleFactory::ColorTheme::Light;
-#ifdef Q_OS_DARWIN
-    bool colorIsChangedByUser = false;
-#endif
-    bool isDark = false;
-#ifdef Q_OS_WIN
-    QTimer colorThemeTimer;
-#endif
     QList<Task*> startupTasklist;
+    StyleFactory* styleFactory {nullptr};
 };
 
 class MainWindowDragNDrop {

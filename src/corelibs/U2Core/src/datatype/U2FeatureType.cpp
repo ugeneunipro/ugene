@@ -101,15 +101,9 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
         if (!lightColor.isValid()) {
             lightColor = FeatureColors::genLightColor(colorName);
         }
-
-        QColor darkColor(colorName);
-        if (!darkColor.isValid()) {
-            darkColor = FeatureColors::transformLightToDark(lightColor);
-        } else {
-            darkColor = FeatureColors::transformLightToDark(darkColor);
-        }
+        auto darkColor = FeatureColors::transformLightToDark(lightColor);
         SAFE_POINT(lightColor.isValid(), "Got invalid light color for feature: " + name, );
-        SAFE_POINT(darkColor.isValid(), "Got invalid light dark for feature: " + name, );
+        SAFE_POINT(darkColor.isValid(), "Got invalid dark color for feature: " + name, );
         SAFE_POINT(alphabets.testFlag(U2FeatureTypes::Alphabet_Nucleic) || !isShowOnAminoFrame, "Only features with nucleic alphabet may have isShowOnAminoFrame ON", );
 
         typeInfoList << U2FeatureTypeInfo(type, name, alphabets, lightColor, darkColor, description, isShowOnAminoFrame);

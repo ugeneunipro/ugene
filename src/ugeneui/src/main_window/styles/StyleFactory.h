@@ -21,15 +21,21 @@
 
 #pragma once
 
+#include <QObject>
 #include <QStyleFactory>
+#include <QTimer>
 
 namespace U2 {
 
+class MainWindowImpl;
+
 // Creates a style by given parameters
-class StyleFactory {
+class StyleFactory : public QObject {
 public:
+    StyleFactory(MainWindowImpl* parent);
+
     // Get all possible styles
-    static QStringList keys();
+    //static QStringList keys();
 
     // Supported color themes
     enum class ColorTheme {
@@ -37,18 +43,38 @@ public:
         Dark,
         Auto
     };
+
+    QStyle* createNewStyle(const QString& styleName, int colorThemeIndex);
+
+    void applyNewColorScheme();
+
+    bool isDarkTheme() const;
+
+    int getNewColorThemeIndex() const;
+
+    QString getNewVisualStyleName(int newColorThemeIndex) const;
+
+    // True if auto style avaliable
+    // Not avaliable on macOS early than 10.14 and
+    // Windows early than 10 1809 10.0.17763
+    static bool isDarkStyleAvaliable();
+
+private:
+    // True if dark style enabled
+    static bool isDarkStyleEnabled();
+
     // Create style by style name and color theme
     static QStyle* create(const QString& styleName, ColorTheme colorTheme);
     // Create style by style name and color theme
     static QStyle* create(const QString& styleName, int colorTheme);
 
-    // True if dark style avaliable
-    // Not avaliable on macOS early than 10.14 and
-    // Windows early than 10 1809 10.0.17763
-    static bool isDarkStyleAvaliable();
-    // True if dark style enabled
-    static bool isDarkStyleEnabled();
-
+    bool isDark = false;
+#ifdef Q_OS_DARWIN
+    bool colorIsChangedByUser = false;
+#endif
+#ifdef Q_OS_WIN
+    QTimer colorThemeTimer;
+#endif
 
 };
 

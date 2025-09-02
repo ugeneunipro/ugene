@@ -60,9 +60,23 @@ QColor FeatureColors::genLightColor(const QString& name) {
     return c;
 }
 
-QColor FeatureColors::transformLightToDark(QColor color) {
-    color.setHsv(color.hue(), color.saturation(), color.value() / 2);
-    return color;
+QColor FeatureColors::transformLightToDark(const QColor& color) {
+    int h, s, v;
+    color.getHsv(&h, &s, &v);
+
+    // Decrease saturation to avoid too bright colors
+    // 0.8 is an empirical value
+    s = qBound(0, int(s * 0.8), 255);
+
+    // Value should be lower that for the light theme, but not too low to avoid too dark colors
+    // The higher the saturation, the lower the value
+    // Also limit the calue to avoid too bright colors
+    // 0.5 and 150 are empirical values
+    v = qMin(int(v * 0.5), 150);
+
+    QColor dark;
+    dark.setHsv(h, s, v);
+    return dark;
 }
 
 }  // namespace U2

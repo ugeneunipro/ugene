@@ -218,15 +218,20 @@ bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
     CHECK(mw == object, false);
     CHECK(event != nullptr, false);
 
-#ifdef Q_OS_DARWIN
-    if (!colorIsChangedByUser && event->type() == QEvent::PaletteChange) {
-        auto newStyle = StyleFactory::create(QApplication::style()->objectName(), 0);
-        QApplication::setStyle(newStyle);
-        isDark = !isDark;
-        emit si_colorThemeSwitched();
+    if (event->type() == QEvent::PaletteChange) {
+        styleFactory->applyNewColorScheme();
         return MainWindow::eventFilter(object, event);
     }
-#endif
+
+//#ifdef Q_OS_DARWIN
+//    if (!colorIsChangedByUser && event->type() == QEvent::PaletteChange) {
+//        auto newStyle = StyleFactory::create(QApplication::style()->objectName(), 0);
+//        QApplication::setStyle(newStyle);
+//        isDark = !isDark;
+//        emit si_colorThemeSwitched();
+//        return MainWindow::eventFilter(object, event);
+//    }
+//#endif
 
     CHECK(event->type() == QEvent::KeyPress, false);
 
@@ -287,22 +292,7 @@ void MainWindowImpl::createActions() {
     switchColorTheme = new QAction("Switch color theme", this);
     switchColorTheme->setShortcut(QKeySequence(Qt::Key_F5));
     switchColorTheme->setShortcutContext(Qt::ApplicationShortcut);
-    connect(switchColorTheme, &QAction::triggered, this, [this]() {
-        auto s = AppContext::getAppSettings()->getUserAppsSettings();
-        int cm = 0;
-        if (!isDark) {
-            cm = 1;
-        }
-        auto vs = s->getVisualStyle();
-#ifdef Q_OS_WIN
-        // On Windows Dark theme + fusion is better, than Dark mode + windowsvista
-        if (cm == 1) {
-            vs = "fusion";
-        }
-#endif
-        setNewStyle(vs, cm);
-
-    });
+    connect(switchColorTheme, &QAction::triggered, this, &MainWindowImpl::sl_switchColorTheme);
 
 #ifdef _INSTALL_TO_PATH_ACTION
     installToPathAction = new QAction(tr("Enable Terminal Usage..."), this);
@@ -344,49 +334,14 @@ void MainWindowImpl::registerAction(QAction* action) {
     menuManager->registerAction(action);
 }
 
-void MainWindowImpl::setDarkTheme(bool _isDark) {
-    isDark = _isDark;
-}
-
 bool MainWindowImpl::isDarkTheme() const {
-    return isDark;
+    return styleFactory->isDarkTheme();
 }
 
 void MainWindowImpl::setNewStyle(const QString& style, int colorThemeIndex) {
-    auto cm = static_cast<StyleFactory::ColorTheme>(colorThemeIndex);
-#ifdef Q_OS_DARWIN
-    colorIsChangedByUser = true;
-    switch (cm) {
-        case StyleFactory::ColorTheme::Light:
-            MacStyleFactory::macSetToLightTheme();
-            isDark = false;
-            break;
-        case StyleFactory::ColorTheme::Dark:
-            MacStyleFactory::macSetToDarkTheme();
-            isDark = true;
-            break;
-        case StyleFactory::ColorTheme::Auto:
-            MacStyleFactory::macSetToAutoTheme();
-            isDark = StyleFactory::isDarkStyleEnabled();
-            break;
-    }
-    colorIsChangedByUser = false;
-#else
-    switch (cm) {
-        case StyleFactory::ColorTheme::Light:
-            isDark = false;
-            break;
-        case StyleFactory::ColorTheme::Dark:
-            isDark = true;
-            break;
-        case StyleFactory::ColorTheme::Auto:
-            CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
+    auto newStyle = styleFactory->createNewStyle(style, colorThemeIndex);
+    CHECK(newStyle != nullptr, );
 
-            isDark = StyleFactory::isDarkStyleEnabled();
-            break;
-    }
-#endif
-    auto newStyle = StyleFactory::create(style, cm);
     QApplication::setStyle(newStyle);
     emit si_colorThemeSwitched();
 }
@@ -467,16 +422,7 @@ void MainWindowImpl::prepareGUI() {
         helpMenu->addAction(addRepeatingNotificationAction);
     }
 
-#ifdef Q_OS_WIN
-    connect(&colorThemeTimer, &QTimer::timeout, this, [this]() {
-        auto s = AppContext::getAppSettings()->getUserAppsSettings();
-        auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
-        CHECK(cm == StyleFactory::ColorTheme::Auto, );
-
-        setNewStyle(s->getVisualStyle(), (int)cm);
-    });
-    colorThemeTimer.start(5000);
-#endif
+    styleFactory = new StyleFactory(this);
 
     mdiManager = new MWMDIManagerImpl(this, mdi);
 
@@ -689,6 +635,12 @@ void MainWindowImpl::sl_show() {
 void MainWindowImpl::sl_crashUgene() {
     volatile int* killer = nullptr;
     *killer = 0;
+}
+
+void MainWindowImpl::sl_switchColorTheme() {
+    int newColorThemeIndex = styleFactory->getNewColorThemeIndex();
+    auto newVisualStyleName = styleFactory->getNewVisualStyleName(newColorThemeIndex);
+    setNewStyle(newVisualStyleName, newColorThemeIndex);
 }
 
 void MainWindowImpl::sl_colorThemeSwitched() {
