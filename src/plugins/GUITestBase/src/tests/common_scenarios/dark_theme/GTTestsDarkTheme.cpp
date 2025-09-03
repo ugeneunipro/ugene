@@ -268,8 +268,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Set Dark theme
     // Open murine.gb
     // Expected: (48, 48, 48) background color
-    // Expected: misc_feature annotatation color #7f7f4c
-    // Expected: CDS annotatation color #4d7f7f
+    // Expected: misc_feature annotatation color #7f7f57
+    // Expected: CDS annotatation color #577f7f
     // Open GC content Graph
     // Expected: graph color is white, background is (48, 48, 48)
     // Open dotplot dialog
@@ -282,10 +282,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTWidget::click(GTWidget::findWidget("OP_ANNOT_HIGHLIGHT"));
     auto miscFeatureColor = GTUtilsAnnotHighlightingTreeView::getItemColor("misc_feature").name();
-    CHECK_SET_ERR(miscFeatureColor == "#7f7f4c", QString("misc_feature color expected: #7f7f4c, current: %1").arg(miscFeatureColor));
+    CHECK_SET_ERR(miscFeatureColor == "#7f7f57", QString("misc_feature color expected: #7f7f57, current: %1").arg(miscFeatureColor));
 
     auto cdsColor = GTUtilsAnnotHighlightingTreeView::getItemColor("CDS").name();
-    CHECK_SET_ERR(cdsColor == "#4d7f7f", QString("CDS color expected: #4d7f7f, current: %1").arg(cdsColor));
+    CHECK_SET_ERR(cdsColor == "#577f7f", QString("CDS color expected: #577f7f, current: %1").arg(cdsColor));
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"GC Content (%)"}));
     GTWidget::click(GTWidget::findWidget("GraphMenuAction"));
