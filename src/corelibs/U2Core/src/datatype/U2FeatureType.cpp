@@ -93,7 +93,7 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
         SAFE_POINT(colorName.isEmpty() || colorName.startsWith("#"), "Got invalid color name: " + colorName, );
         QColor color(colorName);
         if (!color.isValid()) {
-            color = FeatureColors::genLightColor(colorName);
+            color = FeatureColors::genLightColor(name);
         }
         SAFE_POINT(color.isValid(), "Got invalid color for feature: " + name, );
         SAFE_POINT(alphabets.testFlag(U2FeatureTypes::Alphabet_Nucleic) || !isShowOnAminoFrame, "Only features with nucleic alphabet may have isShowOnAminoFrame ON", );
