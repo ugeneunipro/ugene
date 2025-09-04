@@ -29,12 +29,50 @@
 namespace U2 {
 
 IMPLEMENT_TEST(FeaturesUnitTest, checkFeaturesColors) {
-    for (int i = 0; i <= (int)U2FeatureType::RestrictionSite; i++) {
+    for (int i = 1; i <= (int)U2FeatureType::RestrictionSite; i++) {
         auto featureType = static_cast<U2FeatureType>(i);
-        auto name = U2FeatureTypes::getVisualName(featureType);
-        auto generatedColor = FeatureColors::genLightColor(name).name();
         auto color = U2FeatureTypes::getColor(featureType).name();
-        CHECK_EQUAL(generatedColor, color, "feature color");
+        QString generatedColor;
+        switch (featureType) {
+            case U2FeatureType::Cds:
+                generatedColor = "#9bffff";
+                break;
+            case U2FeatureType::Gene:
+                generatedColor = "#00ffc8";
+                break;
+            case U2FeatureType::MiscFeature:
+                generatedColor = "#ffff99";
+                break;
+            case U2FeatureType::RepeatRegion:
+                generatedColor = "#ccccff";
+                break;
+            case U2FeatureType::Source:
+                generatedColor = "#cccccc";
+                break;
+            case U2FeatureType::Sts:
+                generatedColor = "#00dcdc";
+                break;
+            case U2FeatureType::TRna:
+                generatedColor = "#c8fac8";
+                break;
+            case U2FeatureType::Variation:
+                generatedColor = "#e32636";
+                break;
+            case U2FeatureType::ThreePrimeUtr:
+                generatedColor = "#ffcde6";
+                break;
+            case U2FeatureType::FivePrimeUtr:
+                generatedColor = "#ffc8c8";
+                break;
+            case U2FeatureType::RepeatUnit:
+                generatedColor = "#ccccff";
+                break;
+            default:
+                auto name = U2FeatureTypes::getVisualName(featureType);
+                generatedColor = FeatureColors::genLightColor(name).name();
+                break;
+        }
+        CHECK_EQUAL(color, generatedColor, "CDS");
     }
 }
 

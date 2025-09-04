@@ -95,6 +95,7 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
         if (!color.isValid()) {
             color = FeatureColors::genLightColor(name);
         }
+        auto colorName1 = color.name();
         SAFE_POINT(color.isValid(), "Got invalid color for feature: " + name, );
         SAFE_POINT(alphabets.testFlag(U2FeatureTypes::Alphabet_Nucleic) || !isShowOnAminoFrame, "Only features with nucleic alphabet may have isShowOnAminoFrame ON", );
         typeInfoList << U2FeatureTypeInfo(type, name, alphabets, color, description, isShowOnAminoFrame);
@@ -164,8 +165,8 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
     // Mapped to 'misc_feature' when saved to EMBL/Genbank format. The original name is saved/loaded using a special qualifier (GBFeatureUtils::QUALIFIER_NAME).
     r(AaRich, "AA-Rich", Alphabet_Amino);
     r(Acetylation, "Acetylation", Alphabet_Amino);
-    r(Acetylation, "Active Site", Alphabet_Amino);
-    r(Acetylation, "Adenylation", Alphabet_Amino);
+    r(ActiveSite, "Active Site", Alphabet_Amino);
+    r(Adenylation, "Adenylation", Alphabet_Amino);
     r(Allele, "Allele", Alphabet_Nucleic);
     r(AlphaHelix, "Alpha-Helix", Alphabet_Amino);
     r(AlteredSite, "Altered Site", Alphabet_Amino);
