@@ -1,0 +1,6 @@
+<unittest>
+
+    FeaturesUnitTest
+    + checkFeaturesColors
+
+</unittest>
