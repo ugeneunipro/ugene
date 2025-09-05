@@ -81,7 +81,7 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
     connect(timer, SIGNAL(timeout()), SLOT(sl_onTimer()));
 
     updateState();
-    setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
+    setWindowIcon(QIcon(":/ugene/images/ugene.png"));
 
     rbBoth->setChecked(true);
 }
@@ -117,7 +117,7 @@ void CollocationsDialogController::sl_plusClicked() {
         if (usedNames.contains(name)) {
             continue;
         }
-        QColor c = asr->getAnnotationSettings(name)->color;
+        QColor c = asr->getAnnotationSettings(name)->getActiveColor();
         QAction* a = m.addAction(GUIUtils::createSquareIcon(c, 10), name, this, SLOT(sl_addName()));
         assert(a->parent() == &m);
         Q_UNUSED(a);
@@ -140,7 +140,7 @@ void CollocationsDialogController::sl_addName() {
 
     usedNames.insert(name);
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
-    QColor c = asr->getAnnotationSettings(name)->color;
+    QColor c = asr->getAnnotationSettings(name)->getActiveColor();
 
     auto item = new QTreeWidgetItem();
     item->setText(0, name);

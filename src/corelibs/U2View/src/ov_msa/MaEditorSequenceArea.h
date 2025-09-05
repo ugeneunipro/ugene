@@ -190,6 +190,7 @@ protected slots:
     void sl_replaceSelectedCharacter();
     void sl_changeSelectionColor();
     virtual void sl_modelChanged();
+    virtual void sl_colorThemeSwitched();
 
 private slots:
     void sl_hScrollBarActionPerformed();

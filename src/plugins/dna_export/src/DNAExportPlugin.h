@@ -24,6 +24,8 @@
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceModel.h>
 
+#include <QAction>
+
 namespace U2 {
 
 class ExportAlignmentViewItemsController;
@@ -38,6 +40,9 @@ public:
 
 private slots:
     void sl_generateSequence();
+
+private:
+    QAction* randomSequenceGeneratorAction {nullptr};
 };
 
 class DNAExportService : public Service {

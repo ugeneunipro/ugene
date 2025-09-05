@@ -28,9 +28,16 @@
 #include <QPainter>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/Task.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/Version.h>
+
+#include <U2Gui/MainWindow.h>
+#include <U2Gui/GUIUtils.h>
+
+#include "main_window/styles/StyleFactory.h"
 
 namespace U2 {
 
@@ -88,7 +95,8 @@ SplashScreenWidget::SplashScreenWidget() {
               (v.minor == 0 ? "" : "." + QString::number(v.minor)) +
               (v.suffix.isEmpty() ? "" : "-" + v.suffix);
 
-    QImage image(":ugene/images/ugene_splash.png");
+    QImage image(GUIUtils::getThemedPath(":ugene/images/ugene_splash.png"));
+
     QSize widgetSize = image.size();
     setFixedSize(widgetSize);
 
@@ -168,7 +176,7 @@ void SplashScreenWidget::drawInfo() {
     font.setBold(true);
     font.setPixelSize(VERSION_HEIGHT_PX);
     p.setFont(font);
-    p.setPen(QColor(0, 46, 59));
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(0, 177, 226) : QColor(0, 46, 59));
 
     QString text = tr("Version ") + version + tr(" is loading") + QString(".").repeated(dots_number);
     p.drawText(17, 285, text);

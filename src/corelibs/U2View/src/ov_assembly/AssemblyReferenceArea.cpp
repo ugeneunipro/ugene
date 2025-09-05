@@ -46,6 +46,7 @@ AssemblySequenceArea::AssemblySequenceArea(AssemblyBrowserUi* ui_, char skipChar
 void AssemblySequenceArea::connectSlots() {
     connect(browser, SIGNAL(si_zoomOperationPerformed()), SLOT(sl_zoomPerformed()));
     connect(browser, SIGNAL(si_offsetsChanged()), SLOT(sl_offsetsChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AssemblySequenceArea::sl_colorThemeSwitched);
 }
 
 void AssemblySequenceArea::setNormalCellRenderer() {
@@ -162,6 +163,11 @@ void AssemblySequenceArea::sl_offsetsChanged() {
 }
 
 void AssemblySequenceArea::sl_zoomPerformed() {
+    sl_redraw();
+}
+
+void AssemblySequenceArea::sl_colorThemeSwitched() {
+    cellRenderer->makeForceRenderUpdate();
     sl_redraw();
 }
 

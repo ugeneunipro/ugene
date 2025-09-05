@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="hmm2/" >
-        <file>images/hmmer_16.png</file>
-        <file>images/hmmer_32.png</file>
-        <file>images/hmmer_64.png</file>
+        <file>images/dark/hmmer2.png</file>
+
+        <file>images/light/hmmer2.png</file>
     </qresource>
 </RCC>

@@ -171,9 +171,6 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     sortTimer.setSingleShot(true);
     connect(&sortTimer, SIGNAL(timeout()), SLOT(sl_sortTree()));
 
-    addColumnIcon = QIcon(":core/images/add_column.png");
-    removeColumnIcon = QIcon(":core/images/remove_column.png");
-
     /*
     pasteAction = new QAction(QIcon(":/core/images/paste.png"), tr("Paste annotations"), this);
     pasteAction->setObjectName("Paste annotations");
@@ -251,6 +248,8 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
     isDragging = false;
     resetDragAndDropData();
     tree->setAcceptDrops(true);
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AnnotationsTreeView::sl_colorThemeSwitched);
 }
 
 void AnnotationsTreeView::restoreWidgetState() {
@@ -1755,6 +1754,13 @@ void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContex
     disconnectSequenceObjectContext(advContext);
 }
 
+void AnnotationsTreeView::sl_colorThemeSwitched() {
+    QString emptyFilter;
+    for (int i = 0; i < tree->topLevelItemCount(); i++) {
+        updateColorThemeRecursively(static_cast<AVItem*>(tree->topLevelItem(i)));
+    }
+}
+
 // TODO: refactoring of annotationClicked and annotationDoubleClicked methods.
 // It's too difficult to understand what's going on in this methods
 // UTI-155
@@ -1843,6 +1849,44 @@ void AnnotationsTreeView::emitAnnotationActivated(Annotation* annotation) {
     disconnectSequenceObjectContext(seqObjCtx);
     seqObjCtx->emitAnnotationActivated(annotation, -1);
     connectSequenceObjectContext(seqObjCtx);
+}
+
+void AnnotationsTreeView::updateColorThemeRecursively(AVItem* item) {
+    switch (item->type) {
+        case AVItemType_Group: {
+            auto grItem = static_cast<AVGroupItem*>(item);
+            if (grItem->parent() == nullptr) {  // document item
+                GUIUtils::setMutedLnF(grItem, !grItem->group->getGObject()->hasAnnotations(), false);
+            } else {
+                GUIUtils::setMutedLnF(grItem, grItem->childCount() == 0, false);
+            }
+            break;
+        }
+        case AVItemType_Annotation: {
+            auto aItem = static_cast<AVAnnotationItem*>(item);
+            const auto& aData = aItem->annotation->getData();
+            const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+            const QColor iconColor = as->visible ? as->getActiveColor() : Qt::lightGray;
+            auto icon = GUIUtils::createSquareIcon(iconColor, 9);
+            aItem->setIcon(AnnotationsTreeView::COLUMN_NAME, icon);
+            QMap<QString, QIcon>& cache = AVAnnotationItem::getIconsCache();
+            cache[aData->name] = icon;
+            GUIUtils::setMutedLnF(aItem, !as->visible, false);
+            break;
+        }
+        case AVItemType_Qualifier: {
+            auto qualItem = static_cast<AVQualifierItem*>(item);
+            auto parentAnnItem = static_cast<AVAnnotationItem*>(qualItem->parent());
+            const auto& aData = parentAnnItem->annotation->getData();
+            const auto* as = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+            GUIUtils::setMutedLnF(qualItem, !as->visible, false);
+            break;
+        }
+    }
+
+    for (int i = 0; i < item->childCount(); i++) {
+        updateColorThemeRecursively(static_cast<AVItem*>(item->child(i)));
+    }
 }
 
 void AnnotationsTreeView::clearSelectedNotAnnotations() {
@@ -2376,6 +2420,7 @@ void AVGroupItem::updateAnnotations(const QString& nameFilter, ATVAnnUpdateFlags
             auto level1 = static_cast<AVGroupItem*>(item);
             if (noFilter || level1->group->getName() == nameFilter) {
                 level1->updateAnnotations(nameFilter, f);
+                level1->updateVisual();
             }
         } else {
             SAFE_POINT(item->type == AVItemType_Annotation, "Unexpected tree item type", );
@@ -2439,7 +2484,7 @@ void AVAnnotationItem::updateVisual(ATVAnnUpdateFlags f) {
         QMap<QString, QIcon>& cache = getIconsCache();
         QIcon icon = cache.value(aData->name);
         if (icon.isNull()) {
-            const QColor iconColor = as->visible ? as->color : Qt::lightGray;
+            const QColor iconColor = as->visible ? as->getActiveColor() : Qt::lightGray;
             icon = GUIUtils::createSquareIcon(iconColor, 9);
             if (cache.size() > MAX_ICONS_CACHE_SIZE) {
                 cache.clear();

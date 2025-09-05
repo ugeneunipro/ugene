@@ -46,6 +46,7 @@
 #include "tests/common_scenarios/circular_view/GTTestsCvGeneral.h"
 #include "tests/common_scenarios/cloning/GTTestsCloning.h"
 #include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
+#include "tests/common_scenarios/dark_theme/GTTestsDarkTheme.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
 #include "tests/common_scenarios/external_tools/mfold/GTTestsMfold.h"
@@ -2806,6 +2807,15 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0045_3);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0045_4);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0046);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/dark_mode/
+    //////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_dark_theme::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_dark_theme::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_dark_theme::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_dark_theme::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_dark_theme::test_0005);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/

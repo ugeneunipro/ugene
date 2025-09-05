@@ -31,6 +31,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
@@ -178,7 +180,7 @@ QString WriteGenbankPrompter::composeRichDoc() {
  *****************************/
 namespace {
 
-const QString generatedStr = "<font color='blue'>" + QApplication::translate("WriteDocPrompter", "default file") + "</font>";
+const QString generatedStr = "<font color='%1'>" + QApplication::translate("WriteDocPrompter", "default file") + "</font>";
 
 }
 QString WriteFastaPrompter::composeRichDoc() {
@@ -187,7 +189,7 @@ QString WriteFastaPrompter::composeRichDoc() {
     QString url = getScreenedURL(qobject_cast<IntegralBusPort*>(target->getPort(outPortId)),
                                  BaseAttributes::URL_OUT_ATTRIBUTE().getId(),
                                  BaseSlots::URL_SLOT().getId(),
-                                 generatedStr);
+                                 generatedStr.arg(Theme::hyperlinkColorLabelHtmlStr()));
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
 
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
@@ -218,7 +220,7 @@ ActorDocument* WriteFastaPrompter::createDescription(Actor* a) {
  * WriteDocPrompter
  *****************************/
 QString WriteDocPrompter::composeRichDoc() {
-    const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    const QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
 
     const QString outPortId = target->getInputPorts().first()->getId();
     Attribute* dataStorageAttr = target->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
@@ -233,7 +235,10 @@ QString WriteDocPrompter::composeRichDoc() {
         url = dbPathAttr->getAttributePureValue().toString();
         url = getHyperlink(BaseAttributes::DB_PATH().getId(), url);
     } else if (dataStorage == BaseAttributes::LOCAL_FS_DATA_STORAGE()) {
-        url = getScreenedURL(qobject_cast<IntegralBusPort*>(target->getPort(outPortId)), BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId(), generatedStr);
+        url = getScreenedURL(qobject_cast<IntegralBusPort*>(target->getPort(outPortId)),
+                                                            BaseAttributes::URL_OUT_ATTRIBUTE().getId(),
+                                                            BaseSlots::URL_SLOT().getId(),
+                                                            generatedStr.arg(Theme::hyperlinkColorLabelHtmlStr()));
         url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
     } else {
         FAIL("Unexpected attribute value", QString());

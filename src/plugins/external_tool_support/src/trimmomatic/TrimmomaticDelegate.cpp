@@ -30,6 +30,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/MultiClickMenu.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
 #include "TrimmomaticStep.h"
@@ -174,6 +175,8 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
                                                      QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
+    GUIUtils::setThemedIcon(buttonUp, ":/external_tool_support/images/up.png");
+    GUIUtils::setThemedIcon(buttonDown, ":/external_tool_support/images/down.png");
     new HelpButton(this, buttonBox, "65930159");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
@@ -202,6 +205,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
     connect(buttonUp, SIGNAL(pressed()), SLOT(sl_moveStepUp()));
     connect(buttonDown, SIGNAL(pressed()), SLOT(sl_moveStepDown()));
     connect(buttonRemove, SIGNAL(pressed()), SLOT(sl_removeStep()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TrimmomaticPropertyDialog::si_colorThemeSwitched);
 
     parseCommand(value);
     sl_valuesChanged();
@@ -223,10 +227,18 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);
         SAFE_POINT(item != nullptr, QString("Item with number %1 is NULL").arg(i), );
-        item->setBackgroundColor(isStepValid ? GUIUtils::OK_COLOR : GUIUtils::WARNING_COLOR);
+        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
         isValid = isValid && isStepValid;
     }
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isValid);
+}
+
+void TrimmomaticPropertyDialog::si_colorThemeSwitched() {
+    for (int i = 0; i < steps.size(); i++) {
+        const bool isStepValid = steps[i]->validate();
+        QListWidgetItem* item = listSteps->item(i);
+        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
+    }
 }
 
 void TrimmomaticPropertyDialog::sl_currentRowChanged() {

@@ -37,7 +37,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MsaObject.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Msa.h>
@@ -49,6 +48,7 @@
 
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
@@ -165,9 +165,7 @@ void PairAlign::initParameters() {
     }
     sl_algorithmSelected(pairwiseAlignmentWidgetsSettings->algorithmName);
 
-    lblMessage->setStyleSheet("color: " + Theme::errorColorLabelStr() + ";"
-                                                                        "font: bold;"
-                                                                        "padding-top: 15px;");
+    lblMessage->setStyleSheet(QString("color: %1; font: bold; padding-top: 15px;").arg(Theme::errorColorLabelStr()));
     sl_alignmentChanged();
 }
 
@@ -220,6 +218,7 @@ void PairAlign::connectSignals() {
     connect(secondSeqSelectorWC, SIGNAL(si_selectionChanged()), SLOT(sl_selectorTextChanged()));
     connect(msa->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_checkState()));
     connect(msa->getMaObject(), SIGNAL(si_alignmentChanged(const Msa&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PairAlign::sl_colorThemeSwitched);
 }
 
 void PairAlign::sl_checkState() {
@@ -241,6 +240,10 @@ void PairAlign::sl_alignmentChanged() {
         settingsWidget->updateWidget();
     }
     checkState();
+}
+
+void PairAlign::sl_colorThemeSwitched() {
+    lblMessage->setStyleSheet(QString("color: %1; font: bold; padding-top: 15px;").arg(Theme::errorColorLabelStr()));
 }
 
 void PairAlign::checkState() {

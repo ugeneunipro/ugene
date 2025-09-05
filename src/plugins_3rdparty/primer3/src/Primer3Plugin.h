@@ -32,6 +32,7 @@
 
 namespace U2 {
 
+class ADVGlobalAction;
 class Primer3ADVContext;
 class XMLTestFactory;
 
@@ -42,6 +43,7 @@ public:
 
 private:
     Primer3ADVContext* viewCtx = nullptr;
+    QAction* noTargetSequencePrimer3 = nullptr;
 };
 
 class Primer3ADVContext : public GObjectViewWindowContext {

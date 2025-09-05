@@ -35,6 +35,8 @@
 #    include <U2Core/AppResources.h>
 #endif
 
+#include <U2Designer/PrompterBase.h>
+
 #include <U2Lang/WorkflowUtils.h>
 
 #include "ExternalToolSearchTask.h"

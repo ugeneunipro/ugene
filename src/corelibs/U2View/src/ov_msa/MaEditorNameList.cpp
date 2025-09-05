@@ -31,6 +31,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
+#include <U2Gui/Theme.h>
 
 #include "MaEditorSelection.h"
 #include "MaEditorSequenceArea.h"
@@ -90,6 +91,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(actionTriggered(int)), SLOT(sl_vScrollBarActionPerformed()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditorNameList::sl_colorThemeSwitched);
 
     nhBar->setParent(this);
     nhBar->setVisible(false);
@@ -110,7 +112,8 @@ QSize MaEditorNameList::getCanvasSize(const QList<int>& seqIdx) const {
 }
 
 void MaEditorNameList::drawNames(QPainter& painter, const QList<int>& maRows, bool drawSelection) {
-    painter.fillRect(painter.viewport(), Qt::white);
+    painter.fillRect(painter.viewport(), QPalette().base().color());
+    painter.setPen(QPalette().text().color());
 
     const MaEditorSelection& selection = editor->getSelection();
     const MaCollapseModel* collapseModel = editor->getCollapseModel();
@@ -654,6 +657,10 @@ void MaEditorNameList::sl_completeUpdate() {
     update();
 }
 
+void MaEditorNameList::sl_colorThemeSwitched() {
+    sl_completeRedraw();
+}
+
 void MaEditorNameList::sl_completeRedraw() {
     completeRedraw = true;
     update();
@@ -712,8 +719,10 @@ void MaEditorNameList::drawAll() {
 }
 
 void MaEditorNameList::drawContent(QPainter& painter) {
-    painter.fillRect(cachedView->rect(), Qt::white);
+    painter.fillRect(cachedView->rect(), QPalette().base().color());
     CHECK(!editor->isAlignmentEmpty(), );
+
+    painter.setPen(QPalette().text().color());
 
     if (labels) {
         labels->setObjectName("");
@@ -781,11 +790,11 @@ void MaEditorNameList::drawChildSequenceItem(QPainter& painter, const QString& n
 
 void MaEditorNameList::drawBackground(QPainter& p, const QString&, const QRect& rect, bool isReference) {
     if (isReference) {
-        p.fillRect(rect, QColor("#9999CC"));  // SANGER_TODO: create the const, reference  color
+        p.fillRect(rect, AppContext::getMainWindow()->isDarkTheme() ? QColor("#727299") : QColor("#9999CC"));  // SANGER_TODO: create the const, reference  color
         return;
     }
 
-    p.fillRect(rect, Qt::white);
+    p.fillRect(rect, QPalette().base().color());
 }
 
 void MaEditorNameList::drawText(QPainter& p, const QString& name, const QRect& rect, bool selected) {
@@ -821,7 +830,7 @@ void MaEditorNameList::drawSelection(QPainter& painter) {
     CHECK(!selectionRectList.isEmpty(), );
 
     painter.save();
-    painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
+    painter.setPen(QPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray, 1, Qt::DashLine));
     for (const QRect& selectionRect : selectionRectList) {
         U2Region rowRange = U2Region::fromYRange(selectionRect);
         U2Region screenYRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(rowRange);
