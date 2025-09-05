@@ -23,16 +23,26 @@
 
 #include <QObject>
 #include <QStyleFactory>
-#include <QTimer>
+
+#ifdef Q_OS_WIN
+#include <QAbstractNativeEventFilter>
+#endif
 
 namespace U2 {
 
 class MainWindowImpl;
 
 // Creates a style by given parameters
-class StyleFactory : public QObject {
+class StyleFactory : public QObject
+#ifdef Q_OS_WIN
+    , public QAbstractNativeEventFilter
+#endif
+{
 public:
     StyleFactory(MainWindowImpl* parent);
+#ifdef Q_OS_WIN
+    ~StyleFactory();
+#endif
 
     // Supported color themes
     enum class ColorTheme {
@@ -67,6 +77,10 @@ public:
     static bool isAutoStyleAvaliable();
 
 private:
+#ifdef Q_OS_WIN
+    bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;
+#endif
+
     void syncColorSchemeWithSystem();
 
     // True if dark style enabled
@@ -80,9 +94,6 @@ private:
     bool isDark = false;
 #ifdef Q_OS_DARWIN
     bool colorIsChangedByUser = false;
-#endif
-#ifdef Q_OS_WIN
-    QTimer colorThemeTimer;
 #endif
 
 };

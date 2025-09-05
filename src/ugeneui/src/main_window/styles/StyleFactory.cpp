@@ -41,24 +41,31 @@
 #ifdef Q_OS_WIN
 #    include <QOperatingSystemVersion>
 #    include <QSettings>
+#    include <windows.h>
 #endif
 
 
 namespace U2 {
 
 StyleFactory::StyleFactory(MainWindowImpl* parent)
-    : QObject(parent) {
-
+    : QObject(parent)
+#ifdef Q_OS_WIN
+      , QAbstractNativeEventFilter()
+#endif
+{
 #ifdef Q_OS_WIN
     // Now the only way to track system color theme changed on Windows is
     // to periodically check the corresponding registry value.
     // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
-    connect(&colorThemeTimer, &QTimer::timeout, this, [this]() {
-        syncColorSchemeWithSystem();
-    });
-    colorThemeTimer.start(5000);
+    qApp->installNativeEventFilter(this);
 #endif
 }
+
+#ifdef Q_OS_WIN
+StyleFactory::~StyleFactory() {
+    qApp->removeNativeEventFilter(this);
+}
+#endif
 
 QStyle* StyleFactory::createNewStyle(const QString& styleName, int colorThemeIndex) {
     auto cm = static_cast<StyleFactory::ColorTheme>(colorThemeIndex);
@@ -165,6 +172,22 @@ bool StyleFactory::isAutoStyleAvaliable() {
     return false;
 #endif
 }
+
+#ifdef Q_OS_WIN
+bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message, long* result) {
+    // This function is called periodically by Qt.
+    // On windows eventType is "windows_generic_MSG" or "windows_dispatcher_MSG"
+    CHECK(eventType == "windows_generic_MSG" || eventType == "windows_dispatcher_MSG", false);
+
+    MSG* msg = static_cast<MSG*>(message);
+    CHECK(msg != nullptr, false);
+
+    if (msg->message == WM_SETTINGCHANGE) {
+        syncColorSchemeWithSystem();
+    }
+    return false;
+}
+#endif
 
 void StyleFactory::syncColorSchemeWithSystem() {
     auto s = AppContext::getAppSettings()->getUserAppsSettings();
