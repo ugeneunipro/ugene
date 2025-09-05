@@ -54,7 +54,7 @@ StyleFactory::StyleFactory(MainWindowImpl* parent)
     // to periodically check the corresponding registry value.
     // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
     connect(&colorThemeTimer, &QTimer::timeout, this, [this]() {
-        applyAutomaticallyChangedColorScheme();
+        syncColorSchemeWithSystem();
     });
     colorThemeTimer.start(5000);
 #endif
@@ -97,11 +97,11 @@ QStyle* StyleFactory::createNewStyle(const QString& styleName, int colorThemeInd
     return StyleFactory::create(styleName, cm);
 }
 
-void StyleFactory::applyAutomaticallyChangedColorSchemeForMacOs() {
+void StyleFactory::syncColorSchemeWithSystemForMacOs() {
 #ifdef Q_OS_DARWIN
     CHECK(!colorIsChangedByUser, );
 
-    applyAutomaticallyChangedColorScheme();
+    syncColorSchemeWithSystem();
 #endif
 }
 
@@ -166,10 +166,11 @@ bool StyleFactory::isAutoStyleAvaliable() {
 #endif
 }
 
-void StyleFactory::applyAutomaticallyChangedColorScheme() {
+void StyleFactory::syncColorSchemeWithSystem() {
     auto s = AppContext::getAppSettings()->getUserAppsSettings();
     auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
     CHECK(cm == StyleFactory::ColorTheme::Auto, );
+    CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
 
     auto mwi = qobject_cast<MainWindowImpl*>(this->parent());
     SAFE_POINT_NN(mwi, );

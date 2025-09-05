@@ -50,7 +50,7 @@ public:
     // This function is called for macOS only because this is the only system
     // which triggers the event when system color scheme is changed
     // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
-    void applyAutomaticallyChangedColorSchemeForMacOs();
+    void syncColorSchemeWithSystemForMacOs();
 
     // Returns true if current theme is dark
     bool isDarkTheme() const;
@@ -67,7 +67,7 @@ public:
     static bool isAutoStyleAvaliable();
 
 private:
-    void applyAutomaticallyChangedColorScheme();
+    void syncColorSchemeWithSystem();
 
     // True if dark style enabled
     static bool isDarkStyleEnabled();

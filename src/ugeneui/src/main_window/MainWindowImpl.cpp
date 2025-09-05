@@ -221,7 +221,7 @@ bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
     // macOS triggers PaletteChange event when the system color scheme is changed
     // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
     if (event->type() == QEvent::PaletteChange) {
-        styleFactory->applyAutomaticallyChangedColorSchemeForMacOs();
+        styleFactory->syncColorSchemeWithSystemForMacOs();
         return MainWindow::eventFilter(object, event);
     }
 

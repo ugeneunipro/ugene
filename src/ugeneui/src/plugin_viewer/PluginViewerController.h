@@ -51,7 +51,6 @@ private slots:
     void sl_onServiceUnregistered(Service* s);
     void sl_showHideLicense();
     void sl_acceptLicense();
-    void sl_colorThemeSwitched();
 
 private:
     void connectStaticActions();
@@ -101,7 +100,6 @@ public:
         return true;
     }
     void updateVisual();
-    void updateTextColor();
     Plugin* plugin;
     bool showServices;
 };
