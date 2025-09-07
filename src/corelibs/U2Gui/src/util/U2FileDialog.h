@@ -54,15 +54,6 @@ public:
                                    const QString& filter = QString(),
                                    const QString& selectedFilter = QString(),
                                    const QFileDialog::Options& options = {0});
-    /* Returns pair of filename and selected file filter in file dialog */
-    static QPair<QString, QString> getFileNameAndSelectedFilter(QWidget* parent,
-                                                         const QString& caption,
-                                                         const QString& dir,
-                                                         const QString& filter,
-                                                         const QString& selectedFilter,
-                                                         QFileDialog::Options options,
-                                                         QFileDialog::AcceptMode acceptMode,
-                                                         QFileDialog::FileMode fileMode);
 };
 
 }  // namespace U2

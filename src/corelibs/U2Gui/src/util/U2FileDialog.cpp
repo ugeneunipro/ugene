@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-static QPair<QStringList, QString> getFileNamesAndSelectedFilter(QWidget* parent,
+static QStringList getFileNames(QWidget* parent,
                                 const QString& caption,
                                 const QString& dir,
                                 const QString& filter,
@@ -50,7 +50,26 @@ static QPair<QStringList, QString> getFileNamesAndSelectedFilter(QWidget* parent
     fileDialog->setFileMode(fileMode);
     fileDialog->setAcceptMode(acceptMode);
     CHECK(fileDialog->exec() == QFileDialog::Accepted && !fileDialog.isNull(), {});
-    return QPair<QStringList, QString>(fileDialog->selectedFiles(), fileDialog->selectedNameFilter());
+    return fileDialog->selectedFiles();
+}
+
+static QString getFileName(QWidget* parent,
+                           const QString& caption,
+                           const QString& dir,
+                           const QString& filter,
+                           const QString& selectedFilter,
+                           QFileDialog::Options options,
+                           QFileDialog::AcceptMode acceptMode,
+                           QFileDialog::FileMode fileMode) {
+    auto names = getFileNames(parent,
+                              caption,
+                              dir,
+                              filter,
+                              selectedFilter,
+                              options,
+                              acceptMode,
+                              fileMode);
+    return !names.isEmpty() ? names.first() : QString();
 }
 
 static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options& options) {
@@ -87,14 +106,14 @@ QString U2FileDialog::getOpenFileName(QWidget* parent,
                                       const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return getFileNameAndSelectedFilter(parent,
+    return getFileName(parent,
                        caption,
                        dir,
                        filter,
                        selectedFilter,
                        effectiveOptions,
                        QFileDialog::AcceptOpen,
-                       QFileDialog::ExistingFile).first;
+                       QFileDialog::ExistingFile);
 }
 
 QStringList U2FileDialog::getOpenFileNames(QWidget* parent,
@@ -105,14 +124,14 @@ QStringList U2FileDialog::getOpenFileNames(QWidget* parent,
                                            const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return getFileNamesAndSelectedFilter(parent,
+    return getFileNames(parent,
                         caption,
                         dir,
                         filter,
                         selectedFilter,
                         effectiveOptions,
                         QFileDialog::AcceptOpen,
-                        QFileDialog::ExistingFiles).first;
+                        QFileDialog::ExistingFiles);
 }
 
 QString U2FileDialog::getExistingDirectory(QWidget* parent,
@@ -132,33 +151,14 @@ QString U2FileDialog::getSaveFileName(QWidget* parent,
                                       const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return getFileNameAndSelectedFilter(parent,
+    return getFileName(parent,
                        caption,
                        dir,
                        filter,
                        selectedFilter,
                        effectiveOptions,
                        QFileDialog::AcceptSave,
-                       QFileDialog::AnyFile).first;
-}
-
-QPair<QString, QString> U2FileDialog::getFileNameAndSelectedFilter(QWidget* parent,
-                                                                   const QString& caption,
-                                                                   const QString& dir,
-                                                                   const QString& filter,
-                                                                   const QString& selectedFilter,
-                                                                   QFileDialog::Options options,
-                                                                   QFileDialog::AcceptMode acceptMode,
-                                                                   QFileDialog::FileMode fileMode) {
-    auto names = getFileNamesAndSelectedFilter(parent,
-                                               caption,
-                                               dir,
-                                               filter,
-                                               selectedFilter,
-                                               options,
-                                               acceptMode,
-                                               fileMode);
-    return QPair<QString, QString>(!names.first.first().isEmpty() ? names.first.first() : QString(), names.second);
+                       QFileDialog::AnyFile);
 }
 
 }  // namespace U2

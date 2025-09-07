@@ -70,10 +70,8 @@ public:
     /** Returns a filter with all document formats supported by UGENE plus 'All files' filter. */
     static QString createAllSupportedFormatsFileFilter(const QMap<QString, QStringList>& extraFilters = {});
 
-    /** Returns a filter with all document formats what support writing of any of the given object types 
-     *  plus 'All files' filter optionally. */
-    static QString createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats = false, 
-                                                 bool excludeAllFilesIfNotEmpty = false);
+    /** Returns a filter with all document formats what support writing of any of the given object types plus 'All files' filter. */
+    static QString createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats = false);
 };
 
 }  // namespace U2
