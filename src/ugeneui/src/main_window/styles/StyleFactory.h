@@ -21,28 +21,22 @@
 
 #pragma once
 
+#include <QAbstractNativeEventFilter>
 #include <QObject>
 #include <QStyleFactory>
-
-#ifdef Q_OS_WIN
-#include <QAbstractNativeEventFilter>
-#endif
 
 namespace U2 {
 
 class MainWindowImpl;
 
 // Creates a style by given parameters
-class StyleFactory : public QObject
-#ifdef Q_OS_WIN
-    , public QAbstractNativeEventFilter
-#endif
+// QAbstractNativeEventFilter used to track system color scheme changes on Windows
+// TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
+class StyleFactory : public QObject, public QAbstractNativeEventFilter
 {
 public:
     StyleFactory(MainWindowImpl* parent);
-#ifdef Q_OS_WIN
     ~StyleFactory();
-#endif
 
     // Supported color themes
     enum class ColorTheme {
@@ -57,10 +51,8 @@ public:
     QStyle* createNewStyle(const QString& styleName, int colorThemeIndex);
 
     // Apply color scheme if it was changed by system
-    // This function is called for macOS only because this is the only system
-    // which triggers the event when system color scheme is changed
     // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
-    void syncColorSchemeWithSystemForMacOs();
+    void syncColorSchemeWithSystem();
 
     // Returns true if current theme is dark
     bool isDarkTheme() const;
@@ -77,19 +69,15 @@ public:
     static bool isAutoStyleAvaliable();
 
 private:
-#ifdef Q_OS_WIN
+    // Used for Windows only to detect system color scheme changes
+    // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
     bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;
-#endif
-
-    void syncColorSchemeWithSystem();
 
     // True if dark style enabled
     static bool isDarkStyleEnabled();
 
     // Create style by style name and color theme
     static QStyle* create(const QString& styleName, ColorTheme colorTheme);
-    // Create style by style name and color theme
-    static QStyle* create(const QString& styleName, int colorTheme);
 
     bool isDark = false;
 #ifdef Q_OS_DARWIN

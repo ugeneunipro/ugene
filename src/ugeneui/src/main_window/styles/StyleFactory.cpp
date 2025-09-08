@@ -23,49 +23,44 @@
 
 #include "ProxyStyle.h"
 
-#ifndef Q_OS_DARWIN
-#include "DarkStyle.h"
+#ifdef Q_OS_DARWIN
+#    include "MacStyleFactory.h"
 #else
-#include "MacStyleFactory.h"
+#    ifdef Q_OS_WIN
+#        include "WinStyleFactory.h"
+#        include <windows.h>
+#    endif
+#    include "DarkStyle.h"
 #endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/global.h>
 
 #include <U2Gui/MainWindow.h>
 
 #include "main_window/MainWindowImpl.h"
 
-#ifdef Q_OS_WIN
-#    include <QOperatingSystemVersion>
-#    include <QSettings>
-#    include <windows.h>
-#endif
-
-
 namespace U2 {
 
 StyleFactory::StyleFactory(MainWindowImpl* parent)
-    : QObject(parent)
-#ifdef Q_OS_WIN
-      , QAbstractNativeEventFilter()
-#endif
-{
-#ifdef Q_OS_WIN
-    // Now the only way to track system color theme changed on Windows is
-    // to periodically check the corresponding registry value.
-    // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
-    qApp->installNativeEventFilter(this);
-#endif
+    : QObject(parent), QAbstractNativeEventFilter() {
+
+    if (isOsWindows()) {
+        // Now the only way to track system color theme changed on Windows is
+        // to periodically check the corresponding registry value.
+        // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
+        qApp->installNativeEventFilter(this);
+    }
 }
 
-#ifdef Q_OS_WIN
 StyleFactory::~StyleFactory() {
-    qApp->removeNativeEventFilter(this);
+    if (isOsWindows()) {
+        qApp->removeNativeEventFilter(this);
+    }
 }
-#endif
 
 QStyle* StyleFactory::createNewStyle(const QString& styleName, int colorThemeIndex) {
     auto cm = static_cast<StyleFactory::ColorTheme>(colorThemeIndex);
@@ -104,12 +99,20 @@ QStyle* StyleFactory::createNewStyle(const QString& styleName, int colorThemeInd
     return StyleFactory::create(styleName, cm);
 }
 
-void StyleFactory::syncColorSchemeWithSystemForMacOs() {
+void StyleFactory::syncColorSchemeWithSystem() {
 #ifdef Q_OS_DARWIN
+    // On macOS this function is triggered on changing color scheme by user too
     CHECK(!colorIsChangedByUser, );
-
-    syncColorSchemeWithSystem();
 #endif
+    auto s = AppContext::getAppSettings()->getUserAppsSettings();
+    auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
+    CHECK(cm == StyleFactory::ColorTheme::Auto, );
+    CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
+
+    auto mwi = qobject_cast<MainWindowImpl*>(this->parent());
+    SAFE_POINT_NN(mwi, );
+
+    mwi->setNewStyle(s->getVisualStyle(), (int)cm);
 }
 
 bool StyleFactory::isDarkTheme() const {
@@ -128,53 +131,29 @@ int StyleFactory::getNewColorThemeIndex() const {
 QString StyleFactory::getNewVisualStyleName(int newColorThemeIndex) const {
     auto s = AppContext::getAppSettings()->getUserAppsSettings();
     auto visualStyleName = s->getVisualStyle();
-#ifdef Q_OS_WIN
-    // On Windows Dark theme + fusion is better, than Dark mode + windowsvista
-    if (newColorThemeIndex == 1) {
-        visualStyleName = "fusion";
+    if (isOsWindows()) {
+        // On Windows Dark theme + fusion is better, than Dark mode + windowsvista
+        if (newColorThemeIndex == 1) {
+            visualStyleName = "fusion";
+        }
     }
-#else
-    Q_UNUSED(newColorThemeIndex)
-#endif
     return visualStyleName;
 }
-
-#ifdef Q_OS_WIN32
-namespace {
-bool windowsDarkThemeAvailable() {
-    // dark theme supported Windows 10 1809 10.0.17763 onward
-    // https://stackoverflow.com/questions/53501268/win10-dark-theme-how-to-use-in-winapi
-    if (QOperatingSystemVersion::current().majorVersion() == 10) {
-        return QOperatingSystemVersion::current().microVersion() >= 17763;
-    } else if (QOperatingSystemVersion::current().majorVersion() > 10) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool windowsIsInDarkTheme() {
-    CHECK(windowsDarkThemeAvailable(), false);
-
-    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
-    return settings.value("AppsUseLightTheme", 1).toInt() == 0;
-}
-
-}  // namespace
-#endif
 
 bool StyleFactory::isAutoStyleAvaliable() {
 #ifdef Q_OS_DARWIN
     return MacStyleFactory::macDarkThemeAvailable();
 #elif defined(Q_OS_WIN32)
-    return windowsDarkThemeAvailable();
+    return WinStyleFactory::windowsDarkThemeAvailable();
 #else
     return false;
 #endif
 }
 
-#ifdef Q_OS_WIN
 bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message, long* result) {
+    // Used for Windows only to detect system color scheme changes
+    SAFE_POINT(isOsWindows(), "Should be called on Windows only", false);
+
     // This function is called periodically by Qt.
     // On windows eventType is "windows_generic_MSG" or "windows_dispatcher_MSG"
     CHECK(eventType == "windows_generic_MSG" || eventType == "windows_dispatcher_MSG", false);
@@ -187,25 +166,12 @@ bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message,
     }
     return false;
 }
-#endif
-
-void StyleFactory::syncColorSchemeWithSystem() {
-    auto s = AppContext::getAppSettings()->getUserAppsSettings();
-    auto cm = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
-    CHECK(cm == StyleFactory::ColorTheme::Auto, );
-    CHECK(isDark != StyleFactory::isDarkStyleEnabled(), );
-
-    auto mwi = qobject_cast<MainWindowImpl*>(this->parent());
-    SAFE_POINT_NN(mwi, );
-
-    mwi->setNewStyle(s->getVisualStyle(), (int)cm);
-}
 
 bool StyleFactory::isDarkStyleEnabled() {
 #ifdef Q_OS_DARWIN
     return MacStyleFactory::macIsInDarkTheme();
 #elif defined(Q_OS_WIN32)
-    return windowsIsInDarkTheme();
+    return WinStyleFactory::windowsIsInDarkTheme();
 #else
     return false;
 #endif
@@ -216,37 +182,31 @@ QStyle* StyleFactory::create(const QString& styleName, ColorTheme colorTheme) {
     QStyle* qtStyle = QStyleFactory::create(styleName);
     auto proxyStyle = new ProxyStyle(qtStyle);
 
-#ifdef Q_OS_DARWIN
-    result = proxyStyle;
-#else
-    switch (colorTheme) {
-        case ColorTheme::Light:
-            result = proxyStyle;
-            break;
-        case ColorTheme::Dark:
-            result = new DarkStyle(proxyStyle);
-            break;
-        case ColorTheme::Auto:
-            if (isDarkStyleEnabled()) {
-                result = new DarkStyle(proxyStyle);
-            } else {
+    if (isOsMac()) {
+        result = proxyStyle;
+    } else {
+        switch (colorTheme) {
+            case ColorTheme::Light:
                 result = proxyStyle;
-            }
-            break;
+                break;
+            case ColorTheme::Dark:
+                result = new DarkStyle(proxyStyle);
+                break;
+            case ColorTheme::Auto:
+                if (isDarkStyleEnabled()) {
+                    result = new DarkStyle(proxyStyle);
+                } else {
+                    result = proxyStyle;
+                }
+                break;
+        }
+        // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
+        if (qtStyle != nullptr) {
+            result->setObjectName(qtStyle->objectName());
+        }
     }
-    // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
-    if (qtStyle != nullptr) {
-        result->setObjectName(qtStyle->objectName());
-    }
-#endif
     return result;
 }
-
-QStyle* StyleFactory::create(const QString& styleName, int colorTheme) {
-    auto colorThemeEnum = static_cast<ColorTheme>(colorTheme);
-    return create(styleName, colorThemeEnum);
-}
-
 
 
 }  // namespace U2
