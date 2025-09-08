@@ -36,14 +36,14 @@ class U2GUI_EXPORT SaveDocumentWithFormatDialogController : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(SaveDocumentWithFormatDialogController)
 public:
-    SaveDocumentWithFormatDialogController(const QString& defaultUrl, const DocumentFormatConstraints& dfc, QWidget* parent);
+    SaveDocumentWithFormatDialogController(const QString& defaultUrl, const DocumentFormatConstraints& dfc, const QString& windowTitle, QWidget* parent);
 
     QString getDocumentURL() const;
     DocumentFormatId getDocumentFormatId() const;
 
 private:
-    SaveDocumentController* saveController;
-    Ui_ExportDocumentDialog* ui;
+    SaveDocumentController* saveController = nullptr;
+    Ui_ExportDocumentDialog* ui = nullptr;
 };
 
 }  // namespace U2

@@ -144,7 +144,8 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     dfc.addFlagToExclude(DocumentFormatFlag_Hidden);
     LastUsedDirHelper lod;
     QObjectScopedPointer<SaveDocumentWithFormatDialogController> dialog(new SaveDocumentWithFormatDialogController(
-                                                                        lod.getLastUsedDir() + "/selected_row", dfc, ui));
+                                                                        lod.getLastUsedDir() + "/selected_row", dfc,
+                                                                        tr("File path and format to save"), ui));
     CHECK(dialog->exec() == QDialog::Accepted, );
     const DocumentFormatId formatId = dialog->getDocumentFormatId();
     const QString url = dialog->getDocumentURL();

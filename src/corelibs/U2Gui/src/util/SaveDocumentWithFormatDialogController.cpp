@@ -29,14 +29,13 @@
 namespace U2 {
 
 SaveDocumentWithFormatDialogController::SaveDocumentWithFormatDialogController(const QString& defaultUrl, 
-                                                                               const DocumentFormatConstraints& dfc, 
-                                                                               QWidget* parent)
-    : QDialog(parent),
-      saveController(nullptr) {
+                                                                               const DocumentFormatConstraints& dfc,
+                                                                               const QString& windowTitle,
+                                                                               QWidget* parent) {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
     setMinimumWidth(size().width());
-    setWindowTitle(tr("File path and format to save"));
+    setWindowTitle(windowTitle);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     ui->compressCheck->setVisible(false);
     ui->addToProjCheck->setVisible(false);
