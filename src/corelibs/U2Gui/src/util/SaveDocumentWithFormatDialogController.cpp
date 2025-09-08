@@ -31,7 +31,8 @@ namespace U2 {
 SaveDocumentWithFormatDialogController::SaveDocumentWithFormatDialogController(const QString& defaultUrl, 
                                                                                const DocumentFormatConstraints& dfc,
                                                                                const QString& windowTitle,
-                                                                               QWidget* parent) {
+                                                                               QWidget* parent) 
+    : QDialog(parent) {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
     setMinimumWidth(size().width());
