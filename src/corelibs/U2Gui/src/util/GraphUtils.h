@@ -76,9 +76,6 @@ public:
         int predefinedChunk;
         int correction;
         bool drawNumbers;
-        // if true draw only start number, if false draw both
-        // Could be useful if the gap between start and end is too small
-        bool drawOnlyStartNumber = false;
         bool drawNotches;
         bool drawBorderNotches;
         bool singleSideNotches;

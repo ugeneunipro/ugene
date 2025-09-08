@@ -267,8 +267,6 @@ void MaConsensusAreaRenderer::drawRuler(QPainter& painter, const ConsensusRender
     config.extraAxisLenAfter = settings.rulerWidth - (startPoint.x() + firstLastDistance);
     config.textBorderStart = -settings.firstNotchedBaseXRange.length / 2;
     config.textBorderEnd = -settings.firstNotchedBaseXRange.length / 2;
-    static constexpr int MIN_NOTCHED_FIRST_LAST_DISTANCE = 2;
-    config.drawOnlyStartNumber = (settings.lastNotchedBasePosition - settings.firstNotchedBasePosition) < MIN_NOTCHED_FIRST_LAST_DISTANCE;
 
     GraphUtils::drawRuler(painter, startPoint, firstLastDistance, settings.firstNotchedBasePosition + 1, settings.lastNotchedBasePosition + 1, settings.rulerFont, config);
 
