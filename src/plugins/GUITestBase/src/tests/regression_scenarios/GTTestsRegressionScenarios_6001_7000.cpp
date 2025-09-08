@@ -101,6 +101,7 @@
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -1317,6 +1318,39 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(second), QString("The second sequence '%1' is absent in the project tree view").arg(second));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6246) {
+    // Open "murine.gb".
+    // Select a region.
+    // Click on the "Export image" button on the SV toolbar.
+    // In the "Export Image" dialog:
+    // Select "Zoomed annotations".
+    // Select "Whole sequence" region.
+    // Click "Export".
+    // Expected state: there is a zoom view image for the whole sequence.
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsSequenceView::selectSequenceRegion(5, 7);
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTRadioButton::click("zoomButton", dialog);
+            GTComboBox::selectItemByText("region_type_combo", dialog, "Whole sequence");
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_6246.png", dialog);
+
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new ExportImage(new Scenario));
+    GTWidget::click(GTAction::button("export_image"));
+
+    QImage img(sandBoxDir + "test_6246.png");
+    CHECK_SET_ERR(img.width() > 100, "Width is too low to be a width of a whole sequence image");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6247) {
     class Scenario : public CustomScenario {
         void run() override {
@@ -1803,6 +1837,56 @@ GUI_TEST_CLASS_DEFINITION(test_6350) {
     CHECK_SET_ERR(list.first() == "[s] region [150000 199950]",
                   QString("Unexpected sequence name, expected: [s] region [150000 199950], current %1")
                       .arg(list.first()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6363) {
+    // 1. Open the "External tools" tab in the "Preferences" dialod
+    // 2. Choose any validated tool, select the path to it in the line edit, cut and click to another line (the last action starts a validation task)
+    // Expected state: The "Remove tool" button became disabled
+    // 3. Paste the path to the tool from the clipboard to this line edit again and click to another line
+    // Expected state: The "Remove tool" button became enabled
+    // Current state: The "Remove tool" button still disabled
+
+    class Scenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
+
+            auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
+            QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
+            QLineEdit* blastdbcmdLineEdit = nullptr;
+            QToolButton* blastdbcmdClearButton = nullptr;
+            QLineEdit* blastnLineEdit = nullptr;
+            for (QTreeWidgetItem* item : qAsConst(listOfItems)) {
+                if (item->text(0) == "blastdbcmd") {
+                    QWidget* itemWid = treeWidget->itemWidget(item, 1);
+                    blastdbcmdLineEdit = GTWidget::findLineEdit("PathLineEdit", itemWid);
+                    blastdbcmdClearButton = itemWid->findChild<QToolButton*>("ClearToolPathButton");
+                } else if (item->text(0) == "blastn") {
+                    blastnLineEdit = GTWidget::findLineEdit("PathLineEdit", treeWidget->itemWidget(item, 1));
+                }
+                if (blastdbcmdLineEdit != nullptr && blastnLineEdit != nullptr) {
+                    break;
+                }
+            }
+            QString blastdirPath = AppSettingsDialogFiller::getExternalToolPath("blastdbcmd");
+            GTLineEdit::clear(blastdbcmdLineEdit);
+            GTWidget::click(blastnLineEdit);
+            CHECK_SET_ERR(!blastdbcmdClearButton->isEnabled(), "Button is enabled");
+
+            GTLineEdit::setText(blastdbcmdLineEdit, blastdirPath, true, true);
+            GTWidget::click(blastnLineEdit);
+            GTUtilsTaskTreeView::waitTaskFinished();
+            CHECK_SET_ERR(blastdbcmdClearButton->isEnabled(), "Button is disabled");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new Scenario()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6397) {
@@ -2328,7 +2412,7 @@ GUI_TEST_CLASS_DEFINITION(test_6485) {
     GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::algorithms);
     QTreeWidgetItem* treeItem = GTUtilsWorkflowDesigner::findTreeItem(settings.elementName, GTUtilsWorkflowDesigner::algorithms);
     CHECK_SET_ERR(treeItem != nullptr, "Element not found");
-    
+
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "The element with external tool is used in other Workflow Designer window(s). Please remove these instances to be able to remove the element configuration."));
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "", "Remove element"));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove"}));

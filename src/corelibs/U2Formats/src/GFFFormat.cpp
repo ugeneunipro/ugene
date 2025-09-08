@@ -314,6 +314,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
                 seqMap.insert(objName, seqObj);
                 addAnnotations(seqImporter.getCaseAnnotations(), objects, atoSet, fastaHeaderName, dbiRef, hints);
+                CHECK_OBJECT_COUNT();
                 objName = extractSeqObjectName(fastaHeaderName, words, names, isNameModified);
                 anyNamelessSequence = isNameModified || anyNamelessSequence;
                 seq = "";
@@ -416,12 +417,12 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                     }
                 }
                 if (ato == nullptr) {
-                    CHECK_OBJECT_COUNT();
                     QVariantMap objectHints;
                     objectHints.insert(DBI_FOLDER_HINT, hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
                     ato = new AnnotationTableObject(atoName, dbiRef, objectHints);
                     objects.append(ato);
                     atoSet.insert(ato);
+                    CHECK_OBJECT_COUNT();
                 }
 
                 // qualifiers from columns

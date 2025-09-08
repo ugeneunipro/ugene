@@ -5,7 +5,7 @@
 
 #include "gzguts.h"
 
-#ifdef __MACH__
+#if defined(__MACH__) || defined(__linux__)
 #include <unistd.h>
 #endif
 
