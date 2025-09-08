@@ -97,9 +97,9 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
                                              const QString& colorName = "",
                                              bool isShowOnAminoFrame = false) {
         SAFE_POINT(colorName.isEmpty() || colorName.startsWith("#"), "Got invalid color name: " + colorName, );
-        QColor color(colorName);
-        if (!color.isValid()) {
-            color = FeatureColors::genLightColor(name);
+        QColor lightColor(colorName);
+        if (!lightColor.isValid()) {
+            lightColor = FeatureColors::genLightColor(name);
         }
         auto darkColor = FeatureColors::transformLightToDark(lightColor);
         SAFE_POINT(lightColor.isValid(), "Got invalid light color for feature: " + name, );
