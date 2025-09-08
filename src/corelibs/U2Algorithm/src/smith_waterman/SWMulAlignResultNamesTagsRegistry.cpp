@@ -21,6 +21,8 @@
 
 #include "SWMulAlignResultNamesTagsRegistry.h"
 
+#include <U2Core/U2SafePoints.h>
+
 #include <QMutexLocker>
 
 #include "SWMulAlignExternalPropTag.h"
@@ -111,33 +113,34 @@ bool SWMulAlignResultNamesTagsRegistry::registerTag(SWMulAlignResultNamesTag* ta
     return true;
 }
 
-QList<SWMulAlignResultNamesTag*>* SWMulAlignResultNamesTagsRegistry::getTagsWithCorrectOrder() const {
-    QList<SWMulAlignResultNamesTag*>* result = new QList<SWMulAlignResultNamesTag*>;
-    qint16 tagIndex = 0;
-    QString tagShorthand;
-    foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
-        tagShorthand = tag->getShorthand();
+QMap<int, SWMulAlignResultNamesTag*> SWMulAlignResultNamesTagsRegistry::getTagsWithCorrectOrder() const {
+    QMap<int, SWMulAlignResultNamesTag*> result;
+    auto tagsValues = tags.values();
+    for (SWMulAlignResultNamesTag* tag : qAsConst(tagsValues)) {
+        auto tagShorthand = tag->getShorthand();
+        int tagIndex = 0;
 
-        if (SEQ_NAME_PREFIX_TAG_SHORTHAND == tagShorthand)
+        if (tagShorthand == SEQ_NAME_PREFIX_TAG_SHORTHAND) {
             tagIndex = 0;
-        else if (PTRN_NAME_PREFIX_TAG_SHORTHAND == tagShorthand)
+        } else if (tagShorthand == PTRN_NAME_PREFIX_TAG_SHORTHAND) {
             tagIndex = 1;
-        else if (SUBSEQ_START_POS_TAG_SHORTHAND == tagShorthand)
+        } else if (tagShorthand == SUBSEQ_START_POS_TAG_SHORTHAND) {
             tagIndex = 2;
-        else if (SUBSEQ_END_POS_TAG_SHORTHAND == tagShorthand)
+        } else if (tagShorthand == SUBSEQ_END_POS_TAG_SHORTHAND) {
             tagIndex = 3;
-        else if (SUBSEQ_LENGTH_TAG_SHORTHAND == tagShorthand)
+        } else if (tagShorthand == SUBSEQ_LENGTH_TAG_SHORTHAND) {
             tagIndex = 4;
-        else if (COUNTER_TAG_SHORTHAND == tagShorthand)
+        } else if (tagShorthand == COUNTER_TAG_SHORTHAND) {
             tagIndex = 5;
-        else if (DATE_TAG_SHORTHAND == tagShorthand)
+        } else if (tagShorthand == DATE_TAG_SHORTHAND) {
             tagIndex = 6;
-        else if (TIME_TAG_SHORTHAND == tagShorthand)
+        } else if (tagShorthand == TIME_TAG_SHORTHAND) {
             tagIndex = 7;
-        else
-            assert(0);
+        } else {
+            FAIL(QString("Unexpected tagShorthand").arg(tagShorthand), {});
+        }
 
-        result->insert(tagIndex, tag);
+        result.insert(tagIndex, tag);
     }
 
     return result;
