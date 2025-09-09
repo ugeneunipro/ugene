@@ -152,8 +152,7 @@ bool StyleFactory::isAutoStyleAvaliable() {
 
 bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message, long* result) {
     // Used for Windows only to detect system color scheme changes
-    SAFE_POINT(isOsWindows(), "Should be called on Windows only", false);
-
+#ifdef Q_OS_WIN32
     // This function is called periodically by Qt.
     // On windows eventType is "windows_generic_MSG" or "windows_dispatcher_MSG"
     CHECK(eventType == "windows_generic_MSG" || eventType == "windows_dispatcher_MSG", false);
@@ -167,6 +166,10 @@ bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message,
             syncColorSchemeWithSystem();
         }
     }
+#else
+    FAIL("Should not be called on non-Windows OS", );
+#endif
+
     return false;
 }
 
