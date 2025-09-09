@@ -152,7 +152,7 @@ bool StyleFactory::isAutoStyleAvaliable() {
 #endif
 }
 
-bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message, long* result) {
+bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message, long*) {
     // Used for Windows only to detect system color scheme changes
 #ifdef Q_OS_WIN32
     // This function is called periodically by Qt.
@@ -169,6 +169,8 @@ bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message,
         }
     }
 #else
+    Q_UNUSED(eventType);
+    Q_UNUSED(message);
     FAIL("Should not be called on non-Windows OS", false);
 #endif
 
