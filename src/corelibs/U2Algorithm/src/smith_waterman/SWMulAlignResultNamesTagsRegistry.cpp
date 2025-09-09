@@ -113,8 +113,8 @@ bool SWMulAlignResultNamesTagsRegistry::registerTag(SWMulAlignResultNamesTag* ta
     return true;
 }
 
-QMap<int, SWMulAlignResultNamesTag*> SWMulAlignResultNamesTagsRegistry::getTagsWithCorrectOrder() const {
-    QMap<int, SWMulAlignResultNamesTag*> result;
+QVector<SWMulAlignResultNamesTag*> SWMulAlignResultNamesTagsRegistry::getTagsWithCorrectOrder() const {
+    QVector<SWMulAlignResultNamesTag*> result(tags.count());
     auto tagsValues = tags.values();
     for (SWMulAlignResultNamesTag* tag : qAsConst(tagsValues)) {
         auto tagShorthand = tag->getShorthand();
@@ -140,7 +140,7 @@ QMap<int, SWMulAlignResultNamesTag*> SWMulAlignResultNamesTagsRegistry::getTagsW
             FAIL(QString("Unexpected tagShorthand").arg(tagShorthand), {});
         }
 
-        result.insert(tagIndex, tag);
+        result[tagIndex] = tag;
     }
 
     return result;
