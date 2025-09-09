@@ -29,41 +29,47 @@
 
 #include <U2Gui/HelpButton.h>
 
-#include "SaveDocumentController.h"
 #include "ui_ExportDocumentDialog.h"
 
 namespace U2 {
 
 ExportDocumentDialogController::ExportDocumentDialogController(Document* d, QWidget* p)
     : QDialog(p),
-      saveController(nullptr),
-      sourceDoc(d),
-      sourceObject(nullptr) {
+      sourceDoc(d) {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929295");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
-    initSaveController(sourceDoc->getObjects(), sourceDoc->getURLString());
+    saveController = new SaveDocumentController(getSaveConfig(sourceDoc->getURLString()), getAcceptableConstraints(sourceDoc->getObjects()), this);
 }
 
 ExportDocumentDialogController::ExportDocumentDialogController(GObject* object, QWidget* parent, const QString& initUrl)
     : QDialog(parent),
       ui(new Ui_ExportDocumentDialog()),
-      sourceDoc(nullptr),
       sourceObject(object) {
     ui->setupUi(this);
-
-    QList<GObject*> objectList = QList<GObject*>() << sourceObject;
-    initSaveController(objectList, initUrl);
-
+    saveController = new SaveDocumentController(getSaveConfig(initUrl), getAcceptableConstraints(QList<GObject*>() << sourceObject), this);
     new HelpButton(this, ui->buttonBox, "65929295");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 }
 
-void ExportDocumentDialogController::initSaveController(const QList<GObject*>& objects, const QString& fileUrl) {
+ExportDocumentDialogController::ExportDocumentDialogController(const QString& defaultUrl, 
+                                                               const DocumentFormatConstraints& dfc, 
+                                                               QWidget* parent)
+    : QDialog(parent),
+      ui(new Ui_ExportDocumentDialog()),
+    hiddenAddToProjectAndCompressionOptions(true) {
+    ui->setupUi(this);
+    setMinimumWidth(size().width());
+    ui->compressCheck->setHidden(true);
+    ui->addToProjCheck->setHidden(true);
+    adjustSize();
+    saveController = new SaveDocumentController(getSaveConfig(defaultUrl), dfc, this);
+}
+
+SaveDocumentControllerConfig ExportDocumentDialogController::getSaveConfig(const QString& fileUrl) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = fileUrl;
     config.fileDialogButton = ui->browseButton;
@@ -73,9 +79,7 @@ void ExportDocumentDialogController::initSaveController(const QList<GObject*>& o
     config.parentWidget = this;
     config.rollOutProjectUrls = true;
     config.rollSuffix = "_copy";
-
-    const DocumentFormatConstraints formatConstraints = getAcceptableConstraints(objects);
-    saveController = new SaveDocumentController(config, formatConstraints, this);
+    return config;
 }
 
 DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstraints(const QList<GObject*>& objects) {
@@ -107,10 +111,12 @@ DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstrain
 
 QString ExportDocumentDialogController::getDocumentURL() const {
     QString path = saveController->getSaveFileName();
-    if (ui->compressCheck != nullptr && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
-        QString suffix = path.split(".").last();
-        if (suffix != "gz") {
-            return path + ".gz";
+    if (!hiddenAddToProjectAndCompressionOptions) {
+        if (ui->compressCheck != nullptr && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
+            QString suffix = path.split(".").last();
+            if (suffix != "gz") {
+                return path + ".gz";
+            }
         }
     }
     return path;
@@ -118,10 +124,6 @@ QString ExportDocumentDialogController::getDocumentURL() const {
 
 DocumentFormatId ExportDocumentDialogController::getDocumentFormatId() const {
     return saveController->getFormatIdToSave();
-}
-
-ExportDocumentDialogController::~ExportDocumentDialogController() {
-    delete ui;
 }
 
 bool ExportDocumentDialogController::getAddToProjectFlag() const {

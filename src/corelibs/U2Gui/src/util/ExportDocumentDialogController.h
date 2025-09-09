@@ -26,6 +26,8 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/global.h>
 
+#include "SaveDocumentController.h"
+
 class Ui_ExportDocumentDialog;
 
 namespace U2 {
@@ -38,12 +40,13 @@ class U2GUI_EXPORT ExportDocumentDialogController : public QDialog {
 public:
     ExportDocumentDialogController(Document* d, QWidget* p);
     ExportDocumentDialogController(GObject* object, QWidget* parent, const QString& initUrl = "");
-    ~ExportDocumentDialogController();
+    ExportDocumentDialogController(const QString& defaultUrl, const DocumentFormatConstraints& dfc, QWidget* parent);
 
     QString getDocumentURL() const;
 
     bool getAddToProjectFlag() const;
     void setAddToProjectFlag(bool checked);
+    //void setHiddenAddToProjectAndCompressionOptions();
 
     DocumentFormatId getDocumentFormatId() const;
 
@@ -51,15 +54,16 @@ public:
     GObject* getSourceObject() const;
 
 private:
-    void initSaveController(const QList<GObject*>& objects, const QString& fileUrl);
+    SaveDocumentControllerConfig getSaveConfig(const QString& fileUrl);
     static DocumentFormatConstraints getAcceptableConstraints(const QList<GObject*>& objects);
 
-    SaveDocumentController* saveController;
-    Ui_ExportDocumentDialog* ui;
+    SaveDocumentController* saveController = nullptr;
+    Ui_ExportDocumentDialog* ui = nullptr;
     // the following fields are used to determine whether the object was used for
     // creating a Document from single GObeject or another Document
-    Document* sourceDoc;
-    GObject* sourceObject;
+    Document* sourceDoc = nullptr;
+    GObject* sourceObject = nullptr;
+    bool hiddenAddToProjectAndCompressionOptions = false;
 };
 
 }  // namespace U2

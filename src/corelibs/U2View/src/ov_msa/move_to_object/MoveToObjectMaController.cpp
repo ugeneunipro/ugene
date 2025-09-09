@@ -41,7 +41,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
-#include <U2Gui/SaveDocumentWithFormatDialogController.h>
+#include <U2Gui/ExportDocumentDialogController.h>
 
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorSelection.h>
@@ -143,9 +143,10 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     dfc.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     dfc.addFlagToExclude(DocumentFormatFlag_Hidden);
     LastUsedDirHelper lod;
-    QObjectScopedPointer<SaveDocumentWithFormatDialogController> dialog(new SaveDocumentWithFormatDialogController(
-                                                                        lod.getLastUsedDir() + "/selected_row", dfc,
-                                                                        tr("File path and format to save"), ui));
+    QObjectScopedPointer<ExportDocumentDialogController> dialog(new ExportDocumentDialogController(
+                                                                lod.getLastUsedDir() + "/selected_row",
+                                                                dfc, ui));
+    dialog->setWindowTitle(tr("File path and format to save"));
     CHECK(dialog->exec() == QDialog::Accepted, );
     const DocumentFormatId formatId = dialog->getDocumentFormatId();
     const QString url = dialog->getDocumentURL();
