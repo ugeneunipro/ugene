@@ -43,6 +43,8 @@
 
 #include "main_window/MainWindowImpl.h"
 
+#include <QApplication>
+
 namespace U2 {
 
 StyleFactory::StyleFactory(MainWindowImpl* parent)
@@ -167,7 +169,7 @@ bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message,
         }
     }
 #else
-    FAIL("Should not be called on non-Windows OS", );
+    FAIL("Should not be called on non-Windows OS", false);
 #endif
 
     return false;
@@ -188,29 +190,29 @@ QStyle* StyleFactory::create(const QString& styleName, ColorTheme colorTheme) {
     QStyle* qtStyle = QStyleFactory::create(styleName);
     auto proxyStyle = new ProxyStyle(qtStyle);
 
-    if (isOsMac()) {
-        result = proxyStyle;
-    } else {
-        switch (colorTheme) {
-            case ColorTheme::Light:
-                result = proxyStyle;
-                break;
-            case ColorTheme::Dark:
+#ifdef Q_OS_DARWIN
+    result = proxyStyle;
+#else
+    switch (colorTheme) {
+        case ColorTheme::Light:
+            result = proxyStyle;
+            break;
+        case ColorTheme::Dark:
+            result = new DarkStyle(proxyStyle);
+            break;
+        case ColorTheme::Auto:
+            if (isDarkStyleEnabled()) {
                 result = new DarkStyle(proxyStyle);
-                break;
-            case ColorTheme::Auto:
-                if (isDarkStyleEnabled()) {
-                    result = new DarkStyle(proxyStyle);
-                } else {
-                    result = proxyStyle;
-                }
-                break;
-        }
-        // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
-        if (qtStyle != nullptr) {
-            result->setObjectName(qtStyle->objectName());
-        }
+            } else {
+                result = proxyStyle;
+            }
+            break;
     }
+    // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
+    if (qtStyle != nullptr) {
+        result->setObjectName(qtStyle->objectName());
+    }
+#endif
     return result;
 }
 
