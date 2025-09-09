@@ -161,8 +161,11 @@ bool StyleFactory::nativeEventFilter(const QByteArray& eventType, void* message,
     MSG* msg = static_cast<MSG*>(message);
     CHECK(msg != nullptr, false);
 
-    if (msg->message == WM_SETTINGCHANGE) {
-        syncColorSchemeWithSystem();
+    if (msg->message == WM_SETTINGCHANGE && msg->lParam != 0) {
+        LPCWSTR param = reinterpret_cast<LPCWSTR>(msg->lParam);
+        if (wcscmp(param, L"ImmersiveColorSet") == 0) {
+            syncColorSchemeWithSystem();
+        }
     }
     return false;
 }

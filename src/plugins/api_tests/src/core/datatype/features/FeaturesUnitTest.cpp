@@ -31,7 +31,7 @@ namespace U2 {
 IMPLEMENT_TEST(FeaturesUnitTest, checkFeaturesColors) {
     for (int i = 1; i <= (int)U2FeatureType::RestrictionSite; i++) {
         auto featureType = static_cast<U2FeatureType>(i);
-        auto color = U2FeatureTypes::getColor(featureType).name();
+        auto color = U2FeatureTypes::getLightColor(featureType).name();
         QString generatedColor;
         switch (featureType) {
             case U2FeatureType::Cds:
