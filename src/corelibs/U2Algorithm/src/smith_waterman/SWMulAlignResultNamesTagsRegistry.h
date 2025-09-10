@@ -80,7 +80,7 @@ public:
 private:
     bool registerTag(SWMulAlignResultNamesTag* tag);
     QString tagExpansion(const QString& shorthand, const QVariant& argument = QVariant()) const;
-    QList<SWMulAlignResultNamesTag*>* getTagsWithCorrectOrder() const;
+    QVector<SWMulAlignResultNamesTag*> getTagsWithCorrectOrder() const;
 
     QMutex mutex;
     QHash<const QString, SWMulAlignResultNamesTag*> tags;
@@ -88,15 +88,13 @@ private:
 
 inline QList<QPushButton*>* SWMulAlignResultNamesTagsRegistry::getTagsButtons() const {
     QList<QPushButton*>* tagsButtons = new QList<QPushButton*>;
-    QList<SWMulAlignResultNamesTag*>* arrangedTags = getTagsWithCorrectOrder();
-
-    foreach (SWMulAlignResultNamesTag* tag, *arrangedTags) {
+    auto arrangedTags = getTagsWithCorrectOrder();
+    for (auto tag : qAsConst(arrangedTags)) {
         auto button = new QPushButton(OPEN_SQUARE_BRACKET + tag->getShorthand() +
                                               CLOSE_SQUARE_BRACKET + SHORTHAND_AND_LABEL_SEPARATOR + tag->getLabel());
         button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tagsButtons->append(button);
     }
-    delete arrangedTags;
 
     return tagsButtons;
 }
