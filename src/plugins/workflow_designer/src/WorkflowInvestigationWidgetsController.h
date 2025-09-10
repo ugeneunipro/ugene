@@ -41,7 +41,6 @@ class WorkflowInvestigationWidgetsController : public QObject {
     Q_DISABLE_COPY(WorkflowInvestigationWidgetsController)
 public:
     explicit WorkflowInvestigationWidgetsController(QWidget* parent = nullptr);
-    ~WorkflowInvestigationWidgetsController();
 
     void deleteBusInvestigations();
     void resetInvestigations();
@@ -73,7 +72,7 @@ private slots:
     void sl_columnsVisibilityResponse();
 
 private:
-    void createNewInvestigation();
+    void createNewInvestigation(QWidget *investigationWidgetParent);
     void createInvestigationModel();
     void adjustInvestigationColumnWidth(WorkflowInvestigationWidget* investigator);
 
