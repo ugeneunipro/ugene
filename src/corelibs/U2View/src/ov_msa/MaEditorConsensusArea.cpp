@@ -76,6 +76,8 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt* _ui)
 
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(setupFontAndHeight()));
 
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MaEditorConsensusArea::sl_colorThemeSwitched);
+
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
@@ -169,7 +171,7 @@ void MaEditorConsensusArea::paintEvent(QPaintEvent* e) {
 
     if (completeRedraw) {
         QPainter pCached(cachedView);
-        pCached.fillRect(cachedView->rect(), Qt::white);
+        pCached.fillRect(cachedView->rect(), QPalette().base().color());
         drawContent(pCached);
         completeRedraw = false;
     }
@@ -254,6 +256,10 @@ void MaEditorConsensusArea::sl_zoomOperationPerformed(bool resizeModeChanged) {
 void MaEditorConsensusArea::sl_completeRedraw() {
     completeRedraw = true;
     update();
+}
+
+void MaEditorConsensusArea::sl_colorThemeSwitched() {
+    sl_completeRedraw();
 }
 
 void MaEditorConsensusArea::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev) {

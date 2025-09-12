@@ -30,6 +30,8 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
 // TODO:
 //  track factory registry and show only the states with factories available
 //  delete view state if factory refuses create view

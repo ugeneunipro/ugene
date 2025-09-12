@@ -179,7 +179,7 @@ QPixmap SaveSchemaImageUtils::generateSchemaSnapshot(const QString& data) {
     CHECK(!bounds.isEmpty(), QPixmap());
 
     QPixmap pixmap(bounds.size().toSize());
-    pixmap.fill();
+    pixmap.fill(QPalette().base().color());
     QPainter painter(&pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
     scene->render(&painter, QRectF(), bounds);

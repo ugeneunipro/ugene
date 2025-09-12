@@ -183,7 +183,7 @@ QSize DetViewMultiLineRenderer::getBaseCanvasSize(const U2Region& visibleRange) 
 void DetViewMultiLineRenderer::drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
     int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
-    p.fillRect(QRect(QPoint(0, 0), canvasSize), Qt::white);
+    p.fillRect(QRect(QPoint(0, 0), canvasSize), QPalette().base().color());
 
     // Add extra indent between lines if necessary.
     extraIndent = 0;

@@ -218,7 +218,7 @@ const QMap<QString, QColor> SecStructColorScheme::getSecStructAnnotationColors(c
             foreach (Annotation* a, ao->getAnnotationsByName(BioStruct3D::SecStructAnnotationTag)) {
                 QString ssName = a->getQualifiers().first().value;
                 AnnotationSettings* as = asr->getAnnotationSettings(ssName);
-                colors.insert(ssName, as->color);
+                colors.insert(ssName, as->lightColor);
             }
         }
     }

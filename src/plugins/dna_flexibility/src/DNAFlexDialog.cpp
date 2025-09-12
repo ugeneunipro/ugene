@@ -31,6 +31,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -66,7 +67,7 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext* _ctx)
     tabOutput->layout()->addWidget(annotWidget);
 
     // Setting the dialog icon to the standard UGENE icon
-    setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
+    setWindowIcon(QIcon(":/ugene/images/ugene.png"));
 
     // Setting the bounds for the parameters
     spinBoxWindowSize->setMaximum(sequenceLength);

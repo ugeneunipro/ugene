@@ -24,6 +24,7 @@
 #include <U2Core/Folder.h>
 #include <U2Core/U2ObjectDbi.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 
 #include "ui_DbFolderOptions.h"

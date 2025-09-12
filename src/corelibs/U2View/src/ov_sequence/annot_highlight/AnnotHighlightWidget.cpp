@@ -47,11 +47,16 @@ ShowAllAnnotTypesLabel::ShowAllAnnotTypesLabel() {
     showAllIsSelected = false;
     setText(QObject::tr("Show all annotation names"));
 
-    setStyleSheet(
+    colorThemeSwitched();
+}
+
+void ShowAllAnnotTypesLabel::colorThemeSwitched() {
+    setStyleSheet(QString(
         "text-decoration: underline;"
-        "color: gray;"
+        "color: %1;"
         "margin-left: 2px;"
-        "margin-top: 1px;");
+        "margin-top: 1px;")
+        .arg(AppContext::getMainWindow()->isDarkTheme() ? "rgb(220, 220, 220)" : "gray"));
 }
 
 void ShowAllAnnotTypesLabel::mousePressEvent(QMouseEvent* event) {
@@ -119,7 +124,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->setSpacing(0);
 
     prevAnnotationButton = new QPushButton("");
-    GUIUtils::setThemedIcon(prevAnnotationButton, ":core/images/backward.png");
+    GUIUtils::setThemedIcon(prevAnnotationButton, ":core/images/arrow-move-left.png");
     prevAnnotationButton->setFixedSize(32, 32);
     prevAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Previous annotation"));
     prevAnnotationButton->setDisabled(true);
@@ -128,7 +133,7 @@ void AnnotHighlightWidget::initLayout() {
     buttonsLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     nextAnnotationButton = new QPushButton("");
-    GUIUtils::setThemedIcon(prevAnnotationButton, ":core/images/forward.png");
+    GUIUtils::setThemedIcon(nextAnnotationButton, ":core/images/arrow-move-right.png");
     nextAnnotationButton->setFixedSize(32, 32);
     nextAnnotationButton->setToolTip(AnnotHighlightWidget::tr("Next annotation"));
     nextAnnotationButton->setObjectName("nextAnnotationButton");
@@ -475,7 +480,7 @@ void AnnotHighlightWidget::loadAnnotTypes() {
         AnnotationSettingsRegistry* annotRegistry = AppContext::getAnnotationsSettingsRegistry();
         foreach (const QString& name, annotNames) {
             AnnotationSettings* annotSettings = annotRegistry->getAnnotationSettings(name);
-            annotTree->addItem(name, annotSettings->color);
+            annotTree->addItem(name, annotSettings->getActiveColor());
         }
 
         // By default, select either previously selected item (if it is present) or the first item
@@ -503,8 +508,8 @@ void AnnotHighlightWidget::sl_storeNewColor(const QString& annotName, const QCol
     QList<AnnotationSettings*> annotToWrite;
     AnnotationSettingsRegistry* annotRegistry = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings* annotSettings = annotRegistry->getAnnotationSettings(annotName);
-    if (annotSettings->color != newColor) {
-        annotSettings->color = newColor;
+    if (annotSettings->getActiveColor() != newColor) {
+        annotSettings->setActiveColor(newColor);
         annotToWrite.append(annotSettings);
         annotRegistry->changeSettings(annotToWrite, true);
     }

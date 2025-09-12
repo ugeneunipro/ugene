@@ -342,6 +342,15 @@ void McaEditorSequenceArea::sl_updateActions() {
     removeColumnsOfGapsAction->setEnabled(canEditAlignment);
 }
 
+void McaEditorSequenceArea::sl_colorThemeSwitched() {
+    auto csId = AppContext::getMainWindow()->isDarkTheme() ? MsaColorScheme::UGENE_SANGER_NUCL_DARK : MsaColorScheme::UGENE_SANGER_NUCL_LIGHT;
+    MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
+    MsaColorSchemeFactory* csf = csr->getSchemeFactoryById(csId);
+    initColorSchemes(csf);
+
+    MaEditorSequenceArea::sl_colorThemeSwitched();
+}
+
 void McaEditorSequenceArea::trimRowEnd(MsaObject::TrimEdge edge) {
     MsaObject* mcaObj = getEditor()->getMaObject();
     QList<int> maRowIndexes = getEditor()->getSelectionController()->getSelectedMaRowIndexes();
@@ -393,7 +402,7 @@ void McaEditorSequenceArea::drawBackground(QPainter& painter) {
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString& csid, QString& hsid) {
-    csid = MsaColorScheme::UGENE_SANGER_NUCL;
+    csid = AppContext::getMainWindow()->isDarkTheme() ? MsaColorScheme::UGENE_SANGER_NUCL_DARK : MsaColorScheme::UGENE_SANGER_NUCL_LIGHT;
     hsid = MsaHighlightingScheme::DISAGREEMENTS;
 }
 

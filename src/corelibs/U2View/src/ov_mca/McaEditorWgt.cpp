@@ -78,7 +78,7 @@ McaEditorWgt::McaEditorWgt(McaEditor* editor, QWidget* parent)
     auto mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consensusArea);
     SAFE_POINT(mcaConsArea != nullptr, "Failed to cast consensus area to MCA consensus area", );
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
-    seqAreaHeader->setStyleSheet("background-color: white;");
+    seqAreaHeader->setStyleSheet("background-color: palette(base);");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }
 

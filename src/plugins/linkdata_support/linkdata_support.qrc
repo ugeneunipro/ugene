@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="linkdata_support/" >
-       <file>images/linkdata_16.png</file>
        <file>src/linkdata.js</file>
     </qresource>
 </RCC>

@@ -29,8 +29,10 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
 #include <U2View/AnnotatedDNAView.h>
@@ -43,7 +45,7 @@ namespace U2 {
 DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
     : ADVSplitWidget(a),
       locked(false) {
-    syncLockAction = createAction(":core/images/sync_lock.png", tr("Multiple view synchronization lock"), SLOT(sl_toggleSyncLock(bool)));
+    syncLockAction = createAction(":core/images/sync_lock.png", tr("Multiple view synchronization lock"), SLOT(sl_toggleSyncLock(bool)), true, true);
     filterAction = createAction(":dotplot/images/filter.png", tr("Filter results"), SLOT(sl_toggleFilter()), false);
     zoomInAction = createAction(":core/images/zoom_in.png", tr("Zoom in (<b> + </b>)"), SLOT(sl_toggleZoomIn()), false);
     zoomOutAction = createAction(":core/images/zoom_out.png", tr("Zoom out (<b> - </b>)"), SLOT(sl_toggleZoomOut()), false);
@@ -90,10 +92,14 @@ bool DotPlotSplitter::onCloseEvent() {
     return true;
 }
 
-QAction* DotPlotSplitter::createAction(const QIcon& ic, const QString& toolTip, const char* slot, bool checkable) {
+QAction* DotPlotSplitter::createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable, bool switchable) {
     auto a = new QAction(this);
     if (a != nullptr) {
-        a->setIcon(ic);
+        if (switchable) {
+            GUIUtils::setThemedIcon(a, iconPath);
+        } else {
+            a->setIcon(QIcon(iconPath));
+        }
         a->setToolTip(toolTip);
         a->setCheckable(checkable);
         if (checkable) {
@@ -104,10 +110,6 @@ QAction* DotPlotSplitter::createAction(const QIcon& ic, const QString& toolTip, 
     }
 
     return a;
-}
-
-QAction* DotPlotSplitter::createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable) {
-    return createAction(QIcon(iconPath), toolTip, slot, checkable);
 }
 
 void DotPlotSplitter::addView(DotPlotWidget* view) {

@@ -103,8 +103,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 100);
 
-    auto windowIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconPath);
-    setWindowIcon(windowIcon);
+    GUIUtils::setThemedWindowIcon(this, GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).iconPath);
 
     auto horizontalSequenceScrollBar = new GScrollBar(Qt::Horizontal);
     horizontalSequenceScrollBar->setObjectName("horizontal_sequence_scroll");
@@ -181,7 +180,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
 
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
-    nameAreaContainer->setStyleSheet("background-color: white;");
+    nameAreaContainer->setStyleSheet("background-color: palette(base);");
     horizontalNameListScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
 
     nameAreaContainer->setMinimumWidth(15);  // Splitter uses min-size to collapse a widget

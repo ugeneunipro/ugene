@@ -39,6 +39,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Formats/ConvertFileTask.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -68,7 +70,7 @@ static const QString CUSTOM_DIR_ID("custom-dir");
 QString ConvertFilesFormatPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
     QString doc = tr("Convert file %1 to selected format if it is not excluded.").arg(producerName);

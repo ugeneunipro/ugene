@@ -24,8 +24,11 @@
 #include <QFont>
 #include <QPainter>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/MainWindow.h>
 
 namespace U2 {
 
@@ -33,7 +36,7 @@ namespace {
 
 typedef QPair<char, char> TwoChars;
 
-static QMap<char, QColor> initDefaultColorSheme() {
+static QMap<char, QColor> initDefaultLightColorSheme() {
     QMap<char, QColor> colors;
 
     // TODO other chars ??
@@ -62,6 +65,36 @@ static QMap<char, QColor> initDefaultColorSheme() {
     return colors;
 }
 
+static QMap<char, QColor> initDefaultDarkColorSheme() {
+    QMap<char, QColor> colors;
+
+    // TODO other chars ??
+    // TODO = symbol
+    colors['a'] = colors['A'] = QColor("#C8CC00");
+    colors['c'] = colors['C'] = QColor("#4BA84B");
+    colors['g'] = colors['G'] = QColor("#377A9E");
+    colors['t'] = colors['T'] = QColor("#FF4271");
+
+    // TODO: more meaningful colors
+    colors['w'] = colors['W'] =
+        colors['r'] = colors['R'] =
+            colors['m'] = colors['M'] =
+                colors['k'] = colors['K'] =
+                    colors['y'] = colors['Y'] =
+                        colors['s'] = colors['S'] =
+
+                            colors['b'] = colors['B'] =
+                                colors['v'] = colors['V'] =
+                                    colors['d'] = colors['D'] =
+                                        colors['h'] = colors['H'] = QColor("#FFAA60");
+
+    colors['-'] = QColor("#353535");
+    colors['N'] = QColor("#353535");
+
+    return colors;
+}
+
+
 static QMap<char, TwoChars> initExtendedPairs() {
     QMap<char, TwoChars> pairs;
 
@@ -82,8 +115,9 @@ inline static bool isGap(char c) {
 
 }  // namespace
 
-static const QMap<char, QColor> nucleotideColorScheme = initDefaultColorSheme();
-static const QList<char> assemblyAlphabet = nucleotideColorScheme.keys();
+static const QMap<char, QColor> nucleotideColorSchemeLight = initDefaultLightColorSheme();
+static const QMap<char, QColor> nucleotideColorSchemeDark = initDefaultDarkColorSheme();
+static const QList<char> assemblyAlphabet = nucleotideColorSchemeLight.keys();
 static const QMap<char, TwoChars> extendedPairs = initExtendedPairs();
 
 static void drawBackground(QPixmap& img, const QSize& size, const QColor& topColor, const QColor& bottomColor) {
@@ -107,6 +141,19 @@ static void drawText(QPixmap& img, const QSize& size, char c, const QFont& font,
     p.drawText(rect, Qt::AlignCenter, QString(c));
 }
 
+void AssemblyCellRenderer::render(const QSize& _size, int _devicePixelRatio, bool _text, const QFont& _font) {
+    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font) || forceRenderUpdate) {
+        forceRenderUpdate = false;
+        // update cache
+        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
+        update();
+    }
+}
+
+void AssemblyCellRenderer::makeForceRenderUpdate() {
+    forceRenderUpdate = true;
+}
+
 void AssemblyCellRenderer::drawCell(QPixmap& img, const QSize& size, const QColor& topColor, const QColor& bottomColor, bool text, char c, const QFont& font, const QColor& textColor) {
     drawBackground(img, size, topColor, bottomColor);
 
@@ -118,9 +165,9 @@ void AssemblyCellRenderer::drawCell(QPixmap& img, const QSize& size, const QColo
 class NucleotideColorsRenderer : public AssemblyCellRenderer {
 public:
     NucleotideColorsRenderer()
-        : AssemblyCellRenderer(), colorScheme(nucleotideColorScheme),
-          images(), unknownChar(), size(), devicePixelRatio(0), text(false), font() {
+        : AssemblyCellRenderer() {
     }
+
     virtual ~NucleotideColorsRenderer() {
     }
 
@@ -131,39 +178,32 @@ public:
     QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
-    void update();
+    void update() override;
 
 private:
     QMap<char, QColor> colorScheme;
 
     // images cache
     QHash<char, QPixmap> images;
-    QPixmap unknownChar;
-
-    // cached cells parameters
-    QSize size;
-    int devicePixelRatio;
-    bool text;
-    QFont font;
 };
 
 void NucleotideColorsRenderer::render(const QSize& _size, int _devicePixelRatio, bool _text, const QFont& _font) {
     GTIMER(c1, t1, "NucleotideColorsRenderer::render");
 
-    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
-        // update cache
-        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
-        update();
-    }
+    AssemblyCellRenderer::render(_size, _devicePixelRatio, _text, _font);
 }
 
 void NucleotideColorsRenderer::update() {
     images.clear();
 
-    foreach (char c, colorScheme.keys()) {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    colorScheme = isDark ? nucleotideColorSchemeDark : nucleotideColorSchemeLight;
+    auto gapTextColor = isDark ? QColor(255, 127, 127) : Qt::red;
+    const auto& colorSchemeKeys = colorScheme.keys();
+    for (char c : qAsConst(colorSchemeKeys)) {
         QPixmap img(size * devicePixelRatio);
         img.setDevicePixelRatio(devicePixelRatio);
-        QColor textColor = isGap(c) ? Qt::red : Qt::black;
+        QColor textColor = isGap(c) ? gapTextColor : QPalette().text().color();
         if (extendedPairs.contains(c)) {
             // char from extended alphabet, draw gradient
             TwoChars pair = extendedPairs.value(c);
@@ -177,11 +217,12 @@ void NucleotideColorsRenderer::update() {
 
     unknownChar = QPixmap(size * devicePixelRatio);
     unknownChar.setDevicePixelRatio(devicePixelRatio);
-    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    auto gapBackgroundColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
+    drawCell(unknownChar, size, gapBackgroundColor, text, '?', font, Qt::red);
 }
 
 QPixmap NucleotideColorsRenderer::cellImage(char c) {
-    c = (!nucleotideColorScheme.contains(c)) ? 'N' : c;
+    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
     return images.value(c, unknownChar);
 }
 
@@ -196,9 +237,7 @@ QPixmap NucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char)
 class ComplementColorsRenderer : public AssemblyCellRenderer {
 public:
     ComplementColorsRenderer()
-        : AssemblyCellRenderer(),
-          directImages(), complementImages(), unknownChar(),
-          size(), devicePixelRatio(0), text(false), font() {
+        : AssemblyCellRenderer() {
     }
 
     virtual ~ComplementColorsRenderer() {
@@ -211,49 +250,44 @@ public:
     QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
-    void update();
+    void update() override;
 
 private:
     // images cache
     QHash<char, QPixmap> directImages, complementImages;
-    QPixmap unknownChar;
 
-    // cached cells parameters
-    QSize size;
-    int devicePixelRatio;
-    bool text;
-    QFont font;
-
-private:
-    static const QColor directColor, complementColor;
+    static const QColor directColorLight, complementColorLight, directColorDark, complementColorDark;
 };
 
-const QColor ComplementColorsRenderer::directColor("#4EADE1");
-const QColor ComplementColorsRenderer::complementColor("#70F970");
+const QColor ComplementColorsRenderer::directColorLight("#4EADE1");
+const QColor ComplementColorsRenderer::complementColorLight("#70F970");
+const QColor ComplementColorsRenderer::directColorDark("#377A9E");
+const QColor ComplementColorsRenderer::complementColorDark("#4BA84B");
 
 void ComplementColorsRenderer::render(const QSize& _size, int _devicePixelRatio, bool _text, const QFont& _font) {
     GTIMER(c1, t1, "ComplementColorsRenderer::render");
 
-    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
-        // update cache
-        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
-        update();
-    }
+    AssemblyCellRenderer::render(_size, _devicePixelRatio, _text, _font);
 }
 
 void ComplementColorsRenderer::update() {
     directImages.clear();
     complementImages.clear();
 
-    foreach (char c, assemblyAlphabet) {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    QColor gappedColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
+    for(char c : qAsConst(assemblyAlphabet)) {
         QPixmap dimg(size * devicePixelRatio), cimg(size * devicePixelRatio);
         dimg.setDevicePixelRatio(devicePixelRatio);
         cimg.setDevicePixelRatio(devicePixelRatio);
-        QColor dcolor = directColor, ccolor = complementColor, textColor = Qt::black;
+        QColor dcolor = isDark ? directColorDark : directColorLight;
+        QColor ccolor = isDark ? complementColorDark : complementColorLight;
+        QColor textColor = QPalette().text().color();
 
         if (isGap(c)) {
-            dcolor = ccolor = QColor("#FBFBFB");
-            textColor = Qt::red;
+            dcolor = gappedColor;
+            ccolor = gappedColor;
+            textColor = isDark ? QColor(255, 127, 127) : Qt::red;
         }
 
         drawCell(dimg, size, dcolor, text, c, font, textColor);
@@ -265,16 +299,16 @@ void ComplementColorsRenderer::update() {
 
     unknownChar = QPixmap(size * devicePixelRatio);
     unknownChar.setDevicePixelRatio(devicePixelRatio);
-    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    drawCell(unknownChar, size, gappedColor, text, '?', font, Qt::red);
 }
 
 QPixmap ComplementColorsRenderer::cellImage(char c) {
-    c = (!nucleotideColorScheme.contains(c)) ? 'N' : c;
+    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
     return directImages.value(c, unknownChar);
 }
 
 QPixmap ComplementColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
-    c = (!nucleotideColorScheme.contains(c)) ? 'N' : c;
+    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
 
     if (ReadFlagsUtils::isComplementaryRead(read->flags)) {
         return complementImages.value(c, unknownChar);
@@ -300,7 +334,7 @@ public:
     QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
-    void update();
+    void update() override;
 
 private:
     QMap<char, QColor> colorScheme;
@@ -308,21 +342,12 @@ private:
     // images cache
     QHash<char, QPixmap> highlightedImages;
     QHash<char, QPixmap> normalImages;
-    QPixmap unknownChar;
-
-    // cached cells parameters
-    QSize size;
-    int devicePixelRatio;
-    bool text;
-    QFont font;
 };
 
 class PairedColorsRenderer : public AssemblyCellRenderer {
 public:
     PairedColorsRenderer()
-        : AssemblyCellRenderer(),
-          pairedImages(), unpairedImages(), unknownChar(),
-          size(), devicePixelRatio(0), text(false), font() {
+        : AssemblyCellRenderer() {
     }
 
     virtual ~PairedColorsRenderer() {
@@ -335,49 +360,44 @@ public:
     QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
-    void update();
+    void update() override;
 
 private:
     // images cache
     QHash<char, QPixmap> pairedImages, unpairedImages;
-    QPixmap unknownChar;
 
-    // cached cells parameters
-    QSize size;
-    int devicePixelRatio;
-    bool text;
-    QFont font;
-
-private:
-    static const QColor pairedColor, unpairedColor;
+    static const QColor pairedColorLight, unpairedColorLight, pairedColorDark, unpairedColorDark;
 };
 
-const QColor PairedColorsRenderer::pairedColor("#4EE1AD");
-const QColor PairedColorsRenderer::unpairedColor("#BBBBBB");
+const QColor PairedColorsRenderer::pairedColorLight("#4EE1AD");
+const QColor PairedColorsRenderer::unpairedColorLight("#BBBBBB");
+const QColor PairedColorsRenderer::pairedColorDark("#43BC90");
+const QColor PairedColorsRenderer::unpairedColorDark("#757575");
 
 void PairedColorsRenderer::render(const QSize& _size, int _devicePixelRatio, bool _text, const QFont& _font) {
     GTIMER(c1, t1, "PairedReadsColorsRenderer::render");
 
-    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
-        // update cache
-        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
-        update();
-    }
+    AssemblyCellRenderer::render(_size, _devicePixelRatio, _text, _font);
 }
 
 void PairedColorsRenderer::update() {
     pairedImages.clear();
     unpairedImages.clear();
 
-    foreach (char c, assemblyAlphabet) {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    QColor gappedColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
+    for (char c : qAsConst(assemblyAlphabet)) {
         QPixmap pimg(size * devicePixelRatio), npimg(size * devicePixelRatio);
         pimg.setDevicePixelRatio(devicePixelRatio);
         npimg.setDevicePixelRatio(devicePixelRatio);
-        QColor pcolor = pairedColor, ucolor = unpairedColor, textColor = Qt::black;
+        QColor pcolor = isDark ? pairedColorDark : pairedColorLight;
+        QColor ucolor = isDark ? unpairedColorDark : unpairedColorLight;
+        QColor textColor = QPalette().text().color();
 
         if (isGap(c)) {
-            pcolor = ucolor = QColor("#FBFBFB");
-            textColor = Qt::red;
+            pcolor = gappedColor;
+            ucolor = gappedColor;
+            textColor = isDark ? QColor(255, 127, 127) : Qt::red;
         }
 
         drawCell(pimg, size, pcolor, text, c, font, textColor);
@@ -389,16 +409,16 @@ void PairedColorsRenderer::update() {
 
     unknownChar = QPixmap(size * devicePixelRatio);
     unknownChar.setDevicePixelRatio(devicePixelRatio);
-    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    drawCell(unknownChar, size, gappedColor, text, '?', font, Qt::red);
 }
 
 QPixmap PairedColorsRenderer::cellImage(char c) {
-    c = (!nucleotideColorScheme.contains(c)) ? 'N' : c;
+    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
     return unpairedImages.value(c, unknownChar);
 }
 
 QPixmap PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
-    c = (!nucleotideColorScheme.contains(c)) ? 'N' : c;
+    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
 
     if (ReadFlagsUtils::isPairedRead(read->flags)) {
         return pairedImages.value(c, unknownChar);
@@ -412,33 +432,31 @@ QPixmap PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c, char
 }
 
 DiffNucleotideColorsRenderer::DiffNucleotideColorsRenderer()
-    : AssemblyCellRenderer(), colorScheme(nucleotideColorScheme),
-      highlightedImages(), normalImages(), unknownChar(), size(), devicePixelRatio(0), text(false), font() {
+    : AssemblyCellRenderer() {
 }
 
 void DiffNucleotideColorsRenderer::render(const QSize& _size, int _devicePixelRatio, bool _text, const QFont& _font) {
     GTIMER(c1, t1, "DiffNucleotideColorsRenderer::render");
 
-    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
-        // update cache
-        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
-        update();
-    }
+    AssemblyCellRenderer::render(_size, _devicePixelRatio, _text, _font);
 }
 
 void DiffNucleotideColorsRenderer::update() {
     highlightedImages.clear();
     normalImages.clear();
 
-    QColor normalColor("#BBBBBB");
-
-    foreach (char c, colorScheme.keys()) {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    colorScheme = isDark ? nucleotideColorSchemeDark : nucleotideColorSchemeLight;
+    QColor normalColor(isDark ? "#757575" : "#BBBBBB");
+    auto gapBackgroundColor = isDark ? QColor("#FF8787") : QColor("#CC4E4E");
+    const auto& colorSchemeKeys = colorScheme.keys();
+    for (char c : qAsConst(colorSchemeKeys)) {
         QPixmap himg(size * devicePixelRatio), nimg(size * devicePixelRatio);
         himg.setDevicePixelRatio(devicePixelRatio);
         nimg.setDevicePixelRatio(devicePixelRatio);
         // make gaps more noticeable
-        QColor textColor = isGap(c) ? Qt::white : Qt::black;
-        QColor highlightColor = isGap(c) ? QColor("#CC4E4E") : colorScheme.value(c);
+        QColor textColor = isGap(c) ? QPalette().window().color() : QPalette().text().color();
+        QColor highlightColor = isGap(c) ? gapBackgroundColor : colorScheme.value(c);
 
         if (extendedPairs.contains(c)) {
             // char from extended alphabet, draw gradient
@@ -456,11 +474,12 @@ void DiffNucleotideColorsRenderer::update() {
 
     unknownChar = QPixmap(size * devicePixelRatio);
     unknownChar.setDevicePixelRatio(devicePixelRatio);
-    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    QColor gappedColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
+    drawCell(unknownChar, size, gappedColor, text, '?', font, Qt::red);
 }
 
 QPixmap DiffNucleotideColorsRenderer::cellImage(char c) {
-    c = (!nucleotideColorScheme.contains(c)) ? 'N' : c;
+    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
     return highlightedImages.value(c, unknownChar);
 }
 
@@ -469,7 +488,7 @@ QPixmap DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c) {
 }
 
 QPixmap DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char ref) {
-    c = (!nucleotideColorScheme.contains(c)) ? 'N' : c;
+    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
 
     if (c == ref) {
         return normalImages.value(c, unknownChar);

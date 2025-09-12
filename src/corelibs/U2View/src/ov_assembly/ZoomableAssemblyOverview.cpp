@@ -37,8 +37,8 @@
 
 namespace U2 {
 
-static const QColor labelForegroundColor = Qt::darkRed;
-static const QColor labelBackgroundColor(255, 255, 255, 180);
+static const QColor labelForegroundColorLight = Qt::darkRed;
+static const QColor labelForegroundColorDark = QColor(255, 100, 100);
 
 //==============================================================================
 // ZoomableAssemblyOverview
@@ -117,7 +117,7 @@ void ZoomableAssemblyOverview::drawAll() {
             cachedBackground = QPixmap(size() * devicePixelRatio());
             cachedBackground.setDevicePixelRatio(devicePixelRatio());
             QPainter p(&cachedBackground);
-            p.fillRect(rect(), Qt::gray);
+            p.fillRect(rect(), AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray);
             p.drawText(rect(), Qt::AlignCenter, tr("Background is rendering..."));
         }
         // coverage is ready -> redraw background if needed
@@ -161,7 +161,8 @@ void ZoomableAssemblyOverview::drawZoomToRegion(QPainter& p) {
         topLeft = QPoint(curX, 0);
         bottomRight = QPoint(zoomToRegionSelector.startPos.x(), height());
     }
-    p.fillRect(QRect(topLeft, bottomRight), QColor(128, 0, 0, 100));
+    QColor rectColor = AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127, 100) : QColor(128, 0, 0, 100);
+    p.fillRect(QRect(topLeft, bottomRight), rectColor);
 }
 
 void ZoomableAssemblyOverview::drawBackground(QPainter& p) {
@@ -188,9 +189,10 @@ void ZoomableAssemblyOverview::drawBackground(QPainter& p) {
             assert(false);
     }
 
-    p.fillRect(rect(), Qt::white);
+    p.fillRect(rect(), QPalette().window().color());
 
     // 2. draw the graph line-by-line
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     for (int i = 0; i < widgetWidth; ++i) {
         quint64 columnPixels = 0;
         double grayCoeffD = 0.;
@@ -212,12 +214,12 @@ void ZoomableAssemblyOverview::drawBackground(QPainter& p) {
         }
 
         // UGENE-style colors
-        p.setPen(ui->getCoverageColor(grayCoeffD));
+        p.setPen(ui->getCoverageColor(grayCoeffD, isDark));
         p.drawLine(i, 0, i, columnPixels);
     }
 
     // 3. draw gray border
-    p.setPen(Qt::gray);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray);
     p.drawRect(rect().adjusted(0, 0, -1, -1));
 }
 
@@ -289,14 +291,14 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
     p.setFont(font);
     QFontMetrics fontMetrics(font, this);
 
-    p.setPen(labelForegroundColor);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? labelForegroundColorDark : labelForegroundColorLight);
 
     // draw Visible Region
     QString visibleRegionText = tr("%1 to %2 (%3 bp)").arg(visibleStartText).arg(visibleEndText).arg(visibleDiffText);
     QRect grtRect = QRect(0, 0, fontMetrics.horizontalAdvance(visibleRegionText), fontMetrics.height());
     grtRect.translate(xoffset, rect().height() - yoffset - grtRect.height());
     if (rect().contains(grtRect)) {
-        p.fillRect(grtRect, labelBackgroundColor);
+        p.fillRect(grtRect, Qt::transparent);
         p.drawText(grtRect, visibleRegionText);
     }
 
@@ -318,7 +320,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
     QRect srtRect = QRect(0, 0, fontMetrics.horizontalAdvance(selectedRegionText), fontMetrics.height());
     srtRect.translate(rect().width() - srtRect.width() - xoffset, rect().height() - yoffset - grtRect.height());
     if (rect().contains(srtRect) && !srtRect.intersects(grtRect)) {
-        p.fillRect(srtRect, labelBackgroundColor);
+        p.fillRect(srtRect, Qt::transparent);
         p.drawText(srtRect, selectedRegionText);
     }
 }

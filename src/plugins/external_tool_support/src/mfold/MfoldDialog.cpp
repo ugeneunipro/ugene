@@ -34,6 +34,7 @@
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -54,6 +55,10 @@ static QString getLongRegionErr() {
     return MfoldDialog::tr("Region cannot be larger than %1 nucleotides").arg(maxRegionLen);
 }
 }  // namespace
+
+void MfoldDialog::sl_colorThemeSwitched() {
+    ui.wrongRegionLabel->setStyleSheet(QString("QLabel{ font-weight: bold; color: %1; }").arg(Theme::errorColorLabelHtmlStr()));
+}
 
 MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     : QDialog(ctx.getAnnotatedDNAView()->getWidget()), seqLen(ctx.getSequenceLength()),
@@ -80,6 +85,8 @@ MfoldDialog::MfoldDialog(const ADVSequenceObjectContext& ctx)
     });
     new HelpButton(this, ui.buttonBox, "96666238");
 
+    sl_colorThemeSwitched();
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &MfoldDialog::sl_colorThemeSwitched);
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 

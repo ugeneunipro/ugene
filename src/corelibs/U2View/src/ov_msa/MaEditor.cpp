@@ -152,7 +152,8 @@ MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewNam
     multilineViewAction->setChecked(false);
     connect(multilineViewAction, SIGNAL(triggered()), SLOT(sl_multilineViewAction()));
 
-    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
+    gotoAction = new QAction(tr("Go to position…"), this);
+    GUIUtils::setThemedIcon(gotoAction, ":core/images/goto.png");
     gotoAction->setObjectName("action_go_to_position");
     gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
     gotoAction->setShortcutContext(Qt::WindowShortcut);

@@ -31,7 +31,6 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -39,6 +38,7 @@
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/Theme.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>

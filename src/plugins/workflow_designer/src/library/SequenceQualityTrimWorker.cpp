@@ -25,6 +25,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BasePorts.h>
@@ -50,7 +52,7 @@ SequenceQualityTrimPrompter::SequenceQualityTrimPrompter(Actor* actor)
 QString SequenceQualityTrimPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     const Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    const QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     const QString producerName = tr("from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     const QString trimSide = getHyperlink(BOTH_ID, tr(getParameter(BOTH_ID).toBool() ? "the both ends" : "the end"));
     return tr("Trim input sequence %1 from %2, using the quality threshold.").arg(producerName).arg(trimSide);

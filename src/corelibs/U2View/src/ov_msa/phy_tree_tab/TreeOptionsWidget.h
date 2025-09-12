@@ -69,6 +69,8 @@ private slots:
 
     void sl_onOptionChanged(const TreeViewOption& option, const QVariant& value);
 
+    void sl_colorThemeSwitched();
+
 private:
     /** Initialization code common for both constructors. */
     void init();

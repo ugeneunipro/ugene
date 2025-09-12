@@ -53,6 +53,16 @@ void LogCategories::init() {
     localizedLevelNames[LogLevel_ERROR] = tr("ERROR");
 }
 
+QVector<QString> LogSettings::LIGHT_LEVEL_COLORS = { QColor(Qt::darkGray).name(),
+                                                     QColor(Qt::black).name(),
+                                                     QColor(Qt::darkBlue).name(),
+                                                     QColor(Qt::darkRed).name() };
+
+QVector<QString> LogSettings::DARK_LEVEL_COLORS = { QColor(180, 180, 180).name(),
+                                                    QColor(Qt::white).name(),
+                                                    QColor(85, 170, 255).name(),
+                                                    QColor(255, 127, 127).name() };
+
 LogSettings::LogSettings()
     : levelColors(LogLevel_NumLevels), activeLevelGlobalFlag(LogLevel_NumLevels, false) {
 }
@@ -71,10 +81,7 @@ const LoggerSettings& LogSettings::getLoggerSettings(const QString& cName) {
 void LogSettings::reinitAll() {
     Settings* s = AppContext::getSettings();
 
-    levelColors.fill(QColor(Qt::black).name());
-    levelColors[LogLevel_TRACE] = QColor(Qt::darkGray).name();
-    levelColors[LogLevel_INFO] = QColor(Qt::darkBlue).name();
-    levelColors[LogLevel_ERROR] = QColor(Qt::darkRed).name();
+    levelColors = LIGHT_LEVEL_COLORS;
 
     showDate = s->getValue(SETTINGS_ROOT + "showDate", true).toBool();
     showLevel = s->getValue(SETTINGS_ROOT + "showLevel", true).toBool();
@@ -107,6 +114,10 @@ void LogSettings::reinitCategories() {
             categories[name] = cs;
         }
     }
+}
+
+void LogSettings::colorThemeSwitched(bool isDark) {
+    levelColors = isDark ? DARK_LEVEL_COLORS : LIGHT_LEVEL_COLORS;
 }
 
 void LogSettings::removeCategory(const QString& name) {

@@ -1145,7 +1145,7 @@ GUI_TEST_CLASS_DEFINITION(test_8111) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_8114) {
-    /*  
+    /*
      *  1. Select "Tools>Sanger data analysis>Map reads to reference..."
      *  2. Set reference file with ";" in path, and correct reads path. Press OK.
      *  Expected state: message box with error appears
@@ -1159,22 +1159,22 @@ GUI_TEST_CLASS_DEFINITION(test_8114) {
 
     class CheckBadPaths : public CustomScenario {
         void run() override {
-            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), sandBoxDir + "8114/bad;path/reference.gb");           
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), sandBoxDir + "8114/bad;path/reference.gb");
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/sanger/sanger_01.ab1"));
             GTWidget::click(GTWidget::findPushButton("addReadButton"));
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, 
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok,
                                             "Reference sequence path should not contain \";\" character."));
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 
-            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");           
+            GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir + "8114/bad;path/sanger_01.ab1"));
             GTWidget::click(GTWidget::findPushButton("addReadButton"));
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, 
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok,
                                             "Read sequence path should not contain \";\" character."));
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         }
-    };    
+    };
     GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(new CheckBadPaths()));
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
 }
@@ -1612,12 +1612,12 @@ GUI_TEST_CLASS_DEFINITION(test_8174) {
 GUI_TEST_CLASS_DEFINITION(test_8175) {
     /*
      *1. Open _common_data/scenarios/tree_view/deep_tree_412.nwk
-     *Expected state: no crash, corresponding message 
+     *Expected state: no crash, corresponding message
      **/
-    
+
     GTLogTracer lt;
     GTFileDialog::openFile(testDir + "_common_data/scenarios/tree_view/deep_tree_412.nwk");
-    GTUtilsTaskTreeView::waitTaskFinished();    
+    GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasError("Tree branch is too long"), "Expected no errors");
 }
 

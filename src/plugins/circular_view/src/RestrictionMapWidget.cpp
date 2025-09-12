@@ -34,6 +34,8 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U1AnnotationUtils.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/ADVSequenceObjectContext.h>
 
 #define ENZYME_FOLDER_ITEM_TYPE 1022

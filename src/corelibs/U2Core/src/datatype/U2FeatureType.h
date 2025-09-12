@@ -232,8 +232,11 @@ public:
     /** Returns alphabets info by feature type. */
     static Alphabets getAlphabets(const U2FeatureType& type);
 
-    /** Returns feature color by feature type. */
-    static QColor getColor(const U2FeatureType& type);
+    /** Returns light feature color by feature type. */
+    static QColor getLightColor(const U2FeatureType& type);
+
+    /** Returns dark feature color by feature type. */
+    static QColor getDarkColor(const U2FeatureType& type);
 
     /** Returns feature description by feature type. */
     static QColor getDescription(const U2FeatureType& type);
@@ -248,7 +251,8 @@ public:
         U2FeatureTypeInfo(const U2FeatureType& featureType,
                           const QString& visualName,
                           const Alphabets& alphabets,
-                          const QColor& color,
+                          const QColor& colorLight,
+                          const QColor& colorDark,
                           const QString& description,
                           bool isShowOnAminoFrame);
 
@@ -256,8 +260,11 @@ public:
         QString visualName;
         Alphabets alphabets;
 
-        /** A default color used to render the feature in UGENE. */
-        QColor color;
+        /** A default light color used to render the feature in UGENE. */
+        QColor colorLight;
+
+        /** A default dark color used to render the feature in UGENE. */
+        QColor colorDark;
 
         /** Detailed description of the feature meaning. */
         QString description;

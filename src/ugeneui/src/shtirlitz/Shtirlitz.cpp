@@ -46,6 +46,7 @@
 
 #include <U2Gui/MainWindow.h>
 
+#include "ColorThemeWindow.h"
 #include "StatisticalReportController.h"
 
 const static char* SETTINGS_NOT_FIRST_LAUNCH = "shtirlitz/not_first_launch";
@@ -118,6 +119,24 @@ QList<Task*> Shtirlitz::wakeup() {
     // Do nothing if Shtirlitz was disabled
     if (QProcess::systemEnvironment().contains(ENV_UGENE_DEV)) {
         return result;
+    }
+
+    if (minorVersionFirstLaunch) {
+        ColorThemeWindow dialog;
+        dialog.exec();
+
+        if (dialog.result() == QDialog::Accepted) {
+            auto styleInfo = dialog.getNewStyle();
+            UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
+            auto currentVisualStyle = st->getVisualStyle();
+            auto currentcolorThemeIndex = st->getColorThemeId();
+
+            if (currentVisualStyle != styleInfo.first || currentcolorThemeIndex != styleInfo.second) {
+                AppContext::getMainWindow()->setNewStyle(styleInfo.first, styleInfo.second);
+                st->setVisualStyle(styleInfo.first);
+                st->setColorThemeId((int)styleInfo.second);
+            }
+        }
     }
 
     // Check if this version of UGENE is launched for the first time

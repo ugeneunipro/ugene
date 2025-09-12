@@ -193,7 +193,7 @@ void ToolsMenu::init() {
     }
 
     actionText[HMMER_MENU] = tr("HMMER tools");
-    actionIcon[HMMER_MENU] = ":/hmm2/images/hmmer_16.png";
+    actionIcon[HMMER_MENU] = ":/hmm2/images/hmmer2.png";
     subMenuAction[TOOLS] << HMMER_MENU;
     {
         subMenuAction[HMMER_MENU] << HMMER_BUILD3;

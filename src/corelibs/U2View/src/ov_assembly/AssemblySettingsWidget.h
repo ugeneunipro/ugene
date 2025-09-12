@@ -45,6 +45,8 @@ private slots:
     void sl_consensusAlgorithmChanged();
     void sl_changeConsensusAlgorithm(int newIndex);
 
+    void sl_colorThemeSwitched();
+
 private:
     QWidget* createReadsSettings();
     QWidget* createRulerSettings();

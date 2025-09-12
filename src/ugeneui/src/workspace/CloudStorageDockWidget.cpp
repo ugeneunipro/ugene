@@ -43,9 +43,11 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 
 #include "CloudStorageService.h"
 #include "WorkspaceService.h"
+#include "main_window/DockManagerImpl.h"
 
 namespace U2 {
 constexpr auto CLOUD_STORAGE_LAST_OPENED_DOWNLOAD_DIR = "CloudStorageDownloadDir";
@@ -248,7 +250,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     stateLabel = new QLabel();
     stateLabel->setTextFormat(Qt::RichText);
     stateLabel->setOpenExternalLinks(false);
-    stateLabel->setStyleSheet("background: white; padding: 10px;");
+    stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
 
     treeView = new QTreeView();
     treeView->setModel(&treeViewModel);
@@ -608,8 +610,8 @@ void CloudStorageDockWidget::updateStateLabelText() {
     disconnect(stateLabel, &QLabel::linkActivated, this, nullptr);
     const auto isLoggedIn = workspaceService->isLoggedIn();
     stateLabel->setText(isLoggedIn
-                            ? tr(R"(Loading file list...<br><br><br><a href="logout">Logout</a>)")
-                            : tr(R"(Please <a href="login">log in to Workspace</a> to access cloud storage)"));
+                            ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
+                            : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
 
     connect(stateLabel, &QLabel::linkActivated, this, [&](const QString& link) {
         if (link == "login") {

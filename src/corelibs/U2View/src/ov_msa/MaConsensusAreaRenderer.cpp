@@ -24,8 +24,10 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaConsensusAlgorithm.h>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/MsaObject.h>
 
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/GraphUtils.h>
 
 #include "MaEditorWgt.h"
@@ -67,7 +69,8 @@ QRect ConsensusCharRenderData::getCharRect() const {
     return QRect(xRange.startPos, yRange.startPos, xRange.length + 1, yRange.length);
 }
 
-const QColor MaConsensusAreaRenderer::DEFAULT_MISMATCH_COLOR = Qt::red;
+const QColor MaConsensusAreaRenderer::DEFAULT_MISMATCH_COLOR_LIGHT = Qt::red;
+const QColor MaConsensusAreaRenderer::DEFAULT_MISMATCH_COLOR_DARK = QColor(255, 127, 127);
 
 MaConsensusAreaRenderer::MaConsensusAreaRenderer(MaEditorConsensusArea* area)
     : QObject(area),
@@ -194,7 +197,7 @@ U2Region MaConsensusAreaRenderer::getYRange(MaEditorConsElement element) const {
 }
 
 void MaConsensusAreaRenderer::drawConsensus(QPainter& painter, const ConsensusRenderData& consensusRenderData, const ConsensusRenderSettings& settings) {
-    painter.setPen(Qt::black);
+    painter.setPen(QPalette().text().color());
 
     QFont font = settings.font;
     font.setWeight(QFont::DemiBold);
@@ -222,16 +225,19 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter& painter, const ConsensusRe
 void MaConsensusAreaRenderer::drawConsensusChar(QPainter& painter, const ConsensusCharRenderData& charData, const ConsensusRenderSettings& settings) {
     const QRect charRect = charData.getCharRect();
 
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor color;
     if (charData.isSelected) {
-        color = Qt::lightGray;
-        color = color.lighter(115);
+        color = isDark ? Qt::darkGray : Qt::lightGray;
+        if (!isDark) {
+            color = color.lighter(115);
+        }
     }
 
     if (settings.highlightMismatches && charData.isMismatch) {
         color = settings.colorScheme->getBackgroundColor(0, 0, charData.consensusChar);
         if (!color.isValid()) {
-            color = DEFAULT_MISMATCH_COLOR;
+            color = isDark ? DEFAULT_MISMATCH_COLOR_DARK : DEFAULT_MISMATCH_COLOR_LIGHT;
         }
     }
     if (color.isValid()) {
@@ -244,7 +250,7 @@ void MaConsensusAreaRenderer::drawConsensusChar(QPainter& painter, const Consens
 }
 
 void MaConsensusAreaRenderer::drawRuler(QPainter& painter, const ConsensusRenderSettings& settings) {
-    painter.setPen(Qt::darkGray);
+    painter.setPen(AppContext::getMainWindow()->isDarkTheme() ? Qt::lightGray : Qt::darkGray);
 
     U2Region rulerYRange = settings.yRangeToDrawIn[MSAEditorConsElement_RULER];
     U2Region consensusTextYRange = settings.yRangeToDrawIn[MSAEditorConsElement_CONSENSUS_TEXT];
@@ -277,7 +283,7 @@ void MaConsensusAreaRenderer::drawRuler(QPainter& painter, const ConsensusRender
 }
 
 void MaConsensusAreaRenderer::drawHistogram(QPainter& painter, const ConsensusRenderData& consensusRenderData, const ConsensusRenderSettings& settings) {
-    QColor color("#255060");
+    QColor color = AppContext::getMainWindow()->isDarkTheme() ? QColor("#4CA4C4") : QColor("#255060");
     painter.setPen(color);
 
     // TODO: move calculations to getYRange method

@@ -118,6 +118,9 @@ protected:
     QAction* setUpFramesManuallyAction;
     QAction* showAllFramesAction;
 
+    QMenu* translationsMenu = nullptr;
+    QMenu* ttMenu = nullptr;
+
     DetViewSequenceEditor* editor;
 
     GScrollBar* verticalScrollBar;

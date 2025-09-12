@@ -39,6 +39,7 @@ public:
 public:
     AssemblyReadsAreaHint(QWidget* parent);
     void setData(U2AssemblyRead r, QList<U2AssemblyRead> mates);
+    void colorThemeSwitched();
 
 protected:
     bool eventFilter(QObject*, QEvent*) override;

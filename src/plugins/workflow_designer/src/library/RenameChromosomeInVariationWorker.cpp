@@ -27,6 +27,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseSlots.h>
@@ -56,7 +58,7 @@ RenameChomosomeInVariationPrompter::RenameChomosomeInVariationPrompter(Actor* ac
 }
 
 QString RenameChomosomeInVariationPrompter::composeRichDoc() {
-    const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    const QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
 
     const QStringList prefixesToReplace = getHyperlink(TO_REPLACE_ATTR, getRequiredParam(TO_REPLACE_ATTR)).split(SEPARATOR, Qt::SkipEmptyParts);
     const QString prefixReplaceWith = getHyperlink(REPLACE_WITH_ATTR, getRequiredParam(REPLACE_WITH_ATTR));

@@ -32,6 +32,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
+#include <U2Designer/PrompterBase.h>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowUtils.h>

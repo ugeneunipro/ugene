@@ -209,6 +209,7 @@ private:
     QAction* createNewRulerAction;
     QAction* shotScreenAction;
     QAction* closeViewAction;
+    QAction* exportImageAction = nullptr;
 
     GAutoDeleteList<QAction> rulerActions;
     QList<QString>* buttonTabOrederedNames;

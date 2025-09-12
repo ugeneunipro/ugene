@@ -115,6 +115,7 @@ private slots:
     void sl_sequenceWidgetRemoved(ADVSequenceWidget*);
     void sl_panViewChanged();
     void sl_timer();
+    void sl_colorThemeSwitched();
 
 protected:
     void paintEvent(QPaintEvent*) override;
@@ -180,6 +181,12 @@ private:
     QColor dotPlotDirectColor;
     QColor dotPlotInvertedColor;
     QColor dotPlotNearestRepeatColor;
+
+    static const QColor DOT_PLOT_BACKGROUND_COLOR_LIGHT;
+    static const QColor DOT_PLOT_NEAREST_REPEAT_COLOR_LIGHT;
+
+    static const QColor DOT_PLOT_BACKGROUND_COLOR_DARK;
+    static const QColor DOT_PLOT_NEAREST_REPEAT_COLOR_DARK;
 
     bool clearedByRepitSel;
     QByteArray seqXCache, seqYCache;  // cached sequence, used only during DP computation

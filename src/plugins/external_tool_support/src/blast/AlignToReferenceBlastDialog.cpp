@@ -231,7 +231,7 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
     if (hasError()) {
         reportString = "<br><table><tr><td><b>" + tr("Error: ") + "</b></td><td>" + stateInfo.getError() + "</td></tr></table>";
         return ReportResult_Finished;
-    } 
+    }
     SAFE_POINT_NN(cmdlineTask, ReportResult_Finished);
     if (cmdlineTask->hasError()) {
         reportString = cmdlineTask->getProcessErrorsLog();
@@ -293,21 +293,21 @@ AlignToReferenceBlastCmdlineTask::Settings AlignToReferenceBlastDialog::getSetti
 
 void AlignToReferenceBlastDialog::accept() {
     const QString refText = referenceLineEdit->text();
-    CHECK_EXT(!refText.isEmpty(), QMessageBox::warning(this, L10N::errorTitle(), 
+    CHECK_EXT(!refText.isEmpty(), QMessageBox::warning(this, L10N::errorTitle(),
                 tr("Reference sequence is not set.")), )
-    CHECK_EXT(!refText.contains(";"), QMessageBox::warning(this, L10N::errorTitle(), 
+    CHECK_EXT(!refText.contains(";"), QMessageBox::warning(this, L10N::errorTitle(),
                 tr("Reference sequence path should not contain \";\" character.")), )
-    
+
     settings.referenceUrl = referenceLineEdit->text();
 
-    CHECK_EXT(readsListWidget->count() != 0, QMessageBox::warning(this, L10N::errorTitle(), 
+    CHECK_EXT(readsListWidget->count() != 0, QMessageBox::warning(this, L10N::errorTitle(),
                 tr("No reads provided.")), )
     QStringList readUrls;
     for (int i = 0; i < readsListWidget->count(); i++) {
         QListWidgetItem* item = readsListWidget->item(i);
         SAFE_POINT(item != nullptr, "Item is NULL", );
         QString s = item->text();
-        CHECK_EXT(!s.contains(";"), QMessageBox::warning(this, L10N::errorTitle(), 
+        CHECK_EXT(!s.contains(";"), QMessageBox::warning(this, L10N::errorTitle(),
                     tr("Read sequence path should not contain \";\" character.")), )
         readUrls.append(s);
     }
@@ -319,7 +319,7 @@ void AlignToReferenceBlastDialog::accept() {
     settings.rowNaming = static_cast<AlignToReferenceBlastCmdlineTask::Settings::RowNaming>(cbRowNaming->currentData().toInt());
 
     CHECK_EXT(!outputLineEdit->text().isEmpty(), QMessageBox::warning(this, L10N::errorTitle(), tr("Output file is not set.")), )
-    
+
     settings.resultAlignmentFile = outputLineEdit->text();
     settings.addResultToProject = addToProjectCheckbox->isChecked();
 

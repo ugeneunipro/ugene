@@ -132,7 +132,7 @@ ReadAssemblyProto::ReadAssemblyProto()
 
     setPrompter(new ReadDocPrompter(ReadAssemblyWorker::tr("Reads assembly from <u>%1</u>.")));
     if (AppContext::isGUIMode()) {
-        setIconPath(":/U2Designer/images/blue_circle.png");
+        setIconPath(GUIUtils::getThemedPath(":/U2Designer/images/blue_circle.png"));
     }
 }
 

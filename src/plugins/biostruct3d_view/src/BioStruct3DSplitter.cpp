@@ -371,10 +371,7 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
     if (f.pixelSize() > HEADER_HEIGHT) {
         f.setPixelSize(HEADER_HEIGHT - 8);
     }
-    QIcon objIcon(":biostruct3d_view/images/logo.png");
-    Q_ASSERT(!objIcon.isNull());
-    QPixmap pix = objIcon.pixmap(QSize(32, 32), QIcon::Active);
-    pixLabel->setPixmap(pix);
+    GUIUtils::setThemedIcon(pixLabel, ":core/images/biostruct3d.png");
     pixLabel->setFont(f);
 
     layout->addWidget(pixLabel);
@@ -399,16 +396,16 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter* sp)
 
     zoomInAction = new QAction(this);
     zoomInAction->setText(tr("Zoom In"));
-    GUIUtils::setThemedIcon(zoomInAction, ":core/images/zoom_in.png");
+    GUIUtils::setThemedIcon(zoomInAction, ":/core/images/zoom_in.png");
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
     zoomOutAction = new QAction(this);
-    GUIUtils::setThemedIcon(zoomOutAction, ":core/images/zoom_out.png");
+    GUIUtils::setThemedIcon(zoomOutAction, ":/core/images/zoom_out.png");
     zoomOutAction->setText(tr("Zoom Out"));
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
     syncLockAction = new QAction(this);
-    GUIUtils::setThemedIcon(syncLockAction, ":core/images/sync_lock.png");
+    GUIUtils::setThemedIcon(syncLockAction, ":/core/images/sync_lock.png");
     syncLockAction->setText(tr("Synchronize 3D Structure Views"));
     syncLockAction->setCheckable(true);
     connect(syncLockAction, SIGNAL(triggered(bool)), SLOT(sl_toggleSyncLock(bool)));

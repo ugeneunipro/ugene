@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="sitecon/" >
-        <file>images/sitecon.png</file>
+        <file>images/dark/sitecon.png</file>
+
+        <file>images/light/sitecon.png</file>
     </qresource>
 </RCC>

@@ -144,7 +144,7 @@ protected:
      * \param as AnnotationSettings object.
      * \return Returns rect, which contains posistions of annotation on details view.
      */
-    QRect getAnnotationRect(int regionIndex, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const;
+    QRect getAnnotationRect(const U2Region& reg, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const;
 
     void drawAnnotationConnections(QPainter& p, Annotation* a, const AnnotationSettings* as, const AnnotationDisplaySettings& drawSettings, const QSize& canvasSize, const U2Region& visibleRange);
 

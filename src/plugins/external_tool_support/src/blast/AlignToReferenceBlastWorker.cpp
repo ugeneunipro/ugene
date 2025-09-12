@@ -36,6 +36,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BasePorts.h>
@@ -155,7 +157,7 @@ QString AlignToReferenceBlastPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     SAFE_POINT(input != nullptr, "No input port", "");
     Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    const QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     const QString producerName = producer != nullptr ? producer->getLabel() : unsetStr;
     const QString refLink = getHyperlink(REF_ATTR_ID, getURL(REF_ATTR_ID));
     return tr("Aligns each sequence from <u>%1</u> to the reference sequence from <u>%2</u>.").arg(producerName).arg(refLink);

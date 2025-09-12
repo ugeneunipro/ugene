@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QColor>
 #include <QObject>
 #include <QProcess>
 #include <QVariant>

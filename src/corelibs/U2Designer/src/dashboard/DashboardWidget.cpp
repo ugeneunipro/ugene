@@ -36,7 +36,16 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
+
+static const QString TABLE_BORDER_COLOR_LIGHT = "#ddd";
+static const QString TABLE_BORDER_COLOR_DARK = "#525252";
+static const QString TABLE_STYLE_SHEET = "QWidget#tabWidgetStyleRoot {"
+                                         " border-radius: 6px;"
+                                         " border: 1px solid %1;"
+                                         "}";
 
 DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     auto layout = new QHBoxLayout();
@@ -44,10 +53,7 @@ DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     layout->setSpacing(0);
     setLayout(layout);
 
-    setStyleSheet("QWidget#tabWidgetStyleRoot {"
-                  " border-radius: 6px;"
-                  " border: 1px solid #ddd;"
-                  "}");
+    setStyleSheet(TABLE_STYLE_SHEET.arg(AppContext::getMainWindow()->isDarkTheme() ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT));
 
     auto styleRootWidget = new QWidget();
     styleRootWidget->setObjectName("tabWidgetStyleRoot");
@@ -59,8 +65,8 @@ DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     styleRootWidget->setLayout(styleRootWidgetLayout);
 
     auto titleLabel = new QLabel(title);
-    titleLabel->setStyleSheet("background: rgb(239, 239, 239);"
-                              "color: #222;"
+    titleLabel->setStyleSheet("background: palette(alternate-base);"
+                              "color: palette(text);"
                               "padding: 5px;"
                               "border-top-left-radius: 6px;"
                               "border-top-right-radius: 6px;");
@@ -69,7 +75,7 @@ DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     auto contentStyleWidget = new QWidget();
     contentStyleWidget->setObjectName("tabWidgetContentStyleRoot");
     contentStyleWidget->setStyleSheet("QWidget#tabWidgetContentStyleRoot {"
-                                      " background: white;"
+                                      " background: palette(base);"
                                       " border-bottom-left-radius: 6px;"
                                       " border-bottom-right-radius: 6px;"
                                       "}");
@@ -83,8 +89,20 @@ DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     contentStyleWidgetLayout->addWidget(contentWidget);
 }
 
+void DashboardWidget::sl_colorThemeSwitched() {
+    setStyleSheet(TABLE_STYLE_SHEET.arg(AppContext::getMainWindow()->isDarkTheme() ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT));
+}
+
+static const QString HEADER_COLOR_LIGHT = "rgb(101, 101, 101)";
+static const QString HEADER_BORDER_COLOR_LIGHT = "#999";
+static const QString HEADER_COLOR_DARK = "rgb(200, 200, 200)";
+static const QString HEADER_BORDER_COLOR_DARK = "#C8C8C8";
+
 void DashboardWidgetUtils::addTableHeadersRow(QGridLayout* gridLayout, const QStringList& headerNameList) {
-    QString commonHeaderStyle = "border: 1px solid #999; background-color: rgb(101, 101, 101);";
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    QString headerColor = isDark ? HEADER_COLOR_DARK : HEADER_COLOR_LIGHT;
+    QString headerBorderColor = isDark ? HEADER_BORDER_COLOR_DARK : HEADER_BORDER_COLOR_LIGHT;
+    QString commonHeaderStyle = QString("border: 1px solid %2; background-color: %1;").arg(headerColor).arg(headerBorderColor);
     for (int i = 0; i < headerNameList.size(); i++) {
         auto headerNameWidget = new QWidget();
         headerNameWidget->setObjectName("tableHeaderCell");
@@ -99,7 +117,7 @@ void DashboardWidgetUtils::addTableHeadersRow(QGridLayout* gridLayout, const QSt
         headerNameWidgetLayout->setContentsMargins(0, 0, 0, 0);
         headerNameWidget->setLayout(headerNameWidgetLayout);
         auto headerNameWidgetLabel = new QLabel(headerNameList.at(i));
-        headerNameWidgetLabel->setStyleSheet("color: white; padding: 5px 10px;");
+        headerNameWidgetLabel->setStyleSheet("color: palette(base); padding: 5px 10px;");
         headerNameWidgetLayout->addWidget(headerNameWidgetLabel);
         gridLayout->addWidget(headerNameWidget, 0, i);
     }
@@ -107,23 +125,24 @@ void DashboardWidgetUtils::addTableHeadersRow(QGridLayout* gridLayout, const QSt
 
 #define ID_KEY "DashboardWidget-Row-Id"
 
-static QString cellStyle = "border: 1px solid #ddd; border-top: 0px; border-right: 0px;";
-static QString rightCellStyle = "border-right: 1px solid #ddd;";
+static QString CELL_STYLE = "border: 1px solid %1; border-top: 0px; border-right: 0px;";
+static QString RIGHT_CELL_STYLE = "border-right: 1px solid %1;";
 static QString lastRowLeftCellStyle = "border-bottom-left-radius: 4px;";
 static QString lastRowRightCellStyle = "border-bottom-right-radius: 4px;";
 
 void DashboardWidgetUtils::addTableCell(QGridLayout* gridLayout, const QString& rowId, QWidget* widget, int row, int column, bool isLastRow, bool isLastColumn) {
     auto cellWidget = new QWidget();
     cellWidget->setObjectName("tableCell");
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QString extraCellStyle = "";
     if (isLastColumn) {
-        extraCellStyle += rightCellStyle;
+        extraCellStyle += RIGHT_CELL_STYLE.arg(isDark ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT);
     }
     if (isLastRow) {
         extraCellStyle += column == 0 ? lastRowLeftCellStyle : "";
         extraCellStyle += isLastColumn ? lastRowRightCellStyle : "";
     }
-    cellWidget->setStyleSheet("#tableCell {" + cellStyle + extraCellStyle + "}");
+    cellWidget->setStyleSheet("#tableCell {" + CELL_STYLE.arg(isDark ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT) + extraCellStyle + "}");
     auto cellWidgetLayout = new QVBoxLayout();
     cellWidgetLayout->setContentsMargins(10, 7, 10, 7);
     cellWidget->setLayout(cellWidgetLayout);
@@ -145,21 +164,25 @@ void DashboardWidgetUtils::addTableCell(QGridLayout* gridLayout, const QString& 
     auto cellLabel = new QLabel(text);
     cellLabel->setWordWrap(true);
     cellLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    cellLabel->setStyleSheet("color: #333");
+    cellLabel->setStyleSheet("color: palette(text)");
     addTableCell(gridLayout, rowId, cellLabel, row, column, isLastRow, isLastColumn);
 }
 
 void DashboardWidgetUtils::addTableRow(QGridLayout* gridLayout, const QString& rowId, const QStringList& valueList) {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
     // Update last border style for the old last.
     int lastRowIndex = gridLayout->rowCount() - 1;
     if (lastRowIndex > 0) {  // row = 0 is a header.
         auto leftCellLayoutItem = gridLayout->itemAtPosition(lastRowIndex, 0);
         auto leftCellWidget = leftCellLayoutItem->widget();
-        leftCellWidget->setStyleSheet("#tableCell {" + cellStyle + "}");
+        leftCellWidget->setStyleSheet("#tableCell {" + CELL_STYLE.arg(isDark ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT) + "}");
 
         auto rightCellLayoutItem = gridLayout->itemAtPosition(lastRowIndex, gridLayout->columnCount() - 1);
         auto rightCellWidget = rightCellLayoutItem->widget();
-        rightCellWidget->setStyleSheet("#tableCell {" + cellStyle + rightCellStyle + "}");
+        rightCellWidget->setStyleSheet("#tableCell {" +
+                                       CELL_STYLE.arg(isDark ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT) +
+                                       RIGHT_CELL_STYLE.arg(isDark ? TABLE_BORDER_COLOR_DARK : TABLE_BORDER_COLOR_LIGHT) +
+                                       "}");
     }
 
     for (int columnIndex = 0; columnIndex < valueList.size(); columnIndex++) {
@@ -198,6 +221,39 @@ QString DashboardWidgetUtils::parseOpenUrlValueFromOnClick(const QString& onclic
     return onclickValue.length() > prefixLen + suffixLen ? onclickValue.mid(prefixLen, onclickValue.length() - prefixLen - suffixLen) : QString();
 }
 
+void DashboardWidgetUtils::colorThemeSwitched(QGridLayout* gridLayout) {
+    int rowCount = gridLayout->rowCount();
+    int columnCount = gridLayout->columnCount();
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    for (int row = 0; row < rowCount; row++) {
+        for (int column = 0; column < columnCount; column++) {
+            auto layoutAtPosition = gridLayout->itemAtPosition(row, column);
+            CHECK_CONTINUE(layoutAtPosition != nullptr);
+
+            auto wgt = layoutAtPosition->widget();
+            CHECK_CONTINUE(wgt != nullptr);
+
+            auto ss = wgt->styleSheet();
+            if (row == 0) {
+                if (isDark) {
+                    ss.replace(HEADER_COLOR_LIGHT, HEADER_COLOR_DARK);
+                    ss.replace(HEADER_BORDER_COLOR_LIGHT, HEADER_BORDER_COLOR_DARK);
+                } else {
+                    ss.replace(HEADER_COLOR_DARK, HEADER_COLOR_LIGHT);
+                    ss.replace(HEADER_BORDER_COLOR_DARK, HEADER_BORDER_COLOR_LIGHT);
+                }
+            } else {
+                if (isDark) {
+                    ss.replace(TABLE_BORDER_COLOR_LIGHT, TABLE_BORDER_COLOR_DARK);
+                } else {
+                    ss.replace(TABLE_BORDER_COLOR_DARK, TABLE_BORDER_COLOR_LIGHT);
+                }
+            }
+            wgt->setStyleSheet(ss);
+        }
+    }
+}
+
 DashboardPopupMenu::DashboardPopupMenu(QAbstractButton* button, QWidget* parent)
     : QMenu(parent), button(button) {
 }
@@ -211,6 +267,25 @@ void DashboardPopupMenu::showEvent(QShowEvent* event) {
 
 #define FILE_URL_KEY "file-url"
 
+static const QString BUTTON_COLOR_ONE_LIGHT = "#f6f7fa";
+static const QString BUTTON_COLOR_TWO_LIGHT = "#dadbde";
+static const QString BUTTON_COLOR_ONE_DARK = "#393835";
+static const QString BUTTON_COLOR_TWO_DARK = "#555451";
+static const QString DASHBOARD_FILE_BUTTON_STYLESHEET =
+                  "QToolButton {"
+                  "  height: 1.33em; border-radius: 4px;"
+                  "  border: 1px solid #aaa; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 %1, stop: 1 %2);"
+                  "}"
+                  "QToolButton:pressed {"
+                  "  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 %2, stop: 1 %1);"
+                  "}"
+                  "QToolButton::menu-button {"
+                  "  border: 1px solid #aaa;"
+                  "  border-top-right-radius: 4px; border-bottom-right-radius: 4px;"
+                  "  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 %1, stop: 1 %2);"
+                  "  width: 1.5em;"
+                  "}";
+
 DashboardFileButton::DashboardFileButton(const QStringList& urlList, const QString& dashboardDir, const WorkflowMonitor* monitor, bool isFolderMode)
     : urlList(urlList), dashboardDirInfo(dashboardDir), isFolderMode(isFolderMode) {
     setObjectName("DashboardFileButton");
@@ -221,19 +296,7 @@ DashboardFileButton::DashboardFileButton(const QStringList& urlList, const QStri
     setText(buttonText);
     setToolTip(buttonText);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    setStyleSheet("QToolButton {"
-                  "  height: 1.33em; border-radius: 4px;"
-                  "  border: 1px solid #aaa; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);"
-                  "}"
-                  "QToolButton:pressed {"
-                  "  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa);"
-                  "}"
-                  "QToolButton::menu-button {"
-                  "  border: 1px solid #aaa;"
-                  "  border-top-right-radius: 4px; border-bottom-right-radius: 4px;"
-                  "  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);"
-                  "  width: 1.5em;"
-                  "}");
+    updateStyleSheet();
 
     connect(this, SIGNAL(clicked()), SLOT(sl_openFileClicked()));
     if (monitor != nullptr) {
@@ -261,6 +324,8 @@ DashboardFileButton::DashboardFileButton(const QStringList& urlList, const QStri
         setMenu(menu);
         setPopupMode(QToolButton::InstantPopup);
     }
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &DashboardFileButton::sl_colorThemeSwitched);
 }
 
 void DashboardFileButton::addUrlActionsToMenu(QMenu* menu, const QString& url, bool addOpenByUgeneAction) {
@@ -280,6 +345,13 @@ void DashboardFileButton::addUrlActionsToMenu(QMenu* menu, const QString& url, b
     openFileAction->setProperty(FILE_URL_KEY, "file\n" + url);
     connect(openFileAction, SIGNAL(triggered()), SLOT(sl_openFileClicked()));
     menu->addAction(openFileAction);
+}
+
+void DashboardFileButton::updateStyleSheet() {
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    QString buttonColorOne = isDark ? BUTTON_COLOR_ONE_DARK : BUTTON_COLOR_ONE_LIGHT;
+    QString buttonColorTwo = isDark ? BUTTON_COLOR_TWO_DARK : BUTTON_COLOR_TWO_LIGHT;
+    setStyleSheet(DASHBOARD_FILE_BUTTON_STYLESHEET.arg(buttonColorOne).arg(buttonColorTwo));
 }
 
 /**
@@ -308,6 +380,10 @@ static QFileInfo findFileOpenCandidateInTheDashboardOutputDir(const QFileInfo& d
 
 void DashboardFileButton::sl_dashboardDirChanged(const QString& dashboardDir) {
     dashboardDirInfo = QFileInfo(dashboardDir);
+}
+
+void DashboardFileButton::sl_colorThemeSwitched() {
+    updateStyleSheet();
 }
 
 /** Returns true if the url must be opened with OS, but not with UGENE. */

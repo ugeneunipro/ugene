@@ -21,6 +21,8 @@
 
 #include "DirectoryItem.h"
 
+#include <U2Gui/GUIUtils.h>
+
 namespace U2 {
 
 DirectoryItem::DirectoryItem(const QString& url, QListWidget* parent)

@@ -26,7 +26,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/Theme.h>
+
+#include <U2Gui/Theme.h>
 
 #include "BwaSupport.h"
 #include "BwaTask.h"

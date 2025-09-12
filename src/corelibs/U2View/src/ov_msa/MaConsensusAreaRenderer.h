@@ -117,7 +117,8 @@ protected:
     MaEditorWgt* ui;
     MaEditorConsensusArea* area;
 
-    static const QColor DEFAULT_MISMATCH_COLOR;
+    static const QColor DEFAULT_MISMATCH_COLOR_LIGHT;
+    static const QColor DEFAULT_MISMATCH_COLOR_DARK;
 };
 
 }  // namespace U2

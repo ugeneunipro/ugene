@@ -1,38 +1,64 @@
 <RCC>
     <qresource prefix="/external_tool_support">
-        <file>images/add.png</file>
         <file>images/cancel.png</file>
-        <file>images/clustalo.png</file>
-        <file>images/clustalo_gray.png</file>
-        <file>images/clustalo_warn.png</file>
-        <file>images/clustalx.png</file>
-        <file>images/clustalx_gray.png</file>
-        <file>images/clustalx_warn.png</file>
-        <file>images/cmdline.png</file>
-        <file>images/cmdline_gray.png</file>
-        <file>images/cmdline_warn.png</file>
-        <file>images/down.png</file>
-        <file>images/hmmer.png</file>
-        <file>images/kalign.png</file>
-        <file>images/mfold.png</file>
         <file>images/mfold_gray.png</file>
-        <file>images/mfold_warn.png</file>
-        <file>images/mrbayes.png</file>
-        <file>images/mrbayes_gray.png</file>
-        <file>images/mrbayes_warn.png</file>
-        <file>images/ncbi.png</file>
-        <file>images/ncbi_gray.png</file>
-        <file>images/ncbi_warn.png</file>
-        <file>images/perl.png</file>
-        <file>images/perl_gray.png</file>
-        <file>images/perl_warn.png</file>
         <file>images/python.png</file>
         <file>images/python_cutadapt.png</file>
         <file>images/python_cutadapt_gray.png</file>
-        <file>images/python_cutadapt_warn.png</file>
         <file>images/python_gray.png</file>
-        <file>images/python_warn.png</file>
-        <file>images/up.png</file>
+
+        <file>images/dark/clustalo.png</file>
+        <file>images/dark/clustalo_gray.png</file>
+        <file>images/dark/clustalo_warn.png</file>
+        <file>images/dark/clustalw.png</file>
+        <file>images/dark/clustalw_gray.png</file>
+        <file>images/dark/clustalw_warn.png</file>
+        <file>images/dark/cmdline.png</file>
+        <file>images/dark/cmdline_gray.png</file>
+        <file>images/dark/cmdline_warn.png</file>
+        <file>images/dark/down.png</file>
+        <file>images/dark/hmmer.png</file>
+        <file>images/dark/mfold.png</file>
+        <file>images/dark/mfold_warn.png</file>
+        <file>images/dark/mrbayes.png</file>
+        <file>images/dark/mrbayes_gray.png</file>
+        <file>images/dark/mrbayes_warn.png</file>
+        <file>images/dark/ncbi.png</file>
+        <file>images/dark/ncbi_gray.png</file>
+        <file>images/dark/ncbi_warn.png</file>
+        <file>images/dark/perl.png</file>
+        <file>images/dark/perl_gray.png</file>
+        <file>images/dark/perl_warn.png</file>
+        <file>images/dark/python_cutadapt_warn.png</file>
+        <file>images/dark/python_warn.png</file>
+        <file>images/dark/up.png</file>
+
+        <file>images/light/clustalo.png</file>
+        <file>images/light/clustalo_gray.png</file>
+        <file>images/light/clustalo_warn.png</file>
+        <file>images/light/clustalw.png</file>
+        <file>images/light/clustalw_gray.png</file>
+        <file>images/light/clustalw_warn.png</file>
+        <file>images/light/cmdline.png</file>
+        <file>images/light/cmdline_gray.png</file>
+        <file>images/light/cmdline_warn.png</file>
+        <file>images/light/down.png</file>
+        <file>images/light/hmmer.png</file>
+        <file>images/light/mfold.png</file>
+        <file>images/light/mfold_warn.png</file>
+        <file>images/light/mrbayes.png</file>
+        <file>images/light/mrbayes_gray.png</file>
+        <file>images/light/mrbayes_warn.png</file>
+        <file>images/light/ncbi.png</file>
+        <file>images/light/ncbi_gray.png</file>
+        <file>images/light/ncbi_warn.png</file>
+        <file>images/light/perl.png</file>
+        <file>images/light/perl_gray.png</file>
+        <file>images/light/perl_warn.png</file>
+        <file>images/light/python_cutadapt_warn.png</file>
+        <file>images/light/python_warn.png</file>
+        <file>images/light/up.png</file>
+
         <file>schemas/CustomExternalToolConfig.xsd</file>
     </qresource>
 </RCC>

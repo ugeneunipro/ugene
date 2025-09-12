@@ -41,6 +41,7 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Gui/ExportAnnotations2CSVTask.h>
+#include <U2Gui/Theme.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -513,7 +514,7 @@ Worker* WriteAnnotationsWorkerFactory::createWorker(Actor* a) {
  * WriteAnnotationsPrompter
  ***************************/
 QString WriteAnnotationsPrompter::composeRichDoc() {
-    const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    const QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID()));
     QString annName = getProducers(BasePorts::IN_ANNOTATIONS_PORT_ID(), BaseSlots::ANNOTATION_TABLE_SLOT().getId());
     annName = annName.isEmpty() ? unsetStr : annName;
@@ -526,8 +527,8 @@ QString WriteAnnotationsPrompter::composeRichDoc() {
     QString dbName;
     const bool storeToFs = dataStorage == BaseAttributes::LOCAL_FS_DATA_STORAGE();
     if (storeToFs) {
-        static const QString generatedStr = "<font color='blue'>" + tr("default file") + "</font>";
-        url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId(), generatedStr);
+        static const QString generatedStr = QString("<font color='%1'>") + tr("default file") + "</font>";
+        url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId(), generatedStr.arg(Theme::hyperlinkColorLabelHtmlStr()));
         url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
     } else if (dataStorage == BaseAttributes::SHARED_DB_DATA_STORAGE()) {
         Attribute* dbPathAttr = target->getParameter(BaseAttributes::DB_PATH().getId());

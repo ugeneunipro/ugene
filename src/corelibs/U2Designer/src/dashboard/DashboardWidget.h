@@ -42,6 +42,10 @@ class U2DESIGNER_EXPORT DashboardWidget : public QWidget {
     Q_OBJECT
 public:
     DashboardWidget(const QString& title, QWidget* contentWidget);
+
+private slots:
+    void sl_colorThemeSwitched();
+
 };
 
 class U2DESIGNER_EXPORT DashboardFileButton : public QToolButton {
@@ -52,9 +56,11 @@ public:
 private slots:
     void sl_openFileClicked();
     void sl_dashboardDirChanged(const QString& dashboardDir);
+    void sl_colorThemeSwitched();
 
 private:
     void addUrlActionsToMenu(QMenu* menu, const QString& url, bool addOpenByUgeneAction = false);
+    void updateStyleSheet();
 
     /** List of urls to open. */
     QStringList urlList;
@@ -95,6 +101,9 @@ public:
     static bool addOrUpdateTableRow(QGridLayout* gridLayout, const QString& rowId, const QStringList& valueList);
 
     static QString parseOpenUrlValueFromOnClick(const QString& onclickValue);
+
+    static void colorThemeSwitched(QGridLayout* gridLayout);
+
 };
 
 }  // namespace U2

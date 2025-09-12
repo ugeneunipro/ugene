@@ -61,6 +61,7 @@ private slots:
     // Checks the values of region widgets: if the region is incorrect, it enables the error label; if it is correct,
     // it disables the label.
     void validateRegionAndShowError();
+    void sl_colorThemeSwitched();
 
 public:
     // Uses the context to assign a dialog parent and get sequence params (current selection, isCircular, ...).

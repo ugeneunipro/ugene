@@ -28,6 +28,9 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 #include "TaskViewController.h"
 #include "workspace/WorkspaceConnectionStatusIcon.h"
 
@@ -92,6 +95,7 @@ TaskStatusBar::TaskStatusBar() {
     nStack = AppContext::getMainWindow()->getNotificationStack();
     // nStack = new NotificationStack;
     connect(nStack, SIGNAL(si_changed()), SLOT(sl_notificationChanged()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TaskStatusBar::sl_colorThemeSwitched);
 
     lampLabel->installEventFilter(this);
     taskCountLabel->installEventFilter(this);
@@ -307,8 +311,8 @@ void TaskStatusBar::sl_notificationChanged() {
         }
 
         QPainter painter(&iconWithNumber);
-        painter.setPen(Qt::black);
-        QFont font("Arial", 7);
+        painter.setPen(QPalette().text().color());
+        QFont font("Arial", 9);
         font.setBold(true);
         painter.setFont(font);
         QRect rect(0, 0, 16, 16);
@@ -317,6 +321,10 @@ void TaskStatusBar::sl_notificationChanged() {
         notificationLabel->setPixmap(iconWithNumber);
     }
     notificationLabel->setProperty("notifications-count", QString::number(nStack->count()));
+}
+
+void TaskStatusBar::sl_colorThemeSwitched() {
+    sl_notificationChanged();
 }
 
 void TaskStatusBar::sl_taskProgressChanged() {
