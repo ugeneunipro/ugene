@@ -33,6 +33,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MsaObject.h>
 #include <U2Core/MultiTask.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2Mod.h>
 
 #include <U2Formats/ExportTasks.h>
@@ -40,6 +41,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
+#include <U2Gui/ExportDocumentDialogController.h>
 
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorSelection.h>
@@ -134,26 +136,20 @@ void MoveToObjectMaController::buildMenu(GObjectViewController*, QMenu* menu, co
 void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     GCounter::increment("MoveSelectedMsaRowsToNewFile");
 
-    // Get the file name to move rows to first.
+    // Get the file name and format to move rows to first.
+    DocumentFormatConstraints dfc;
+    dfc.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    dfc.addFlagToSupport(DocumentFormatFlag_SupportWriting);
+    dfc.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
+    dfc.addFlagToExclude(DocumentFormatFlag_Hidden);
     LastUsedDirHelper lod;
-    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, true);
-    QString selectedFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::CLUSTAL_ALN);
-    lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, selectedFilter);
-    CHECK(!lod.url.isEmpty(), );
-
-    QString url = lod.url;
-    QFileInfo urlInfo(url);
-    CHECK_EXT(!urlInfo.baseName().isEmpty(), QMessageBox::critical(ui, L10N::errorTitle(), tr("Please select a file with a non-empty name.")), );
-    QString fileExtension = urlInfo.suffix();
-    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
-    DocumentFormat* format = formatRegistry->selectFormatByFileExtension(fileExtension);
-    if (format == nullptr) {
-        format = formatRegistry->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
-    }
-    QStringList extensions = format->getSupportedDocumentFileExtensions();
-    if (!extensions.isEmpty() && !extensions.contains(fileExtension)) {
-        url += "." + extensions.first();
-    }
+    QObjectScopedPointer<ExportDocumentDialogController> dialog(new ExportDocumentDialogController(
+                                                                lod.getLastUsedDir() + "/selected_row",
+                                                                dfc, ui));
+    dialog->setWindowTitle(tr("File path and format to save"));
+    CHECK(dialog->exec() == QDialog::Accepted, );
+    const DocumentFormatId formatId = dialog->getDocumentFormatId();
+    const QString url = dialog->getDocumentURL();
 
     // Create a sub-alignment from moved rows.
     QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
@@ -161,6 +157,8 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
     SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove is empty", );
 
+    QFileInfo urlInfo(url);
+    CHECK_EXT(!urlInfo.baseName().isEmpty() && !urlInfo.isDir(), QMessageBox::critical(ui, L10N::errorTitle(), tr("Please select a file with a non-empty name.")), );
     Msa msaToExport;
     msaToExport->setName(urlInfo.baseName());
     msaToExport->setAlphabet(maObject->getAlphabet());
@@ -170,7 +168,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     }
 
     // Run 2 tasks: first create a new document, next remove moved rows from the original document.
-    auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, url, format->getFormatId()));
+    auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, url, formatId));
     auto removeRowsTask = new RemoveRowsFromMaObjectTask(editor, rowIdsToRemove);
     auto task = new MultiTask(tr("Export alignment rows to a new file"), {createNewMsaTask, removeRowsTask});
     AppContext::getTaskScheduler()->registerTopLevelTask(task);

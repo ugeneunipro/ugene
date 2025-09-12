@@ -4082,9 +4082,10 @@ GUI_TEST_CLASS_DEFINITION(test_0096) {
 
     // Select a couple of sequences and check that 'Move' menu is enabled now and have a disabled "No other objects" item.
     GTUtilsMsaEditor::selectRowsByName({"IXI_234", "IXI_237"});
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}));
-    GTUtilsDialog::add(new GTFileDialogUtils(sandBoxDir, targetAlnFile, GTFileDialogUtils::Save));
-    GTUtilsMSAEditorSequenceArea::callContextMenu();
+    auto filler = new ExportDocumentDialogFiller(sandBoxDir, targetAlnFile, ExportDocumentDialogFiller::CLUSTALW);
+    filler->setNoAddToProjectCheckbox();
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsMdi::activateWindow(sourceFile);
@@ -4097,9 +4098,10 @@ GUI_TEST_CLASS_DEFINITION(test_0096) {
 
     // Now export using Stockholm format.
     GTUtilsMsaEditor::selectRowsByName({"IXI_237"});
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}));
-    GTUtilsDialog::add(new GTFileDialogUtils(sandBoxDir, targetStoFile, GTFileDialogUtils::Save));
-    GTUtilsMSAEditorSequenceArea::callContextMenu();
+    auto filler2 = new ExportDocumentDialogFiller(sandBoxDir, targetStoFile, ExportDocumentDialogFiller::STOCKHOLM);
+    filler2->setNoAddToProjectCheckbox();
+    GTUtilsDialog::waitForDialog(filler2);
+    GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
     nameList = GTUtilsMSAEditorSequenceArea::getNameList();
     CHECK_SET_ERR(nameList == QStringList({"IXI_237"}), "Unexpected targetSto msa name list: " + nameList.join(","));
