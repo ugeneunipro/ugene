@@ -37,6 +37,7 @@ public:
         MEGA,
         MSF,
         NWK,
+        STOCKHOLM,
         TEXT,
         UGENEDB,
         VCF,
@@ -45,7 +46,7 @@ public:
 
     ExportDocumentDialogFiller(const QString& _path = "", const QString& _name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, 
                                bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    void setNoProjectAndCompressCheckboxes();
+    void setNoAddToProjectCheckbox();
     void commonScenario() override;
 
 private:
@@ -55,6 +56,6 @@ private:
     bool compressFile;
     bool addToProject;
     QMap<FormatToUse, QString> comboBoxItems;
-    bool noProjectAndCompressCheckboxes = false;
+    bool noAddToProjectCheckbox = false;
 };
 }  // namespace U2

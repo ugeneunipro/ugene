@@ -59,11 +59,9 @@ ExportDocumentDialogController::ExportDocumentDialogController(const QString& de
                                                                const DocumentFormatConstraints& dfc, 
                                                                QWidget* parent)
     : QDialog(parent),
-      ui(new Ui_ExportDocumentDialog()),
-    hiddenAddToProjectAndCompressionOptions(true) {
+      ui(new Ui_ExportDocumentDialog()) {
     ui->setupUi(this);
     setMinimumWidth(size().width());
-    ui->compressCheck->setHidden(true);
     ui->addToProjCheck->setHidden(true);
     adjustSize();
     saveController = new SaveDocumentController(getSaveConfig(defaultUrl), dfc, this);
@@ -111,12 +109,10 @@ DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstrain
 
 QString ExportDocumentDialogController::getDocumentURL() const {
     QString path = saveController->getSaveFileName();
-    if (!hiddenAddToProjectAndCompressionOptions) {
-        if (ui->compressCheck != nullptr && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
-            QString suffix = path.split(".").last();
-            if (suffix != "gz") {
-                return path + ".gz";
-            }
+    if (ui->compressCheck != nullptr && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
+        QString suffix = path.split(".").last();
+        if (suffix != "gz") {
+            return path + ".gz";
         }
     }
     return path;

@@ -63,7 +63,6 @@ private:
     // creating a Document from single GObeject or another Document
     Document* sourceDoc = nullptr;
     GObject* sourceObject = nullptr;
-    bool hiddenAddToProjectAndCompressionOptions = false;
 };
 
 }  // namespace U2
