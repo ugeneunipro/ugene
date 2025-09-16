@@ -55,6 +55,8 @@ private:
     static QString formCountersReport();
     static QString formSystemReport();
 
+    static QString getCurrentCpuArchitecture();
+
     static void getSysInfo(QString& name,
                            QString& version,
                            QString& kernelType,

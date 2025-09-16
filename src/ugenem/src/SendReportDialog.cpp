@@ -40,6 +40,10 @@
 #include "Utils.h"
 #include "getMemorySize.c"
 
+#ifdef Q_OS_DARWIN
+#include <sys/sysctl.h>
+#endif
+
 #define HOST_URL "http://ugene.net"
 #ifdef Q_OS_LINUX
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_lin.html"
@@ -391,9 +395,21 @@ void ReportSender::setFailedTest(const QString& failedTestStr) {
     failedTest = failedTestStr;
 }
 
+
+bool ReportSender::isRunningUnderRosetta() {
+#ifdef Q_OS_DARWIN
+    int ret = 0;
+    size_t size = sizeof(ret);
+    if ((sysctlbyname("sysctl.proc_translated", &ret, &size, NULL, 0) == 0) && (ret == 1)) {
+        return true;
+    }
+#endif
+    return false;
+}
+
 QString ReportSender::getArchSuffix() const {
 #ifdef Q_PROCESSOR_X86_64
-    return " x64";
+    return QString(" x64%1").arg(isRunningUnderRosetta() ? " (arm64)" : "");
 #elif defined(Q_PROCESSOR_X86_32)
     return " x86";
 #elif defined(Q_PROCESSOR_ARM_64)
