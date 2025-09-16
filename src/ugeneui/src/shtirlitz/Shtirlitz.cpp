@@ -49,6 +49,10 @@
 #include "ColorThemeWindow.h"
 #include "StatisticalReportController.h"
 
+#ifdef Q_OS_DARWIN
+#include <sys/sysctl.h>
+#endif
+
 const static char* SETTINGS_NOT_FIRST_LAUNCH = "shtirlitz/not_first_launch";
 const static char* SETTINGS_PREVIOUS_REPORT_DATE = "shtirlitz/previous_report_date";
 const static char* SETTINGS_COUNTERS = "shtirlitz/counters";
@@ -272,6 +276,18 @@ QString Shtirlitz::formSystemReport() {
     return systemReport;
 }
 
+QString Shtirlitz::getCurrentCpuArchitecture() {
+    QString cpuArchitecture = QSysInfo::currentCpuArchitecture();
+#ifdef Q_OS_DARWIN
+    int ret = 0;
+    size_t size = sizeof(ret);
+    if ((sysctlbyname("sysctl.proc_translated", &ret, &size, NULL, 0) == 0) && (ret == 1)) {
+        cpuArchitecture += " (arm64)";
+    }
+#endif
+    return cpuArchitecture;
+}
+
 void Shtirlitz::getSysInfo(QString& name,
                            QString& version,
                            QString& kernelType,
@@ -301,7 +317,7 @@ void Shtirlitz::getSysInfo(QString& name,
     productVersion = QSysInfo::productVersion();
     productType = QSysInfo::productType();
     prettyProductName = QSysInfo::prettyProductName();
-    cpuArchitecture = QSysInfo::currentCpuArchitecture();
+    cpuArchitecture = getCurrentCpuArchitecture();
 }
 
 void Shtirlitz::getFirstLaunchInfo(bool& allVersions, bool& minorVersions) {
