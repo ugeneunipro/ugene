@@ -42,6 +42,8 @@ public:
     QString getArchSuffix() const;
     void setFailedTest(const QString& failedTestStr);
 
+    static bool isRunningUnderRosetta();
+
 private slots:
     void sl_replyFinished(QNetworkReply*);
 
