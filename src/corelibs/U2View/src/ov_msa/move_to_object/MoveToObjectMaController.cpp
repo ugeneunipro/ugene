@@ -20,8 +20,11 @@
  */
 
 #include "MoveToObjectMaController.h"
+#include "../CreateSubalignmentDialogController.h"
 
 #include <QMessageBox>
+
+#include <U2Algorithm/CreateSubalignmentTask.h>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
@@ -168,10 +171,21 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     }
 
     // Run 2 tasks: first create a new document, next remove moved rows from the original document.
-    auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, url, formatId));
-    auto removeRowsTask = new RemoveRowsFromMaObjectTask(editor, rowIdsToRemove);
-    auto task = new MultiTask(tr("Export alignment rows to a new file"), {createNewMsaTask, removeRowsTask});
-    AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    if (dialog->getAddToProjectFlag()) {
+        auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, url, formatId));
+        auto removeRowsTask = new RemoveRowsFromMaObjectTask(editor, rowIdsToRemove);
+        auto task = new MultiTask(tr("Export alignment rows to a new file"), {createNewMsaTask, removeRowsTask});
+        AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    } else {
+        MsaObject* maObject = editor->getMaObject();
+        QList<qint64> rowsToKeep = maObject->getRowIds();
+        for (const qint64 rowId : qAsConst(rowIdsToRemove)) {
+            rowsToKeep.removeAll(rowId);
+        }
+        CreateSubalignmentSettings createSubalignmentSettings(rowsToKeep, U2Region(0, maObject->getLength()), url, true, false, formatId);
+        auto createSubAlignmentTask = new CreateSubalignmentAndOpenViewTask(maObject, createSubalignmentSettings);
+        AppContext::getTaskScheduler()->registerTopLevelTask(createSubAlignmentTask);
+    }
 }
 
 /************************************************************************/

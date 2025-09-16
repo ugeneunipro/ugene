@@ -57,10 +57,6 @@ ExportDocumentDialogFiller::ExportDocumentDialogFiller(const QString& _path, con
     comboBoxItems[VectorNTI] = "Vector NTI sequence";
 }
 
-void ExportDocumentDialogFiller::setNoAddToProjectCheckbox() {
-    noAddToProjectCheckbox = true;
-}
-
 void ExportDocumentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -72,12 +68,12 @@ void ExportDocumentDialogFiller::commonScenario() {
 
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
         GTComboBox::selectItemByIndex(comboBox, index, useMethod);
+
         auto compressCheckBox = GTWidget::findCheckBox("compressCheck", dialog);
         GTCheckBox::setChecked(compressCheckBox, compressFile);
-        if (!noAddToProjectCheckbox) {
-            auto addCheckBox = GTWidget::findCheckBox("addToProjCheck", dialog);
-            GTCheckBox::setChecked(addCheckBox, addToProject);
-        }
+
+        auto addCheckBox = GTWidget::findCheckBox("addToProjCheck", dialog);
+        GTCheckBox::setChecked(addCheckBox, addToProject);
     }
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);

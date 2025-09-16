@@ -46,7 +46,6 @@ public:
 
     bool getAddToProjectFlag() const;
     void setAddToProjectFlag(bool checked);
-    //void setHiddenAddToProjectAndCompressionOptions();
 
     DocumentFormatId getDocumentFormatId() const;
 

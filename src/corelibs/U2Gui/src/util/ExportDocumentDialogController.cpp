@@ -61,9 +61,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(const QString& de
     : QDialog(parent),
       ui(new Ui_ExportDocumentDialog()) {
     ui->setupUi(this);
-    setMinimumWidth(size().width());
-    ui->addToProjCheck->setHidden(true);
-    adjustSize();
+    setAddToProjectFlag(true);
     saveController = new SaveDocumentController(getSaveConfig(defaultUrl), dfc, this);
 }
 
