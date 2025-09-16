@@ -141,7 +141,7 @@ Task::ReportResult ProjectServiceEnableTask::report() {
     assert(psi->saveAction == nullptr && psi->closeProjectAction == nullptr);
 
     psi->saveAction = new QAction(tr("&Save all"), psi);
-    GUIUtils::setThemedIcon(psi->saveAction, ":ugene/images/project_save.png");
+    GUIUtils::setThemedIcon(psi->saveAction, ":ugene/images/save.png");
     psi->saveAction->setObjectName("saveProjectAction");
     psi->saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     psi->saveAction->setShortcutContext(Qt::WindowShortcut);

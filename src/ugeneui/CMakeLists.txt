@@ -21,6 +21,7 @@ if (APPLE)
 endif ()
 
 qt5_add_resources(RCC_SRCS ugeneui.qrc)
+qt5_add_resources(RCC_SRCS dark/darkstyle.qrc)
 
 set(EXTRA_FLAGS "")
 if (WIN32 AND NOT DEFINED ENV{UGENE_BUILD_WITH_CONSOLE})
@@ -40,6 +41,7 @@ target_link_libraries(ugeneui
 
 if (APPLE)
     target_link_libraries(ugeneui
+            "-framework AppKit"
             "-framework Foundation"
             "-framework Security"
             "-framework CoreFoundation"

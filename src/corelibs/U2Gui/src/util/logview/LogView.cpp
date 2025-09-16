@@ -34,6 +34,7 @@
 #include <U2Core/Timer.h>
 
 #include <U2Gui/AppSettingsGUI.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 namespace U2 {
@@ -64,7 +65,6 @@ void LogViewWidget::init() {
     useRegexp = true;
 
     setWindowTitle(tr("Log"));
-    setWindowIcon(QIcon(":ugene/images/book_open.png"));
 
     connect(&updateViewTimer, SIGNAL(timeout()), this, SLOT(sl_showNewMessages()));
 
@@ -308,6 +308,12 @@ QString LogViewWidget::prepareText(const LogMessage& msg) const {
     QString text = "<font color=" + color + ">" + prefix + spacing + msg.text + "</font><br/>";
 
     return text;
+}
+
+void LogViewWidget::sl_colorThemeSwitched() {
+    settings.colorThemeSwitched(AppContext::getMainWindow()->isDarkTheme());
+    LogSettingsHolder::setSettings(settings);
+    resetView();
 }
 
 void LogViewWidget::addMessage(const LogMessage& msg) {

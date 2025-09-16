@@ -33,6 +33,66 @@
 namespace U2 {
 
 /************************************************************************/
+/* Settings                                                             */
+/************************************************************************/
+
+AlignmentLogoSettings::AlignmentLogoSettings(const Msa& _ma)
+    : ma(_ma->getCopy()) {
+    if (ma->getAlphabet()->isNucleic()) {
+        sequenceType = NA;
+    } else if (ma->getAlphabet()->isAmino()) {
+        sequenceType = AA;
+    } else {
+        sequenceType = Auto;
+    }
+
+    updateColors();
+
+    startPos = 0;
+    len = ma->getLength();
+}
+
+void AlignmentLogoSettings::updateColors() {
+    for (int i = 0; i < 256; i++) {
+        colorScheme[i] = QPalette().text().color();
+    }
+
+    bool isDark = AppContext::getMainWindow()->isDarkTheme();
+    if (sequenceType == SequenceType::NA) {
+        colorScheme['G'] = QColor(255, 128, 0);
+        colorScheme['T'] = Qt::red;
+        colorScheme['C'] = isDark ? Qt::cyan : Qt::blue;
+        colorScheme['A'] = Qt::green;
+        colorScheme['U'] = Qt::red;
+    }
+
+    if (!ma->getAlphabet()->isNucleic()) {
+        colorScheme['G'] = Qt::green;
+        colorScheme['S'] = Qt::green;
+        colorScheme['T'] = Qt::green;
+        colorScheme['Y'] = Qt::green;
+        colorScheme['C'] = Qt::green;
+        colorScheme['N'] = QColor(192, 0, 192);
+        colorScheme['Q'] = QColor(192, 0, 192);
+        colorScheme['K'] = isDark ? Qt::cyan : Qt::blue;
+        colorScheme['R'] = isDark ? Qt::cyan : Qt::blue;
+        colorScheme['H'] = isDark ? Qt::cyan : Qt::blue;
+        colorScheme['D'] = Qt::red;
+        colorScheme['E'] = Qt::red;
+        colorScheme['P'] = QPalette().text().color();
+        colorScheme['A'] = QPalette().text().color();
+        colorScheme['W'] = QPalette().text().color();
+        colorScheme['F'] = QPalette().text().color();
+        colorScheme['L'] = QPalette().text().color();
+        colorScheme['I'] = QPalette().text().color();
+        colorScheme['M'] = QPalette().text().color();
+        colorScheme['V'] = QPalette().text().color();
+    }
+}
+
+
+
+/************************************************************************/
 /* LogoRenderArea                                                       */
 /************************************************************************/
 AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s, QWidget* p)
@@ -66,6 +126,8 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s
 
     evaluateHeights();
     sortCharsByHeight();
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AlignmentLogoRenderArea::sl_colorThemeSwitched);
 }
 
 void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
@@ -100,7 +162,7 @@ void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
 #define MIN_WIDTH 8
 void AlignmentLogoRenderArea::paintEvent(QPaintEvent* e) {
     QPainter p(this);
-    p.fillRect(0, 0, width(), height(), Qt::white);
+    p.fillRect(0, 0, width(), height(), QPalette().base().color());
     QFont charFont("Helvetica");
     charFont.setPixelSize(bitHeight);
     charFont.setBold(true);
@@ -178,6 +240,10 @@ qreal AlignmentLogoRenderArea::getH(int pos) {
     }
     assert(h >= 0.0);
     return h;
+}
+
+void AlignmentLogoRenderArea::sl_colorThemeSwitched() {
+    settings.updateColors();
 }
 
 void AlignmentLogoRenderArea::sortCharsByHeight() {

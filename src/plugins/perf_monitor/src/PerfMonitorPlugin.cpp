@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include "PerfMonitorView.h"
@@ -44,7 +45,7 @@ PerfMonitorPlugin::PerfMonitorPlugin()
     windowId = 0;
     openWindowAction = new QAction(tr("Show counters"), this);
     openWindowAction->setObjectName("Show counters");
-    openWindowAction->setIcon(QIcon(":perf_monitor/images/mon.png"));
+    GUIUtils::setThemedIcon(openWindowAction, ":/perf_monitor/images/mon.png");
     connect(openWindowAction, SIGNAL(triggered()), SLOT(sl_openWindow()));
 
     QMenu* toolsMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
@@ -56,7 +57,7 @@ void PerfMonitorPlugin::sl_openWindow() {
     MWMDIWindow* mdiWindow = mdi->getWindowById(windowId);
     if (mdiWindow == nullptr) {
         mdiWindow = new PerfMonitorView();
-        mdiWindow->setWindowIcon(QIcon(":perf_monitor/images/mon.png"));
+        GUIUtils::setThemedWindowIcon(mdiWindow , ":/perf_monitor/images/mon.png");
         windowId = mdiWindow->getId();
         mdi->addMDIWindow(mdiWindow);
     }

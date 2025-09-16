@@ -156,9 +156,10 @@
 
 #include "app_settings/AppSettingsGUIImpl.h"
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
+#include "main_window/styles/ProxyStyle.h"
+#include "main_window/styles/StyleFactory.h"
 #include "main_window/CheckUpdatesTask.h"
 #include "main_window/MainWindowImpl.h"
-#include "main_window/ProxyStyle.h"
 #include "main_window/SplashScreen.h"
 #include "plugin_viewer/PluginViewerImpl.h"
 #include "project_support/ProjectLoaderImpl.h"
@@ -168,6 +169,10 @@
 #include "task_view/TaskViewController.h"
 #include "update/UgeneUpdater.h"
 #include "welcome_page/WelcomePageMdiController.h"
+
+#ifndef Q_OS_DARWIN
+#include "main_window/styles/DarkStyle.h"
+#endif
 
 using namespace U2;
 
@@ -435,7 +440,6 @@ int main(int argc, char** argv) {
 
     GTIMER(c1, t1, "main()->QApp::exec");
 
-    // Create a global application context & initialize settings first.
     AppContextImpl* appContext = AppContextImpl::getApplicationContext();
     appContext->setGUIMode(true);
 
@@ -494,18 +498,6 @@ int main(int argc, char** argv) {
         QPixmap pixmap(":/ugene/images/originals/ugene_128.png");
         GApplication::setWindowIcon(pixmap);
     }
-
-    QMainWindow window;
-    auto splashScreen = new SplashScreen(&window);
-    splashScreen->adjustSize();
-    splashScreen->setGeometry(
-        QStyle::alignedRect(
-            Qt::LeftToRight,
-            Qt::AlignCenter,
-            splashScreen->size(),
-            QGuiApplication::primaryScreen()->availableGeometry()));
-
-    splashScreen->show();
 
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
 
@@ -596,21 +588,6 @@ int main(int argc, char** argv) {
 
     qInstallMessageHandler(guiTestMessageOutput);
 
-    QString styleName = userAppSettings->getVisualStyle();
-    QStyle* qtStyle = nullptr;
-    if (!styleName.isEmpty()) {
-        qtStyle = QStyleFactory::create(styleName);
-        if (qtStyle == nullptr) {
-            uiLog.details(AppContextImpl::tr("Style not available %1").arg(styleName));
-        }
-    }
-    auto proxyStyle = new ProxyStyle(qtStyle);
-    // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
-    if (qtStyle != nullptr) {
-        proxyStyle->setObjectName(qtStyle->objectName());
-    }
-    QApplication::setStyle(proxyStyle);
-
     auto resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
 
@@ -635,9 +612,13 @@ int main(int argc, char** argv) {
         Q_UNUSED(res);
     }
 
-    auto mw = new MainWindowImpl();
+    auto mw = new MainWindowImpl;
     appContext->setMainWindow(mw);
     mw->prepare();
+
+    QString styleName = userAppSettings->getVisualStyle();
+    int colorThemeIndex = userAppSettings->getColorThemeId();
+    mw->setNewStyle(styleName, colorThemeIndex);
 
     // Do not use native menu bar in GUI tests mode on Mac or when asked via command line.
     bool dontUseNativeMenuBar = (isOsMac() && qEnvironmentVariableIntValue(ENV_GUI_TEST) == 1) ||
@@ -647,6 +628,18 @@ int main(int argc, char** argv) {
     }
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));
 
+    QMainWindow window;
+    auto splashScreen = new SplashScreen(&window);
+    splashScreen->adjustSize();
+    splashScreen->setGeometry(
+        QStyle::alignedRect(
+            Qt::LeftToRight,
+            Qt::AlignCenter,
+            splashScreen->size(),
+            QGuiApplication::primaryScreen()->availableGeometry()));
+
+    splashScreen->show();
+
     auto appSettingsGUI = new AppSettingsGUIImpl();
     appContext->setAppSettingsGUI(appSettingsGUI);
 
@@ -655,6 +648,8 @@ int main(int argc, char** argv) {
     // Initialize logged log view
     auto logView = new LogViewWidget(&logsCache);
     logView->setObjectName(DOCK_LOG_VIEW);
+    logView->sl_colorThemeSwitched();
+    mw->connectLogView(logView);
     AppContext::getAppSettingsGUI()->registerPage(new LogSettingsPageController(logView));
     AppContext::getMainWindow()->getDockManager()->registerDock(MWDockArea_Bottom, logView, ":ugene/images/book_open.png", QKeySequence(Qt::ALT | Qt::Key_3));
 

@@ -277,7 +277,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectViewController* view) {
 
     auto action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
     action->setObjectName("Build HMMER3 profile");
-    action->setIcon(QIcon(":/external_tool_support/images/hmmer.png"));
+    GUIUtils::setThemedIcon(action, ":/external_tool_support/images/hmmer.png");
     connect(action, SIGNAL(triggered()), SLOT(sl_build()));
     addViewAction(action);
 }

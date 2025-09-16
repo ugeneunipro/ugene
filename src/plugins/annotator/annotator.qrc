@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="annotator/" >
-        <file>images/regions.png</file>
-        <file>images/plasmid_features.png</file>
+        <file>images/dark/regions.png</file>
+        <file>images/dark/plasmid_features.png</file>
+
+        <file>images/light/regions.png</file>
+        <file>images/light/plasmid_features.png</file>
     </qresource>
 </RCC>

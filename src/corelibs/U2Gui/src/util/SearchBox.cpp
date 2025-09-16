@@ -27,7 +27,6 @@
 #include <QToolButton>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 static const QString LABEL_STYLE_SHEET = "border: 0px; padding: 0px;";
 static const QString CLEAR_BUTTON_STYLE_SHEET = "border: 0px; padding: 1px 0px 0px 0px;";
@@ -44,7 +43,8 @@ SearchBox::SearchBox(QWidget* p)
 
     searchIconLabel = new QLabel(this);
     searchIconLabel->setStyleSheet(LABEL_STYLE_SHEET);
-    searchIconLabel->setPixmap(QPixmap(":/core/images/zoom_whole.png"));
+    static constexpr int ZOOM_PIIXMAP_SIZE = 16;
+    searchIconLabel->setPixmap(QPixmap(":/core/images/zoom_whole.png").scaled(ZOOM_PIIXMAP_SIZE, ZOOM_PIIXMAP_SIZE));
 
     clearButton = new QToolButton(this);
     clearButton->setStyleSheet(CLEAR_BUTTON_STYLE_SHEET);

@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
@@ -348,8 +349,6 @@ void PlugViewPluginItem::updateVisual() {
     setData(3, Qt::DisplayRole, desc);
 
     setIcon(showServices ? 0 : 1, QIcon(":ugene/images/plugins.png"));
-
-    GUIUtils::setMutedLnF(this, false);
     if (!plugin->getDescription().contains("\n") && desc.length() > 80) {
         for (int i = 80; i < desc.length();) {
             i = desc.lastIndexOf(" ", i);
@@ -376,7 +375,7 @@ void PlugViewServiceItem::updateVisual() {
     setData(1, Qt::DisplayRole, service->getName());
     setData(2, Qt::DisplayRole, service->isEnabled() ? PluginViewerController::tr("On") : PluginViewerController::tr("Off"));
     setData(3, Qt::DisplayRole, service->getDescription());
-    setIcon(0, QIcon(":ugene/images/service.png"));
+    setIcon(0, GUIUtils::getThemedIcon(":ugene/images/service.png"));
 }
 
 }  // namespace U2

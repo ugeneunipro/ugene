@@ -30,6 +30,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
@@ -100,7 +102,7 @@ ReadHMMProto::ReadHMMProto(const Descriptor& _desc, const QList<PortDescriptor*>
     QMap<QString, PropertyDelegate*> delegateMap;
     delegateMap[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(HMMIO::getHMMFileFilter(), HMMIO::HMM_ID, true, false, false);
     setEditor(new DelegateEditor(delegateMap));
-    setIconPath(":/hmm2/images/hmmer_16.png");
+    setIconPath(":hmm2/images/hmmer2.png");
 }
 
 bool ReadHMMProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
@@ -117,7 +119,7 @@ WriteHMMProto::WriteHMMProto(const Descriptor& _desc, const QList<PortDescriptor
     delegateMap[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(false);
 
     setEditor(new DelegateEditor(delegateMap));
-    setIconPath(":/hmm2/images/hmmer_16.png");
+    setIconPath(":hmm2/images/hmmer2.png");
     setValidator(new ScreenedParamValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), ports.first()->getId(), BaseSlots::URL_SLOT().getId()));
     setPortValidator(HMM_IN_PORT_ID, new ScreenedSlotValidator(BaseSlots::URL_SLOT().getId()));
 }
@@ -174,7 +176,7 @@ QString HMMReadPrompter::composeRichDoc() {
 QString HMMWritePrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(HMM_IN_PORT_ID));
     Actor* producer = input->getProducer(HMM2_SLOT_ID);
-    QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    QString unsetStr = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     QString producerStr = producer ? producer->getLabel() : unsetStr;
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);

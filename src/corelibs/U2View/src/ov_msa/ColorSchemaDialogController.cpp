@@ -31,12 +31,12 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2FileDialog.h>
 
 namespace U2 {
@@ -45,7 +45,8 @@ ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor>& col
     : QDialog(),
       alphabetColorsView(nullptr),
       newColors(colors),
-      storedColors(colors) {
+      storedColors(colors),
+      textColor(QPalette().text().color()) {
 }
 
 int ColorSchemaDialogController::adjustAlphabetColors() {
@@ -89,6 +90,7 @@ void ColorSchemaDialogController::paintEvent(QPaintEvent*) {
     QFont font;
     font.setFamily("Verdana");
     font.setPointSize(qMin(rect_width, rect_height) / 2);
+    painter.setPen(textColor);
     painter.setFont(font);
 
     QMapIterator<char, QColor> it(newColors);
@@ -144,7 +146,7 @@ void ColorSchemaDialogController::sl_onClear() {
     QMapIterator<char, QColor> it(newColors);
     while (it.hasNext()) {
         it.next();
-        newColors[it.key()] = QColor(Qt::white);
+        newColors[it.key()] = QColor(QPalette().base().color());
     }
 
     update();

@@ -48,8 +48,7 @@ void PrimerLineEdit::paintEvent(QPaintEvent* event) {
         return;
     }
     QPainter p(this);
-    QColor col = palette().text().color();
-    col.setAlpha(128);
+    QColor col = palette().brush(QPalette::Disabled, QPalette::Text).color();
     p.setPen(col);
 
     QRect r = getPlaceHolderRect();

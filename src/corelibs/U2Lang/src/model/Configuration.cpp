@@ -25,8 +25,6 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Lang/WorkflowUtils.h>
-
 #include "Configuration.h"
 #include "ConfigurationEditor.h"
 

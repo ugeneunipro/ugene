@@ -81,6 +81,10 @@ void MaSimpleOverview::sl_highlightingChanged() {
     update();
 }
 
+void MaSimpleOverview::sl_colorThemeSwitched() {
+    sl_redraw();
+}
+
 void MaSimpleOverview::paintEvent(QPaintEvent* e) {
     if (!isValid()) {
         QPainter messagePainter(this);
@@ -115,7 +119,7 @@ void MaSimpleOverview::resizeEvent(QResizeEvent* e) {
 }
 
 void MaSimpleOverview::drawOverview(QPainter& p) {
-    p.fillRect(cachedMSAOverview.rect(), Qt::white);
+    p.fillRect(cachedMSAOverview.rect(), QPalette().base().color());
     CHECK(!editor->isAlignmentEmpty(), );
 
     recalculateScale();
@@ -142,7 +146,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
 
             QColor color = sequenceArea->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
-                color = Qt::gray;
+                color = AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray;
             }
 
             bool drawColor = true;
@@ -166,7 +170,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
             }
         }
     }
-    p.setPen(Qt::gray);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(190, 190, 190) : Qt::gray);
     p.drawRect(rect().adjusted(0, 0, -1, -1));
 }
 

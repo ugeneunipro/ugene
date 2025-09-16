@@ -257,8 +257,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     mainSplitter->addAction(removeAnnsAndQsAction);
 
-    auto windowIcon = GUIUtils::getThemedIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconPath);
-    mainSplitter->setWindowIcon(windowIcon);
+    GUIUtils::setThemedWindowIcon(mainSplitter, GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).iconPath);
 
     // Init the Options Panel
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
@@ -826,7 +825,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
             toggleHLAction->setText(tr("Enable '%1' highlighting").arg(aData->name));
         }
 
-        const QIcon icon = GUIUtils::createSquareIcon(as->color, 10);
+        const QIcon icon = GUIUtils::createSquareIcon(as->getActiveColor(), 10);
         toggleHLAction->setIcon(icon);
 
         toggleHLAction->setObjectName("toggle_HL_action");

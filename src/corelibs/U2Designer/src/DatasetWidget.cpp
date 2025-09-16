@@ -36,7 +36,9 @@
 
 #include <U2Designer/DatasetsController.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/ProjectUtils.h>
 #include <U2Gui/U2FileDialog.h>
@@ -55,18 +57,11 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     popup = new OptionsPopup(this);
 
     reset();
-    QIcon fileIcon = QIcon(QString(":U2Designer/images/add_file.png"));
-    QIcon dirIcon = QIcon(QString(":U2Designer/images/add_directory.png"));
-    QIcon dbIcon = QIcon(QString(":U2Designer/images/database_add.png"));
-    QIcon deleteIcon = QIcon(QString(":U2Designer/images/exit.png"));
-    QIcon upIcon = QIcon(QString(":U2Designer/images/up.png"));
-    QIcon downIcon = QIcon(QString(":U2Designer/images/down.png"));
-
-    ui->addFileButton->setIcon(fileIcon);
-    ui->addDirButton->setIcon(dirIcon);
-    ui->deleteButton->setIcon(deleteIcon);
-    ui->upButton->setIcon(upIcon);
-    ui->downButton->setIcon(downIcon);
+    ui->addFileButton->setIcon(QIcon(":U2Designer/images/add_file.png"));
+    ui->addDirButton->setIcon(QIcon(":U2Designer/images/add_directory.png"));
+    ui->deleteButton->setIcon(QIcon(":U2Designer/images/exit.png"));
+    GUIUtils::setThemedIcon(ui->upButton, ":U2Designer/images/up.png");
+    GUIUtils::setThemedIcon(ui->downButton, ":U2Designer/images/down.png");
 
     connect(ui->addFileButton, SIGNAL(clicked()), SLOT(sl_addFileButton()));
     connect(ui->addDirButton, SIGNAL(clicked()), SLOT(sl_addDirButton()));

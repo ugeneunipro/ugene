@@ -21,6 +21,8 @@
 
 #include "ADVSyncViewManager.h"
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/CollectionUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -150,6 +152,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
 
     connect(adv, SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget*)));
     connect(adv, SIGNAL(si_sequenceWidgetRemoved(ADVSequenceWidget*)), SLOT(sl_sequenceWidgetRemoved(ADVSequenceWidget*)));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &ADVSyncViewManager::sl_colorThemeSwitched);
 }
 
 ADVSyncViewManager::~ADVSyncViewManager() {
@@ -440,6 +443,10 @@ void ADVSyncViewManager::sl_updateVisualMode() {
     togglePanAction->setText(haveVisiblePan ? tr("Hide all zoom views") : tr("Show all zoom views"));
     toggleDetAction->setText(haveVisibleDet ? tr("Hide all details") : tr("Show all details"));
     toggleOveAction->setText(haveVisibleOve ? tr("Hide all overviews") : tr("Show all overviews"));
+}
+
+void ADVSyncViewManager::sl_colorThemeSwitched() {
+    updateEnabledState();
 }
 
 void ADVSyncViewManager::sl_setUpLockMenuActions() {

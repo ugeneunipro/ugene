@@ -32,7 +32,9 @@ GraphLabelTextBox::GraphLabelTextBox(QWidget* parent)
 void GraphLabelTextBox::paintEvent(QPaintEvent* e) {
     QPainter paint;
     paint.begin(this);
-    paint.setBrush(QBrush(QColor(255, 255, 255, 200)));
+    auto color = QPalette().base().color();
+    color.setAlpha(200);
+    paint.setBrush(QBrush(color));
     paint.setPen(Qt::NoPen);
     paint.drawRect(0, 0, width(), height());
     paint.end();

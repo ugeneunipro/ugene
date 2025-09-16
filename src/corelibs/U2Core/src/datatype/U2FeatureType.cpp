@@ -51,10 +51,16 @@ U2FeatureTypes::Alphabets U2FeatureTypes::getAlphabets(const U2FeatureType& type
     return typeInfos[typeInfoIndex].alphabets;
 }
 
-QColor U2FeatureTypes::getColor(const U2FeatureType& type) {
+QColor U2FeatureTypes::getLightColor(const U2FeatureType& type) {
     int typeInfoIndex = typeInfoIndexByType.value(type, -1);
     SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
-    return typeInfos[typeInfoIndex].color;
+    return typeInfos[typeInfoIndex].colorLight;
+}
+
+QColor U2FeatureTypes::getDarkColor(const U2FeatureType& type) {
+    int typeInfoIndex = typeInfoIndexByType.value(type, -1);
+    SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
+    return typeInfos[typeInfoIndex].colorDark;
 }
 
 QColor U2FeatureTypes::getDescription(const U2FeatureType& type) {
@@ -91,14 +97,16 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
                                              const QString& colorName = "",
                                              bool isShowOnAminoFrame = false) {
         SAFE_POINT(colorName.isEmpty() || colorName.startsWith("#"), "Got invalid color name: " + colorName, );
-        QColor color(colorName);
-        if (!color.isValid()) {
-            color = FeatureColors::genLightColor(name);
+        QColor lightColor(colorName);
+        if (!lightColor.isValid()) {
+            lightColor = FeatureColors::genLightColor(name);
         }
-        auto colorName1 = color.name();
-        SAFE_POINT(color.isValid(), "Got invalid color for feature: " + name, );
+        auto darkColor = FeatureColors::transformLightToDark(lightColor);
+        SAFE_POINT(lightColor.isValid(), "Got invalid light color for feature: " + name, );
+        SAFE_POINT(darkColor.isValid(), "Got invalid dark color for feature: " + name, );
         SAFE_POINT(alphabets.testFlag(U2FeatureTypes::Alphabet_Nucleic) || !isShowOnAminoFrame, "Only features with nucleic alphabet may have isShowOnAminoFrame ON", );
-        typeInfoList << U2FeatureTypeInfo(type, name, alphabets, color, description, isShowOnAminoFrame);
+
+        typeInfoList << U2FeatureTypeInfo(type, name, alphabets, lightColor, darkColor, description, isShowOnAminoFrame);
         typeInfoIndexByType[type] = typeInfoIndex;
         typeInfoIndex++;
     };
@@ -302,13 +310,15 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
 U2FeatureTypes::U2FeatureTypeInfo::U2FeatureTypeInfo(const U2FeatureType& _featureType,
                                                      const QString& _visualName,
                                                      const Alphabets& _alphabets,
-                                                     const QColor& _color,
+                                                     const QColor& _colorLight,
+                                                     const QColor& _colorDark,
                                                      const QString& _description,
                                                      bool _isShowOnAminoFrame)
     : featureType(_featureType),
       visualName(_visualName),
       alphabets(_alphabets),
-      color(_color),
+      colorLight(_colorLight),
+      colorDark(_colorDark),
       description(_description),
       isShowOnAminoFrame(_isShowOnAminoFrame) {
 }

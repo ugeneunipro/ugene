@@ -53,6 +53,8 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotationsTreeView.h>
@@ -2147,9 +2149,9 @@ GUI_TEST_CLASS_DEFINITION(test_0861_5) {
     auto editQualifiers = GTWidget::findLineEdit("editQualifiers");
     GTLineEdit::setText(editQualifiers, "aaaaaaaaaaa aaaaaaaaaaaa");
     QString style = editQualifiers->styleSheet();
-    CHECK_SET_ERR(style == "background-color: rgb(255, 152, 142);", "unexpected styleSheet: " + style);
+    CHECK_SET_ERR(style == "background-color: " + Theme::errorColorTextFieldStr() + ";", "unexpected styleSheet: " + style);
     //    3. Enter something with an incorrect symbol (eg "space")
-    //    Expected state: the line editor is highlighted in red background-color: rgb(255, 152, 142);
+    //    Expected state: the line editor is highlighted in red background-color: rgb(255, 200, 200);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0866) {

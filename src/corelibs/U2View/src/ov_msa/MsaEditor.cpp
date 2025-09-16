@@ -363,7 +363,7 @@ void MsaEditor::addSortMenu(QMenu* m) {
 
 void MsaEditor::addAlignMenu(QMenu* m) {
     QMenu* alignMenu = m->addMenu(tr("Align"));
-    alignMenu->setIcon(QIcon(":core/images/align.png"));
+    GUIUtils::setThemedIcon(alignMenu, ":core/images/align.png");
     alignMenu->menuAction()->setObjectName(MSAE_MENU_ALIGN);
 
     buildActionMenu(alignMenu,
@@ -551,7 +551,8 @@ void MsaEditor::initActions() {
     searchInSequenceNamesAction->setToolTip(QString("%1 (%2)").arg(searchInSequenceNamesAction->text()).arg(searchInSequenceNamesAction->shortcut().toString()));
     connect(searchInSequenceNamesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequenceNames()));
 
-    alignAction = new QAction(QIcon(":core/images/align.png"), tr("Align"), this);
+    alignAction = new QAction(tr("Align"), this);
+    GUIUtils::setThemedIcon(alignAction, ":core/images/align.png");
     alignAction->setObjectName("Align");
     connect(alignAction, SIGNAL(triggered()), this, SLOT(sl_align()));
 

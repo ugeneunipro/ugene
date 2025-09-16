@@ -30,7 +30,12 @@
 #include <U2Core/Log.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/MainWindow.h>
+#include <U2Gui/Theme.h>
 #include <U2Gui/U2FileDialog.h>
+
+#include "main_window/styles/ProxyStyle.h"
+#include "main_window/styles/StyleFactory.h"
 
 namespace U2 {
 #define TRANSMAP_FILE_NAME "translations.txt"
@@ -70,6 +75,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState()
     state->openLastProjectFlag = s->openLastProjectAtStartup();
     state->askToSaveProject = s->getAskToSaveProject();
     state->style = s->getVisualStyle();
+    state->colorTheme = static_cast<StyleFactory::ColorTheme>(s->getColorThemeId());
     state->enableStatistics = s->isStatisticsCollectionEnabled();
     state->tabbedWindowLayout = s->tabbedWindowLayout();
     state->resetSettings = s->resetSettings();
@@ -92,10 +98,11 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     st->setExperimentalFeaturesModeEnabled(state->experimentsEnabled);
     st->setAutoScalingInHighDpiModeDisabled(state->isHighDpiAutoScalingDisabled);
 
-    if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0) {
-        QStyle* style = QStyleFactory::create(state->style);
-        QApplication::setStyle(style);
+    if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0 ||
+        state->colorTheme != static_cast<StyleFactory::ColorTheme>(st->getColorThemeId())) {
+        AppContext::getMainWindow()->setNewStyle(state->style, (int)state->colorTheme);
         st->setVisualStyle(state->style);
+        st->setColorThemeId((int)state->colorTheme);
     }
 }
 
@@ -106,8 +113,9 @@ AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(A
 }
 
 const QString UserApplicationsSettingsPageController::helpPageId = QString("65929344");
+const QString UserApplicationsSettingsPageWidget::WINDOWS_VISTA_STYLE = "WindowsVista";
 const QMap<QString, QString> UserApplicationsSettingsPageWidget::FIXED_CASE_QSTYLE_KEY_MAP =
-    {{"windowsvista", "WindowsVista"}, {"macintosh", "Macintosh"}};
+    {{"windowsvista", WINDOWS_VISTA_STYLE}, {"macintosh", "Macintosh"}};
 
 UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController* ctrl) {
     setupUi(this);
@@ -121,6 +129,18 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
     for (const auto& key : qAsConst(keys)) {
         styleCombo->addItem(FIXED_CASE_QSTYLE_KEY_MAP.value(key, key));
     }
+    lightSign = tr("Light");
+    colorThemeCombo->addItem(lightSign);
+    darkSign = tr("Dark");
+    colorThemeCombo->addItem(darkSign);
+    if (StyleFactory::isAutoStyleAvaliable()) {
+        autoSign = tr("Auto");
+        colorThemeCombo->addItem(autoSign);
+    }
+    errorLabel->setStyleSheet(QString("color: %1;").arg(Theme::errorColorLabelColor().name()));
+    connect(styleCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
+    connect(colorThemeCombo, &QComboBox::currentTextChanged, this, &UserApplicationsSettingsPageWidget::sl_updateState);
+    sl_updateState();
 }
 
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
@@ -138,6 +158,8 @@ void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     if (styleIdx != -1) {
         styleCombo->setCurrentIndex(styleIdx);
     }
+
+    colorThemeCombo->setCurrentIndex((int)state->colorTheme);
 
     autoOpenProjectBox->setChecked(state->openLastProjectFlag);
     askToSaveProject->addItem(tr("Ask to save new project on exit"), QDialogButtonBox::NoButton);
@@ -157,6 +179,7 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->openLastProjectFlag = autoOpenProjectBox->isChecked();
     state->askToSaveProject = askToSaveProject->itemData(askToSaveProject->currentIndex()).toInt();
     state->style = styleCombo->currentText();
+    state->colorTheme = static_cast<StyleFactory::ColorTheme>(colorThemeCombo->currentIndex());
     state->enableStatistics = enableStatisticsEdit->isChecked();
     state->resetSettings = resetSettingsBox->isChecked();
     state->updatesEnabled = updatesCheckBox->isChecked();
@@ -164,6 +187,42 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->isHighDpiAutoScalingDisabled = !highDpiAutoScalingCheckBox->isChecked();
 
     return state;
+}
+
+void UserApplicationsSettingsPageWidget::sl_updateState() {
+    auto removeItemFromComboBox = [this](QComboBox* comboBox, const QString& name) {
+        int styleIdx = comboBox->findText(name, Qt::MatchFixedString);  // case insensitive
+        if (styleIdx != -1) {
+            comboBox->removeItem(styleIdx);
+        }
+    };
+    auto addItemToComboBox = [this](QComboBox* comboBox, const QString& name) {
+        int styleIdx = comboBox->findText(name, Qt::MatchFixedString);  // case insensitive
+        if (styleIdx == -1) {
+            comboBox->addItem(name);
+        }
+    };
+
+
+    if (isOsWindows()) {
+        if (styleCombo->currentText() == WINDOWS_VISTA_STYLE) {
+            removeItemFromComboBox(colorThemeCombo, darkSign);
+            if (StyleFactory::isAutoStyleAvaliable()) {
+                removeItemFromComboBox(colorThemeCombo, autoSign);
+            }
+            errorLabel->setText(tr("Note: WindowsVista style is incompatible with Dark color theme. We suggest using Fusion"));
+        } else if (colorThemeCombo->currentText() != lightSign) {
+            removeItemFromComboBox(styleCombo, WINDOWS_VISTA_STYLE);
+            errorLabel->setText("");
+        } else {
+            addItemToComboBox(colorThemeCombo, darkSign);
+            if (StyleFactory::isAutoStyleAvaliable()) {
+                addItemToComboBox(colorThemeCombo, autoSign);
+            }
+            addItemToComboBox(styleCombo, WINDOWS_VISTA_STYLE);
+            errorLabel->setText("");
+        }
+    }
 }
 
 void UserApplicationsSettingsPageWidget::sl_transFileClicked() {

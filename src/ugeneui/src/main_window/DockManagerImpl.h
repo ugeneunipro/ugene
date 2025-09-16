@@ -34,6 +34,7 @@ class MainWindowImpl;
 
 // used to save/restore geometry of the dock
 class DockWrapWidget : public QWidget {
+    Q_OBJECT
 public:
     DockWrapWidget(QWidget* w, const QString& iconPath);
     ~DockWrapWidget();
@@ -76,6 +77,8 @@ public:
     virtual QWidget* toggleDock(const QString& widgetObjName);
 
     virtual void dontActivateNextTime(MWDockArea a);
+
+    virtual void colorThemeSwitched(bool isDark) override;
 
 protected:
     bool eventFilter(QObject* obj, QEvent* event);

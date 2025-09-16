@@ -546,7 +546,7 @@ QVBoxLayout* TophatSamples::createControlButtons() {
     auto result = new QVBoxLayout();
     result->setContentsMargins(0, 0, 0, 0);
 
-    QToolButton* addButton = createButton(this, ":U2Designer/images/add.png", false);
+    QToolButton* addButton = createButton(this, ":core/images/plus.png", false);
     upButton = createButton(this, ":U2Designer/images/up.png", true);
     downButton = createButton(this, ":U2Designer/images/down.png", true);
     result->addWidget(addButton);

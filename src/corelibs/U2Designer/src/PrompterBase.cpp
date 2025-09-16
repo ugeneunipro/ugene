@@ -24,6 +24,8 @@
 #include <U2Core/Folder.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/Theme.h>
+
 #include <U2Lang/Dataset.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -64,7 +66,7 @@ QString PrompterBaseImpl::getURL(const QString& id, bool* empty, const QString& 
         if (!defaultValue.isEmpty()) {
             url = defaultValue;
         } else {
-            url = "<font color='red'>" + tr("unset") + "</font>";
+            url = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
         }
         if (empty != nullptr) {
             *empty = true;
@@ -87,7 +89,7 @@ QString PrompterBaseImpl::getURL(const QString& id, bool* empty, const QString& 
 QString PrompterBaseImpl::getRequiredParam(const QString& id) {
     QString url = getParameter(id).toString();
     if (url.isEmpty()) {
-        url = "<font color='red'>" + tr("unset") + "</font>";
+        url = QString("<font color='%1'>").arg(Theme::wdParameterLabelStr()) + tr("unset") + "</font>";
     }
     return url;
 }
@@ -123,9 +125,9 @@ QString PrompterBaseImpl::getProducers(const QString& port, const QString& slot)
 }
 
 QString PrompterBaseImpl::getProducersOrUnset(const QString& port, const QString& slot) {
-    static const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
+    static const QString unsetStr = QString("<font color='%1'>") + tr("unset") + "</font>";
     QString prods = getProducers(port, slot);
-    return prods.isEmpty() ? unsetStr : prods;
+    return prods.isEmpty() ? unsetStr.arg(Theme::wdParameterLabelStr()) : prods;
 }
 
 QString PrompterBaseImpl::getHyperlink(const QString& id, const QString& val) {

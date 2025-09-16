@@ -34,7 +34,6 @@ public:
     MsaColorSchemeStatic(QObject* parent, const MsaColorSchemeFactory* factory, MsaObject* maObj, const QVector<QColor>& colorsPerChar);
 
     QColor getBackgroundColor(int seq, int pos, char c) const override;
-    QColor getFontColor(int seq, int pos, char c) const override;
 
 private:
     QVector<QColor> colorsPerChar;

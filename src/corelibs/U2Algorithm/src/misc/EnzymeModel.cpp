@@ -26,6 +26,8 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
 
 const QString EnzymeSettings::DATA_DIR_KEY("enzymes");
@@ -43,6 +45,9 @@ const QString EnzymeSettings::MAX_HIT_VALUE("plugin_enzymes/max_hit_value");
 const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");
 const QString EnzymeSettings::MAX_RESULTS("plugin_enzymes/max_results");
 const QString EnzymeSettings::COMMON_ENZYMES("ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,HindIII,PstI,SalI,SmaI,XmaI");
+
+static const QString ENZYME_TOOLTIP_DARK = "#FF7F7F";
+static const QString ENZYME_TOOLTIP_LIGHT = "#FF0000";
 
 void EnzymeData::calculateLeadingAndTrailingLengths(int& leadingNsNumber, int& trailingNsNumber) const {
     int seqSize = seq.size();
@@ -202,7 +207,9 @@ QString generateMainPart(const QByteArray& seq, int cut, bool forward, int enzym
         }
         QString ch(seq.at(i));
         if (ch != "N") {
-            ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+            ch = QString("<span style=\"color: %1; \">%2</span>")
+                     .arg(AppContext::getMainWindow()->isDarkTheme() ? ENZYME_TOOLTIP_DARK : ENZYME_TOOLTIP_LIGHT)
+                     .arg(ch);
         }
         append2Result(ch);
         append2Result(TOOLTIP_SPACE);
@@ -345,7 +352,8 @@ QString EnzymeData::generateEnzymeTooltip() const {
             QString result;
             for (QString ch : qAsConst(sequence)) {
                 if (ch != "N") {
-                    ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+                    ch = QString("<span style=\"color: %1; \">%2</span>")
+                        .arg(AppContext::getMainWindow()->isDarkTheme() ? ENZYME_TOOLTIP_DARK : ENZYME_TOOLTIP_LIGHT).arg(ch);
                 }
                 result += ch;
             }

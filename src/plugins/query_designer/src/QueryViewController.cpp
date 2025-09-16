@@ -356,7 +356,7 @@ void QueryScene::setRowsNumber(int count) {
 void QueryScene::drawBackground(QPainter* painter, const QRectF& rect) {
     Q_UNUSED(rect);
     int step = GRID_STEP;
-    painter->setPen(QPen(QColor(200, 200, 255, 125)));
+    painter->setPen(QPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(75, 75, 48, 125) : QColor(200, 200, 255, 125)));
     // draw horizontal grid
     const QRectF& area = annotationsArea();
     qreal start = area.top();
@@ -873,12 +873,12 @@ void QueryViewController::setupViewMenu(QMenu* m) {
     m->addSeparator();
 
     auto viewModeMenu = new QMenu(tr("View Mode"), this);
-    viewModeMenu->setIcon(QIcon(":query_designer/images/eye.png"));
+    GUIUtils::setThemedIcon(viewModeMenu, ":query_designer/images/eye.png");
     setupViewModeMenu(viewModeMenu);
     m->addMenu(viewModeMenu);
 
     auto querySequenceModeMenu = new QMenu(tr("Query Sequence Mode"), this);
-    querySequenceModeMenu->setIcon((QIcon(":query_designer/images/strands.png")));
+    GUIUtils::setThemedIcon(querySequenceModeMenu, ":query_designer/images/strands.png");
     setupQuerySequenceModeMenu(querySequenceModeMenu);
     m->addMenu(querySequenceModeMenu);
 

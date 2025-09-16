@@ -94,6 +94,7 @@ private slots:
     void sl_trimRightEnd();
 
     void sl_updateActions() override;
+    void sl_colorThemeSwitched() override;
 
 private:
     void initRenderer() override;

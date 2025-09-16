@@ -34,12 +34,12 @@
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
-#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/Theme.h>
 
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/ADVSequenceObjectContext.h>

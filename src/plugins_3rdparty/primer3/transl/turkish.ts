@@ -2744,14 +2744,14 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="861"/>
-        <source>The following errors are critical and does not allow one to continue calculation: 
+        <source>The following errors are critical and does not allow one to continue calculation:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="868"/>
-        <source>The following not critical errors are possible: 
+        <source>The following not critical errors are possible:
 
 </source>
         <translation type="unfinished"></translation>

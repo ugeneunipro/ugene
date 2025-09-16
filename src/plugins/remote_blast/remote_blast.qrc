@@ -1,9 +1,7 @@
 <RCC>
     <qresource prefix="remote_blast/" >
+      <file>images/dark/remote_db_request.png</file>
 
-        <file>images/remote_db_request.png</file>
-		<file>images/down_arrow.png</file>
-		<file>images/up_arrow.png</file>
-
+      <file>images/light/remote_db_request.png</file>
     </qresource>
 </RCC>

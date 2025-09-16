@@ -27,8 +27,11 @@
 #include <QStyleOptionGraphicsItem>
 #include <QTimer>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/PhyTree.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include "../TreeViewer.h"
 #include "../TreeViewerUtils.h"
@@ -48,11 +51,13 @@ static const QBrush hoveredStateBrush(QColor("#FFA500"));  // The same hue as se
 TvNodeItem::TvNodeItem(TvBranchItem* parentItem, const QString& _nodeName)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius), parentItem),
       nodeName(_nodeName) {
-    setPen(QColor(Qt::black));
+    setPen(QPalette().text().color());
     setAcceptHoverEvents(true);
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
+
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &TvNodeItem::sl_colorThemeSwitched);
 }
 
 void TvNodeItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -122,7 +127,8 @@ void TvNodeItem::updateSettings(const QMap<TreeViewOption, QVariant>& settings) 
     }
     if (labelItem != nullptr) {
         labelItem->setFont(TreeViewerUtils::getFontFromSettings(settings));
-        labelItem->setBrush(qvariant_cast<QColor>(settings[LABEL_COLOR]));
+        auto labelColor = AppContext::getMainWindow()->isDarkTheme() ? LABEL_COLOR_DARK : LABEL_COLOR_LIGHT;
+        labelItem->setBrush(qvariant_cast<QColor>(settings[labelColor]));
         QRectF rect = labelItem->boundingRect();
         labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
         labelItem->setVisible(isLabelVisible);
@@ -163,6 +169,11 @@ void TvNodeItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
     clonedStyleOption.state.setFlag(QStyle::State_HasFocus, false);
 
     QGraphicsEllipseItem::paint(painter, &clonedStyleOption, widget);
+}
+
+
+void TvNodeItem::sl_colorThemeSwitched() {
+    setPen(QPalette().text().color());
 }
 
 }  // namespace U2

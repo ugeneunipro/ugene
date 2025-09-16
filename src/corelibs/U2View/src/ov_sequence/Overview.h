@@ -88,6 +88,8 @@ private:
     /** A renderArea from the base class with a correct type. Used to avoid casts in the code. */
     OverviewRenderArea* overviewRenderArea;
 
+    QAction* densityGraphAction = nullptr;
+
     static const QString ANNOTATION_GRAPH_STATE;
 
     friend class OverviewRenderArea;

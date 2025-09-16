@@ -101,7 +101,7 @@ int numOfDigits(qint64 n) {
 
 void AssemblyRuler::drawCursor(QPainter& p) {
     // 1. draw the cursor itself
-    p.setPen(Qt::darkRed);
+    p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127) : Qt::darkRed);
     p.drawLine(cursorPos, BORDER_NOTCH_START, cursorPos, BORDER_NOTCH_END);
     p.drawLine(cursorPos + 1, BORDER_NOTCH_START, cursorPos + 1, BORDER_NOTCH_END);
 
@@ -148,7 +148,7 @@ void AssemblyRuler::drawCursor(QPainter& p) {
 void AssemblyRuler::drawRuler(QPainter& p) {
     cachedLabelsRects.clear();
     cachedLabels.clear();
-    p.setPen(Qt::black);
+    p.setPen(QPalette().text().color());
 
     // draw the axis + left and right border notches
     {
@@ -197,6 +197,7 @@ void AssemblyRuler::drawRuler(QPainter& p) {
                 img.setDevicePixelRatio(devicePixelRatio());
                 QPainter labelPainter(&img);
                 img.fill(Qt::transparent);
+                labelPainter.setPen(QPalette().text().color());
                 labelPainter.drawText(QRect(0, 0, textWidth, textHeight), Qt::AlignCenter, offsetStr);
 
                 lastLabelRight = offsetRect.right() + 15;  // prevent intersecting or too close labels

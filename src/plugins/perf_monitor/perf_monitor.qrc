@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="perf_monitor/" >
-        <file>images/mon.png</file>
+        <file>images/light/mon.png</file>
+
+        <file>images/dark/mon.png</file>
     </qresource>
 </RCC>

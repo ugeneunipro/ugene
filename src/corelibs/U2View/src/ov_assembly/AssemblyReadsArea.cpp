@@ -38,11 +38,12 @@
 #include <U2Core/MultiTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/Theme.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AssemblyReadIterator.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/Theme.h>
 
 #include "AddReadsToDocumentTask.h"
 #include "AssemblyBrowser.h"
@@ -53,8 +54,8 @@
 
 namespace U2 {
 
-static const QColor backgroundColor(Qt::white);
-static const QColor shadowingColor(255, 255, 255, 200);
+static const QColor shadowingColorLight(255, 255, 255, 200);
+static const QColor shadowingColorDark(0, 0, 0, 150);
 const QString AssemblyReadsArea::ZOOM_LINK = "zoom";
 const int AssemblyReadsArea::DEFAULT_MOUSE_DELTA = 120;
 
@@ -207,6 +208,7 @@ void AssemblyReadsArea::initRedraw() {
 void AssemblyReadsArea::connectSlots() {
     connect(browser, SIGNAL(si_zoomOperationPerformed()), SLOT(sl_zoomOperationPerformed()));
     connect(browser, SIGNAL(si_offsetsChanged()), SLOT(sl_redraw()));
+    connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AssemblyReadsArea::sl_colorThemeSwitched);
 }
 
 void AssemblyReadsArea::setupHScrollBar() {
@@ -382,7 +384,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
     bdBusyLabel.hide();
 
     p.setFont(browser->getFont());
-    p.fillRect(rect(), backgroundColor);
+    p.fillRect(rect(), QPalette().base().color());
 
     cachedReads.xOffsetInAssembly = browser->getXOffsetInAssembly();
     cachedReads.yOffsetInAssembly = browser->getYOffsetInAssembly();
@@ -450,7 +452,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
             if ((scribbling || scrolling) && optimizeRenderOnScroll) {
                 int width = readVisibleBases.length * cachedReads.letterWidth;
                 int height = cachedReads.letterWidth;
-                p.fillRect(x_pix_start, y_pix_start, width, height, QColor("#BBBBBB"));
+                p.fillRect(x_pix_start, y_pix_start, width, height, AppContext::getMainWindow()->isDarkTheme() ? QColor("#757575") : QColor("#BBBBBB"));
             } else {
                 // iterate over letters of the read
                 QList<U2CigarToken> cigar(read->cigar);  // hack: to show reads without cigar but with mapped position
@@ -484,7 +486,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
             int ystart = browser->calcPixelCoord(yToDrawRegion.startPos);
             int yend = browser->calcPixelCoord(yToDrawRegion.endPos());
 
-            p.fillRect(xstart, ystart, xend - xstart, yend - ystart, Qt::black);
+            p.fillRect(xstart, ystart, xend - xstart, yend - ystart, QPalette().text().color());
         }
     }
     t0 = GTimer::currentTimeMicros() - t0;
@@ -595,7 +597,7 @@ void AssemblyReadsArea::drawCurrentReadHighlight(QPainter& p) {
     bool found = findReadOnPos(curPos, read);
     if (found) {
         p.setBrush(Qt::NoBrush);
-        p.setPen(Qt::darkRed);
+        p.setPen(AppContext::getMainWindow()->isDarkTheme() ? QColor(255, 127, 127) : Qt::darkRed);
         QRect rect = calcReadRect(read);
         rect.setBottomRight(rect.bottomRight() - QPoint(1, 1));
 
@@ -640,7 +642,7 @@ void AssemblyReadsArea::drawReadsShadowing(QPainter& p) {
             rects << QRect(this->rect());
         }
 
-        p.setBrush(QBrush(shadowingColor));
+        p.setBrush(QBrush(AppContext::getMainWindow()->isDarkTheme() ? shadowingColorDark : shadowingColorLight));
         p.setPen(Qt::NoPen);
 
         p.drawRects(rects);
@@ -1032,6 +1034,12 @@ void AssemblyReadsArea::setReadHintEnabled(bool enabled) {
 void AssemblyReadsArea::sl_onOptimizeRendering(bool enabled) {
     AssemblyBrowserSettings::setOptimizeRenderOnScroll(enabled);
     optimizeRenderOnScroll = enabled;
+}
+
+void AssemblyReadsArea::sl_colorThemeSwitched() {
+    hintData.hint.colorThemeSwitched();
+    cellRenderer->makeForceRenderUpdate();
+    sl_redraw();
 }
 
 bool AssemblyReadsArea::isScrolling() {

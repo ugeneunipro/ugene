@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="umuscle/" >
-       <file>images/muscle_16.png</file>
+       <file>images/muscle.png</file>
     </qresource>
 </RCC>
