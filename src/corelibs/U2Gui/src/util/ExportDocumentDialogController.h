@@ -26,8 +26,6 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/global.h>
 
-#include "SaveDocumentController.h"
-
 class Ui_ExportDocumentDialog;
 
 namespace U2 {
@@ -40,7 +38,6 @@ class U2GUI_EXPORT ExportDocumentDialogController : public QDialog {
 public:
     ExportDocumentDialogController(Document* d, QWidget* p);
     ExportDocumentDialogController(GObject* object, QWidget* parent, const QString& initUrl = "");
-    ExportDocumentDialogController(const QString& defaultUrl, const DocumentFormatConstraints& dfc, QWidget* parent);
 
     QString getDocumentURL() const;
 
@@ -53,7 +50,7 @@ public:
     GObject* getSourceObject() const;
 
 private:
-    SaveDocumentControllerConfig getSaveConfig(const QString& fileUrl);
+    void initSaveController(const QList<GObject*>& objects, const QString& fileUrl);
     static DocumentFormatConstraints getAcceptableConstraints(const QList<GObject*>& objects);
 
     SaveDocumentController* saveController = nullptr;

@@ -29,6 +29,7 @@
 
 #include <U2Gui/HelpButton.h>
 
+#include "SaveDocumentController.h"
 #include "ui_ExportDocumentDialog.h"
 
 namespace U2 {
@@ -41,7 +42,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(Document* d, QWid
     new HelpButton(this, ui->buttonBox, "65929295");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    saveController = new SaveDocumentController(getSaveConfig(sourceDoc->getURLString()), getAcceptableConstraints(sourceDoc->getObjects()), this);
+    initSaveController(sourceDoc->getObjects(), sourceDoc->getURLString());
 }
 
 ExportDocumentDialogController::ExportDocumentDialogController(GObject* object, QWidget* parent, const QString& initUrl)
@@ -49,23 +50,16 @@ ExportDocumentDialogController::ExportDocumentDialogController(GObject* object, 
       ui(new Ui_ExportDocumentDialog()),
       sourceObject(object) {
     ui->setupUi(this);
-    saveController = new SaveDocumentController(getSaveConfig(initUrl), getAcceptableConstraints(QList<GObject*>() << sourceObject), this);
+
+    QList<GObject*> objectList = QList<GObject*>() << sourceObject;
+    initSaveController(objectList, initUrl);
+
     new HelpButton(this, ui->buttonBox, "65929295");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 }
 
-ExportDocumentDialogController::ExportDocumentDialogController(const QString& defaultUrl, 
-                                                               const DocumentFormatConstraints& dfc, 
-                                                               QWidget* parent)
-    : QDialog(parent),
-      ui(new Ui_ExportDocumentDialog()) {
-    ui->setupUi(this);
-    setAddToProjectFlag(true);
-    saveController = new SaveDocumentController(getSaveConfig(defaultUrl), dfc, this);
-}
-
-SaveDocumentControllerConfig ExportDocumentDialogController::getSaveConfig(const QString& fileUrl) {
+void ExportDocumentDialogController::initSaveController(const QList<GObject*>& objects, const QString& fileUrl) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = fileUrl;
     config.fileDialogButton = ui->browseButton;
@@ -75,7 +69,9 @@ SaveDocumentControllerConfig ExportDocumentDialogController::getSaveConfig(const
     config.parentWidget = this;
     config.rollOutProjectUrls = true;
     config.rollSuffix = "_copy";
-    return config;
+
+    const DocumentFormatConstraints formatConstraints = getAcceptableConstraints(objects);
+    saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
 DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstraints(const QList<GObject*>& objects) {

@@ -138,18 +138,11 @@ void MoveToObjectMaController::buildMenu(GObjectViewController*, QMenu* menu, co
 
 void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     GCounter::increment("MoveSelectedMsaRowsToNewFile");
-
+    MsaObject* msaObject = editor->getMaObject();
     // Get the file name and format to move rows to first.
-    DocumentFormatConstraints dfc;
-    dfc.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
-    dfc.addFlagToSupport(DocumentFormatFlag_SupportWriting);
-    dfc.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
-    dfc.addFlagToExclude(DocumentFormatFlag_Hidden);
     LastUsedDirHelper lod;
-    QObjectScopedPointer<ExportDocumentDialogController> dialog(new ExportDocumentDialogController(
-                                                                lod.getLastUsedDir() + "/selected_row",
-                                                                dfc, ui));
-    dialog->setWindowTitle(tr("File path and format to save"));
+    QObjectScopedPointer<ExportDocumentDialogController> dialog(new ExportDocumentDialogController(msaObject, ui, lod.getLastUsedDir() + "/selected_row"));
+    dialog->setWindowTitle(tr("Save Alignment"));
     CHECK(dialog->exec() == QDialog::Accepted, );
     const DocumentFormatId formatId = dialog->getDocumentFormatId();
     const QString url = dialog->getDocumentURL();
@@ -157,16 +150,16 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     // Create a sub-alignment from moved rows.
     QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
     QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesByViewRowIndexes(selectedViewRowIndexes, true);
-    QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
+    QList<qint64> rowIdsToRemove = msaObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
     SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove is empty", );
 
     QFileInfo urlInfo(url);
     CHECK_EXT(!urlInfo.baseName().isEmpty() && !urlInfo.isDir(), QMessageBox::critical(ui, L10N::errorTitle(), tr("Please select a file with a non-empty name.")), );
     Msa msaToExport;
     msaToExport->setName(urlInfo.baseName());
-    msaToExport->setAlphabet(maObject->getAlphabet());
+    msaToExport->setAlphabet(msaObject->getAlphabet());
     for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
-        const MsaRow& row = maObject->getRow(maRowIndex);
+        const MsaRow& row = msaObject->getRow(maRowIndex);
         msaToExport->addRow(row->getName(), row->getSequenceWithGaps(true, true));
     }
 
@@ -177,13 +170,12 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
         auto task = new MultiTask(tr("Export alignment rows to a new file"), {createNewMsaTask, removeRowsTask});
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     } else {
-        MsaObject* maObject = editor->getMaObject();
-        QList<qint64> rowsToKeep = maObject->getRowIds();
+        QList<qint64> rowsToKeep = msaObject->getRowIds();
         for (const qint64 rowId : qAsConst(rowIdsToRemove)) {
             rowsToKeep.removeAll(rowId);
         }
-        CreateSubalignmentSettings createSubalignmentSettings(rowsToKeep, U2Region(0, maObject->getLength()), url, true, false, formatId);
-        auto createSubAlignmentTask = new CreateSubalignmentAndOpenViewTask(maObject, createSubalignmentSettings);
+        CreateSubalignmentSettings createSubalignmentSettings(rowsToKeep, U2Region(0, msaObject->getLength()), url, true, false, formatId);
+        auto createSubAlignmentTask = new CreateSubalignmentAndOpenViewTask(msaObject, createSubalignmentSettings);
         AppContext::getTaskScheduler()->registerTopLevelTask(createSubAlignmentTask);
     }
 }
