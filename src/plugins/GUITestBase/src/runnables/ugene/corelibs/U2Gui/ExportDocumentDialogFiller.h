@@ -37,13 +37,15 @@ public:
         MEGA,
         MSF,
         NWK,
+        STOCKHOLM,
         TEXT,
         UGENEDB,
         VCF,
         VectorNTI
     };
 
-    ExportDocumentDialogFiller(const QString& _path = "", const QString& _name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    ExportDocumentDialogFiller(const QString& _path = "", const QString& _name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, 
+                               bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     void commonScenario() override;
 
 private:

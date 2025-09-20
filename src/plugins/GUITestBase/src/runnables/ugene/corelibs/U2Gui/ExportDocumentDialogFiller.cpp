@@ -50,6 +50,7 @@ ExportDocumentDialogFiller::ExportDocumentDialogFiller(const QString& _path, con
     comboBoxItems[MEGA] = "Mega";
     comboBoxItems[MSF] = "MSF";
     comboBoxItems[NWK] = "Newick Standard";
+    comboBoxItems[STOCKHOLM] = "Stockholm";
     comboBoxItems[TEXT] = "Plain text";
     comboBoxItems[UGENEDB] = "UGENE Database";
     comboBoxItems[VCF] = "VCFv4";

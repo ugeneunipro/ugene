@@ -36,22 +36,18 @@ namespace U2 {
 
 ExportDocumentDialogController::ExportDocumentDialogController(Document* d, QWidget* p)
     : QDialog(p),
-      saveController(nullptr),
-      sourceDoc(d),
-      sourceObject(nullptr) {
+      sourceDoc(d) {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929295");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
     initSaveController(sourceDoc->getObjects(), sourceDoc->getURLString());
 }
 
 ExportDocumentDialogController::ExportDocumentDialogController(GObject* object, QWidget* parent, const QString& initUrl)
     : QDialog(parent),
       ui(new Ui_ExportDocumentDialog()),
-      sourceDoc(nullptr),
       sourceObject(object) {
     ui->setupUi(this);
 
@@ -118,10 +114,6 @@ QString ExportDocumentDialogController::getDocumentURL() const {
 
 DocumentFormatId ExportDocumentDialogController::getDocumentFormatId() const {
     return saveController->getFormatIdToSave();
-}
-
-ExportDocumentDialogController::~ExportDocumentDialogController() {
-    delete ui;
 }
 
 bool ExportDocumentDialogController::getAddToProjectFlag() const {
