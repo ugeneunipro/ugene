@@ -515,7 +515,6 @@ void FpkmTrackingFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus&
     SAFE_POINT(doc != nullptr, "Internal error: NULL Document during saving a FPKM Tracking Format file!", );
     SAFE_POINT(io != nullptr, "Internal error: NULL IOAdapter during saving a FPKM Tracking Format file!", );
 
-    bool noErrorsDuringStoring = true;
     QList<GObject*> annotTables = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     if (annotTables.isEmpty()) {
         return;
@@ -558,9 +557,7 @@ void FpkmTrackingFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus&
 
                     // Also, validate some fields
                     if ((columnName == TRACKING_ID_COLUMN) && (columnValue.isEmpty())) {
-                        ioLog.trace(tr("FPKM Tracking Format saving error: tracking ID"
-                                       " shouldn't be empty!"));
-                        noErrorsDuringStoring = false;
+                        ioLog.details(tr("FPKM Tracking Format saving: 'tracking ID' shouldn't be empty!"));
                     }
 
                     if (columnName == LOCUS_COLUMN) {
@@ -582,22 +579,20 @@ void FpkmTrackingFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus&
                             QString seqNameFromLocusQual;  // Currently, do not verify a sequence name in locus!
                             U2Region regionFromLocusQual;
                             if (!parseLocus(columnValue, seqNameFromLocusQual, regionFromLocusQual)) {
-                                ioLog.trace(tr("FPKM Tracking Format saving error: failed"
+                                ioLog.details(tr("FPKM Tracking Format saving: failed"
                                                " to parse locus qualifier '%1', writing it"
                                                " to the output file anyway!")
                                                 .arg(columnValue));
-                                noErrorsDuringStoring = false;
                             }
 
                             if (regionFromLocusQual != region) {
-                                ioLog.trace(tr("FPKM Tracking Format saving error: an annotation"
+                                ioLog.details(tr("FPKM Tracking Format saving: an annotation"
                                                " region (%1, %2) differs from the information stored in the 'locus'"
                                                " qualifier (%3, %4). Writing the 'locus' qualifier to output!")
                                                 .arg(QString::number(region.startPos)
                                                          .arg(QString::number(region.endPos())
                                                                   .arg(QString::number(regionFromLocusQual.startPos))
                                                                   .arg(QString::number(regionFromLocusQual.endPos())))));
-                                noErrorsDuringStoring = false;
                             }
                         }
                     }
@@ -620,11 +615,6 @@ void FpkmTrackingFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus&
                 }
             }
         }
-    }
-
-    if (!noErrorsDuringStoring) {
-        ioLog.error(tr("FPKM Tracking Format saving error: one or more errors occurred while saving a file,"
-                       " see TRACE log for details!"));
     }
 }
 
