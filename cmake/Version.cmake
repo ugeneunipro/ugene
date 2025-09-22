@@ -2,7 +2,7 @@
 
 set(UGENE_VER_MAJOR 53)
 set(UGENE_VER_MINOR 0)
-set(UGENE_VER_SUFFIX "-dev") # optional, like "-dev" or ""
+set(UGENE_VER_SUFFIX "") # optional, like "-dev" or ""
 
 set(UGENE_VERSION "${UGENE_VER_MAJOR}.${UGENE_VER_MINOR}${UGENE_VER_SUFFIX}")
 
