@@ -1631,6 +1631,31 @@ GUI_TEST_CLASS_DEFINITION(test_8175) {
     CHECK_SET_ERR(lt.hasError("Tree branch is too long"), "Expected no errors");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8184) {
+    // Open COI.aln
+    // Opes Search OP tab
+    // Set "Substitute" algorithm
+    // Type "WWWWWW" as pattern
+    // Expected: input value contains characters that do not match the active alphabet!
+    // Check "Search with ambiguious bases" and wait for task finished
+    // Expect: no warning, 887 results
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Search);
+    GTUtilsOptionPanelMsa::setAlgorithm("Substitute");
+    GTUtilsOptionPanelMsa::enterPattern("WWWWWW");
+    auto lblErrorMessage = GTWidget::findLabel("lblErrorMessage");
+    auto errorText = lblErrorMessage->text();
+    CHECK_SET_ERR(errorText.contains("input value contains characters that do not match the active alphabet!"), QString("Unexpected error: %1").arg(errorText));
+
+    GTCheckBox::setChecked("useAmbiguousBasesBox", true);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsOptionPanelMsa::checkResultsText("Results: 1/887");
+    errorText = lblErrorMessage->text();
+    CHECK_SET_ERR(errorText.isEmpty(), QString("Unexpected error: %1").arg(errorText));
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
