@@ -21,7 +21,7 @@ SYMBOLS_DIR_NAME=symbols
 SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
 ARCHITECTURE_FILE_SUFFIX=x86-64
-SIGN_IDENTITY="Developer ID Application: Alteametasoft, S.L."
+SIGN_IDENTITY="Developer ID Application: Alteametasoft, S.L. (QBDVMPDVPQ)"
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
@@ -76,8 +76,6 @@ else
   exit 1
 fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
-
-rm -rf "${APP_EXE_DIR}/tools/spades"
 
 echo "##teamcity[blockOpened name='Dump symbols']"
 
