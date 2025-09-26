@@ -21,7 +21,7 @@ SYMBOLS_DIR_NAME=symbols
 SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
 ARCHITECTURE_FILE_SUFFIX=x86-64
-SIGN_IDENTITY="Developer ID Application: Alteametasoft"
+SIGN_IDENTITY="Developer ID Application: Alteametasoft, S.L."
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
