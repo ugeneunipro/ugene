@@ -156,7 +156,6 @@ GUI_TEST_CLASS_DEFINITION(test_1794) {
             int end = GTLineEdit::getText("end_edit_line", dialog).toInt();
             CHECK_SET_ERR(start >= 6000 && end < 10000, QString("Unexpected region: start: %1, end: %2").arg(start).arg(end));
 
-            auto region_type_combo = GTWidget::findComboBox("region_type_combo", dialog);
             GTComboBox::selectItemByText("region_type_combo", dialog, "Custom region");
             GTComboBox::selectItemByText("region_type_combo", dialog, "Visible");
             CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
