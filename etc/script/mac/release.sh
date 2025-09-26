@@ -107,20 +107,20 @@ tar cfz "${SYMBOLS_DIR_NAME}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-mac-${ARCHITECTU
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Sign bundle']"
-codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "${APP_EXE_DIR}/ugeneui" || exit 1
+  "${APP_DIR}" || exit 1
 echo "##teamcity[blockClosed name='Sign bundle']"
 
 echo "##teamcity[blockOpened name='Check sign']"
 echo "------------------ codesign:"
 codesign -dv --verbose=4 "${APP_DIR}"
 echo "------------------- pkgutil:"
-#pkgutil --check-signature "${APP_DIR}"
-#if pkgutil --check-signature "${APP_DIR}" | grep -q 'package is invalid'; then
-#  echo "Sign failed"
-#  exit 1
-#fi
+pkgutil --check-signature "${APP_DIR}"
+if pkgutil --check-signature "${APP_DIR}" | grep -q 'package is invalid'; then
+  echo "Sign failed"
+  exit 1
+fi
 echo " ##teamcity[blockClosed name='Check sign']"
 
 echo "##teamcity[blockOpened name='Pack']"
