@@ -49,6 +49,9 @@ public:
     Document* getSourceDoc() const;
     GObject* getSourceObject() const;
 
+public slots:
+    virtual void accept();
+
 private:
     void initSaveController(const QList<GObject*>& objects, const QString& fileUrl);
     static DocumentFormatConstraints getAcceptableConstraints(const QList<GObject*>& objects);

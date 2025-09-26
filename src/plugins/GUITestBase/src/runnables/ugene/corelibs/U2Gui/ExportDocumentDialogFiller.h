@@ -45,7 +45,8 @@ public:
     };
 
     ExportDocumentDialogFiller(const QString& _path = "", const QString& _name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, 
-                               bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+                               bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse, 
+                               bool handleErrorMessageBox = false);
     void commonScenario() override;
 
 private:
@@ -54,6 +55,7 @@ private:
     FormatToUse format;
     bool compressFile;
     bool addToProject;
+    bool handleErrorMessageBox;
     QMap<FormatToUse, QString> comboBoxItems;
 };
 }  // namespace U2
