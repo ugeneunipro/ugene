@@ -59,7 +59,8 @@ class U2GUI_EXPORT RegionSelector : public QWidget {
     Q_OBJECT
 public:
     RegionSelector(QWidget* p, qint64 len = 0, bool isVertical = false, DNASequenceSelection* selection = nullptr, 
-                   bool isCircularSelectionAvailable = false, QList<RegionPreset> presetRegions = QList<RegionPreset>());
+                   bool isCircularSelectionAvailable = false, QList<RegionPreset> presetRegions = QList<RegionPreset>(),
+                   const QString& defaultPreset = QString());
 
     U2Region getRegion(bool* ok = nullptr) const;
     U2Location getLocation(bool* ok = nullptr) const;
