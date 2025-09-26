@@ -232,6 +232,7 @@ void OpenSavedMaEditorTask::updateRanges(const QVariantMap& stateData, MaEditor*
 
     ctx->setFirstVisiblePosSeq(state.getFirstPos(), state.getFirstSeq());
     ctx->setZoomFactor(state.getZoomFactor());
+    ctx->updateActions();
 }
 
 //////////////////////////////////////////////////////////////////////////
