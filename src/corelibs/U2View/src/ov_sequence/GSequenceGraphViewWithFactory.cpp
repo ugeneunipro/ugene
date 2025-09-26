@@ -35,7 +35,7 @@ namespace U2 {
 GSequenceGraphDrawer* GSequenceGraphFactory::getDrawer(GSequenceGraphView* v) {
     qint64 seqLen = v->getSequenceLength();
     // By default, we have max window = 500: it is normal for DNA regions to have some meaningful content in this range.
-    qint64 window = qBound((qint64)40, GraphUtils::pickRoundedNumberBelow(seqLen / 300), (qint64)500);
+    qint64 window = qBound(qMin((qint64)40, seqLen), GraphUtils::pickRoundedNumberBelow(seqLen / 300), (qint64)500);
     qint64 step = window / 2;
     return new GSequenceGraphDrawer(v, window, step);
 }
