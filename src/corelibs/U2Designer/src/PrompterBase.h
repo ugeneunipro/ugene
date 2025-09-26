@@ -39,7 +39,10 @@ class U2DESIGNER_EXPORT PrompterBaseImpl : public ActorDocument, public Prompter
     Q_OBJECT
 public:
     PrompterBaseImpl(Actor* p = 0) : ActorDocument(p) {
-        connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &PrompterBaseImpl::sl_actorModified);
+        auto mw = AppContext::getMainWindow();
+        if (mw != nullptr) {
+            connect(mw, &MainWindow::si_colorThemeSwitched, this, &PrompterBaseImpl::sl_actorModified);
+        }
     }
 
     static bool isWildcardURL(const QString& url) {
