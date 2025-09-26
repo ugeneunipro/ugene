@@ -34,7 +34,7 @@ mkdir "${SYMBOLS_DIR}"
 echo "##teamcity[blockOpened name='Get version']"
 VERSION=$("${APP_EXE_DIR}/ugenecl" --version | grep 'version of UGENE' | sed -n "s/.*version of UGENE \([0-9\.A-Za-z-]*\).*/\1/p")
 if [ -z "${VERSION}" ]; then
-  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Failed to get version of UGENE']"
+  echo "##teamcity[buildStatus Failed to get version of UGENE']"
   exit 1
 fi
 echo "Version of UGENE: ${VERSION}"
@@ -50,7 +50,7 @@ rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
 
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
-  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Failed to copy tools dir']"
+  echo "##teamcity[buildStatus Failed to copy tools dir']"
 }
 
 # These tools can't be notarized today:
@@ -60,7 +60,6 @@ rm -rf "${APP_EXE_DIR}/tools/python3"
 #       "path": "ugene-51.0-r732-b6391-mac-x86-64.dmg/Unipro UGENE.app/Contents/MacOS/tools/fastqc/cisd-jhdf5.jar/native/nativedata/x86_64-Mac OS X/libnativedata.jnilib",
 #      "message": "The signature does not include a secure timestamp.",
 rm -rf "${APP_EXE_DIR}/tools/fastqc"
-rm -rf "${APP_EXE_DIR}/tools/spades"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
@@ -73,10 +72,12 @@ if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
 else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
   diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Failed to validate release bundle content']"
+  echo "##teamcity[buildStatus Failed to validate release bundle content']"
   exit 1
 fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
+
+rm -rf "${APP_EXE_DIR}/tools/spades"
 
 echo "##teamcity[blockOpened name='Dump symbols']"
 
