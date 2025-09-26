@@ -60,6 +60,7 @@ rm -rf "${APP_EXE_DIR}/tools/python3"
 #       "path": "ugene-51.0-r732-b6391-mac-x86-64.dmg/Unipro UGENE.app/Contents/MacOS/tools/fastqc/cisd-jhdf5.jar/native/nativedata/x86_64-Mac OS X/libnativedata.jnilib",
 #      "message": "The signature does not include a secure timestamp.",
 rm -rf "${APP_EXE_DIR}/tools/fastqc"
+rm -rf "${APP_EXE_DIR}/tools/spades"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
