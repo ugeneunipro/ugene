@@ -74,7 +74,7 @@ function dump_symbols() {
 }
 
 find "${DIST_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
-  ${PATH_SIGNTOOL_}dump_symbols "${BINARY_FILE}"
+  dump_symbols "${BINARY_FILE}"
 done
 
 # Remove pdb files used for symbol generation.
