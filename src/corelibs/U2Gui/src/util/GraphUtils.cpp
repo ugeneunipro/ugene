@@ -179,9 +179,8 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
         int enX2 = pos.x() + len - c.textBorderEnd;
         if (c.drawNumbers) {
             drawNum(p, stX1, stX2, st, stX1, stX2, yt1, yt2);
-            // Check, that the distance between start and end numbers is enough to draw both of them without overlap.
-            static constexpr int MIN_START_END_DISTANCE = 3;
-            if (end - start >= MIN_START_END_DISTANCE) {
+            // Check, that start and end do not intersect each other
+            if (stX2 < enX1) {
                 drawNum(p, enX1, enX2, en, enX1, enX2, yt1, yt2);
             }
         }
