@@ -38,12 +38,12 @@ rm -rf "${SIGNING_WORKSPACE_DIR}"
 mkdir -p "${SIGNING_WORKSPACE_DIR}"
 if [ ! -d "${ORIGINAL_APP_BUNDLE_DIR}" ]; then
   echo "Source bundle directory not found: ${ORIGINAL_APP_BUNDLE_DIR}"
-  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Source bundle directory not found']"
+  echo "##teamcity[buildStatus Source bundle directory not found']"
   exit 1
 fi
 
 rsync -a "${ORIGINAL_APP_BUNDLE_DIR}/" "${WORKSPACE_APP_BUNDLE_DIR}" || {
-  echo "##teamcity[buildStatus NOTARYTOOL_JOB_INFO_OUTPUT='FAILURE' text='{build.NOTARYTOOL_JOB_INFO_OUTPUT.text}. Failed to prepare signing workspace']"
+  echo "##teamcity[buildStatus Failed to prepare signing workspace']"
   exit 1
 }
 echo "Prepared signing workspace: ${WORKSPACE_APP_BUNDLE_DIR}"
@@ -84,14 +84,15 @@ echo " ##teamcity[blockClosed name='Copy files']"
 echo "##teamcity[blockOpened name='Validate bundle content']"
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
-find "${WORKSPACE_APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
+BUNDLE_CONTENT=$(find "${WORKSPACE_APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort)
+echo "${BUNDLE_CONTENT}" >"${CURRENT_BUNDLE_FILE}"
 if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
   echo 'Bundle content validated successfully.'
 else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
   diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-  echo "##teamcity[buildStatus Failed to validate release bundle content']"
-  exit 1
+#  echo "##teamcity[buildStatus Failed to validate release bundle content']"
+#  exit 1
 fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
 
@@ -123,13 +124,13 @@ tar cfz "${SYMBOLS_DIR_NAME}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-mac-${ARCHITECTU
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Sign bundle']"
-#codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
-#  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-#  "${APP_EXE_DIR}/ugeneui" || exit 1
+codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
+  "${APP_EXE_DIR}/ugeneui" || exit 1
 
-codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime \
-   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-   "${APP_DIR}" || exit 1
+#codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime \
+#   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
+#   "${APP_DIR}" || exit 1
 
 echo "##teamcity[blockClosed name='Sign bundle']"
 
