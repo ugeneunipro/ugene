@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!regression/8070/test_scheme_fpkm.uwl"
+                 in="!workflow_samples!../samples/Genbank/murine.gb"
+                 out="!tmp_data_dir!8070.fpkm"
+                 message="FPKM Tracking Format saving: 'tracking ID' shouldn't be empty!"
+    />
+</multi-test>
