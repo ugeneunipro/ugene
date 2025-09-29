@@ -37,6 +37,13 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
 include_directories(src/libs_3rdparty/qtscript/script/api)
 
+if (APPLE)
+    # OpenGL libs
+    include_directories(
+            /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers
+    )
+endif ()
+
 if (WIN32)
     add_definitions(
             -D_UNICODE
