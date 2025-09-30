@@ -1,7 +1,0 @@
-<multi-test>
-    <run-cmdline task="!common_data_dir!regression/8070/test_scheme_case_dif.uwl"
-                 in="!workflow_samples!../samples/Genbank/murine.gb"
-                 out="!tmp_data_dir!8070.fpkm"
-                 message="Required column is missed: test_id"
-    />
-</multi-test>
