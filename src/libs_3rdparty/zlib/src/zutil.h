@@ -137,7 +137,8 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 #  endif
 #endif
 
-#if defined(MACOS) || defined(TARGET_OS_MAC)
+/* Classic Mac OS (not modern macOS/Darwin which defines __APPLE__) */
+#if (defined(MACOS) || defined(TARGET_OS_MAC)) && !defined(__APPLE__)
 #  define OS_CODE  7
 #  ifndef Z_SOLO
 #    if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
