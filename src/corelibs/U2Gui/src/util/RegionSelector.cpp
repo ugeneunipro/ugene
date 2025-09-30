@@ -40,7 +40,7 @@
 namespace U2 {
 ////////////////////////////////////////
 // RangeSelectorWidget
-RegionSelector::RegionSelector(QWidget* p, qint64 len, bool isVertical, DNASequenceSelection* selection, bool isCircularSelectionAvailable, QList<RegionPreset> presetRegions)
+RegionSelector::RegionSelector(QWidget* p, qint64 len, bool isVertical, DNASequenceSelection* selection, bool isCircularSelectionAvailable, QList<RegionPreset> presetRegions, const QString& defaultPreset)
     : QWidget(p),
       maxLen(len),
       startEdit(nullptr),
@@ -49,7 +49,7 @@ RegionSelector::RegionSelector(QWidget* p, qint64 len, bool isVertical, DNASeque
     initLayout();
 
     RegionSelectorGui gui(startEdit, endEdit, locationLineEdit, comboBox);
-    RegionSelectorSettings settings(len, isCircularSelectionAvailable, selection, presetRegions);
+    RegionSelectorSettings settings(len, isCircularSelectionAvailable, selection, presetRegions, defaultPreset);
     controller = new RegionSelectorController(gui, settings, this);
     connect(controller, SIGNAL(si_regionChanged(U2Region)), this, SIGNAL(si_regionChanged(U2Region)));
     connect(comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &RegionSelector::sl_presetChanged);
