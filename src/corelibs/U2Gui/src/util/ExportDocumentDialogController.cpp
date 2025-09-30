@@ -138,7 +138,7 @@ GObject* ExportDocumentDialogController::getSourceObject() const {
 void ExportDocumentDialogController::accept() {
     QFileInfo urlInfo(getDocumentURL());
     if (urlInfo.baseName().isEmpty() || urlInfo.isDir()) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Please select a file with a non-empty name."));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("File name is required."));
         return;
     }
     return QDialog::accept();

@@ -38,10 +38,10 @@ namespace U2 {
 
 #define GT_CLASS_NAME "ExportDocumentDialogFiller"
 ExportDocumentDialogFiller::ExportDocumentDialogFiller(const QString& _path, const QString& _name, ExportDocumentDialogFiller::FormatToUse _format, 
-                                                       bool compressFile, bool addToProject, GTGlobals::UseMethod method, bool _handleErrorMessageBox)
+                                                       bool compressFile, bool addToProject, GTGlobals::UseMethod method, QString _expectedError)
     : Filler("ExportDocumentDialog"),
       path(_path), name(_name), useMethod(method), format(_format), compressFile(compressFile),
-      addToProject(addToProject), handleErrorMessageBox(_handleErrorMessageBox) {
+      addToProject(addToProject), expectedError(_expectedError) {
     if (!path.isEmpty()) {
         path = GTFileDialog::toAbsoluteNativePath(_path, true);
     }
@@ -79,11 +79,11 @@ void ExportDocumentDialogFiller::commonScenario() {
         auto addCheckBox = GTWidget::findCheckBox("addToProjCheck", dialog);
         GTCheckBox::setChecked(addCheckBox, addToProject);
     }
-    if (handleErrorMessageBox) {
-        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file with a non-empty name."));
+    if (!expectedError.isEmpty()) {
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, expectedError));
     }
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
-    if (handleErrorMessageBox) {
+    if (!expectedError.isEmpty()) {
         GTGlobals::sleep();
         GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
     }
