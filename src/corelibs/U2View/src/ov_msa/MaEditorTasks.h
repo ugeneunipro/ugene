@@ -44,6 +44,8 @@ public:
     OpenMaEditorTask(UnloadedObject* obj, GObjectViewFactoryId fid, GObjectType type);
     OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type);
 
+    void loadCache() override;
+
     void open() override;
 
     static void updateTitle(MsaEditor* msaEd);

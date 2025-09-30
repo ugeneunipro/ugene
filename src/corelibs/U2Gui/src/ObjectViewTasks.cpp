@@ -46,7 +46,7 @@ namespace U2 {
 /* TRANSLATOR U2::ObjectViewTask */
 
 ObjectViewTask::ObjectViewTask(GObjectViewController* _view, const QString& stateName, const QVariantMap& s)
-    : Task("", TaskFlag_NoRun), taskType(Type_Update), stateData(s), view(_view), stateIsIllegal(false) {
+    : Task("", TaskFlag_None), taskType(Type_Update), stateData(s), view(_view), stateIsIllegal(false) {
     assert(view != nullptr);
     const QString& vName = view->getName();
     setTaskName(tr("Update '%1' to '%2' state").arg(vName).arg(stateName));
@@ -54,7 +54,7 @@ ObjectViewTask::ObjectViewTask(GObjectViewController* _view, const QString& stat
 }
 
 ObjectViewTask::ObjectViewTask(GObjectViewFactoryId fid, const QString& vName, const QVariantMap& s)
-    : Task("", TaskFlag_NoRun), taskType(Type_Open), stateData(s), view(nullptr), viewName(vName), stateIsIllegal(false) {
+    : Task("", TaskFlag_None), taskType(Type_Open), stateData(s), view(nullptr), viewName(vName), stateIsIllegal(false) {
     if (vName.isEmpty()) {
         QString factoryName = AppContext::getObjectViewFactoryRegistry()->getFactoryById(fid)->getName();
         setTaskName(tr("Open new '%1'").arg(factoryName));
@@ -73,6 +73,10 @@ void ObjectViewTask::prepare() {
             processed.insert(pd);
         }
     }
+}
+
+void ObjectViewTask::run() {
+    loadCache();
 }
 
 Task::ReportResult ObjectViewTask::report() {

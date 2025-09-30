@@ -81,6 +81,12 @@ OpenMaEditorTask::OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObj
     documentsToLoad.append(doc);
 }
 
+void OpenMaEditorTask::loadCache() {
+    SAFE_POINT_NN(maObject, );
+
+    maObject->getAlignment(); // to load and cache the alignment
+}
+
 void OpenMaEditorTask::open() {
     if (stateInfo.hasError() || (maObject.isNull() && documentsToLoad.isEmpty())) {
         return;
