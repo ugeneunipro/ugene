@@ -13,7 +13,6 @@ list(APPEND JSC_WTF_SOURCES ${JSC_WTF_QT_SOURCES})
 file(GLOB JSC_WTF_UNICODE_SOURCES 3rdparty/javascriptcore/JavaScriptCore/wtf/unicode/*.cpp)
 list(APPEND JSC_WTF_SOURCES ${JSC_WTF_UNICODE_SOURCES})
 
-
 file(GLOB API_SOURCES script/api/*.cpp)
 file(GLOB BRIDGE_SOURCES script/bridge/*.cpp)
 file(GLOB PARSER_SOURCES script/parser/*.cpp)
@@ -98,7 +97,6 @@ target_include_directories(qtscript PRIVATE
         script/parser
 )
 
-
 # Add compile definitions
 target_compile_definitions(qtscript PRIVATE
         BUILDING_JavaScriptCore
@@ -122,6 +120,17 @@ target_compile_definitions(qtscript PRIVATE
         jscyylex=qtjscyylex
         jscyyparse=qtjscyyparse
 )
+
+if(APPLE)
+    # __CORRECT_ISO_CPP11_MATH_H_PROTO=1: Fix math function namespace conflicts in modern C++ headers
+    # _LIBCPP_DISABLE_DEPRECATION_WARNINGS=1: Suppress libc++ deprecation warnings 
+    # _LIBCPP_ENABLE_CXX17_REMOVED_FEATURES=1: Enable deprecated features that macOS libc++ disables even in C++14 mode
+    target_compile_definitions(qtscript PRIVATE
+        __CORRECT_ISO_CPP11_MATH_H_PROTO=1
+        _LIBCPP_DISABLE_DEPRECATION_WARNINGS=1
+        _LIBCPP_ENABLE_CXX17_REMOVED_FEATURES=1
+    )
+endif()
 
 # Suppress all warnings.
 target_compile_options(qtscript PRIVATE
