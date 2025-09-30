@@ -250,7 +250,7 @@ CloudStorageDockWidget::CloudStorageDockWidget(WorkspaceService* _workspaceServi
     stateLabel = new QLabel();
     stateLabel->setTextFormat(Qt::RichText);
     stateLabel->setOpenExternalLinks(false);
-    updateStateLabelBackground();
+    stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
 
     treeView = new QTreeView();
     treeView->setModel(&treeViewModel);
@@ -381,8 +381,6 @@ bool CloudStorageDockWidget::eventFilter(QObject* watched, QEvent* event) {
 
 void CloudStorageDockWidget::sl_colorThemeSwitched() {
     updateTreeViewIconsRecursively(treeViewModel.invisibleRootItem());
-    updateStateLabelBackground();
-    updateStateLabelTextOnly();
 }
 
 void CloudStorageDockWidget::updateTreeViewIconsRecursively(QStandardItem* item) {
@@ -610,8 +608,10 @@ void CloudStorageDockWidget::updateActionsState() const {
 
 void CloudStorageDockWidget::updateStateLabelText() {
     disconnect(stateLabel, &QLabel::linkActivated, this, nullptr);
-
-    updateStateLabelTextOnly();
+    const auto isLoggedIn = workspaceService->isLoggedIn();
+    stateLabel->setText(isLoggedIn
+                            ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
+                            : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
 
     connect(stateLabel, &QLabel::linkActivated, this, [&](const QString& link) {
         if (link == "login") {
@@ -620,17 +620,6 @@ void CloudStorageDockWidget::updateStateLabelText() {
             workspaceService->logout();
         }
     });
-}
-
-void CloudStorageDockWidget::updateStateLabelTextOnly() {
-    const auto isLoggedIn = workspaceService->isLoggedIn();
-    stateLabel->setText(isLoggedIn
-                            ? tr(R"(Loading file list...<br><br><br><a href="logout"><span style=\"color: %1;\">Logout</span></a>)").arg(Theme::hyperlinkColorLabelHtmlStr())
-                            : tr(R"(Please <a href="login"><span style=\"color: %1;\">log in to Workspace</span></a> to access cloud storage)").arg(Theme::hyperlinkColorLabelHtmlStr()));
-}
-
-void CloudStorageDockWidget::updateStateLabelBackground() {
-    stateLabel->setStyleSheet(QString("background: %1; padding: 10px;").arg(QPalette().base().color().name()));
 }
 
 CloudStorageService* CloudStorageDockWidget::getCloudStorageService() const {

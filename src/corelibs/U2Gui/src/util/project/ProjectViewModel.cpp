@@ -36,7 +36,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/ObjectViewModel.h>
 
 #include "ConnectionHelper.h"
@@ -45,8 +44,7 @@
 
 namespace U2 {
 
-const QString ProjectViewModel::MODIFIED_ITEM_COLOR_LIGHT = "#0032a0";
-const QString ProjectViewModel::MODIFIED_ITEM_COLOR_DARK = "#00aaff";
+const QString ProjectViewModel::MODIFIED_ITEM_COLOR = "#0032a0";
 
 ProjectViewModel::ProjectViewModel(const ProjectTreeControllerModeSettings& settings, QObject* parent)
     : QAbstractItemModel(parent), settings(settings) {
@@ -881,7 +879,7 @@ QVariant ProjectViewModel::data(Document* doc, int role) const {
 
 QVariant ProjectViewModel::getDocumentTextColorData(Document* doc) const {
     if (doc->isModified()) {
-        return QColor(AppContext::getMainWindow()->isDarkTheme() ? MODIFIED_ITEM_COLOR_DARK : MODIFIED_ITEM_COLOR_LIGHT);
+        return QColor(MODIFIED_ITEM_COLOR);
     } else {
         return QVariant();
     }
@@ -1048,7 +1046,7 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnab
 
 QVariant ProjectViewModel::getObjectTextColorData(GObject* obj) const {
     if (obj->isItemModified()) {
-        return QColor(AppContext::getMainWindow()->isDarkTheme() ? MODIFIED_ITEM_COLOR_DARK : MODIFIED_ITEM_COLOR_LIGHT);
+        return QColor(MODIFIED_ITEM_COLOR);
     } else {
         return {};
     }

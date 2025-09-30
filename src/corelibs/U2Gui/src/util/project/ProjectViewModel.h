@@ -183,8 +183,7 @@ private:
     mutable QHash<Document*, DocumentFolders*> folders;
     ProjectTreeControllerModeSettings settings;
 
-    static const QString MODIFIED_ITEM_COLOR_LIGHT;
-    static const QString MODIFIED_ITEM_COLOR_DARK;
+    static const QString MODIFIED_ITEM_COLOR;
 };
 
 }  // namespace U2

@@ -62,8 +62,6 @@ private:
 
     void updateActionsState() const;
     void updateStateLabelText();
-    void updateStateLabelTextOnly();
-    void updateStateLabelBackground();
     CloudStorageService* getCloudStorageService() const;
 
     WorkspaceService* workspaceService = nullptr;
