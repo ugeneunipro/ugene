@@ -397,7 +397,7 @@ void EnzymesSelectorWidget::sl_filterConditionsChanged() {
             auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
             if (filterMode == FILTER_BY_NAME) {
                 const QStringList enzList = filterText.split(",", Qt::SkipEmptyParts);
-                bool notHit = true;
+                bool notHit = !enzList.isEmpty();
                 for (const QString& itemFromList : qAsConst(enzList)) {
                     if (item->enzyme->id.contains(itemFromList, Qt::CaseInsensitive)) {
                         item->setHidden(false);

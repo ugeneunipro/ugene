@@ -86,6 +86,7 @@
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
 #include "primitives/GTAction.h"
+#include "primitives/GTLabel.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
@@ -137,6 +138,48 @@
 namespace U2 {
 
 namespace GUITest_regression_scenarios_github_issues {
+
+GUI_TEST_CLASS_DEFINITION(test_1790) {
+    /*
+     * Open human_T1.fa.
+     * Open the "Find restriction sites" dialog.
+     * Type "qwerty" to the "Filter by name".
+     * Expected: Nothing found.
+     * Remove "werty" and leaver only "q".
+     * Expected: Some enzymes are visible.
+     * Clear filter.
+     * Expected: All enzymes are visible.
+     **/
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class TryNamesInSearchEdit : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("enzymesFilterEdit", "qwerty", dialog);
+            auto enzymesTree = GTWidget::findTreeWidget("tree", GTWidget::findWidget("enzymesSelectorWidget"));
+            CHECK_SET_ERR(GTTreeWidget::countVisibleItems(enzymesTree) == 21, "Item list should be empty");
+            auto findLEWidget = GTWidget::findWidget("enzymesFilterEdit", dialog);
+            GTWidget::click(findLEWidget);
+            GTKeyboardDriver::keyClick(Qt::Key_End);
+            for (int i = 0; i < 5; i++) {
+                GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+            }
+            const int wEnzymesCount = GTTreeWidget::countVisibleItems(enzymesTree);
+            CHECK_SET_ERR(wEnzymesCount > 21, "Item list shouldn't be empty");
+            GTWidget::click(findLEWidget);
+            GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+            CHECK_SET_ERR(GTTreeWidget::countVisibleItems(enzymesTree) > wEnzymesCount, "Item list size should be bigger than with 'w'");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new TryNamesInSearchEdit()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+    
+}
 
 GUI_TEST_CLASS_DEFINITION(test_1794) {
     // Open "samples/Assembly/chrM.sam" and import it to ugenedb.
