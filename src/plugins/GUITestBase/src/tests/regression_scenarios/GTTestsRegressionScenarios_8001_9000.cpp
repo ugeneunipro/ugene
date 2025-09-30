@@ -1262,6 +1262,18 @@ GUI_TEST_CLASS_DEFINITION(test_8120_2) {
     CHECK_SET_ERR(lt.hasMessage("Render overview"), "No expected message in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8134) {
+    // Open _common_data/scenarios/_regression/8134/8134.fa (short sequence 15 bases long)
+    // Show GC Content (%) graph
+    // Expected: not "Unexpected sequence size" error in the log
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/8134/8134.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new PopupChooser({"GC Content (%)"}));
+    GTWidget::click(GTWidget::findWidget("GraphMenuAction"));
+    CHECK_SET_ERR(!lt.hasError("Unexpected sequence size"), "There is an error");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8136) {
     /*
     * 1. Open _common_data/scenarios/_regression/8136/8136.seq

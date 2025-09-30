@@ -78,6 +78,8 @@ void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float>& re
         int base_count = 0;
         for (int x = start; x < end; x++) {
             CHECK_OP(os, );
+            SAFE_POINT(x < seq.size(), "Unexpected sequence size", );
+
             char c = seq[x];
             if (map[(uchar)c]) {
                 base_count++;
