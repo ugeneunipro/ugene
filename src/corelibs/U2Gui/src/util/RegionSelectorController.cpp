@@ -261,11 +261,9 @@ void RegionSelectorController::sl_onPresetChanged(int index) {
     U2Region newRegion;
     if (index == gui.presetsComboBox->findText(RegionPreset::getSelectedRegionDisplayName())) {
         newRegion = settings.getOneRegionFromSelection();
-    } else if (index == gui.presetsComboBox->findText(RegionPreset::getWholeSequenceModeDisplayName())) {
+    } else {
         const U2Location location = gui.presetsComboBox->itemData(index).value<U2Location>();
         newRegion = location.data()->regions.first();
-    } else {
-        FAIL("Unexpected selection preset", );
     }
 
     setRegion(newRegion);
