@@ -4954,6 +4954,28 @@ GUI_TEST_CLASS_DEFINITION(test_7867) {
     CHECK_SET_ERR(tsPar == "Rough", "Incorrect parameter, expected \"Rough\"");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7883) {
+    // Open COI.aln
+    // Click "Zoom in" until the maximum state
+    // Expected: "Zoom in" is disabled, "Reset zoom" is enabled.
+    // Create a bookmark.
+    // Click "Reset zoom"
+    // Double click to the bookmark created on point 3.
+    // Expected: "Zoom in" is disabled
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    QToolBar* toolbar = GTToolbar::getToolbar("mwtoolbar_activemdi");
+    QWidget* zoomInButton = GTToolbar::getWidgetForActionObjectName(toolbar, "Zoom In");
+    while (zoomInButton->isEnabled()) {
+        GTUtilsMsaEditor::zoomIn();
+    }
+
+    GTUtilsBookmarksTreeView::addBookmark("COI [COI.aln]", "test_7883");
+    GTUtilsMsaEditor::resetZoom();
+    GTUtilsBookmarksTreeView::doubleClickBookmark("test_7883");
+    CHECK_SET_ERR(!zoomInButton->isEnabled(), "Zoom in should be disabled");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7885) {
     // UGENE_GUI_TEST=1 env variable is required for this test
     // Open _common_data/scenarios/_regression/7885/test_7885_1.aln
