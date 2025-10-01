@@ -82,12 +82,6 @@ OpenMaEditorTask::OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObj
 }
 
 void OpenMaEditorTask::loadCache() {
-    SAFE_POINT_NN(maObject, );
-
-    maObject->getAlignment(); // to load and cache the alignment
-}
-
-void OpenMaEditorTask::open() {
     if (stateInfo.hasError() || (maObject.isNull() && documentsToLoad.isEmpty())) {
         return;
     }
@@ -111,6 +105,11 @@ void OpenMaEditorTask::open() {
             return;
         }
     }
+
+    maObject->getAlignment(); // to load and cache the alignment
+}
+
+void OpenMaEditorTask::open() {
     viewName = GObjectViewUtils::genUniqueViewName(maObject->getDocument(), maObject);
     uiLog.details(tr("Opening MSA editor for object: %1").arg(maObject->getGObjectName()));
 
