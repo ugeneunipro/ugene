@@ -4504,6 +4504,24 @@ GUI_TEST_CLASS_DEFINITION(test_7797) {
     // Expected state: there is no crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7804) {
+    class Scenario : public CustomScenario {
+    public:
+        void run() override {
+            GTWidget::getActiveModalWidget();
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            auto eaValue = GTUtilsWizard::getParameter("Extract annotations");
+            CHECK_SET_ERR(eaValue.isValid(), "Extract annotations parameter is not valid");
+            GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    GTUtilsDialog::waitForDialog(new WizardFiller("In Silico PCR", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample("In Silico PCR");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7806) {
     QDir(sandBoxDir).mkdir("test_7806");
     QDir(sandBoxDir).mkdir("test_7806/1");
