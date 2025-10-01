@@ -75,6 +75,8 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     tagMap["DE"] = DNAInfo::DEFINITION;  // The DE (DEscription) lines contain general descriptive information about the sequence stored.
     tagMap["KW"] = DNAInfo::KEYWORDS;  // The KW (KeyWord) lines provide information that can be used to generate indexes of the sequence entries based on functional, structural, or other categories.
     tagMap["CC"] = DNAInfo::COMMENT;  // The CC lines are free text comments on the entry, and are used to convey any useful information.
+    
+    allTags = {"ID", "AC", "DT", "DE", "GN", "OS", "OG", "OC", "RN", "RP", "RC", "RX", "RA", "RL", "CC", "DR", "KW", "FT", "SQ"};
 }
 
 FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
@@ -87,14 +89,31 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     if (!textOnly || size < 100) {
         return FormatDetection_NotMatched;
     }
-    bool tokenMatched = TextUtils::equals("ID   ", data, 5);
-    if (tokenMatched) {
-        if (QString(rawData).contains(QRegExp("\\d+ AA."))) {
-            return FormatDetection_HighSimilarity;
+    QString textCopy(rawData);
+    QTextStream stream(&textCopy);
+    QString line = stream.readLine();
+    QStringList lines;
+    while (!line.isNull()) {
+        if (!line.isEmpty()) {
+            lines.append(line);
         }
-        return FormatDetection_NotMatched;
+        line = stream.readLine();
     }
-    return FormatDetection_NotMatched;
+    if (lines.size() > 1) {
+        //last line incomplete don't check it
+        lines.removeLast();
+    }    
+    for (const QString& line : qAsConst(lines)) {
+        const QString firstWord = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts).first();
+        if (firstWord.size() != 2 && allTags.contains(firstWord)) {
+            return FormatDetection_NotMatched;
+        }
+        if (firstWord == "SQ") {
+            //Sequence section starts from here, nothing format specific to check after
+            return FormatDetection_Matched;
+        }
+    }
+    return FormatDetection_Matched;
 }
 
 //////////////////////////////////////////////////////////////////////////

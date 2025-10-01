@@ -47,6 +47,7 @@ protected:
     SharedAnnotationData readAnnotationNewFormat(char* cbuff, U2OpStatus& si, int offset);
 
     QMap<QString, QString> tagMap;
+    QSet<QString> allTags;
 
 private:
     static void check4SecondaryStructure(AnnotationData* a);
