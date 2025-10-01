@@ -68,15 +68,6 @@ const double piOverFourDouble = M_PI_4;
 const float piOverFourFloat = static_cast<float>(M_PI_4);
 #endif
 
-#if OS(DARWIN)
-
-// Work around a bug in the Mac OS X libc where ceil(-0.1) return +0.
-inline double wtf_ceil(double x) { return copysign(ceil(x), x); }
-
-#define ceil(x) wtf_ceil(x)
-
-#endif
-
 #if OS(SOLARIS) && __cplusplus < 201103L
 
 namespace std {
