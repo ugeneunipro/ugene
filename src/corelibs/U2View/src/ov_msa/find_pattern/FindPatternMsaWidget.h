@@ -100,6 +100,10 @@ private slots:
      * and runs a new search if the were no validation errors.
      */
     void sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges = false);
+    /**
+     * Toggles the use of ambiguous bases in the pattern.
+     */
+    void sl_toggleExtendedAlphabet();
 
 private:
     void updateActions();
@@ -107,6 +111,7 @@ private:
     void initAlgorithmLayout();
     void initRegionSelection();
     void initResultsLimit();
+    void initUseAmbiguousBasesContainer();
     void initMaxResultLenContainer();
     void updateLayout();
     void connectSlots();
@@ -202,6 +207,8 @@ private:
 
     QLabel* lblMatch;
     QSpinBox* spinMatch;
+    QWidget* useAmbiguousBasesContainer {nullptr};
+    QCheckBox* useAmbiguousBasesBox {nullptr};
 
     QWidget* useMaxResultLenContainer;
     QCheckBox* boxUseMaxResultLen;
