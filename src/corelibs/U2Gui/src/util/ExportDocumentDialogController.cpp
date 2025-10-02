@@ -21,11 +21,14 @@
 
 #include "ExportDocumentDialogController.h"
 
+#include <QFileInfo>
+#include <QMessageBox>
 #include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 
 #include <U2Gui/HelpButton.h>
 
@@ -130,6 +133,15 @@ Document* ExportDocumentDialogController::getSourceDoc() const {
 
 GObject* ExportDocumentDialogController::getSourceObject() const {
     return sourceObject;
+}
+
+void ExportDocumentDialogController::accept() {
+    QFileInfo urlInfo(getDocumentURL());
+    if (urlInfo.baseName().isEmpty() || urlInfo.isDir()) {
+        QMessageBox::critical(this, L10N::errorTitle(), tr("File name is required."));
+        return;
+    }
+    return QDialog::accept();
 }
 
 }  // namespace U2

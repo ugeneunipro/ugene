@@ -1560,8 +1560,7 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file with a non-empty name."));
-    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "", ExportDocumentDialogFiller::FASTA, false, true));
+    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "", ExportDocumentDialogFiller::FASTA, false, true, GTGlobals::UseMouse, "File name is required."));
     GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
 }
@@ -1569,7 +1568,7 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
 GUI_TEST_CLASS_DEFINITION(test_8164) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "COI_test_8164.pdb", ExportDocumentDialogFiller::CLUSTALW, false, true));
+    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "COI_test_8164.pdb", ExportDocumentDialogFiller::CLUSTALW, false, "File name is required."));
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
     GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
