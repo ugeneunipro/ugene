@@ -20,6 +20,8 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
+
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
@@ -35,9 +37,11 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "ExportDocumentDialogFiller"
-ExportDocumentDialogFiller::ExportDocumentDialogFiller(const QString& _path, const QString& _name, ExportDocumentDialogFiller::FormatToUse _format, bool compressFile, bool addToProject, GTGlobals::UseMethod method)
+ExportDocumentDialogFiller::ExportDocumentDialogFiller(const QString& _path, const QString& _name, ExportDocumentDialogFiller::FormatToUse _format, 
+                                                       bool compressFile, bool addToProject, GTGlobals::UseMethod method, QString _expectedError)
     : Filler("ExportDocumentDialog"),
-      path(_path), name(_name), useMethod(method), format(_format), compressFile(compressFile), addToProject(addToProject) {
+      path(_path), name(_name), useMethod(method), format(_format), compressFile(compressFile),
+      addToProject(addToProject), expectedError(_expectedError) {
     if (!path.isEmpty()) {
         path = GTFileDialog::toAbsoluteNativePath(_path, true);
     }
@@ -75,8 +79,14 @@ void ExportDocumentDialogFiller::commonScenario() {
         auto addCheckBox = GTWidget::findCheckBox("addToProjCheck", dialog);
         GTCheckBox::setChecked(addCheckBox, addToProject);
     }
-
+    if (!expectedError.isEmpty()) {
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, expectedError));
+    }
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+    if (!expectedError.isEmpty()) {
+        GTGlobals::sleep();
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+    }
 }
 #undef GT_CLASS_NAME
 
