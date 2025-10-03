@@ -74,8 +74,6 @@ protected:
     U2DbiRef dstDbiRef;
 
 private:
-    DataStorage dataStorage;
-
     CommunicationChannel* ch;
     bool append;
     uint fileMode;
@@ -83,9 +81,6 @@ private:
     QMap<QString, int> counters;  // url <-> count suffix
     QMap<QString, IOAdapter*> adapters;
     QMap<IOAdapter*, Document*> docs;
-
-    QString dstPathInDb;
-    bool objectsReceived;
 
 private slots:
     void sl_objectImported(Task* importTask);
@@ -103,7 +98,6 @@ private:
     Task* processDocs();
     SaveDocFlags getDocFlags() const;
     void storeData(const QStringList& urls, const QVariantMap& data, U2OpStatus& os);
-    Task* createWriteToSharedDbTask(const QVariantMap& data);
     void reportNoDataReceivedWarning();
 
     QString getDefaultFileName() const;
