@@ -48,8 +48,13 @@ public:
     ObjectViewTask(GObjectViewFactoryId fid, const QString& viewName = QString(), const QVariantMap& s = QVariantMap());
 
     void prepare() override;
+    void run() override;
     ReportResult report() override;
 
+    // Override these methods in subclasses if needed
+    // loadCache() is called from the separate thread in run() u
+    // use it to load cache from DB, which loads long enough
+    virtual void loadCache() {};
     virtual void open() {};
     virtual void update() {};
 
