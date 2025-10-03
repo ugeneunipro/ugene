@@ -392,13 +392,6 @@ void MaEditorNameList::mousePressEvent(QMouseEvent* e) {
     maVersionBeforeMousePress = maObject->getModificationVersion();
     maObject->saveState();
 
-    // FIXME: do not start tracking signal here. Do it when the real dragging starts.
-    if (!maObject->isStateLocked()) {
-        U2OpStatus2Log os;
-        changeTracker->startTracking(os);
-    }
-    emit si_startMaChanging();
-
     mousePressPoint = e->pos();
     MaCollapseModel* collapseModel = editor->getCollapseModel();
     RowHeightController* heightController = ui->getRowHeightController();
@@ -457,6 +450,15 @@ void MaEditorNameList::mouseMoveEvent(QMouseEvent* e) {
     }
 
     if (isDragSequences) {
+        if (!changeTracker->isTracking()) {
+            SAFE_POINT(!editor->getMaObject()->isStateLocked(), "Cannot drag sequence when the state is locked", );
+
+            U2OpStatus2Log os;
+            changeTracker->startTracking(os);
+            CHECK_OP(os, );
+
+            emit si_startMaChanging();
+        }
         moveSelectedRegion(mouseRow - editor->getCursorPosition().y());
     } else if (isDragSelection) {
         rubberBand->setGeometry(QRect(mousePressPoint, e->pos()).normalized());

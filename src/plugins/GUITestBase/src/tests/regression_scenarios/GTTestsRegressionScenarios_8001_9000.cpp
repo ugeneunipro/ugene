@@ -1262,6 +1262,42 @@ GUI_TEST_CLASS_DEFINITION(test_8120_2) {
     CHECK_SET_ERR(lt.hasMessage("Render overview"), "No expected message in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8121) {
+    // Open big.aln
+    // Expected: rendering task in progress
+    // Select read "seq2"
+    // Expected: rendering task was not restarted
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "big.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    // GTUtilsMsaEditor::checkMsaEditorWindowIsActive() passes execution too early, loading tasks arn't finished yet.
+    // From the other hand, GTUtilsTaskTreeView::waitTaskFinished() waits until rendering task is finished,
+    // so it's better to use the last one and re-run rendering task, for example, by toggling Project View.
+    GTUtilsProjectTreeView::toggleView();
+    auto ts = AppContext::getTaskScheduler();
+    auto tlt = ts->getTopLevelTasks();
+    int tltSize = tlt.size();
+    CHECK_SET_ERR(tltSize == 1, QString("Unexpected number of tasks, check 1: %1").arg(tltSize));
+
+    auto task = tlt.first();
+    auto taskName = task->getTaskName();
+    CHECK_SET_ERR(taskName == "Render overview", QString("Unexpected task name, check 1: %1").arg(taskName));
+
+    int progress1 = task->getProgress();
+    GTUtilsMsaEditor::selectRowsByName({"seq2"});
+    tlt = ts->getTopLevelTasks();
+    tltSize = tlt.size();
+    CHECK_SET_ERR(tltSize == 1, QString("Unexpected number of tasks, check 2: %1").arg(tltSize));
+
+    task = tlt.first();
+    taskName = task->getTaskName();
+    CHECK_SET_ERR(taskName == "Render overview", QString("Unexpected task name, check 2: %1").arg(taskName));
+
+    int progress2 = task->getProgress();
+    CHECK_SET_ERR(progress1 < progress2, QString("Unexpected task progress, should be: %1 < %2").arg(progress1).arg(progress2));
+
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8134) {
     // Open _common_data/scenarios/_regression/8134/8134.fa (short sequence 15 bases long)
     // Show GC Content (%) graph
