@@ -451,10 +451,12 @@ void MaEditorNameList::mouseMoveEvent(QMouseEvent* e) {
 
     if (isDragSequences) {
         if (!changeTracker->isTracking()) {
-            SAFE_POINT(!editor->getMaObject()->isStateLocked(), "Cannot dra sequence when the state is locked", );
+            SAFE_POINT(!editor->getMaObject()->isStateLocked(), "Cannot drag sequence when the state is locked", );
 
             U2OpStatus2Log os;
             changeTracker->startTracking(os);
+            CHECK_OP(os, );
+
             emit si_startMaChanging();
         }
         moveSelectedRegion(mouseRow - editor->getCursorPosition().y());
