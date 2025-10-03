@@ -79,14 +79,15 @@ private:
     uint fileMode;
     QSet<QString> usedUrls;
     QMap<QString, int> counters;  // url <-> count suffix
-    QMap<QString, IOAdapter*> adapters;
-    QMap<IOAdapter*, Document*> docs;
+    QMap<QString, Document*> docs;
+
+    // Key - adapter factory, value - corresponding adapter
+    QMap<IOAdapterFactory*, QPointer<IOAdapter>> factoryAdapterCache;
 
 private slots:
     void sl_objectImported(Task* importTask);
 
 private:
-    bool ifCreateAdapter(const QString& url) const;
     /**
      * Creates an adapter for @url or returns existing one.
      * The url of the adapter could be not equal to @url.
