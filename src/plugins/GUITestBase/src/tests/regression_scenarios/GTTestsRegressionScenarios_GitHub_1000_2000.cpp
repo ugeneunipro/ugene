@@ -173,6 +173,21 @@ GUI_TEST_CLASS_DEFINITION(test_1794) {
     GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Reads);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1812) {
+    GTFileDialog::openFile(testDir + "_common_data/primer3/custom_primers.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    
+    GTUtilsAnnotationsTreeView::clickItem("primer1", 1, false);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsAnnotationsTreeView::clickItem("primer2", 1, false);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    GTKeyboardDriver::keyClick('t', Qt::ShiftModifier);
+
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 1  (0, 2)", {{50, 79}, {400, 435}});
+}
+
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
