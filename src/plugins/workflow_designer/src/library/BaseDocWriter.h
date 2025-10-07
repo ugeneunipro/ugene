@@ -81,8 +81,7 @@ private:
     QMap<QString, int> counters;  // url <-> count suffix
     QMap<QString, Document*> docs;
 
-    // Key - adapter factory, value - corresponding adapter
-    QMap<IOAdapterFactory*, QPointer<IOAdapter>> factoryAdapterCache;
+    QPointer<IOAdapter> adapterCache;
 
 private slots:
     void sl_objectImported(Task* importTask);

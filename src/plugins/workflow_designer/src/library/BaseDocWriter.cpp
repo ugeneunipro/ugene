@@ -58,7 +58,11 @@ BaseDocWriter::BaseDocWriter(Actor* a)
     : BaseWorker(a), format(nullptr), ch(nullptr), append(true), fileMode(SaveDoc_Roll) {
 }
 
-void BaseDocWriter::cleanup() {}
+void BaseDocWriter::cleanup() {
+    if (!adapterCache.isNull()) {
+        adapterCache->close();
+    }
+}
 
 void BaseDocWriter::init() {
     SAFE_POINT(ports.size() == 1, "Unexpected port count", );
@@ -218,14 +222,21 @@ void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDo
 }
 
 IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    auto io = factoryAdapterCache.value(iof);
-    if (io == nullptr) {
-        io = iof->createIOAdapter();
-        factoryAdapterCache.insert(iof, io);
+    IOAdapter* io = nullptr;
+    if (adapterCache.isNull()) {
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        adapterCache = iof->createIOAdapter();
+
+        io = adapterCache;
+        openAdapter(io, url, SaveDocFlags(fileMode), os);
+        CHECK_OP(os, nullptr);
+    } else {
+        io = adapterCache;
+        if (!append) {
+            openAdapter(io, url, SaveDocFlags(fileMode), os);
+            CHECK_OP(os, nullptr);
+        }
     }
-    openAdapter(io.data(), url, SaveDocFlags(fileMode), os);
-    CHECK_OP(os, nullptr);
 
     QString resultUrl = io->getURL().getURLString();
     usedUrls << resultUrl;
@@ -268,7 +279,10 @@ void BaseDocWriter::storeData(const QStringList& urls, const QVariantMap& data, 
             CHECK_OP(os, );
             data2doc(doc, data);
         }
-        io->close();
+        if (!append) {
+            io->close();
+        }
+
     }
 }
 
@@ -329,7 +343,7 @@ void BaseDocWriter::sl_objectImported(Task* importTask) {
 }
 
 Task* BaseDocWriter::processDocs() {
-    if (factoryAdapterCache.isEmpty()) {
+    if (adapterCache.isNull()) {
         reportNoDataReceivedWarning();
     }
     if (docs.isEmpty()) {
