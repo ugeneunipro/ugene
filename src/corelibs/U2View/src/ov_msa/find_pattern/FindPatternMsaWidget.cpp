@@ -35,6 +35,7 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -252,6 +253,8 @@ void FindPatternMsaWidget::initAlgorithmLayout() {
     layoutMismatch->addWidget(spinMatch);
 
     layoutAlgorithmSettings->addLayout(layoutMismatch);
+
+    initUseAmbiguousBasesContainer();
     initMaxResultLenContainer();
 
     selectedAlgorithm = boxAlgorithm->itemData(boxAlgorithm->currentIndex()).toInt();
@@ -274,6 +277,25 @@ void FindPatternMsaWidget::initResultsLimit() {
     boxMaxResult->setMaximum(INT_MAX);
     boxMaxResult->setValue(DEFAULT_RESULTS_NUM_LIMIT);
     boxMaxResult->setEnabled(true);
+}
+
+void FindPatternMsaWidget::initUseAmbiguousBasesContainer() {
+    useAmbiguousBasesContainer = new QWidget();
+
+    auto useAmbiguousBasesLayout = new QHBoxLayout();
+    useAmbiguousBasesLayout->setContentsMargins(0, 0, 0, 0);
+    useAmbiguousBasesLayout->setSpacing(10);
+    useAmbiguousBasesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    useAmbiguousBasesContainer->setLayout(useAmbiguousBasesLayout);
+
+    useAmbiguousBasesBox = new QCheckBox();
+    useAmbiguousBasesBox->setObjectName("useAmbiguousBasesBox");
+    auto useAmbiguousBasesLabel = new QLabel(tr("Search with ambiguous bases"));
+    useAmbiguousBasesLabel->setWordWrap(true);
+
+    useAmbiguousBasesLayout->addWidget(useAmbiguousBasesBox, 0);
+    useAmbiguousBasesLayout->addWidget(useAmbiguousBasesLabel, 1);
+    layoutAlgorithmSettings->addWidget(useAmbiguousBasesContainer);
 }
 
 void FindPatternMsaWidget::initMaxResultLenContainer() {
@@ -336,6 +358,8 @@ void FindPatternMsaWidget::connectSlots() {
             SLOT(sl_onSelectedRegionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
+
+    connect(useAmbiguousBasesBox, &QCheckBox::toggled, this, &FindPatternMsaWidget::sl_toggleExtendedAlphabet);
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index) {
@@ -392,6 +416,7 @@ void FindPatternMsaWidget::updateLayout() {
         boxMaxResultLen->hide();
         spinMatch->hide();
         lblMatch->hide();
+        useAmbiguousBasesContainer->hide();
     }
     if (selectedAlgorithm == FindAlgorithmPatternSettings_InsDel) {
         useMaxResultLenContainer->hide();
@@ -400,6 +425,7 @@ void FindPatternMsaWidget::updateLayout() {
         lblMatch->show();
         spinMatch->show();
         QWidget::setTabOrder(boxAlgorithm, spinMatch);
+        useAmbiguousBasesContainer->hide();
     } else if (selectedAlgorithm == FindAlgorithmPatternSettings_Subst) {
         useMaxResultLenContainer->hide();
         boxMaxResultLen->hide();
@@ -407,6 +433,7 @@ void FindPatternMsaWidget::updateLayout() {
         enableDisableMatchSpin();
         lblMatch->show();
         spinMatch->show();
+        useAmbiguousBasesContainer->show();
     } else if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         useMaxResultLenContainer->show();
         boxMaxResultLen->show();
@@ -414,6 +441,7 @@ void FindPatternMsaWidget::updateLayout() {
         lblMatch->hide();
         QWidget::setTabOrder(boxAlgorithm, boxUseMaxResultLen);
         QWidget::setTabOrder(boxUseMaxResultLen, boxMaxResultLen);
+        useAmbiguousBasesContainer->hide();
     }
 }
 
@@ -524,6 +552,10 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     } else {
         startFindPatternInMsaTask(newPatterns);
     }
+}
+
+void FindPatternMsaWidget::sl_toggleExtendedAlphabet() {
+    sl_validateStateAndStartNewSearch();
 }
 
 void FindPatternMsaWidget::clearResults() {
@@ -714,6 +746,7 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList& patterns
 
     settings.findSettings.maxErr = 0;
 
+    settings.findSettings.useAmbiguousBases = useAmbiguousBasesBox->isChecked();
     settings.findSettings.maxRegExpResultLength = boxUseMaxResultLen->isChecked() ? boxMaxResultLen->value() : DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
 
     // Creating and registering the task
@@ -785,7 +818,19 @@ bool FindPatternMsaWidget::checkAlphabet(const QString& pattern) {
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         return true;
     }
-    return TextUtils::fits(alphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
+    if (TextUtils::fits(alphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size())) {
+        return true;
+    }
+    if (useAmbiguousBasesBox->isChecked() && !alphabet->isExtended()) {
+        const DNAAlphabet* extAlphabet = U2AlphabetUtils::getExtendedAlphabet(alphabet);
+        if (extAlphabet != nullptr) {
+            bool patternFitsIntoExtAlphabet = TextUtils::fits(extAlphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
+            if (patternFitsIntoExtAlphabet) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 QString FindPatternMsaWidget::checkSearchRegion() const {

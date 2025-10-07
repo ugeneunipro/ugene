@@ -1560,8 +1560,7 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file with a non-empty name."));
-    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "", ExportDocumentDialogFiller::FASTA, false, true));
+    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "", ExportDocumentDialogFiller::FASTA, false, true, GTGlobals::UseMouse, "File name is required."));
     GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
 }
@@ -1569,7 +1568,7 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
 GUI_TEST_CLASS_DEFINITION(test_8164) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "COI_test_8164.pdb", ExportDocumentDialogFiller::CLUSTALW, false, true));
+    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "COI_test_8164.pdb", ExportDocumentDialogFiller::CLUSTALW, false, "File name is required."));
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
     GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1641,6 +1640,31 @@ GUI_TEST_CLASS_DEFINITION(test_8175) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/tree_view/deep_tree_412.nwk");
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasError("Tree branch is too long"), "Expected no errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_8184) {
+    // Open COI.aln
+    // Opes Search OP tab
+    // Set "Substitute" algorithm
+    // Type "WWWWWW" as pattern
+    // Expected: input value contains characters that do not match the active alphabet!
+    // Check "Search with ambiguious bases" and wait for task finished
+    // Expect: no warning, 887 results
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Search);
+    GTUtilsOptionPanelMsa::setAlgorithm("Substitute");
+    GTUtilsOptionPanelMsa::enterPattern("WWWWWW");
+    auto lblErrorMessage = GTWidget::findLabel("lblErrorMessage");
+    auto errorText = lblErrorMessage->text();
+    CHECK_SET_ERR(errorText.contains("input value contains characters that do not match the active alphabet!"), QString("Unexpected error: %1").arg(errorText));
+
+    GTCheckBox::setChecked("useAmbiguousBasesBox", true);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsOptionPanelMsa::checkResultsText("Results: 1/887");
+    errorText = lblErrorMessage->text();
+    CHECK_SET_ERR(errorText.isEmpty(), QString("Unexpected error: %1").arg(errorText));
 }
 
 }  // namespace GUITest_regression_scenarios
