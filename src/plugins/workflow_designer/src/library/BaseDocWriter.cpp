@@ -58,11 +58,7 @@ BaseDocWriter::BaseDocWriter(Actor* a)
     : BaseWorker(a), format(nullptr), ch(nullptr), append(true), fileMode(SaveDoc_Roll) {
 }
 
-void BaseDocWriter::cleanup() {
-    if (!adapterCache.isNull()) {
-        adapterCache->close();
-    }
-}
+void BaseDocWriter::cleanup() {}
 
 void BaseDocWriter::init() {
     SAFE_POINT(ports.size() == 1, "Unexpected port count", );
@@ -195,24 +191,26 @@ void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDo
     // Generate a target URL from the source URL.
     QString url = aUrl;
     int suffix = 0;
-    do {
-        if (suffix == 0 && counters.contains(aUrl)) {
-            suffix = counters[aUrl];
-        }
-        if (suffix > 0) {
-            url = GUrlUtils::insertSuffix(aUrl, "_" + QString::number(suffix));
-        }
-        suffix++;
-    } while (monitor()->containsOutputFile(url));
+    if (!append) {
+        do {
+            if (suffix == 0 && counters.contains(aUrl)) {
+                suffix = counters[aUrl];
+            }
+            if (suffix > 0) {
+                url = GUrlUtils::insertSuffix(aUrl, "_" + QString::number(suffix));
+            }
+            suffix++;
+        } while (monitor()->containsOutputFile(url));
 
-    if (flags.testFlag(SaveDoc_Roll)) {
-        TaskStateInfo ti;
-        if (!GUrlUtils::renameFileWithNameRoll(url, ti, usedUrls)) {
-            os.setError(ti.getError());
-            return;
+        if (flags.testFlag(SaveDoc_Roll)) {
+            TaskStateInfo ti;
+            if (!GUrlUtils::renameFileWithNameRoll(url, ti, usedUrls)) {
+                os.setError(ti.getError());
+                return;
+            }
         }
     }
-    IOAdapterMode mode = flags.testFlag(SaveDoc_Append) ? IOAdapterMode_Append : IOAdapterMode_Write;
+    IOAdapterMode mode = (append && usedUrls.contains(url)) ? IOAdapterMode_Append : IOAdapterMode_Write;
     bool opened = io->open(url, mode);
     if (!opened) {
         os.setError(tr("Can not open a file for writing: %1").arg(url));
@@ -221,22 +219,46 @@ void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDo
     counters[aUrl] = suffix;
 }
 
+bool BaseDocWriter::adapterShouldBeReopened(const QString& url) const {
+    // Current format does not support multiple messages in one file
+    // e.g. we cannot write several alignments into one CLUSTALW file
+    if (!isSupportedSeveralMessages()) {
+        return true;
+    }
+
+    // if not accumulate object in one file
+    if (!append) {
+        return true;
+    }
+
+    // it is opened, but for another url
+    SAFE_POINT_NN(adapterCache, true);
+    SAFE_POINT(adapterCache->isOpen(), "Adapter should be opened", true);
+
+    return adapterCache->getURL().getURLString() != url;
+}
+
 IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
     IOAdapter* io = nullptr;
     if (adapterCache.isNull()) {
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         adapterCache = iof->createIOAdapter();
 
+    } /* else {
         io = adapterCache;
-        openAdapter(io, url, SaveDocFlags(fileMode), os);
-        CHECK_OP(os, nullptr);
-    } else {
-        io = adapterCache;
-        if (!append) {
+        if (adapterShouldBeReopened(url)) {
+            if (!io->isOpen()) {
+                // could be already closed, if previous document was saved by task
+                io->close();
+            }
             openAdapter(io, url, SaveDocFlags(fileMode), os);
             CHECK_OP(os, nullptr);
         }
-    }
+    }*/
+
+    io = adapterCache;
+    openAdapter(io, url, SaveDocFlags(fileMode), os);
+    CHECK_OP(os, nullptr);
 
     QString resultUrl = io->getURL().getURLString();
     usedUrls << resultUrl;
@@ -279,10 +301,8 @@ void BaseDocWriter::storeData(const QStringList& urls, const QVariantMap& data, 
             CHECK_OP(os, );
             data2doc(doc, data);
         }
-        if (!append) {
-            io->close();
-        }
 
+        io->close();
     }
 }
 

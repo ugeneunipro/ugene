@@ -87,6 +87,7 @@ private slots:
     void sl_objectImported(Task* importTask);
 
 private:
+    bool adapterShouldBeReopened(const QString& url) const;
     /**
      * Creates an adapter for @url or returns existing one.
      * The url of the adapter could be not equal to @url.
