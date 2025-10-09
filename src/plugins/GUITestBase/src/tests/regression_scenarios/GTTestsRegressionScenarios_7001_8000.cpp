@@ -5435,5 +5435,16 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
     GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7994) {
+    // Open _common_data/primer3/KPNB1_genomic.gb
+    // Click on mRNA annotation with right mouse button
+    // Expected: no "Fetch sequences from remote database" in the context menu
+    GTFileDialog::openFile(testDir, "_common_data/primer3/KPNB1_genomic.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::clickAnnotationPan("mRNA", 1);
+    GTUtilsDialog::waitForDialog(new PopupCheckerByText({"Fetch sequences from remote database"}, PopupChecker::CheckOption::NotExists));
+    GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
