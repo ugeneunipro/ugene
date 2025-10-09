@@ -663,6 +663,93 @@ GUI_TEST_CLASS_DEFINITION(test_8077_2) {
     GTUtilsWorkflowDesigner::runWorkflow();
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_8078) {
+    // Enable the debug mode for WD
+    // Open the WD
+    // Open "Samples"- >"Alignment"->"Align sequences with MUSCLE".
+    // Set "COI.aln" and "HIV-1.aln" as input
+    // Click "Next" and "Apply"
+    // Set a breakpoint on the "Align with MUSCLE" element
+    // Run workflow
+    // Wait for breakpoint triggered
+    // Select the "Read alignment"
+    // Click "Process one message"
+    // Click on the connection between the "Align with MUSCLE" and "Write alignment" elements
+    // Right-click the cell "Name: 'COI'; ..."->"Convert to document"
+    // Make sure the "Add to project" checkbox is checked
+    // Click "Export"
+    // Expected: MSA is loaded
+    class EnableWdDebuggerFiller : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto tree = GTWidget::findTreeWidget("tree", dialog);
+
+            QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
+            foreach (QTreeWidgetItem* item, items) {
+                if (item->text(0) == "  Workflow Designer") {
+                    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
+                    GTMouseDriver::click();
+                }
+            }
+
+            GTCheckBox::setChecked(GTWidget::findCheckBox("debuggerBox", dialog), true);
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new EnableWdDebuggerFiller()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    class MuscleScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTUtilsWizard::setInputFiles({{dataDir + "samples/CLUSTALW/COI.aln", dataDir + "samples/CLUSTALW/HIV-1.aln"}});
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new Filler("Align Sequences with MUSCLE Wizard", new MuscleScenario));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Break at element..."}));
+    GTUtilsWorkflowDesigner::click("Align with MUSCLE");
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTGlobals::sleep(2000, "Wait for breakpoint triggered");
+    GTUtilsWorkflowDesigner::click("Read alignment");
+    GTWidget::click(GTAction::button("process_one_message", GTUtilsMdi::activeWindow()));
+    auto alignItem = GTUtilsWorkflowDesigner::getWorker("Align with MUSCLE");
+    auto writeItem = GTUtilsWorkflowDesigner::getWorker("Write alignment");
+    auto bus = GTUtilsWorkflowDesigner::getConnectionArrow(alignItem, writeItem);
+    auto hint = GTUtilsWorkflowDesigner::getArrowHint(bus);
+    GTUtilsWorkflowDesigner::click(hint);
+    QWidget* wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
+    auto investigationWidget = GTWidget::findTableView("investigation_widget_Messages from 'Align with MUSCLE' to 'Write alignment'", wdWindow);
+    GTTableView::click(investigationWidget, 0, 0);
+
+    class ExportScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_8078.gb", dialog);
+            GTCheckBox::setChecked(GTWidget::findCheckBox("addToProjCheck", dialog), true);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new Filler("ExportDocumentDialog", new ExportScenario));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Convert to document"}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    
+    // Finish
+    GTUtilsMdi::activateWindow("Workflow Designer - Align sequences with MUSCLE");
+    GTUtilsWorkflowDesigner::stopWorkflow();
+    
+}
+
 // Check that there is only one breakpoint "Read Alignment" in the breakpoint manager.
 static void checkReadAlignmentBreakpoint() {
     GTThread::waitForMainThread();

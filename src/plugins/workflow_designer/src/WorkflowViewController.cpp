@@ -688,6 +688,7 @@ void WorkflowView::createActions() {
     toggleBreakpointAction->setEnabled(false);
 
     tickReadyAction = new QAction(tr("Process one &message"), this);
+    tickReadyAction->setObjectName("process_one_message");
     tickReadyAction->setIcon(QIcon(":workflow_designer/images/process_one_message.png"));
     tickReadyAction->setShortcut(QKeySequence("Ctrl+M"));
     tickReadyAction->setEnabled(false);
