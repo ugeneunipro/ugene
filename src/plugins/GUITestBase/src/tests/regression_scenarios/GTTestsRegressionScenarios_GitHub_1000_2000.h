@@ -31,6 +31,7 @@ namespace GUITest_regression_scenarios_github_issues {
 #define GUI_TEST_SUITE "GUITest_regression_scenarios_github_issues"
 
 GUI_TEST_CLASS_DECLARATION(test_1794)
+GUI_TEST_CLASS_DECLARATION(test_1812)
 
 #undef GUI_TEST_SUITE
 
