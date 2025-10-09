@@ -83,6 +83,7 @@ private:
     void fetchSequencesFromRemoteDB(const QMap<QString, QStringList>& databaseAccessionsMap);
     void selectionToAlignment(const QString& title, bool annotations, bool translate);
     QString getDbByCurrentAlphabet() const;
+    QMap<QString, QStringList> getSelectedAnnotationsDatabaseAccessionsMap() const;
 
     AnnotatedDNAView* view;
 
