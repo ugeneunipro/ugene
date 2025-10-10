@@ -1944,6 +1944,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1790);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1794);
+    REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1810);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1812);
 
     //////////////////////////////////////////////////////////////////////////
