@@ -219,7 +219,7 @@ GUI_TEST_CLASS_DEFINITION(test_1794) {
 GUI_TEST_CLASS_DEFINITION(test_1812) {
     GTFileDialog::openFile(testDir + "_common_data/primer3/custom_primers.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
-    
+
     GTUtilsAnnotationsTreeView::clickItem("primer1", 1, false);
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsAnnotationsTreeView::clickItem("primer2", 1, false);
@@ -229,6 +229,20 @@ GUI_TEST_CLASS_DEFINITION(test_1812) {
 
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 1  (0, 2)", {{50, 79}, {400, 435}});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1819) {
+    // Open human_T1.fa
+    // Open empty_ugene_name.gb
+    // Attach annotations from the second file to the first file.
+    // Expected: no errors
+    GTLogTracer lt;
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTFileDialog::openFile(testDir + "_common_data/genbank/", "empty_ugene_name.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject("Annotation features");
+    CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues
