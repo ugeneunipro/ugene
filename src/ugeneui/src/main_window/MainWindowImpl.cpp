@@ -477,7 +477,7 @@ void MainWindowImpl::sl_installToPathAction() {
 
     bool success = true;
     QString exePath = AppContext::getWorkingDirectoryPath() + "/";
-    QString installationPath = "/usr/bin/";
+    QString installationPath = "/usr/local/bin/";
     QStringList tools;
     tools << "ugene"
           << "ugeneui"
@@ -496,7 +496,7 @@ void MainWindowImpl::sl_installToPathAction() {
                 // HACK: sleep because otherwise QFileInfo::exists might return false
                 sleep(100);
                 wait(nullptr);
-                if (!QFileInfo(symlink).exists()) {
+                if (!QFileInfo::exists(symlink)) {
                     QMessageBox::critical(nullptr, tr("Installation failed"), tr("Failed to enable terminal usage: couldn't install '%1'").arg(symlink));
                     success = false;
                     break;
