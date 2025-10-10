@@ -706,7 +706,6 @@ GUI_TEST_CLASS_DEFINITION(test_8078) {
     class MuscleScenario : public CustomScenario {
     public:
         void run() override {
-            QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsWizard::setInputFiles({{dataDir + "samples/CLUSTALW/COI.aln", dataDir + "samples/CLUSTALW/HIV-1.aln"}});
             GTUtilsWizard::clickButton(GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
