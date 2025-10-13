@@ -88,6 +88,7 @@ if (seqObject.length() < SequenceLength) {
         }
         wizard {
             name:"Filter short sequences";
+            help-page-id:16122740;
             auto-run: true;
             page {
                 id:1;

@@ -192,6 +192,7 @@ workflow "Variant calling and effects prediction"{
         }
         wizard {
             auto-run: true;
+            help-page-id:16122742;
             name:"Call Variants Wizard";
             page {
                 id:1;
