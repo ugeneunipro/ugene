@@ -78,6 +78,7 @@ workflow "De novo assemble Illumina PE and Nanopore reads"{
         }
         wizard {
             name:"Illumina PE Reads De Novo Assembly Wizard";
+            help-page-id:16122730;
             auto-run: true;
             page {
                 id:1;

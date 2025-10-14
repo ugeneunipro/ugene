@@ -58,6 +58,7 @@ workflow "Quality control by FastQC"{
         }
         wizard {
             name:"Quality Control by FastQC Wizard";
+            help-page-id:16122728;
             auto-run:true;
             page {
                 id:1;
