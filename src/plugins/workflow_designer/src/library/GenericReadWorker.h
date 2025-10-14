@@ -98,11 +98,17 @@ public:
     DocumentFormat* format;
 };
 
+// This task loads MSA from a file and imports it to the database.
+// Multiple alignment or a set of sequences can be treated as MSA.
+// It the file does not contain MSA or sequences, an error is set.
 class LoadMSATask : public Task {
     Q_OBJECT
 public:
     LoadMSATask(const QString& url, const QString& datasetName, DbiDataStorage* storage);
     virtual void prepare();
+    // Opens the document, finds MSA or sequences, imports them to the database,
+    // If sequences are found, they are converted to MSA.
+    // If there is no MSA or sequences, an error is set.
     virtual void run();
 
     QString url;
