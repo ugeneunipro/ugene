@@ -165,6 +165,7 @@ workflow "RNA-Seq analysis with TopHat and StringTie"{
         }
         wizard {
             name:"RNA-Seq Analysis with TopHat and StringTie";
+            help-page-id:16122738;
             auto-run: true;
             page {
                 id:1;
