@@ -4331,7 +4331,6 @@ GUI_TEST_CLASS_DEFINITION(test_7780) {
     class Scenario : public CustomScenario {
     public:
         void run() override {
-            QWidget* wizard = GTWidget::getActiveModalWidget();
             GTUtilsWizard::setInputFiles({{testDir + "_common_data/scenarios/_regression/7780/seq.seq"}});
             GTUtilsWizard::clickButton(GTUtilsWizard::Next);
             GTUtilsWizard::setParameter("Primers URL", testDir + "_common_data/scenarios/_regression/7780/primers.fa");
