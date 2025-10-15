@@ -53,6 +53,8 @@ public:
 
     MsaEditor* getMsaEditor() const;
 
+    CreatePhyTreeSettings getSettings() const;
+
 private slots:
     void sl_openTree(Task* treeBuildTask);
     void sl_openTreeTaskFinished(Task* task);

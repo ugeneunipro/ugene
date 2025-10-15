@@ -1184,7 +1184,7 @@ bool FindPatternWidget::checkAlphabet(const QString& pattern) {
     if (patternFitsIntoAlphabet) {
         return true;
     }
-    if (useAmbiguousBasesBox->isChecked() && !alphabet->isExtended()) {
+    if (useAmbiguousBasesBox->isVisible() && useAmbiguousBasesBox->isChecked() && !alphabet->isExtended()) {
         const DNAAlphabet* extAlphabet = U2AlphabetUtils::getExtendedAlphabet(alphabet);
         if (extAlphabet != nullptr) {
             bool patternFitsIntoExtAlphabet = TextUtils::fits(extAlphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());

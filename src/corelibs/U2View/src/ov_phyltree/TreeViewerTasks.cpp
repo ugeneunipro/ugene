@@ -243,9 +243,15 @@ MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, Msa
 }
 
 void MSAEditorOpenTreeViewerTask::createTreeViewer() {
-    auto createTask = new CreateMSAEditorTreeViewerTask(treeManager->getMsaEditor(), phyObject->getDocument()->getName(), phyObject, stateData);
-    connect(new TaskSignalMapper(createTask), SIGNAL(si_taskFinished(Task*)), treeManager, SLOT(sl_openTreeTaskFinished(Task*)));
-    AppContext::getTaskScheduler()->registerTopLevelTask(createTask);
+    Task* openViewTask = nullptr;
+    if (!treeManager->getSettings().displayWithAlignmentEditor) {
+        openViewTask = AppContext::getProjectLoader()->openWithProjectTask(phyObject->getDocument()->getURL());
+        CHECK(openViewTask, )
+    } else {
+        openViewTask = new CreateMSAEditorTreeViewerTask(treeManager->getMsaEditor(), phyObject->getDocument()->getName(), phyObject, stateData);
+        connect(new TaskSignalMapper(openViewTask), SIGNAL(si_taskFinished(Task*)), treeManager, SLOT(sl_openTreeTaskFinished(Task*)));
+    }
+    AppContext::getTaskScheduler()->registerTopLevelTask(openViewTask);
 }
 
 }  // namespace U2

@@ -142,6 +142,10 @@ QList<Task*> Shtirlitz::wakeup() {
             }
         }
     }
+    
+    if (AppContext::getMainWindow()->isDarkTheme()) {
+        GCOUNTER(ctr, "ugeneui starts in dark theme");
+    }
 
     // Check if this version of UGENE is launched for the first time
     // and user did not enabled stats before -> ask to enable
