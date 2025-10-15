@@ -75,6 +75,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsProject.h"
@@ -106,6 +107,7 @@
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View//ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
@@ -214,6 +216,32 @@ GUI_TEST_CLASS_DEFINITION(test_1794) {
     GTUtilsDialog::add(new PopupChooserByText({"Export", "Assembly region"}));
     GTUtilsDialog::add(new AnyDialogFiller("ExtractAssemblyRegionDialog", new Scenario()));
     GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Reads);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1810) {
+    /*
+     * 1. Open COI.aln.
+     * 2. Build a tree and make it open in a new window in Display Options tab -> COI.hwk is created in new window.
+     * 3. Select opened COI.aln in the view.
+     * 4. In Option View select tree tab
+     * 5. Open created COI.nwk from COI.aln options panel
+     * Expected state: previously opened view activated
+     */
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(testDir + "_common_data/scenarios/sandbox/COI_test_1810.nwk", 0, 0, false));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsMdi::activateWindow("COI [COI.aln]");
+
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::AddTree);
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/sandbox/COI_test_1810.nwk"));
+    GTWidget::click(GTWidget::findWidget("openTreeButton"));
+    GTGlobals::sleep();
+    CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle() == "Tree [COI_test_1810.nwk]", "Unexpected active window title");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1812) {
