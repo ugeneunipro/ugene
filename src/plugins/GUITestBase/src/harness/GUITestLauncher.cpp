@@ -138,7 +138,7 @@ void GUITestLauncher::firstTestRunCheck(const QString& testName) {
 QList<GUITest*> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest*>& allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {  // Windows & Mac.
-        testsPerSuite << 950 << 910 << -1;
+        testsPerSuite << 980 << 940 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 670 << 670 << 730 << -1;
     } else if (suiteCount == 5) {

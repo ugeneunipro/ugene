@@ -654,13 +654,8 @@ void PanViewRenderArea::drawAll(QPaintDevice* pd) {
 
     p.drawPixmap(0, 0, *cachedView);
 
-    // SANGER_TODO: should not be this kind of connection
-    //    ADVSingleSequenceWidget* ssw = panView->seqWidget;
-    //    SAFE_POINT(ssw != NULL, "ADVSingleSequenceWidget is NULL", );
-    //    if (!ssw->isOverviewCollapsed()) {
-    //        //! VIEW_RENDERER_REFACTORING: consider to move frame drawing to renderer
-    //        drawFrame(p);
-    //    }
+    //! VIEW_RENDERER_REFACTORING: consider to move frame drawing to renderer
+    drawFrame(p);
 
     renderer->drawSelection(p, QSize(pd->width(), pd->height()), view->getVisibleRange());
 

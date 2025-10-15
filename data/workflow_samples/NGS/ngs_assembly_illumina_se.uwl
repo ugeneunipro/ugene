@@ -104,6 +104,7 @@ workflow "De novo assemble Illumina SE reads"{
         }
         wizard {
             name:"Illumina SE Reads De Novo Assembly Wizard";
+            help-page-id:16122731;
             auto-run: true;
             page {
                 id:1;

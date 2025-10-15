@@ -241,7 +241,7 @@ void ADVExportContext::buildMenu(QMenu* m) {
             isShowId = true;
         } else if (!isShowAccession && !annotation->findFirstQualifierValue("accession").isEmpty()) {
             isShowAccession = true;
-        } else if (!isShowDBXref && !annotation->findFirstQualifierValue("db_xref").isEmpty()) {
+        } else if (!isShowDBXref && !getSelectedAnnotationsDatabaseAccessionsMap().isEmpty()) {
             isShowDBXref = true;
         }
 
@@ -679,7 +679,7 @@ void ADVExportContext::sl_saveSelectedSequenceToAlignmentWithTranslation() {
     selectionToAlignment(sequenceToAlignmentWithTranslationAction->text(), false, true);
 }
 
-void ADVExportContext::sl_getSequenceByDBXref() {
+QMap<QString, QStringList> ADVExportContext::getSelectedAnnotationsDatabaseAccessionsMap() const {
     const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
     auto dbEntries = AppContext::getDBXRefRegistry()->getEntries();
     QMap<QString, QStringList> databaseAccessionsMap;
@@ -701,7 +701,11 @@ void ADVExportContext::sl_getSequenceByDBXref() {
         }
     }
 
-    fetchSequencesFromRemoteDB(databaseAccessionsMap);
+    return databaseAccessionsMap;
+}
+
+void ADVExportContext::sl_getSequenceByDBXref() {
+    fetchSequencesFromRemoteDB(getSelectedAnnotationsDatabaseAccessionsMap());
 }
 
 void ADVExportContext::sl_getSequenceByAccession() {

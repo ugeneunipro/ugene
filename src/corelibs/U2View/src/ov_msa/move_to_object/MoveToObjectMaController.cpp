@@ -153,10 +153,8 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     QList<qint64> rowIdsToRemove = msaObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
     SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove is empty", );
 
-    QFileInfo urlInfo(url);
-    CHECK_EXT(!urlInfo.baseName().isEmpty() && !urlInfo.isDir(), QMessageBox::critical(ui, L10N::errorTitle(), tr("Please select a file with a non-empty name.")), );
     Msa msaToExport;
-    msaToExport->setName(urlInfo.baseName());
+    msaToExport->setName(QFileInfo(url).baseName());
     msaToExport->setAlphabet(msaObject->getAlphabet());
     for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
         const MsaRow& row = msaObject->getRow(maRowIndex);

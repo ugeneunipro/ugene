@@ -663,6 +663,92 @@ GUI_TEST_CLASS_DEFINITION(test_8077_2) {
     GTUtilsWorkflowDesigner::runWorkflow();
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_8078) {
+    // Enable the debug mode for WD
+    // Open the WD
+    // Open "Samples"- >"Alignment"->"Align sequences with MUSCLE".
+    // Set "COI.aln" and "HIV-1.aln" as input
+    // Click "Next" and "Apply"
+    // Set a breakpoint on the "Align with MUSCLE" element
+    // Run workflow
+    // Wait for breakpoint triggered
+    // Select the "Read alignment"
+    // Click "Process one message"
+    // Click on the connection between the "Align with MUSCLE" and "Write alignment" elements
+    // Right-click the cell "Name: 'COI'; ..."->"Convert to document"
+    // Make sure the "Add to project" checkbox is checked
+    // Click "Export"
+    // Expected: MSA is loaded
+    class EnableWdDebuggerFiller : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto tree = GTWidget::findTreeWidget("tree", dialog);
+
+            QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
+            foreach (QTreeWidgetItem* item, items) {
+                if (item->text(0) == "  Workflow Designer") {
+                    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
+                    GTMouseDriver::click();
+                }
+            }
+
+            GTCheckBox::setChecked(GTWidget::findCheckBox("debuggerBox", dialog), true);
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new EnableWdDebuggerFiller()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    class MuscleScenario : public CustomScenario {
+    public:
+        void run() override {
+            GTUtilsWizard::setInputFiles({{dataDir + "samples/CLUSTALW/COI.aln", dataDir + "samples/CLUSTALW/HIV-1.aln"}});
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new Filler("Align Sequences with MUSCLE Wizard", new MuscleScenario));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Break at element..."}));
+    GTUtilsWorkflowDesigner::click("Align with MUSCLE");
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTGlobals::sleep(2000, "Wait for breakpoint triggered");
+    GTUtilsWorkflowDesigner::click("Read alignment");
+    GTWidget::click(GTAction::button("process_one_message", GTUtilsMdi::activeWindow()));
+    auto alignItem = GTUtilsWorkflowDesigner::getWorker("Align with MUSCLE");
+    auto writeItem = GTUtilsWorkflowDesigner::getWorker("Write alignment");
+    auto bus = GTUtilsWorkflowDesigner::getConnectionArrow(alignItem, writeItem);
+    auto hint = GTUtilsWorkflowDesigner::getArrowHint(bus);
+    GTUtilsWorkflowDesigner::click(hint);
+    QWidget* wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
+    auto investigationWidget = GTWidget::findTableView("investigation_widget_Messages from 'Align with MUSCLE' to 'Write alignment'", wdWindow);
+    GTTableView::click(investigationWidget, 0, 0);
+
+    class ExportScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_8078.gb", dialog);
+            GTCheckBox::setChecked(GTWidget::findCheckBox("addToProjCheck", dialog), true);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new Filler("ExportDocumentDialog", new ExportScenario));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Convert to document"}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    
+    // Finish
+    GTUtilsMdi::activateWindow("Workflow Designer - Align sequences with MUSCLE");
+    GTUtilsWorkflowDesigner::stopWorkflow();
+    
+}
+
 // Check that there is only one breakpoint "Read Alignment" in the breakpoint manager.
 static void checkReadAlignmentBreakpoint() {
     GTThread::waitForMainThread();
@@ -1262,6 +1348,42 @@ GUI_TEST_CLASS_DEFINITION(test_8120_2) {
     CHECK_SET_ERR(lt.hasMessage("Render overview"), "No expected message in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_8121) {
+    // Open big.aln
+    // Expected: rendering task in progress
+    // Select read "seq2"
+    // Expected: rendering task was not restarted
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "big.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    // GTUtilsMsaEditor::checkMsaEditorWindowIsActive() passes execution too early, loading tasks arn't finished yet.
+    // From the other hand, GTUtilsTaskTreeView::waitTaskFinished() waits until rendering task is finished,
+    // so it's better to use the last one and re-run rendering task, for example, by toggling Project View.
+    GTUtilsProjectTreeView::toggleView();
+    auto ts = AppContext::getTaskScheduler();
+    auto tlt = ts->getTopLevelTasks();
+    int tltSize = tlt.size();
+    CHECK_SET_ERR(tltSize == 1, QString("Unexpected number of tasks, check 1: %1").arg(tltSize));
+
+    auto task = tlt.first();
+    auto taskName = task->getTaskName();
+    CHECK_SET_ERR(taskName == "Render overview", QString("Unexpected task name, check 1: %1").arg(taskName));
+
+    int progress1 = task->getProgress();
+    GTUtilsMsaEditor::selectRowsByName({"seq2"});
+    tlt = ts->getTopLevelTasks();
+    tltSize = tlt.size();
+    CHECK_SET_ERR(tltSize == 1, QString("Unexpected number of tasks, check 2: %1").arg(tltSize));
+
+    task = tlt.first();
+    taskName = task->getTaskName();
+    CHECK_SET_ERR(taskName == "Render overview", QString("Unexpected task name, check 2: %1").arg(taskName));
+
+    int progress2 = task->getProgress();
+    CHECK_SET_ERR(progress1 < progress2, QString("Unexpected task progress, should be: %1 < %2").arg(progress1).arg(progress2));
+
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_8134) {
     // Open _common_data/scenarios/_regression/8134/8134.fa (short sequence 15 bases long)
     // Show GC Content (%) graph
@@ -1560,8 +1682,7 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please select a file with a non-empty name."));
-    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "", ExportDocumentDialogFiller::FASTA, false, true));
+    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "", ExportDocumentDialogFiller::FASTA, false, true, GTGlobals::UseMouse, "File name is required."));
     GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
 }
@@ -1569,7 +1690,7 @@ GUI_TEST_CLASS_DEFINITION(test_8163) {
 GUI_TEST_CLASS_DEFINITION(test_8164) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "COI_test_8164.pdb", ExportDocumentDialogFiller::CLUSTALW, false, true));
+    GTUtilsDialog::waitForDialog(new ExportDocumentDialogFiller(sandBoxDir, "COI_test_8164.pdb", ExportDocumentDialogFiller::CLUSTALW, false, "File name is required."));
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
     GTMenu::clickMainMenuItem({"Actions", "Export", "Move selected rows to another alignment", "Create a new alignment"});
     GTUtilsTaskTreeView::waitTaskFinished();
