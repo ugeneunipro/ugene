@@ -255,16 +255,13 @@ MsaEditor* MsaEditorTreeManager::getMsaEditor() const {
     return editor;
 }
 
+CreatePhyTreeSettings MsaEditorTreeManager::getSettings() const {
+    return settings;
+}
+
 void MsaEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
     auto createTreeViewerTask = qobject_cast<CreateMSAEditorTreeViewerTask*>(task);
     CHECK(createTreeViewerTask != nullptr, );
-
-    if (!settings.displayWithAlignmentEditor) {
-        auto objectViewWindow = new GObjectViewWindow(createTreeViewerTask->getTreeViewer(), editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
-        MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
-        mdiManager->addMDIWindow(objectViewWindow);
-        return;
-    }
 
     auto treeViewer = qobject_cast<MsaEditorTreeViewer*>(createTreeViewerTask->getTreeViewer());
     SAFE_POINT(treeViewer != nullptr, "Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)", );
