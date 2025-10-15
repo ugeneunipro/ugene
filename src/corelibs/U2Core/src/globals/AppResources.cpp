@@ -184,9 +184,9 @@ void AppResourcePool::setMaxMemorySizeInMB(int n) {
 
 size_t AppResourcePool::getCurrentAppMemory() {
 #ifdef Q_OS_WIN
-    PROCESS_MEMORY_COUNTERS memCounter;
-    bool result = GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
-    return result ? memCounter.WorkingSetSize : 0;
+    _PROCESS_MEMORY_COUNTERS_EX memCounter1;
+    bool result = GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&memCounter1, sizeof(memCounter1));
+    return result ? memCounter1.PrivateUsage : 0;
 #elif defined(Q_OS_LINUX)
     size_t vm = 0;
     process_mem_usage(vm);
