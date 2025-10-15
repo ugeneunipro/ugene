@@ -259,6 +259,27 @@ GUI_TEST_CLASS_DEFINITION(test_1812) {
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 1  (0, 2)", {{50, 79}, {400, 435}});
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1818) {
+    /*
+     * 1. Open "data/samples/Genbank/human_T1.fa".
+     * 2. Open "Search in Sequence" options panel tab.
+     * 3. Insert "AYCG" pattern.
+     * 4. Open section "Search agorithm", set algorithm - Substitute, check - Search with ambiguous bases.
+     * 5. Set algorithm - Exact
+     * Expected result: 2738 results are found.
+     */
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Substitute");
+    GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases();
+    GTUtilsOptionPanelSequenceView::enterPattern("AYCG");
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Exact");
+    CHECK_SET_ERR(GTWidget::findLabel("lblErrorMessage")->isVisible(), QString("Warning label should be visible"));    
+}
+
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
