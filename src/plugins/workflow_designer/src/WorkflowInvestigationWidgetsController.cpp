@@ -134,6 +134,7 @@ void WorkflowInvestigationWidgetsController::resetInvestigations() {
 
 void WorkflowInvestigationWidgetsController::createNewInvestigation(QWidget* investigationWidgetParent) {
     investigationView = new QTableView(investigationWidgetParent);
+    investigationView->setObjectName(QString("investigation_widget_%1").arg(investigatorName));
     investigationView->viewport()->installEventFilter(this);
     investigationView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(investigationView, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_contextMenuRequested(const QPoint&)));
