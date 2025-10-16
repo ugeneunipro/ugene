@@ -654,7 +654,7 @@ SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, 
             valQStr.replace("\\ ", " ");
         }
 
-        if (nameQStr == GBFeatureUtils::QUALIFIER_NAME) {
+        if (nameQStr == GBFeatureUtils::QUALIFIER_NAME && !valQStr.isEmpty()) {
             a->name = valQStr;
         } else {
             a->qualifiers << createQualifier(nameQStr, valQStr, containsDoubleQuotes);
