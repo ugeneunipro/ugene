@@ -47,12 +47,12 @@ protected:
     SharedAnnotationData readAnnotationNewFormat(char* cbuff, U2OpStatus& si, int offset);
 
     QMap<QString, QString> tagMap;
-    QSet<QString> allTags;
 
 private:
     static void check4SecondaryStructure(AnnotationData* a);
     static void processAnnotationRegion(AnnotationData* a, const int start, const int end, const int offset);
 
+    static const QSet<QString> MANDATORY_TAGS;
     static const QDate UPDATE_DATE;
     static const QMap<QString, int> MONTH_STRING_2_INT;
     static const QString ANNOTATION_HEADER_REGEXP;

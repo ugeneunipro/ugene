@@ -43,6 +43,7 @@ namespace U2 {
 /* TRANSLATOR U2::EMBLPlainTextFormat */
 /* TRANSLATOR U2::EMBLGenbankAbstractDocument */
 
+const QSet<QString> SwissProtPlainTextFormat::MANDATORY_TAGS {"ID", "DT", "DE", "OS", "OC", "RN", "RP", "RA", "RL"};
 const QDate SwissProtPlainTextFormat::UPDATE_DATE = QDate(2019, 12, 11);
 const QMap<QString, int> SwissProtPlainTextFormat::MONTH_STRING_2_INT = {{"JAN", 1},
                                                                          {"FEB", 2},
@@ -75,8 +76,6 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     tagMap["DE"] = DNAInfo::DEFINITION;  // The DE (DEscription) lines contain general descriptive information about the sequence stored.
     tagMap["KW"] = DNAInfo::KEYWORDS;  // The KW (KeyWord) lines provide information that can be used to generate indexes of the sequence entries based on functional, structural, or other categories.
     tagMap["CC"] = DNAInfo::COMMENT;  // The CC lines are free text comments on the entry, and are used to convey any useful information.
-    
-    allTags = {"ID", "AC", "DT", "DE", "GN", "OS", "OG", "OC", "RN", "RP", "RC", "RX", "RA", "RL", "CC", "DR", "KW", "FT", "SQ"};
 }
 
 FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
@@ -102,17 +101,21 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     if (lines.size() > 1) {
         //last line incomplete don't check it
         lines.removeLast();
-    }    
+    }
+    QMap<QString, int>hits;
     for (const QString& line : qAsConst(lines)) {
         const QString firstWord = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts).first();
-        if (firstWord.size() != 2 && allTags.contains(firstWord)) {
+        if (firstWord.size() != 2) {
             return FormatDetection_NotMatched;
         }
-        if (firstWord == "SQ") {
-            //Sequence section starts from here, nothing format specific to check after
-            return FormatDetection_Matched;
-        }
+        CHECK_BREAK(firstWord != "SQ")
+        hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
     }
+    for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
+        CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
+    }
+    //Could be less than 3 if they split by comment lines
+    CHECK(hits["DT"] == 3, FormatDetection_HighSimilarity);
     return FormatDetection_Matched;
 }
 
