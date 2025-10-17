@@ -43,6 +43,7 @@ namespace U2 {
 /* TRANSLATOR U2::EMBLPlainTextFormat */
 /* TRANSLATOR U2::EMBLGenbankAbstractDocument */
 
+const QSet<QString> SwissProtPlainTextFormat::MANDATORY_TAGS {"ID", "DT", "DE", "OS", "OC", "RN", "RP", "RA", "RL"};
 const QDate SwissProtPlainTextFormat::UPDATE_DATE = QDate(2019, 12, 11);
 const QMap<QString, int> SwissProtPlainTextFormat::MONTH_STRING_2_INT = {{"JAN", 1},
                                                                          {"FEB", 2},
@@ -87,14 +88,35 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     if (!textOnly || size < 100) {
         return FormatDetection_NotMatched;
     }
-    bool tokenMatched = TextUtils::equals("ID   ", data, 5);
-    if (tokenMatched) {
-        if (QString(rawData).contains(QRegExp("\\d+ AA."))) {
-            return FormatDetection_HighSimilarity;
+    QString textCopy(rawData);
+    QTextStream stream(&textCopy);
+    QString line = stream.readLine();
+    QStringList lines;
+    while (!line.isNull()) {
+        if (!line.isEmpty()) {
+            lines.append(line);
         }
-        return FormatDetection_NotMatched;
+        line = stream.readLine();
     }
-    return FormatDetection_NotMatched;
+    if (lines.size() > 1) {
+        //last line incomplete don't check it
+        lines.removeLast();
+    }
+    QMap<QString, int>hits;
+    for (const QString& line : qAsConst(lines)) {
+        const QString firstWord = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts).first();
+        if (firstWord.size() != 2) {
+            return FormatDetection_NotMatched;
+        }
+        CHECK_BREAK(firstWord != "SQ")
+        hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
+    }
+    for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
+        CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
+    }
+    //Could be less than 3 if they split by comment lines
+    CHECK(hits["DT"] == 3, FormatDetection_HighSimilarity);
+    return FormatDetection_Matched;
 }
 
 //////////////////////////////////////////////////////////////////////////
