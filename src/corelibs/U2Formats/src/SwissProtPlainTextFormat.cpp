@@ -85,7 +85,7 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     int size = rawData.size();
 
     bool textOnly = !TextUtils::contains(TextUtils::BINARY, data, size);
-    if (!textOnly || size < 100) {
+    if (!textOnly) {
         return FormatDetection_NotMatched;
     }
     QString textCopy(rawData);
@@ -104,18 +104,22 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     }
     QMap<QString, int>hits;
     for (const QString& line : qAsConst(lines)) {
-        const QString firstWord = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts).first();
+        const QStringList lineAsList = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+        CHECK(!lineAsList.isEmpty(), FormatDetection_NotMatched);
+        const QString firstWord = lineAsList.first();
         if (firstWord.size() != 2) {
             return FormatDetection_NotMatched;
+        }
+        if (hits.isEmpty()) {
+            CHECK(firstWord == "ID", FormatDetection_NotMatched);
         }
         CHECK_BREAK(firstWord != "SQ")
         hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
     }
+    CHECK(hits["DT"] == 3, FormatDetection_NotMatched);
     for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
         CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
     }
-    //Could be less than 3 if they split by comment lines
-    CHECK(hits["DT"] == 3, FormatDetection_HighSimilarity);
     return FormatDetection_Matched;
 }
 
