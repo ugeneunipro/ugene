@@ -70,7 +70,7 @@ private:
     void firstTestRunCheck(const QString& testName);
 
     /** Runs test multiple times (UGENE_TEST_NUMBER_RERUN_FAILED_TEST) and returns test output of the last run. */
-    QString runTest(const QString& testName, int timeoutMillis);
+    QString runTest(const QString& testName, int timeoutMillis, int &rerunCounter);
 
     /** Runs test once and returns test output. */
     QString runTestOnce(U2OpStatus& os, const QString& testName, int iteration, int timeout, bool isVideoRecordingOn);
