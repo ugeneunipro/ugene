@@ -149,12 +149,6 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#ifdef Q_OS_WIN
-// clang-format off
-#    include <windows.h>
-#    include <Psapi.h>
-// clang-format on
-#endif
 
 namespace U2 {
 
