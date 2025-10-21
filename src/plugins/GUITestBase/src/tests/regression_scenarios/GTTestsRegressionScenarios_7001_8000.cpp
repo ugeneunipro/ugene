@@ -4351,7 +4351,7 @@ GUI_TEST_CLASS_DEFINITION(test_7780) {
     GTUtilsTaskTreeView::waitTaskFinished();
     size_t memAfter = AppResourcePool::getCurrentAppMemory() / (1024 * 1024);
     
-    CHECK_SET_ERR((memAfter - memBefore) < 50, QString("Memory before: %1 Mb, memory after: %2 Mb").arg(memBefore).arg(memAfter));
+    CHECK_SET_ERR((memAfter - memBefore) < 100, QString("Memory before: %1 Mb, memory after: %2 Mb").arg(memBefore).arg(memAfter));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7781) {

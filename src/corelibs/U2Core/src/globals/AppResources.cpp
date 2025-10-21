@@ -45,6 +45,10 @@
 // clang-format on
 #endif
 
+#ifdef Q_OS_DARWIN
+#include <mach/mach.h>
+#endif
+
 #define LOG_TRACE(contextName) \
     coreLog.trace(QString("AppResource %1::" contextName " delta: %2, available: %3").arg(id).arg(n).arg(available()));
 
@@ -193,20 +197,15 @@ size_t AppResourcePool::getCurrentAppMemory() {
     bool ok = false;
     qlonglong output_mem = ps_vsize.toLongLong(&ok);
     return ok ? output_mem : 0;
-// #elif defined(Q_OS_DARWIN)
-//    qint64 pid = QCoreApplication::applicationPid();
+#elif defined(Q_OS_DARWIN)
+    task_vm_info_data_t vmInfo;
+    mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
+    if (task_info(mach_task_self(), TASK_VM_INFO,
+                  (task_info_t)&vmInfo, &count) == KERN_SUCCESS) {
+        return vmInfo.phys_footprint;
+    }
 
-//    QProcess p;
-//    // Virtual private memory size in megabytes
-//    p.start("sh", QStringList() << "-c" << "top -l 1 -pid " + QString::number(pid) + " -e -stats vprvt | tail -1 | sed 's/M+//g'");
-//    p.waitForFinished();
-//    const QString outputString = p.readAllStandardOutput();
-//    p.close();
-//    bool ok = false;
-//    size_t output_mem = outputString.toULong(&ok);
-//    if (ok) {
-//        return output_mem * 1024 * 1024;
-//    }
+    return 0;
 #else
     return 0;
 #endif
