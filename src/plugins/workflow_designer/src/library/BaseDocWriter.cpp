@@ -58,13 +58,7 @@ BaseDocWriter::BaseDocWriter(Actor* a)
     : BaseWorker(a), format(nullptr), dataStorage(LocalFs), ch(nullptr), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
 }
 
-void BaseDocWriter::cleanup() {
-    foreach (IOAdapter* io, adapters.values()) {
-        if (io->isOpen()) {
-            io->close();
-        }
-    }
-}
+void BaseDocWriter::cleanup() {}
 
 void BaseDocWriter::init() {
     SAFE_POINT(ports.size() == 1, "Unexpected port count", );
@@ -201,17 +195,8 @@ bool BaseDocWriter::isSupportedSeveralMessages() const {
     return true;
 }
 
-bool BaseDocWriter::ifCreateAdapter(const QString& url) const {
-    if (!isSupportedSeveralMessages()) {
-        return true;
-    }
-
-    // if not accumulate object in one file
-    if (!append) {
-        return true;
-    }
-
-    return (!adapters.contains(url));
+bool BaseDocWriter::appendToExistingFile(const QString& url) const {
+    return isSupportedSeveralMessages() && append && usedUrls.contains(url);
 }
 
 void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDocFlags& flags, U2OpStatus& os) {
@@ -255,41 +240,46 @@ void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDo
 }
 
 IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
-    if (!ifCreateAdapter(url)) {
-        return adapters[url];
+    if (appendToExistingFile(url)) {
+        SAFE_POINT_NN(cachedAdapter, nullptr);
+
+        if (!cachedAdapter->open(url, IOAdapterMode_Append)) {
+            os.setError(tr("Can not open a file for writing: %1").arg(url));
+            return nullptr;
+        }
+
+        return cachedAdapter;
     }
 
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    QScopedPointer<IOAdapter> io(iof->createIOAdapter());
-    openAdapter(io.data(), url, SaveDocFlags(fileMode), os);
+    if (cachedAdapter.isNull()) {
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        cachedAdapter = iof->createIOAdapter();
+    }
+    openAdapter(cachedAdapter.data(), url, SaveDocFlags(fileMode), os);
     CHECK_OP(os, nullptr);
 
-    QString resultUrl = io->getURL().getURLString();
-    if (!adapters.contains(url)) {
-        adapters[url] = io.data();
-    }
-    if (!adapters.contains(resultUrl)) {
-        adapters[resultUrl] = io.data();
-    }
+    QString resultUrl = cachedAdapter->getURL().getURLString();
     usedUrls << resultUrl;
     monitor()->addOutputFile(resultUrl, getActorId());
 
-    return io.take();
+    return cachedAdapter;
 }
 
 Document* BaseDocWriter::getDocument(IOAdapter* io, U2OpStatus& os) {
-    if (docs.contains(io)) {
-        return docs[io];
+    auto url = io->getURL();
+    auto urlString = url.getURLString();
+    if (docs.contains(urlString)) {
+        return docs[urlString];
     }
 
     QVariantMap hints;
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
     hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue(dbiRef));
-    Document* doc = format->createNewLoadedDocument(io->getFactory(), io->getURL(), os, hints);
+    Document* doc = format->createNewLoadedDocument(io->getFactory(), url, os, hints);
     CHECK_OP(os, nullptr);
 
     doc->setDocumentOwnsDbiResources(false);
-    docs[io] = doc;
+    docs[urlString] = doc;
     return doc;
 }
 
@@ -298,7 +288,7 @@ bool BaseDocWriter::isStreamingSupport() const {
 }
 
 void BaseDocWriter::storeData(const QStringList& urls, const QVariantMap& data, U2OpStatus& os) {
-    foreach (const QString& anUrl, urls) {
+    for (const QString& anUrl : qAsConst(urls)) {
         IOAdapter* io = getAdapter(anUrl, os);
         CHECK_OP(os, );
         if (isStreamingSupport()) {
@@ -309,6 +299,7 @@ void BaseDocWriter::storeData(const QStringList& urls, const QVariantMap& data, 
             CHECK_OP(os, );
             data2doc(doc, data);
         }
+        io->close();
     }
 }
 
@@ -402,17 +393,16 @@ void BaseDocWriter::sl_objectImported(Task* importTask) {
 }
 
 Task* BaseDocWriter::processDocs() {
-    if (adapters.isEmpty()) {
+    if (cachedAdapter.isNull()) {
         reportNoDataReceivedWarning();
     }
     if (docs.isEmpty()) {
         return nullptr;
     }
     QList<Task*> tlist;
-    foreach (IOAdapter* io, docs.keys()) {
-        Document* doc = docs[io];
-        ioLog.details(tr("Writing to %1 [%2]").arg(io->getURL().getURLString()).arg(format->getFormatName()));
-        io->close();
+    foreach (const auto& url, docs.keys()) {
+        Document* doc = docs[url];
+        ioLog.details(tr("Writing to %1 [%2]").arg(url).arg(format->getFormatName()));
         GHints* hints = doc->getGHints();
         hints->set(DocumentRemovalMode_Synchronous, QString());
         tlist << getWriteDocTask(doc, getDocFlags());
