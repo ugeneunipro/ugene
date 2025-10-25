@@ -79,8 +79,6 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
 }
 
 FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
-    // TODO: improve format checking
-
     const char* data = rawData.constData();
     int size = rawData.size();
 
@@ -116,10 +114,10 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
         CHECK_BREAK(firstWord != "SQ")
         hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
     }
-    CHECK(hits["DT"] == 3, FormatDetection_NotMatched);
     for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
         CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
     }
+    CHECK(hits["DT"] == 3, FormatDetection_HighSimilarity);
     return FormatDetection_Matched;
 }
 
