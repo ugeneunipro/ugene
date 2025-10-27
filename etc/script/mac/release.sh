@@ -178,6 +178,8 @@ while [ $SECONDS -lt $END_TIME ]; do
         exit 1
     elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: In Progress"; then
         echo "Notarization still in progress..."
+    elif echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "The request timed out"; then
+        echo "Network timeout while checking notarization status. Retrying..."
     else
         echo "Unexpected output. Exiting."
         exit 1
