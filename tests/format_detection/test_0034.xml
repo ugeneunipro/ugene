@@ -2,5 +2,6 @@
 
     <fd-check-score url="swiss_prot/broken/no_mandatory_tags.txt" format="swiss-prot" equal-to="6"/>
     <fd-check-score url="swiss_prot/broken/not_enough_DT_mandatory_tags.txt" format="swiss-prot" equal-to="7"/>
+    <fd-check-score url="swiss_prot/two_entries.txt" format="swiss-prot" more-than="9"/>
 
 </multi-test>

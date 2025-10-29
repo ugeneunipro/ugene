@@ -89,20 +89,11 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     QString textCopy(rawData);
     QTextStream stream(&textCopy);
     QString line = stream.readLine();
-    QStringList lines;
-    while (!line.isNull()) {
-        if (!line.isEmpty()) {
-            lines.append(line);
-        }
-        line = stream.readLine();
-    }
-    if (lines.size() > 1) {
-        //last line incomplete don't check it
-        lines.removeLast();
-    }
-    QMap<QString, int>hits;
-    for (const QString& line : qAsConst(lines)) {
-        const QStringList lineAsList = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QString nextLine = line;
+    QMap<QString, int> hits;
+    const QRegExp rXSpace = QRegExp("\\s+");
+    while (!line.isNull() && !nextLine.isEmpty()) {
+        const QStringList lineAsList = line.split(rXSpace, Qt::SkipEmptyParts);
         CHECK(!lineAsList.isEmpty(), FormatDetection_NotMatched);
         const QString firstWord = lineAsList.first();
         if (firstWord.size() != 2) {
@@ -113,6 +104,8 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
         }
         CHECK_BREAK(firstWord != "SQ")
         hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
+        line = nextLine == line ? stream.readLine() : line = nextLine;
+        nextLine = stream.readLine();        
     }
     for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
         CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
