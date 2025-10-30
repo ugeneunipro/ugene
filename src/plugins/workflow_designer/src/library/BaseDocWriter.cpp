@@ -251,9 +251,12 @@ IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
         return cachedAdapter;
     }
 
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (cachedAdapter.isNull()) {
-        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         cachedAdapter = iof->createIOAdapter();
+    } else {
+        // Check, that adapter has the same type
+        SAFE_POINT_EXT(iof->getAdapterName() == cachedAdapter->getAdapterName(), os.setError("Unexpected IO adapter type"), nullptr);
     }
     openAdapter(cachedAdapter.data(), url, SaveDocFlags(fileMode), os);
     CHECK_OP(os, nullptr);
