@@ -640,7 +640,7 @@ void AssemblyBrowser::setupActions() {
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomIn()));
 
     zoomOutAction = new QAction(tr("Zoom out"), this);
-    GUIUtils::setThemedIcon(zoomInAction, ":core/images/zoom_out.png");
+    GUIUtils::setThemedIcon(zoomOutAction, ":core/images/zoom_out.png");
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
     auto linearScaleAction = new QAction(tr("Linear"), this);
