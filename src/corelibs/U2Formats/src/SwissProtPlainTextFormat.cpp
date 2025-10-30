@@ -43,6 +43,7 @@ namespace U2 {
 /* TRANSLATOR U2::EMBLPlainTextFormat */
 /* TRANSLATOR U2::EMBLGenbankAbstractDocument */
 
+const QSet<QString> SwissProtPlainTextFormat::MANDATORY_TAGS {"ID", "DT", "DE", "OS", "OC", "RN", "RP", "RA", "RL"};
 const QDate SwissProtPlainTextFormat::UPDATE_DATE = QDate(2019, 12, 11);
 const QMap<QString, int> SwissProtPlainTextFormat::MONTH_STRING_2_INT = {{"JAN", 1},
                                                                          {"FEB", 2},
@@ -78,23 +79,39 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
 }
 
 FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
-    // TODO: improve format checking
-
     const char* data = rawData.constData();
     int size = rawData.size();
 
     bool textOnly = !TextUtils::contains(TextUtils::BINARY, data, size);
-    if (!textOnly || size < 100) {
+    if (!textOnly) {
         return FormatDetection_NotMatched;
     }
-    bool tokenMatched = TextUtils::equals("ID   ", data, 5);
-    if (tokenMatched) {
-        if (QString(rawData).contains(QRegExp("\\d+ AA."))) {
-            return FormatDetection_HighSimilarity;
+    QString textCopy(rawData);
+    QTextStream stream(&textCopy);
+    QString line = stream.readLine();
+    QString nextLine = line;
+    QMap<QString, int> hits;
+    const QRegExp rXSpace = QRegExp("\\s+");
+    while (!line.isNull() && !nextLine.isEmpty()) {
+        const QStringList lineAsList = line.split(rXSpace, Qt::SkipEmptyParts);
+        CHECK(!lineAsList.isEmpty(), FormatDetection_NotMatched);
+        const QString firstWord = lineAsList.first();
+        if (firstWord.size() != 2) {
+            return FormatDetection_NotMatched;
         }
-        return FormatDetection_NotMatched;
+        if (hits.isEmpty()) {
+            CHECK(firstWord == "ID", FormatDetection_NotMatched);
+        }
+        CHECK_BREAK(firstWord != "SQ")
+        hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
+        line = nextLine == line ? stream.readLine() : line = nextLine;
+        nextLine = stream.readLine();        
     }
-    return FormatDetection_NotMatched;
+    for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
+        CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
+    }
+    CHECK(hits["DT"] == 3, FormatDetection_HighSimilarity);
+    return FormatDetection_Matched;
 }
 
 //////////////////////////////////////////////////////////////////////////
