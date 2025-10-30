@@ -286,8 +286,8 @@ static const QString DASHBOARD_FILE_BUTTON_STYLESHEET =
                   "  width: 1.5em;"
                   "}";
 
-DashboardFileButton::DashboardFileButton(const QStringList& urlList, const QString& dashboardDir, const WorkflowMonitor* monitor, bool isFolderMode)
-    : urlList(urlList), dashboardDirInfo(dashboardDir), isFolderMode(isFolderMode) {
+DashboardFileButton::DashboardFileButton(const QStringList& _urlList, const QString& dashboardDir, const WorkflowMonitor* monitor, bool isFolderMode)
+    : urlList(_urlList), dashboardDirInfo(dashboardDir), isFolderMode(isFolderMode) {
     setObjectName("DashboardFileButton");
     QString buttonText = urlList.size() != 1 ? tr("%1 file(s)").arg(urlList.size()) : QFileInfo(urlList[0]).fileName();
     if (buttonText.length() > 27) {
@@ -314,10 +314,10 @@ DashboardFileButton::DashboardFileButton(const QStringList& urlList, const QStri
             setPopupMode(QToolButton::MenuButtonPopup);
         }
     } else {
-        auto menu = new DashboardPopupMenu(this);
+        auto menu = new DashboardPopupMenu(this, this);
         for (int i = 0, n = qMin(urlList.size(), 50); i < n; i++) {
             QString url = urlList[i];
-            auto perUrlMenu = new QMenu(QFileInfo(url).fileName());
+            auto perUrlMenu = new QMenu(QFileInfo(url).fileName(), menu);
             addUrlActionsToMenu(perUrlMenu, url, !isFolderMode);
             menu->addMenu(perUrlMenu);
         }
@@ -330,18 +330,18 @@ DashboardFileButton::DashboardFileButton(const QStringList& urlList, const QStri
 
 void DashboardFileButton::addUrlActionsToMenu(QMenu* menu, const QString& url, bool addOpenByUgeneAction) {
     if (addOpenByUgeneAction) {
-        auto openFolderAction = new QAction(tr("Open file with UGENE"), this);
+        auto openFolderAction = new QAction(tr("Open file with UGENE"), menu);
         openFolderAction->setProperty(FILE_URL_KEY, "ugene\n" + url);
         connect(openFolderAction, SIGNAL(triggered()), SLOT(sl_openFileClicked()));
         menu->addAction(openFolderAction);
     }
 
-    auto openFolderAction = new QAction(tr("Open folder with the file"), this);
+    auto openFolderAction = new QAction(tr("Open folder with the file"), menu);
     openFolderAction->setProperty(FILE_URL_KEY, "folder\n" + url);
     connect(openFolderAction, SIGNAL(triggered()), SLOT(sl_openFileClicked()));
     menu->addAction(openFolderAction);
 
-    auto openFileAction = new QAction(tr("Open file by OS"), this);
+    auto openFileAction = new QAction(tr("Open file by OS"), menu);
     openFileAction->setProperty(FILE_URL_KEY, "file\n" + url);
     connect(openFileAction, SIGNAL(triggered()), SLOT(sl_openFileClicked()));
     menu->addAction(openFileAction);
