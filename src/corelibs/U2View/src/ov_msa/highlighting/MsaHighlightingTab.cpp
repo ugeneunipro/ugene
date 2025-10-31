@@ -185,7 +185,8 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
                                        << highlightingSchemeController->getComboBox()->objectName()
                                        << colorSchemeController->getComboBox()->objectName()
                                        << colorThresholdSlider->objectName()
-                                       << colorSpinBox->objectName());
+                                       << colorSpinBox->objectName()
+                                       << useDots->objectName());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
     sl_sync();
