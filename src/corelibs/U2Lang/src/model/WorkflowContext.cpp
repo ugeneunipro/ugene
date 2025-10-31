@@ -203,7 +203,12 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus& os) {
     } else if (cmdlineReg != nullptr && cmdlineReg->hasParameter(WORKING_DIR)) {
         root = FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(WORKING_DIR));
     } else {
-        root = QProcess().workingDirectory();
+        auto workingDirectory = QProcess().workingDirectory();
+        if (QDir(workingDirectory) == QDir(QCoreApplication::applicationDirPath())) {
+            root = WorkflowSettings::getWorkflowOutputDirectory() + "cmdline_run/";
+        } else {
+            root = workingDirectory;
+        }
     }
 
     // 2. Create folder if it does not exist
