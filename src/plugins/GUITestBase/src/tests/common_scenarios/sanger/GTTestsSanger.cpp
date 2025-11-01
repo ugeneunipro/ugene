@@ -26,8 +26,10 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTWidget.h>
+#include <system/GTFile.h>
 
 #include <QCheckBox>
+#include <QDir>
 #include <QFileInfo>
 
 #include "GTTestsSanger.h"
@@ -42,6 +44,8 @@
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+
+#include <U2Lang/WorkflowSettings.h>
 
 namespace U2 {
 
@@ -516,6 +520,30 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasMessage("trimming was skipped"), "Could not find the message about skipped trimming");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0009) {
+    // Remove WorkflowSettings::getWorkflowOutputDirectory() + "cmdline_run/
+    // Run sanger through dialog
+    // Check that run.info is created in WorkflowSettings::getWorkflowOutputDirectory() + cmdline_run/"
+    // Check that run.info is NOT created in the old location: QDir(QProcess().workingDirectory()).absolutePath() + "run.info"
+    QString runInfoDir = WorkflowSettings::getWorkflowOutputDirectory() + "cmdline_run/";
+    GTFile::removeDir(runInfoDir);
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+    settings.readUrls << testDir + "_common_data/sanger/sanger_01.ab1";
+    settings.outAlignment = sandBoxDir + "sanger_test_0009";
+
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(settings));
+    GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    QString runInfoFileName = "run.info";
+    GTFile::checkFileExists(runInfoDir + runInfoFileName);
+    auto oldRunInfoFilePath = QDir(QProcess().workingDirectory()).absolutePath() + runInfoFileName;
+    CHECK_SET_ERR(!GTFile::isFileExists(oldRunInfoFilePath), "File exist, but should not: " + oldRunInfoFilePath);
 }
 
 }  // namespace GUITest_common_scenarios_sanger
