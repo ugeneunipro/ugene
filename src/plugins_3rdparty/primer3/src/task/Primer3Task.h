@@ -52,11 +52,15 @@ private:
     void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
     void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
+    QString translateMacros(const QString& p3ErrorMessage);
+
     QSharedPointer<Primer3TaskSettings> settings;
     QList<QSharedPointer<PrimerPair>> bestPairs;
     QList<QSharedPointer<PrimerSingle>> singlePrimers;
 
     int offset = 0;
+
+    static QMap<QString, QString> macroReplaceMap;
 };
 
 }  // namespace U2

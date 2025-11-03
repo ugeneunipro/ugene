@@ -40,6 +40,71 @@
 
 namespace U2 {
 
+QMap<QString, QString> Primer3Task::macroReplaceMap = 
+    {{"PRIMER_FIRST_BASE_INDEX", "primer first base index"},
+     {"PRIMER_MAX_TEMPLATE_MISPRIMING", "primer maximum template mispriming"},
+     {"PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", "primer pair maximum template mispriming"},
+     {"PRIMER_MAX_LIBRARY_MISPRIMING", "primer maximum library mispriming"},
+     {"PRIMER_INTERNAL_MAX_LIBRARY_MISHYB", "primer internal maximum library Myshyb"},
+     {"PRIMER_PAIR_MAX_LIBRARY_MISPRIMING", "primer pair maximum library mispriming"},
+     {"PRIMER_INTERNAL_MAX_TEMPLATE_MISHYB", "primer internal maximum template Myshyb"},
+     {"PRIMER_INTERNAL_MAX_TEMPLATE_MISHYB_TH", "primer internal maximum template Myshyb thermodynamic"},
+     {"PRIMER_MIN_SIZE", "primer minimum size"},
+     {"PRIMER_MAX_SIZE", "primer maximum size"},
+     {"PRIMER_INTERNAL_MAX_SIZE", "primer internal maximum size"},
+     {"MAX_SIZE", "maximum size"},
+     {"MIN_SIZE", "minimum size"},
+     {"PRIMER_GC_CLAMP", "primer CG clamp"},
+     {"PRIMER_MAX_END_GC", "primer maximum end CG"},
+     {"PRIMER_PRODUCT_SIZE_RANGE", "primer product size range"},
+     {"PRIMER_NUM_RETURN", "primer number return"},
+     {"PRIMER_MUST_MATCH_FIVE_PRIME", "primer must match 5'"},
+     {"PRIMER_MUST_MATCH_THREE_PRIME", "primer must match 3'"},
+     {"PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME", "primer internal must match 5'"},
+     {"PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME", "primer internal must match 3'"},
+     {"SEQUENCE_INCLUDED_REGION", "sequence included region"},
+     {"PRIMER_MAX_END_STABILITY", "primer maximum end stability"},
+     {"SEQUENCE_START_CODON_POSITION", "sequence start codon position"},
+     {"PRIMER_INSIDE_PENALTY", "primer inside penalty"},
+     {"PRIMER_OUTSIDE_PENALTY", "primer outside penalty"},
+     {"SEQUENCE_START_CODON_SEQUENCE", "sequence start codon sequence"},
+     {"PRIMER_QUALITY_RANGE_MIN", "primer quality range minimum"},
+     {"PRIMER_MIN_QUALITY", "primer minimum quality"},
+     {"PRIMER_QUALITY_RANGE_MAX", "primer quality range maximum"},
+     {"PRIMER_INTERNAL_MIN_QUALITY", "primer internal minimum quality"},
+     {"SEQUENCE_OVERHANG_LEFT", "sequence overhang left"},
+     {"SEQUENCE_OVERHANG_RIGHT", "sequence overhang right"},
+     {"PRIMER_MAX_GC", "primer maximum GC"},
+     {"PRIMER_MIN_GC", "primer minimum GC"},
+     {"PRIMER_INTERNAL_OLIGO_GC", "primer internal oligo GC"},
+     {"PRIMER_MAX_NS_ACCEPTED", "primer maximum Ns accepted"},
+     {"PRIMER_INTERNAL_MAX_NS_ACCEPTED", "primer internal maximum Ns accepted"},
+     {"PRIMER_INTERNAL_MIN_SIZE", "primer internal minimum size"},
+     {"PRIMER_SEQUENCING_LEAD", "primer sequencing lead"},
+     {"PRIMER_SEQUENCING_INTERVAL", "primer sequencing interval"},
+     {"PRIMER_SEQUENCING_ACCURACY", "primer sequencing accuracy"},
+     {"PRIMER_SEQUENCING_SPACING", "primer sequencing spacing"},
+     {"SEQUENCE_FORCE_LEFT_START", "sequence force left start"},
+     {"SEQUENCE_FORCE_LEFT_END", "sequence force left end"},
+     {"SEQUENCE_FORCE_RIGHT_END", "sequence force right start"},
+     {"SEQUENCE_FORCE_RIGHT_START", "sequence force right start"},
+     {"PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION", "primer minimum 5' prime overlap of junction"},
+     {"PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION", "primer minimum 3' prime overlap of junction"},
+     {"PRIMER_INTERNAL_MIN_5_PRIME_OVERLAP_OF_JUNCTION", "primer internal minimum 5' prime overlap of junction"},
+     {"PRIMER_INTERNAL_MIN_3_PRIME_OVERLAP_OF_JUNCTION", "primer internal minimum 3' prime overlap of junction"},
+     {"PRIMER_SALT_DIVALENT", "primer salt divalent"},
+     {"PRIMER_DNTP_CONC", "primer DNTP concentration"},
+     {"PRIMER_MIN_THREE_PRIME_DISTANCE", "primer minimum 3' prime distance"},
+     {"PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE", "primer minimum left 3' prime distance"},
+     {"PRIMER_INTERNAL_MIN_THREE_PRIME_DISTANCE", "primer internal minimum 3' prime distance"},
+     {"PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE", "primer minimum right 3' prime distance"},
+     {"PRIMER_MISPRIMING_LIBRARY", "primer mispriming library"},
+     {"PRIMER_INTERNAL_MISHYB_LIBRARY", "primer internal mispriming library"},
+     {"PRIMER_MASK_TEMPLATE", "primer mask template"},
+     {"PRIMER_TASK", "primer task"}};
+
+static QStringList sortedKeys = {};
+
 Primer3Task::Primer3Task(const QSharedPointer<Primer3TaskSettings>& _settings)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
       settings(_settings) {
@@ -173,11 +238,11 @@ Task::ReportResult Primer3Task::report() {
     auto resultPrimers = settings->getP3RetVal();
     QString globalError;
     if (resultPrimers->glob_err.storage_size != 0) {
-        globalError = tr("Global Primer3 error: \"%1\". ").arg(resultPrimers->glob_err.data);
+        globalError = tr("Global Primer3 error: \"%1\". ").arg(translateMacros(resultPrimers->glob_err.data));
     }
     QString sequenceError;
     if (resultPrimers->per_sequence_err.storage_size != 0) {
-        sequenceError = tr("Sequence Primer3 error: \"%1\".").arg(resultPrimers->per_sequence_err.data);
+        sequenceError = tr("Sequence Primer3 error: \"%1\".").arg(translateMacros(resultPrimers->per_sequence_err.data));
     }
     if (!globalError.isEmpty() || !sequenceError.isEmpty()) {
         stateInfo.setError(globalError + sequenceError);
@@ -223,6 +288,26 @@ static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qi
     }
 
     return false;
+}
+
+QString Primer3Task::translateMacros(const QString& p3ErrorMessage) {
+    CHECK(settings->getTranslateMacrosInReport(), p3ErrorMessage);
+    static QMutex mutex;
+    QMutexLocker lock(&mutex);
+    if (sortedKeys.isEmpty()) {
+        sortedKeys = macroReplaceMap.keys();
+        std::sort(sortedKeys.begin(), sortedKeys.end(), [](QString& t1, QString& t2) { 
+            return t1.length() > t2.length(); 
+        });
+    }
+    lock.unlock();
+    QString result = p3ErrorMessage;
+    for (const QString& key : qAsConst(sortedKeys)) {
+        if (result.contains(key)) {
+            result = result.replace(key, macroReplaceMap[key]);
+        }
+    }
+    return result;
 }
 
 void Primer3Task::selectPairsSpanningExonJunction(p3retval* primers, int toReturn) {

@@ -202,6 +202,8 @@ public:
     bool isIncludedRegionValid(const U2Region& r) const;
     void setSequenceRange(const U2Region& region);
     const U2Region& getSequenceRange() const;
+    void setTranslateMacrosInReport(bool value);
+    bool getTranslateMacrosInReport() const;
 
 private:
     void initMaps();
@@ -223,6 +225,7 @@ private:
     p3_global_settings* primerSettings = nullptr;
     seq_args* seqArgs = nullptr;
     p3retval* p3Retval = nullptr;
+    bool translateMacrosInReport = true;
 };
 
 }  // namespace U2
