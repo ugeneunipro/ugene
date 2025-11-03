@@ -50,7 +50,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     circular = el.attribute("circular") == "true";
 
     settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
-    settings->setTranslateMacrosInReport(false);
+    settings->setTranslateMacrosInReport(el.attribute("translate_macros") == "true");
     settings->getPrimerSettings()->first_base_index = 0;  // Default mode for XML tests.
     auto buf = el.attribute("range");
     if (!buf.isEmpty()) {
