@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-QMap<QString, QString> Primer3Task::macroReplaceMap = {
+static QMap<QString, QString> macroReplaceMap = {
     {"MAX_SIZE", "maximum size"},
     {"MIN_SIZE", "minimum size"},
     {"PRIMER_DNTP_CONC", "primer DNTP concentration"},
@@ -235,17 +235,41 @@ void Primer3Task::run() {
     }
 }
 
+// Returns string with translated macros to human friendly text (PRIMER_GC_CLAMP => primer CG clamp)
+QString translateMacros(const QString& p3ErrorMessage) {
+    static QMutex mutex;
+    QMutexLocker lock(&mutex);
+    if (sortedKeys.isEmpty()) {
+        sortedKeys = macroReplaceMap.keys();
+        std::sort(sortedKeys.begin(), sortedKeys.end(), [](QString& t1, QString& t2) {
+            return t1.length() > t2.length();
+        });
+    }
+    lock.unlock();
+    QString result = p3ErrorMessage;
+    for (const QString& key : qAsConst(sortedKeys)) {
+        if (result.contains(key)) {
+            result = result.replace(key, macroReplaceMap[key]);
+        }
+    }
+    return result;
+}
+
 Task::ReportResult Primer3Task::report() {
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
     auto resultPrimers = settings->getP3RetVal();
     QString globalError;
     if (resultPrimers->glob_err.storage_size != 0) {
-        globalError = tr("Global Primer3 error: \"%1\". ").arg(translateMacros(resultPrimers->glob_err.data));
+        const QString resultGlobError = settings->getTranslateMacrosInReport() ? translateMacros(resultPrimers->glob_err.data) 
+                                        : resultPrimers->glob_err.data;
+        globalError = tr("Global Primer3 error: \"%1\". ").arg(resultGlobError);
     }
     QString sequenceError;
     if (resultPrimers->per_sequence_err.storage_size != 0) {
-        sequenceError = tr("Sequence Primer3 error: \"%1\".").arg(translateMacros(resultPrimers->per_sequence_err.data));
+        const QString resultSeqError = settings->getTranslateMacrosInReport() ? translateMacros(resultPrimers->per_sequence_err.data) 
+                                        : resultPrimers->per_sequence_err.data;
+        sequenceError = tr("Sequence Primer3 error: \"%1\".").arg(resultSeqError);
     }
     if (!globalError.isEmpty() || !sequenceError.isEmpty()) {
         stateInfo.setError(globalError + sequenceError);
@@ -291,26 +315,6 @@ static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qi
     }
 
     return false;
-}
-
-QString Primer3Task::translateMacros(const QString& p3ErrorMessage) {
-    CHECK(settings->getTranslateMacrosInReport(), p3ErrorMessage);
-    static QMutex mutex;
-    QMutexLocker lock(&mutex);
-    if (sortedKeys.isEmpty()) {
-        sortedKeys = macroReplaceMap.keys();
-        std::sort(sortedKeys.begin(), sortedKeys.end(), [](QString& t1, QString& t2) { 
-            return t1.length() > t2.length(); 
-        });
-    }
-    lock.unlock();
-    QString result = p3ErrorMessage;
-    for (const QString& key : qAsConst(sortedKeys)) {
-        if (result.contains(key)) {
-            result = result.replace(key, macroReplaceMap[key]);
-        }
-    }
-    return result;
 }
 
 void Primer3Task::selectPairsSpanningExonJunction(p3retval* primers, int toReturn) {

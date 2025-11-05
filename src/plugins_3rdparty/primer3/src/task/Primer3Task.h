@@ -51,17 +51,12 @@ public:
 private:
     void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
     void selectPairsSpanningIntron(p3retval* primers, int toReturn);
-    
-    //Returns string with translated macros to human friendly text (PRIMER_GC_CLAMP => primer CG clamp)
-    QString translateMacros(const QString& p3ErrorMessage);
 
     QSharedPointer<Primer3TaskSettings> settings;
     QList<QSharedPointer<PrimerPair>> bestPairs;
     QList<QSharedPointer<PrimerSingle>> singlePrimers;
 
     int offset = 0;
-
-    static QMap<QString, QString> macroReplaceMap;
 };
 
 }  // namespace U2
