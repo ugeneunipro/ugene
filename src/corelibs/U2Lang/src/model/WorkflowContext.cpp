@@ -205,7 +205,8 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus& os) {
     } else {
         auto workingDirectory = QProcess().workingDirectory();
         if (QDir(workingDirectory) == QDir(QCoreApplication::applicationDirPath())) {
-            root = WorkflowSettings::getWorkflowOutputDirectory() + "cmdline_run/";
+            QDir wdDir(WorkflowSettings::getWorkflowOutputDirectory());
+            root = wdDir.absoluteFilePath("cmdline_run");
         } else {
             root = workingDirectory;
         }

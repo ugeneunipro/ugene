@@ -527,13 +527,14 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     // Run sanger through dialog
     // Check that run.info is created in WorkflowSettings::getWorkflowOutputDirectory() + cmdline_run/"
     // Check that run.info is NOT created in the old location: QDir(QProcess().workingDirectory()).absolutePath() + "run.info"
-    QString runInfoDir = WorkflowSettings::getWorkflowOutputDirectory() + "cmdline_run/";
+    QDir wdDir(WorkflowSettings::getWorkflowOutputDirectory());
+    QString runInfoDir = wdDir.absoluteFilePath("cmdline_run");
     GTFile::removeDir(runInfoDir);
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
     settings.readUrls << testDir + "_common_data/sanger/sanger_01.ab1";
-    settings.outAlignment = sandBoxDir + "sanger_test_0009";
+    settings.outAlignment = sandBoxDir + "sanger_test_0009.ugenedb";
 
     GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(settings));
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
@@ -541,8 +542,9 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QString runInfoFileName = "run.info";
-    GTFile::checkFileExists(runInfoDir + runInfoFileName);
-    auto oldRunInfoFilePath = QDir(QProcess().workingDirectory()).absolutePath() + runInfoFileName;
+    QFileInfo fiRunInfo(wdDir, runInfoFileName);
+    GTFile::checkFileExists(fiRunInfo.absoluteFilePath());
+    auto oldRunInfoFilePath = QFileInfo(QDir(QProcess().workingDirectory()), runInfoFileName).absoluteFilePath();
     CHECK_SET_ERR(!GTFile::isFileExists(oldRunInfoFilePath), "File exist, but should not: " + oldRunInfoFilePath);
 }
 
