@@ -78,6 +78,22 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     tagMap["CC"] = DNAInfo::COMMENT;  // The CC lines are free text comments on the entry, and are used to convey any useful information.
 }
 
+const QRegExp rXSpace = QRegExp("\\s+");
+
+bool analyzeLineAndFillHits(const QString& line, QMap<QString, int>& hits) {
+    const QStringList lineAsList = line.split(rXSpace, Qt::SkipEmptyParts);
+    CHECK(!lineAsList.isEmpty(), false);
+    const QString& firstWord = lineAsList.first();
+    if (firstWord.size() != 2) {
+        return false;
+    }
+    if (hits.isEmpty()) {
+        CHECK(firstWord == "ID", false);
+    }
+    hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
+    return true;
+}
+
 FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
@@ -88,25 +104,15 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     }
     QString textCopy(rawData);
     QTextStream stream(&textCopy);
-    QString line = stream.readLine();
-    QString nextLine = line;
+    QString line = "";
+    QString nextLine = stream.readLine();
     QMap<QString, int> hits;
-    const QRegExp rXSpace = QRegExp("\\s+");
-    while (!line.isNull() && !nextLine.isEmpty()) {
-        const QStringList lineAsList = line.split(rXSpace, Qt::SkipEmptyParts);
-        CHECK(!lineAsList.isEmpty(), FormatDetection_NotMatched);
-        const QString firstWord = lineAsList.first();
-        if (firstWord.size() != 2) {
-            return FormatDetection_NotMatched;
-        }
-        if (hits.isEmpty()) {
-            CHECK(firstWord == "ID", FormatDetection_NotMatched);
-        }
-        CHECK_BREAK(firstWord != "SQ")
-        hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
-        line = nextLine == line ? stream.readLine() : line = nextLine;
-        nextLine = stream.readLine();        
-    }
+    do {
+        line = nextLine;
+        CHECK(analyzeLineAndFillHits(line, hits), FormatDetection_NotMatched);
+        CHECK_BREAK(!hits.contains("SQ"));
+        nextLine = stream.readLine();
+    } while (!nextLine.isNull());
     for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
         CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
     }
