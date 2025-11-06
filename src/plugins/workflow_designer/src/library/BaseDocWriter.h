@@ -81,7 +81,7 @@ private:
     uint fileMode;
     QSet<QString> usedUrls;
     QMap<QString, int> counters;  // url <-> count suffix
-    QPointer<IOAdapter> cachedAdapter;
+    QList<QPointer<IOAdapter>> cachedAdapterList;
     QMap<QString, Document*> docs;
 
     QString dstPathInDb;
@@ -96,6 +96,7 @@ private:
      * Creates an adapter for @url or returns existing one.
      * The url of the adapter could be not equal to @url.
      */
+    IOAdapter* getCachedAdapter(const QString& url);
     IOAdapter* getAdapter(const QString& url, U2OpStatus& os);
     void openAdapter(IOAdapter* io, const QString& url, const SaveDocFlags& flags, U2OpStatus& os);
     /** Creates a document for @io or returns existing one. */

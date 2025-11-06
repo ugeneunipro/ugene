@@ -239,8 +239,20 @@ void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDo
     counters[aUrl] = suffix;
 }
 
+IOAdapter* BaseDocWriter::getCachedAdapter(const QString& url) {
+    IOAdapter* cachedAdapter = nullptr;
+    auto adapterId = IOAdapterUtils::url2io(url);
+    for (auto adapter : qAsConst(cachedAdapterList)) {
+        if (adapter->getAdapterId() == adapterId) {
+            return adapter;
+        }
+    }
+    return nullptr;
+}
+
 IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
     if (appendToExistingFile(url)) {
+        IOAdapter* cachedAdapter = getCachedAdapter(url);
         SAFE_POINT_NN(cachedAdapter, nullptr);
 
         if (!cachedAdapter->open(url, IOAdapterMode_Append)) {
@@ -252,13 +264,12 @@ IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
     }
 
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    if (cachedAdapter.isNull()) {
+    IOAdapter* cachedAdapter = getCachedAdapter(url);
+    if (cachedAdapter == nullptr) {
         cachedAdapter = iof->createIOAdapter();
-    } else {
-        // Check, that adapter has the same type
-        SAFE_POINT_EXT(iof->getAdapterName() == cachedAdapter->getAdapterName(), os.setError("Unexpected IO adapter type"), nullptr);
+        cachedAdapterList << cachedAdapter;
     }
-    openAdapter(cachedAdapter.data(), url, SaveDocFlags(fileMode), os);
+    openAdapter(cachedAdapter, url, SaveDocFlags(fileMode), os);
     CHECK_OP(os, nullptr);
 
     QString resultUrl = cachedAdapter->getURL().getURLString();
@@ -396,7 +407,7 @@ void BaseDocWriter::sl_objectImported(Task* importTask) {
 }
 
 Task* BaseDocWriter::processDocs() {
-    if (cachedAdapter.isNull()) {
+    if (cachedAdapterList.isEmpty()) {
         reportNoDataReceivedWarning();
     }
     if (docs.isEmpty()) {
