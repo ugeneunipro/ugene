@@ -104,15 +104,12 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     }
     QString textCopy(rawData);
     QTextStream stream(&textCopy);
-    QString line = "";
-    QString nextLine = stream.readLine();
+    QString line = stream.readLine();
     QMap<QString, int> hits;
     do {
-        line = nextLine;
         CHECK(analyzeLineAndFillHits(line, hits), FormatDetection_NotMatched);
-        CHECK_BREAK(!hits.contains("SQ"));
-        nextLine = stream.readLine();
-    } while (!nextLine.isNull());
+        line = stream.readLine();
+    } while (!line.isNull() && !hits.contains("SQ"));
     for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
         CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
     }
