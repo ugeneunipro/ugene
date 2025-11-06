@@ -542,7 +542,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QString runInfoFileName = "run.info";
-    QFileInfo fiRunInfo(wdDir, runInfoFileName);
+    QFileInfo fiRunInfo(runInfoDir, runInfoFileName);
     GTFile::checkFileExists(fiRunInfo.absoluteFilePath());
     auto oldRunInfoFilePath = QFileInfo(QDir(QProcess().workingDirectory()), runInfoFileName).absoluteFilePath();
     CHECK_SET_ERR(!GTFile::isFileExists(oldRunInfoFilePath), "File exist, but should not: " + oldRunInfoFilePath);
