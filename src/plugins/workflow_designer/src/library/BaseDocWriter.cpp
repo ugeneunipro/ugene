@@ -240,9 +240,12 @@ void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDo
 }
 
 IOAdapter* BaseDocWriter::getCachedAdapter(const QString& url) {
-    IOAdapter* cachedAdapter = nullptr;
     auto adapterId = IOAdapterUtils::url2io(url);
     for (auto adapter : qAsConst(cachedAdapterList)) {
+        if (adapter.isNull()) {
+            FAIL_AND_CONTINUE("Adapter should not be null");
+        }
+
         if (adapter->getAdapterId() == adapterId) {
             return adapter;
         }
@@ -254,6 +257,7 @@ IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
     if (appendToExistingFile(url)) {
         IOAdapter* cachedAdapter = getCachedAdapter(url);
         SAFE_POINT_NN(cachedAdapter, nullptr);
+        SAFE_POINT(!cachedAdapter->isOpen(), "Adapter should not be open", nullptr);
 
         if (!cachedAdapter->open(url, IOAdapterMode_Append)) {
             os.setError(tr("Can not open a file for writing: %1").arg(url));
@@ -269,6 +273,8 @@ IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
         cachedAdapter = iof->createIOAdapter();
         cachedAdapterList << cachedAdapter;
     }
+    SAFE_POINT(!cachedAdapter->isOpen(), "Adapter should not be open", nullptr);
+
     openAdapter(cachedAdapter, url, SaveDocFlags(fileMode), os);
     CHECK_OP(os, nullptr);
 
