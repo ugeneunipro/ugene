@@ -78,7 +78,7 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     tagMap["CC"] = DNAInfo::COMMENT;  // The CC lines are free text comments on the entry, and are used to convey any useful information.
 }
 
-const QRegExp rXSpace = QRegExp("\\s+");
+static const QRegExp rXSpace = QRegExp("\\s+");
 
 bool analyzeLineAndFillHits(const QString& line, QMap<QString, int>& hits) {
     const QStringList lineAsList = line.split(rXSpace, Qt::SkipEmptyParts);
