@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDomElement>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
@@ -187,8 +188,16 @@ void GTest_RunCMDLine::prepare() {
         proc->setWorkingDirectory(workingDir);
     }
 
+    // Create separate log file for subprocess to avoid TEST_LOG_LISTENER resource deadlock
+    // when parent test needs to check log messages and subprocess also tries to write to log
+    separateLogFile = GUrlUtils::rollFileName(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/cmdline_subprocess_log.txt", "_");
+    tmpFiles << separateLogFile;  // Will be auto-removed in cleanup
+    args.prepend("--log-file=" + separateLogFile);
+    coreLog.info(QString("[GTest_RunCMDLine] Using separate log file for subprocess: %1").arg(separateLogFile));
+
     QString argsStr = args.join(" ");
     coreLog.trace("Starting UGENE with arguments: " + argsStr);
+    processStartTime = GTimer::currentTimeMicros();
     proc->start(ugeneclPath, args);
 }
 
@@ -205,12 +214,42 @@ Task::ReportResult GTest_RunCMDLine::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
     }
+
+    // Check subprocess timeout
     if (proc->state() != QProcess::NotRunning) {
+        qint64 elapsedSeconds = GTimer::secsBetween(processStartTime, GTimer::currentTimeMicros());
+        if (elapsedSeconds > SUBPROCESS_TIMEOUT_SECONDS) {
+            coreLog.error(QString("[GTest_RunCMDLine] Subprocess TIMEOUT after %1 seconds (max %2 seconds)").arg(elapsedSeconds).arg(SUBPROCESS_TIMEOUT_SECONDS));
+            proc->kill();
+            proc->waitForFinished(5000);  // Wait up to 5 seconds for process to die
+            stateInfo.setError(QString("Subprocess timeout: process did not finish in %1 seconds").arg(SUBPROCESS_TIMEOUT_SECONDS));
+            return ReportResult_Finished;
+        }
         return ReportResult_CallMeAgain;
     }
-    // QProcess::ProcessError err = proc->error();
-    QString output(proc->readAllStandardOutput());
-    // QByteArray outputErr = proc->readAllStandardError();
+
+    // Read output from separate log file instead of stdout to avoid TEST_LOG_LISTENER deadlock
+    QString output;
+    if (!separateLogFile.isEmpty() && QFile::exists(separateLogFile)) {
+        QFile logFile(separateLogFile);
+        if (logFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            output = QString::fromUtf8(logFile.readAll());
+            logFile.close();
+            coreLog.trace(QString("[GTest_RunCMDLine] Read %1 bytes from subprocess log file").arg(output.size()));
+        } else {
+            coreLog.error(QString("[GTest_RunCMDLine] Failed to open subprocess log file: %1").arg(separateLogFile));
+        }
+    }
+
+    // Also read stdout as fallback (for compatibility with old behavior)
+    QString stdOutput(proc->readAllStandardOutput());
+    if (!stdOutput.isEmpty()) {
+        if (!output.isEmpty()) {
+            output += "\n=== STDOUT ===\n";
+        }
+        output += stdOutput;
+    }
+
     cmdLog.trace(output);
 
     if (!expectedMessage.isEmpty()) {
