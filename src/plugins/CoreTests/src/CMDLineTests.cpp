@@ -190,15 +190,25 @@ void GTest_RunCMDLine::prepare() {
 
     // Create separate log file for subprocess to avoid TEST_LOG_LISTENER resource deadlock
     // when parent test needs to check log messages and subprocess also tries to write to log
-    separateLogFile = GUrlUtils::rollFileName(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/cmdline_subprocess_log.txt", "_");
+    QString tempDir = env->getVar(TEMP_DATA_DIR_ENV_ID);
+    coreLog.info(QString("[GTest_RunCMDLine] TEMP_DATA_DIR from env: '%1'").arg(tempDir));
+
+    separateLogFile = GUrlUtils::rollFileName(tempDir + "/cmdline_subprocess_log.txt", "_");
     tmpFiles << separateLogFile;  // Will be auto-removed in cleanup
     args.prepend("--log-file=" + separateLogFile);
     coreLog.info(QString("[GTest_RunCMDLine] Using separate log file for subprocess: %1").arg(separateLogFile));
+    coreLog.info(QString("[GTest_RunCMDLine] Executable: %1").arg(ugeneclPath));
 
     QString argsStr = args.join(" ");
-    coreLog.trace("Starting UGENE with arguments: " + argsStr);
+    coreLog.info(QString("[GTest_RunCMDLine] Full command line: %1 %2").arg(ugeneclPath).arg(argsStr));
     processStartTime = GTimer::currentTimeMicros();
     proc->start(ugeneclPath, args);
+
+    if (!proc->waitForStarted(5000)) {
+        coreLog.error(QString("[GTest_RunCMDLine] Failed to start subprocess! Error: %1").arg(proc->errorString()));
+    } else {
+        coreLog.info(QString("[GTest_RunCMDLine] Subprocess started successfully, PID: %1").arg(proc->processId()));
+    }
 }
 
 static const QString ERROR_LABEL_TRY1 = "finished with error";

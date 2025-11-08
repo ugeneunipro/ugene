@@ -178,7 +178,7 @@ static bool checkIfLogLockIsNeeded(const QDomElement& multiTestElement) {
             // Important: Do NOT lock TEST_LOG_LISTENER if there are run-cmdline subtests
             // because they spawn subprocesses that also need to write to logs.
             if (element.tagName() == "run-cmdline") {
-                coreLog.trace("[XMLMultiTest] Found run-cmdline subtest, skipping TEST_LOG_LISTENER lock to avoid deadlock");
+                coreLog.info("[XMLMultiTest] Found run-cmdline subtest, skipping TEST_LOG_LISTENER lock to avoid deadlock");
                 return false;  // Don't lock - run-cmdline uses separate log files.
             }
 
