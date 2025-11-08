@@ -220,6 +220,7 @@ void LoadRemoteDocumentTask::prepare() {
     BaseLoadRemoteDocumentTask::prepare();
     if (!isCached()) {
         if (sourceUrl.isHyperLink()) {
+            coreLog.info(tr("[LoadRemoteDocumentTask] Creating CopyDataTask for URL: %1 -> save to: %2").arg(sourceUrl.getURLString()).arg(fullPath));
             IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::HTTP_FILE);
             IOAdapterFactory* iow = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
             copyDataTask = new CopyDataTask(iof, sourceUrl, iow, fullPath);
@@ -231,10 +232,13 @@ void LoadRemoteDocumentTask::prepare() {
                 setError(tr("Undefined database: '%1'").arg(dbName));
                 return;
             } else {
+                coreLog.info(tr("[LoadRemoteDocumentTask] Creating LoadDataFromEntrezTask for dbId: %1, acc: %2").arg(dbId).arg(accNumber));
                 loadDataFromEntrezTask = new LoadDataFromEntrezTask(dbId, accNumber, getRetType(), fullPath);
                 addSubTask(loadDataFromEntrezTask);
             }
         }
+    } else {
+        coreLog.info(tr("[LoadRemoteDocumentTask] File is cached, skipping download"));
     }
 }
 
@@ -279,10 +283,13 @@ QString LoadRemoteDocumentTask::getFileFormat(const QString& dbid) {
 
 GUrl LoadRemoteDocumentTask::getSourceUrl() {
     if (!fileUrl.isEmpty()) {
+        coreLog.info(tr("[LoadRemoteDocumentTask] Using file URL: %1").arg(fileUrl.getURLString()));
         return fileUrl;
     }
     RemoteDBRegistry::getRemoteDBRegistry().convertAlias(dbName);
-    return {RemoteDBRegistry::getRemoteDBRegistry().getURL(accNumber, dbName)};
+    QString generatedUrl = RemoteDBRegistry::getRemoteDBRegistry().getURL(accNumber, dbName);
+    coreLog.info(tr("[LoadRemoteDocumentTask] Generated URL for db='%1', acc='%2': %3").arg(dbName).arg(accNumber).arg(generatedUrl));
+    return {generatedUrl};
 }
 
 QString LoadRemoteDocumentTask::getFileName() {
@@ -671,11 +678,16 @@ RemoteDBRegistry::RemoteDBRegistry() {
     aliases.insert("protein", GENBANK_PROTEIN);
 
     const QMap<QString, DBXRefInfo>& entries = AppContext::getDBXRefRegistry()->getEntries();
+    coreLog.info(QObject::tr("[RemoteDBRegistry] Loading database URLs from DBXRefRegistry, total entries: %1").arg(entries.size()));
     foreach (const DBXRefInfo& info, entries.values()) {
         if (!info.fileUrl.isEmpty()) {
             httpDBs.insert(info.name, info.fileUrl);
+            if (info.name == PDB) {
+                coreLog.info(QObject::tr("[RemoteDBRegistry] PDB database URL loaded: '%1'").arg(info.fileUrl));
+            }
         }
     }
+    coreLog.info(QObject::tr("[RemoteDBRegistry] Total HTTP databases loaded: %1").arg(httpDBs.size()));
 
     hints.insert(ENSEMBL, QObject::tr("Use Ensembl ID. For example: %1 or %2").arg(makeIDLink("ENSG00000205571")).arg(makeIDLink("ENSG00000146463")));
     hints.insert(GENBANK_DNA, QObject::tr("Use Genbank DNA accession number. For example: %1 or %2").arg(makeIDLink("NC_001363")).arg(makeIDLink("D11266")));
@@ -698,7 +710,11 @@ QList<QString> RemoteDBRegistry::getDBs() const {
 QString RemoteDBRegistry::getURL(const QString& accId, const QString& dbName) const {
     QString result("");
     if (httpDBs.contains(dbName)) {
-        result = QString(httpDBs.value(dbName)).arg(accId);
+        QString urlTemplate = httpDBs.value(dbName);
+        result = QString(urlTemplate).arg(accId);
+        coreLog.info(QObject::tr("[RemoteDBRegistry] DB '%1' URL template: '%2' -> Final URL: '%3'").arg(dbName).arg(urlTemplate).arg(result));
+    } else {
+        coreLog.error(QObject::tr("[RemoteDBRegistry] Database '%1' NOT FOUND in httpDBs!").arg(dbName));
     }
     return result;
 }
