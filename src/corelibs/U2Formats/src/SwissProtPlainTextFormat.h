@@ -51,12 +51,6 @@ protected:
 private:
     static void check4SecondaryStructure(AnnotationData* a);
     static void processAnnotationRegion(AnnotationData* a, const int start, const int end, const int offset);
-
-    static const QSet<QString> MANDATORY_TAGS;
-    static const QDate UPDATE_DATE;
-    static const QMap<QString, int> MONTH_STRING_2_INT;
-    static const QString ANNOTATION_HEADER_REGEXP;
-    static const QString ANNOTATION_QUALIFIERS_REGEXP;
 };
 
 }  // namespace U2
