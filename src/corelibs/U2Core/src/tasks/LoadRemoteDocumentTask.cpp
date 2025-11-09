@@ -282,11 +282,17 @@ GUrl LoadRemoteDocumentTask::getSourceUrl() {
         return fileUrl;
     }
     RemoteDBRegistry::getRemoteDBRegistry().convertAlias(dbName);
-    return {RemoteDBRegistry::getRemoteDBRegistry().getURL(accNumber, dbName)};
+    QString generatedUrl = RemoteDBRegistry::getRemoteDBRegistry().getURL(accNumber, dbName);
+    return {generatedUrl};
 }
 
 QString LoadRemoteDocumentTask::getFileName() {
     if (sourceUrl.isHyperLink()) {
+        // For PDB, preserve the familiar filename format (uppercase + .pdb extension)
+        // even though we download from PDBe with lowercase
+        if (dbName == "PDB") {
+            return accNumber + ".pdb";
+        }
         return dbName == RemoteDBRegistry::ENSEMBL ? QString("%1.fa").arg(accNumber) : sourceUrl.fileName();
     } else {
         if (format.isEmpty()) {
@@ -698,7 +704,10 @@ QList<QString> RemoteDBRegistry::getDBs() const {
 QString RemoteDBRegistry::getURL(const QString& accId, const QString& dbName) const {
     QString result("");
     if (httpDBs.contains(dbName)) {
-        result = QString(httpDBs.value(dbName)).arg(accId);
+        QString urlTemplate = httpDBs.value(dbName);
+        // PDBe requires lowercase ID in URL
+        QString finalAccId = (dbName == "PDB") ? accId.toLower() : accId;
+        result = QString(urlTemplate).arg(finalAccId);
     }
     return result;
 }
