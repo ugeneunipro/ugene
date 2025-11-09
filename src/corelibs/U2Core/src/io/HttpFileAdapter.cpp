@@ -119,7 +119,6 @@ bool HttpFileAdapter::open(const QUrl& url, const QNetworkProxy& p) {
     } else {
         QString urlString = url.toString();
         urlString = urlString.replace(RemoteRequestConfig::HTTP_BODY_SEPARATOR, "&");
-        coreLog.info(tr("[HttpFileAdapter] Starting GET request to: %1").arg(urlString));
         QNetworkRequest netRequest(urlString);
         netRequest.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
         reply = netManager->get(netRequest);
@@ -297,16 +296,8 @@ qint64 HttpFileAdapter::skipAhead(qint64 nBytes) {
 }
 
 qint64 HttpFileAdapter::waitData(qint64 until) {
-    if (!is_downloaded && (until > stored())) {
-        coreLog.info(tr("[HttpFileAdapter] Waiting for data: need %1 bytes, have %2 bytes").arg(until).arg(stored()));
-    }
     while (!is_downloaded && (until > stored())) {
         loop.exec();
-    }
-    if (!is_downloaded) {
-        coreLog.info(tr("[HttpFileAdapter] Wait completed: have %1 bytes (still downloading)").arg(stored()));
-    } else {
-        coreLog.info(tr("[HttpFileAdapter] Wait completed: download finished, total %1 bytes").arg(stored()));
     }
     return qMin(until, stored());
 }
@@ -317,7 +308,7 @@ void HttpFileAdapter::done() {
         QUrl redirectUrl(locationHeaderValue);
         chunk_list.clear();
         close();
-        coreLog.info(tr("[HttpFileAdapter] HTTP Redirect detected to: %1").arg(locationHeaderValue));
+        coreLog.details(tr("Http redirect %1").arg(locationHeaderValue));
         QString fullRedirectUrl(redirectUrl.toString());
         if (!postData.isEmpty()) {
             fullRedirectUrl = redirectUrl.toString() + RemoteRequestConfig::HTTP_BODY_SEPARATOR + postData;
@@ -327,11 +318,6 @@ void HttpFileAdapter::done() {
     }
     is_downloaded = true;
     badstate = reply->error() != QNetworkReply::NoError;
-    if (badstate) {
-        coreLog.error(tr("[HttpFileAdapter] Download FAILED with error: %1").arg(reply->errorString()));
-    } else {
-        coreLog.info(tr("[HttpFileAdapter] Download COMPLETED successfully, received %1 bytes").arg(stored()));
-    }
     loop.exit();
 }
 

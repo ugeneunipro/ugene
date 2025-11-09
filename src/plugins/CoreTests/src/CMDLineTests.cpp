@@ -191,24 +191,13 @@ void GTest_RunCMDLine::prepare() {
     // Create separate log file for subprocess to avoid TEST_LOG_LISTENER resource deadlock
     // when parent test needs to check log messages and subprocess also tries to write to log
     QString tempDir = env->getVar(TEMP_DATA_DIR_ENV_ID);
-    coreLog.info(QString("[GTest_RunCMDLine] TEMP_DATA_DIR from env: '%1'").arg(tempDir));
-
     separateLogFile = GUrlUtils::rollFileName(tempDir + "/cmdline_subprocess_log.txt", "_");
     tmpFiles << separateLogFile;  // Will be auto-removed in cleanup
     args.prepend("--log-file=" + separateLogFile);
-    coreLog.info(QString("[GTest_RunCMDLine] Using separate log file for subprocess: %1").arg(separateLogFile));
-    coreLog.info(QString("[GTest_RunCMDLine] Executable: %1").arg(ugeneclPath));
 
-    QString argsStr = args.join(" ");
-    coreLog.info(QString("[GTest_RunCMDLine] Full command line: %1 %2").arg(ugeneclPath).arg(argsStr));
     processStartTime = GTimer::currentTimeMicros();
     proc->start(ugeneclPath, args);
-
-    if (!proc->waitForStarted(5000)) {
-        coreLog.error(QString("[GTest_RunCMDLine] Failed to start subprocess! Error: %1").arg(proc->errorString()));
-    } else {
-        coreLog.info(QString("[GTest_RunCMDLine] Subprocess started successfully, PID: %1").arg(proc->processId()));
-    }
+    proc->waitForStarted(5000);
 }
 
 static const QString ERROR_LABEL_TRY1 = "finished with error";
@@ -229,7 +218,6 @@ Task::ReportResult GTest_RunCMDLine::report() {
     if (proc->state() != QProcess::NotRunning) {
         qint64 elapsedSeconds = GTimer::secsBetween(processStartTime, GTimer::currentTimeMicros());
         if (elapsedSeconds > SUBPROCESS_TIMEOUT_SECONDS) {
-            coreLog.error(QString("[GTest_RunCMDLine] Subprocess TIMEOUT after %1 seconds (max %2 seconds)").arg(elapsedSeconds).arg(SUBPROCESS_TIMEOUT_SECONDS));
             proc->kill();
             proc->waitForFinished(5000);  // Wait up to 5 seconds for process to die
             stateInfo.setError(QString("Subprocess timeout: process did not finish in %1 seconds").arg(SUBPROCESS_TIMEOUT_SECONDS));
@@ -245,9 +233,6 @@ Task::ReportResult GTest_RunCMDLine::report() {
         if (logFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             output = QString::fromUtf8(logFile.readAll());
             logFile.close();
-            coreLog.trace(QString("[GTest_RunCMDLine] Read %1 bytes from subprocess log file").arg(output.size()));
-        } else {
-            coreLog.error(QString("[GTest_RunCMDLine] Failed to open subprocess log file: %1").arg(separateLogFile));
         }
     }
 
