@@ -158,7 +158,7 @@ Pathema|||Pathema Genome Resource
 
 PBmice|||PiggyBac Mutagenesis Information Center
 
-PDB|http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=%1|https://files.rcsb.org/view/%1.pdb|Biological macromolecule three dimensional structure database
+PDB|http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=%1|https://www.ebi.ac.uk/pdbe/entry-files/pdb%1.ent|Biological macromolecule three dimensional structure database
 
 PFAM|||Collection of protein families
 

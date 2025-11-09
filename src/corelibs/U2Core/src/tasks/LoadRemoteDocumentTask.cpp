@@ -294,6 +294,11 @@ GUrl LoadRemoteDocumentTask::getSourceUrl() {
 
 QString LoadRemoteDocumentTask::getFileName() {
     if (sourceUrl.isHyperLink()) {
+        // For PDB, preserve the familiar filename format (uppercase + .pdb extension)
+        // even though we download from PDBe with lowercase
+        if (dbName == "PDB") {
+            return accNumber + ".pdb";
+        }
         return dbName == RemoteDBRegistry::ENSEMBL ? QString("%1.fa").arg(accNumber) : sourceUrl.fileName();
     } else {
         if (format.isEmpty()) {
@@ -711,7 +716,9 @@ QString RemoteDBRegistry::getURL(const QString& accId, const QString& dbName) co
     QString result("");
     if (httpDBs.contains(dbName)) {
         QString urlTemplate = httpDBs.value(dbName);
-        result = QString(urlTemplate).arg(accId);
+        // PDBe requires lowercase ID in URL
+        QString finalAccId = (dbName == "PDB") ? accId.toLower() : accId;
+        result = QString(urlTemplate).arg(finalAccId);
         coreLog.info(QObject::tr("[RemoteDBRegistry] DB '%1' URL template: '%2' -> Final URL: '%3'").arg(dbName).arg(urlTemplate).arg(result));
     } else {
         coreLog.error(QObject::tr("[RemoteDBRegistry] Database '%1' NOT FOUND in httpDBs!").arg(dbName));
