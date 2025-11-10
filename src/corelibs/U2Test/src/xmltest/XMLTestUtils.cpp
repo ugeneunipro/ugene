@@ -159,6 +159,12 @@ const QString XMLMultiTest::FAIL_ON_SUBTEST_FAIL = "fail-on-subtest-fail";
 /**
  * Returns 'true' if the whole test must be executed under 'lock-log'.
  * This lock is needed if any element of the test checks log.
+ *
+ * IMPORTANT: For 'run-cmdline' tests, we must NOT lock TEST_LOG_LISTENER because:
+ * - The parent test (XMLMultiTest) would hold the lock
+ * - The subprocess (ugenecl) would also need this lock to write logs
+ * - This creates a deadlock where parent waits for subprocess and subprocess waits for lock
+ * - Solution: run-cmdline tests use separate log files (--log-file argument).
  */
 static bool checkIfLogLockIsNeeded(const QDomElement& multiTestElement) {
     QList<QString> logMessageAttributePrefixes = {"message", "no-message"};
@@ -167,7 +173,15 @@ static bool checkIfLogLockIsNeeded(const QDomElement& multiTestElement) {
     for (int i = 0; i < childNodes.length(); i++) {
         QDomNode node = childNodes.at(i);
         if (node.isElement()) {
-            QDomNamedNodeMap attributes = node.attributes();
+            QDomElement element = node.toElement();
+
+            // Important: Do NOT lock TEST_LOG_LISTENER if there are run-cmdline subtests
+            // because they spawn subprocesses that also need to write to logs.
+            if (element.tagName() == "run-cmdline") {
+                return false;  // Don't lock - run-cmdline uses separate log files.
+            }
+
+            QDomNamedNodeMap attributes = element.attributes();
             for (int j = 0; j < attributes.length(); j++) {
                 QDomNode attribute = attributes.item(j);
                 QString attributeName = attribute.nodeName();

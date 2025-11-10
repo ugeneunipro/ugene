@@ -308,7 +308,7 @@ void HttpFileAdapter::done() {
         QUrl redirectUrl(locationHeaderValue);
         chunk_list.clear();
         close();
-        coreLog.details(tr("Redirecting to %1").arg(locationHeaderValue));
+        coreLog.details(tr("Http redirect %1").arg(locationHeaderValue));
         QString fullRedirectUrl(redirectUrl.toString());
         if (!postData.isEmpty()) {
             fullRedirectUrl = redirectUrl.toString() + RemoteRequestConfig::HTTP_BODY_SEPARATOR + postData;
