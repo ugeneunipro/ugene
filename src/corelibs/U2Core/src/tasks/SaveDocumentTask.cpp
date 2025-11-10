@@ -179,8 +179,9 @@ Task::ReportResult SaveDocumentTask::report() {
         if (!dontUnload) {
             doc->unload();
         }
-        CHECK(AppContext::getProject() != nullptr, ReportResult_Finished);
-        AppContext::getProject()->removeDocument(doc, true);
+        if (AppContext::getProject() != nullptr) {
+            AppContext::getProject()->removeDocument(doc, true);
+        }
     }
     if (flags.testFlag(SaveDoc_UnloadAfter)) {
         if (!doc->unload()) {

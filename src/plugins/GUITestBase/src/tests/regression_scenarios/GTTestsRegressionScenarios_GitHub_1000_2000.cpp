@@ -75,6 +75,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsProject.h"
@@ -106,6 +107,7 @@
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View//ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
@@ -216,10 +218,36 @@ GUI_TEST_CLASS_DEFINITION(test_1794) {
     GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Reads);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1810) {
+    /*
+     * 1. Open COI.aln.
+     * 2. Build a tree and make it open in a new window in Display Options tab -> COI.hwk is created in new window.
+     * 3. Select opened COI.aln in the view.
+     * 4. In Option View select tree tab
+     * 5. Open created COI.nwk from COI.aln options panel
+     * Expected state: previously opened view activated
+     */
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(testDir + "_common_data/scenarios/sandbox/COI_test_1810.nwk", 0, 0, false));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsMdi::activateWindow("COI [COI.aln]");
+
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::AddTree);
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/sandbox/COI_test_1810.nwk"));
+    GTWidget::click(GTWidget::findWidget("openTreeButton"));
+    GTGlobals::sleep();
+    CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle() == "Tree [COI_test_1810.nwk]", "Unexpected active window title");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_1812) {
     GTFileDialog::openFile(testDir + "_common_data/primer3/custom_primers.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
-    
+
     GTUtilsAnnotationsTreeView::clickItem("primer1", 1, false);
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsAnnotationsTreeView::clickItem("primer2", 1, false);
@@ -229,6 +257,41 @@ GUI_TEST_CLASS_DEFINITION(test_1812) {
 
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 1  (0, 2)", {{50, 79}, {400, 435}});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1818) {
+    /*
+     * 1. Open "data/samples/Genbank/human_T1.fa".
+     * 2. Open "Search in Sequence" options panel tab.
+     * 3. Insert "AYCG" pattern.
+     * 4. Open section "Search agorithm", set algorithm - Substitute, check - Search with ambiguous bases.
+     * 5. Set algorithm - Exact
+     * Expected result: 2738 results are found.
+     */
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Substitute");
+    GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases();
+    GTUtilsOptionPanelSequenceView::enterPattern("AYCG");
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Exact");
+    CHECK_SET_ERR(GTWidget::findLabel("lblErrorMessage")->isVisible(), QString("Warning label should be visible"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1819) {
+    // Open human_T1.fa
+    // Open empty_ugene_name.gb
+    // Attach annotations from the second file to the first file.
+    // Expected: no errors
+    GTLogTracer lt;
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTFileDialog::openFile(testDir + "_common_data/genbank/", "empty_ugene_name.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject("Annotation features");
+    CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues
