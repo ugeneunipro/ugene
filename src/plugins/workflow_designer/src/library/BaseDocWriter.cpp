@@ -239,50 +239,27 @@ void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDo
     counters[aUrl] = suffix;
 }
 
-IOAdapter* BaseDocWriter::getCachedAdapter(const QString& url) {
-    auto adapterId = IOAdapterUtils::url2io(url);
-    for (auto adapter : qAsConst(cachedAdapterList)) {
-        if (adapter.isNull()) {
-            FAIL_AND_CONTINUE("Adapter should not be null");
-        }
-
-        if (adapter->getAdapterId() == adapterId) {
-            return adapter;
-        }
-    }
-    return nullptr;
-}
-
-IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
+QSharedPointer<IOAdapter> BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    QSharedPointer<IOAdapter> adapter(iof->createIOAdapter());
     if (appendToExistingFile(url)) {
-        IOAdapter* cachedAdapter = getCachedAdapter(url);
-        SAFE_POINT_NN(cachedAdapter, nullptr);
-        SAFE_POINT(!cachedAdapter->isOpen(), "Adapter should not be open", nullptr);
-
-        if (!cachedAdapter->open(url, IOAdapterMode_Append)) {
+        if (!adapter->open(url, IOAdapterMode_Append)) {
             os.setError(tr("Can not open a file for writing: %1").arg(url));
             return nullptr;
         }
 
-        return cachedAdapter;
+        return adapter;
     }
 
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    IOAdapter* cachedAdapter = getCachedAdapter(url);
-    if (cachedAdapter == nullptr) {
-        cachedAdapter = iof->createIOAdapter();
-        cachedAdapterList << cachedAdapter;
-    }
-    SAFE_POINT(!cachedAdapter->isOpen(), "Adapter should not be open", nullptr);
-
-    openAdapter(cachedAdapter, url, SaveDocFlags(fileMode), os);
+    openAdapter(adapter.data(), url, SaveDocFlags(fileMode), os);
     CHECK_OP(os, nullptr);
 
-    QString resultUrl = cachedAdapter->getURL().getURLString();
+    QString resultUrl = adapter->getURL().getURLString();
     usedUrls << resultUrl;
     monitor()->addOutputFile(resultUrl, getActorId());
+    dataReceived = true;
 
-    return cachedAdapter;
+    return adapter;
 }
 
 Document* BaseDocWriter::getDocument(IOAdapter* io, U2OpStatus& os) {
@@ -309,13 +286,13 @@ bool BaseDocWriter::isStreamingSupport() const {
 
 void BaseDocWriter::storeData(const QStringList& urls, const QVariantMap& data, U2OpStatus& os) {
     for (const QString& anUrl : qAsConst(urls)) {
-        IOAdapter* io = getAdapter(anUrl, os);
+        auto io = getAdapter(anUrl, os);
         CHECK_OP(os, );
         if (isStreamingSupport()) {
             // TODO: make it in separate thread!
-            storeEntry(io, data, ch->takenMessages());
+            storeEntry(io.data(), data, ch->takenMessages());
         } else {
-            Document* doc = getDocument(io, os);
+            Document* doc = getDocument(io.data(), os);
             CHECK_OP(os, );
             data2doc(doc, data);
         }
@@ -413,7 +390,7 @@ void BaseDocWriter::sl_objectImported(Task* importTask) {
 }
 
 Task* BaseDocWriter::processDocs() {
-    if (cachedAdapterList.isEmpty()) {
+    if (!dataReceived) {
         reportNoDataReceivedWarning();
     }
     if (docs.isEmpty()) {
