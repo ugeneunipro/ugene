@@ -256,7 +256,12 @@ void LoadMSATask::run() {
             results.append(res);
         }
     } else {
-        Msa ma = MsaUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
+        auto seqObj = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+        if (seqObj.isEmpty()) {
+            stateInfo.setError(tr("The input file does not contain alignment or sequence objects: %1").arg(url));
+            return;
+        }
+        Msa ma = MsaUtils::seq2ma(seqObj, stateInfo);
 
         QScopedPointer<MsaObject> msaObj(MsaImportUtils::createMsaObject(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo, );

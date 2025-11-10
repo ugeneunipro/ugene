@@ -1,0 +1,10 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/msa-msa.uwl"
+            in="!common_data_dir!sanger/alignment.ugenedb"
+            out="!tmp_data_dir!test_8008.aln"
+			message="The input file does not contain alignment or sequence objects"
+    />
+	
+</multi-test>
