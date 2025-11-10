@@ -23,6 +23,7 @@
 
 #include <QProcess>
 
+#include <U2Core/Timer.h>
 #include <U2Test/XMLTestUtils.h>
 
 namespace U2 {
@@ -57,6 +58,10 @@ private:
     QStringList tmpFiles;
     QString workingDir;
     bool autoRemoveWorkingDir = false;
+    qint64 processStartTime = 0;  // Time when subprocess was started (microseconds)
+    QString separateLogFile;  // Separate log file for subprocess to avoid TEST_LOG_LISTENER deadlock
+
+    static const int SUBPROCESS_TIMEOUT_SECONDS = 300;  // 5 minutes timeout for subprocess
 };  // GTest_RunCMDLine
 
 class CMDLineTests {
