@@ -294,6 +294,26 @@ GUI_TEST_CLASS_DEFINITION(test_1819) {
     CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1829) {
+    /*
+     * 1. Open COI.aln
+     * 2. Open highlighting option panel tab, check "Use dots" checkbox
+     * 3. Switch to multiline mode
+     * Expected state: "Use dots" still checked
+     * 4. Switch back from multilone mode
+     * Expected state: "Use dots" still checked
+     **/
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
+    GTCheckBox::setChecked("useDots", true);
+    GTUtilsMsaEditor::setMultilineMode(true);
+    GTCheckBox::checkState("useDots", true);
+    GTUtilsMsaEditor::setMultilineMode(false);
+    GTCheckBox::checkState("useDots", true);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_1831) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
