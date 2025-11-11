@@ -4320,7 +4320,7 @@ GUI_TEST_CLASS_DEFINITION(test_7780) {
     // Choose _common_data/scenarios/_regression/7780/seq.seq as input
     // Choose _common_data/scenarios/_regression/7780/primers.fa as primers
     // Run workflow and wait util it ends
-    // Expected: no more than 50 Mb RAM
+    // Expected: no more than 100 Mb RAM
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     class Scenario : public CustomScenario {
     public:
@@ -4337,7 +4337,7 @@ GUI_TEST_CLASS_DEFINITION(test_7780) {
     GTUtilsWorkflowDesigner::addSample("In silico PCR");
 
     GTUtilsWorkflowDesigner::click("Write Sequence");
-    GTUtilsWorkflowDesigner::setParameter("Output file", sandBoxDir + "test_7770.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+    GTUtilsWorkflowDesigner::setParameter("Output file", sandBoxDir + "test_7780.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
 
     size_t memBefore = AppResourcePool::getCurrentAppMemory() / (1024 * 1024);
 

@@ -247,6 +247,7 @@ QSharedPointer<IOAdapter> BaseDocWriter::getAdapter(const QString& url, U2OpStat
             os.setError(tr("Can not open a file for writing: %1").arg(url));
             return nullptr;
         }
+        dataReceived = true;
 
         return adapter;
     }
