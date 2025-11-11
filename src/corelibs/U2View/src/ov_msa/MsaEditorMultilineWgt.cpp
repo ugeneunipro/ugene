@@ -164,7 +164,7 @@ void MsaEditorMultilineWgt::updateChildren() {
         }
         treeView = false;
     }
-
+    const bool useDotsCheckSate = getLineWidget(0)->getSequenceArea()->getUseDotsCheckedState();
     bool showStatistics = false;
     for (; uiChildCount > 0; uiChildCount--) {
         auto child = qobject_cast<MsaEditorWgt*>(uiChild[uiChildCount - 1]);
@@ -178,6 +178,10 @@ void MsaEditorMultilineWgt::updateChildren() {
     }
 
     createChildren();
+    int index = getLineWidgetCount();
+    while(index--) {
+        getLineWidget(index)->getSequenceArea()->useDotsAction->setChecked(useDotsCheckSate);
+    }
     if (showStatistics) {
         showSimilarity();
     }
