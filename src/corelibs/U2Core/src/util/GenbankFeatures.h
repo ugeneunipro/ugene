@@ -143,9 +143,6 @@ public:
     static GBFeatureKey getKey(const QString& text);
     static GBFeatureKey getKey(U2FeatureType featureType);
 
-    // Some features do not have values in GenBank (e.g. "/pseudo")
-    static bool isFeatureHasNoValue(const QString& featureName);
-
     static const QByteArray QUALIFIER_AMINO_STRAND;
 
     static const QByteArray QUALIFIER_NAME;
