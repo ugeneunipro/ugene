@@ -259,7 +259,7 @@ bool WorkflowContextCMDLine::useSubDirs() {
 void WorkflowContextCMDLine::saveRunInfo(const QString& dir) {
     QFile runInfo(dir + "run.info");
     bool opened = runInfo.open(QIODevice::WriteOnly);
-    CHECK(opened, );
+    CHECK_EXT(opened, coreLog.error(runInfo.errorString()), );
 
     QTextStream stream(&runInfo);
     stream.setCodec("UTF-8");
