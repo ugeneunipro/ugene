@@ -44,6 +44,14 @@ const U2Region& Primer3TaskSettings::getSequenceRange() const {
     return sequenceRange;
 }
 
+void Primer3TaskSettings::setTranslateMacrosInReport(bool value) {
+    translateMacrosInReport = value;
+}
+
+bool Primer3TaskSettings::getTranslateMacrosInReport() const {
+    return translateMacrosInReport;
+}
+
 Primer3TaskSettings::Primer3TaskSettings() {
     primerSettings = p3_create_global_settings_default_version_1();
     seqArgs = create_seq_arg();
