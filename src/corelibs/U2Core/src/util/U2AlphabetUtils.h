@@ -168,6 +168,11 @@ public:
     static const DNAAlphabet* deriveCommonAlphabet(const DNAAlphabet* al1, const DNAAlphabet* al2);
 
     static const DNAAlphabet* getExtendedAlphabet(const DNAAlphabet* al);
+
+    // Returns true if the alphabet, identified by @extentionId, contains all symbols of
+    // the alphabet, identified by @origId. In other words, @extentionId is a superset
+    // of @origId and may include additional bases.
+    static const bool extens(const U2AlphabetId& origId, const U2AlphabetId& extentionId);
 };
 
 }  // namespace U2
