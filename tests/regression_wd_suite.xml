@@ -1,4 +1,4 @@
-<suite name="Regression suite">
+<suite test-timeout="360" name="Regression suite">
 
     <test-dir test-ext="*.xml" path="regression" test-format="XML"/>
 </suite>
