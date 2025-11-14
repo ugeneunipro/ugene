@@ -200,15 +200,26 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus& os) {
 
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
+        coreLog.details("Using workflow output directory: " + root);
     } else if (cmdlineReg != nullptr && cmdlineReg->hasParameter(WORKING_DIR)) {
-        root = FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(WORKING_DIR));
+        auto wd = cmdlineReg->getParameterValue(WORKING_DIR);
+        coreLog.details("Command line working directory parameter: " + wd);
+        root = FileAndDirectoryUtils::getAbsolutePath(wd);
+        coreLog.details("Using command line working directory: " + root);
     } else {
         auto workingDirectory = QDir::currentPath();
-        if (QDir(workingDirectory).canonicalPath() == QDir(QCoreApplication::applicationDirPath()).canonicalPath()) {
+        coreLog.details("Current working directory: " + workingDirectory);
+        auto wdcp = QDir(workingDirectory).canonicalPath();
+        coreLog.details("Canonical current working directory: " + wdcp);
+        auto adcp = QDir(QCoreApplication::applicationDirPath()).canonicalPath();
+        coreLog.details("Canonical application directory path: " + adcp);
+        if (wdcp == adcp) {
             QDir wdDir(WorkflowSettings::getWorkflowOutputDirectory());
             root = wdDir.absoluteFilePath("cmdline_run");
+            coreLog.details("Using default command line working directory: " + root);
         } else {
             root = workingDirectory;
+            coreLog.details("Using current working directory as command line working directory: " + root);
         }
     }
 
