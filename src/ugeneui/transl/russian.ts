@@ -4,42 +4,35 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../src/main_window/AboutDialog.ui" line="23"/>
+        <location filename="../src/main_window/AboutDialog.ui"/>
         <source>About UGENE</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialog.ui" line="60"/>
+        <location filename="../src/main_window/AboutDialog.ui"/>
         <source>Web Page</source>
         <translation>Домашняя страница</translation>
     </message>
     <message>
-        <location filename="../src/main_window/AboutDialog.ui" line="80"/>
+        <location filename="../src/main_window/AboutDialog.ui"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
 </context>
 <context>
-    <name>AppContextImpl</name>
-    <message>
-        <source>Style not available %1</source>
-        <translation type="vanished">Стиль не доступен: %1</translation>
-    </message>
-</context>
-<context>
     <name>AppSettingsDialog</name>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialog.ui" line="14"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui"/>
         <source>Application Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialog.ui" line="50"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialog.ui" line="58"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui"/>
         <source>GroupBox</source>
         <translation>GroupBox</translation>
     </message>
@@ -47,27 +40,27 @@
 <context>
     <name>ColorThemeWindow</name>
     <message>
-        <location filename="../src/shtirlitz/ColorThemeWindow.ui" line="20"/>
+        <location filename="../src/shtirlitz/ColorThemeWindow.ui"/>
         <source>Welcome to UGENE 1.16</source>
         <translation>Добро пожаловать в UGENE 1.16</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/ColorThemeWindow.ui" line="31"/>
+        <location filename="../src/shtirlitz/ColorThemeWindow.ui"/>
         <source>Start with a familiar environment</source>
         <translation>Начните в знакомом окружении</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/ColorThemeWindow.ui" line="45"/>
+        <location filename="../src/shtirlitz/ColorThemeWindow.ui"/>
         <source>Style:</source>
         <translation>Стиль:</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/ColorThemeWindow.ui" line="68"/>
+        <location filename="../src/shtirlitz/ColorThemeWindow.ui"/>
         <source>Choose your color theme</source>
         <translation>Выберите цветовую схему</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/ColorThemeWindow.ui" line="83"/>
+        <location filename="../src/shtirlitz/ColorThemeWindow.ui"/>
         <source>You can always change these settings later</source>
         <translation>Вы сможете поменять эти настройки позже</translation>
     </message>
@@ -75,22 +68,22 @@
 <context>
     <name>CreateNewProjectDialog</name>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="20"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>Create New Project</source>
         <translation>Создать новый проект</translation>
     </message>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="28"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>Project name</source>
         <translation>Имя проекта</translation>
     </message>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="38"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>Save project to file</source>
         <translation>Сохранить проект в файл</translation>
     </message>
     <message>
-        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="50"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -98,39 +91,37 @@
 <context>
     <name>DirectoriesSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="48"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="86"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="130"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="28"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Downloaded data</source>
         <translation>Скачанные данные</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="60"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Temporary files</source>
         <translation>Временные файлы</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="104"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>File storage</source>
         <translation>Хранение файла</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="160"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Cleanup storage</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="172"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Build indexes</source>
         <translation>Индексы построения</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="195"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui"/>
         <source>Documents</source>
         <translation>Документы</translation>
     </message>
@@ -138,17 +129,17 @@
 <context>
     <name>DocumentFormatSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="14"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui"/>
         <source>Select Correct Document Format</source>
         <translation>Выбор формата открываемого документа</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="32"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui"/>
         <source>Options</source>
         <translation>Опции</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="39"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui"/>
         <source>File preview</source>
         <translation>Просмотр</translation>
     </message>
@@ -156,12 +147,12 @@
 <context>
     <name>DocumentProviderSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui" line="20"/>
+        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui"/>
         <source>Select Document Format</source>
         <translation>Выбор формата открываемого документа</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui" line="35"/>
+        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui"/>
         <source>Document Format</source>
         <translation>Формат документа</translation>
     </message>
@@ -169,12 +160,12 @@
 <context>
     <name>ExportProjectDialog</name>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="20"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>Export Project</source>
         <translation>Экспортировать проект</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="64"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -187,12 +178,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#a6392e;&quot;&gt;Внимание! Все несохранённые изменения в активном проекте будут сохранены!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="51"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ExportProjectDialog.ui" line="34"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui"/>
         <source>Project file name</source>
         <translation>Имя файла проекта</translation>
     </message>
@@ -200,17 +191,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FormatSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui"/>
         <source>Format settings</source>
         <translation>Настройки формата</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="20"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui"/>
         <source>Sequence annotations</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="32"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui"/>
         <source>Create annotations for case switchings:</source>
         <translation>Создать аннотации для:</translation>
     </message>
@@ -218,47 +209,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LogSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>LogSettingsWidget</source>
         <translation>Logger settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="47"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Log format</source>
         <translation>Формат записей</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="53"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Show date</source>
         <translation>Показывать дату</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="60"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Date format:</source>
         <translation>Формат даты:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="83"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Show log level</source>
         <translation>Показывать тип</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="90"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Show log category</source>
         <translation>Показывать категорию</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="97"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Enable colored log output</source>
         <translation>Разрешить подсветку событий лога</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="106"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>Save output to file:</source>
         <translation>Сохранить в файл:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="116"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -266,42 +257,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MultipleDocumentsReadingModeSelectorController</name>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="14"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Multiple Sequence Reading Mode</source>
         <translation>Чтение нескольких последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="26"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Separate sequence mode</source>
         <translation>Разделить последовательности</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="36"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Merge sequence mode</source>
         <translation>Соединить последовательности</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="51"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Number of unknown symbols (&apos;N &apos;for nucleic acid or &apos;X&apos; for amino acid) between sequences</source>
         <translation>Число неизвестных символов (&apos;N&apos; для нуклеотидных и &apos;X&apos; для амино) между последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="75"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>New document name</source>
         <translation>Имя нового документа</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="92"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="109"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Save document</source>
         <translation>Сохранить документ</translation>
     </message>
     <message>
-        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="207"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui"/>
         <source>Join sequences into alignment</source>
         <translation>Соединить последовательности в выравнивание</translation>
     </message>
@@ -309,97 +300,97 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NetworkSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="47"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Preferred Web browser</source>
         <translation>Предпочитаемый Интернет-браузер</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="67"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>System default browser</source>
         <translation>Стандартный браузер ОС</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="77"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Custom browser</source>
         <translation>Другой браузер</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="100"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="187"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Proxy</source>
         <translation>Прокси</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="198"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Type:</source>
         <translation>Тип:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="205"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Server:</source>
         <translation>Сервер:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="212"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="225"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="334"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Do not use proxy on following addresses (separate line for each):</source>
         <translation>Не использовать прокси для следующих адресов (разделять переводом строки):</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="266"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Use authentication with HTTP proxy:</source>
         <translation>Использовать аутентификацию с HTTP прокси:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="278"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Login</source>
         <translation>Логин</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="288"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="353"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>SSL settings</source>
         <translation>Настройки SSL</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="364"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Secure Socket protocol:</source>
         <translation>Безопасный протокол:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="121"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Remote request settings</source>
         <translation>Настройки удаленного запроса</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="26"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Network settings</source>
         <translation>Конфигурация сети</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="130"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source>Remote request timeout</source>
         <translation>Тайм-аут удаленного запроса</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="143"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui"/>
         <source> sec</source>
         <translation> сек</translation>
     </message>
@@ -407,47 +398,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PluginViewWidget</name>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="14"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Plugin Viewer</source>
         <translation>Управление модулями</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="24"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Pugin info:</source>
         <translation>Информация о модуле:</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="38"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Plugin license:</source>
         <translation>Лицензия модуля:</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="63"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Accept</source>
         <translation>Принять</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="70"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Show License</source>
         <translation>Показать лицензию</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="94"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="99"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="104"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>State</source>
         <translation>Статус</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="109"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
@@ -455,17 +446,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ProjectViewWidget</name>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="14"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui"/>
         <source>Form</source>
         <translation>Проект</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="113"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui"/>
         <source>Bookmarks</source>
         <translation>Закладки</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="65"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui"/>
         <source>Objects</source>
         <translation>Объекты</translation>
     </message>
@@ -491,32 +482,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ResourceSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Resource settings</source>
         <translation>Параметры ресурсов</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="20"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Application resources</source>
         <translation>Общие ресурсы приложения</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="32"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Optimize for CPU count</source>
         <translation>Оптимизировать под кол-во ЦПУ</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="64"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Tasks memory limit</source>
         <translation>Ограничение по памяти для задач</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="83"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Mb</source>
         <translation>Мб</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="105"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui"/>
         <source>Threads limit</source>
         <translation>Ограничение по параллельным потокам</translation>
     </message>
@@ -524,17 +515,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SaveProjectDialog</name>
     <message>
-        <location filename="../src/project_support/SaveProjectDialog.ui" line="26"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui"/>
         <source>UGENE</source>
         <translation>UGENE</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SaveProjectDialog.ui" line="34"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui"/>
         <source>Save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SaveProjectDialog.ui" line="67"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui"/>
         <source>don&apos;t ask again</source>
         <translation>больше не задавать этот вопрос</translation>
     </message>
@@ -542,12 +533,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SequenceReadingModeSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="14"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Sequence Reading Options</source>
         <translation>Способы отображения последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="20"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -564,17 +555,17 @@ p, li { white-space: pre-wrap; }
           &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Выберите способ отображения этих последовательностей:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="39"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source> As separate sequences in sequence viewer</source>
         <translation> Как отдельные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="65"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Merge sequences into a single sequence to show in sequence viewer</source>
         <translation>Соединить все последовательности в одну последовательность</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="90"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -587,22 +578,22 @@ p, li { white-space: pre-wrap; }
           &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Число &apos;неизвестных&apos; символов &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;(&apos;N &apos;для нуклеотидных или &apos;X&apos; для аминных)&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; между частями:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="110"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source> bases</source>
         <translation> осн</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="141"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Join sequences into alignment and open in multiple alignment viewer</source>
         <translation>Соединить последовательности во множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="167"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>Map reads to a reference sequence</source>
         <translation>Выровнять на референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="193"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui"/>
         <source>File preview:</source>
         <translation>Просмотр:</translation>
     </message>
@@ -610,27 +601,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>StatisticalReport</name>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="20"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Welcome to UGENE 1.16</source>
         <translation>Добро пожаловать в UGENE 1.16</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="26"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
         <translation>Поделитесь, сколько раз были запущены различные инструменты или активированы действия в пользовательском интерфейсе. Никакие пользовательские данные не отправляются в UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="29"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Allow collection of usage data</source>
         <translation>Разрешить сбор статистики использования</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="39"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Enables experimental features hidden by default. May require restart for some features to be activated.</source>
         <translation>Включает экспериментальные функции, скрытые по умолчанию. Для активации некоторых функций может потребоваться перезагрузка.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReport.ui" line="42"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui"/>
         <source>Enable experimental features</source>
         <translation>Включить экспериментальные функции</translation>
     </message>
@@ -638,40 +629,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TmpDirChangeDialog</name>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="20"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>Dialog</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="39"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>Path for temporary files</source>
         <translation>Папка для временных файлов</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="72"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="99"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>Exit UGENE</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="119"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui"/>
         <source>OK</source>
         <translation>Готово</translation>
-    </message>
-</context>
-<context>
-    <name>U2</name>
-    <message>
-        <source>Path doesn&apos;t exist: </source>
-        <translation type="vanished">Путь не существует: </translation>
-    </message>
-    <message>
-        <source>File is empty: </source>
-        <translation type="vanished">Файл пуст: </translation>
     </message>
 </context>
 <context>
@@ -718,13 +698,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1116"/>
         <source>Load document and add to project: %1</source>
         <translation>Load document and add to project: %1</translation>
-    </message>
-</context>
-<context>
-    <name>U2::AppContextImpl</name>
-    <message>
-        <source>Style not available %1</source>
-        <translation type="vanished">Стиль не доступен: %1</translation>
     </message>
 </context>
 <context>
@@ -933,10 +906,6 @@ p, li { white-space: pre-wrap; }
         <translation>Пожалуйста &lt;a href=&quot;login&quot;&gt;&lt;span style=\&quot;color: %1;\&quot;&gt;авторизуйтесь в Workspace&lt;/span&gt;&lt;/a&gt; чтобы получить доступ к облачному хранилищу</translation>
     </message>
     <message>
-        <source>Folder name contains illegal characters</source>
-        <translation type="vanished">Название папки содержит недопустимые символы</translation>
-    </message>
-    <message>
         <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="454"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
@@ -955,10 +924,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="479"/>
         <source>New Name</source>
         <translation>Новое имя</translation>
-    </message>
-    <message>
-        <source>New name contains illegal characters</source>
-        <translation type="vanished">Новое имя содержит недопустимые символы</translation>
     </message>
     <message>
         <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="517"/>
@@ -989,14 +954,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/workspace/CloudStorageDockWidget.cpp" line="566"/>
         <source>Invalid shared file name: %1</source>
         <translation>Невалидное имя файла, которым вы пытаетесь поделиться: %</translation>
-    </message>
-    <message>
-        <source>Please &lt;a href=&quot;login&quot;&gt;log in to Workspace&lt;/a&gt; to access cloud storage</source>
-        <translation type="vanished">Пожалуйста, &lt;a href=&quot;login&quot;&gt;войдите в Workspace&lt;/a&gt;, чтобы получить доступ к облачному хранилищу</translation>
-    </message>
-    <message>
-        <source>Loading file list...&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;logout&quot;&gt;Logout&lt;/a&gt;</source>
-        <translation type="vanished">Загрузка списка файлов...&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;logout&quot;&gt;Выйти из Workspace&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2606,13 +2563,6 @@ Would you like to download and install it?</source>
     </message>
 </context>
 <context>
-    <name>U2::UserAppsSettings</name>
-    <message>
-        <source>UGENE initialization started</source>
-        <translation type="vanished">Инициализация UGENE</translation>
-    </message>
-</context>
-<context>
     <name>U2::VersionMessage</name>
     <message>
         <location filename="../src/main_window/CheckUpdatesTask.cpp" line="161"/>
@@ -2773,103 +2723,87 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
 <context>
     <name>UserApplicationsSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="41"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="131"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Open last project at startup</source>
         <translation>Открывать последний проект при старте</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="125"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Project</source>
         <translation>Проект</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="26"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="73"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="80"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Color theme</source>
         <translation>Цветовая схема</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="161"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
         <translation>Поделитесь, сколько раз были запущены различные инструменты или активированы действия в пользовательском интерфейсе. Никакие пользовательские данные не отправляются в UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="164"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Share usage metrics with UGENE team</source>
         <translation>Разрешить отображение показателей использования</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="181"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enable scaling for high-resolution (HiDPI) displays. Improves UI clarity on 4K and Retina screens. Requires restart.</source>
         <translation>Включить масштабирование для дисплеев с высоким разрешением (HiDPI). Улучшает чёткость интерфейса на экранах 4K и Retina. Требуется перезапуск.</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="184"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enable auto scaling in HDPI mode (requires restart)</source>
         <translation>Авто масштабирование в HDPI (нужен перезапуск)</translation>
     </message>
     <message>
-        <source>Updates</source>
-        <translation type="vanished">Обновления</translation>
-    </message>
-    <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="171"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Do not check and ask about UGENE updates during UGENE startup.</source>
         <translation>Не проверять и не спрашивать об обновлениях при запуске UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="174"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Check for updates when UGENE starts</source>
         <translation>Проверять обновления при запуске UGENE</translation>
     </message>
     <message>
-        <source>Experimental features</source>
-        <translation type="vanished">Экспериментальные функции</translation>
-    </message>
-    <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="191"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enables experimental features hidden by default. May require restart for some features to be activated.</source>
         <translation>Включает экспериментальные функции, скрытые по умолчанию. Для активации некоторых функций может потребоваться перезагрузка.</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="194"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Enable experimental features</source>
         <translation>Включить экспериментальные функции</translation>
     </message>
     <message>
-        <source>Default settings</source>
-        <translation type="vanished">Настройки по умолчанию</translation>
-    </message>
-    <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="201"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Resets all UGENE settings to default. Requires restart.</source>
         <translation>Сбросить все настройки UGENE на значения по умолчанию. Требуется перезапуск.</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="204"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Reset settings to default on the next run</source>
         <translation>Установить настройки по умолчанию при следующем запуске</translation>
     </message>
     <message>
-        <source>Statistical reports</source>
-        <translation type="vanished">Отчеты о статистике использования</translation>
-    </message>
-    <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="57"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui"/>
         <source>Appearance</source>
         <translation>Внешний вид</translation>
     </message>
