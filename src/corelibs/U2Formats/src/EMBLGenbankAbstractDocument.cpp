@@ -633,7 +633,8 @@ SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, 
 
         // Check the case when a qualifier has no value
         QString noValueQualifier = QString::fromLocal8Bit(qname, qnameLen + 1);
-        if (GBFeatureUtils::isFeatureHasNoValue(noValueQualifier)) {
+        // if valStart == flen - no value qualificator
+        if (valStart == flen) {
             qnameLen += 1;
         }
 

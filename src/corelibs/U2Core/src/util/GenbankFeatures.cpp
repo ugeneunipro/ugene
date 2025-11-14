@@ -147,13 +147,6 @@ const QVector<GBFeatureKeyInfo>& GBFeatureUtils::allKeys() {
     return features;
 }
 
-bool GBFeatureUtils::isFeatureHasNoValue(const QString& featureName) {
-    if (featureName == "pseudo") {
-        return true;
-    }
-    return false;
-}
-
 GBFeatureKey GBFeatureUtils::getKey(const QString& text) {
     QMutexLocker locker(&getKey_mutex);
     static QHash<QString, GBFeatureKey> keysByText;
