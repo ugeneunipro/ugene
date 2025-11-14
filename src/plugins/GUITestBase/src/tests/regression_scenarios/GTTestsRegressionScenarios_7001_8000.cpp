@@ -60,6 +60,7 @@
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -148,6 +149,7 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -4311,6 +4313,39 @@ GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTGlobals::sleep(15000);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Cancel the execution.
     GTUtilsTaskTreeView::waitTaskFinished(5000);  // Check the task is canceled fast enough with no crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7780) {
+    // Open WD, the "In silico PCR" sample
+    // Choose _common_data/scenarios/_regression/7780/seq.seq as input
+    // Choose _common_data/scenarios/_regression/7780/primers.fa as primers
+    // Run workflow and wait util it ends
+    // Expected: no more than 100 Mb RAM
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    class Scenario : public CustomScenario {
+    public:
+        void run() override {
+            GTUtilsWizard::setInputFiles({{testDir + "_common_data/scenarios/_regression/7780/seq.seq"}});
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::setParameter("Primers URL", testDir + "_common_data/scenarios/_regression/7780/primers.fa");
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new WizardFiller("In Silico PCR", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample("In silico PCR");
+
+    GTUtilsWorkflowDesigner::click("Write Sequence");
+    GTUtilsWorkflowDesigner::setParameter("Output file", sandBoxDir + "test_7780.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    size_t memBefore = AppResourcePool::getCurrentAppMemory() / (1024 * 1024);
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    size_t memAfter = AppResourcePool::getCurrentAppMemory() / (1024 * 1024);
+    
+    CHECK_SET_ERR((memAfter - memBefore) < 100, QString("Memory before: %1 Mb, memory after: %2 Mb").arg(memBefore).arg(memAfter));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7781) {
