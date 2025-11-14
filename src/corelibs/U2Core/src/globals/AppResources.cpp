@@ -45,6 +45,10 @@
 // clang-format on
 #endif
 
+#ifdef Q_OS_DARWIN
+#include <mach/mach.h>
+#endif
+
 #define LOG_TRACE(contextName) \
     coreLog.trace(QString("AppResource %1::" contextName " delta: %2, available: %3").arg(id).arg(n).arg(available()));
 
@@ -58,24 +62,15 @@ void process_mem_usage(size_t& vm_usage) {
 
     vm_usage = 0;
 
-    // 'file' stat seems to give the most reliable results
-    ifstream stat_stream("/proc/self/stat");
+    ifstream stat_stream("/proc/self/statm");
     CHECK(stat_stream.good(), );
 
-    // dummy vars for leading entries in stat that we don't care about
-    string pid, comm, state, ppid, pgrp, session, tty_nr;
-    string tpgid, flags, minflt, cminflt, majflt, cmajflt;
-    string utime, stime, cutime, cstime, priority, nice;
-    string O, itrealvalue, starttime;
-
-    // the two fields we want
-    unsigned long vsize;
-
-    stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt >> utime >> stime >> cutime >> cstime >> priority >> nice >> O >> itrealvalue >> starttime >> vsize;  // don't care about the rest
-
+    long rss = 0L;
+    long total;
+    stat_stream >> total >> rss;
+    long page_size_bytes = sysconf(_SC_PAGE_SIZE);
+    vm_usage = static_cast<size_t>(rss) * static_cast<size_t>(page_size_bytes);
     stat_stream.close();
-
-    vm_usage = vsize;
 }
 #endif
 
@@ -184,9 +179,9 @@ void AppResourcePool::setMaxMemorySizeInMB(int n) {
 
 size_t AppResourcePool::getCurrentAppMemory() {
 #ifdef Q_OS_WIN
-    PROCESS_MEMORY_COUNTERS memCounter;
-    bool result = GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
-    return result ? memCounter.WorkingSetSize : 0;
+    _PROCESS_MEMORY_COUNTERS_EX memCounter1;
+    bool result = GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&memCounter1, sizeof(memCounter1));
+    return result ? memCounter1.PrivateUsage : 0;
 #elif defined(Q_OS_LINUX)
     size_t vm = 0;
     process_mem_usage(vm);
@@ -202,20 +197,15 @@ size_t AppResourcePool::getCurrentAppMemory() {
     bool ok = false;
     qlonglong output_mem = ps_vsize.toLongLong(&ok);
     return ok ? output_mem : 0;
-// #elif defined(Q_OS_DARWIN)
-//    qint64 pid = QCoreApplication::applicationPid();
+#elif defined(Q_OS_DARWIN)
+    task_vm_info_data_t vmInfo;
+    mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
+    if (task_info(mach_task_self(), TASK_VM_INFO,
+                  (task_info_t)&vmInfo, &count) == KERN_SUCCESS) {
+        return vmInfo.phys_footprint;
+    }
 
-//    QProcess p;
-//    // Virtual private memory size in megabytes
-//    p.start("sh", QStringList() << "-c" << "top -l 1 -pid " + QString::number(pid) + " -e -stats vprvt | tail -1 | sed 's/M+//g'");
-//    p.waitForFinished();
-//    const QString outputString = p.readAllStandardOutput();
-//    p.close();
-//    bool ok = false;
-//    size_t output_mem = outputString.toULong(&ok);
-//    if (ok) {
-//        return output_mem * 1024 * 1024;
-//    }
+    return 0;
 #else
     return 0;
 #endif

@@ -314,6 +314,19 @@ GUI_TEST_CLASS_DEFINITION(test_1829) {
     GTCheckBox::checkState("useDots", true);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1831) {
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
+    GTLogTracer lt;
+    GTComboBox::selectItemByText(GTWidget::findComboBox("copyType"), "Plain text");    
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu();
+    CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
+}
+
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
