@@ -81,22 +81,18 @@ private:
     uint fileMode;
     QSet<QString> usedUrls;
     QMap<QString, int> counters;  // url <-> count suffix
-    QMap<QString, IOAdapter*> adapters;
-    QMap<IOAdapter*, Document*> docs;
+    QMap<QString, Document*> docs;
 
     QString dstPathInDb;
+    bool dataReceived = false;
     bool objectsReceived;
 
 private slots:
     void sl_objectImported(Task* importTask);
 
 private:
-    bool ifCreateAdapter(const QString& url) const;
-    /**
-     * Creates an adapter for @url or returns existing one.
-     * The url of the adapter could be not equal to @url.
-     */
-    IOAdapter* getAdapter(const QString& url, U2OpStatus& os);
+    bool appendToExistingFile(const QString& url) const;
+    QSharedPointer<IOAdapter> getAdapter(const QString& url, U2OpStatus& os);
     void openAdapter(IOAdapter* io, const QString& url, const SaveDocFlags& flags, U2OpStatus& os);
     /** Creates a document for @io or returns existing one. */
     Document* getDocument(IOAdapter* io, U2OpStatus& os);
