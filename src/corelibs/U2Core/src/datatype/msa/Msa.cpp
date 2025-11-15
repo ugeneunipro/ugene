@@ -599,7 +599,7 @@ void MsaData::removeRegion(int startPos, int startRow, int nBases, int nRows, bo
 }
 
 bool MsaData::crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os) {
-    if (!(columnRange.startPos >= 0 && columnRange.length > 0 && columnRange.length < length && columnRange.startPos < length)) {
+    if (!(columnRange.startPos >= 0 && columnRange.length > 0 && columnRange.length <= length && columnRange.startPos < length)) {
         os.setError(QString("Incorrect region was passed to MultipleSequenceData::crop, "
                             "startPos '%1', length '%2'")
                         .arg(columnRange.startPos)
