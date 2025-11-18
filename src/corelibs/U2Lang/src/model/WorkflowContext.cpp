@@ -213,7 +213,7 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus& os) {
         coreLog.details("Canonical current working directory: " + wdcp);
         auto adcp = QDir(QCoreApplication::applicationDirPath()).canonicalPath();
         coreLog.details("Canonical application directory path: " + adcp);
-        auto processWorkingDirectory = QProcess().workingDirectory();
+        auto processWorkingDirectory = QDir(QProcess().workingDirectory()).canonicalPath();
         coreLog.details("Process working directory: " + processWorkingDirectory);
         if (wdcp == adcp) {
             QDir wdDir(WorkflowSettings::getWorkflowOutputDirectory());
