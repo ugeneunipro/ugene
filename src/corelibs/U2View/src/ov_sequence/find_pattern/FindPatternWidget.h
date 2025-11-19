@@ -84,7 +84,8 @@ public:
         SearchRegionIncorrect,
         PatternWrongRegExp,
         SequenceIsTooBig,
-        CreateAnnotationControllerValidaitionError
+        CreateAnnotationControllerValidaitionError,
+        NotValidPatternsFile
     };
 
     FindPatternWidget(AnnotatedDNAView*);
