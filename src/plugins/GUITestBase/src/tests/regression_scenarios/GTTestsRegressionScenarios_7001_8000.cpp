@@ -2091,7 +2091,7 @@ GUI_TEST_CLASS_DEFINITION(test_7456) {
     GTUtilsDialog::add(new DNASequenceGeneratorDialogFiller(model));
     GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Join), 90000);
     GTMenu::clickMainMenuItem({"Tools", "Random sequence generator..."});
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsTaskTreeView::waitTaskFinished(240000);
 
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     int sequenceCount = GTUtilsMsaEditor::getSequencesCount();
