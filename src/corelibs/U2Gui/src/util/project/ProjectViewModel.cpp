@@ -1035,7 +1035,7 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnab
         auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         SAFE_POINT(seqObj != nullptr, "Cannot cast GObject to U2SequenceObject", QVariant());
         if (seqObj->isCircular()) {
-            const QIcon circIcon(":core/images/circular_seq.png");
+            const QIcon circIcon(GUIUtils::getThemedPath(":core/images/circular_seq.png"));
             return getIcon(circIcon, itemIsEnabled);
         }
     }
