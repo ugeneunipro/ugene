@@ -3,7 +3,7 @@ project(U2Formats)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets)
+find_package(Qt6 REQUIRED Core Gui Widgets)
 
 add_definitions(-DBUILDING_U2FORMATS_DLL)
 
@@ -17,12 +17,12 @@ include_directories(../../libs_3rdparty/samtools/src/samtools_core/htslib)
 
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
-qt5_add_resources(RCC_SRCS U2Formats.qrc)
+qt6_add_resources(RCC_SRCS U2Formats.qrc)
 
 add_library(U2Formats SHARED ${HDRS} ${SRCS} ${RCC_SRCS})
 
 target_link_libraries(U2Formats
-        Qt5::Core Qt5::Gui Qt5::Widgets
+        Qt6::Core Qt6::Gui Qt6::Widgets
         samtools ugenedb
         U2Core U2Algorithm)
 

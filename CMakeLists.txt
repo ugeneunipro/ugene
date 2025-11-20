@@ -173,7 +173,7 @@ add_subdirectory(src/plugins_3rdparty/umuscle)
 add_subdirectory(src/plugins_3rdparty/variants)
 
 # Generate translations.
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt6LinguistTools REQUIRED)
 set(LANGUAGES "RU" "TR")
 foreach (LANG IN LISTS LANGUAGES)
     string(TOLOWER ${LANG} LANG_LOWER)
@@ -181,7 +181,7 @@ foreach (LANG IN LISTS LANGUAGES)
     set(QM_FILE ${CMAKE_BINARY_DIR}/dist/transl_${LANG_LOWER}.qm)
     add_custom_command(
             OUTPUT ${QM_FILE}
-            COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${${TRANSLATIONS_VAR}} -qm ${QM_FILE}
+            COMMAND ${Qt6_LRELEASE_EXECUTABLE} ${${TRANSLATIONS_VAR}} -qm ${QM_FILE}
             DEPENDS ${${TRANSLATIONS_VAR}}
             COMMENT "Generating translation file: ${QM_FILE}"
     )
@@ -211,7 +211,7 @@ foreach (TS_FILE IN LISTS ALL_TS_FILES)
         add_custom_command(
                 TARGET update_all_translations
                 PRE_BUILD
-                COMMAND ${Qt5_LUPDATE_EXECUTABLE}
+                COMMAND ${Qt6_LUPDATE_EXECUTABLE}
                 -locations absolute
                 -no-ui-lines
                 -I ${CMAKE_SOURCE_DIR}/src/include

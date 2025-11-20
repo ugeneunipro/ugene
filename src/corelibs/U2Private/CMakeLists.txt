@@ -3,9 +3,9 @@ project(U2Private)
 set(CMAKE_AUTOMOC ON)
 
 if (APPLE)
-    find_package(Qt5 REQUIRED Core Gui Widgets Xml)
+    find_package(Qt6 REQUIRED Core Gui Widgets Xml)
 else ()
-    find_package(Qt5 REQUIRED Core Gui Widgets)
+    find_package(Qt6 REQUIRED Core Gui Widgets)
 endif ()
 
 add_definitions(-DBUILDING_U2PRIVATE_DLL)
@@ -36,10 +36,10 @@ endif ()
 add_library(U2Private SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Private
-        Qt5::Core Qt5::Gui Qt5::Widgets
+        Qt6::Core Qt6::Gui Qt6::Widgets
         breakpad
         U2Core U2Algorithm U2Formats)
 
 if (APPLE)
-    target_link_libraries(U2Private Qt5::Xml "-framework CoreFoundation -framework IOKit")
+    target_link_libraries(U2Private Qt6::Xml "-framework CoreFoundation -framework IOKit")
 endif ()

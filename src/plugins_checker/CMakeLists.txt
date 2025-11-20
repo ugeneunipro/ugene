@@ -1,6 +1,6 @@
 project(plugins_checker)
 
-find_package(Qt5 REQUIRED Core Gui Widgets)
+find_package(Qt6 REQUIRED Core Gui Widgets)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -20,6 +20,6 @@ endif ()
 
 
 target_link_libraries(plugins_checker
-        Qt5::Core Qt5::Gui Qt5::Widgets
+        Qt6::Core Qt6::Gui Qt6::Widgets
         U2Core U2Lang U2Private
 )

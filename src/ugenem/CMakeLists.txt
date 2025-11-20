@@ -4,7 +4,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 REQUIRED Core Gui Network Widgets)
+find_package(Qt6 REQUIRED Core Gui Network Widgets)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -22,6 +22,6 @@ if (WIN32)
 endif ()
 
 target_link_libraries(ugenem
-        Qt5::Core Qt5::Gui Qt5::Network Qt5::Widgets
+        Qt6::Core Qt6::Gui Qt6::Network Qt6::Widgets
         U2Core U2Gui)
 

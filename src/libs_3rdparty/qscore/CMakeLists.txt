@@ -1,6 +1,6 @@
 project(qscore)
 
-find_package(Qt5 REQUIRED Core)
+find_package(Qt6 REQUIRED Core)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -13,5 +13,5 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_library(qscore STATIC ${HDRS} ${SRCS})
 
 target_link_libraries(qscore
-        Qt5::Core
+        Qt6::Core
         U2Core zlib)

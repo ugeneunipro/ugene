@@ -5,7 +5,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets Xml Network NetworkAuth WebSockets)
+find_package(Qt6 REQUIRED Core Gui Widgets Xml Network NetworkAuth WebSockets)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -20,8 +20,8 @@ if (APPLE)
     file(GLOB_RECURSE OBJC_SRCS src/*.mm)
 endif ()
 
-qt5_add_resources(RCC_SRCS ugeneui.qrc)
-qt5_add_resources(RCC_SRCS dark/darkstyle.qrc)
+qt6_add_resources(RCC_SRCS ugeneui.qrc)
+qt6_add_resources(RCC_SRCS dark/darkstyle.qrc)
 
 set(EXTRA_FLAGS "")
 if (WIN32 AND NOT DEFINED ENV{UGENE_BUILD_WITH_CONSOLE})
@@ -36,7 +36,7 @@ if (WIN32)
 endif ()
 
 target_link_libraries(ugeneui
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::NetworkAuth Qt5::WebSockets
+        Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Xml Qt6::Network Qt6::NetworkAuth Qt6::WebSockets
         U2Core U2Designer U2Algorithm U2Formats U2Gui U2View U2Test U2Lang U2Private breakpad)
 
 if (APPLE)

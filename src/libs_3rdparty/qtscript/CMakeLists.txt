@@ -1,6 +1,6 @@
 project(qtscript LANGUAGES CXX)
 
-find_package(Qt5 REQUIRED Core)
+find_package(Qt6 REQUIRED Core)
 
 file(GLOB JSC_RUNTIME_SOURCES 3rdparty/javascriptcore/JavaScriptCore/runtime/*.cpp)
 file(GLOB JSC_GENERATED_SOURCES 3rdparty/javascriptcore/JavaScriptCore/generated/*.cpp)
@@ -139,7 +139,7 @@ target_compile_options(qtscript PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/w>
 )
 
-target_link_libraries(qtscript PRIVATE Qt5::Core)
+target_link_libraries(qtscript PRIVATE Qt6::Core)
 if (WIN32)
     target_link_libraries(qtscript PRIVATE winmm.lib)
 elseif (APPLE)
