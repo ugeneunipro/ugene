@@ -45,6 +45,7 @@
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/ADVSequenceWidget.h>
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AnnotationsTreeView.h>
@@ -106,12 +107,31 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
-    auto transformIntoPrimerPair = new ADVGlobalAction(av, "", tr("Transform into a primer pair"), 60, 
-                                                       ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu) |
-                                                       ADVGlobalActionFlag_SingleSequenceOnly);
+    auto transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
+    auto asw = av->getActiveSequenceWidget();
+    SAFE_POINT_NN(asw, );
+
+    asw->addAction(transformIntoPrimerPair);
+    transformIntoPrimerPair->setEnabled(true);
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
+
+    auto atv = av->getAnnotationsView();
+    SAFE_POINT_NN(atv, );
+
+    auto atvw = atv->getTreeWidget();
+    SAFE_POINT_NN(atvw, );
+
+    auto sm = atvw->selectionModel();
+    SAFE_POINT_NN(sm, );
+
+    connect(sm, &QItemSelectionModel::selectionChanged, this, [transformIntoPrimerPair, atvw]() {
+        auto items = atvw->selectedItems();
+        bool enabled = isTransformIntoPrimerPairEnabled(items);
+        transformIntoPrimerPair->setEnabled(enabled);
+    });
+
     connect(transformIntoPrimerPair, &QAction::triggered, this, &RemoteBLASTViewContext::sl_transformIntoPrimerPair);
     addViewAction(transformIntoPrimerPair);
 }
@@ -218,7 +238,7 @@ static const QString TOP_PRIMERS_ANNOTATIONS_GROUP_NAME = "top_primers";
 static const QString PAIR_NAME_BEGINNING = "pair ";
 
 void RemoteBLASTViewContext::sl_transformIntoPrimerPair() {
-    auto action = qobject_cast<ADVGlobalAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT_NN(action, );
 
     auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
