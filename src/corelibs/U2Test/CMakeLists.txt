@@ -3,7 +3,7 @@ project(U2Test)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets Xml)
+find_package(Qt6 REQUIRED Core Gui Widgets Xml)
 
 add_definitions(-DBUILDING_U2TEST_DLL)
 
@@ -18,5 +18,5 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_library(U2Test SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Test
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml
+        Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Xml
         U2Core)

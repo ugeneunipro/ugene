@@ -2,7 +2,7 @@ project(samtools)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 REQUIRED Core LinguistTools)
+find_package(Qt6 REQUIRED Core LinguistTools)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -236,7 +236,7 @@ endif ()
 add_library(samtools STATIC ${SRCS})
 
 target_link_libraries(samtools
-        Qt5::Core
+        Qt6::Core
 #        U2Core
         zlib)
 

@@ -1,6 +1,6 @@
 project(breakpad)
 
-find_package(Qt5 REQUIRED Core)
+find_package(Qt6 REQUIRED Core)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -24,7 +24,7 @@ endif ()
 
 add_library(breakpad SHARED ${COMMON_HDRS} ${HDRS} ${COMMON_SRCS} ${SRCS})
 
-target_link_libraries(breakpad Qt5::Core)
+target_link_libraries(breakpad Qt6::Core)
 
 if (APPLE)
     target_link_libraries(breakpad "-framework CoreFoundation")

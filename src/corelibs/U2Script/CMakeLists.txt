@@ -2,7 +2,7 @@ project(U2Script)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets)
+find_package(Qt6 REQUIRED Core Gui Widgets)
 
 add_definitions(-DBUILDING_U2SCRIPT_DLL)
 
@@ -22,5 +22,5 @@ list(REMOVE_ITEM HDRS ${IGNORE_FILES})
 add_library(U2Script SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Script
-        Qt5::Core Qt5::Gui Qt5::Widgets
+        Qt6::Core Qt6::Gui Qt6::Widgets
         U2Core U2Algorithm U2Formats U2Lang U2Private U2Gui U2Test)

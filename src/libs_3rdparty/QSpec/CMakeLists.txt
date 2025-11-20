@@ -2,7 +2,7 @@ project(QSpec)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets Test)
+find_package(Qt6 REQUIRED Core Gui Widgets Test)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -16,7 +16,7 @@ file(GLOB_RECURSE HDRS src/*.h)
 
 add_library(QSpec SHARED ${HDRS} ${SRCS})
 
-target_link_libraries(QSpec Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Test)
+target_link_libraries(QSpec Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Test)
 
 if (UNIX AND NOT APPLE)
     target_link_libraries(QSpec

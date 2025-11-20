@@ -5,7 +5,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets Xml Network PrintSupport Test)
+find_package(Qt6 REQUIRED Core Gui Widgets Xml Network PrintSupport Test)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
@@ -34,13 +34,13 @@ if (NOT DEFINED SRCS)
 endif ()
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${UGENE_PLUGIN_ID}.qrc)
-    qt5_add_resources(RCC_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/${UGENE_PLUGIN_ID}.qrc)
+    qt6_add_resources(RCC_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/${UGENE_PLUGIN_ID}.qrc)
 endif ()
 
 add_library(${UGENE_PLUGIN_ID} SHARED ${SRCS} ${RCC_SRCS})
 
 set(UGENE_PLUGIN_LIBS
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::PrintSupport Qt5::Test
+        Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Xml Qt6::Network Qt6::PrintSupport Qt6::Test
         U2Core U2Algorithm U2Formats U2Gui U2View U2Lang U2Designer QSpec U2Script)
 
 target_link_libraries(${UGENE_PLUGIN_ID} ${UGENE_PLUGIN_LIBS})
