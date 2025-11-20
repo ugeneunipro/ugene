@@ -106,9 +106,7 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
-    auto transformIntoPrimerPair = new ADVGlobalAction(av, "", tr("Transform into a primer pair"), 60, 
-                                                       ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu) |
-                                                       ADVGlobalActionFlag_SingleSequenceOnly);
+    auto transformIntoPrimerPair = new ADVGlobalAction(av, "", tr("Transform into a primer pair"), 60);
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
