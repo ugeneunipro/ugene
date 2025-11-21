@@ -422,15 +422,17 @@ QString Annotation::produceValidAnnotationName(const QString& name) {
 static QList<U2CigarToken> parseCigar(const QString& cigar) {
     QList<U2CigarToken> cigarTokens;
 
-    QRegExp rx("(\\d+)(\\w)");
+    QRegularExpression re("(\\d+)(\\w)");
+    QRegularExpressionMatch match;
 
     int pos = 0;
-    while (-1 != (pos = rx.indexIn(cigar, pos))) {
-        if (2 != rx.captureCount()) {
+    while ((match = re.match(cigar, pos)).hasMatch()) {
+        if (match.lastCapturedIndex() != 2) {
             break;
         }
-        int count = rx.cap(1).toInt();
-        QString cigarChar = rx.cap(2);
+
+        int count = match.captured(1).toInt();
+        QString cigarChar = match.captured(2);
 
         if (cigarChar == "M") {
             cigarTokens.append(U2CigarToken(U2CigarOp_M, count));
@@ -444,7 +446,7 @@ static QList<U2CigarToken> parseCigar(const QString& cigar) {
             break;
         }
 
-        pos += rx.matchedLength();
+        pos = match.capturedEnd();
     }
 
     return cigarTokens;
@@ -461,10 +463,10 @@ static QString getAlignmentTip(const QString& ref, const QList<U2CigarToken>& to
     QList<int> mismatchPositions;
     for (const U2CigarToken& t : qAsConst(tokens)) {
         if (t.op == U2CigarOp_M) {
-            alignmentTip += ref.midRef(cigarPos, t.count);
+            alignmentTip += QStringView(ref).mid(cigarPos, t.count);
             cigarPos += t.count;
         } else if (t.op == U2CigarOp_X) {
-            alignmentTip += ref.midRef(cigarPos, t.count);
+            alignmentTip += QStringView(ref).mid(cigarPos, t.count);
             mismatchPositions.append(cigarPos);
             cigarPos += t.count;
         } else if (t.op == U2CigarOp_I) {

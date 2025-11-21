@@ -46,7 +46,7 @@ BedtoolsSupport::BedtoolsSupport(const QString& path)
     validationMessageRegExp = "bedtools v";
     description = tr("<i>Bedtools</i>: flexible tools for genome arithmetic and DNA sequence analysis.");
 
-    versionRegExp = QRegExp("bedtools v(\\d+.\\d+.\\d+)");
+    versionRegExp = QRegularExpression("bedtools v(\\d+.\\d+.\\d+)");
     validationArguments << "--version";
     toolKitName = "bedtools";
 

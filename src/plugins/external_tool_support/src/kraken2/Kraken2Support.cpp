@@ -37,7 +37,7 @@ Kraken2Support::Kraken2Support()
     toolKitName = "Kraken 2";
 
     validationArguments << "--version";
-    versionRegExp = QRegExp("Kraken version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
+    versionRegExp = QRegularExpression("Kraken version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
     dependencies << "USUPP_PERL";
     toolRunnerProgram = "USUPP_PERL";
     executableFileName = "kraken2";

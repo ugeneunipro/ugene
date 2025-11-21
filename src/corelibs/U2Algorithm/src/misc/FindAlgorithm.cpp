@@ -21,7 +21,7 @@
 
 #include "FindAlgorithm.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <U2Algorithm/DynTable.h>
 #include <U2Algorithm/RollingArray.h>
@@ -447,7 +447,7 @@ static void sendResultToListener(int resultStartPos, int resultLength, U2Strand 
 }
 
 static void regExpSearch(const QString& refSequence,
-                         const QRegExp& regExp,
+                         const QRegularExpression& regExp,
                          const U2Strand& searchStrand,
                          const U2Region& sequenceRange,
                          int maxResultLen,
@@ -466,12 +466,19 @@ static void regExpSearch(const QString& refSequence,
     }
     int percentsCompletedOnStart = percentsCompleted;
     int foundStartPos = 0;
-    while (stopFlag == 0 && (foundStartPos = regExp.indexIn(refSequence, foundStartPos)) != -1) {
+    while (stopFlag == 0) {
+        QRegularExpressionMatch m = regExp.match(refSequence, foundStartPos);
+        if (!m.hasMatch()) {
+            break;
+        }
+
+        foundStartPos = m.capturedStart(0);
+        int foundLength = m.capturedLength(0);
+
         // remember that there are a few iterations, so a single one yields (1 / @conEnd) of total progress
         int percentsCompletedInner = (100 * foundStartPos * (currentStrand + 1)) / (sequenceRange.length * totalStrandCount);
         percentsCompleted = qMin(percentsCompletedOnStart + percentsCompletedInner, 100);
 
-        int foundLength = regExp.matchedLength();
         if (maxResultLen >= foundLength) {
             int resultStartPos = refSeqIsAminoTranslation ? foundStartPos * 3 : foundStartPos;
             if (resultStartPos < cyclePoint || sequenceRange.startPos != 0) {
@@ -489,8 +496,16 @@ static void regExpSearch(const QString& refSequence,
 
         // try to find smaller substrings starting from the same position
         int substrLength = qMin(foundLength - 1, maxResultLen);
-        while (0 == stopFlag && 0 < substrLength && foundStartPos == (regExp.indexIn(refSequence.left(foundStartPos + substrLength), foundStartPos))) {
-            const int foundSubstrLength = regExp.matchedLength();
+        while (stopFlag == 0 && substrLength > 0) {
+            const QString sub = refSequence.left(foundStartPos + substrLength);
+            QRegularExpressionMatch sm = regExp.match(sub, foundStartPos);
+
+            if (!sm.hasMatch() || sm.capturedStart(0) != foundStartPos) {
+                break;
+            }
+
+            int foundSubstrLength = sm.capturedLength(0);
+
             if (maxResultLen >= foundSubstrLength) {
                 int resultStartPos = refSeqIsAminoTranslation ? foundStartPos * 3 : foundStartPos;
                 if (resultStartPos < cyclePoint || sequenceRange.startPos != 0) {
@@ -523,7 +538,8 @@ static void findInAmino_regExp(FindAlgorithmResultsListener* rl,
                                int maxRegExpResult,
                                int& stopFlag,
                                int& percentsCompleted) {
-    QRegExp regExp(pattern, Qt::CaseInsensitive);
+    QRegularExpression regExp(QString::fromLatin1(pattern), QRegularExpression::CaseInsensitiveOption);
+
     CHECK(regExp.isValid(), );
 
     percentsCompleted = 0;
@@ -594,7 +610,7 @@ static void findRegExp(FindAlgorithmResultsListener* rl,
                        int maxRegExpResult,
                        int& stopFlag,
                        int& percentsCompleted) {
-    QRegExp regExp(pattern, Qt::CaseInsensitive);
+    QRegularExpression regExp(QString::fromLatin1(pattern), QRegularExpression::CaseInsensitiveOption);
     CHECK(regExp.isValid(), );
 
     if (aminoTT != nullptr) {

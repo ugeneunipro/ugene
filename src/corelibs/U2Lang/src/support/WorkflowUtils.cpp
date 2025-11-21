@@ -123,7 +123,7 @@ void WorkflowUtils::setQObjectProperties(QObject& o, const QVariantMap& params) 
 QStringList WorkflowUtils::expandToUrls(const QString& s) {
     QStringList urls = s.split(";");
     QStringList result;
-    QRegExp wcard("[*?\\[\\]]");
+    QRegularExpression wcard("[*?\\[\\]]");
     for (QString url : qAsConst(urls)) {
         int idx = url.indexOf(wcard);
         if (idx >= 0) {

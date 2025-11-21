@@ -124,7 +124,7 @@ const QString HRSchemaSerializer::SCHEMA_PATHS_SETTINGS_TAG = "workflow_settings
 QString HRSchemaSerializer::valueString(const QString& s, bool quoteEmpty) {
     QString str = s;
     str.replace("\"", "'");
-    if (str.contains(QRegExp("\\s")) || str.contains(Constants::SEMICOLON) ||
+    if (str.contains(QRegularExpression("\\s")) || str.contains(Constants::SEMICOLON) ||
         str.contains(Constants::EQUALS_SIGN) || str.contains(Constants::DATAFLOW_SIGN) ||
         str.contains(Constants::BLOCK_START) || str.contains(Constants::BLOCK_END) ||
         str.contains(Constants::SINGLE_QUOTE) || str.contains(OldConstants::MARKER_START) ||
@@ -493,7 +493,7 @@ URLContainer* HRSchemaSerializer::parseDirectoryUrl(Tokenizer& tokenizer) {
 }
 
 Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer& tokenizer, const QString& actorName, QMap<QString, Actor*>& actorMap, QMap<ActorId, ActorId>* idMap) {
-    if (actorName.contains(QRegExp("\\s"))) {
+    if (actorName.contains(QRegularExpression("\\s"))) {
         throw ReadFailed(tr("Element name cannot contain whitespaces: '%1'").arg(actorName));
     }
     if (actorName.contains(Constants::DOT)) {
@@ -1612,7 +1612,7 @@ static QString elementsDefinitionBlock(Actor* actor, bool copyMode) {
                 }
             }
             QString attributeId = attribute->getId();
-            assert(!attributeId.contains(QRegExp("\\s")));
+            assert(!attributeId.contains(QRegularExpression("\\s")));
 
             const AttributeScript& attrScript = attribute->getAttributeScript();
             if (!attrScript.isEmpty()) {
@@ -1690,7 +1690,7 @@ QString HRSchemaSerializer::elementsDefinition(const QList<Actor*>& procs, const
     QString res;
     foreach (Actor* actor, procs) {
         QString idStr = nmap[actor->getId()];
-        SAFE_POINT(!idStr.contains(QRegExp("\\s")), "Error: element name in the workflow file contains spaces", QString());
+        SAFE_POINT(!idStr.contains(QRegularExpression("\\s")), "Error: element name in the workflow file contains spaces", QString());
         res += makeBlock(idStr, Constants::NO_NAME, elementsDefinitionBlock(actor, copyMode));
     }
     return res + Constants::NEW_LINE;
@@ -1879,7 +1879,7 @@ HRSchemaSerializer::NamesMap HRSchemaSerializer::generateElementNames(const QLis
     QMap<ActorId, QString> nmap;
     foreach (Actor* proc, procs) {
         QString id = aid2str(proc->getId());
-        QString name = id.replace(QRegExp("\\s"), "-");
+        QString name = id.replace(QRegularExpression("\\s"), "-");
         nmap[proc->getId()] = name;  // generateElementName(proc, nmap.values());
     }
     return nmap;

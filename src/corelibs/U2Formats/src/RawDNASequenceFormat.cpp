@@ -123,7 +123,7 @@ Document* RawDNASequenceFormat::loadTextDocument(IOAdapterReader& reader, const 
 }
 
 FormatCheckResult RawDNASequenceFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    if (QRegExp("[a-zA-Z\r\n\\*-]*").exactMatch(dataPrefix)) {
+    if (QRegularExpression("^[a-zA-Z\r\n\\*-]*$").match(dataPrefix).hasMatch()) {
         return FormatDetection_VeryHighSimilarity;
     }
     // returning 'very low chance' here just because it's impossible to have 100% detection for this format.

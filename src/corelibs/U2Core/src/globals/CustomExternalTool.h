@@ -38,7 +38,7 @@ public:
     void setValidationArguments(const QStringList& arguments);
     void setValidationExpectedText(const QString& text);
     void setPredefinedVersion(const QString& version);
-    void setVersionRegExp(const QRegExp& versionRegExp);
+    void setVersionRegExp(const QRegularExpression& versionRegExp);
     void setToolkitName(const QString& toolkitName);
     void setDependencies(const QStringList& dependencies);
     void setConfigFilePath(const QString& configFilePath);

@@ -22,15 +22,16 @@
 #pragma once
 
 #include <QValidator>
+#include <QRegularExpressionValidator>
 
 #include <U2Core/global.h>
 
 namespace U2 {
 /**
  * @PrimerValidator
- * QRegExpValidator improving for primers. Make possible to type nucleotide or nucleotide-extended characters.
+ * QRegularExpressionValidator improving for primers. Make possible to type nucleotide or nucleotide-extended characters.
  */
-class U2CORE_EXPORT PrimerValidator : public QRegExpValidator {
+class U2CORE_EXPORT PrimerValidator : public QRegularExpressionValidator {
 public:
     PrimerValidator(QObject* parent, bool allowExtended = true);
 

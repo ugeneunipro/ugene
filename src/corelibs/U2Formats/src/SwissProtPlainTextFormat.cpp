@@ -89,7 +89,7 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& r
     }
     bool tokenMatched = TextUtils::equals("ID   ", data, 5);
     if (tokenMatched) {
-        if (QString(rawData).contains(QRegExp("\\d+ AA."))) {
+        if (QString(rawData).contains(QRegularExpression("\\d+ AA."))) {
             return FormatDetection_HighSimilarity;
         }
         return FormatDetection_NotMatched;
@@ -149,7 +149,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& se
         }
         if (st->hasKey("AC")) {  // The AC (ACcession number) line lists the accession number(s) associated with an entry.
             QVariant v = st->entry->tags.value(DNAInfo::ACCESSION);
-            QStringList l = st->value().split(QRegExp(";\\s*"), Qt::SkipEmptyParts);
+            QStringList l = st->value().split(QRegularExpression(";\\s*"), Qt::SkipEmptyParts);
             st->entry->tags[DNAInfo::ACCESSION] = QVariantUtils::addStr2List(v, l);
             continue;
         }
@@ -402,7 +402,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
 
     processAnnotationRegion(a, startInt, endInt, offset);
 
-    QString valQStr = QString::fromLatin1(cbuff).split(QRegExp("\\n")).first().mid(34);
+    QString valQStr = QString::fromLatin1(cbuff).split(QRegularExpression("\\n")).first().mid(34);
     bool isDescription = true;
 
     const QByteArray& aminoQ = GBFeatureUtils::QUALIFIER_AMINO_STRAND;
@@ -426,7 +426,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
         // parse line
         if (cbuff[A_COL] != '/') {  // continue of description
             valQStr.append(" ");
-            valQStr.append(QString::fromLatin1(cbuff).split(QRegExp("\\n")).takeAt(0).mid(34));
+            valQStr.append(QString::fromLatin1(cbuff).split(QRegularExpression("\\n")).takeAt(0).mid(34));
         } else {
             for (; QN_COL < len && TextUtils::LINE_BREAKS[(uchar)cbuff[len - 1]]; len--) {
             };  // remove line breaks

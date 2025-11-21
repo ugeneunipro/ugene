@@ -145,8 +145,8 @@ bool MarkerEditorWidget::checkAddMarkerGroupResult(Marker* newMarker, QString& m
         }
     }
 
-    QRegExp rx("\\s");
-    if (rx.indexIn(newMarker->getName()) >= 0) {
+    QRegularExpression rx("\\s");
+    if (rx.match(newMarker->getName()).capturedEnd() >= 0) {
         message.append(tr("Marker's name contains spaces: %1").arg(newMarker->getName()));
         return false;
     }

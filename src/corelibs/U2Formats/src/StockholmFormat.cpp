@@ -22,6 +22,7 @@
 #include "StockholmFormat.h"
 
 #include <QTextStream>
+#include <QRegularExpression>
 
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/IOAdapter.h>
@@ -479,7 +480,7 @@ static void save(IOAdapterWriter& writer, const Msa& msa, const QString& name, U
     writer.write(os, StockholmFormat::UNI_ANNOTATION_MARK + "\n\n");
     CHECK_OP(os, );
 
-    QString idValue = QString(name).replace(QRegExp("\\s"), "_");
+    QString idValue = QString(name).replace(QRegularExpression("\\s"), "_");
     writer.write(os, StockholmFormat::FILE_ANNOTATION_ID + " " + idValue + "\n\n");
     CHECK_OP(os, );
 

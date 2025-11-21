@@ -21,6 +21,8 @@
 
 #include "ScriptHighlighter.h"
 
+#include <QRegularExpression>
+
 namespace U2 {
 
 ScriptHighlighter::ScriptHighlighter(QTextDocument* parent)
@@ -44,7 +46,7 @@ ScriptHighlighter::ScriptHighlighter(QTextDocument* parent)
                     << "\\bwhile\\b";
 
     foreach (const QString& pattern, keywordPatterns) {
-        rule.pattern = QRegExp(pattern);
+        rule.pattern = QRegularExpression(pattern);
         rule.format = keywordFormat;
         highlightingRules.append(rule);
     }
@@ -53,13 +55,13 @@ ScriptHighlighter::ScriptHighlighter(QTextDocument* parent)
     QTextCharFormat valueFormat;
     valueFormat.setForeground(Qt::blue);
     rule.format = valueFormat;
-    rule.pattern = QRegExp("\\btrue\\b|\\bfalse\\b|\\b[0-9]+\\b");
+    rule.pattern = QRegularExpression("\\btrue\\b|\\bfalse\\b|\\b[0-9]+\\b");
     highlightingRules.append(rule);
 
     QTextCharFormat functionFormat;
     functionFormat.setForeground(Qt::darkBlue);
     rule.format = functionFormat;
-    rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
+    rule.pattern = QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()");
     highlightingRules.append(rule);
 
     // Quotation
@@ -67,51 +69,56 @@ ScriptHighlighter::ScriptHighlighter(QTextDocument* parent)
     QTextCharFormat quotationFormat;
     quotationFormat.setForeground(Qt::blue);
     rule.format = quotationFormat;
-    rule.pattern = QRegExp("\"[^\"]*\"");
+    rule.pattern = QRegularExpression("\"[^\"]*\"");
     highlightingRules.append(rule);
 
     // Single Line Comments
     QTextCharFormat singleLineCommentFormat;
     singleLineCommentFormat.setForeground(Qt::darkGreen);
     rule.format = singleLineCommentFormat;
-    rule.pattern = QRegExp("//[^\n]*");
+    rule.pattern = QRegularExpression("//[^\n]*");
     highlightingRules.append(rule);
 
     multiLineCommentFormat.setForeground(Qt::darkGreen);
 
-    commentStartExpression = QRegExp("/\\*");
-    commentEndExpression = QRegExp("\\*/");
+    commentStartExpression = QRegularExpression("/\\*");
+    commentEndExpression = QRegularExpression("\\*/");
 }
 
 void ScriptHighlighter::highlightBlock(const QString& text) {
-    foreach (const HighlightingRule& rule, highlightingRules) {
-        QRegExp expression(rule.pattern);
-        int index = expression.indexIn(text);
-        while (index >= 0) {
-            int length = expression.matchedLength();
+    for (const HighlightingRule& rule : highlightingRules) {
+        QRegularExpression expression = rule.pattern;
+        QRegularExpressionMatch match = expression.match(text);
+        while (match.hasMatch()) {
+            int index = match.capturedStart(0);
+            int length = match.capturedLength(0);
             setFormat(index, length, rule.format);
-            index = expression.indexIn(text, index + length);
+            match = expression.match(text, index + length);
         }
     }
     setCurrentBlockState(0);
 
     int startIndex = 0;
     if (previousBlockState() != 1) {
-        startIndex = commentStartExpression.indexIn(text);
+        QRegularExpressionMatch match = commentStartExpression.match(text);
+        startIndex = match.hasMatch() ? match.capturedStart(0) : -1;
     }
 
     while (startIndex >= 0) {
-        int endIndex = commentEndExpression.indexIn(text, startIndex);
+        QRegularExpressionMatch endMatch = commentEndExpression.match(text, startIndex);
         int commentLength;
-        if (endIndex == -1) {
+        if (!endMatch.hasMatch()) {
             setCurrentBlockState(1);
             commentLength = text.length() - startIndex;
         } else {
-            commentLength = endIndex - startIndex + commentEndExpression.matchedLength();
+            commentLength = endMatch.capturedStart(0) - startIndex + endMatch.capturedLength(0);
         }
         setFormat(startIndex, commentLength, multiLineCommentFormat);
-        startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);
+
+        QRegularExpressionMatch nextMatch = commentStartExpression.match(text, startIndex + commentLength);
+        startIndex = nextMatch.hasMatch() ? nextMatch.capturedStart(0) : -1;
     }
 }
+
 
 }  // namespace U2

@@ -453,8 +453,8 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
 
 bool McaEditorSequenceArea::isCharacterAcceptable(const QString& text) const {
     static const QString alphabetCharacters = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED())->getAlphabetChars();
-    static const QRegExp dnaExtendedCharacterOrGap(QString("([%1]| |-|%2)").arg(alphabetCharacters).arg(emDash));
-    return dnaExtendedCharacterOrGap.exactMatch(text);
+    static const QRegularExpression dnaExtendedCharacterOrGap(QString("^([%1]| |-|%2)$").arg(alphabetCharacters).arg(emDash));
+    return dnaExtendedCharacterOrGap.match(text).hasMatch();
 }
 
 const QString& McaEditorSequenceArea::getInacceptableCharacterErrorMessage() const {

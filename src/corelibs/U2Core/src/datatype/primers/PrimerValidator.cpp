@@ -27,20 +27,20 @@
 namespace U2 {
 
 PrimerValidator::PrimerValidator(QObject* parent, bool allowExtended)
-    : QRegExpValidator(parent) {
+    : QRegularExpressionValidator(parent) {
     const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(
         allowExtended ? BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     QByteArray alphabetChars = alphabet->getAlphabetChars(true);
     // Gaps are not allowed
     alphabetChars.remove(alphabetChars.indexOf('-'), 1);
-    setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
+    setRegularExpression(QRegularExpression(QString("[%1]+").arg(alphabetChars.constData())));
 }
 
 QValidator::State PrimerValidator::validate(QString& input, int& pos) const {
     input = input.simplified();
     input = input.toUpper();
     input.remove(" ");
-    return QRegExpValidator::validate(input, pos);
+    return QRegularExpressionValidator ::validate(input, pos);
 }
 
 }  // namespace U2

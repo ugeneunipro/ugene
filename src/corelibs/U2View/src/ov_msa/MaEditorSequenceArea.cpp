@@ -1587,8 +1587,8 @@ void MaEditorSequenceArea::exitFromEditCharacterMode() {
 }
 
 bool MaEditorSequenceArea::isCharacterAcceptable(const QString& text) const {
-    static const QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
-    return latinCharacterOrGap.exactMatch(text);
+    static const QRegularExpression latinCharacterOrGap(QString("^([A-Z]| |-|%1)$").arg(emDash));
+    return latinCharacterOrGap.match(text).hasMatch();
 }
 
 const QString& MaEditorSequenceArea::getInacceptableCharacterErrorMessage() const {

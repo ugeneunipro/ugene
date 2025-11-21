@@ -240,7 +240,7 @@ QStringList Tokenizer::getUntil(const QString& what, Qt::CaseSensitivity cs) {
     return words;
 }
 
-QString Tokenizer::readUntil(const QRegExp& regExpMatcher) {
+QString Tokenizer::readUntil(const QRegularExpression& regExpMatcher) {
     // push 'next' token back
     QString str = next + buffStream.readAll();
     QString result = "";
@@ -420,14 +420,14 @@ bool NEXUSParser::readDataContents(Context& ctx) {
                 name.replace('_', ' ');
 
                 // Read value
-                QString value = tz.readUntil(QRegExp("(;|\\n|\\r)"));
+                QString value = tz.readUntil(QRegularExpression("(;|\\n|\\r)"));
 
                 // The value is the last in the section if there is an empty new line at the end.
                 QString trailingSpaces = tz.whiteSpacesAfterLastToken;
                 bool isLastValueInTheSection = trailingSpaces.count('\r') >= 2 || trailingSpaces.count('\n') >= 2;
 
                 // Remove spaces
-                value.remove(QRegExp("\\s"));
+                value.remove(QRegularExpression("\\s"));
 
                 // Replace gaps
                 if (ctx.contains("gap")) {
@@ -810,10 +810,10 @@ void writeMAligment(const Msa& ma, bool simpleName, IOAdapter* io, U2OpStatus&) 
     foreach (const MsaRow& row, rows) {
         QString name = row->getName();
 
-        if (name.contains(QRegExp("\\s|\\W"))) {
+        if (name.contains(QRegularExpression("\\s|\\W"))) {
             if (simpleName) {
                 name.replace(' ', '_');
-                int idx = name.indexOf(QRegExp("\\s|\\W"));
+                int idx = name.indexOf(QRegularExpression("\\s|\\W"));
                 if (idx != -1) {
                     name = name.left(idx);
                 }
@@ -860,7 +860,7 @@ static void writeNode(const PhyNode* node, IOAdapter* io) {
         }
         io->writeBlock(")", 1);
     } else {
-        bool containsSpaces = node->name.contains(QRegExp("\\s"));
+        bool containsSpaces = node->name.contains(QRegularExpression("\\s"));
         if (containsSpaces) {
             io->writeBlock("'", 1);
         }

@@ -21,7 +21,7 @@
 
 #include "UdrSchemaRegistry.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -56,8 +56,8 @@ const UdrSchema* UdrSchemaRegistry::getSchemaById(const UdrSchemaId& id) const {
 }
 
 bool UdrSchemaRegistry::isCorrectName(const QByteArray& name) {
-    QRegExp regExp("([A-z]|_)([A-z]|_|\\d)*");
-    return regExp.exactMatch(name);
+    QRegularExpression regExp("([A-z]|_)([A-z]|_|\\d)*");
+    return regExp.match(name).hasMatch();
 }
 
 }  // namespace U2

@@ -58,7 +58,7 @@ Kalign3Support::Kalign3Support()
     validationMessageRegExp = "kalign \\d+\\.\\d+\\.\\d+";
     validationArguments << "--version";
     description = tr("<i>Kalign</i> is a fast multiple sequence alignment program for biological sequences.");
-    versionRegExp = QRegExp("kalign (\\d+\\.\\d+\\.\\d+)");
+    versionRegExp = QRegularExpression("kalign (\\d+\\.\\d+\\.\\d+)");
     toolKitName = "Kalign";
 
     AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new Kalign3PairwiseAlignmentAlgorithm());

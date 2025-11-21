@@ -117,13 +117,13 @@ bool GenbankPlainTextFormat::readIdLine(ParserState* st) {
     }
 
     QString locusStr = st->value();
-    QStringList tokens = locusStr.split(QRegExp("(\t| )"), Qt::SkipEmptyParts);  // separators: tabs and spaces
+    QStringList tokens = locusStr.split(QRegularExpression("(\t| )"), Qt::SkipEmptyParts);  // separators: tabs and spaces
     if (tokens.isEmpty()) {
         st->si.setError(tr("Error parsing LOCUS line"));
         return false;
     }
     // try improving name readability
-    tokens[0] = tokens[0].replace(QRegExp("_(?![0-9])"), QChar(' '));
+    tokens[0] = tokens[0].replace(QRegularExpression("_(?![0-9])"), QChar(' '));
     st->entry->name = tokens[0];
 
     if (tokens.size() >= 3 && (tokens[2] == "bp" || tokens[2] == "aa")) {
@@ -351,14 +351,14 @@ QString GenbankPlainTextFormat::getFeatureTypeString(U2FeatureType featureType, 
 }
 
 bool GenbankPlainTextFormat::breakQualifierOnSpaceOnly(const QString& qualifierName) const {
-    QRegExp spacelessQualifierCatcher = QRegExp("^/?(" +
+    QRegularExpression spacelessQualifierCatcher("^/?(" +
                                                 GBFeatureUtils::QUALIFIER_TRANSLATION +
                                                 "|" +
                                                 GBFeatureUtils::QUALIFIER_NAME +
                                                 "|" +
                                                 GBFeatureUtils::QUALIFIER_GROUP +
                                                 ")");
-    return -1 == spacelessQualifierCatcher.indexIn(qualifierName);
+    return !spacelessQualifierCatcher.match(qualifierName).hasMatch();
 }
 
 const QMap<U2FeatureType, GBFeatureKey> GenbankPlainTextFormat::additionalFeatureTypes = GenbankPlainTextFormat::initAdditionalFeatureTypes();

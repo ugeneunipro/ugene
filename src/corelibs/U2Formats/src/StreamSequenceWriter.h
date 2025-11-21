@@ -53,7 +53,7 @@ public:
         refSeqLength = l;
     }
     void setRefSeqName(const QString& name) {
-        refSeqName = QString(name).replace(QRegExp("\\s|\\t"), "_").toLatin1();
+        refSeqName = QString(name).replace(QRegularExpression("\\s|\\t"), "_").toLatin1();
     }
     int getNumSeqWritten() {
         return numSeqWritten;

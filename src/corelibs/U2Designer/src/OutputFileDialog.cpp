@@ -58,7 +58,7 @@ OutputFileDialog::OutputFileDialog(RunFileSystem* _rfs, bool _saveDir, Completio
         if (filler != nullptr) {
             new BaseCompleter(filler, nameEdit);
         }
-        nameEdit->setValidator(new QRegExpValidator(QRegExp("[^" + BAD_CHARS + "]+"), this));
+        nameEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^" + BAD_CHARS + "]+"), this));
     }
     updateFocus();
     setupSettings();
@@ -218,7 +218,7 @@ CreateDirectoryDialog::CreateDirectoryDialog(RunFileSystem* _rfs, const QString&
     }
     sl_textChanged();
 
-    nameEdit->setValidator(new QRegExpValidator(QRegExp("[^" + BAD_CHARS + "\\\\\\/]+"), this));
+    nameEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^" + BAD_CHARS + "\\\\\\/]+"), this));
 
     connect(nameEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_textChanged()));
 }

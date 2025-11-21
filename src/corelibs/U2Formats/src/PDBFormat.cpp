@@ -303,7 +303,7 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
             int index = returnEndOfNameIndexAndUpdateParserState(specification);
             currentMoleculeName = specification.mid(MOLECULE_TAG.size() + 1, index - MOLECULE_TAG.size() - 1).trimmed();
         } else if (specification.startsWith(CHAIN_TAG)) {
-            QStringList idetifiers = specification.split(QRegExp(",|:|;"));
+            QStringList idetifiers = specification.split(QRegularExpression(",|:|;"));
             for (int i = 1; i < idetifiers.size(); i++) {
                 QString identifier = idetifiers.at(i).trimmed();
                 if (identifier.size() > 0 && !currentMoleculeName.isEmpty()) {
@@ -544,7 +544,7 @@ void PDBFormat::PDBParser::parseSequence(BioStruct3D& biostruct, U2OpStatus& ti)
         seqResMap.insert(chainIdentifier, QByteArray());
     }
 
-    QStringList residues = currentPDBLine.mid(19).split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList residues = currentPDBLine.mid(19).split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     QByteArray sequencePart;
     foreach (QString name, residues) {
         SharedResidue residue(new ResidueData);
@@ -584,7 +584,7 @@ void PDBFormat::PDBParser::parseSplitSection(U2OpStatus& /*ti*/) {
     9 - 10 Continuation continuation Allows concatenation of multiple records.
     12 - 15 IDcode idCode ID code of related entry.
     .. every 2 spaces IDcode*/
-    QStringList ids = currentPDBLine.mid(11).split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList ids = currentPDBLine.mid(11).split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     ioLog.trace(QString("The list of SPLIT ids is %1").arg(ids.join(",")));
 }
 
@@ -627,8 +627,9 @@ void PDBFormat::PDBParser::updateResidueIndexes(BioStruct3D& /*biostruc*/) {
 }
 
 int PDBFormat::PDBParser::returnEndOfNameIndexAndUpdateParserState(const QString& specification) {
-    static const QRegExp end(";\\s*$");
-    int index = end.indexIn(specification);
+    static const QRegularExpression end(";\\s*$");
+    QRegularExpressionMatch match = end.match(specification);
+    int index = match.hasMatch() ? match.capturedStart(0) : -1;
     if (index < 0) {
         return specification.size();
     }

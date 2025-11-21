@@ -23,6 +23,7 @@
 
 #include <QDir>
 #include <QDomDocument>
+#include <QRegularExpression>
 
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
@@ -56,7 +57,7 @@ static PlatformArch archFromText(const QString& text) {
 
 static PluginMode modeFromText(const QString& text) {
     QString trimmed = text.trimmed().toLower();
-    QStringList tokens = trimmed.split(QRegExp("[\\s,]"), Qt::SkipEmptyParts);
+    QStringList tokens = trimmed.split(QRegularExpression("[\\s,]"), Qt::SkipEmptyParts);
     PluginMode result;
     if (tokens.isEmpty()) {
         result |= PluginMode_Malformed;

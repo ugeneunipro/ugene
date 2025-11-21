@@ -39,7 +39,7 @@ Bowtie2Support::Bowtie2Support(const QString& id)
     : ExternalTool(id, "bowtie2", "") {
 
     toolKitName = "Bowtie2";
-    versionRegExp = QRegExp("version (\\d+\\.\\d+\\.\\d+[.]{0,1}[\\d+]{0,1})");
+    versionRegExp = QRegularExpression("version (\\d+\\.\\d+\\.\\d+[.]{0,1}[\\d+]{0,1})");
 
     if (id == ET_BOWTIE2_ALIGN_ID) {  // Bowtie2-align
         name = "Bowtie 2 aligner";

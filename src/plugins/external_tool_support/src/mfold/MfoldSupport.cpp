@@ -68,7 +68,7 @@ MfoldSupport::MfoldSupport()
 
     static const QString MFOLD_VERSION_REGEXP = "(\\d+\\.\\d+)";
     validationMessageRegExp = "mfold version " + MFOLD_VERSION_REGEXP;
-    versionRegExp = QRegExp(MFOLD_VERSION_REGEXP);
+    versionRegExp = QRegularExpression(MFOLD_VERSION_REGEXP);
 }
 
 GObjectViewWindowContext* MfoldSupport::getViewContext() const {

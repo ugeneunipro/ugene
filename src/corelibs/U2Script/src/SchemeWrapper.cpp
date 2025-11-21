@@ -197,7 +197,7 @@ U2ErrorType SchemeWrapper::addNewElementAndGetItsName(const QString& elementType
     result = getSchemeDescriptionStart(&newElementBlockInsertPosition);
     CHECK(U2_OK == result, result);
 
-    newElementBlockInsertPosition = schemeContent.indexOf(QRegExp("[\\w\\n]"),
+    newElementBlockInsertPosition = schemeContent.indexOf(QRegularExpression("[\\w\\n]"),
                                                           newElementBlockInsertPosition);
     CHECK(SUBSTRING_NOT_FOUND != newElementBlockInsertPosition, U2_INVALID_SCHEME);
     if (Constants::NEW_LINE[0] == schemeContent[newElementBlockInsertPosition]) {
@@ -224,11 +224,11 @@ U2ErrorType SchemeWrapper::addFlow(const QString& srcElementName, const QString&
         result = addActorBindingsBlock(&flowDescriptionInsertPosition);
         CHECK(U2_OK == result, result);
     }
-    flowDescriptionInsertPosition = schemeContent.indexOf(QRegExp(BLOCK_END_PATTERN),
+    flowDescriptionInsertPosition = schemeContent.indexOf(QRegularExpression(BLOCK_END_PATTERN),
                                                           flowDescriptionInsertPosition);
     CHECK(SUBSTRING_NOT_FOUND != flowDescriptionInsertPosition, U2_INVALID_SCHEME);
     flowDescriptionInsertPosition = qMax(
-        schemeContent.lastIndexOf(QRegExp(BLOCK_START_PATTERN), flowDescriptionInsertPosition),
+        schemeContent.lastIndexOf(QRegularExpression(BLOCK_START_PATTERN), flowDescriptionInsertPosition),
         schemeContent.lastIndexOf(Constants::NEW_LINE, flowDescriptionInsertPosition));
     CHECK(SUBSTRING_NOT_FOUND != flowDescriptionInsertPosition, U2_INVALID_SCHEME);
     ++flowDescriptionInsertPosition;
@@ -264,15 +264,15 @@ U2ErrorType SchemeWrapper::addActorsBinding(const QString& srcElementName,
     int bindingDescriptionPosition = schemeContent.indexOf(getBlockStartPattern(
         Constants::META_START));
     if (SUBSTRING_NOT_FOUND == bindingDescriptionPosition) {
-        bindingDescriptionPosition = schemeContent.lastIndexOf(QRegExp(BLOCK_END_PATTERN));
+        bindingDescriptionPosition = schemeContent.lastIndexOf(QRegularExpression(BLOCK_END_PATTERN));
         CHECK(SUBSTRING_NOT_FOUND != bindingDescriptionPosition, U2_INVALID_SCHEME);
         bindingDescriptionPosition = schemeContent.lastIndexOf(Constants::NEW_LINE,
                                                                bindingDescriptionPosition);
     } else {
-        QRegExp flowsDescriptionEndPattern(BLOCK_END_PATTERN);
-        bindingDescriptionPosition = qMax(flowsDescriptionEndPattern.lastIndexIn(schemeContent,
-                                                                                 bindingDescriptionPosition),
-                                          schemeContent.lastIndexOf(Constants::NEW_LINE,
+        QRegularExpression flowsDescriptionEndPattern(BLOCK_END_PATTERN);
+        QRegularExpressionMatch match = flowsDescriptionEndPattern.match(schemeContent, bindingDescriptionPosition);
+        int lastFlowIndex = match.hasMatch() ? match.capturedEnd(0) - 1 : -1;
+        bindingDescriptionPosition = qMax(lastFlowIndex, schemeContent.lastIndexOf(Constants::NEW_LINE,
                                                                     bindingDescriptionPosition));
         CHECK(SUBSTRING_NOT_FOUND != bindingDescriptionPosition, U2_INVALID_SCHEME);
     }
@@ -415,16 +415,16 @@ U2ErrorType SchemeWrapper::getEnclosingElementBoundaries(const QString& elementN
     *end = SUBSTRING_NOT_FOUND;
     CHECK(0 < elementNamePosition && (schemeContent.length() - 1) > elementNamePosition,
           U2_NUM_ARG_OUT_OF_RANGE);
-    const QRegExp elementDescStartPattern(BLOCK_START_PATTERN);
+    const QRegularExpression elementDescStartPattern(BLOCK_START_PATTERN);
     *start = schemeContent.lastIndexOf(elementDescStartPattern, elementNamePosition);
     CHECK(SUBSTRING_NOT_FOUND != *start, U2_INVALID_SCHEME);
-    const QRegExp elementDescEndPattern(BLOCK_END_PATTERN);
+    const QRegularExpression elementDescEndPattern(BLOCK_END_PATTERN);
     *end = schemeContent.indexOf(elementDescEndPattern, elementNamePosition);
     // check if the founded boundaries belong to an attribute description
     int bracesBalance = 0;
     result = checkBracesBalanceInRange(*start + 1, *end, &bracesBalance);
     CHECK(U2_OK == result, U2_INVALID_SCHEME);
-    QRegExp typeAttributePattern(TYPE_ATTR_PATTERN);
+    QRegularExpression typeAttributePattern(TYPE_ATTR_PATTERN);
     int typeAttributePosition = schemeContent.indexOf(typeAttributePattern, *start);
     while (0 != bracesBalance || typeAttributePosition > *end || SUBSTRING_NOT_FOUND == typeAttributePosition) {
         // consequently considering all possible cases
@@ -461,10 +461,10 @@ U2ErrorType SchemeWrapper::getEnclosingElementBoundaries(const QString& elementN
         typeAttributePosition = schemeContent.indexOf(typeAttributePattern, *start);
     }
     // make founded boundaries contain an integer number of UWL strings
-    *end = schemeContent.lastIndexOf(QRegExp("[(" + Constants::BLOCK_END + ")\\" + Constants::SEMICOLON + "]"), *end - 1);
+    *end = schemeContent.lastIndexOf(QRegularExpression("[(" + Constants::BLOCK_END + ")\\" + Constants::SEMICOLON + "]"), *end - 1);
     CHECK(SUBSTRING_NOT_FOUND != *end, U2_INVALID_SCHEME);
     *end += 2;
-    *start = schemeContent.indexOf(QRegExp("[\\n\\w]"), *start + 1);
+    *start = schemeContent.indexOf(QRegularExpression("[\\n\\w]"), *start + 1);
     return U2_OK;
 }
 
@@ -472,7 +472,7 @@ U2ErrorType SchemeWrapper::checkBracesBalanceInRange(int startPos, int endPos, i
     const {
     CHECK(0 < startPos && 0 < endPos && (schemeContent.length() - 1) > startPos && (schemeContent.length() - 1) > endPos, U2_NUM_ARG_OUT_OF_RANGE);
     *disbalance = 0;
-    const QRegExp bracesPattern("[\\" + Constants::BLOCK_START + "\\" + Constants::BLOCK_END + "][\\s\"\\" + Constants::SEMICOLON + "]");
+    const QRegularExpression bracesPattern("[\\" + Constants::BLOCK_START + "\\" + Constants::BLOCK_END + "][\\s\"\\" + Constants::SEMICOLON + "]");
     int searchPosition = schemeContent.indexOf(bracesPattern, startPos + 1);
     while (searchPosition < endPos && searchPosition != SUBSTRING_NOT_FOUND) {
         // suppose that `BLOCK_START` and `BLOCK_END` start with different symbols
@@ -495,43 +495,63 @@ U2ErrorType SchemeWrapper::getElementNameAttributePosition(const QString& elemen
     const int nameStartPosition = schemeContent.indexOf(
         HRSchemaSerializer::valueString(elementName));
     CHECK(SUBSTRING_NOT_FOUND != nameStartPosition, U2_ELEMENT_NOT_FOUND);
-    const int nameAttributeStartPos = schemeContent.lastIndexOf(QRegExp(NAME_ATTR_PATTERN),
+    const int nameAttributeStartPos = schemeContent.lastIndexOf(QRegularExpression(NAME_ATTR_PATTERN),
                                                                 nameStartPosition);
     CHECK(SUBSTRING_NOT_FOUND != nameAttributeStartPos, U2_INVALID_SCHEME);
     *position = nameAttributeStartPos;
     return U2_OK;
 }
 
+namespace {
+
+int reIndexIn(const QRegularExpression& re, const QString& str, int pos = 0) {
+    QRegularExpressionMatch match = re.match(str, pos);
+    return match.hasMatch() ? match.capturedStart(0) : SUBSTRING_NOT_FOUND;
+}
+
+int reEndIn(const QRegularExpression& re, const QString& str, int pos = 0) {
+    QRegularExpressionMatch match = re.match(str, pos);
+    return match.hasMatch() ? match.capturedEnd(0) - 1 : SUBSTRING_NOT_FOUND;
+}
+
+}  // namespace
+
 U2ErrorType SchemeWrapper::fillElementNamesFromSchemeContent() {
     U2ErrorType result = U2_OK;
-    QRegExp nameAttrStartPattern(NAME_ATTR_PATTERN);
-    QRegExp blockStartPattern(BLOCK_START_PATTERN);
-    QRegExp schemeNamePattern("\"[^\"]*\"");
-    QRegExp blockEndPattern(BLOCK_END_PATTERN);
-    QRegExp letterOrNumberPattern("\\w");
+
+    QRegularExpression nameAttrStartPattern(NAME_ATTR_PATTERN);
+    QRegularExpression blockStartPattern(BLOCK_START_PATTERN);
+    QRegularExpression blockEndPattern(BLOCK_END_PATTERN);
+    QRegularExpression letterOrNumberPattern("\\w");
+
     int searchStartPosition = SUBSTRING_NOT_FOUND;
     result = getSchemeDescriptionStart(&searchStartPosition);
     CHECK(U2_OK == result, result);
     CHECK(SUBSTRING_NOT_FOUND != searchStartPosition, U2_INVALID_SCHEME);
-    searchStartPosition = schemeContent.indexOf(blockStartPattern, searchStartPosition);
+
+    searchStartPosition = reIndexIn(blockStartPattern, schemeContent, searchStartPosition);
+
     while (SUBSTRING_NOT_FOUND != searchStartPosition) {
-        int nextBlockStart = schemeContent.indexOf(blockStartPattern, searchStartPosition + 2);
-        int blockEnd = blockEndPattern.indexIn(schemeContent, searchStartPosition + 2);
+        int nextBlockStart = reIndexIn(blockStartPattern, schemeContent, searchStartPosition + 2);
+        int blockEnd = reEndIn(blockEndPattern, schemeContent, searchStartPosition + 2);
+
         CHECK_EXT(SUBSTRING_NOT_FOUND != blockEnd, elementNamesAndIds.clear(), U2_INVALID_SCHEME);
-        int elementNameStart = nameAttrStartPattern.indexIn(schemeContent, searchStartPosition);
+
+        int elementNameStart = reEndIn(nameAttrStartPattern, schemeContent, searchStartPosition);
         if (SUBSTRING_NOT_FOUND == elementNameStart) {
-            return (elementNamesAndIds.isEmpty()) ? U2_INVALID_SCHEME : U2_OK;
+            return elementNamesAndIds.isEmpty() ? U2_INVALID_SCHEME : U2_OK;
         }
-        elementNameStart += nameAttrStartPattern.matchedLength();
+
         int elementNameEnd = SUBSTRING_NOT_FOUND;
+
         while (SUBSTRING_NOT_FOUND != nextBlockStart && nextBlockStart < blockEnd && elementNameStart > nextBlockStart) {
             int bracesDisbalance = 1;
             int lastFoundBlockBoundaryPos = nextBlockStart;
+
             while (0 != bracesDisbalance) {
-                blockEnd = schemeContent.indexOf(blockEndPattern,
-                                                 lastFoundBlockBoundaryPos + 1);
-                nextBlockStart = schemeContent.indexOf(blockStartPattern,
-                                                       lastFoundBlockBoundaryPos + 1);
+                blockEnd = reEndIn(blockEndPattern, schemeContent, lastFoundBlockBoundaryPos + 1);
+                nextBlockStart = reIndexIn(blockStartPattern, schemeContent, lastFoundBlockBoundaryPos + 1);
+
                 if (nextBlockStart < blockEnd) {
                     lastFoundBlockBoundaryPos = nextBlockStart;
                     ++bracesDisbalance;
@@ -541,21 +561,22 @@ U2ErrorType SchemeWrapper::fillElementNamesFromSchemeContent() {
                 }
                 CHECK_EXT(0 <= bracesDisbalance, elementNamesAndIds.clear(), U2_INVALID_SCHEME);
             }
-            elementNameStart = nameAttrStartPattern.indexIn(schemeContent, blockEnd);
+
+            elementNameStart = reEndIn(nameAttrStartPattern, schemeContent, blockEnd);
             CHECK_EXT(SUBSTRING_NOT_FOUND != elementNameStart, elementNamesAndIds.clear(), U2_INVALID_SCHEME);
-            elementNameStart += nameAttrStartPattern.matchedLength();
-            nextBlockStart = schemeContent.indexOf(blockStartPattern,
-                                                   nextBlockStart + 1);
-            blockEnd = blockEndPattern.indexIn(schemeContent, blockEnd + 1);
+
+            nextBlockStart = reIndexIn(blockStartPattern, schemeContent, nextBlockStart + 1);
+            blockEnd = reEndIn(blockEndPattern, schemeContent, blockEnd + 1);
         }
-        elementNameStart = schemeContent.indexOf(letterOrNumberPattern, elementNameStart);
+
+        elementNameStart = reIndexIn(letterOrNumberPattern, schemeContent, elementNameStart);
         elementNameEnd = schemeContent.indexOf(Constants::SEMICOLON, elementNameStart);
         elementNameEnd = schemeContent.lastIndexOf(letterOrNumberPattern, elementNameEnd);
 
         CHECK_EXT(SUBSTRING_NOT_FOUND != elementNameStart, elementNamesAndIds.clear(), U2_INVALID_SCHEME);
         CHECK_EXT(SUBSTRING_NOT_FOUND != elementNameEnd, elementNamesAndIds.clear(), U2_INVALID_SCHEME);
-        const QString elementName = schemeContent.mid(elementNameStart,
-                                                      elementNameEnd - elementNameStart + 1);
+
+        const QString elementName = schemeContent.mid(elementNameStart, elementNameEnd - elementNameStart + 1);
         CHECK_EXT(!elementNamesAndIds.contains(elementName), elementNamesAndIds.clear(), U2_INVALID_SCHEME);
         QString elementType;
         result = getElementType(elementName, elementType);
@@ -566,7 +587,8 @@ U2ErrorType SchemeWrapper::fillElementNamesFromSchemeContent() {
         elementNamesAndIds[elementName] = elementType;
         result = getEnclosingElementBoundaries(elementName, &nextBlockStart, &searchStartPosition);
         CHECK_EXT(U2_OK == result, elementNamesAndIds.clear(), result);
-        searchStartPosition = schemeContent.indexOf(blockStartPattern, searchStartPosition);
+
+        searchStartPosition = reIndexIn(blockStartPattern, schemeContent, searchStartPosition);
     }
     return U2_OK;
 }
@@ -580,12 +602,20 @@ void SchemeWrapper::initSchemeContentWithEmptyScheme() {
 U2ErrorType SchemeWrapper::addActorBindingsBlock(int* position) {
     *position = -1;
     const int schemeDescriptionEndPos = schemeContent.lastIndexOf(
-        QRegExp(BLOCK_END_PATTERN));
+        QRegularExpression(BLOCK_END_PATTERN));
     CHECK(SUBSTRING_NOT_FOUND != schemeDescriptionEndPos, U2_INVALID_SCHEME);
-    const QRegExp metaStartPattern = getBlockStartPattern(Constants::META_START);
-    const int metaStartPos = metaStartPattern.lastIndexIn(schemeContent,
-                                                          schemeDescriptionEndPos);
-    int lastBlockEndPos = schemeContent.lastIndexOf(QRegExp(BLOCK_END_PATTERN),
+    const QRegularExpression metaStartPattern = getBlockStartPattern(Constants::META_START);
+    int metaStartPos = -1;
+    QRegularExpressionMatchIterator it = metaStartPattern.globalMatch(schemeContent);
+    while (it.hasNext()) {
+        QRegularExpressionMatch match = it.next();
+        int pos = match.capturedStart();
+        if (pos > schemeDescriptionEndPos) {
+            break;
+        }
+        metaStartPos = pos;
+    }
+    int lastBlockEndPos = schemeContent.lastIndexOf(QRegularExpression(BLOCK_END_PATTERN),
                                                     (SUBSTRING_NOT_FOUND == metaStartPos) ? schemeDescriptionEndPos : metaStartPos);
     CHECK(SUBSTRING_NOT_FOUND != lastBlockEndPos, U2_INVALID_SCHEME);
     lastBlockEndPos = schemeContent.lastIndexOf(Constants::BLOCK_END, lastBlockEndPos);
@@ -619,23 +649,31 @@ U2ErrorType SchemeWrapper::getElementType(const QString& elementName, QString& t
     U2ErrorType result = getEnclosingElementBoundaries(elementName, &elementDescStartPosition, &elementDescEndPosition);
     CHECK(U2_OK == result, result);
 
-    const QRegExp letterOrQuotePattern("[\\w\"]");
-    int elementTypeAttrStartPos = schemeContent.indexOf(QRegExp(TYPE_ATTR_PATTERN),
+const QRegularExpression letterOrQuotePattern(R"([\w"])");
+    int elementTypeAttrStartPos = schemeContent.indexOf(QRegularExpression(TYPE_ATTR_PATTERN),
                                                         elementDescStartPosition);
     CHECK(SUBSTRING_NOT_FOUND != elementTypeAttrStartPos && elementTypeAttrStartPos < elementDescEndPosition, U2_INVALID_SCHEME);
-    int outerBlockStartPos = schemeContent.lastIndexOf(QRegExp(BLOCK_START_PATTERN),
-                                                       elementTypeAttrStartPos);
+
+    int outerBlockStartPos = -1;
+    QRegularExpression re(BLOCK_START_PATTERN);
+    QRegularExpressionMatchIterator it = re.globalMatch(schemeContent.left(elementTypeAttrStartPos + 1));
+    while (it.hasNext()) {
+        QRegularExpressionMatch match = it.next();
+        outerBlockStartPos = match.capturedStart();
+    }
+
     if (outerBlockStartPos > elementDescStartPosition) {
         int bracesDisbalance = -1;
         while (0 != bracesDisbalance) {
             result = checkBracesBalanceInRange(elementDescStartPosition, elementTypeAttrStartPos, &bracesDisbalance);
             CHECK(U2_OK == result, U2_INVALID_SCHEME);
             if (0 != bracesDisbalance) {
-                elementTypeAttrStartPos = schemeContent.indexOf(QRegExp(TYPE_ATTR_PATTERN),
+                elementTypeAttrStartPos = schemeContent.indexOf(QRegularExpression(TYPE_ATTR_PATTERN),
                                                                 elementTypeAttrStartPos + 1);
             }
         }
     }
+
     elementTypeAttrStartPos += Constants::TYPE_ATTR.length() + 2;
     elementTypeAttrStartPos = schemeContent.indexOf(letterOrQuotePattern,
                                                     elementTypeAttrStartPos);
@@ -697,7 +735,7 @@ U2ErrorType SchemeWrapper::setElementAttributeInRange(const QString& attributeNa
     } else {
         // suppose that element descriptions starts with new line in UWL format,
         // i.e. all indents are retained
-        const int tabsCount = (schemeContent.indexOf(QRegExp("\\w"), start) - start) / Constants::TAB.length();
+        const int tabsCount = (schemeContent.indexOf(QRegularExpression("\\w"), start) - start) / Constants::TAB.length();
         const QString attributeString = HRSchemaSerializer::makeEqualsPair(attributeName,
                                                                            attributeValue,
                                                                            tabsCount);
@@ -727,15 +765,15 @@ U2ErrorType SchemeWrapper::getElementAttributeFromRange(const QString& attribute
 U2ErrorType SchemeWrapper::getBlockBoundaries(const QString& blockName, int* start, int* end)
     const {
     CHECK(0 < *start && 0 < *end && *start < *end && *start < schemeContent.length() && *end < schemeContent.length(), U2_NUM_ARG_OUT_OF_RANGE);
-    QRegExp blockStartPattern = getBlockStartPattern(blockName);
-    *start = blockStartPattern.indexIn(schemeContent, *start);
-    if (SUBSTRING_NOT_FOUND == *start || *start > *end) {
+    QRegularExpression blockStartPattern = getBlockStartPattern(blockName);
+    QRegularExpressionMatch match = blockStartPattern.match(schemeContent, *start);
+    if (!match.hasMatch() || match.capturedStart() > *end) {
         *start = SUBSTRING_NOT_FOUND;
         *end = SUBSTRING_NOT_FOUND;
         return U2_OK;
     }
-    *start += blockStartPattern.matchedLength() - 1;
-    QRegExp blockEndPattern(BLOCK_END_PATTERN);
+    *start = match.capturedEnd() - 1;
+    QRegularExpression blockEndPattern(BLOCK_END_PATTERN);
     int blockEnd = schemeContent.indexOf(blockEndPattern, *start);
     CHECK(SUBSTRING_NOT_FOUND != blockEnd, U2_INVALID_SCHEME);
     CHECK(*end > blockEnd, U2_NUM_ARG_OUT_OF_RANGE);
@@ -754,7 +792,7 @@ U2ErrorType SchemeWrapper::getBlockBoundaries(const QString& blockName, int* sta
         result = checkBracesBalanceInRange(*start, blockEnd, &bracesBalance);
         CHECK(U2_OK == result, U2_INVALID_CALL);
     }
-    *end = schemeContent.lastIndexOf(QRegExp("[(" + Constants::BLOCK_END + ")\\" + Constants::SEMICOLON + "]"), blockEnd - 1);
+    *end = schemeContent.lastIndexOf(QRegularExpression("[(" + Constants::BLOCK_END + ")\\" + Constants::SEMICOLON + "]"), blockEnd - 1);
     CHECK(SUBSTRING_NOT_FOUND != *end, U2_INVALID_SCHEME);
     *end += 2;
     return U2_OK;
@@ -799,7 +837,7 @@ U2ErrorType SchemeWrapper::getBoundariesOfUrlInAttribute(const QString& datasetN
     U2ErrorType result = getBlockBoundaries(urlBlockName, &blockStart, &blockEnd);
     CHECK(U2_OK == result, U2_INVALID_CALL);
     if (SUBSTRING_NOT_FOUND == blockStart) {
-        const QRegExp simpleAttributePattern("[\\s\\" + Constants::SEMICOLON + "]" + urlBlockName + "\\s*\\" + Constants::EQUALS_SIGN);
+        const QRegularExpression simpleAttributePattern("[\\s\\" + Constants::SEMICOLON + "]" + urlBlockName + "\\s*\\" + Constants::EQUALS_SIGN);
         blockStart = schemeContent.indexOf(simpleAttributePattern, *start);
         if (SUBSTRING_NOT_FOUND != blockStart && blockStart < blockEnd) {
             return U2_OK;
@@ -885,23 +923,29 @@ U2ErrorType SchemeWrapper::replaceStringInScheme(int i, int len, const QString& 
 }
 
 U2ErrorType SchemeWrapper::getSchemeDescriptionStart(int* pos) const {
-    QRegExp blockStartPattern(BLOCK_START_PATTERN);
-    QRegExp schemeNamePattern("\"[^\"]*\"");
+    QRegularExpression blockStartPattern(BLOCK_START_PATTERN);
+    QRegularExpression schemeNamePattern(R"("[^"]*")");
     *pos = schemeContent.indexOf(Constants::BODY_START);
     CHECK(SUBSTRING_NOT_FOUND != *pos, U2_INVALID_SCHEME);
-    int bodyBlockStartPos = blockStartPattern.indexIn(schemeContent, *pos);
+
+    QRegularExpressionMatch blockMatch = blockStartPattern.match(schemeContent, *pos);
+    int bodyBlockStartPos = (blockMatch.hasMatch()) ? blockMatch.capturedEnd() : SUBSTRING_NOT_FOUND;
     CHECK(SUBSTRING_NOT_FOUND != bodyBlockStartPos, U2_INVALID_SCHEME);
-    bodyBlockStartPos += 2;
-    int schemeNamePos = schemeNamePattern.indexIn(schemeContent, *pos);
-    if (SUBSTRING_NOT_FOUND != schemeNamePos && bodyBlockStartPos > schemeNamePos) {
-        schemeNamePos += schemeNamePattern.matchedLength();
+
+    bodyBlockStartPos += 0;
+    QRegularExpressionMatch schemeMatch = schemeNamePattern.match(schemeContent, *pos);
+    int schemeNamePos = (schemeMatch.hasMatch()) ? schemeMatch.capturedEnd() : SUBSTRING_NOT_FOUND;
+    if (SUBSTRING_NOT_FOUND != schemeNamePos && bodyBlockStartPos > schemeMatch.capturedStart()) {
         if (bodyBlockStartPos < schemeNamePos) {
-            bodyBlockStartPos = blockStartPattern.indexIn(schemeContent, schemeNamePos) + 2;
+            QRegularExpressionMatch nextBlockMatch = blockStartPattern.match(schemeContent, schemeNamePos);
+            CHECK(nextBlockMatch.hasMatch(), U2_INVALID_SCHEME);
+            bodyBlockStartPos = nextBlockMatch.capturedEnd();
         }
     }
     *pos = bodyBlockStartPos;
     return U2_OK;
 }
+
 
 U2ErrorType SchemeWrapper::updateCommentPositionsOnShift(int shiftStartPosition, int shiftLength) {
     CHECK(0 <= shiftStartPosition && 0 <= shiftStartPosition + shiftLength && schemeContent.length() > shiftStartPosition, U2_NUM_ARG_OUT_OF_RANGE);
@@ -923,23 +967,26 @@ U2ErrorType SchemeWrapper::getAttributeValuePositionFromRange(const QString& att
                                                               int* start,
                                                               int* end) const {
     CHECK(0 < *start && 0 < *end && *start < *end && *start < schemeContent.length() && *end < schemeContent.length(), U2_NUM_ARG_OUT_OF_RANGE);
-    const QRegExp letterOrNumberPattern("\\w");
-    const QRegExp attributeNamePattern = QRegExp("[\\s\\" + Constants::SEMICOLON + "]" + attributeName + "\\s*\\" + Constants::EQUALS_SIGN);
-    const int attributePosition = attributeNamePattern.indexIn(schemeContent, *start);
+
+    QRegularExpression letterOrNumberPattern("\\w");
+    QRegularExpression attributeNamePattern("[\\s\\" + Constants::SEMICOLON + "]" + QRegularExpression::escape(attributeName) + "\\s*\\" + Constants::EQUALS_SIGN);
+    QRegularExpressionMatch attrMatch = attributeNamePattern.match(schemeContent, *start);
+    const int attributePosition = (attrMatch.hasMatch()) ? attrMatch.capturedStart() : SUBSTRING_NOT_FOUND;
     if (SUBSTRING_NOT_FOUND != attributePosition && attributePosition < *end) {
-        int valueStartPosition = attributePosition + attributeNamePattern.matchedLength();
-        const int firstValueSymbolPos = schemeContent.indexOf(letterOrNumberPattern,
-                                                              valueStartPosition);
-        const int firstOpenQuotePos = schemeContent.indexOf(Constants::QUOTE,
-                                                            valueStartPosition);
+        int valueStartPosition = attrMatch.capturedEnd();
+        QRegularExpressionMatch firstLetterMatch = letterOrNumberPattern.match(schemeContent, valueStartPosition);
+        const int firstValueSymbolPos = (firstLetterMatch.hasMatch()) ? firstLetterMatch.capturedStart() : SUBSTRING_NOT_FOUND;
+        const int firstOpenQuotePos = schemeContent.indexOf(Constants::QUOTE, valueStartPosition);
         const bool quotesExist = (SUBSTRING_NOT_FOUND != firstOpenQuotePos && firstOpenQuotePos < firstValueSymbolPos);
         valueStartPosition = quotesExist ? firstOpenQuotePos : firstValueSymbolPos;
-        int valueEndPosition = quotesExist ? schemeContent.indexOf(Constants::QUOTE,
-                                                                   firstOpenQuotePos + 1) +
-                                                 1
-                                           : schemeContent.indexOf(Constants::SEMICOLON,
-                                                                   valueStartPosition);
+        int valueEndPosition = SUBSTRING_NOT_FOUND;
+        if (quotesExist) {
+            valueEndPosition = schemeContent.indexOf(Constants::QUOTE, firstOpenQuotePos + 1) + 1;
+        } else {
+            valueEndPosition = schemeContent.indexOf(Constants::SEMICOLON, valueStartPosition);
+        }
         CHECK(SUBSTRING_NOT_FOUND != valueEndPosition, U2_INVALID_SCHEME);
+
         *start = valueStartPosition;
         *end = valueEndPosition;
     } else {
@@ -948,6 +995,7 @@ U2ErrorType SchemeWrapper::getAttributeValuePositionFromRange(const QString& att
     }
     return U2_OK;
 }
+
 
 U2ErrorType SchemeWrapper::getUrlInAttributePositionByName(const QStringList& attributesHierarchy,
                                                            bool createIfNotExists,
@@ -1002,13 +1050,14 @@ U2ErrorType SchemeWrapper::insertUrlInAttributeInRange(int* start, int* end) {
     *start = schemeContent.indexOf(Constants::NEW_LINE,
                                    *start);
     *end += newBlock.length();
-    *end = schemeContent.lastIndexOf(QRegExp(BLOCK_END_PATTERN), *end);
+    *end = schemeContent.lastIndexOf(QRegularExpression(BLOCK_END_PATTERN), *end);
     *end = schemeContent.lastIndexOf(Constants::SEMICOLON, *end) + 2;
     return U2_OK;
 }
 
-QRegExp SchemeWrapper::getBlockStartPattern(const QString& blockName) {
-    return QRegExp("\\s" + QRegExp::escape(blockName) + "\\s*" + QRegExp::escape(Constants::BLOCK_START));
+QRegularExpression SchemeWrapper::getBlockStartPattern(const QString& blockName) {
+    return QRegularExpression("\\s" + QRegularExpression::escape(blockName) + "\\s*" + QRegularExpression::escape(Constants::BLOCK_START));
 }
+
 
 }  // namespace U2

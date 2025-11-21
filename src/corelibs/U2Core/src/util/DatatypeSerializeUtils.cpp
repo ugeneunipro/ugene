@@ -22,6 +22,7 @@
 #include "DatatypeSerializeUtils.h"
 
 #include <QBitArray>
+#include <QRegularExpression>
 #include <QStack>
 #include <QtEndian>
 
@@ -227,7 +228,7 @@ static void packTreeNode(QString& resultText, const PhyNode* node, U2OpStatus& o
             resultText.append(QString::number(childBranch->distance));
         }
         resultText.append(")");
-    } else if (node->name.contains(QRegExp("\\s|[(]|[)]|[:]|[;]|[,]"))) {
+    } else if (node->name.contains(QRegularExpression("\\s|[(]|[)]|[:]|[;]|[,]"))) {
         resultText.append(QString("\'%1\'").arg(node->name));
     } else {
         resultText.append(node->name);
