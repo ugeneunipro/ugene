@@ -140,7 +140,7 @@ QList<GUITest*> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<G
     if (suiteCount == 3) {  // Windows & Mac.
         testsPerSuite << 980 << 940 << -1;
     } else if (suiteCount == 4) {
-        testsPerSuite << 670 << 670 << 730 << -1;
+        testsPerSuite << 750 << 750 << 750 << -1;
     } else if (suiteCount == 5) {
         testsPerSuite << 580 << 650 << 530 << 600 << -1;  // Linux.
     }

@@ -4154,6 +4154,7 @@ GUI_TEST_CLASS_DEFINITION(test_4710_1) {
     CHECK_SET_ERR(!corner->isEnabled(), "close tab button is unexpectidly enabled");
 
     //    2) Stop the workflow execution
+    GTUtilsTaskTreeView::waitTaskFinished();
     GTWidget::click(GTAction::button("Stop workflow"));
     corner = GTTabWidget::getTabCornerWidget(dashboardWidget, dashboardWidget->currentIndex());
     CHECK_SET_ERR(corner->isEnabled(), "close tab button is unexpectidly disabled");
