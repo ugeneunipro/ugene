@@ -29,6 +29,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppFileStorage.h>
+#include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -215,13 +216,14 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus& os) {
         coreLog.details("Canonical application directory path: " + adcp);
         auto processWorkingDirectory = QDir(QProcess().workingDirectory()).canonicalPath();
         coreLog.details("Process working directory: " + processWorkingDirectory);
-        if (wdcp == adcp) {
+        bool xml = AppContext::getCMDLineRegistry()->getParameterValue(CMDLineCoreOptions::XML_CUSTOM_WORKING_DIR) == "true";
+        if (xml) {
+            root = workingDirectory;
+            coreLog.details("Using current working directory as command line working directory: " + root);
+        } else {
             QDir wdDir(WorkflowSettings::getWorkflowOutputDirectory());
             root = wdDir.absoluteFilePath("cmdline_run");
             coreLog.details("Using default command line working directory: " + root);
-        } else {
-            root = workingDirectory;
-            coreLog.details("Using current working directory as command line working directory: " + root);
         }
     }
 
