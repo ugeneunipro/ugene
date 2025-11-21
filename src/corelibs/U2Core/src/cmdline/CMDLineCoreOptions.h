@@ -58,6 +58,7 @@ public:
     static const QString SESSION_DB;
     static const QString USE_SAME_INI_FOR_TESTS;
     static const QString DONT_USE_NATIVE_MENUBAR;
+    static const QString XML_CUSTOM_WORKING_DIR;
 
 public:
     // initialize help for core cmdline options

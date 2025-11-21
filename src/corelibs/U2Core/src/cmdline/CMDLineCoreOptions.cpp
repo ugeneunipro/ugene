@@ -53,6 +53,7 @@ const QString CMDLineCoreOptions::FILE_STORAGE_DIR = "file-storage-dir";
 const QString CMDLineCoreOptions::SESSION_DB = "session-db";
 const QString CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS = "use-same-ini-for-tests";
 const QString CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR = "dont-use-native-menubar";
+const QString CMDLineCoreOptions::XML_CUSTOM_WORKING_DIR = "xml-custom-workicg-dir";
 
 void CMDLineCoreOptions::initHelp() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();

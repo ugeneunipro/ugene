@@ -29,6 +29,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppFileStorage.h>
+#include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -201,9 +202,16 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus& os) {
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
     } else if (cmdlineReg != nullptr && cmdlineReg->hasParameter(WORKING_DIR)) {
-        root = FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(WORKING_DIR));
+        auto wd = cmdlineReg->getParameterValue(WORKING_DIR);
+        root = FileAndDirectoryUtils::getAbsolutePath(wd);
     } else {
-        root = QProcess().workingDirectory();
+        bool xml = AppContext::getCMDLineRegistry()->getParameterValue(CMDLineCoreOptions::XML_CUSTOM_WORKING_DIR) == "true";
+        if (xml) {
+            coreLog.details("Using current working directory as command line working directory: " + root);
+        } else {
+            QDir wdDir(WorkflowSettings::getWorkflowOutputDirectory());
+            root = wdDir.absoluteFilePath("cmdline_run");
+        }
     }
 
     // 2. Create folder if it does not exist
@@ -253,7 +261,7 @@ bool WorkflowContextCMDLine::useSubDirs() {
 void WorkflowContextCMDLine::saveRunInfo(const QString& dir) {
     QFile runInfo(dir + "run.info");
     bool opened = runInfo.open(QIODevice::WriteOnly);
-    CHECK(opened, );
+    CHECK_EXT(opened, coreLog.error(QString("run.info writing error: %1").arg(runInfo.errorString())), );
 
     QTextStream stream(&runInfo);
     stream.setCodec("UTF-8");

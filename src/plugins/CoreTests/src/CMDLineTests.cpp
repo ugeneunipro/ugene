@@ -186,6 +186,7 @@ void GTest_RunCMDLine::prepare() {
     if (!workingDir.isEmpty()) {
         QDir().mkpath(workingDir);
         proc->setWorkingDirectory(workingDir);
+        args.prepend(QString("--%1=true").arg(CMDLineCoreOptions::XML_CUSTOM_WORKING_DIR));
     }
 
     // Create separate log file for subprocess to avoid TEST_LOG_LISTENER resource deadlock
