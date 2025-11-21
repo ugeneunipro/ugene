@@ -180,7 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_1790) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new TryNamesInSearchEdit()));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1794) {
@@ -306,10 +306,36 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
     GTLogTracer lt;
-    GTComboBox::selectItemByText(GTWidget::findComboBox("copyType"), "Plain text");    
+    GTComboBox::selectItemByText(GTWidget::findComboBox("copyType"), "Plain text");
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1842) {
+    // Click "Create Sequence".
+    // Type "YTK" as sequence, check "Custom settings", set "Standard amino acid" as alphabet.
+    // Set path to the output file and click "Create".
+    // Expected: [amino] alpabet.
+
+    auto filler = new CreateDocumentFiller(
+        "AYT",
+        true,
+        CreateDocumentFiller::StandardAmino,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/test_1842.fa",
+        CreateDocumentFiller::FASTA,
+        "test_1842");
+
+    GTUtilsDialog::waitForDialog(filler);
+
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto label = GTWidget::findLabel("nameLabel", GTWidget::findWidget("ADV_single_sequence_widget_0"));
+    CHECK_SET_ERR(label->text().contains("[amino]"), QString("Unexpected label of sequence name: %1, must contain %2").arg(label->text()).arg("[amino]"));
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues

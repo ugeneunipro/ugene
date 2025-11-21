@@ -35,6 +35,7 @@ public:
                             ExtendedDNA,
                             ExtendedRNA,
                             StandardAmino,
+                            ExtendedAmino,
                             AllSymbols };
 
     CreateDocumentFiller(const QString& _pasteDataHere,
