@@ -662,11 +662,11 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation* an) {
                 break;
             }
 
+            lastFoundPos = match.capturedEnd();
             const QString matchedRegion = match.captured(0);
             const qint64 start = match.captured(1).toLongLong() - 1;  // position starts with 0
             const qint64 end = match.captured(2).toLongLong() - 1;
 
-            lastFoundPos = match.capturedEnd(0);
             U2Region referencedRegion(start, end - start + 1);
             if (isRegionValid(referencedRegion)) {
                 QList<QVector<U2Region>> newRegions = U1AnnotationUtils::fixLocationsForReplacedRegion(regionToReplace,
@@ -690,8 +690,6 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation* an) {
                     annotationForReport[an].append(QStrStrPair(qual.name, matchedRegion));
                 }
             }
-
-            lastFoundPos += match.capturedEnd();
         }
 
         if (newQualifierValue != qual.value) {

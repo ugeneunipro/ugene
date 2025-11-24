@@ -104,7 +104,8 @@ FormatCheckResult SAMFormat::checkRawTextData(const QByteArray& rawData, const G
     }
     QRegularExpression rx("^@[A-Za-z][A-Za-z](\\t[A-Za-z][A-Za-z]:[ -~]+)");
     // try to find SAM header
-    if (rx.match(rawData).capturedEnd() != 0) {
+    QRegularExpressionMatch m = rx.match(QString::fromUtf8(rawData));
+    if (!m.hasMatch() || m.capturedStart() != 0) {
         // if no header try to parse first alignment line
         QList<QByteArray> fieldValues = rawData.split('\n')[0].split(SPACE);
         int readFieldsCount = fieldValues.count();
