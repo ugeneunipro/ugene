@@ -8,6 +8,6 @@
 
     <find-annotation-by-number index="ann" obj="obj" number="1"/>
 
-    <check-annotation-qualifier annotation="ann" qualifier="pseudo" value=""/>
+    <check-annotation-qualifier annotation="ann" qualifier="pseudo " value=""/>
 
 </multi-test>
