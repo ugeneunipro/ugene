@@ -1,6 +1,11 @@
 <multi-test>
-    <run-cmdline task="!common_data_dir!/regression/8145/test.uwl"
+    <run-cmdline task="!common_data_dir!/regression/8145/test_1.uwl"
                  in="!common_data_dir!/Sitecon/Algorithm/human_T1.fa"
                  uql="!common_data_dir!regression/8145/gr.uql"
+                 out="!tmp_data_dir!test_8145.gb"
     />
+    
+    <load-document index="doc" url="test_8145.gb" io="local_file" format="genbank" dir="temp"/>
+    <find-object-by-name index="obj" doc="doc" name="human_T1 (UCSC April 2002 chr7:115977709-117855134) features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="obj" value="38"/>
 </multi-test>

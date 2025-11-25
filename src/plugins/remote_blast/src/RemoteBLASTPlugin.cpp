@@ -106,9 +106,7 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
-    auto transformIntoPrimerPair = new ADVGlobalAction(av, "", tr("Transform into a primer pair"), 60, 
-                                                       ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu) |
-                                                       ADVGlobalActionFlag_SingleSequenceOnly);
+    auto transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
@@ -218,7 +216,7 @@ static const QString TOP_PRIMERS_ANNOTATIONS_GROUP_NAME = "top_primers";
 static const QString PAIR_NAME_BEGINNING = "pair ";
 
 void RemoteBLASTViewContext::sl_transformIntoPrimerPair() {
-    auto action = qobject_cast<ADVGlobalAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT_NN(action, );
 
     auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
