@@ -168,7 +168,7 @@ void LogViewWidget::sl_onTextEdited(const QString& text) {
 }
 
 bool LogViewWidget::isShown(const QString& txt) {
-    return !highlighter->reg_exp.match(txt, 0).hasMatch();
+    return highlighter->reg_exp.match(txt).hasMatch();
 }
 
 void LogViewWidget::sl_openSettingsDialog() {

@@ -56,8 +56,8 @@ const UdrSchema* UdrSchemaRegistry::getSchemaById(const UdrSchemaId& id) const {
 }
 
 bool UdrSchemaRegistry::isCorrectName(const QByteArray& name) {
-    QRegularExpression regExp("([A-z]|_)([A-z]|_|\\d)*");
-    return regExp.match(name).hasMatch();
+    QRegularExpression re("^[A-Za-z_][A-Za-z0-9_]*$");
+    return re.match(name).hasMatch();
 }
 
 }  // namespace U2
