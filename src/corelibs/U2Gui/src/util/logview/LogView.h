@@ -26,7 +26,7 @@
 #include <QHash>
 #include <QLineEdit>
 #include <QPlainTextEdit>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QShortcut>
 #include <QSyntaxHighlighter>
 #include <QTimer>
@@ -43,7 +43,7 @@ public:
         : QSyntaxHighlighter(doc) {
     }
 
-    QRegExp reg_exp;
+    QRegularExpression reg_exp;
     void highlightBlock(const QString& text) override;
 };
 

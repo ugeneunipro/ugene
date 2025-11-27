@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QProcess>
+#include <QRegularExpression>
 
 #include <U2Core/MultiTask.h>
 #include <U2Core/Task.h>
@@ -90,7 +91,7 @@ private:
 
     QList<ExternalToolValidation> validations;  // original tool validation is the last one
 
-    QRegExp checkVersionRegExp;
+    QRegularExpression checkVersionRegExp;
 
     QString lastErrLine;
     QString lastOutLine;

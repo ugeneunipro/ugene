@@ -126,7 +126,7 @@ private:
         bool& replaceIfExists);
     U2ErrorType insertUrlInAttributeInRange(int* start, int* end);
     U2ErrorType addActorBindingsBlock(int* position);
-    static QRegExp getBlockStartPattern(const QString& blockName);
+    static QRegularExpression getBlockStartPattern(const QString& blockName);
 
     QString pathToScheme;
     QString schemeContent;

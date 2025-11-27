@@ -362,7 +362,7 @@ bool getAttributeValue(const QString& line, const QString& attrName, QString& at
         attrEndIndex = line.indexOf("\"", attrBeginIndex + 1);
     } else {
         parenthesisAreUsed = false;
-        attrEndIndex = line.indexOf(QRegExp("\\s"), attrIndex);
+        attrEndIndex = line.indexOf(QRegularExpression("\\s"), attrIndex);
         if (-1 == attrEndIndex) {
             attrEndIndex = line.size();
         }

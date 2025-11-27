@@ -49,7 +49,7 @@ SnpEffSupport::SnpEffSupport()
     validationMessageRegExp = "Usage: snpEff \\[command\\] \\[options\\] \\[files\\]";
     description = tr("<i>SnpEff</i>: Genetic variant annotation and effect prediction toolbox.");
 
-    versionRegExp = QRegExp("version SnpEff (\\d+.\\d+)");
+    versionRegExp = QRegularExpression("version SnpEff (\\d+.\\d+)");
     validationArguments << "-h";
     toolKitName = "SnpEff";
 

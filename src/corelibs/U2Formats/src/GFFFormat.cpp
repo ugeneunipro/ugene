@@ -239,7 +239,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
     buff[len] = '\0';
     QString qstrbuf(buff.data());
-    QStringList words = qstrbuf.split(QRegExp("\\s+"));
+    QStringList words = qstrbuf.split(QRegularExpression("\\s+"));
     bool isOk;
     QSet<AnnotationTableObject*> atoSet;
     QMap<QString, U2SequenceObject*> seqMap;
@@ -585,11 +585,11 @@ QStringList GFFFormat::parseLine(const QString& line) const {
 }
 
 QString normalizeQualifier(QString qual) {
-    QRegExp rx("  +");
+    QRegularExpression rx("  +");
     if (qual.contains(rx)) {
         qual.replace(rx, " ");
     }
-    QRegExp rxN("\n+");
+    QRegularExpression rxN("\n+");
     qual.replace(rxN, " ");
     return qual;
 }

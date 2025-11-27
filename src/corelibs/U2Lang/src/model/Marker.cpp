@@ -270,10 +270,9 @@ bool Marker::getMarkerStringResult(const QVariant& object, QVariantList& expr) {
     } else if (MarkerUtils::CONTAINS_OPERATION == operation) {
         return obj.contains(val);
     } else if (MarkerUtils::REGEXP_OPERATION == operation) {
-        QRegExp rx(val);
-        rx.setPatternSyntax(QRegExp::Wildcard);
-
-        return rx.exactMatch(obj);
+        QRegularExpression rx(QRegularExpression::wildcardToRegularExpression(val));
+        QRegularExpressionMatch match = rx.match(obj);
+        return match.hasMatch() && match.capturedLength(0) == obj.length();
     }
 
     return false;
