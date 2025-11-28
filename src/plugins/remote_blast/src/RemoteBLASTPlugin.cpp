@@ -45,6 +45,7 @@
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/ADVSequenceWidget.h>
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AnnotationsTreeView.h>
@@ -107,9 +108,30 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
     auto transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
+    auto asw = av->getActiveSequenceWidget();
+    SAFE_POINT_NN(asw, );
+
+    asw->addAction(transformIntoPrimerPair);
+    transformIntoPrimerPair->setEnabled(true);
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
+
+    auto atv = av->getAnnotationsView();
+    SAFE_POINT_NN(atv, );
+
+    auto atvw = atv->getTreeWidget();
+    SAFE_POINT_NN(atvw, );
+
+    auto sm = atvw->selectionModel();
+    SAFE_POINT_NN(sm, );
+
+    connect(sm, &QItemSelectionModel::selectionChanged, this, [transformIntoPrimerPair, atvw]() {
+        auto items = atvw->selectedItems();
+        bool enabled = isTransformIntoPrimerPairEnabled(items);
+        transformIntoPrimerPair->setEnabled(enabled);
+    });
+
     connect(transformIntoPrimerPair, &QAction::triggered, this, &RemoteBLASTViewContext::sl_transformIntoPrimerPair);
     addViewAction(transformIntoPrimerPair);
 }
