@@ -314,7 +314,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
 
 GUI_TEST_CLASS_DEFINITION(test_1842) {
     // Click "Create Sequence".
-    // Type "YTK" as sequence, check "Custom settings", set "Standard amino acid" as alphabet.
+    // Type "AYT" as sequence, check "Custom settings", set "Standard amino acid" as alphabet.
     // Set path to the output file and click "Create".
     // Expected: [amino] alpabet.
 
