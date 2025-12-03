@@ -63,6 +63,7 @@ QString LibraryVersionUtils::getFileVersion(const QString& path) {
         .arg(HIWORD(ls))
         .arg(LOWORD(ls));
 #else
+    Q_UNUSED(path);
     FAIL("File version detection is not implemented for this OS", );
 #endif
 }
