@@ -85,6 +85,7 @@ void GUITestLauncher::run() {
     qint64 suiteStartMicros = GTimer::currentTimeMicros();
 
     int finishedCount = 0;
+    int testRerunsCounter = 0;
     for (GUITest* test : qAsConst(testList)) {
         if (isCanceled()) {
             return;
@@ -107,7 +108,7 @@ void GUITestLauncher::run() {
             GUITestTeamcityLogger::testStarted(teamcityTestName);
 
             try {
-                QString testResult = runTest(fullTestName, test->timeout);
+                QString testResult = runTest(fullTestName, test->timeout, testRerunsCounter);
                 testResultByFullTestNameMap[fullTestName] = testResult;
 
                 qint64 finishTime = GTimer::currentTimeMicros();
@@ -126,7 +127,11 @@ void GUITestLauncher::run() {
     }
     qint64 suiteEndMicros = GTimer::currentTimeMicros();
     qint64 suiteTimeMinutes = ((suiteEndMicros - suiteStartMicros) / 1000000) / 60;
-    coreLog.info(QString("Suite %1 finished in %2 minutes").arg(suiteNumber).arg(suiteTimeMinutes));
+    QString summaryInfo = QString("Suite %1 finished in %2 minutes").arg(suiteNumber).arg(suiteTimeMinutes);
+    if (testRerunsCounter) {
+        summaryInfo.append(QString(", test reruns: %1").arg(testRerunsCounter));
+    }
+    coreLog.info(summaryInfo);
 }
 
 void GUITestLauncher::firstTestRunCheck(const QString& testName) {
@@ -372,7 +377,7 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString& te
     return env;
 }
 
-QString GUITestLauncher::runTest(const QString& testName, int timeoutMillis) {
+QString GUITestLauncher::runTest(const QString& testName, int timeoutMillis, int& rerunCounter) {
     int maxReruns = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
     QString testOutput;
     bool isVideoRecordingEnabled = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
@@ -383,6 +388,7 @@ QString GUITestLauncher::runTest(const QString& testName, int timeoutMillis) {
                               .arg(iteration)
                               .arg(maxReruns)
                               .arg(testOutputDir));
+            rerunCounter++;
         }
         U2OpStatusImpl os;
         bool isVideoRecordingOn = isVideoRecordingEnabled && (isVideoRecordingEnabledForAllIterations || iteration > 0);
