@@ -40,6 +40,8 @@
 #include "Utils.h"
 #include "getMemorySize.c"
 
+#include <U2Gui/LibraryVersionUtils.h>
+
 #ifdef Q_OS_DARWIN
 #include <sys/sysctl.h>
 #endif
@@ -80,6 +82,15 @@ void ReportSender::parse(const QString& htmlReport, const QString& dumpUrl) {
 
         report += "Memory Info: ";
         report += QString::number(getTotalPhysicalMemory()) + "Mb\n\n";
+
+#ifdef Q_OS_WIN
+        QString version;
+        // Check if Aspera Connect installed
+        if (U2::LibraryVersionUtils::detectAsperaVersion(version)) {
+            report += "Aspera Connect version: ";
+            report += version + "\n\n";
+        }
+#endif
 
         if (addGuiTestInfo) {
             report += "User email: ugene@unipro.ru\n\n";
