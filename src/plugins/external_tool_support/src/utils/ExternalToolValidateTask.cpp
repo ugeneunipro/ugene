@@ -257,22 +257,23 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 }
 
 void ExternalToolJustValidateTask::checkVersion(const QString& partOfLog) {
-    if (checkVersionRegExp.isEmpty()) {
+    if (checkVersionRegExp.pattern().isEmpty()) {
         version = tool->getVersionFromToolPath(toolPath);
         if (version.isEmpty()) {
             version = tool->getPredefinedVersion();
         }
     } else {
-        QStringList lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
-        foreach (QString buf, lastPartOfLog) {
-            if (buf.contains(checkVersionRegExp)) {
-                checkVersionRegExp.indexIn(buf);
-                version = checkVersionRegExp.cap(1);
+        QStringList lastPartOfLog = partOfLog.split(QRegularExpression("[\n\r]"));
+        for (const QString& buf : lastPartOfLog) {
+            QRegularExpressionMatch match = checkVersionRegExp.match(buf);
+            if (match.hasMatch()) {
+                version = match.captured(1);
                 return;
             }
         }
     }
 }
+
 
 void ExternalToolJustValidateTask::checkArchitecture(const QString& toolPath) {
     Q_UNUSED(toolPath);

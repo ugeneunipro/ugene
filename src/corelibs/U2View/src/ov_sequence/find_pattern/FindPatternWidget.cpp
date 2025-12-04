@@ -870,7 +870,7 @@ bool FindPatternWidget::verifyPatternAlphabet() {
             setMessageFlag(PatternWrongRegExp, true);
             result = false;
         } else {
-            QRegExp regExp(pattern.toUtf8());
+            QRegularExpression regExp(pattern.toUtf8());
             if (regExp.isValid()) {
                 setMessageFlag(PatternWrongRegExp, false);
             } else {
@@ -968,7 +968,7 @@ QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternFiel
     QList<NamePattern> result = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
 
     if (result.isEmpty()) {
-        QStringList patterns = inputText.split(QRegExp("\n"), Qt::SkipEmptyParts);
+        QStringList patterns = inputText.split(QRegularExpression("\n"), Qt::SkipEmptyParts);
         for (const QString& pattern : qAsConst(patterns)) {
             result.append(qMakePair(QString(""), pattern));
         }
@@ -1022,7 +1022,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern>& patterns) 
     CHECK(!patterns.isEmpty(), );
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        QRegExp regExp(textPattern->toPlainText());
+        QRegularExpression regExp(textPattern->toPlainText());
         CHECK(regExp.isValid(), );
     }
     ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();

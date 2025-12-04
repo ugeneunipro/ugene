@@ -25,6 +25,8 @@
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <QRegularExpression>
+
 namespace U2 {
 
 const QString SnpeffInfoParser::PAIRS_SEPARATOR = ";";
@@ -209,11 +211,11 @@ QStringList EffParser::getQualifierNames() const {
 }
 
 QStringList EffParser::getValues(const QString& entry) const {
-    QRegExp regexp("^(\\w+)\\((.*)\\)$");
+    QRegularExpression regexp("^(\\w+)\\((.*)\\)$");
     QStringList values;
-    regexp.indexIn(entry);
-    values << regexp.cap(1);
-    values << regexp.cap(2).split(EFFECT_DATA_SEPARATOR);
+    QRegularExpressionMatch match = regexp.match(entry);
+    values << match.captured(1);
+    values << match.captured(2).split(EFFECT_DATA_SEPARATOR);
     return values;
 }
 

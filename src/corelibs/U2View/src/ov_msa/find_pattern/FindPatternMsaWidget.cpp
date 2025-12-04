@@ -628,7 +628,7 @@ bool FindPatternMsaWidget::verifyPatternAlphabet() {
             setMessageFlag(PatternWrongRegExp, true);
             result = false;
         } else {
-            QRegExp regExp(reText.toUtf8());
+            QRegularExpression regExp(reText.toUtf8());
             if (regExp.isValid()) {
                 setMessageFlag(PatternWrongRegExp, false);
             } else {
@@ -708,7 +708,7 @@ QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus& os
         }
         return result;
     }
-    return inputText.split(QRegExp("\n"), Qt::SkipEmptyParts);
+    return inputText.split(QRegularExpression("\n"), Qt::SkipEmptyParts);
 }
 
 #define FIND_PATTER_LAST_DIR "Find_msa_pattern_last_dir"
@@ -718,7 +718,7 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList& patterns
     CHECK(!patterns.isEmpty(), );
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        QRegExp regExp(textPattern->toPlainText());
+        QRegularExpression regExp(textPattern->toPlainText());
         CHECK(regExp.isValid(), );
     }
 

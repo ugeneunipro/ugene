@@ -36,12 +36,10 @@ FilesIterator* FilesIteratorFactory::createFileList(const QStringList& files) {
 /************************************************************************/
 DirectoryScanner::DirectoryScanner(const QStringList& dirs, const QString& _includeFilter, const QString& _excludeFilter, bool _recursive)
     : FilesIterator(), includeFilter(_includeFilter), excludeFilter(_excludeFilter), recursive(_recursive),
-      incRx(includeFilter), excRx(excludeFilter) {
+      incRx(QRegularExpression::wildcardToRegularExpression(includeFilter)), excRx(QRegularExpression::wildcardToRegularExpression(excludeFilter)) {
     foreach (const QString& dirPath, dirs) {
         unusedDirs << QFileInfo(dirPath);
     }
-    incRx.setPatternSyntax(QRegExp::Wildcard);
-    excRx.setPatternSyntax(QRegExp::Wildcard);
 }
 
 QString DirectoryScanner::getNextFile() {
@@ -71,10 +69,10 @@ QString DirectoryScanner::getNextFile() {
 bool DirectoryScanner::isPassedByFilters(const QString& fileName) const {
     bool passed = true;
     if (!includeFilter.isEmpty()) {
-        passed = incRx.exactMatch(fileName);
+        passed = incRx.match(fileName).hasMatch();
     }
     if (!excludeFilter.isEmpty()) {
-        passed = passed && !excRx.exactMatch(fileName);
+        passed = passed && !excRx.match(fileName).hasMatch();
     }
 
     return passed;
