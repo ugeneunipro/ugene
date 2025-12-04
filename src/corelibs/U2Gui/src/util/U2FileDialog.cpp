@@ -27,6 +27,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -49,7 +50,15 @@ static QStringList getFileNames(QWidget* parent,
     fileDialog->setOptions(options);
     fileDialog->setFileMode(fileMode);
     fileDialog->setAcceptMode(acceptMode);
+    bool writeToSettings = !U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG && U2FileDialog::CRASH_DETECTING_ENABLED;
+    if (writeToSettings) {
+        AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, true);
+    }
     CHECK(fileDialog->exec() == QFileDialog::Accepted && !fileDialog.isNull(), {});
+
+    if (writeToSettings) {
+        AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false);
+    }
     return fileDialog->selectedFiles();
 }
 
@@ -75,7 +84,8 @@ static QString getFileName(QWidget* parent,
 static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options& options) {
     CHECK(!options.testFlag(QFileDialog::DontUseNativeDialog), options);
 
-    bool useNonNativeDialog = qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0;
+    bool useNonNativeDialog = (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) ||
+                              U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG;
     TaskScheduler* taskScheduler = AppContext::getTaskScheduler();
     if (!useNonNativeDialog && taskScheduler != nullptr && taskScheduler->isCallerInsideTaskSchedulerCallback()) {
         uiLog.trace("Using a non-native file dialog: the method is inside task processing callback");
@@ -97,6 +107,10 @@ static void activateAppWindow() {
         target->activateWindow();
     }
 }
+
+bool U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = false;
+bool U2FileDialog::CRASH_DETECTING_ENABLED = false;
+QString U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT = "file_dialog/dialog_opened";
 
 QString U2FileDialog::getOpenFileName(QWidget* parent,
                                       const QString& caption,
