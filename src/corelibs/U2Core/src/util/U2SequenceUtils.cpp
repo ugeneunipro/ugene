@@ -226,7 +226,9 @@ U2EntityRef U2SequenceUtils::import(U2OpStatus& os, const U2DbiRef& dbiRef, cons
     U2EntityRef res;
     U2SequenceImporter i;
 
-    i.startSequence(os, dbiRef, folder, seq.getName(), seq.circular, alphabetId);
+    bool useSequenceAlphabet = !alphabetId.isValid() && seq.alphabet != nullptr;
+    auto dbiAlphabetId = useSequenceAlphabet ? U2AlphabetId(seq.alphabet->getId()) : alphabetId;
+    i.startSequence(os, dbiRef, folder, seq.getName(), seq.circular, dbiAlphabetId);
     CHECK_OP(os, res);
 
     i.addBlock(seq.constData(), seq.length(), os);
@@ -476,7 +478,7 @@ void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) 
     }
     const DNAAlphabet* resAl = U2AlphabetUtils::findBestAlphabet(bytes);
     CHECK_EXT(resAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
-    if (resAl != U2AlphabetUtils::getById(sequence.alphabet)) {
+    if (!sequence.alphabet.isValid() || U2AlphabetUtils::extends(sequence.alphabet, resAl->getId())) {
         sequence.alphabet.id = resAl->getId();
         if (sequenceCreated) {
             con.dbi->getSequenceDbi()->updateSequenceObject(sequence, os);
