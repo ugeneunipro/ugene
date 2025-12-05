@@ -108,26 +108,26 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
     auto transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
-    auto asw = av->getActiveSequenceWidget();
-    SAFE_POINT_NN(asw, );
+    auto activeSequenceWidget = av->getActiveSequenceWidget();
+    SAFE_POINT_NN(activeSequenceWidget, );
 
-    asw->addAction(transformIntoPrimerPair);
+    activeSequenceWidget->addAction(transformIntoPrimerPair);
     transformIntoPrimerPair->setEnabled(true);
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
 
-    auto atv = av->getAnnotationsView();
-    SAFE_POINT_NN(atv, );
+    auto annotationsView = av->getAnnotationsView();
+    SAFE_POINT_NN(annotationsView, );
 
-    auto atvw = atv->getTreeWidget();
-    SAFE_POINT_NN(atvw, );
+    auto treeWidget = annotationsView->getTreeWidget();
+    SAFE_POINT_NN(treeWidget, );
 
-    auto sm = atvw->selectionModel();
-    SAFE_POINT_NN(sm, );
+    auto selectionModel = treeWidget->selectionModel();
+    SAFE_POINT_NN(selectionModel, );
 
-    connect(sm, &QItemSelectionModel::selectionChanged, this, [transformIntoPrimerPair, atvw]() {
-        auto items = atvw->selectedItems();
+    connect(selectionModel, &QItemSelectionModel::selectionChanged, this, [transformIntoPrimerPair, treeWidget]() {
+        auto items = treeWidget->selectedItems();
         bool enabled = isTransformIntoPrimerPairEnabled(items);
         transformIntoPrimerPair->setEnabled(enabled);
     });
