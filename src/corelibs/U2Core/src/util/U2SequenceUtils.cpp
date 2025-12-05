@@ -478,7 +478,7 @@ void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) 
     }
     const DNAAlphabet* resAl = U2AlphabetUtils::findBestAlphabet(bytes);
     CHECK_EXT(resAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
-    if (!sequence.alphabet.isValid() || U2AlphabetUtils::extend(sequence.alphabet, resAl->getId())) {
+    if (!sequence.alphabet.isValid() || U2AlphabetUtils::extends(sequence.alphabet, resAl->getId())) {
         sequence.alphabet.id = resAl->getId();
         if (sequenceCreated) {
             con.dbi->getSequenceDbi()->updateSequenceObject(sequence, os);

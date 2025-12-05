@@ -253,7 +253,7 @@ const U2::DNAAlphabet* U2AlphabetUtils::getExtendedAlphabet(const DNAAlphabet* a
     }
 }
 
-bool U2AlphabetUtils::extend(const U2AlphabetId& origId, const U2AlphabetId& extentionId) {
+bool U2AlphabetUtils::extends(const U2AlphabetId& origId, const U2AlphabetId& extentionId) {
     return extentionId.id == BaseDNAAlphabetIds::RAW() ||
            (origId.id == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() && extentionId.id == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED()) ||
            (origId.id == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() && extentionId.id == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED()) ||

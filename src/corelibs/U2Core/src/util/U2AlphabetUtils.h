@@ -172,7 +172,7 @@ public:
     // Returns true if the alphabet, identified by @extentionId, contains all symbols of
     // the alphabet, identified by @origId. In other words, @extentionId is a superset
     // of @origId and may include additional bases.
-    static bool extend(const U2AlphabetId& origId, const U2AlphabetId& extentionId);
+    static bool extends(const U2AlphabetId& origId, const U2AlphabetId& extentionId);
 };
 
 }  // namespace U2
