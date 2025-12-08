@@ -665,7 +665,7 @@ QString GenbankPlainTextFormat::prepareQualifierSingleString(const QString& qual
     if (isNum) {
         return "/" + qualifierName + "=" + qualifierValue;
     }
-    if (GBFeatureUtils::isFeatureHasNoValue(qualifierName)) {
+    if (qualifierValue.isEmpty()) {
         return "/" + qualifierName;
     }
 

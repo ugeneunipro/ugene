@@ -35,24 +35,19 @@ class LoadUnloadedDocumentTask;
 
 class QDRunSettings {
 public:
-    QDRunSettings()
-        : annotationsObj(nullptr), scheme(nullptr),
-          offset(0), outputType(Group) {
-    }
-
-    DNASequence dnaSequence;
-    AnnotationTableObject* annotationsObj;
+    DNASequence dnaSequence = DNASequence();
+    AnnotationTableObject* annotationsObj = nullptr;
     GObjectReference annotationsObjRef;
-    QString groupName;
+    QString groupName = "Result";
     QString annDescription;
     U2Region region;
-    QDScheme* scheme;
+    QDScheme* scheme = nullptr;
     QString viewName;
-    int offset;
+    int offset = 0;
 
     enum OutputType { Group,
                       Single };
-    OutputType outputType;
+    OutputType outputType = Group;
 };
 
 class QDStep {

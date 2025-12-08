@@ -23,7 +23,9 @@
 
 #include <QMenu>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -32,6 +34,8 @@
 #include <U2Gui/U2LongLongValidator.h>
 
 namespace U2 {
+
+const QString SETTINGS_SIMPLE_FORMAT = "create_annotation/simple_format";
 
 CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWidget* parent)
     : CreateAnnotationWidget(parent),
@@ -43,10 +47,15 @@ CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWid
     init();
     initOsDependingLayoutSettings();
     connectSignals();
+    
+    const bool simpleFormat = AppContext::getSettings()->getValue(SETTINGS_SIMPLE_FORMAT, true).toBool();
+    rbSimpleFormat->setChecked(simpleFormat);
+    rbGenbankFormat->setChecked(!simpleFormat);
 }
 
 CreateAnnotationFullWidget::~CreateAnnotationFullWidget() {
     countDescriptionUsage();
+    AppContext::getSettings()->setValue(SETTINGS_SIMPLE_FORMAT, rbSimpleFormat->isChecked());
 }
 
 void CreateAnnotationFullWidget::setGroupNameVisible(bool visible) {
