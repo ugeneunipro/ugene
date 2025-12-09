@@ -21,6 +21,7 @@
 
 #include "FindPatternWidget.h"
 
+#include <QButtonGroup>
 #include <QFlags>
 #include <QKeyEvent>
 #include <QMessageBox>
@@ -274,6 +275,10 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
         annotationsWidget = createAnnotationController->getWidget();
         annotationsWidget->setObjectName("annotationsWidget");
 
+        patternSelectorBG = new QButtonGroup(this);
+        patternSelectorBG->addButton(usePatternFromFileRadioButton);
+        patternSelectorBG->addButton(usePatternFromTextEditRadioButton);
+
         const DNAAlphabet* alphabet = activeContext->getAlphabet();
         isAminoSequenceSelected = alphabet->isAmino();
 
@@ -480,8 +485,7 @@ void FindPatternWidget::connectSlots() {
     connect(annotatedDnaView->getActiveSequenceContext()->getSequenceObject(), SIGNAL(si_sequenceChanged()), this, SLOT(sl_onSequenceModified()));
 
     connect(loadFromFileToolButton, SIGNAL(clicked()), SLOT(sl_onFileSelectorClicked()));
-    connect(usePatternFromFileRadioButton, SIGNAL(toggled(bool)), SLOT(sl_onFileSelectorToggled(bool)));
-    connect(usePatternFromTextEditRadioButton, &QAbstractButton::toggled, this, &FindPatternWidget::sl_onFileSelectorToggled);
+    connect(patternSelectorBG, &QButtonGroup::buttonToggled, this, &FindPatternWidget::sl_onFileSelectorToggled);
 
     usePatternFromTextEditRadioButton->setChecked(true);
     updatePatternSourceControlsUiState();
@@ -1021,11 +1025,11 @@ void FindPatternWidget::sl_onFileSelectorClicked() {
         filePathLineEdit->setText(lod.url);
 }
 
-void FindPatternWidget::sl_onFileSelectorToggled(bool) {
+void FindPatternWidget::sl_onFileSelectorToggled(QAbstractButton* button, bool checked) {
     updatePatternSourceControlsUiState();
     checkState();
     //if returning to input-pattern mode -> recheck it's content
-    if (qobject_cast<QRadioButton*>(sender()) == usePatternFromTextEditRadioButton) {
+    if (qobject_cast<QRadioButton*>(button) == usePatternFromTextEditRadioButton && checked) {
         verifyPatternAlphabet();
     }
     sl_activateNewSearch(true);
