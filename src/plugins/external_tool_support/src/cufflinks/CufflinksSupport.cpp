@@ -46,7 +46,7 @@ CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const
     : ExternalTool(id, "cufflinks", name, path) {
 
     toolKitName = "Cufflinks";
-    versionRegExp = QRegExp("v(\\d+\\.\\d+\\.\\d+)");
+    versionRegExp = QRegularExpression("v(\\d+\\.\\d+\\.\\d+)");
 
     // Cuffcompare
     if (name == ET_CUFFCOMPARE) {

@@ -42,7 +42,7 @@ StringTieSupport::StringTieSupport()
                      "but also alignments longer sequences that have been assembled "
                      "from those reads.");
 
-    versionRegExp = QRegExp("StringTie v(\\d+.\\d+.\\d+[a-zA-Z]?)");
+    versionRegExp = QRegularExpression("StringTie v(\\d+.\\d+.\\d+[a-zA-Z]?)");
     validationArguments << "-h";
     toolKitName = "StringTie";
 }

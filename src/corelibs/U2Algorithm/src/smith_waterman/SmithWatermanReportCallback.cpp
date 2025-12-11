@@ -478,10 +478,13 @@ void SmithWatermanReportCallbackMAImpl::changeGivenUrlIfDocumentExists(QString& 
     if (curProject->findDocumentByURL(GUrl(givenUrl)) != nullptr) {
         for (size_t i = 1;; i++) {
             QString tmpUrl = givenUrl;
-            QRegExp dotWithExtensionRegExp("\\.{1,1}[^\\.]*$|^[^\\.]*$");
-            dotWithExtensionRegExp.lastIndexIn(tmpUrl);
-            tmpUrl.replace(dotWithExtensionRegExp.capturedTexts().last(),
-                           "(" + QString::number(i) + ")" + dotWithExtensionRegExp.capturedTexts().last());
+            QRegularExpression dotWithExtensionRegExp("\\.[^\\.]*$|^[^\\.]*$");
+            QRegularExpressionMatchIterator it = dotWithExtensionRegExp.globalMatch(tmpUrl);
+            QRegularExpressionMatch m;
+            while (it.hasNext()) {
+                m = it.next();
+            }
+            tmpUrl.replace(m.captured(0), "(" + QString::number(i) + ")" + m.captured(0));
             if (curProject->findDocumentByURL(GUrl(tmpUrl)) == nullptr) {
                 givenUrl = tmpUrl;
                 break;
@@ -489,5 +492,6 @@ void SmithWatermanReportCallbackMAImpl::changeGivenUrlIfDocumentExists(QString& 
         }
     }
 }
+
 
 }  // namespace U2

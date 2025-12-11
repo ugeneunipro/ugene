@@ -22,6 +22,7 @@
 #include "U1AnnotationUtils.h"
 
 #include <QStringBuilder>
+#include <QRegularExpressionMatch>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -649,16 +650,22 @@ QMap<QString, QList<SharedAnnotationData>> FixAnnotationsUtils::fixAnnotation(An
 void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation* an) {
     CHECK(recalculateQualifiers, );
 
-    QRegExp locationMatcher("(\\d+)\\.\\.(\\d+)");
+    QRegularExpression locationMatcher("(\\d+)\\.\\.(\\d+)");
     foreach (const U2Qualifier& qual, an->getQualifiers()) {
         QString newQualifierValue = qual.value;
 
         int lastModifiedPos = 0;
         int lastFoundPos = 0;
-        while ((lastFoundPos = locationMatcher.indexIn(qual.value, lastFoundPos)) != -1) {
-            const QString matchedRegion = locationMatcher.cap();
-            const qint64 start = locationMatcher.cap(1).toLongLong() - 1;  // position starts with 0
-            const qint64 end = locationMatcher.cap(2).toLongLong() - 1;
+        while (true) {
+            QRegularExpressionMatch match = locationMatcher.match(qual.value, lastFoundPos);
+            if (!match.hasMatch()) {
+                break;
+            }
+
+            lastFoundPos = match.capturedEnd();
+            const QString matchedRegion = match.captured(0);
+            const qint64 start = match.captured(1).toLongLong() - 1;  // position starts with 0
+            const qint64 end = match.captured(2).toLongLong() - 1;
 
             U2Region referencedRegion(start, end - start + 1);
             if (isRegionValid(referencedRegion)) {
@@ -683,8 +690,6 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation* an) {
                     annotationForReport[an].append(QStrStrPair(qual.name, matchedRegion));
                 }
             }
-
-            lastFoundPos += locationMatcher.matchedLength();
         }
 
         if (newQualifierValue != qual.value) {

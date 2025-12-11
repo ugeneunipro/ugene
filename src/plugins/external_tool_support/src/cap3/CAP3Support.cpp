@@ -61,7 +61,7 @@ CAP3Support::CAP3Support(const QString& id, const QString& name, const QString& 
     description += tr("<br><br> Huang, X. and Madan, A.  (1999)");
     description += tr("<br>CAP3: A DNA Sequence Assembly Program,");
     description += tr("<br>Genome Research, 9: 868-877.");
-    versionRegExp = QRegExp("VersionDate: (\\d+\\/\\d+\\/\\d+)");
+    versionRegExp = QRegularExpression("VersionDate: (\\d+\\/\\d+\\/\\d+)");
     toolKitName = "CAP3";
 }
 

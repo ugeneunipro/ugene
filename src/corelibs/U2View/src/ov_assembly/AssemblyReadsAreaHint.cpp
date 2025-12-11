@@ -128,7 +128,7 @@ QString getReadNameWrapped(QString n) {
         n = n.trimmed();
         if (n.size() > AssemblyReadsAreaHint::LETTER_MAX_COUNT) {
             QString sub = n.mid(0, AssemblyReadsAreaHint::LETTER_MAX_COUNT);
-            int pos = sub.lastIndexOf(QRegExp("\\s+"));
+            int pos = sub.lastIndexOf(QRegularExpression("\\s+"));
             if (pos == -1) {
                 pos = sub.size();
             }

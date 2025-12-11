@@ -183,7 +183,7 @@ void DownloadRemoteFileDialog::accept() {
     }
 
     QString dbId = getDBId();
-    QStringList resIds = resourceId.split(QRegExp("[\\s,;]+"));
+    QStringList resIds = resourceId.split(QRegularExpression("[\\s,;]+"));
     QList<Task*> tasks;
 
     QString fileFormat;

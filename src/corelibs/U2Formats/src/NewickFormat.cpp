@@ -118,7 +118,7 @@ FormatCheckResult NewickFormat::checkRawTextData(const QString& dataPrefix, cons
     if (!dataPrefix.contains(';') || (!dataPrefix.contains('(') && dataPrefix.contains(','))) {
         return FormatDetection_LowSimilarity;
     }
-    if (QRegExp("[a-zA-Z\r\n]*").exactMatch(dataPrefix)) {
+    if (QRegularExpression("^[a-zA-Z\r\n]*$").match(dataPrefix).hasMatch()) {
         return FormatDetection_LowSimilarity;
     }
     int braces = (dataPrefix.contains('(') ? 1 : 0) + (dataPrefix.contains(')') ? 1 : 0);

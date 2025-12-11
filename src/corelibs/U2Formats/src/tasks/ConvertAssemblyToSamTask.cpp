@@ -111,7 +111,7 @@ void ConvertAssemblyToSamTask::run() {
         U2Assembly assembly = handle->dbi->getAssemblyDbi()->getAssemblyObject(id, stateInfo);
         CHECK_OP(stateInfo, );
         U2EntityRef ref(handle->dbi->getDbiRef(), id);
-        QString name = assembly.visualName.replace(QRegExp("\\s|\\t"), "_").toLatin1();
+        QString name = assembly.visualName.replace(QRegularExpression("\\s|\\t"), "_").toLatin1();
         doc->addObject(new AssemblyObject(name, ref));
     }
 

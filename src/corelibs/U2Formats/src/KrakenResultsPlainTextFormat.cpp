@@ -30,6 +30,8 @@
 
 #include "KrakenResultsPlainTextFormat.h"
 
+#include <QRegularExpression>
+
 namespace U2 {
 
 static const QString PAIRED_READS_DELIMITER = "|:|";
@@ -82,7 +84,7 @@ FormatCheckResult KrakenResultsPlainTextFormat::checkRawTextData(const QString& 
         lines.removeLast();
     }    
     for (const QString& line : qAsConst(lines)) {
-        const QStringList words = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+        const QStringList words = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
         // first word - 'C' or 'U'
         if (words.size() > 4 && (words[0] == "C" || words[0] == "U")) {
             bool isNumber = false;
@@ -121,7 +123,7 @@ LineParseResult parse(const QString& line, int lineNumber, ReadsType& readsInFil
                 .arg(QString::number(lineNumber))), result);
         }
     }
-    const QStringList words = line.split(QRegExp("\\s+"));
+    const QStringList words = line.split(QRegularExpression("\\s+"));
     CHECK_EXT(words[0] == "C" || words[0] == "U", os.setError(
         KrakenResultsPlainTextFormat::tr("Error on line %1, 1st word should be \"C\" or \"U\".").arg(QString::number(lineNumber))), result);
     result.left.first = words[1];

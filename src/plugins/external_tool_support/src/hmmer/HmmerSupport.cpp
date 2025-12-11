@@ -59,7 +59,7 @@ HmmerSupport::HmmerSupport(const QString& id, const QString& name)
     : ExternalTool(id, "hmmer3", name) {
 
     toolKitName = "HMMER";
-    versionRegExp = QRegExp("HMMER (\\d+.\\d+.\\d+\\w?)");
+    versionRegExp = QRegularExpression("HMMER (\\d+.\\d+.\\d+\\w?)");
 
     if (id == BUILD_TOOL_ID) {
         initBuild();
