@@ -312,6 +312,23 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1877) {
+    /*
+     * 1. Load corrupted ugenedb
+     * Expected state: Loading documents finished with error
+     * 2. Select context menu on it and select "Open In->Open in Sanger Editor"
+     * Expected state: no crash, error message in log
+     **/
+    GTFileDialog::openFile(testDir + "_common_data/regression/1877/sanger_wrong.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Open In", "Open new view: Sanger Reads Editor"}));
+    GTUtilsProjectTreeView::click("sanger_wrong.ugenedb", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Document can't be loaded"), "Expected message is not found");    
+}
+
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
