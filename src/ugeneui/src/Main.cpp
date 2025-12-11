@@ -103,6 +103,7 @@
 #include <U2Gui/CredentialsAskerGui.h>
 #include <U2Gui/FeatureKeyFilterTask.h>
 #include <U2Gui/ImportWidgetsFactories.h>
+#include <U2Gui/LibraryVersionUtils.h>
 #include <U2Gui/LogView.h>
 #include <U2Gui/MsaContentFilterTask.h>
 #include <U2Gui/MsaSeqNameFilterTask.h>
@@ -551,6 +552,37 @@ int main(int argc, char** argv) {
     LogCache::setAppGlobalInstance(&logsCache);
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
+
+#ifdef Q_OS_WIN
+    // Installed IBM Aspera Connect makes native Windows File Selection dialogs fail
+    // In latest versions of Aspera it was fixed, but we often recieve crash reports from the older once
+    QString version;
+    // Check if Aspera Connect installed
+    if (LibraryVersionUtils::detectAsperaVersion(version)) {
+        coreLog.details(QObject::tr("Aspera Connect version %1 detected").arg(version));
+
+        // This is the highest Aspera Connect version this problem reproduces
+        // Increase this value if crash report with higher Aspera Connect verion recieved
+        static const QString MIN_MALICIOUS_ASPERA_VERSION = "4.2.12.780";
+        static const QString MIN_GOOD_ASPERA_VERSION = "4.2.18.918";
+        bool isMalicious = LibraryVersionUtils::versionLessThan(version, MIN_MALICIOUS_ASPERA_VERSION);
+        bool isGood = !LibraryVersionUtils::versionLessThan(MIN_GOOD_ASPERA_VERSION, version, false);
+        if (isMalicious) {
+            coreLog.details(QObject::tr("Aspera Connect malicious version detected, switching to non-native dialog..."));
+            U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
+        } else if (!isMalicious && !isGood) {
+            coreLog.details(QObject::tr("Aspera Connect version in the suspicious range"));
+            bool crashedPreviously = settings->getValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false).toBool();
+            if (crashedPreviously) {
+                coreLog.details(QObject::tr("UGENE crashed previously with Aspera Connect, switching to non-native dialog..."));
+                U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
+            } else {
+                coreLog.details(QObject::tr("UGENE didn't crash previously with Aspera Connect, enabling crash detection..."));
+                U2FileDialog::CRASH_DETECTING_ENABLED = true;
+            }
+        }
+    }
+#endif
 
     int ugeneArch = getUgeneBinaryArch();
     QString ugeneArchCounterSuffix = ugeneArch == UGENE_ARCH_X86_64   ? "Ugene 64-bit"
