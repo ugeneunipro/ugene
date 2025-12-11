@@ -84,7 +84,8 @@ public:
         SearchRegionIncorrect,
         PatternWrongRegExp,
         SequenceIsTooBig,
-        CreateAnnotationControllerValidaitionError
+        CreateAnnotationControllerValidaitionError,
+        NotValidPatternsFile
     };
 
     FindPatternWidget(AnnotatedDNAView*);
@@ -99,7 +100,7 @@ private slots:
     void sl_onMaxResultChanged(int);
 
     void sl_onFileSelectorClicked();
-    void sl_onFileSelectorToggled(bool on);
+    void sl_onFileSelectorToggled(QAbstractButton* button, bool checked);
     void sl_loadPatternTaskStateChanged();
     void sl_findPatternTaskStateChanged();
 
@@ -245,6 +246,8 @@ private:
     QSpinBox* boxMaxResultLen;
 
     QWidget* annotationsWidget;
+    
+    QButtonGroup* patternSelectorBG = nullptr;
 
     /**
      * Currently tracked selection.

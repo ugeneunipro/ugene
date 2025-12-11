@@ -21,6 +21,7 @@
 
 #include "FindPatternWidget.h"
 
+#include <QButtonGroup>
 #include <QFlags>
 #include <QKeyEvent>
 #include <QMessageBox>
@@ -274,6 +275,10 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
         annotationsWidget = createAnnotationController->getWidget();
         annotationsWidget->setObjectName("annotationsWidget");
 
+        patternSelectorBG = new QButtonGroup(this);
+        patternSelectorBG->addButton(usePatternFromFileRadioButton);
+        patternSelectorBG->addButton(usePatternFromTextEditRadioButton);
+
         const DNAAlphabet* alphabet = activeContext->getAlphabet();
         isAminoSequenceSelected = alphabet->isAmino();
 
@@ -480,7 +485,7 @@ void FindPatternWidget::connectSlots() {
     connect(annotatedDnaView->getActiveSequenceContext()->getSequenceObject(), SIGNAL(si_sequenceChanged()), this, SLOT(sl_onSequenceModified()));
 
     connect(loadFromFileToolButton, SIGNAL(clicked()), SLOT(sl_onFileSelectorClicked()));
-    connect(usePatternFromFileRadioButton, SIGNAL(toggled(bool)), SLOT(sl_onFileSelectorToggled(bool)));
+    connect(patternSelectorBG, &QButtonGroup::buttonToggled, this, &FindPatternWidget::sl_onFileSelectorToggled);
 
     usePatternFromTextEditRadioButton->setChecked(true);
     updatePatternSourceControlsUiState();
@@ -766,6 +771,11 @@ QString FindPatternWidget::buildErrorLabelHtml() const {
                 text += tr("<b><font color=%1>Error: %2</font><br></br></b>").arg(errorColor).arg(customErrorMessage);
                 break;
             }
+            case NotValidPatternsFile: {
+                text += tr("<b><font color=%1>Error: please input a valid file with patterns.</font><br></br></b>").arg(errorColor);
+                GUIUtils::setWidgetWarningStyle(filePathLineEdit, true);
+                break;
+            }
             default:
                 FAIL("Unexpected value of the error flag in show/hide error message for pattern!", "");
         }
@@ -921,6 +931,8 @@ void FindPatternWidget::checkState() {
     if (pattern.isEmpty() && !usePatternFromFileRadioButton->isChecked()) {
         setMessageFlag(NoPatternToSearch, false);
         GUIUtils::setWidgetWarningStyle(textPattern, false);
+        setMessageFlag(NotValidPatternsFile, false);
+        GUIUtils::setWidgetWarningStyle(filePathLineEdit, false);
         return;
     }
 
@@ -933,7 +945,11 @@ void FindPatternWidget::checkState() {
     }
     if (usePatternFromFileRadioButton->isChecked()) {
         setMessageFlag(PatternAlphabetDoNotMatch, false);
+    } else {
+        setMessageFlag(NotValidPatternsFile, false);
+        GUIUtils::setWidgetWarningStyle(filePathLineEdit, false);
     }
+    
     setMessageFlag(UnsetAnnotationName_UseCustomPatternAndNoInputFasta, false);
     setMessageFlag(InvalidAnnotationName, false);
     setMessageFlag(PatternsWithBadRegionInFile, false);
@@ -1009,10 +1025,11 @@ void FindPatternWidget::sl_onFileSelectorClicked() {
         filePathLineEdit->setText(lod.url);
 }
 
-void FindPatternWidget::sl_onFileSelectorToggled(bool on) {
+void FindPatternWidget::sl_onFileSelectorToggled(QAbstractButton* button, bool checked) {
     updatePatternSourceControlsUiState();
     checkState();
-    if (!on) {  // if returning to input-pattern mode -> recheck it's content
+    //if returning to input-pattern mode -> recheck it's content
+    if (qobject_cast<QRadioButton*>(button) == usePatternFromTextEditRadioButton && checked) {
         verifyPatternAlphabet();
     }
     sl_activateNewSearch(true);
@@ -1279,7 +1296,16 @@ void FindPatternWidget::sl_activateNewSearch(bool forcedSearch) {
     if (usePatternFromFileRadioButton->isChecked()) {
         stopCurrentSearchTask();
         if (filePathLineEdit->text().isEmpty()) {
+            setMessageFlag(NotValidPatternsFile, false);
+            GUIUtils::setWidgetWarningStyle(filePathLineEdit, false);
             return;
+        }
+        if (!QFile(filePathLineEdit->text()).exists()) {
+            setMessageFlag(NotValidPatternsFile, true);
+            return;
+        } else {
+            setMessageFlag(NotValidPatternsFile, false);
+            GUIUtils::setWidgetWarningStyle(filePathLineEdit, false);
         }
         auto loadTask = new LoadPatternsFileTask(filePathLineEdit->text());
         connect(loadTask, SIGNAL(si_stateChanged()), SLOT(sl_loadPatternTaskStateChanged()));
