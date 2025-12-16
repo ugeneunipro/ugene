@@ -38,9 +38,7 @@ namespace U2 {
 
 // Returns a string with the number of notifications, taking into account stack limits.
 static QString notificationCountToString(int notificationCount) {
-    return notificationCount < NotificationStack::MAX_STACK_SIZE
-               ? QString::number(notificationCount)
-               : QString::number(NotificationStack::MAX_STACK_SIZE - 1) + '+';
+    return QString::number(qMin(notificationCount, NotificationStack::MAX_STACK_SIZE));
 }
 
 TaskStatusBar::TaskStatusBar() {
