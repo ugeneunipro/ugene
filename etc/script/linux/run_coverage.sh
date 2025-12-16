@@ -12,13 +12,13 @@ echo "##teamcity[blockOpened name='Build UGENE']"
 "${SCRIPTS_DIR}"/build.sh
 echo "##teamcity[blockClosed name='Build UGENE']"
 
-echo "##teamcity[blockOpened name='Run XML Tests']"
-"${SCRIPTS_DIR}"/run_xml_tests.sh
-echo "##teamcity[blockClosed name='Run XML Tests']"
-
 echo "##teamcity[blockOpened name='Run GUI Tests']"
 "${SCRIPTS_DIR}"/run_gui_tests.sh
 echo "##teamcity[blockClosed name='Run GUI Tests']"
+
+echo "##teamcity[blockOpened name='Run XML Tests']"
+"${SCRIPTS_DIR}"/run_xml_tests.sh
+echo "##teamcity[blockClosed name='Run XML Tests']"
 
 echo "##teamcity[blockOpened name='Run Coverage']"
 
