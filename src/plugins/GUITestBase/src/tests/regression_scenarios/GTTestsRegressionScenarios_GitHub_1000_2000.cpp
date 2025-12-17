@@ -116,6 +116,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/CreateFragmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
@@ -337,6 +338,34 @@ GUI_TEST_CLASS_DEFINITION(test_1857) {
     auto lblErrorMessage = GTWidget::findLabel("lblErrorMessage");
     auto errorText = lblErrorMessage->text();
     CHECK_SET_ERR(errorText.contains("Error: please input a valid file with patterns."), QString("Unexpected or empty error: '%1'").arg(errorText));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1873) {
+    /*
+     * 1. Open general/_common_data/fasta/abcd.fa1.gb, push OK in Sequence Reading Options dialog
+     * 2. Select Dotplot dialog, push OK
+     * 3. Select Dotplot dialog once more, push OK
+     * 4. Select Remove-> Selected sequence from second fitplot view from context menu x3 times
+     * Crash!
+     **/
+
+    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsProject::openFile(testDir + "_common_data/fasta/abcd.fa1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTUtilsDialog::waitForDialog(new DotPlotFiller());
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Build dotplot..."}, GTGlobals::UseMouse);
+
+    GTUtilsDialog::waitForDialog(new DotPlotFiller());
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Build dotplot..."}, GTGlobals::UseMouse);
+    
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
+    for (int i = 0; i < 3; i++) {
+        GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove", "Selected sequence from view"}));
+        GTWidget::click(GTWidget::findWidget("dotplot widget 1"), Qt::RightButton);
+    }
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues
