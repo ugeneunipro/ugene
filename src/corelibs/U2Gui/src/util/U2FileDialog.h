@@ -57,9 +57,6 @@ public:
 
     // If set to true, forces the use of non-native QFileDialog even if native dialogs are available on the platform.
     static bool FORCE_USE_NON_NATIVE_DIALOG;
-    // Text to the settings file before QFileDialog opened and remove sign after QFileDialog closed.
-    // Required for detecting crashes caused by QFileDialog.
-    static bool CRASH_DETECTING_ENABLED;
     // Root settings key.
     // Used for detecting crashes caused by QFileDialog.
     static QString CRASH_DETECTING_SETTINGS_ROOT;

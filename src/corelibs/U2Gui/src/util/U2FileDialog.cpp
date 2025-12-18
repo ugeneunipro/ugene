@@ -50,15 +50,11 @@ static QStringList getFileNames(QWidget* parent,
     fileDialog->setOptions(options);
     fileDialog->setFileMode(fileMode);
     fileDialog->setAcceptMode(acceptMode);
-    bool writeToSettings = !U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG && U2FileDialog::CRASH_DETECTING_ENABLED;
-    if (writeToSettings) {
-        AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, true);
-    }
+    // Enable crash detecting
+    AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, true);
     CHECK(fileDialog->exec() == QFileDialog::Accepted && !fileDialog.isNull(), {});
 
-    if (writeToSettings) {
-        AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false);
-    }
+    AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false);
     return fileDialog->selectedFiles();
 }
 
@@ -109,7 +105,6 @@ static void activateAppWindow() {
 }
 
 bool U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = false;
-bool U2FileDialog::CRASH_DETECTING_ENABLED = false;
 QString U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT = "file_dialog/dialog_opened";
 
 QString U2FileDialog::getOpenFileName(QWidget* parent,

@@ -464,12 +464,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="854"/>
+        <location filename="../src/Main.cpp" line="562"/>
+        <source>Aspera Connect version %1 detected</source>
+        <translation>Обнаружена Aspera Connect версии %1</translation>
+    </message>
+    <message>
+        <location filename="../src/Main.cpp" line="570"/>
+        <source>Aspera Connect malicious version detected, switching to non-native dialog...</source>
+        <translation>Обнаружена Aspera Connect уязвимой версии, переключение на не-нативный диалог...</translation>
+    </message>
+    <message>
+        <location filename="../src/Main.cpp" line="573"/>
+        <source>UGENE crashed previously with native dialog, switching to non-native dialog...</source>
+        <translation>Было обнаружено падение UGENE, произошедшее ранее из-за нативного диалога, переключение на не-нативный диалог...</translation>
+    </message>
+    <message>
+        <location filename="../src/Main.cpp" line="878"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="855"/>
+        <location filename="../src/Main.cpp" line="879"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
     </message>
@@ -2811,7 +2826,7 @@ Use &apos;File-&gt;Login to Workspace&apos; to login.</source>
 <context>
     <name>UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="553"/>
+        <location filename="../src/Main.cpp" line="554"/>
         <source>UGENE initialization started</source>
         <translation>Инициализация UGENE</translation>
     </message>

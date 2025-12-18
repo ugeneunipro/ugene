@@ -564,22 +564,14 @@ int main(int argc, char** argv) {
         // This is the highest Aspera Connect version this problem reproduces
         // Increase this value if crash report with higher Aspera Connect verion recieved
         static const QString MIN_MALICIOUS_ASPERA_VERSION = "4.2.12.780";
-        static const QString MIN_GOOD_ASPERA_VERSION = "4.2.18.918";
         bool isMalicious = LibraryVersionUtils::versionLessThan(version, MIN_MALICIOUS_ASPERA_VERSION);
-        bool isGood = !LibraryVersionUtils::versionLessThan(MIN_GOOD_ASPERA_VERSION, version, false);
+        bool crashedPreviously = settings->getValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false).toBool();
         if (isMalicious) {
             coreLog.details(QObject::tr("Aspera Connect malicious version detected, switching to non-native dialog..."));
             U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
-        } else if (!isMalicious && !isGood) {
-            coreLog.details(QObject::tr("Aspera Connect version in the suspicious range"));
-            bool crashedPreviously = settings->getValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false).toBool();
-            if (crashedPreviously) {
-                coreLog.details(QObject::tr("UGENE crashed previously with Aspera Connect, switching to non-native dialog..."));
-                U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
-            } else {
-                coreLog.details(QObject::tr("UGENE didn't crash previously with Aspera Connect, enabling crash detection..."));
-                U2FileDialog::CRASH_DETECTING_ENABLED = true;
-            }
+        } else if (crashedPreviously) {
+            coreLog.details(QObject::tr("UGENE crashed previously with native dialog, switching to non-native dialog..."));
+            U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
         }
     }
 #endif
