@@ -74,8 +74,6 @@ protected:
     QStringList documentsNotFound;
 
     QList<QPointer<Document>> documentsToLoad;
-    QList<QPointer<Document>> documentsFailedToLoad;
-
     QList<QPointer<GObject>> selectedObjects;
 };
 
