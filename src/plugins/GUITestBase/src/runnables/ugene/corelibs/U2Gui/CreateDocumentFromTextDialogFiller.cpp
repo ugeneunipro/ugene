@@ -69,7 +69,8 @@ CreateDocumentFiller::CreateDocumentFiller(
     comboBoxAlphabetItems[StandardRNA] = "Standard RNA";
     comboBoxAlphabetItems[ExtendedDNA] = "Extended DNA";
     comboBoxAlphabetItems[ExtendedRNA] = "Extended RNA";
-    comboBoxAlphabetItems[StandardAmino] = "Standard amino";
+    comboBoxAlphabetItems[StandardAmino] = "Standard amino acid";
+    comboBoxAlphabetItems[ExtendedAmino] = "Extended amino acid";
     comboBoxAlphabetItems[AllSymbols] = "Raw";
 }
 
