@@ -112,7 +112,7 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     SAFE_POINT_NN(activeSequenceWidget, );
 
     activeSequenceWidget->addAction(transformIntoPrimerPair);
-    transformIntoPrimerPair->setEnabled(true);
+    transformIntoPrimerPair->setEnabled(false);
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
