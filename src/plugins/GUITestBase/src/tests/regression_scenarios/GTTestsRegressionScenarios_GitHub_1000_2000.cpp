@@ -180,7 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_1790) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new TryNamesInSearchEdit()));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1794) {
@@ -300,16 +300,86 @@ GUI_TEST_CLASS_DEFINITION(test_1829) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1831) {
+    /*
+     * 1. Open COI.aln
+     * 2. Select "Zychia_baranovi" sequence
+     * 3. Open Options panel, General tab
+     * 4. Select Plain text format
+     * 5. Press Copy button
+     * Expected state: no error
+     **/
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsMsaEditor::selectRowsByName({"Zychia_baranovi"});
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
     GTLogTracer lt;
-    GTComboBox::selectItemByText(GTWidget::findComboBox("copyType"), "Plain text");    
+    GTComboBox::selectItemByText(GTWidget::findComboBox("copyType"), "Plain text");
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     CHECK_SET_ERR(!lt.hasErrors(), QString("Unexpected errors"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1842) {
+    // Click "Create Sequence".
+    // Type "AYT" as sequence, check "Custom settings", set "Standard amino acid" as alphabet.
+    // Set path to the output file and click "Create".
+    // Expected: [amino] alpabet.
+
+    auto filler = new CreateDocumentFiller(
+        "AYT",
+        true,
+        CreateDocumentFiller::StandardAmino,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/test_1842.fa",
+        CreateDocumentFiller::FASTA,
+        "test_1842");
+
+    GTUtilsDialog::waitForDialog(filler);
+
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto label = GTWidget::findLabel("nameLabel", GTWidget::findWidget("ADV_single_sequence_widget_0"));
+    CHECK_SET_ERR(label->text().contains("[amino]"), QString("Unexpected label of sequence name: %1, must contain %2").arg(label->text()).arg("[amino]"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1857) {
+    /*
+     * 1. Open a sequence in the Sequence View.
+     * 2. Open "Search in Sequence" tab in the options panel.
+     * 3. Check "Load patterns from file", start manually input a string in the "Path" field.
+     * Expected state: tip field contains error "Please input a valid file with patterns.
+     **/
+    //usePatternFromFileRadioButton filePathLineEdit
+    GTFileDialog::openFile(dataDir + "/samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern();
+    GTLineEdit::setText("filePathLineEdit", "sasasas");
+    auto lblErrorMessage = GTWidget::findLabel("lblErrorMessage");
+    auto errorText = lblErrorMessage->text();
+    CHECK_SET_ERR(errorText.contains("Error: please input a valid file with patterns."), QString("Unexpected or empty error: '%1'").arg(errorText));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1877) {
+    /*
+     * 1. Load corrupted ugenedb
+     * Expected state: Loading documents finished with error
+     * 2. Select context menu on it and select "Open In->Open in Sanger Editor"
+     * Expected state: no crash, error message in log
+     **/
+    GTFileDialog::openFile(testDir + "_common_data/regression/1877/sanger_wrong.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Open In", "Open new view: Sanger Reads Editor"}));
+    GTUtilsProjectTreeView::click("sanger_wrong.ugenedb", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Document can't be loaded"), "Expected message is not found");    
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues

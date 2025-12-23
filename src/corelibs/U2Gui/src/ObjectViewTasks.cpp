@@ -85,8 +85,8 @@ Task::ReportResult ObjectViewTask::report() {
             continue;
         }
         if (!pd->isLoaded()) {
-            documentsFailedToLoad.append(pd);
-            continue;
+            stateInfo.setError(tr("Document can't be loaded %1, unable to open view.").arg(pd->getURLString()));
+            return ReportResult_Finished;
         }
         onDocumentLoaded(pd);
     }
@@ -94,7 +94,7 @@ Task::ReportResult ObjectViewTask::report() {
     if (taskType == Type_Open) {
         open();
     } else {
-        assert(taskType == Type_Update);
+        SAFE_POINT(taskType == Type_Update, "taskType expected to be 'update'", ReportResult_Finished);
         update();
     }
 
