@@ -24,6 +24,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include <QRegularExpression>
+
 #include "TextDocumentFormat.h"
 
 namespace U2 {
@@ -55,12 +57,12 @@ public:
             : name(_name), precompiled(_pattern) {
         }
         QString name;
-        QRegExp getPattern() const {
-            return QRegExp(precompiled);
+        QRegularExpression getPattern() const {
+            return precompiled;
         }
 
     private:
-        const QRegExp precompiled;
+        const QRegularExpression precompiled;
     };
 
 protected:

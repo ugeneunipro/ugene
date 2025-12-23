@@ -86,7 +86,7 @@ public:
       * Returns an empty string if can't derive the tool version by the path. */
     virtual const QString getVersionFromToolPath(const QString& toolPath) const;
     const QString& getPredefinedVersion() const;
-    const QRegExp& getVersionRegExp() const;
+    const QRegularExpression& getVersionRegExp() const;
     const QString& getToolKitName() const;
     const StrStrMap& getErrorDescriptions() const;
     const StrStrMap& getAdditionalInfo() const;
@@ -144,7 +144,7 @@ protected:
     QString validationMessageRegExp;  // expected message in the validation run output
     QString version;  // tool version
     QString predefinedVersion;  // tool's predefined version, this value is used if tool is not validated and there is no possibility to get actual version
-    QRegExp versionRegExp;  // RegExp to get the version from the validation run output
+    QRegularExpression versionRegExp;  // RegExp to get the version from the validation run output
     bool isValidTool;  // tool state
 
     /** If true the tool was already checked/validated by UGENE. */

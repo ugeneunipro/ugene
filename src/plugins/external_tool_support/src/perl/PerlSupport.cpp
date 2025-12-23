@@ -44,7 +44,7 @@ PerlSupport::PerlSupport()
     validationArguments << "--version";
 
     description += tr("Perl scripts interpreter");
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
+    versionRegExp = QRegularExpression("(\\d+.\\d+.\\d+)");
     toolKitName = "perl";
 
     muted = true;

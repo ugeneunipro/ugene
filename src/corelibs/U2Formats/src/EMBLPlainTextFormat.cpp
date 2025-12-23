@@ -68,7 +68,7 @@ FormatCheckResult EMBLPlainTextFormat::checkRawTextData(const QByteArray& rawDat
     }
     bool tokenMatched = TextUtils::equals("ID   ", data, 5);
     if (tokenMatched) {
-        if (QString(rawData).contains(QRegExp("\\d+ AA."))) {
+        if (QString(rawData).contains(QRegularExpression("\\d+ AA."))) {
             return FormatDetection_NotMatched;
         }
         return FormatDetection_HighSimilarity;
@@ -148,7 +148,7 @@ bool EMBLPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqImpo
         }
         if (st->hasKey("AC")) {
             QVariant v = st->entry->tags.value(DNAInfo::ACCESSION);
-            QStringList l = st->value().split(QRegExp(";\\s*"), Qt::SkipEmptyParts);
+            QStringList l = st->value().split(QRegularExpression(";\\s*"), Qt::SkipEmptyParts);
             st->entry->tags[DNAInfo::ACCESSION] = QVariantUtils::addStr2List(v, l);
             continue;
         }

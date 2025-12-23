@@ -54,7 +54,7 @@ public:
 
     void skipUntil(const QString& what, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
 
-    QString readUntil(const QRegExp& regExpMatcher);
+    QString readUntil(const QRegularExpression& regExpMatcher);
 
     bool isEof() {
         return io->isEof();

@@ -74,7 +74,7 @@ bool PrimerStatistics::validatePrimerLength(const QByteArray& primer) {
 
 QString PrimerStatistics::getDoubleStringValue(double value) {
     QString result = QString::number(value, 'f', 2);
-    result.remove(QRegExp("\\.?0+$"));
+    result.remove(QRegularExpression("\\.?0+$"));
     return result;
 }
 
@@ -351,7 +351,7 @@ void PrimersPairStatistics::addDimersToReport(QString& report) const {
 
 QString PrimersPairStatistics::toString(double value) {
     QString result = QString::number(value, 'f', 2);
-    result.remove(QRegExp("\\.?0+$"));
+    result.remove(QRegularExpression("\\.?0+$"));
     return result;
 }
 
