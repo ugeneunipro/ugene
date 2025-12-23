@@ -41,7 +41,7 @@
 namespace U2 {
 
 static const QSet<QString> MANDATORY_TAGS = {"ID", "DT", "DE", "OS", "OC", "RN", "RP", "RA", "RL"};
-static const QSet<QString> POSSIBLE_TAGS = {"AC", "GN", "OG", "RC", "RT", "RX", "CC", "DR", "KW", "FT", "OH", "OX", "PE", "SQ"};
+static const QSet<QString> POSSIBLE_TAGS = {"AC", "GN", "OG", "RC", "RT", "RX", "CC", "DR", "KW", "FT", "OH", "OX", "PE", "RG", "SQ"};
 static const QDate UPDATE_DATE = QDate(2019, 12, 11);
 static const QMap<QString, int> MONTH_STRING_2_INT = {{"JAN", 1},
                                                       {"FEB", 2},
@@ -86,7 +86,7 @@ bool analyzeLineAndFillHits(const QString& line, QMap<QString, int>& hits) {
         CHECK(firstWord == "ID", false);
     }
     hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
-    CHECK(MANDATORY_TAGS.contains(firstWord) || POSSIBLE_TAGS.contains(firstWord), false);    
+    CHECK(MANDATORY_TAGS.contains(firstWord) || POSSIBLE_TAGS.contains(firstWord), false);
     return true;
 }
 
