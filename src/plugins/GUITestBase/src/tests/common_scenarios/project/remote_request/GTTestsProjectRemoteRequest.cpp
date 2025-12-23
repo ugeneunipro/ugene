@@ -345,7 +345,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     QDir().mkpath(sandBoxDir + "remote_request/test_0013");
     QList<DownloadRemoteFileDialogFiller::Action> actions;
 
-    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Swiss-Prot"));
     GTUtilsDialog::waitForDialog(new RemoteDBDialogFillerDeprecated("P16152", 5, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."});
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -362,7 +361,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     //    Expected state: after the downloading task finish a new documents appears in the project
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0014");
-    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Swiss-Prot"));
 
     GTUtilsDialog::waitForDialog(new RemoteDBDialogFillerDeprecated("D0VTW9", 6, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."});
@@ -467,7 +465,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_5) {
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
     GTUtilsDialog::waitForDialog(new DownloadRemoteFileDialogFiller(actions));
-    GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("Swiss-Prot"));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsNotifications::checkNotificationReportText("https://www.uniprot.org/uniprotkb/Q9IGQ6/entry");
@@ -481,7 +478,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_6) {
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
     GTUtilsDialog::waitForDialog(new DownloadRemoteFileDialogFiller(actions));
-    GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("Swiss-Prot"));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsNotifications::checkNotificationReportText("https://www.uniprot.org/uniprotkb/P16152/entry");
@@ -495,7 +491,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_7) {
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
     GTUtilsDialog::waitForDialog(new DownloadRemoteFileDialogFiller(actions));
-    GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("Swiss-Prot"));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsNotifications::checkNotificationReportText("https://www.uniprot.org/uniprotkb/D0VTW9/entry");
