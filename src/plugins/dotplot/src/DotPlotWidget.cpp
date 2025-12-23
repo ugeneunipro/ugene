@@ -112,7 +112,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     exitButton->setAutoRaise(true);
     exitButton->setObjectName("exitButton");
 
-    this->setObjectName("dotplot widget " + QString::number(UNIQUE_INDEX++));
+    this->setObjectName("DotPlotWidget" + QString::number(UNIQUE_INDEX++));
 }
 
 bool DotPlotWidget::isShowDeleteDialogOnDotPlotDestroying() const {
