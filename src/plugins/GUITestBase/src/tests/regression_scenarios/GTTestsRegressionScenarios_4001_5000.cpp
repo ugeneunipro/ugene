@@ -5416,7 +5416,6 @@ GUI_TEST_CLASS_DEFINITION(test_4913) {
      *   Expected result: The "Word size" parameter is set to "6".
      * 4. Press "Esc" button.
      */
-    GTUtilsDialog::waitForDialog(new SelectDocumentFormatDialogFiller());
     GTUtilsProject::openFile(dataDir + "samples/Swiss-Prot/P16152.txt");
     GTUtilsTaskTreeView::waitTaskFinished();
 
