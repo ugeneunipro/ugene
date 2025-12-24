@@ -565,7 +565,7 @@ GUI_TEST_CLASS_DEFINITION(test_1022) {
 
     GTUtilsDialog::add(new PopupChooser({"Dotplot", "Remove"}));
     GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::No));
-    GTMenu::showContextMenu(GTWidget::findWidget("dotplot widget"));
+    GTMenu::showContextMenu(GTWidget::findWidget("DotPlotWidget0"));
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 

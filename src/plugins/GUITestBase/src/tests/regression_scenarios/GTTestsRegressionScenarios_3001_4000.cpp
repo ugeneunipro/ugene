@@ -1658,7 +1658,7 @@ GUI_TEST_CLASS_DEFINITION(test_3342) {
     GTUtilsDialog::waitForDialog(new DotPlotFiller());
     GTWidget::click(GTWidget::findWidget("build_dotplot_action_widget"));
 
-    dotplotWgt = GTWidget::findWidget("dotplot widget");
+    dotplotWgt = GTWidget::findWidget("DotPlotWidget0");
 
     GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
     GTWidget::click(GTWidget::findWidget("exitButton"));
