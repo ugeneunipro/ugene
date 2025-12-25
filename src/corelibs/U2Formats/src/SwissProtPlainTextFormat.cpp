@@ -40,24 +40,24 @@
 
 namespace U2 {
 
-/* TRANSLATOR U2::EMBLPlainTextFormat */
-/* TRANSLATOR U2::EMBLGenbankAbstractDocument */
-
-const QDate SwissProtPlainTextFormat::UPDATE_DATE = QDate(2019, 12, 11);
-const QMap<QString, int> SwissProtPlainTextFormat::MONTH_STRING_2_INT = {{"JAN", 1},
-                                                                         {"FEB", 2},
-                                                                         {"MAR", 3},
-                                                                         {"APR", 4},
-                                                                         {"MAY", 5},
-                                                                         {"JUN", 6},
-                                                                         {"JUL", 7},
-                                                                         {"AUG", 8},
-                                                                         {"SEP", 9},
-                                                                         {"OCT", 10},
-                                                                         {"NOV", 11},
-                                                                         {"DEC", 12}};
-const QString SwissProtPlainTextFormat::ANNOTATION_HEADER_REGEXP = "FT   ([A-Za-z0-9\\_]+) *([0-9]+)(..([0-9]+))?";
-const QString SwissProtPlainTextFormat::ANNOTATION_QUALIFIERS_REGEXP = "FT +\\/([a-z]+)=\\\"([a-zA-Z0-9\\:\\|\\-\\_\\s\\,\\;]*)\\\"";
+static const QSet<QString> MANDATORY_TAGS = {"ID", "DT", "DE", "OS", "OC", "RN", "RP", "RA", "RL"};
+static const QSet<QString> POSSIBLE_TAGS = {"AC", "GN", "OG", "RC", "RT", "RX", "CC", "DR", "KW", "FT", "OH", "OX", "PE", "RG", "SQ"};
+static const QDate UPDATE_DATE = QDate(2019, 12, 11);
+static const QMap<QString, int> MONTH_STRING_2_INT = {{"JAN", 1},
+                                                      {"FEB", 2},
+                                                      {"MAR", 3},
+                                                      {"APR", 4},
+                                                      {"MAY", 5},
+                                                      {"JUN", 6},
+                                                      {"JUL", 7},
+                                                      {"AUG", 8},
+                                                      {"SEP", 9},
+                                                      {"OCT", 10},
+                                                      {"NOV", 11},
+                                                      {"DEC", 12}};
+static const QString ANNOTATION_HEADER_REGEXP = "FT   ([A-Za-z0-9\\_]+) *([0-9]+)(..([0-9]+))?";
+static const QString ANNOTATION_QUALIFIERS_REGEXP = "FT +\\/([a-z]+)=\\\"([a-zA-Z0-9\\:\\|\\-\\_\\s\\,\\;]*)\\\"";
+static const QRegExp rXSpace = QRegExp("\\s+");
 
 SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_SWISS_PROT, tr("Swiss-Prot"), 80, DocumentFormatFlag_SupportStreaming, p) {
@@ -77,24 +77,40 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     tagMap["CC"] = DNAInfo::COMMENT;  // The CC lines are free text comments on the entry, and are used to convey any useful information.
 }
 
-FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
-    // TODO: improve format checking
+bool analyzeLineAndFillHits(const QString& line, QMap<QString, int>& hits) {
+    const QStringList lineAsList = line.split(rXSpace, Qt::SkipEmptyParts);
+    CHECK(!lineAsList.isEmpty(), false);
+    const QString& firstWord = lineAsList.first();
+    CHECK(firstWord.size() == 2, false)
+    if (hits.isEmpty()) {
+        CHECK(firstWord == "ID", false);
+    }
+    hits.contains(firstWord) ? hits[firstWord] += 1 : hits[firstWord] = 1;
+    CHECK(MANDATORY_TAGS.contains(firstWord) || POSSIBLE_TAGS.contains(firstWord), false);
+    return true;
+}
 
+FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
 
     bool textOnly = !TextUtils::contains(TextUtils::BINARY, data, size);
-    if (!textOnly || size < 100) {
+    if (!textOnly) {
         return FormatDetection_NotMatched;
     }
-    bool tokenMatched = TextUtils::equals("ID   ", data, 5);
-    if (tokenMatched) {
-        if (QString(rawData).contains(QRegExp("\\d+ AA."))) {
-            return FormatDetection_HighSimilarity;
-        }
-        return FormatDetection_NotMatched;
+    QString textCopy(rawData);
+    QTextStream stream(&textCopy);
+    QString line = stream.readLine();
+    QMap<QString, int> hits;
+    do {
+        CHECK(analyzeLineAndFillHits(line, hits), FormatDetection_NotMatched);
+        line = stream.readLine();
+    } while (!line.isNull() && !hits.contains("SQ"));
+    for (const QString& tag : qAsConst(MANDATORY_TAGS)) {
+        CHECK(hits.contains(tag), FormatDetection_AverageSimilarity);
     }
-    return FormatDetection_NotMatched;
+    CHECK(hits["DT"] == 3, FormatDetection_HighSimilarity);
+    return FormatDetection_Matched;
 }
 
 //////////////////////////////////////////////////////////////////////////
