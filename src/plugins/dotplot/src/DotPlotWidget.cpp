@@ -54,6 +54,8 @@
 
 namespace U2 {
 
+static quint64 UNIQUE_INDEX = 0;
+
 const QColor DotPlotWidget::DOT_PLOT_BACKGROUND_COLOR_LIGHT = QColor(240, 240, 255);
 const QColor DotPlotWidget::DOT_PLOT_NEAREST_REPEAT_COLOR_LIGHT = QColor(240, 0, 0);
 
@@ -110,7 +112,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     exitButton->setAutoRaise(true);
     exitButton->setObjectName("exitButton");
 
-    this->setObjectName("dotplot widget");
+    this->setObjectName("DotPlotWidget" + QString::number(UNIQUE_INDEX++));
 }
 
 bool DotPlotWidget::isShowDeleteDialogOnDotPlotDestroying() const {
@@ -1970,6 +1972,7 @@ bool DotPlotWidget::hasSelectedArea() const {
 }
 
 bool DotPlotWidget::canZoomIn() {
+    CHECK(sequenceX != nullptr && sequenceY != nullptr, false)
     float seqLenX = sequenceX->getSequenceLength();
     float seqLenY = sequenceY->getSequenceLength();
 
