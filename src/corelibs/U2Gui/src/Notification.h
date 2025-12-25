@@ -168,7 +168,7 @@ public:
     void updateOnScreenNotificationPositions();
 
     /** Maximum notifications to keep in the stack. The stack includes all kind of notifications: both on screen and not. */
-    static constexpr int MAX_STACK_SIZE = 100;
+    static constexpr int MAX_STACK_SIZE = 99;
 
     /** Updates on-screen notifications & stack widget position on main window move/resize events. */
     bool eventFilter(QObject* target, QEvent* event) override;
