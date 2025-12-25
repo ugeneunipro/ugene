@@ -25,3 +25,6 @@ target_link_libraries(U2Gui
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::PrintSupport Qt5::Svg
         U2Core U2Algorithm U2Formats U2Private)
 
+if (WIN32)
+    target_link_libraries(U2Gui Version)
+endif ()
