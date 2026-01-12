@@ -593,7 +593,7 @@ void EnzymesSelectorWidget::updateStatus() {
     QString checkedNamesListString;
     int nChecked = gatherCheckedNamesListString(checkedNamesListString);
     if (nChecked > 1000) {
-        checkedEnzymesEdit->setPlainText(tr("%1 sites selected. Click \"Save selection\" to export checked enzymes to a file.").arg(nChecked));
+        checkedEnzymesEdit->setPlainText(tr("%1 sites selected. Click \"Save\" to export checked enzymes to a file.").arg(nChecked));
     } else {
         checkedEnzymesEdit->setPlainText(checkedNamesListString);
     }
