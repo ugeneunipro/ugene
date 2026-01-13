@@ -4201,7 +4201,7 @@ GUI_TEST_CLASS_DEFINITION(test_6684) {
     GTUtilsDialog::waitForDialog(new BuildDotPlotFiller(testDir + "_common_data/fasta/AMINO.fa", testDir + "_common_data/fasta/AMINO.fa"));
     GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
 
-    GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
+    GTWidget::findWidget("DotPlotWidget0");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6684_1) {
@@ -4237,7 +4237,7 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
             testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa",
             testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa"));
     GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
-    GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
+    GTWidget::findWidget("DotPlotWidget0");
 
     GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
     GTMenu::clickMainMenuItem({"File", "Close project"});

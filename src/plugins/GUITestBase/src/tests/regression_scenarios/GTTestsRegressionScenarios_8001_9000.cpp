@@ -1745,7 +1745,6 @@ GUI_TEST_CLASS_DEFINITION(test_8174) {
             sandBoxDir + "/human_T1.fa",
             "", false, true));
     GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
-    //GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
 
     QFile::remove(sandBoxDir + "/human_T1.fa");
     GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
