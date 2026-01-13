@@ -67,6 +67,7 @@ private slots:
     void sl_onObjectAdded(GObject* o);
     void sl_onObjectRemoved(GObject* o);
     void sl_lockedStateChanged();
+    void sl_objectNameChanged(const QString& oldName);
 
 private:
     void updateCombo();
@@ -76,6 +77,7 @@ private:
     void addDocumentObjects(Document* d);
     void removeDocumentObjects(Document* d);
     QString itemText(GObject* o);
+    QString itemText(GObject* o, const QString& gobjectName);
 
     GObjectComboBoxControllerConstraints settings;
     QComboBox* combo;

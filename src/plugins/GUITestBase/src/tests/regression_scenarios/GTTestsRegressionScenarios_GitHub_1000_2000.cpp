@@ -365,6 +365,37 @@ GUI_TEST_CLASS_DEFINITION(test_1857) {
     CHECK_SET_ERR(errorText.contains("Error: please input a valid file with patterns."), QString("Unexpected or empty error: '%1'").arg(errorText));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1871) {
+    // Open murine.gb.
+    // Open the "Search pattern" tab.
+    // Expand show/hide "Save annotation's to".
+    // Expected: murine.gb [NC_001363 features]
+    // Select "[a] NC_001363 features" in the prohect view, click F2 (rename) and set name 'Test".
+    // Expected: "murine.gb [NC_001363 features]" renamed to "murine.gb [Test]" on the the "Search pattern" tab.
+    // Expand show/hide "Annotation parameters".
+    // Click on the blue star button in front of "Group name".
+    // Expected: no SAFE_POINT and errors in the log.
+
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget();
+    auto cbExistingTable = GTWidget::findComboBox("cbExistingTable");
+
+    auto item = GTComboBox::getCurrentText("cbExistingTable");
+    CHECK_SET_ERR(item == "murine.gb [NC_001363 features]", "Expected item 'NC_001363 features' is not found in the list");
+
+    GTUtilsProjectTreeView::rename("NC_001363 features", "Test");
+    item = GTComboBox::getCurrentText("cbExistingTable");
+    CHECK_SET_ERR(item == "murine.gb [Test]", "Expected item 'Test' is not found in the list");
+
+    GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget();
+    GTLogTracer lt;
+    GTWidget::click(GTWidget::findWidget("tbSelectGroupName"));
+    lt.assertNoErrors();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_1877) {
     /*
      * 1. Load corrupted ugenedb
@@ -374,12 +405,12 @@ GUI_TEST_CLASS_DEFINITION(test_1877) {
      **/
     GTFileDialog::openFile(testDir + "_common_data/regression/1877/sanger_wrong.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished();
-    
+
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Open In", "Open new view: Sanger Reads Editor"}));
     GTUtilsProjectTreeView::click("sanger_wrong.ugenedb", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(lt.hasError("Document can't be loaded"), "Expected message is not found");    
+    CHECK_SET_ERR(lt.hasError("Document can't be loaded"), "Expected message is not found");
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues
