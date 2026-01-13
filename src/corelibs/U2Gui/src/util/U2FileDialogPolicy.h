@@ -25,10 +25,17 @@
 
 namespace U2 {
 
-// This class provides a bunch of methods for detecting library versions
-class U2GUI_EXPORT LibraryVersionUtils {
+// This class contains policies related to file dialogs.
+class U2GUI_EXPORT U2FileDialogPolicy {
 public:
+    // Check if we need to use non-native file dialog due to known issues with some 3rd party software.
+    static void checkIfShouldUseNonNativeDialog();
 
+    // Detects known malicious software that may interfere with native file dialogs.
+    // @return map where key is the software name, value is the detected version.
+    static QMap<QString, QString> detectMaliciousSoftwareInstalled();
+
+private:
     // Get version of the library.
     // NOTE: implemented on Windows only now, add other OSs support if required
     // @param path - path to the library file.

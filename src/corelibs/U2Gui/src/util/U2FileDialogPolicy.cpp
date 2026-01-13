@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "LibraryVersionUtils.h"
+#include "U2FileDialogPolicy.h"
 
 #ifdef Q_OS_WIN
 #    include <windows.h>
@@ -29,11 +29,55 @@
 #include <QStringList>
 #include <QFileInfo>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/Settings.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
+
+#include "U2FileDialog.h"
 
 namespace U2 {
 
-QString LibraryVersionUtils::getFileVersion(const QString& path) {
+void U2FileDialogPolicy::checkIfShouldUseNonNativeDialog() {
+#ifdef Q_OS_WIN
+    auto settings = AppContext::getSettings();
+    SAFE_POINT(settings != nullptr, "Too early, app settings are not initialized yet", );
+
+    // Installed IBM Aspera Connect makes native Windows File Selection dialogs fail
+    // In latest versions of Aspera it was fixed, but we often recieve crash reports from the older once
+    QString version;
+    // Check if Aspera Connect installed
+    if (detectAsperaVersion(version)) {
+        coreLog.details(QObject::tr("Aspera Connect version %1 detected").arg(version));
+
+        // This is the highest Aspera Connect version this problem reproduces
+        // Increase this value if crash report with higher Aspera Connect verion recieved
+        static const QString MIN_MALICIOUS_ASPERA_VERSION = "4.2.12.780";
+        bool isMalicious = versionLessThan(version, MIN_MALICIOUS_ASPERA_VERSION);
+        bool crashedPreviously = settings->getValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false).toBool();
+        if (isMalicious) {
+            coreLog.details(QObject::tr("Aspera Connect malicious version detected, switching to non-native dialog..."));
+            U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
+        } else if (crashedPreviously) {
+            coreLog.details(QObject::tr("UGENE crashed previously with native dialog, switching to non-native dialog..."));
+            U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
+        }
+    }
+#endif
+}
+
+QMap<QString, QString> U2FileDialogPolicy::detectMaliciousSoftwareInstalled() {
+    QMap<QString, QString> res;
+#ifdef Q_OS_WIN
+    QString version;
+    if (U2FileDialogPolicy::detectAsperaVersion(version)) {
+        res.insert("Aspera Connect", version);
+    }
+#endif
+    return res;
+}
+
+QString U2FileDialogPolicy::getFileVersion(const QString& path) {
 #ifdef Q_OS_WIN
     std::wstring wpath = path.toStdWString();
 
@@ -68,7 +112,7 @@ QString LibraryVersionUtils::getFileVersion(const QString& path) {
 #endif
 }
 
-int LibraryVersionUtils::versionLessThan(const QString& considered, const QString& target, bool orEqual) {
+int U2FileDialogPolicy::versionLessThan(const QString& considered, const QString& target, bool orEqual) {
     QStringList consideredSplit = considered.split('.');
     QStringList targetSplit = target.split('.');
 
@@ -92,7 +136,7 @@ int LibraryVersionUtils::versionLessThan(const QString& considered, const QStrin
     return orEqual;
 }
 
-bool LibraryVersionUtils::detectAsperaVersion(QString& outVersion) {
+bool U2FileDialogPolicy::detectAsperaVersion(QString& outVersion) {
     QString userProfile = qEnvironmentVariable("USERPROFILE");
 
     QList<QString> candidates = {
