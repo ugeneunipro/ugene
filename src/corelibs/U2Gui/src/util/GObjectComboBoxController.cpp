@@ -117,11 +117,7 @@ void GObjectComboBoxController::removeDocumentObjects(Document* d) {
 }
 
 QString GObjectComboBoxController::itemText(GObject* o) {
-    return itemText(o, o->getGObjectName());
-}
-
-QString GObjectComboBoxController::itemText(GObject* o, const QString& gobjectName) {
-    QString res = o->getDocument()->getName() + " [" + gobjectName + "]";
+    QString res = o->getDocument()->getName() + " [" + o->getGObjectName() + "]";
     return res;
 }
 
@@ -256,27 +252,25 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
     }
 }
 
-void GObjectComboBoxController::sl_objectNameChanged(const QString& oldName) {
+void GObjectComboBoxController::sl_objectNameChanged() {
     auto gObj = qobject_cast<GObject*>(sender());
     SAFE_POINT_NN(gObj, );
 
-    auto gObjComboOldName = itemText(gObj, oldName);
     auto gObjComboNewName = itemText(gObj);
     bool found = false;
     auto comboSize = combo->count();
     for (int i = 0; i < comboSize; i++) {
-        auto itemText = combo->itemText(i);
-        CHECK_CONTINUE(gObjComboOldName == itemText);
+        GObjectReference r = combo->itemData(i).value<GObjectReference>();
+        CHECK_CONTINUE(r.entityRef == gObj->getEntityRef());
 
         combo->setItemText(i, gObjComboNewName);
-        GObjectReference r = combo->itemData(i).value<GObjectReference>();
         r.objName = gObj->getGObjectName();
         combo->setItemData(i, QVariant::fromValue<GObjectReference>(r));
         found = true;
         break;
     }
 
-    SAFE_POINT(found, QString("Item %1 was not found").arg(gObjComboOldName), );
+    SAFE_POINT(found, "Item was not found", );
 }
 
 }  // namespace U2
