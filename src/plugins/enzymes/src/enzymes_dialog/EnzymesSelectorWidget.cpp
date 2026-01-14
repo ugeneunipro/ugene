@@ -57,6 +57,9 @@ EnzymesSelectorWidget::EnzymesSelectorWidget(QWidget* parent)
     : QWidget(parent) {
     setupUi(this);
 
+    selectEnzymeInfoLabel->setMinimumHeight(loadSelectionButton->height());
+    checkedEnzymesLabel->setMinimumHeight(loadSelectionButton->height());
+
     filterComboBox->addItem(tr("name"), FILTER_BY_NAME);
     filterComboBox->addItem(tr("sequence"), FILTER_BY_SEQUENCE);
 
