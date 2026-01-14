@@ -168,7 +168,7 @@ echo "##teamcity[blockClosed name='Notarize']"
 echo "##teamcity[blockOpened name='Check Notarization']"
 END_TIME=$((SECONDS+1200))  # 1200 seconds = 20 minutes
 while [ $SECONDS -lt $END_TIME ]; do
-    NOTARYTOOL_JOB_INFO_OUTPUT=$(xcrun notarytool info "${NOTARYTOOL_JOB_UUID}" --keychain-profile "UGENE")
+    NOTARYTOOL_JOB_INFO_OUTPUT=$(xcrun notarytool info "${NOTARYTOOL_JOB_UUID}" --keychain-profile "UGENE" 2>&1)
     echo "Notary tool job info output: ${NOTARYTOOL_JOB_INFO_OUTPUT}"
     if echo "${NOTARYTOOL_JOB_INFO_OUTPUT}" | grep -q "status: Accepted"; then
         echo "Notarization successful!"
