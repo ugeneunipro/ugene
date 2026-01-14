@@ -382,6 +382,28 @@ GUI_TEST_CLASS_DEFINITION(test_1877) {
     CHECK_SET_ERR(lt.hasError("Document can't be loaded"), "Expected message is not found");    
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1883) {
+    /*
+     * 1. Load big fasta with many sequences
+     * 2. Open with default option
+     * Expected state: file not loaded
+     * 3. Open it in alignment editor by calling context menu with "Open In" item
+     * 4. Delete file from project while it loading
+     * Expected state: loading interrupted, error message in the log, no crash
+     **/
+    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsProject::openFile(testDir + "_common_data/fasta/GSM1313963_S1-21d-KMB17+HAVH2.cluster.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Open In", "Open new view: Multiple Alignment Editor"}));
+    GTUtilsProjectTreeView::click("GSM1313963_S1-21d-KMB17+HAVH2.cluster.fa", Qt::RightButton);
+    GTUtilsDialog::add(new PopupChooserByText({"Remove selected items"}));
+    GTUtilsProjectTreeView::click("GSM1313963_S1-21d-KMB17+HAVH2.cluster.fa", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Multiple alignment object not found"), "Expected message is not found");    
+}
+
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
