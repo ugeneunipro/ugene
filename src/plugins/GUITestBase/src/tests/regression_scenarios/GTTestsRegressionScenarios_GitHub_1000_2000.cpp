@@ -404,6 +404,53 @@ GUI_TEST_CLASS_DEFINITION(test_1883) {
     CHECK_SET_ERR(lt.hasError("Multiple alignment object not found"), "Expected message is not found");    
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1887) {
+    /*
+     * 1. Open a sequence.
+     * 2. Create a new annotation with the following group name inserted by copy/paste: "1//2/3".
+     * Expected state: text isn't pasted
+     * 3. Create a new annotation with the following group entered by keyboard: "1//2/3".
+     * Expected state: because of filter group name should be 123, no errors in the log.
+     **/
+
+    class FillGroupName : public CustomScenario {
+    public:
+        FillGroupName(bool _byCopyPaste)
+            : CustomScenario(),
+              byCopyPaste(_byCopyPaste) {
+        }
+
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            QLineEdit* groupNameLE = qobject_cast<QLineEdit*>(GTWidget::findWidget("leGroupName", dialog));
+            CHECK_SET_ERR(groupNameLE != nullptr, "groupNameLE is null!");
+            const QString prevText = groupNameLE->text();
+            GTLineEdit::setText(groupNameLE, QString("1//2/3"), true, byCopyPaste);
+            if (byCopyPaste) {
+                CHECK_SET_ERR(groupNameLE->text() == prevText, "text not match '" + prevText + "'");
+            } else {
+                CHECK_SET_ERR(groupNameLE->text() == "123", "text not match '123'");
+            }
+            GTRadioButton::click(GTWidget::findRadioButton("rbGenbankFormat", dialog));
+            GTLineEdit::setText("leLocation", "10..20", dialog);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+
+    private:
+        bool byCopyPaste;
+    };
+
+    GTFileDialog::openFile(dataDir + "/samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new FillGroupName(true)));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new FillGroupName(false)));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    lt.assertNoErrors();
+}
+
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
