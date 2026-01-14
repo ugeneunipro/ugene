@@ -1428,7 +1428,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     class CheckErrorMessageBox : public CustomScenario {
     public:
         void run() override {
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "'Uncut' region/location fully contains 'Search in' inside it!"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "'Uncut area' fully contains 'Select sequence region' inside it!"));
             filler->commonScenario();
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Cancel);
         }
