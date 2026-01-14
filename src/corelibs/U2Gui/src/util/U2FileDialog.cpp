@@ -35,6 +35,20 @@
 
 namespace U2 {
 
+// Helper class to set and reset crash detecting flag in settings.
+// The flag is set when file dialog is opened and reset when it is closed.
+// Hidden here to avoid using in other places.
+class FileDialogCrashGuard {
+public:
+    FileDialogCrashGuard() {
+        AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, true);
+    }
+
+    ~FileDialogCrashGuard() {
+        AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false);
+    }
+};
+
 static QStringList getFileNames(QWidget* parent,
                                 const QString& caption,
                                 const QString& dir,
@@ -51,10 +65,9 @@ static QStringList getFileNames(QWidget* parent,
     fileDialog->setFileMode(fileMode);
     fileDialog->setAcceptMode(acceptMode);
     // Enable crash detecting
-    AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, true);
+    FileDialogCrashGuard fileDialogCrashGuard;
     CHECK(fileDialog->exec() == QFileDialog::Accepted && !fileDialog.isNull(), {});
 
-    AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false);
     return fileDialog->selectedFiles();
 }
 
