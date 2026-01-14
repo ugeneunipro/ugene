@@ -380,8 +380,6 @@ GUI_TEST_CLASS_DEFINITION(test_1871) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget();
-    auto cbExistingTable = GTWidget::findComboBox("cbExistingTable");
-
     auto item = GTComboBox::getCurrentText("cbExistingTable");
     CHECK_SET_ERR(item == "murine.gb [NC_001363 features]", "Expected item 'NC_001363 features' is not found in the list");
 
