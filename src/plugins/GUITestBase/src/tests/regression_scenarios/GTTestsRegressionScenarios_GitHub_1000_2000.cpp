@@ -244,6 +244,30 @@ GUI_TEST_CLASS_DEFINITION(test_1810) {
     CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle() == "Tree [COI_test_1810.nwk]", "Unexpected active window title");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1812) {
+    // Open murine.gb
+    // Click Shift + T
+    // Expected: no new annotations created
+    // Select "5' terminal repeat" and "3' terminal repeat" annotations
+    // Click Shift + T
+    // Expecte 2 new primer annotations created
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    auto annotatedRegions1 = GTUtilsAnnotationsTreeView::getAnnotatedRegions();
+    GTKeyboardDriver::keyClick('T', Qt::ShiftModifier);
+    auto annotatedRegions2 = GTUtilsAnnotationsTreeView::getAnnotatedRegions();
+    CHECK_SET_ERR(annotatedRegions1.size() == annotatedRegions2.size(), QString("No new annotations should be created"));
+
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 2);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 5245);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTKeyboardDriver::keyClick('T', Qt::ShiftModifier);
+    auto annotatedRegions3 = GTUtilsAnnotationsTreeView::getAnnotatedRegions();
+    CHECK_SET_ERR(annotatedRegions3.size() == annotatedRegions2.size() + 2, QString("Two new annotations should be created"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_1818) {
     /*
      * 1. Open "data/samples/Genbank/human_T1.fa".

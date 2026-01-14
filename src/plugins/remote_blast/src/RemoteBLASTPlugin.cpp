@@ -107,9 +107,27 @@ void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 
     auto transformIntoPrimerPair = new GObjectViewAction(av, av, tr("Transform into a primer pair"));
+    auto annotationsView = av->getAnnotationsView();
+    SAFE_POINT_NN(annotationsView, );
+
+    annotationsView->addAction(transformIntoPrimerPair);
+    transformIntoPrimerPair->setEnabled(false);
     transformIntoPrimerPair->setObjectName(TRANSFORM_INTO_A_PRIMER_PAIR_NAME);
     transformIntoPrimerPair->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
     transformIntoPrimerPair->setShortcutContext(Qt::WindowShortcut);
+
+    auto treeWidget = annotationsView->getTreeWidget();
+    SAFE_POINT_NN(treeWidget, );
+
+    auto selectionModel = treeWidget->selectionModel();
+    SAFE_POINT_NN(selectionModel, );
+
+    connect(selectionModel, &QItemSelectionModel::selectionChanged, this, [transformIntoPrimerPair, treeWidget]() {
+        auto items = treeWidget->selectedItems();
+        bool enabled = isTransformIntoPrimerPairEnabled(items);
+        transformIntoPrimerPair->setEnabled(enabled);
+    });
+
     connect(transformIntoPrimerPair, &QAction::triggered, this, &RemoteBLASTViewContext::sl_transformIntoPrimerPair);
     addViewAction(transformIntoPrimerPair);
 }
