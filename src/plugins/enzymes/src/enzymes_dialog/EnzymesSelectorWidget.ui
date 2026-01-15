@@ -194,7 +194,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QLabel" name="checkedEnzymesLabel">
+           <widget class="QLabel" name="label">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -270,7 +270,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QLabel" name="selectEnzymeInfoLabel">
+           <widget class="QLabel" name="label_3">
             <property name="text">
              <string>Selected enzyme info</string>
             </property>
