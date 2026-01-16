@@ -31,7 +31,7 @@ class Document;
 class Project;
 class StateLock;
 
-class U2CORE_EXPORT RemoveMultipleDocumentsTask : public Task {
+class U2GUI_EXPORT RemoveMultipleDocumentsTask : public Task {
     Q_OBJECT
 public:
     RemoveMultipleDocumentsTask(Project* p, const QList<Document*>& docs, bool saveModifiedDocs, bool useGUI);

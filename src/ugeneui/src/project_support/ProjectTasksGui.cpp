@@ -40,7 +40,6 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/RemoveDocumentTask.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -49,6 +48,8 @@
 
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ProjectParsing.h>
+#include <U2Gui/RemoveDocumentTask.h>
+#include <U2Gui/SaveMultipleDocumentTask.h>
 #include <U2Gui/UnloadDocumentTask.h>
 
 #include "ProjectImpl.h"

@@ -16,46 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
+ * MA 02110-1301, USA.3
  */
 
 #pragma once
 
-#include <U2Core/DocumentModel.h>
-#include <U2Core/Task.h>
+#include "U2Core/SaveDocumentTask.h"
 
 namespace U2 {
 
-class Document;
-class DocumentProviderTask;
-
-class AddDocumentTaskConfig {
-public:
-    AddDocumentTaskConfig()
-        : createProjectIfNeeded(true), unloadExistingDocument(false) {
-    }
-
-    bool createProjectIfNeeded;
-    bool unloadExistingDocument;
-};
-/**  Adds document to active project. Waits for locks if any */
-class U2CORE_EXPORT AddDocumentTask : public Task {
+class U2GUI_EXPORT SaveMultipleDocuments : public Task {
     Q_OBJECT
 public:
-    AddDocumentTask(Document* d, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
-    AddDocumentTask(DocumentProviderTask* dp, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
+    SaveMultipleDocuments(const QList<Document*>& docs, bool askBeforeSave, SavedNewDocFlag openFlag = SavedNewDoc_DoNotOpen);
 
-    ReportResult report() override;
-
-    QList<Task*> onSubTaskFinished(Task* subTask) override;
-    Document* getDocument() {
-        return document;
-    }
+    static QList<Document*> findModifiedDocuments(const QList<Document*>& docs);
 
 private:
-    Document* document;
-    DocumentProviderTask* dpt;
-    AddDocumentTaskConfig conf;
+    GUrl chooseAnotherUrl(Document* doc);
 };
 
 }  // namespace U2

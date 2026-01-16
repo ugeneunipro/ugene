@@ -26,7 +26,6 @@
 #include <QInputDialog>
 #include <QMessageBox>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ProjectTreeControllerModeSettings.h>
@@ -36,6 +35,7 @@
 
 #include <U2Designer/DatasetsController.h>
 
+#include <U2Gui/AddDocumentTask.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>

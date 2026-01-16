@@ -21,7 +21,6 @@
 
 #include "ModifySequenceObjectTask.h"
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -89,7 +88,7 @@ Task::ReportResult ModifySequenceContentTask::report() {
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         tasks.append(new SaveDocumentTask(seqObj->getDocument(), iof, url.getURLString()));
         if (project != nullptr) {
-            tasks.append(new AddDocumentTask(newDoc));
+            project->addDocument(newDoc);
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask("Save document and add it to project (optional)", tasks));
     }
