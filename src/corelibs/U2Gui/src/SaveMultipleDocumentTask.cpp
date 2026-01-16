@@ -106,7 +106,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document* doc) {
         msgBox->setInformativeText(tr("Do you want to save changes to another file?"));
 
         QPushButton* saveButton = msgBox->addButton(QMessageBox::Save);
-        QPushButton* cancelButton = msgBox->addButton(QMessageBox::Cancel);
+        msgBox->addButton(QMessageBox::Cancel);
         msgBox->setDefaultButton(saveButton);
         msgBox->setObjectName("permissionBox");
         int res = msgBox->exec();
