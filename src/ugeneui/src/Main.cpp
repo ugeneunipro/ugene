@@ -103,6 +103,7 @@
 #include <U2Gui/CredentialsAskerGui.h>
 #include <U2Gui/FeatureKeyFilterTask.h>
 #include <U2Gui/ImportWidgetsFactories.h>
+#include <U2Gui/U2FileDialogPolicy.h>
 #include <U2Gui/LogView.h>
 #include <U2Gui/MsaContentFilterTask.h>
 #include <U2Gui/MsaSeqNameFilterTask.h>
@@ -551,6 +552,8 @@ int main(int argc, char** argv) {
     LogCache::setAppGlobalInstance(&logsCache);
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
+
+    U2FileDialogPolicy::checkIfShouldUseNonNativeDialog();
 
     int ugeneArch = getUgeneBinaryArch();
     QString ugeneArchCounterSuffix = ugeneArch == UGENE_ARCH_X86_64   ? "Ugene 64-bit"
