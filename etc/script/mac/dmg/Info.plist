@@ -51,6 +51,9 @@
     <key>NSRequiresAquaSystemAppearance</key>
     <true/>
     
+    <key>UIDesignRequiresCompatibility</key>
+    <true/>
+
     <key>CFBundleDocumentTypes</key>
     <array>
         <!-- Project -->

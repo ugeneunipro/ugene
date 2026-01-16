@@ -4655,7 +4655,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     CHECK_SET_ERR(sarsMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(sarsMdiTitle).arg(activeMdiTitle));
     int sequenceWidgetsNumber = GTUtilsSequenceView::getSeqWidgetsNumber();
     CHECK_SET_ERR(2 == sequenceWidgetsNumber, QString("Expected 2 sequence widgets, got %2").arg(sequenceWidgetsNumber));
-    GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
+    GTWidget::findWidget("DotPlotWidget0");
 
     //    5. Activate the Sequence View for "murine.gb", that was opened on the file opening.
     const QString murineMdiTitle = "NC_001363 [murine.gb]";
@@ -4668,8 +4668,8 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     sequenceWidgetsNumber = GTUtilsSequenceView::getSeqWidgetsNumber();
     CHECK_SET_ERR(1 == sequenceWidgetsNumber, QString("Expected 1 sequence widget, got %2").arg(sequenceWidgetsNumber));
     GTGlobals::FindOptions findOptions(false);
-    auto dotplotWidget = GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow(), findOptions);
-    CHECK_SET_ERR(dotplotWidget == nullptr, "A dotplot widget unexpectedly found");
+    auto dotplotWidget = GTWidget::findWidget("DotPlotWidget0", GTUtilsMdi::activeWindow(), findOptions);
+    CHECK_SET_ERR(dotplotWidget == nullptr, "A DotPlotWidget0 unexpectedly found");
 
     //    6. Select all documents in project. Press delete.
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No, "Save dot-plot data before closing?"));

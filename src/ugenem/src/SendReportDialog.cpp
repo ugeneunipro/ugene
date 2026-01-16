@@ -40,6 +40,8 @@
 #include "Utils.h"
 #include "getMemorySize.c"
 
+#include <U2Gui/U2FileDialogPolicy.h>
+
 #ifdef Q_OS_DARWIN
 #include <sys/sysctl.h>
 #endif
@@ -80,6 +82,11 @@ void ReportSender::parse(const QString& htmlReport, const QString& dumpUrl) {
 
         report += "Memory Info: ";
         report += QString::number(getTotalPhysicalMemory()) + "Mb\n\n";
+
+        auto sowtwareMap = U2::U2FileDialogPolicy::detectMaliciousSoftwareInstalled();
+        for (const auto& key : sowtwareMap.keys()) {
+            report += key + " version: " + sowtwareMap.value(key) + "\n\n";
+        }
 
         if (addGuiTestInfo) {
             report += "User email: ugene@unipro.ru\n\n";

@@ -116,6 +116,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/CreateFragmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
@@ -393,6 +394,34 @@ GUI_TEST_CLASS_DEFINITION(test_1871) {
     lt.assertNoErrors();
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
+  
+GUI_TEST_CLASS_DEFINITION(test_1873) {
+    /*
+     * 1. Open general/_common_data/fasta/abcd.fa1.gb, push OK in Sequence Reading Options dialog
+     * 2. Select Dotplot dialog, push OK
+     * 3. Select Dotplot dialog once more, push OK
+     * 4. Select Remove-> Selected sequence from second fitplot view from context menu x3 times
+     * Crash!
+     **/
+
+    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsProject::openFile(testDir + "_common_data/fasta/abcd.fa1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTUtilsDialog::waitForDialog(new DotPlotFiller());
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Build dotplot..."}, GTGlobals::UseMouse);
+
+    GTUtilsDialog::waitForDialog(new DotPlotFiller());
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Build dotplot..."}, GTGlobals::UseMouse);
+    
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
+    for (int i = 0; i < 3; i++) {
+        GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove", "Selected sequence from view"}));
+        GTWidget::click(GTWidget::findWidget("DotPlotWidget1"), Qt::RightButton);
+    }
+    GTUtilsDialog::checkNoActiveWaiters();
+}
 
 GUI_TEST_CLASS_DEFINITION(test_1877) {
     /*
@@ -409,6 +438,28 @@ GUI_TEST_CLASS_DEFINITION(test_1877) {
     GTUtilsProjectTreeView::click("sanger_wrong.ugenedb", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasError("Document can't be loaded"), "Expected message is not found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1883) {
+    /*
+     * 1. Load big fasta with many sequences
+     * 2. Open with default option
+     * Expected state: file not loaded
+     * 3. Open it in alignment editor by calling context menu with "Open In" item
+     * 4. Delete file from project while it loading
+     * Expected state: loading interrupted, error message in the log, no crash
+     **/
+    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsProject::openFile(testDir + "_common_data/fasta/GSM1313963_S1-21d-KMB17+HAVH2.cluster.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Open In", "Open new view: Multiple Alignment Editor"}));
+    GTUtilsProjectTreeView::click("GSM1313963_S1-21d-KMB17+HAVH2.cluster.fa", Qt::RightButton);
+    GTUtilsDialog::add(new PopupChooserByText({"Remove selected items"}));
+    GTUtilsProjectTreeView::click("GSM1313963_S1-21d-KMB17+HAVH2.cluster.fa", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(lt.hasError("Multiple alignment object not found"), "Expected message is not found");    
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues

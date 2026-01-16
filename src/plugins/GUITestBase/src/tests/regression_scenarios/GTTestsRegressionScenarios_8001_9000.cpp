@@ -1428,7 +1428,7 @@ GUI_TEST_CLASS_DEFINITION(test_8136) {
     class CheckErrorMessageBox : public CustomScenario {
     public:
         void run() override {
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "'Uncut' region/location fully contains 'Search in' inside it!"));
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "'Uncut area' fully contains 'Select sequence region' inside it!"));
             filler->commonScenario();
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Cancel);
         }
@@ -1745,7 +1745,6 @@ GUI_TEST_CLASS_DEFINITION(test_8174) {
             sandBoxDir + "/human_T1.fa",
             "", false, true));
     GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
-    //GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
 
     QFile::remove(sandBoxDir + "/human_T1.fa");
     GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());

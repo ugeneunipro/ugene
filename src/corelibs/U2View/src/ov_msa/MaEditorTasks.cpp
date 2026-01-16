@@ -110,6 +110,10 @@ void OpenMaEditorTask::loadCache() {
 }
 
 void OpenMaEditorTask::open() {
+    if (maObject.isNull()) {
+        stateInfo.setError(tr("Multiple alignment object not found"));
+        return;
+    }
     viewName = GObjectViewUtils::genUniqueViewName(maObject->getDocument(), maObject);
     uiLog.details(tr("Opening MSA editor for object: %1").arg(maObject->getGObjectName()));
 
