@@ -244,9 +244,6 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
         icon = QIcon(":/ugene/images/ugene.png");
     }
     qw->setWindowIcon(icon);
-    if (isOsMac()) {
-        qw->setAttribute(Qt::WA_NativeWindow);
-    }
     items.append(new MDIItem(w, qw));
     qw->installEventFilter(this);
 
