@@ -67,6 +67,7 @@ private slots:
     void sl_onObjectAdded(GObject* o);
     void sl_onObjectRemoved(GObject* o);
     void sl_lockedStateChanged();
+    void sl_objectNameChanged();
 
 private:
     void updateCombo();
