@@ -47,7 +47,7 @@ CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWid
     init();
     initOsDependingLayoutSettings();
     connectSignals();
-
+    
     const bool simpleFormat = AppContext::getSettings()->getValue(SETTINGS_SIMPLE_FORMAT, true).toBool();
     rbSimpleFormat->setChecked(simpleFormat);
     rbGenbankFormat->setChecked(!simpleFormat);
