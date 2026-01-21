@@ -83,6 +83,8 @@ RealignSequencesInAlignmentTask::~RealignSequencesInAlignmentTask() {
 }
 
 U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
+    CHECK_OP(stateInfo, Task::ReportResult_Finished);
+
     msaObject->sortRowsByList(originalRowOrder);
     delete locker;
     locker = nullptr;
