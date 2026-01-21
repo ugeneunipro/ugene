@@ -24,7 +24,6 @@
 #include <QMenu>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AnnotationGroup.h>
 #include <U2Core/Counter.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U1AnnotationUtils.h>
@@ -48,11 +47,10 @@ CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWid
     init();
     initOsDependingLayoutSettings();
     connectSignals();
-    
+
     const bool simpleFormat = AppContext::getSettings()->getValue(SETTINGS_SIMPLE_FORMAT, true).toBool();
     rbSimpleFormat->setChecked(simpleFormat);
     rbGenbankFormat->setChecked(!simpleFormat);
-    leGroupName->setValidator(new QRegExpValidator(QRegExp("[^" + QString(AnnotationGroup::GROUP_PATH_SEPARATOR) + "]+"), this));
 }
 
 CreateAnnotationFullWidget::~CreateAnnotationFullWidget() {

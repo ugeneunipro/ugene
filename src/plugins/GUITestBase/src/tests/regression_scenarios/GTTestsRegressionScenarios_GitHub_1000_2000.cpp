@@ -415,38 +415,26 @@ GUI_TEST_CLASS_DEFINITION(test_1887) {
 
     class FillGroupName : public CustomScenario {
     public:
-        FillGroupName(bool _byCopyPaste)
-            : CustomScenario(),
-              byCopyPaste(_byCopyPaste) {
-        }
-
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             QLineEdit* groupNameLE = qobject_cast<QLineEdit*>(GTWidget::findWidget("leGroupName", dialog));
             CHECK_SET_ERR(groupNameLE != nullptr, "groupNameLE is null!");
-            const QString prevText = groupNameLE->text();
-            GTLineEdit::setText(groupNameLE, QString("1//2/3"), true, byCopyPaste);
-            if (byCopyPaste) {
-                CHECK_SET_ERR(groupNameLE->text() == prevText, "text not match '" + prevText + "'");
-            } else {
-                CHECK_SET_ERR(groupNameLE->text() == "123", "text not match '123'");
-            }
             GTRadioButton::click(GTWidget::findRadioButton("rbGenbankFormat", dialog));
             GTLineEdit::setText("leLocation", "10..20", dialog);
-            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            for (bool byCopyPaste : {true, false}) {
+                GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Group name can't contain"));
+                GTLineEdit::setText(groupNameLE, QString("1//2/3"), true, byCopyPaste);
+                GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            }
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
-
-    private:
-        bool byCopyPaste;
     };
 
     GTFileDialog::openFile(dataDir + "/samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new FillGroupName(true)));
-    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new FillGroupName(false)));
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new FillGroupName()));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
     lt.assertNoErrors();
 }

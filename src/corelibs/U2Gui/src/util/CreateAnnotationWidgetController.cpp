@@ -237,6 +237,12 @@ QString CreateAnnotationWidgetController::validate() {
         w->focusGroupName();
         return tr("Illegal group name");
     }
+    
+    const QString groupSeparatorStr = QString(AnnotationGroup::GROUP_PATH_SEPARATOR);
+    if (model.groupName.contains(groupSeparatorStr)) {
+        w->focusGroupName();
+        return tr("Group name can't contain \"%1\"").arg(groupSeparatorStr);
+    }
 
     if (!model.hideLocation && model.data->location->isEmpty()) {
         w->focusLocation();
