@@ -46,8 +46,8 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MsaObject* msaO
     : Task(tr("Realign sequences in this alignment"), TaskFlags_NR_FOSE_COSC),
       originalMsaObject(msaObjectToClone),
       msaObject(nullptr),
-      rowsToAlignIds(_rowsToAlignIds), algorithmId(_algorithmId) {
-    locker = new StateLocker(originalMsaObject);
+      rowsToAlignIds(_rowsToAlignIds),algorithmId(_algorithmId), locker(originalMsaObject) {
+    locker.lock();
     msaObject = msaObjectToClone->clone(msaObjectToClone->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
 
@@ -86,8 +86,7 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
     msaObject->sortRowsByList(originalRowOrder);
-    delete locker;
-    locker = nullptr;
+    locker.unlock();
     U2UseCommonUserModStep modStep(originalMsaObject->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
     originalMsaObject->updateGapModel(msaObject->getAlignment()->getRows().toList());

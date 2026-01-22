@@ -45,7 +45,7 @@ private:
     bool includeReference;
 
     Msa msa;
-    QScopedPointer<StateLocker> locker;
+    StateLocker locker;
 };
 
 }  // namespace U2

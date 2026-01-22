@@ -113,7 +113,7 @@ MaModificationInfo AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(
     CHECK_EXT(!msaObject->isStateLocked(), os.setError(tr("Object is locked for modifications.")), modInfo);
 
     {  // Start of MA-object state lock.
-        StateLocker stateLocker(msaObject, new StateLock("add_sequences_to_alignment"));
+        StateLockerGuard stateLocker(msaObject, "add_sequences_to_alignment");
         const DNAAlphabet* derivedAlphabet = deriveCommonAlphabet(sequenceList, msaObject->getAlphabet(), recheckNewSequenceAlphabetOnMismatch);
         CHECK_EXT(derivedAlphabet != nullptr, os.setError(tr("Failed to derive common alphabet")), modInfo);
 

@@ -43,15 +43,33 @@ typedef QFlags<StateLockFlag> StateLockFlags;
 
 /**
  * StateLocker takes ownership over the StackLock object.
+ * Should be locked and unlocked manually.
  */
 class U2CORE_EXPORT StateLocker {
 public:
-    StateLocker(StateLockableItem* lockableItem, StateLock* lock = nullptr);
+    StateLocker(StateLockableItem* lockableItem, const QString& stateLockUserDesc = QString());
     ~StateLocker();
 
+    // Lock object state
+    void lock();
+    // Unlock object state
+    void unlock();
+
 private:
-    StateLockableItem* lockableItem;
-    StateLock* lock;
+    QPointer<StateLockableItem> lockableItem;
+    QPointer<StateLock> stateLock;
+};
+
+/**
+ * StateLockerGuard locks the object state on creation and unlocks it on destruction.
+ */
+class U2CORE_EXPORT StateLockerGuard {
+public:
+    StateLockerGuard(StateLockableItem* lockableItem, const QString& stateLockUserDesc = QString());
+    ~StateLockerGuard();
+
+private:
+    StateLocker stateLocker;
 };
 
 class U2CORE_EXPORT StateLock : public QObject {
