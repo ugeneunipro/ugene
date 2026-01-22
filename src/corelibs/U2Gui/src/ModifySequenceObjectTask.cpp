@@ -40,6 +40,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
+#include <U2Gui/AddDocumentTask.h>
+
 namespace U2 {
 
 typedef QPair<QString, QString> QStrStrPair;
@@ -88,7 +90,7 @@ Task::ReportResult ModifySequenceContentTask::report() {
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         tasks.append(new SaveDocumentTask(seqObj->getDocument(), iof, url.getURLString()));
         if (project != nullptr) {
-            project->addDocument(newDoc);
+            tasks.append(new AddDocumentTask(newDoc));
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask("Save document and add it to project (optional)", tasks));
     }

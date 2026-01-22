@@ -26,9 +26,10 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
-#include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/global.h>
+
+#include <U2Gui/ModifySequenceObjectTask.h>
 
 #include <U2Test/XMLTestUtils.h>
 

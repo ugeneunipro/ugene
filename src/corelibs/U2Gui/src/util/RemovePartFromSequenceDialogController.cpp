@@ -27,12 +27,12 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
 #include <U2Formats/GenbankLocationParser.h>
 
+#include <U2Gui/ModifySequenceObjectTask.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
