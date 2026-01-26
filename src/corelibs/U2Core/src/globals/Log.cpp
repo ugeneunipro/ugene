@@ -29,8 +29,7 @@
 
 namespace U2 {
 
-LogServer::LogServer()
-    : listenerMutex(QMutex::Recursive) {
+LogServer::LogServer() {
     qRegisterMetaType<LogMessage>("LogMessage");
 }
 

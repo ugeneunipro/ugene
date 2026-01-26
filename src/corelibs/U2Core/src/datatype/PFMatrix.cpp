@@ -26,6 +26,8 @@
 
 #include "DIProperties.h"
 
+#include <QRegularExpression>
+
 namespace U2 {
 
 JasparInfo::JasparInfo()
@@ -39,7 +41,7 @@ JasparInfo::JasparInfo(const QMap<QString, QString>& props)
 JasparInfo::JasparInfo(const QString& line) {
     QStringList parsedData = line.split(";");
     QString idData = parsedData.first();
-    QStringList base = idData.split(QRegExp("\\s"));
+    QStringList base = idData.split(QRegularExpression("\\s"));
     QString id = base[0];
     properties.insert(QString("id"), id);
     QString name = base[2];
