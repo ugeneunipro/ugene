@@ -429,8 +429,16 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
         GTIMER(c3, t3, "AssemblyReadsArea::drawReads -> cycle through all reads");
 
         const U2AssemblyRead& read = it.next();
+        // debug
+        const QString cigStr(U2AssemblyUtils::cigar2String(read->cigar));
+        for (const U2CigarToken& tok : read->cigar) {
+            if (tok.op == U2CigarOp_I) {
+                const QString readName(read->name);
+                break;
+            }
+        }
         QByteArray readSequence = read->readSequence;
-        U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLength(read));
+        U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLengthWithInsertions(read));
 
         U2Region readVisibleBases = readBases.intersect(cachedReads.visibleBases);
         U2Region xToDrawRegion(readVisibleBases.startPos - cachedReads.xOffsetInAssembly, readVisibleBases.length);
@@ -461,7 +469,6 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                 }
 
                 U2AssemblyReadIterator cigarIt(readSequence, cigar, firstVisibleBase);
-
                 int basesPainted = 0;
                 for (int x_pix_offset = 0; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; x_pix_offset += cachedReads.letterWidth) {
                     GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");

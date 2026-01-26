@@ -369,7 +369,7 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
         }
 
         SQLiteWriteQuery("PRAGMA synchronous = OFF", db, os).execute();
-        QString lockingMode = props.value(U2DbiOptions::U2_DBI_LOCKING_MODE, "exclusive");
+        QString lockingMode = props.value(U2DbiOptions::U2_DBI_LOCKING_MODE, "normal");
         if (lockingMode == "normal") {
             SQLiteWriteQuery("PRAGMA main.locking_mode = NORMAL", db, os).execute();
         } else {

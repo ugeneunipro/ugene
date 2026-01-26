@@ -214,6 +214,9 @@ public:
     /** Length of the read with CIGAR affect applied */
     qint64 effectiveLen;
 
+    /** Length of the read with CIGAR affect applied insertions included */
+    qint64 effectiveLenWithInsertions = 0;
+
     /**
         Position of the read in packed view
     */

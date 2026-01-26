@@ -533,19 +533,10 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& 
 
     double basesPerRange = double(r.length) / csize;
     while (q.step() && !os.isCoR()) {
-        qint64 startPos = q.getInt64(0);
-        qint64 len = q.getInt64(1);
         // read data and convert to data with cigar
         QByteArray data = q.getBlob(2);
         U2AssemblyRead read(new U2AssemblyReadData());
         unpackData(data, read, os);
-
-        U2Region readRegion(startPos, len);
-        U2Region readCroppedRegion = readRegion.intersect(r);
-
-        if (readCroppedRegion.isEmpty()) {
-            continue;
-        }
 
         // we have used effective length of the read, so insertions/deletions are already taken into account
         // cigarString can be longer than needed
@@ -553,13 +544,19 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& 
         foreach (const U2CigarToken& cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
-        cigarVector.removeAll(U2CigarOp_I);
+        //cigarVector.removeAll(U2CigarOp_I);
         cigarVector.removeAll(U2CigarOp_S);
         cigarVector.removeAll(U2CigarOp_P);
-
+        
+        const qint64 startPos = q.getInt64(0);
+        const qint64 len = q.getInt64(1) + cigarVector.count(U2CigarOp_I);
         if (r.startPos > startPos) {
             cigarVector = cigarVector.mid(r.startPos - startPos);  // cut unneeded cigar string
         }
+        
+        const U2Region readRegion(startPos, len);
+        const U2Region readCroppedRegion = readRegion.intersect(r);
+        CHECK_CONTINUE(!readCroppedRegion.isEmpty());
 
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos) / basesPerRange);
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos) / basesPerRange) - 1;

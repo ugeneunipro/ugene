@@ -121,7 +121,7 @@ bool U2AssemblyReadIterator::isPaddingOrHardClip() const {
 
 void U2AssemblyReadIterator::skip() {
     while (hasNext() && !isMatch() && !isDeletion()) {
-        skipInsertion();
+        //skipInsertion();
         skipPaddingAndHardClip();
     }
 }

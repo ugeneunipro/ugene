@@ -128,6 +128,24 @@ qint64 U2AssemblyUtils::getEffectiveReadLength(const U2AssemblyRead& read) {
     return read->readSequence.length() + getCigarExtraLength(read->cigar);
 }
 
+qint64 U2AssemblyUtils::getEffectiveReadLengthWithInsertions(const U2AssemblyRead& read) {
+    qint64 res = 0;
+    foreach (const U2CigarToken& t, read->cigar) {
+        switch (t.op) {
+            case U2CigarOp_S:
+                res -= t.count;
+                break;
+            case U2CigarOp_I:
+            case U2CigarOp_D:
+            case U2CigarOp_N:
+                res += t.count;
+                break;
+            default:;
+        }
+    }
+    return res + read->readSequence.length();
+}
+
 qint64 U2AssemblyUtils::getCigarExtraLength(const QList<U2CigarToken>& cigar) {
     qint64 res = 0;
     foreach (const U2CigarToken& t, cigar) {
