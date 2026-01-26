@@ -22,7 +22,7 @@
 #pragma once
 
 #include <QHash>
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <QTimer>
 
 #include <U2Core/U2Dbi.h>
