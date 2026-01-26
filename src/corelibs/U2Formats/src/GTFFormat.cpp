@@ -380,7 +380,7 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString>& parsedAttrVa
             semicolonCharIndex = attributesStr.indexOf(';', pos + semicolonCharIndex);
             // There is an attribute name, but no a semicolon
             CHECK(semicolonCharIndex != -1, false);
-        } while ((attributesStr.mid(pos + 1, semicolonCharIndex - pos).count("\"") + 1) % 2 != 0);
+        } while ((attributesStr.mid(pos, semicolonCharIndex - pos).count("\"")) % 2 != 0);
 
         // Skip double quotes for textual attributes
         if (('"' == attributesStr[pos]) && ('"' == attributesStr[semicolonCharIndex - 1])) {
