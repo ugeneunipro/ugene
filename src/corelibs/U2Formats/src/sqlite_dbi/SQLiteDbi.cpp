@@ -200,7 +200,7 @@ void SQLiteDbi::stopOperationBlock(U2OpStatus& os) {
     }
 }
 
-QMutex* SQLiteDbi::getDbMutex() const {
+QRecursiveMutex* SQLiteDbi::getDbMutex() const {
     return &db->lock;
 }
 
