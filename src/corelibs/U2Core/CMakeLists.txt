@@ -2,7 +2,7 @@ project(U2Core)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt6 REQUIRED Core Gui Widgets Network Xml)
+find_package(Qt6 REQUIRED Core Gui Widgets Network Xml Core5Compat)
 
 add_definitions(-DBUILDING_U2CORE_DLL)
 
@@ -22,8 +22,8 @@ set_source_files_properties(
 )
 
 target_link_libraries(U2Core
-        Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Xml
-        qtscript ugenedb zlib
+        Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Xml Qt6::Core5Compat
+        ugenedb zlib
 )
 
 if (APPLE)
