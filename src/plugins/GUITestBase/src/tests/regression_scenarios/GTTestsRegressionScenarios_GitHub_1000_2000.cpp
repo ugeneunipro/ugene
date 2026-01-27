@@ -486,6 +486,41 @@ GUI_TEST_CLASS_DEFINITION(test_1883) {
     CHECK_SET_ERR(lt.hasError("Multiple alignment object not found"), "Expected message is not found");    
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1887) {
+    /*
+     * 1. Open a sequence.
+     * 2. Create a new annotation with the following group name inserted by copy/paste: "1//2/3".
+     * Expected state: text isn't pasted
+     * 3. Create a new annotation with the following group entered by keyboard: "1//2/3".
+     * Expected state: because of filter group name should be 123, no errors in the log.
+     **/
+
+    class FillGroupName : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            QLineEdit* groupNameLE = qobject_cast<QLineEdit*>(GTWidget::findWidget("leGroupName", dialog));
+            CHECK_SET_ERR(groupNameLE != nullptr, "groupNameLE is null!");
+            GTRadioButton::click(GTWidget::findRadioButton("rbGenbankFormat", dialog));
+            GTLineEdit::setText("leLocation", "10..20", dialog);
+            for (bool byCopyPaste : {true, false}) {
+                GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Group name can't contain"));
+                GTLineEdit::setText(groupNameLE, QString("1//2/3"), true, byCopyPaste);
+                GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+            }
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTFileDialog::openFile(dataDir + "/samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new FillGroupName()));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    lt.assertNoErrors();
+}
+
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
