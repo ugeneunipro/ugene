@@ -224,11 +224,12 @@ void MafftAddToAlignmentTask::run() {
         }
         stateInfo.setProgress(70 + 30 * posInMsa / objectsCount);
         auto sequenceObject = qobject_cast<U2SequenceObject*>(object);
+        SAFE_POINT_NN(sequenceObject, );
+
         bool rowWasAdded = true;
         if (!rowNames.contains(sequenceObject->getSequenceName())) {
             // inserting new rows
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
-            SAFE_POINT(sequenceObject != nullptr, "U2SequenceObject is null", );
 
             U2MsaRow row = MsaUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
 
