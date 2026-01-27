@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1958,6 +1958,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1873);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1877);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1883);
+    REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1887);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1896);
 
     //////////////////////////////////////////////////////////////////////////

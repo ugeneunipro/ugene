@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -244,9 +244,6 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
         icon = QIcon(":/ugene/images/ugene.png");
     }
     qw->setWindowIcon(icon);
-    if (isOsMac()) {
-        qw->setAttribute(Qt::WA_NativeWindow);
-    }
     items.append(new MDIItem(w, qw));
     qw->installEventFilter(this);
 

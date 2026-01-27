@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -236,6 +236,12 @@ QString CreateAnnotationWidgetController::validate() {
     if (model.groupName.isEmpty()) {
         w->focusGroupName();
         return tr("Illegal group name");
+    }
+    
+    const QString groupSeparatorStr = QString(AnnotationGroup::GROUP_PATH_SEPARATOR);
+    if (model.groupName.contains(groupSeparatorStr)) {
+        w->focusGroupName();
+        return tr("Group name can't contain \"%1\"").arg(groupSeparatorStr);
     }
 
     if (!model.hideLocation && model.data->location->isEmpty()) {
