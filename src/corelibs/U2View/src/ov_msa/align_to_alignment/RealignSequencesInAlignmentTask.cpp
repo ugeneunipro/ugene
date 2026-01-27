@@ -83,10 +83,10 @@ RealignSequencesInAlignmentTask::~RealignSequencesInAlignmentTask() {
 }
 
 U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
+    locker.unlock();
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
     msaObject->sortRowsByList(originalRowOrder);
-    locker.unlock();
     U2UseCommonUserModStep modStep(originalMsaObject->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
     originalMsaObject->updateGapModel(msaObject->getAlignment()->getRows().toList());
