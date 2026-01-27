@@ -24,7 +24,7 @@
 #include <QBitArray>
 #include <QCoreApplication>
 #include <QMap>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QVariant>
 
@@ -64,16 +64,16 @@ private:
     static const QString PAIR_CONNECTOR;
 
     static const QString listSeparatorPattern;
-    static const QRegExp listSingleQuoteSeparatorRegExp;
-    static const QRegExp listDoubleQuoteSeparatorRegExp;
+    static const QRegularExpression listSingleQuoteSeparatorRegExp;
+    static const QRegularExpression listDoubleQuoteSeparatorRegExp;
 
     static const QString mapSeparatorPattern;
-    static const QRegExp mapSingleQuoteSeparatorRegExp;
-    static const QRegExp mapDoubleQuoteSeparatorRegExp;
+    static const QRegularExpression mapSingleQuoteSeparatorRegExp;
+    static const QRegularExpression mapDoubleQuoteSeparatorRegExp;
 
     static const QString pairSeparatorPattern;
-    static const QRegExp pairSingleQuoteSeparatorRegExp;
-    static const QRegExp pairDoubleQuoteSeparatorRegExp;
+    static const QRegularExpression pairSingleQuoteSeparatorRegExp;
+    static const QRegularExpression pairDoubleQuoteSeparatorRegExp;
 
     static const bool isMetaTypesRegistered;
 };
