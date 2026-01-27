@@ -32,7 +32,7 @@ ConvertMca2MsaTask::ConvertMca2MsaTask(MsaObject* mcaObject, bool includeReferen
     : Task(tr("Convert MCA to MSA task"), TaskFlag_None),
       mcaObject(mcaObject),
       includeReference(includeReference),
-      locker(StateGuard(mcaObject)) {
+      locker(StateLockerOnCall(mcaObject)) {
     SAFE_POINT_EXT(mcaObject != nullptr, setError(L10N::nullPointerError("MCA object")), );
 }
 

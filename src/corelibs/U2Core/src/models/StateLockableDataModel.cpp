@@ -335,26 +335,26 @@ QList<StateLock*> StateLockableTreeItem::findLocks(StateLockableTreeItemBranchFl
     return res;
 }
 
-StateGuard::StateGuard(StateLockableItem* _lockableItem, const QString& stateLockUserDesc)
+StateLockerOnCall::StateLockerOnCall(StateLockableItem* _lockableItem, const QString& stateLockUserDesc)
     : lockableItem(_lockableItem),
       stateLock(new StateLock(stateLockUserDesc)) {
 }
 
-StateGuard::~StateGuard() {
+StateLockerOnCall::~StateLockerOnCall() {
     CHECK(!stateLock.isNull() && !lockableItem.isNull(), );
     SAFE_POINT(!lockableItem->getStateLocks().contains(stateLock), "Should call unlock first", );
 
     delete stateLock;
 }
 
-void StateGuard::lock() {
+void StateLockerOnCall::lock() {
     SAFE_POINT_NN(stateLock, );
     SAFE_POINT_NN(lockableItem, );
 
     lockableItem->lockState(stateLock);
 }
 
-void StateGuard::unlock() {
+void StateLockerOnCall::unlock() {
     SAFE_POINT_NN(stateLock, );
     SAFE_POINT_NN(lockableItem, );
 

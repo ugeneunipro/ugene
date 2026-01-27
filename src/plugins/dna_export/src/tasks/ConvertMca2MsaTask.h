@@ -45,7 +45,7 @@ private:
     bool includeReference;
 
     Msa msa;
-    StateGuard locker;
+    StateLockerOnCall locker;
 };
 
 }  // namespace U2
