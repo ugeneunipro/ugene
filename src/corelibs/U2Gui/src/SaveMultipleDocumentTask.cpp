@@ -23,6 +23,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -69,7 +70,7 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool 
         }
         if (save) {
             GUrl url = doc->getURL();
-            if (SaveDocumentTask::isNoWritePermission(url)) {
+            if (!FileAndDirectoryUtils::canWriteToPath(url.dirPath())) {
                 url = chooseAnotherUrl(doc);
                 if (!url.isEmpty()) {
                     if (saveAndOpenFlag == SavedNewDoc_Open) {
@@ -132,7 +133,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document* doc) {
             return GUrl();
         }
 
-    } while (SaveDocumentTask::isNoWritePermission(url));
+    } while (!FileAndDirectoryUtils::canWriteToPath(url.dirPath()));
 
     return url;
 }

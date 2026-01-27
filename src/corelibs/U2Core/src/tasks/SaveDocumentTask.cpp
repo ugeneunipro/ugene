@@ -68,7 +68,7 @@ void SaveDocumentTask::addFlag(SaveDocFlag f) {
 }
 
 void SaveDocumentTask::prepare() {
-    if (isNoWritePermission(url)) {
+    if (!FileAndDirectoryUtils::canWriteToPath(url.dirPath())) {
         stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
         return;
     }
@@ -198,13 +198,6 @@ QVariantMap SaveDocumentTask::getOpenDocumentWithProjectHints() const {
 /** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
 void SaveDocumentTask::setOpenDocumentWithProjectHints(const QVariantMap& hints) {
     openDocumentWithProjectHints = hints;
-}
-
-bool SaveDocumentTask::isNoWritePermission(GUrl& url) {
-    if (!QFile::exists(url.getURLString())) {
-        return !FileAndDirectoryUtils::isDirectoryWritable(url.dirPath());
-    }
-    return !QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser);
 }
 
 //////////////////////////////////////////////////////////////////////////

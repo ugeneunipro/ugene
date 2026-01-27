@@ -83,9 +83,6 @@ public:
     /** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
     void setOpenDocumentWithProjectHints(const QVariantMap& hints);
 
-    // Returns true if there is no write permission for the given url.
-    static bool isNoWritePermission(GUrl& url);
-
 private:
     StateLock* lock = nullptr;
     QPointer<Document> doc;
