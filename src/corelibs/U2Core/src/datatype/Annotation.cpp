@@ -22,6 +22,7 @@
 #include "Annotation.h"
 
 #include <QTextDocument>
+#include <QRegExp>
 
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationTableObject.h>
