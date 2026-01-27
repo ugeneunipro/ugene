@@ -25,13 +25,13 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/U2FileDialog.h>
 
 #include <QApplication>
 #include <QMessageBox>
-#include <QScopedPointer>
 
 namespace U2 {
 
@@ -46,11 +46,11 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool 
                 buttons = buttons | QMessageBox::YesToAll | QMessageBox::NoToAll;
             }
 
-            QScopedPointer<QMessageBox> messageBox(new QMessageBox(QMessageBox::Question,
-                                                                   tr("Question?"),
-                                                                   tr("Save document: %1").arg(doc->getURLString()),
-                                                                   buttons,
-                                                                   QApplication::activeWindow()));
+            QObjectScopedPointer<QMessageBox> messageBox(new QMessageBox(QMessageBox::Question,
+                                                                         tr("Question?"),
+                                                                         tr("Save document: %1").arg(doc->getURLString()),
+                                                                         buttons,
+                                                                         QApplication::activeWindow()));
 
             int res = saveAll ? QMessageBox::YesToAll : messageBox->exec();
 
@@ -99,7 +99,7 @@ QList<Document*> SaveMultipleDocuments::findModifiedDocuments(const QList<Docume
 GUrl SaveMultipleDocuments::chooseAnotherUrl(Document* doc) {
     GUrl url;
     do {
-        QScopedPointer<QMessageBox> msgBox(new QMessageBox);
+        QObjectScopedPointer<QMessageBox> msgBox(new QMessageBox);
         msgBox->setIcon(QMessageBox::Warning);
         msgBox->setWindowTitle(U2_APP_TITLE);
 
