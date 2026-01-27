@@ -76,7 +76,7 @@ void U2Dbi::startOperationsBlock(U2OpStatus&) {
 void U2Dbi::stopOperationBlock(U2OpStatus&) {
 }
 
-QMutex* U2Dbi::getDbMutex() const {
+QRecursiveMutex* U2Dbi::getDbMutex() const {
     return nullptr;
 }
 
