@@ -461,10 +461,10 @@ static QString getAlignmentTip(const QString& ref, const QList<U2CigarToken>& to
     QList<int> mismatchPositions;
     for (const U2CigarToken& t : qAsConst(tokens)) {
         if (t.op == U2CigarOp_M) {
-            alignmentTip += ref.midRef(cigarPos, t.count);
+            alignmentTip += ref.mid(cigarPos, t.count);
             cigarPos += t.count;
         } else if (t.op == U2CigarOp_X) {
-            alignmentTip += ref.midRef(cigarPos, t.count);
+            alignmentTip += ref.mid(cigarPos, t.count);
             mismatchPositions.append(cigarPos);
             cigarPos += t.count;
         } else if (t.op == U2CigarOp_I) {
