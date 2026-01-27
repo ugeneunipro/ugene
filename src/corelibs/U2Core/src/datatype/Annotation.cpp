@@ -555,7 +555,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData& data, int maxRo
         U2OpStatus2Log os;
         QByteArray seqVal = U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, nullptr, data->isJoin(), os).join("^");
         QByteArray aminoVal = os.hasError() || aminoTT == nullptr
-                                  ? ""
+                                  ? QByteArray()
                                   : U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, aminoTT, data->isJoin(), os).join("^");
         if (!os.hasError() && seqVal.length() > 0) {
             if (!tip.isEmpty()) {
