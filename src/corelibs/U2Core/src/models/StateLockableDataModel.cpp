@@ -335,38 +335,38 @@ QList<StateLock*> StateLockableTreeItem::findLocks(StateLockableTreeItemBranchFl
     return res;
 }
 
-StateLocker::StateLocker(StateLockableItem* _lockableItem, const QString& stateLockUserDesc)
+StateGuard::StateGuard(StateLockableItem* _lockableItem, const QString& stateLockUserDesc)
     : lockableItem(_lockableItem),
       stateLock(new StateLock(stateLockUserDesc)) {
 }
 
-StateLocker::~StateLocker() {
+StateGuard::~StateGuard() {
     CHECK(!stateLock.isNull() && !lockableItem.isNull(), );
     SAFE_POINT(!lockableItem->getStateLocks().contains(stateLock), "Should call unlock first", );
 
     delete stateLock;
 }
 
-void StateLocker::lock() {
+void StateGuard::lock() {
     SAFE_POINT_NN(stateLock, );
     SAFE_POINT_NN(lockableItem, );
 
     lockableItem->lockState(stateLock);
 }
 
-void StateLocker::unlock() {
+void StateGuard::unlock() {
     SAFE_POINT_NN(stateLock, );
     SAFE_POINT_NN(lockableItem, );
 
     lockableItem->unlockState(stateLock);
 }
 
-StateLockerGuard::StateLockerGuard(StateLockableItem* lockableItem, const QString& stateLockUserDesc)
+StateLocker::StateLocker(StateLockableItem* lockableItem, const QString& stateLockUserDesc)
     : stateLocker(lockableItem, stateLockUserDesc) {
     stateLocker.lock();
 }
 
-StateLockerGuard::~StateLockerGuard() {
+StateLocker::~StateLocker() {
     stateLocker.unlock();
 }
 

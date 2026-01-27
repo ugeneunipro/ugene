@@ -52,7 +52,7 @@ private:
     QStringList originalRowOrder;
     Task* extractSequences = nullptr;
     QString extractedSequencesDirUrl;
-    StateLocker locker;
+    StateGuard locker;
     QString algorithmId;
 };
 

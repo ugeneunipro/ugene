@@ -82,7 +82,7 @@ private:
     const QString url;
     const DocumentFormatId formatId;
 
-    StateLocker locker;
+    StateGuard locker;
     CloneObjectTask* cloneTask;
 };
 
