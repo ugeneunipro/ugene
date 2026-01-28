@@ -70,7 +70,7 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool 
         }
         if (save) {
             GUrl url = doc->getURL();
-            if (!FileAndDirectoryUtils::isNoWritePermission(url)) {
+            if (FileAndDirectoryUtils::isNoWritePermission(url)) {
                 url = chooseAnotherUrl(doc);
                 if (!url.isEmpty()) {
                     if (saveAndOpenFlag == SavedNewDoc_Open) {

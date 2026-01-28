@@ -68,7 +68,7 @@ void SaveDocumentTask::addFlag(SaveDocFlag f) {
 }
 
 void SaveDocumentTask::prepare() {
-    if (!FileAndDirectoryUtils::isNoWritePermission(url)) {
+    if (FileAndDirectoryUtils::isNoWritePermission(url)) {
         stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
         return;
     }
