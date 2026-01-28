@@ -46,7 +46,7 @@ protected:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MsaObject* originalMsaObject = nullptr;
+    QPointer<MsaObject> originalMsaObject;
     MsaObject* msaObject = nullptr;
     const QSet<qint64> rowsToAlignIds;
     QStringList originalRowOrder;

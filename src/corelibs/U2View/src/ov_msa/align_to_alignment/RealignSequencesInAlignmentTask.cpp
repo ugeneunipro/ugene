@@ -83,7 +83,9 @@ RealignSequencesInAlignmentTask::~RealignSequencesInAlignmentTask() {
 }
 
 U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
-    locker.unlock();
+    if (!originalMsaObject.isNull()) {
+        locker.unlock();
+    }
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
     msaObject->sortRowsByList(originalRowOrder);
