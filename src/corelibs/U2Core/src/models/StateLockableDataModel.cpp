@@ -335,17 +335,39 @@ QList<StateLock*> StateLockableTreeItem::findLocks(StateLockableTreeItemBranchFl
     return res;
 }
 
-StateLocker::StateLocker(StateLockableItem* lockableItem, StateLock* lock)
-    : lockableItem(lockableItem),
-      lock(lock == nullptr ? lock = new StateLock() : lock) {
+StateLockerOnCall::StateLockerOnCall(StateLockableItem* _lockableItem, const QString& stateLockUserDesc)
+    : lockableItem(_lockableItem),
+      stateLock(new StateLock(stateLockUserDesc)) {
+}
+
+StateLockerOnCall::~StateLockerOnCall() {
+    CHECK(!stateLock.isNull() && !lockableItem.isNull(), );
+    SAFE_POINT(!lockableItem->getStateLocks().contains(stateLock), "Should call unlock first", );
+
+    delete stateLock;
+}
+
+void StateLockerOnCall::lock() {
+    SAFE_POINT_NN(stateLock, );
     SAFE_POINT_NN(lockableItem, );
-    SAFE_POINT_NN(lock, );
-    lockableItem->lockState(lock);
+
+    lockableItem->lockState(stateLock);
+}
+
+void StateLockerOnCall::unlock() {
+    SAFE_POINT_NN(stateLock, );
+    SAFE_POINT_NN(lockableItem, );
+
+    lockableItem->unlockState(stateLock);
+}
+
+StateLocker::StateLocker(StateLockableItem* lockableItem, const QString& stateLockUserDesc)
+    : stateLocker(lockableItem, stateLockUserDesc) {
+    stateLocker.lock();
 }
 
 StateLocker::~StateLocker() {
-    lockableItem->unlockState(lock);
-    delete lock;
+    stateLocker.unlock();
 }
 
 }  // namespace U2

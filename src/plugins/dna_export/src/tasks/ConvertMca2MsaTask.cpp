@@ -31,7 +31,8 @@ namespace U2 {
 ConvertMca2MsaTask::ConvertMca2MsaTask(MsaObject* mcaObject, bool includeReference)
     : Task(tr("Convert MCA to MSA task"), TaskFlag_None),
       mcaObject(mcaObject),
-      includeReference(includeReference) {
+      includeReference(includeReference),
+      locker(StateLockerOnCall(mcaObject)) {
     SAFE_POINT_EXT(mcaObject != nullptr, setError(L10N::nullPointerError("MCA object")), );
 }
 
@@ -40,7 +41,7 @@ Msa ConvertMca2MsaTask::getMsa() const {
 }
 
 void ConvertMca2MsaTask::prepare() {
-    locker.reset(new StateLocker(mcaObject));
+    locker.lock();
 }
 
 void ConvertMca2MsaTask::run() {
@@ -59,7 +60,7 @@ void ConvertMca2MsaTask::run() {
 }
 
 Task::ReportResult ConvertMca2MsaTask::report() {
-    locker.reset();
+    locker.unlock();
     return ReportResult_Finished;
 }
 

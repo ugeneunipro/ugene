@@ -42,16 +42,34 @@ enum StateLockFlag {
 typedef QFlags<StateLockFlag> StateLockFlags;
 
 /**
- * StateLocker takes ownership over the StackLock object.
+ * StateLockerOnCall takes ownership over the StackLock object.
+ * Should be locked and unlocked manually.
+ */
+class U2CORE_EXPORT StateLockerOnCall {
+public:
+    StateLockerOnCall(StateLockableItem* lockableItem, const QString& stateLockUserDesc = QString());
+    ~StateLockerOnCall();
+
+    // Lock object state
+    void lock();
+    // Unlock object state
+    void unlock();
+
+private:
+    QPointer<StateLockableItem> lockableItem;
+    QPointer<StateLock> stateLock;
+};
+
+/**
+ * StateLocker locks the object state on creation and unlocks it on destruction.
  */
 class U2CORE_EXPORT StateLocker {
 public:
-    StateLocker(StateLockableItem* lockableItem, StateLock* lock = nullptr);
+    StateLocker(StateLockableItem* lockableItem, const QString& stateLockUserDesc = QString());
     ~StateLocker();
 
 private:
-    StateLockableItem* lockableItem;
-    StateLock* lock;
+    StateLockerOnCall stateLocker;
 };
 
 class U2CORE_EXPORT StateLock : public QObject {
