@@ -156,6 +156,7 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MsaObject* 
 }
 
 void AddSequenceObjectsToAlignmentTask::run() {
+    CHECK_EXT(!sequenceList.isEmpty(), setError(tr("No sequences to add.")), );
     mi = AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(stateInfo, maObj, sequenceList, insertMaRowIndex, recheckNewSequenceAlphabetOnMismatch);
 }
 
