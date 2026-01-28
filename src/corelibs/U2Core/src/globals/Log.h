@@ -22,7 +22,7 @@
 #pragma once
 
 #include <QMetaType>
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <QStringList>
 #include <QTime>
 
@@ -120,7 +120,7 @@ private:
 
     QList<Logger*> loggers;
     QList<LogListener*> listeners;
-    QMutex listenerMutex;
+    QRecursiveMutex listenerMutex;
 };
 
 // TODO: support log category translation + use log category ids instead of the names in code

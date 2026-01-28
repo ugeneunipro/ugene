@@ -22,6 +22,7 @@
 #include "Annotation.h"
 
 #include <QTextDocument>
+#include <QRegExp>
 
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationTableObject.h>
@@ -461,10 +462,10 @@ static QString getAlignmentTip(const QString& ref, const QList<U2CigarToken>& to
     QList<int> mismatchPositions;
     for (const U2CigarToken& t : qAsConst(tokens)) {
         if (t.op == U2CigarOp_M) {
-            alignmentTip += ref.midRef(cigarPos, t.count);
+            alignmentTip += ref.mid(cigarPos, t.count);
             cigarPos += t.count;
         } else if (t.op == U2CigarOp_X) {
-            alignmentTip += ref.midRef(cigarPos, t.count);
+            alignmentTip += ref.mid(cigarPos, t.count);
             mismatchPositions.append(cigarPos);
             cigarPos += t.count;
         } else if (t.op == U2CigarOp_I) {
@@ -554,7 +555,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData& data, int maxRo
         U2OpStatus2Log os;
         QByteArray seqVal = U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, nullptr, data->isJoin(), os).join("^");
         QByteArray aminoVal = os.hasError() || aminoTT == nullptr
-                                  ? ""
+                                  ? QByteArray()
                                   : U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, aminoTT, data->isJoin(), os).join("^");
         if (!os.hasError() && seqVal.length() > 0) {
             if (!tip.isEmpty()) {

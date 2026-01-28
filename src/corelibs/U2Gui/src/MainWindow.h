@@ -139,9 +139,9 @@ public:
 
     virtual void setNewStyle(const QString& style, int colorThemeIndex) = 0;
 
-    static constexpr char* ICON_PATH_PROPERTY_NAME = "icon-path";
-    static constexpr char* MOVIE_PATH_PROPERTY_NAME = "icon-path-movie";
-    static constexpr char* WINDOWS_ICON_PATH_PROPERTY_NAME = "icon-path-movie";
+    static constexpr const char* ICON_PATH_PROPERTY_NAME = "icon-path";
+    static constexpr const char* MOVIE_PATH_PROPERTY_NAME = "icon-path-movie";
+    static constexpr const char* WINDOWS_ICON_PATH_PROPERTY_NAME = "icon-path-movie";
     static constexpr int PIXMAP_SIZE = 16;
 
 signals:

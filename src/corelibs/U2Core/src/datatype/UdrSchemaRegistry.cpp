@@ -28,10 +28,6 @@
 
 namespace U2 {
 
-UdrSchemaRegistry::UdrSchemaRegistry()
-    : mutex(QMutex::Recursive) {
-}
-
 UdrSchemaRegistry::~UdrSchemaRegistry() {
     qDeleteAll(schemas.values());
 }

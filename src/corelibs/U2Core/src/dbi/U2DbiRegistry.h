@@ -22,7 +22,7 @@
 #pragma once
 
 #include <QHash>
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <QTimer>
 
 #include <U2Core/U2Dbi.h>
@@ -104,7 +104,7 @@ private:
     QHash<U2DbiFactoryId, U2DbiFactory*> factories;
     U2DbiPool* pool;
     QList<TmpDbiRef> tmpDbis;
-    QMutex lock;
+    QRecursiveMutex lock;
 
     /** this connection is opened during the whole ugene session*/
     DbiConnection* sessionDbiConnection;

@@ -42,7 +42,7 @@ namespace U2 {
 static const QString SESSION_TMP_DBI_ALIAS("session");
 
 U2DbiRegistry::U2DbiRegistry(QObject* parent)
-    : QObject(parent), lock(QMutex::Recursive) {
+    : QObject(parent) {
     pool = new U2DbiPool(this);
     sessionDbiConnection = nullptr;
     sessionDbiInitDone = false;

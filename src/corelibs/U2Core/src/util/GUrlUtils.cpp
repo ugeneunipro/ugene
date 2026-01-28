@@ -22,6 +22,7 @@
 #include "GUrlUtils.h"
 
 #include <QDir>
+#include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -71,7 +72,7 @@ GUrl GUrlUtils::ensureFileExt(const GUrl& url, const QStringList& typeExt) {
 }
 
 bool GUrlUtils::containSpaces(const QString& string) {
-    return string.contains(QRegExp("\\s"));
+    return string.contains(QRegularExpression("\\s"));
 }
 
 GUrl GUrlUtils::changeFileExt(const GUrl& url, const DocumentFormatId& newFormatId) {
@@ -351,7 +352,7 @@ QString GUrlUtils::getDefaultDataPath() {
 }
 
 QString GUrlUtils::getQuotedString(const QString& inString) {
-    if (inString.contains(QRegExp("\\s"))) {
+    if (inString.contains(QRegularExpression("\\s"))) {
         return "\"" + inString + "\"";
     }
     return inString;
@@ -454,8 +455,8 @@ QString GUrlUtils::getPairedFastqFilesBaseName(const QString& sourceFileUrl, boo
 
 QString GUrlUtils::fixFileName(const QString& fileName) {
     QString result = fileName;
-    result.replace(QRegExp("[^0-9a-zA-Z._\\-]"), "_");
-    result.replace(QRegExp("_+"), "_");
+    result.replace(QRegularExpression("[^0-9a-zA-Z._\\-]"), "_");
+    result.replace(QRegularExpression("_+"), "_");
 
     // Truncate long file names a bit more to allow suffix adjustments (rolling) later.
     result.truncate(MAX_OS_FILE_NAME_LENGTH - 50);

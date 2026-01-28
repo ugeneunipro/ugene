@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QBitArray>
+#include <QIODevice>
 #include <QObject>
 #include <QTextStream>
 

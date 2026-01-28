@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QDir>
+#include <QRegExp>
 
 #include <U2Core/global.h>
 

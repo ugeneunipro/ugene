@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <QMutex>
+#include <QRecursiveMutex>
 
 #include <U2Core/UdrSchema.h>
 
@@ -30,7 +30,7 @@ namespace U2 {
 class U2CORE_EXPORT UdrSchemaRegistry {
     Q_DISABLE_COPY(UdrSchemaRegistry)
 public:
-    UdrSchemaRegistry();
+    UdrSchemaRegistry() = default;
     ~UdrSchemaRegistry();
 
     void registerSchema(const UdrSchema* schema, U2OpStatus& os);
@@ -44,7 +44,7 @@ public:
     static bool isCorrectName(const QByteArray& name);
 
 private:
-    mutable QMutex mutex;
+    mutable QRecursiveMutex mutex;
     QHash<UdrSchemaId, const UdrSchema*> schemas;
 };
 

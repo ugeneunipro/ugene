@@ -181,7 +181,7 @@ QChar IOAdapterReader::readChar(U2OpStatus& os) {
     if (unreadCharsBuffer.isEmpty()) {
         stream >> ch;
     } else {
-        SAFE_POINT_EXT(unreadCharsBufferPos < unreadCharsBuffer.size(), os.setError(L10N::internalError()), 0);
+        SAFE_POINT_EXT(unreadCharsBufferPos < unreadCharsBuffer.size(), os.setError(L10N::internalError()), '0');
         ch = unreadCharsBuffer[unreadCharsBufferPos];
         unreadCharsBufferPos++;
         if (unreadCharsBufferPos == unreadCharsBuffer.length()) {

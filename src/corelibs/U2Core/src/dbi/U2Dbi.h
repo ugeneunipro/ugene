@@ -23,6 +23,7 @@
 
 #include <QHash>
 #include <QSet>
+#include <QRecursiveMutex>
 
 #include <U2Core/GUrl.h>
 #include <U2Core/U2Assembly.h>
@@ -352,7 +353,7 @@ public:
     /** Returns a mutex that synchronizes access to internal database handler.
         This method is supposed to be used by caching DBIs
         in order to prevent cache inconsistency. */
-    virtual QMutex* getDbMutex() const;
+    virtual QRecursiveMutex* getDbMutex() const;
 
     virtual bool isReadOnly() const = 0;
 

@@ -22,6 +22,7 @@
 #include "U1AnnotationUtils.h"
 
 #include <QStringBuilder>
+#include <QRegExp>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
