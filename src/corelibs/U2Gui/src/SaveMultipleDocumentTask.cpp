@@ -70,7 +70,7 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool 
         }
         if (save) {
             GUrl url = doc->getURL();
-            if (!FileAndDirectoryUtils::canWriteToPath(url.dirPath())) {
+            if (!FileAndDirectoryUtils::isNoWritePermission(url)) {
                 url = chooseAnotherUrl(doc);
                 if (!url.isEmpty()) {
                     if (saveAndOpenFlag == SavedNewDoc_Open) {
@@ -133,7 +133,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document* doc) {
             return GUrl();
         }
 
-    } while (!FileAndDirectoryUtils::canWriteToPath(url.dirPath()));
+    } while (FileAndDirectoryUtils::isNoWritePermission(url));
 
     return url;
 }
