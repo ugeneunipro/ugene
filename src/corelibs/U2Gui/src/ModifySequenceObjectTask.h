@@ -30,7 +30,7 @@ namespace U2 {
 
 class Document;
 
-class U2CORE_EXPORT ModifySequenceContentTask : public Task {
+class U2GUI_EXPORT ModifySequenceContentTask : public Task {
     Q_OBJECT
 public:
     ModifySequenceContentTask(const DocumentFormatId& dfId, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, bool recalculateQualifiers = false, U1AnnotationUtils::AnnotationStrategyForResize _str = U1AnnotationUtils::AnnotationStrategyForResize_Resize, const GUrl& url = GUrl(), bool mergeAnnotations = false);

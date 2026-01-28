@@ -21,7 +21,6 @@
 
 #include "ModifySequenceObjectTask.h"
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -40,6 +39,8 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
+
+#include <U2Gui/AddDocumentTask.h>
 
 namespace U2 {
 

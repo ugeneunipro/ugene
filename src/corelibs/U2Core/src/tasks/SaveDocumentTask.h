@@ -100,17 +100,6 @@ enum SavedNewDocFlag {
     SavedNewDoc_DoNotOpen = false
 };
 
-class U2CORE_EXPORT SaveMultipleDocuments : public Task {
-    Q_OBJECT
-public:
-    SaveMultipleDocuments(const QList<Document*>& docs, bool askBeforeSave, SavedNewDocFlag openFlag = SavedNewDoc_DoNotOpen);
-
-    static QList<Document*> findModifiedDocuments(const QList<Document*>& docs);
-
-private:
-    GUrl chooseAnotherUrl(Document* doc);
-};
-
 class U2CORE_EXPORT SaveCopyAndAddToProjectTask : public Task {
     Q_OBJECT
 public:

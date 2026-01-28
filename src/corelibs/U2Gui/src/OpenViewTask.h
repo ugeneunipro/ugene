@@ -21,9 +21,10 @@
 
 #pragma once
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/Task.h>
+
+#include <U2Gui/AddDocumentTask.h>
 
 namespace U2 {
 

@@ -26,7 +26,7 @@
 #include <U2Core/GHints.h>
 #include <U2Core/ProjectModel.h>
 
-#include "SaveDocumentTask.h"
+#include <U2Gui/SaveMultipleDocumentTask.h>
 
 namespace U2 {
 

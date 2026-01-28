@@ -29,7 +29,6 @@
 #include <QMessageBox>
 #include <QTemporaryFile>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/AssemblyObject.h>
@@ -53,6 +52,7 @@
 
 #include <U2Formats/SAMFormat.h>
 
+#include <U2Gui/AddDocumentTask.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/OpenViewTask.h>

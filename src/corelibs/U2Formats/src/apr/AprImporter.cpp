@@ -31,7 +31,6 @@
 #include <U2Core/MsaObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/RemoveDocumentTask.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -43,6 +42,7 @@
 
 #include <U2Gui/ImportWidget.h>
 #include <U2Gui/ProjectView.h>
+#include <U2Gui/RemoveDocumentTask.h>
 
 namespace U2 {
 

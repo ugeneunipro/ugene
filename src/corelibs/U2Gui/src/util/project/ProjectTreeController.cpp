@@ -42,7 +42,6 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/RemoveDocumentTask.h>
 #include <U2Core/ResourceTracker.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -56,6 +55,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/ProjectViewModel.h>
+#include <U2Gui/RemoveDocumentTask.h>
 #include <U2Gui/UnloadDocumentTask.h>
 
 #include "EditableTreeView.h"
@@ -500,7 +500,7 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint&) {
     }
 
     // User has no 'unload' action anymore. Keeping it only for tests for a while: until tests are removed or rewritten.
-    if (unloadSelectedDocumentsAction->isEnabled() && isGuiTestMode()) {
+    if (unloadSelectedDocumentsAction->isEnabled()) {
         m.addAction(unloadSelectedDocumentsAction);
     }
 

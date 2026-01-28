@@ -227,6 +227,13 @@ NP<FILE> FileAndDirectoryUtils::openFile(const QString& fileUrl, const QString& 
 #endif
 }
 
+bool FileAndDirectoryUtils::isNoWritePermission(GUrl& url) {
+    if (!QFile::exists(url.getURLString())) {
+        return !FileAndDirectoryUtils::isDirectoryWritable(url.dirPath());
+    }
+    return !QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser);
+}
+
 bool FileAndDirectoryUtils::createWritableDirIfNotExists(const QString& dirPath) {
     QDir dir(dirPath);
     if (!dir.exists()) {

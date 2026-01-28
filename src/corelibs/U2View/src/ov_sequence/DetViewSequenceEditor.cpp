@@ -29,7 +29,6 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
-#include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -38,6 +37,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/ModifySequenceObjectTask.h>
 
 #include <U2View/ADVSequenceWidget.h>
 

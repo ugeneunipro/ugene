@@ -27,10 +27,10 @@
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/ModifySequenceObjectTask.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2Test/GTestFrameworkComponents.h>

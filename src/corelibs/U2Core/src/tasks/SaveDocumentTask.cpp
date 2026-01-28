@@ -22,7 +22,6 @@
 #include "SaveDocumentTask.h"
 
 #include <QApplication>
-#include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -43,13 +42,6 @@
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
-
-static bool isNoWritePermission(GUrl& url) {
-    if (!QFile::exists(url.getURLString())) {
-        return !FileAndDirectoryUtils::isDirectoryWritable(url.dirPath());
-    }
-    return !QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser);
-}
 
 SaveDocumentTask::SaveDocumentTask(Document* _doc, IOAdapterFactory* _io, const GUrl& _url, SaveDocFlags _flags)
     : Task(tr("Save document"), TaskFlag_None), doc(_doc), iof(_io), url(_url), flags(_flags) {
@@ -76,7 +68,7 @@ void SaveDocumentTask::addFlag(SaveDocFlag f) {
 }
 
 void SaveDocumentTask::prepare() {
-    if (isNoWritePermission(url)) {
+    if (FileAndDirectoryUtils::isNoWritePermission(url)) {
         stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
         return;
     }
@@ -206,114 +198,6 @@ QVariantMap SaveDocumentTask::getOpenDocumentWithProjectHints() const {
 /** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
 void SaveDocumentTask::setOpenDocumentWithProjectHints(const QVariantMap& hints) {
     openDocumentWithProjectHints = hints;
-}
-
-//////////////////////////////////////////////////////////////////////////
-/// save multiple
-
-SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool askBeforeSave, SavedNewDocFlag saveAndOpenFlag)
-    : Task(tr("Save multiple documents"), TaskFlags_NR_FOSE_COSC) {
-    bool saveAll = false;
-    foreach (Document* doc, docs) {
-        bool save = true;
-        if (askBeforeSave) {
-            QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(QMessageBox::Yes) | QMessageBox::No | QMessageBox::Cancel;
-            if (docs.size() > 1) {
-                buttons = buttons | QMessageBox::YesToAll | QMessageBox::NoToAll;
-            }
-
-            QObjectScopedPointer<QMessageBox> messageBox(new QMessageBox(QMessageBox::Question,
-                                                                         tr("Question?"),
-                                                                         tr("Save document: %1").arg(doc->getURLString()),
-                                                                         buttons,
-                                                                         QApplication::activeWindow()));
-
-            int res = saveAll ? QMessageBox::YesToAll : messageBox->exec();
-
-            if (res == QMessageBox::NoToAll) {
-                break;
-            }
-            if (res == QMessageBox::YesToAll) {
-                saveAll = true;
-            }
-            if (res == QMessageBox::No) {
-                save = false;
-            }
-            if (res == QMessageBox::Cancel) {
-                cancel();
-                break;
-            }
-        }
-        if (save) {
-            GUrl url = doc->getURL();
-            if (isNoWritePermission(url)) {
-                url = chooseAnotherUrl(doc);
-                if (!url.isEmpty()) {
-                    if (saveAndOpenFlag == SavedNewDoc_Open) {
-                        addSubTask(new SaveDocumentTask(doc, doc->getIOAdapterFactory(), url, SaveDocFlags(SaveDoc_DestroyAfter | SaveDoc_OpenAfter)));
-                    } else {
-                        addSubTask(new SaveDocumentTask(doc, doc->getIOAdapterFactory(), url));
-                    }
-                }
-            } else {
-                addSubTask(new SaveDocumentTask(doc));
-            }
-        }
-    }
-}
-
-QList<Document*> SaveMultipleDocuments::findModifiedDocuments(const QList<Document*>& docs) {
-    QList<Document*> res;
-    foreach (Document* doc, docs) {
-        if (doc->isTreeItemModified()) {
-            res.append(doc);
-        }
-    }
-    return res;
-}
-
-GUrl SaveMultipleDocuments::chooseAnotherUrl(Document* doc) {
-    GUrl url;
-    do {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setIcon(QMessageBox::Warning);
-        msgBox->setWindowTitle(U2_APP_TITLE);
-
-        msgBox->setText(tr("You have no permission to write to '%1' file.\nUGENE contains unsaved modifications.").arg(doc->getURL().fileName()));
-        msgBox->setInformativeText(tr("Do you want to save changes to another file?"));
-
-        QPushButton* saveButton = msgBox->addButton(QMessageBox::Save);
-        QPushButton* cancelButton = msgBox->addButton(QMessageBox::Cancel);
-        msgBox->setDefaultButton(saveButton);
-        msgBox->setObjectName("permissionBox");
-        msgBox->exec();
-        CHECK(!msgBox.isNull(), url);
-
-        if (msgBox->clickedButton() == saveButton) {
-            QString newFileUrl = GUrlUtils::rollFileName(doc->getURLString(), "_modified_", DocumentUtils::getNewDocFileNameExcludesHint());
-            QString saveFileFilter = doc->getDocumentFormat()->getSupportedDocumentFileExtensions().join(" *.").prepend("*.");
-            auto activeWindow = qobject_cast<QWidget*>(QApplication::activeWindow());
-            QFileDialog::Options options(qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0 ? QFileDialog::DontUseNativeDialog : 0);
-            const QString fileName = QFileDialog::getSaveFileName(activeWindow, tr("Save as"), newFileUrl, saveFileFilter, 0, options);
-            if (isOsMac()) {
-                activeWindow->activateWindow();
-            }
-            if (!fileName.isEmpty()) {
-                url = fileName;
-            } else {  // Cancel in "Save as" dialog clicked
-                cancel();
-                break;
-            }
-        } else if (msgBox->clickedButton() == cancelButton) {
-            cancel();
-            break;
-        } else {
-            return GUrl();
-        }
-
-    } while (isNoWritePermission(url));
-
-    return url;
 }
 
 //////////////////////////////////////////////////////////////////////////

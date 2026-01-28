@@ -21,7 +21,6 @@
 
 #include "CAP3SupportTask.h"
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/CopyDataTask.h>
 #include <U2Core/Counter.h>
@@ -37,6 +36,7 @@
 
 #include <U2Formats/DNAQualityIOUtils.h>
 
+#include <U2Gui/AddDocumentTask.h>
 #include <U2Gui/OpenViewTask.h>
 
 #include "CAP3Support.h"

@@ -24,7 +24,6 @@
 #include <QScopedPointer>
 #include <QScriptValueIterator>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -43,6 +42,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/AddDocumentTask.h>
 #include <U2Gui/ObjectViewModel.h>
 
 #include <U2View/AnnotatedDNAView.h>
