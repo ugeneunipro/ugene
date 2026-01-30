@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,6 +54,13 @@ public:
                                    const QString& filter = QString(),
                                    const QString& selectedFilter = QString(),
                                    const QFileDialog::Options& options = {0});
+
+    // If set to true, forces the use of non-native QFileDialog even if native dialogs are available on the platform.
+    static bool FORCE_USE_NON_NATIVE_DIALOG;
+    // Root settings key.
+    // Used for detecting crashes caused by QFileDialog.
+    static QString CRASH_DETECTING_SETTINGS_ROOT;
+
 };
 
 }  // namespace U2

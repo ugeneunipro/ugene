@@ -1,0 +1,5 @@
+<!-- Valid GTF file: with semicolon in attribute value. -->
+
+<multi-test>
+    <load-document index="doc" url="gtf/semicolon_in_quotes.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
+</multi-test>

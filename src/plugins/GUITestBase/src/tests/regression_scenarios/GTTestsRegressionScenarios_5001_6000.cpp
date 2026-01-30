@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1533,7 +1533,7 @@ GUI_TEST_CLASS_DEFINITION(test_5417) {
     GTLogTracer lt;
     GTUtilsDialog::add(new PopupChooser({"Dotplot", "Save/Load", "Save"}));
     GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
-    GTMenu::showContextMenu(GTWidget::findWidget("dotplot widget"));
+    GTMenu::showContextMenu(GTWidget::findWidget("DotPlotWidget0"));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 

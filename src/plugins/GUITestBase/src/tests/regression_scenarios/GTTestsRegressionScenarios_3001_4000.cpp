@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1653,18 +1653,17 @@ GUI_TEST_CLASS_DEFINITION(test_3342) {
     GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
     const GTGlobals::FindOptions fo(false);
-    auto dotplotWgt = GTWidget::findWidget("dotplot widget", nullptr, fo);
+    GTWidget::findWidget("DotPlotWidget0", nullptr, fo);
 
     GTUtilsDialog::waitForDialog(new DotPlotFiller());
     GTWidget::click(GTWidget::findWidget("build_dotplot_action_widget"));
 
-    dotplotWgt = GTWidget::findWidget("dotplot widget");
+    GTWidget::findWidget("DotPlotWidget0");
 
     GTUtilsDialog::waitForDialog(new MessageBoxNoToAllOrNo());
     GTWidget::click(GTWidget::findWidget("exitButton"));
 
-    dotplotWgt = GTWidget::findWidget("dotplot widget", nullptr, fo);
-    CHECK_SET_ERR(dotplotWgt == nullptr, "There should be NO dotpot widget");
+    CHECK_SET_ERR(GTWidget::findWidget("DotPlotWidget0", nullptr, fo) == nullptr, "There should be NO dotpot widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3344) {

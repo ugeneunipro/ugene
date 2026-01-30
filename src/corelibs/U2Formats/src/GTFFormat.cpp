@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -374,13 +374,13 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString>& parsedAttrVa
 
         // Set the position to the next position after the space character
         pos = spaceCharIndex + 1;
-
-        int semicolonCharIndex = attributesStr.indexOf(';', pos);
-
-        if (-1 == semicolonCharIndex) {
+        int semicolonCharIndex = 0;
+        //skip separator if it inside quotes
+        do {
+            semicolonCharIndex = attributesStr.indexOf(';', pos + semicolonCharIndex);
             // There is an attribute name, but no a semicolon
-            return false;
-        }
+            CHECK(semicolonCharIndex != -1, false);
+        } while ((attributesStr.mid(pos, semicolonCharIndex - pos).count("\"")) % 2 != 0);
 
         // Skip double quotes for textual attributes
         if (('"' == attributesStr[pos]) && ('"' == attributesStr[semicolonCharIndex - 1])) {

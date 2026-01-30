@@ -82,7 +82,7 @@ bool FindEnzymesDialogSequenceView::acceptProtected() {
         ok = prevOk && ok;
     }
     if (!ok) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search in' or 'Uncut' region/location!"), QMessageBox::Ok, this);
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Select sequence region' or 'Uncut area'!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Given region or genbank location is invalid, please correct it."));
         msgBox->exec();
         CHECK(!msgBox.isNull(), false);
@@ -99,7 +99,7 @@ bool FindEnzymesDialogSequenceView::acceptProtected() {
         }
     }
     if (searchRegionsOutsideExcluded.isEmpty()) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("'Uncut' region/location fully contains 'Search in' inside it!"), QMessageBox::Ok, this);
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("'Uncut area' fully contains 'Select sequence region' inside it!"), QMessageBox::Ok, this);
         msgBox->setInformativeText(tr("Nowhere to search!"));
         msgBox->exec();
         CHECK(!msgBox.isNull(), false);

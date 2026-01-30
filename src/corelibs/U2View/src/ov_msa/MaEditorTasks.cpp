@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -110,6 +110,10 @@ void OpenMaEditorTask::loadCache() {
 }
 
 void OpenMaEditorTask::open() {
+    if (maObject.isNull()) {
+        stateInfo.setError(tr("Multiple alignment object not found"));
+        return;
+    }
     viewName = GObjectViewUtils::genUniqueViewName(maObject->getDocument(), maObject);
     uiLog.details(tr("Opening MSA editor for object: %1").arg(maObject->getGObjectName()));
 

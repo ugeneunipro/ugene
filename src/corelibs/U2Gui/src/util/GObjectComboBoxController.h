@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,6 +67,7 @@ private slots:
     void sl_onObjectAdded(GObject* o);
     void sl_onObjectRemoved(GObject* o);
     void sl_lockedStateChanged();
+    void sl_objectNameChanged();
 
 private:
     void updateCombo();

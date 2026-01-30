@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -161,6 +161,7 @@ void GObjectComboBoxController::addObject(GObject* obj) {
     assert(n == -1);
 #endif
     connect(obj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+    connect(obj, &GObject::si_nameChanged, this, &GObjectComboBoxController::sl_objectNameChanged);
     combo->addItem(obj->isUnloaded() ? unloadedObjectIcon : objectIcon, itemText(obj), QVariant::fromValue<GObjectReference>(GObjectReference(obj)));
 
     emit si_comboBoxChanged();
@@ -203,7 +204,8 @@ GObject* GObjectComboBoxController::getSelectedObject() const {
     GObjectReference r = combo->itemData(n).value<GObjectReference>();
     SAFE_POINT(r.isValid(), "GObjectReverence is invalid", nullptr);
     GObject* obj = GObjectUtils::selectObjectByReference(r, GObjectUtils::findAllObjects(UOF_LoadedAndUnloaded), UOF_LoadedAndUnloaded);
-    assert(obj != nullptr);
+    SAFE_POINT_NN(obj, nullptr);
+
     return obj;
 }
 
@@ -248,6 +250,27 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
             updateCombo();
         }
     }
+}
+
+void GObjectComboBoxController::sl_objectNameChanged() {
+    auto gObj = qobject_cast<GObject*>(sender());
+    SAFE_POINT_NN(gObj, );
+
+    auto gObjComboNewName = itemText(gObj);
+    bool found = false;
+    auto comboSize = combo->count();
+    for (int i = 0; i < comboSize; i++) {
+        GObjectReference r = combo->itemData(i).value<GObjectReference>();
+        CHECK_CONTINUE(r.entityRef == gObj->getEntityRef());
+
+        combo->setItemText(i, gObjComboNewName);
+        r.objName = gObj->getGObjectName();
+        combo->setItemData(i, QVariant::fromValue<GObjectReference>(r));
+        found = true;
+        break;
+    }
+
+    SAFE_POINT(found, "Item was not found", );
 }
 
 }  // namespace U2

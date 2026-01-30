@@ -61,7 +61,7 @@
      <property name="childrenCollapsible">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="10,1">
        <item>
         <widget class="QTreeWidget" name="tree">
@@ -189,7 +189,7 @@
       <property name="orientation">
        <enum>Qt::Orientation::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -209,16 +209,10 @@
           <item>
            <widget class="QPushButton" name="saveSelectionButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>20</height>
-             </size>
             </property>
             <property name="toolTip">
              <string>Save selected enzymes list to a text file</string>
@@ -230,12 +224,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="loadSelectionButton">
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>20</height>
-             </size>
-            </property>
             <property name="toolTip">
              <string>Hint: selection file should contain enzymes' names separtated by whitespaces or commas</string>
             </property>
@@ -277,7 +265,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">

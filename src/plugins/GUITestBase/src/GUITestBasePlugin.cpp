@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1947,13 +1947,18 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1790);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1794);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1810);
+    REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1812);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1818);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1819);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1829);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1831);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1842);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1857);
+    REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1871);
+    REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1873);
     REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1877);
+    REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1883);
+    REGISTER_TEST(GUITest_regression_scenarios_github_issues::test_1887);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

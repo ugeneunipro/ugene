@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2025 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2026 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -565,7 +565,7 @@ GUI_TEST_CLASS_DEFINITION(test_1022) {
 
     GTUtilsDialog::add(new PopupChooser({"Dotplot", "Remove"}));
     GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::No));
-    GTMenu::showContextMenu(GTWidget::findWidget("dotplot widget"));
+    GTMenu::showContextMenu(GTWidget::findWidget("DotPlotWidget0"));
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
