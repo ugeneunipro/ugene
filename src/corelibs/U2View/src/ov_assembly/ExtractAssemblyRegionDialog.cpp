@@ -29,6 +29,8 @@
 #include <U2Gui/RegionSelector.h>
 #include <U2Gui/SaveDocumentController.h>
 
+#include "AssemblyBrowser.h"
+
 namespace U2 {
 
 ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget* p, ExtractAssemblyRegionTaskSettings* settings)
@@ -50,6 +52,11 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget* p, ExtractAsse
 
     setMaximumHeight(layout()->minimumSize().height());
     connect(regionSelector, SIGNAL(si_regionChanged(const U2Region&)), SLOT(sl_regionChanged(const U2Region&)));
+
+    if (qEnvironmentVariableIsSet(AssemblyBrowser::ONLY_ASSEMBLY_BROWSER)) {
+        addToProjectCheckBox->setChecked(false);
+        addToProjectCheckBox->hide();
+    }
 }
 
 void ExtractAssemblyRegionDialog::sl_regionChanged(const U2Region& newRegion) {

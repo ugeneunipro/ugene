@@ -34,6 +34,8 @@
 #include <U2Gui/RegionSelector.h>
 #include <U2Gui/SaveDocumentController.h>
 
+#include "AssemblyBrowser.h"
+
 namespace U2 {
 
 ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget* p, const ExportConsensusVariationsTaskSettings& settings_, const U2Region& visibleRegion)
@@ -61,6 +63,11 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget* p, con
     addToProjectCheckBox->setChecked(settings.addToProject);
     regionSelector->setCustomRegion(settings.region);
     keepGapsCheckBox->setChecked(settings.keepGaps);
+
+    if (qEnvironmentVariableIsSet(AssemblyBrowser::ONLY_ASSEMBLY_BROWSER)) {
+        addToProjectCheckBox->setChecked(false);
+        addToProjectCheckBox->hide();
+    }
 
     QList<QString> algos = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmIds();
     algorithmComboBox->addItems(algos);

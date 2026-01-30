@@ -195,6 +195,11 @@ QByteArray AssemblyReferenceArea::getSequenceRegion(U2OpStatus& os) {
 }
 
 void AssemblyReferenceArea::mousePressEvent(QMouseEvent* e) {
+    if (qEnvironmentVariableIsSet(AssemblyBrowser::ONLY_ASSEMBLY_BROWSER)) {
+        AssemblySequenceArea::mousePressEvent(e);
+        return;
+    }
+
     if (e->button() == Qt::RightButton) {
         referenceAreaMenu->exec(QCursor::pos());
     }
