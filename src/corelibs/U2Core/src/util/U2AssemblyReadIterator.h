@@ -35,11 +35,11 @@ namespace U2 {
  *
  * Handling of CIGAR operations:
  * 1. Hard clips (H) and padding (P) operations are silently skipped.
- * 2. Soft clips (S) and insertions (I) do present in read sequence. So this operations
+ * 2. Soft clips (S) do present in read sequence. So this operations
  *    are skipped together with the corresponding letters of the sequence.
  * 3. Deletions (D) and skipped regions (N) are 'virtual letters'. Iterator returns gap
  *    symbol when iterating through them.
- * 4. Matches/mismatches (M/=/X) are treated normally.
+ * 4. Matches/mismatches/insertions (M/=/X) are treated normally.
  */
 class U2CORE_EXPORT U2AssemblyReadIterator {
 public:
@@ -59,16 +59,18 @@ public:
      * Returns next letter for match/mismatch or gap symbol for deletion/skip.
      */
     char nextLetter();
+    
+    int getOffsetInRead() const;
 
 private:
     void advanceToNextToken();
 
     void skip();
-    void skipInsertion();
+    void skipSoftClipping();
     void skipPaddingAndHardClip();
 
     bool isMatch() const;
-    bool isInsertion() const;
+    bool isSoftClipping() const;
     bool isDeletion() const;
     bool isPaddingOrHardClip() const;
 

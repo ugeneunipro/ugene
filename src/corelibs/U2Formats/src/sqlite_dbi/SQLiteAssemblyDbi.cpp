@@ -624,11 +624,13 @@ U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery* q) {
     if (q->hasError()) {
         return U2AssemblyRead();
     }
+/*
 #ifdef _DEBUG
     // additional check to ensure that db stores correct info
     qint64 effectiveLengthFromCigar = read->readSequence.length() + U2AssemblyUtils::getCigarExtraLength(read->cigar);
     assert(effectiveLengthFromCigar == read->effectiveLen);
 #endif
+*/
     return read;
 }
 

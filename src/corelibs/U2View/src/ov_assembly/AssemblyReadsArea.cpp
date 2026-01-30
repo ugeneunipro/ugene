@@ -422,9 +422,24 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
     }
 
     int totalBasesPainted = 0;
+    QListIterator<U2AssemblyRead> it(cachedReads.data);
+    //Gather isertionsInfo
+    //pos, length map
+    QMap<quint64, quint64> insertionsMap;
+    while (it.hasNext()) {
+        const U2AssemblyRead& read = it.next();
+        quint64 pos = read->leftmostPos;
+        for (const U2CigarToken& tok : qAsConst(read->cigar)) {
+            CHECK_CONTINUE(tok.op != U2CigarOp_S)
+            pos += tok.count;
+            if (tok.op == U2CigarOp_I && insertionsMap.contains(pos) && tok.count > insertionsMap[pos]) {
+                insertionsMap[pos] = tok.count;
+            }
+        }
+    }
 
     // 2. Iterate over all visible reads and draw them
-    QListIterator<U2AssemblyRead> it(cachedReads.data);
+    it.toFront();
     while (it.hasNext()) {
         GTIMER(c3, t3, "AssemblyReadsArea::drawReads -> cycle through all reads");
 
@@ -438,7 +453,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
             }
         }
         QByteArray readSequence = read->readSequence;
-        U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLengthWithInsertions(read));
+        U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLength(read));
 
         U2Region readVisibleBases = readBases.intersect(cachedReads.visibleBases);
         U2Region xToDrawRegion(readVisibleBases.startPos - cachedReads.xOffsetInAssembly, readVisibleBases.length);
@@ -473,7 +488,8 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                 for (int x_pix_offset = 0; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; x_pix_offset += cachedReads.letterWidth) {
                     GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
                     char c = cigarIt.nextLetter();
-
+                    if (cigarIt.getoffsetInRead()) {
+                    }
                     QPoint cellStart(x_pix_start + x_pix_offset, y_pix_start);
                     QPixmap cellImage;
                     if (!referenceRegion.isEmpty()) {

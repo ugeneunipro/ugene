@@ -74,8 +74,6 @@ public:
     /** Returns read effective length: sequence length + CIGAR */
     static qint64 getEffectiveReadLength(const U2AssemblyRead& read);
 
-    static qint64 getEffectiveReadLengthWithInsertions(const U2AssemblyRead& read);
-
     /**
         Serializes Coverage Statistics to byte array for storing in dbi attribute
     */

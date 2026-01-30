@@ -65,7 +65,7 @@ bool U2AssemblyReadIterator::hasNext() const {
         int i = offsetInCigar + 1;
         for (; i < cigar.size(); ++i) {
             U2CigarOp op = cigar.at(i).op;
-            if (U2CigarOp_I != op && U2CigarOp_S != op && U2CigarOp_P != op && U2CigarOp_H != op) {
+            if (U2CigarOp_S != op && U2CigarOp_P != op && U2CigarOp_H != op) {
                 break;
             }
         }
@@ -93,6 +93,10 @@ char U2AssemblyReadIterator::nextLetter() {
     return c;
 }
 
+int U2AssemblyReadIterator::getOffsetInRead() const {
+    return offsetInRead;
+}
+
 void U2AssemblyReadIterator::advanceToNextToken() {
     offsetInToken = 0;
     offsetInCigar++;
@@ -101,13 +105,12 @@ void U2AssemblyReadIterator::advanceToNextToken() {
 
 bool U2AssemblyReadIterator::isMatch() const {
     U2CigarOp op = cigar.at(offsetInCigar).op;
-    return U2CigarOp_M == op || U2CigarOp_X == op || U2CigarOp_EQ == op;
+    return U2CigarOp_M == op || U2CigarOp_X == op || U2CigarOp_EQ == op || U2CigarOp_I == op;
 }
 
-bool U2AssemblyReadIterator::isInsertion() const {
-    U2CigarOp op = cigar.at(offsetInCigar).op;
-    return U2CigarOp_I == op || U2CigarOp_S == op;
-}
+bool U2AssemblyReadIterator::isSoftClipping() const {
+    return U2CigarOp_S == cigar.at(offsetInCigar).op;
+};
 
 bool U2AssemblyReadIterator::isDeletion() const {
     U2CigarOp op = cigar.at(offsetInCigar).op;
@@ -121,14 +124,14 @@ bool U2AssemblyReadIterator::isPaddingOrHardClip() const {
 
 void U2AssemblyReadIterator::skip() {
     while (hasNext() && !isMatch() && !isDeletion()) {
-        //skipInsertion();
+        skipSoftClipping();
         skipPaddingAndHardClip();
     }
 }
 
 // skip tokens and corresponding letters
-void U2AssemblyReadIterator::skipInsertion() {
-    while (hasNext() && isInsertion()) {
+void U2AssemblyReadIterator::skipSoftClipping() {
+    while (hasNext() && isSoftClipping()) {
         offsetInRead += cigar.at(offsetInCigar).count;
         offsetInCigar++;
     }
