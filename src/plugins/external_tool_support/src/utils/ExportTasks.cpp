@@ -127,14 +127,14 @@ SaveSequenceTask::SaveSequenceTask(const QPointer<U2SequenceObject>& sequence, c
       sequence(sequence),
       url(url),
       formatId(formatId),
-      locker(nullptr),
+      locker(sequence),
       cloneTask(nullptr) {
     SAFE_POINT_EXT(sequence != nullptr, setError("Sequence is NULL"), );
     SAFE_POINT_EXT(!url.isEmpty(), setError("URL is empty"), );
 }
 
 void SaveSequenceTask::prepare() {
-    locker = new StateLocker(sequence);
+    locker.lock();
     cloneTask = new CloneObjectTask(sequence, AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo), U2ObjectDbi::ROOT_FOLDER);
     CHECK_OP(stateInfo, );
     cloneTask->setSubtaskProgressWeight(50);
@@ -145,8 +145,7 @@ QList<Task*> SaveSequenceTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
 
     if (subTask == cloneTask) {
-        delete locker;
-        locker = nullptr;
+        locker.unlock();
     }
 
     CHECK_OP(stateInfo, result);

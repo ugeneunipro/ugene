@@ -75,6 +75,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
@@ -485,7 +486,7 @@ GUI_TEST_CLASS_DEFINITION(test_1883) {
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasError("Multiple alignment object not found"), "Expected message is not found");    
 }
-
+  
 GUI_TEST_CLASS_DEFINITION(test_1887) {
     /*
      * 1. Open a sequence.
@@ -519,6 +520,25 @@ GUI_TEST_CLASS_DEFINITION(test_1887) {
     GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new FillGroupName()));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
     lt.assertNoErrors();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_1896) {
+    // Open big.aln
+    // Select sequence "seq1"
+    // Click "Realign sequence(s) to other sequences" -> "Align selected sequences to alignment with MAFFT"
+    // Remove big.aln from the project
+    // The error notification appeared: The multiple alignment is no more available.
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "big.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsMsaEditor::selectRowsByName({"seq1"});
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Align selected sequences to alignment with MAFFT"}, GTGlobals::UseMouse, Qt::MatchFlag::MatchContains));
+    GTWidget::click(GTAction::button("align_selected_sequences_to_alignment"));
+
+    GTUtilsProjectTreeView::click("big.aln");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsNotifications::checkNotificationDialogText("The multiple alignment is no more available.");
 }
 
 }  // namespace GUITest_regression_scenarios_github_issues
