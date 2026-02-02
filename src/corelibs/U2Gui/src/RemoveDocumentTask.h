@@ -21,41 +21,32 @@
 
 #pragma once
 
-#include <U2Core/DocumentModel.h>
+#include <QPointer>
+
 #include <U2Core/Task.h>
 
 namespace U2 {
 
 class Document;
-class DocumentProviderTask;
+class Project;
+class StateLock;
 
-class AddDocumentTaskConfig {
-public:
-    AddDocumentTaskConfig()
-        : createProjectIfNeeded(true), unloadExistingDocument(false) {
-    }
-
-    bool createProjectIfNeeded;
-    bool unloadExistingDocument;
-};
-/**  Adds document to active project. Waits for locks if any */
-class U2CORE_EXPORT AddDocumentTask : public Task {
+class U2GUI_EXPORT RemoveMultipleDocumentsTask : public Task {
     Q_OBJECT
 public:
-    AddDocumentTask(Document* d, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
-    AddDocumentTask(DocumentProviderTask* dp, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
+    RemoveMultipleDocumentsTask(Project* p, const QList<Document*>& docs, bool saveModifiedDocs, bool useGUI);
+    ~RemoveMultipleDocumentsTask();
+
+    void prepare() override;
 
     ReportResult report() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask) override;
-    Document* getDocument() {
-        return document;
-    }
-
 private:
-    Document* document;
-    DocumentProviderTask* dpt;
-    AddDocumentTaskConfig conf;
+    QPointer<Project> p;
+    bool saveModifiedDocs;
+    bool useGUI;
+    StateLock* lock;
+    QList<QPointer<Document>> docPtrs;
 };
 
 }  // namespace U2

@@ -24,7 +24,6 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/IOAdapter.h>
@@ -45,6 +44,7 @@
 #include <U2Core/U2SqlHelpers.h>
 #include <U2Core/VariantTrackObject.h>
 
+#include <U2Gui/AddDocumentTask.h>
 #include <U2Gui/ObjectViewTasks.h>
 
 namespace U2 {
@@ -659,7 +659,7 @@ U2SequenceObject* AssemblyModel::getRefObj() const {
 }
 
 bool AssemblyModel::isDbLocked(int timeout) const {
-    QMutex* mutex = dbiHandle.dbi->getDbMutex();
+    QRecursiveMutex* mutex = dbiHandle.dbi->getDbMutex();
     CHECK(mutex != nullptr, false);
     if (mutex->tryLock(timeout)) {
         mutex->unlock();

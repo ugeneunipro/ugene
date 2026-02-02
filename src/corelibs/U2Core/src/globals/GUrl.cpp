@@ -23,6 +23,7 @@
 
 #include <QDataStream>
 #include <QDir>
+#include <QRegularExpression>
 
 #include "U2SafePoints.h"
 
@@ -110,7 +111,7 @@ GUrlType GUrl::getURLType(const QString& rawUrl) {
         result = GUrl_Http;
     } else if (rawUrl.startsWith("ftp://")) {
         result = GUrl_Ftp;
-    } else if (!rawUrl.startsWith("file://") && rawUrl.contains(QRegExp("^([\\.\\w-]+@)?[\\.\\w-]+:\\d*(/[\\w-]*)?$"))) {
+    } else if (!rawUrl.startsWith("file://") && rawUrl.contains(QRegularExpression("^([\\.\\w-]+@)?[\\.\\w-]+:\\d*(/[\\w-]*)?$"))) {
         return GUrl_Network;
     } else if (rawUrl.startsWith(U2_VFS_URL_PREFIX)) {
         result = GUrl_VFSFile;

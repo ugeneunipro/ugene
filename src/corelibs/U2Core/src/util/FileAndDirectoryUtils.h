@@ -73,6 +73,10 @@ public:
      */
     static NP<FILE> openFile(const QString& path, const QString& mode);
 
+    // Return true if you have no write permission to the file (if @url points to file)
+    // or if you have no write permission to the folder (if @url points to folder)
+    static bool isNoWritePermission(GUrl& url);
+
 private:
     static QString getFormatId(const FormatDetectionResult& r);
 

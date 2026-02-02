@@ -25,11 +25,11 @@
 #include <QStringList>
 
 #include <U2Core/Task.h>
+#include <U2Core/StateLockableDataModel.h>
 
 namespace U2 {
 
 class MsaObject;
-class StateLocker;
 
 class U2VIEW_EXPORT RealignSequencesInAlignmentTask : public Task {
     Q_OBJECT
@@ -46,13 +46,13 @@ protected:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MsaObject* originalMsaObject = nullptr;
+    QPointer<MsaObject> originalMsaObject;
     MsaObject* msaObject = nullptr;
     const QSet<qint64> rowsToAlignIds;
     QStringList originalRowOrder;
     Task* extractSequences = nullptr;
     QString extractedSequencesDirUrl;
-    StateLocker* locker = nullptr;
+    StateLockerOnCall locker;
     QString algorithmId;
 };
 

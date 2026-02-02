@@ -55,6 +55,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ReloadDocumentsTask.h>
+#include <U2Gui/SaveMultipleDocumentTask.h>
 #include <U2Gui/SearchBox.h>
 
 #include <U2View/ADVSingleSequenceWidget.h>

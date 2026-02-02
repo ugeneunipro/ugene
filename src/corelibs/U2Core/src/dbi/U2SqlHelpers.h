@@ -22,8 +22,8 @@
 #pragma once
 
 #include <QHash>
-#include <QMutex>
 #include <QReadWriteLock>
+#include <QRecursiveMutex>
 #include <QSharedPointer>
 #include <QStringList>
 #include <QThread>
@@ -44,11 +44,11 @@ class SQLiteTransaction;
 class U2CORE_EXPORT DbRef {
 public:
     DbRef(sqlite3* db = nullptr)
-        : handle(db), lock(QMutex::Recursive), useTransaction(true) {
+        : handle(db), useTransaction(true) {
     }
 
     sqlite3* handle;
-    QMutex lock;
+    QRecursiveMutex lock;
     QReadWriteLock rwLock;
     bool useTransaction;
     bool useCache;

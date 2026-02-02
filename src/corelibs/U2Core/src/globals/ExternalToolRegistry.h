@@ -24,6 +24,7 @@
 #include <QIcon>
 #include <QList>
 #include <QMap>
+#include <QRegExp>
 #include <QString>
 #include <QStringList>
 #include <QVariant>

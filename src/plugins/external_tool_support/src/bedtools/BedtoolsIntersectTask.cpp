@@ -39,6 +39,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include <U2Gui/SaveMultipleDocumentTask.h>
+
 #include <U2Lang/DbiDataStorage.h>
 
 #include "BedtoolsSupport.h"

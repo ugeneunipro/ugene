@@ -21,20 +21,41 @@
 
 #pragma once
 
-#include <QRegularExpressionValidator>
-
-#include <U2Core/global.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
-/**
- * @PrimerValidator
- * QRegularExpressionValidator improving for primers. Make possible to type nucleotide or nucleotide-extended characters.
- */
-class U2CORE_EXPORT PrimerValidator : public QRegularExpressionValidator {
-public:
-    PrimerValidator(QObject* parent, bool allowExtended = true);
 
-    State validate(QString& input, int& pos) const override;
+class Document;
+class DocumentProviderTask;
+
+class AddDocumentTaskConfig {
+public:
+    AddDocumentTaskConfig()
+        : createProjectIfNeeded(true), unloadExistingDocument(false) {
+    }
+
+    bool createProjectIfNeeded;
+    bool unloadExistingDocument;
+};
+/**  Adds document to active project. Waits for locks if any */
+class U2GUI_EXPORT AddDocumentTask : public Task {
+    Q_OBJECT
+public:
+    AddDocumentTask(Document* d, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
+    AddDocumentTask(DocumentProviderTask* dp, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
+
+    ReportResult report() override;
+
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    Document* getDocument() {
+        return document;
+    }
+
+private:
+    Document* document;
+    DocumentProviderTask* dpt;
+    AddDocumentTaskConfig conf;
 };
 
 }  // namespace U2
