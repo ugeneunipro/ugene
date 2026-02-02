@@ -21,6 +21,8 @@
 
 #include <math.h>
 
+#include <QRegularExpression>
+
 #include <U2Core/U2SafePoints.h>
 
 #include "StrPackUtils.h"
@@ -33,16 +35,16 @@ const QString StrPackUtils::MAP_SEPARATOR = ";";
 const QString StrPackUtils::PAIR_CONNECTOR = "=";
 
 const QString StrPackUtils::listSeparatorPattern = QString("^\\%2|(?!\\\\)\\%2%1\\%2|\\%2$").arg(LIST_SEPARATOR);
-const QRegExp StrPackUtils::listSingleQuoteSeparatorRegExp(listSeparatorPattern.arg("\'"));
-const QRegExp StrPackUtils::listDoubleQuoteSeparatorRegExp(listSeparatorPattern.arg("\""));
+const QRegularExpression StrPackUtils::listSingleQuoteSeparatorRegExp(listSeparatorPattern.arg("\'"));
+const QRegularExpression StrPackUtils::listDoubleQuoteSeparatorRegExp(listSeparatorPattern.arg("\""));
 
 const QString StrPackUtils::mapSeparatorPattern = QString("(?!\\\\)\\%2%1\\%2").arg(MAP_SEPARATOR);
-const QRegExp StrPackUtils::mapSingleQuoteSeparatorRegExp(mapSeparatorPattern.arg("\'"));
-const QRegExp StrPackUtils::mapDoubleQuoteSeparatorRegExp(mapSeparatorPattern.arg("\""));
+const QRegularExpression StrPackUtils::mapSingleQuoteSeparatorRegExp(mapSeparatorPattern.arg("\'"));
+const QRegularExpression StrPackUtils::mapDoubleQuoteSeparatorRegExp(mapSeparatorPattern.arg("\""));
 
 const QString StrPackUtils::pairSeparatorPattern = QString("^\\%2|(?!\\\\)\\%2%1\\%2|\\%2$").arg(PAIR_CONNECTOR);
-const QRegExp StrPackUtils::pairSingleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\'"));
-const QRegExp StrPackUtils::pairDoubleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\""));
+const QRegularExpression StrPackUtils::pairSingleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\'"));
+const QRegularExpression StrPackUtils::pairDoubleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\""));
 
 static bool registerMetaTypes() {
     qRegisterMetaType<StrStrMap>("StrStrMap");
@@ -69,7 +71,7 @@ QString StrPackUtils::packStringList(const QStringList& list, Options options) {
 
 QStringList StrPackUtils::unpackStringList(const QString& string, Options options) {
     QStringList unpackedList;
-    const QRegExp separator = (options == SingleQuotes ? listSingleQuoteSeparatorRegExp : listDoubleQuoteSeparatorRegExp);
+    const auto separator = (options == SingleQuotes ? listSingleQuoteSeparatorRegExp : listDoubleQuoteSeparatorRegExp);
     foreach (const QString& escapedString, string.split(separator, Qt::SkipEmptyParts)) {
         unpackedList << unescapeCharacters(escapedString);
     }
@@ -101,9 +103,9 @@ QString StrPackUtils::packMap(const StrStrMap& map, Options options) {
 
 StrStrMap StrPackUtils::unpackMap(const QString& string, Options options) {
     StrStrMap map;
-    QRegExp elementsSeparator = options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp;
+    auto elementsSeparator = options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp;
     foreach (const QString& pair, string.split(elementsSeparator, Qt::SkipEmptyParts)) {
-        QRegExp keyValueSeparator = options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp;
+        auto keyValueSeparator = options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp;
         QStringList splitPair = pair.split(keyValueSeparator, Qt::SkipEmptyParts);
         Q_ASSERT(splitPair.size() <= 2);
         if (!splitPair.empty()) {  // splitPair can be empty if both key and value are empty strings.

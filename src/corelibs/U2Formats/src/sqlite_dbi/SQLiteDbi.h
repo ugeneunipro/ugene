@@ -151,7 +151,7 @@ public:
 
     void stopOperationBlock(U2OpStatus& os) override;
 
-    QMutex* getDbMutex() const override;
+    QRecursiveMutex* getDbMutex() const override;
 
     bool isReadOnly() const override;
 
