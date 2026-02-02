@@ -30,7 +30,6 @@
 #include <U2Algorithm/GenomeAssemblyMultiTask.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -52,6 +51,7 @@
 #include <U2Formats/FastqFormat.h>
 #include <U2Formats/PairedFastqComparator.h>
 
+#include <U2Gui/AddDocumentTask.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ToolsMenu.h>

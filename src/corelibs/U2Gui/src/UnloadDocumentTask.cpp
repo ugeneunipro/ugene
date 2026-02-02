@@ -35,12 +35,12 @@
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/RemoveDocumentTask.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/OpenViewTask.h>
+#include <U2Gui/RemoveDocumentTask.h>
 
 namespace U2 {
 

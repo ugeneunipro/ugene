@@ -21,7 +21,6 @@
 
 #include "DotPlotTasks.h"
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentUtils.h>
@@ -31,6 +30,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
+
+#include <U2Gui/AddDocumentTask.h>
 
 namespace U2 {
 

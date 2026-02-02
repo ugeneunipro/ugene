@@ -24,8 +24,9 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/RemoveDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/RemoveDocumentTask.h>
 
 namespace U2 {
 

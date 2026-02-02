@@ -24,7 +24,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -46,6 +45,7 @@
 
 #include <U2Designer/QDScheduler.h>
 
+#include <U2Gui/AddDocumentTask.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>

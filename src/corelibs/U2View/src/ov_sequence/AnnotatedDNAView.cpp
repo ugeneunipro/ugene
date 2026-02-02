@@ -42,7 +42,6 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/RemoveAnnotationsTask.h>
@@ -60,6 +59,7 @@
 #include <U2Gui/EditSequenceDialogController.h>
 #include <U2Gui/EditSettingsDialog.h>
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/ModifySequenceObjectTask.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/PositionSelector.h>
