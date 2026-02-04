@@ -541,6 +541,23 @@ GUI_TEST_CLASS_DEFINITION(test_1896) {
     GTUtilsNotifications::checkNotificationDialogText("The multiple alignment is no more available.");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_1905) {
+    /*
+     *Open "COI.aln".
+     * Select "Add > Sequence from file..." in the context menu.
+     * Expected state: The "Open file with sequences" dialog appeared.
+     * Select "samples\GFF\5prime_utr_intron_A20.gff" and press "Ok"
+     * Expected state: Notification about about impossibility to add sequences
+     **/
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/GFF/5prime_utr_intron_A20.gff"));
+    GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from file..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    
+    GTUtilsNotifications::checkNotificationDialogText("No sequences to add.");
+}
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
