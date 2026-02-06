@@ -473,7 +473,10 @@ void GObjectViewWindow::setupViewMenu(QMenu* m) {
 /// Utils
 
 GObjectViewWindow* GObjectViewUtils::findViewByName(const QString& name) {
-    QList<MWMDIWindow*> mdiWindows = AppContext::getMainWindow()->getMDIManager()->getWindows();
+    auto mdiManager = AppContext::getMainWindow()->getMDIManager();
+    CHECK(mdiManager != nullptr, nullptr);
+
+    QList<MWMDIWindow*> mdiWindows = mdiManager->getWindows();
     for (MWMDIWindow* mdiWindow : qAsConst(mdiWindows)) {
         if (mdiWindow->windowTitle() == name) {
             auto objectViewWindow = qobject_cast<GObjectViewWindow*>(mdiWindow);
@@ -549,7 +552,10 @@ GObjectViewState* GObjectViewUtils::findStateInList(const QString& viewName, con
 }
 
 QList<GObjectViewWindow*> GObjectViewUtils::getAllActiveViews() {
-    QList<MWMDIWindow*> mdiWindows = AppContext::getMainWindow()->getMDIManager()->getWindows();
+    auto mdiManager = AppContext::getMainWindow()->getMDIManager();
+    CHECK(mdiManager != nullptr, {});
+
+    QList<MWMDIWindow*> mdiWindows = mdiManager->getWindows();
     QList<GObjectViewWindow*> objectViewWindows;
     for (MWMDIWindow* mdiWindow : qAsConst(mdiWindows)) {
         auto objectViewWindow = qobject_cast<GObjectViewWindow*>(mdiWindow);

@@ -22,6 +22,7 @@
 #pragma once
 
 #include <U2Core/GObjectReference.h>
+#include <U2Core/global.h>
 
 #include <U2Gui/ObjectViewTasks.h>
 

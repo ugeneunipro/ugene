@@ -33,6 +33,8 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 
+#include "AssemblyBrowser.h"
+
 namespace U2 {
 
 ExportReadsDialog::ExportReadsDialog(QWidget* p, const QList<DocumentFormatId>& formats)
@@ -58,6 +60,11 @@ ExportReadsDialog::ExportReadsDialog(QWidget* p, const QList<DocumentFormatId>& 
 
     saveController = new SaveDocumentController(conf, formats, this);
     setMaximumHeight(layout()->minimumSize().height());
+
+    if (qEnvironmentVariableIsSet(AssemblyBrowser::ONLY_ASSEMBLY_BROWSER)) {
+        addToProjectCheckBox->setChecked(false);
+        addToProjectCheckBox->hide();
+    }
 }
 
 void ExportReadsDialog::accept() {

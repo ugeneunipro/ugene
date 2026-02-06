@@ -21,6 +21,7 @@
 
 #include "ExportConsensusDialog.h"
 
+#include <QtGlobal>
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -33,6 +34,8 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
 #include <U2Gui/SaveDocumentController.h>
+
+#include "AssemblyBrowser.h"
 
 namespace U2 {
 
@@ -61,6 +64,11 @@ ExportConsensusDialog::ExportConsensusDialog(QWidget* p, const ExportConsensusTa
     addToProjectCheckBox->setChecked(settings.addToProject);
     regionSelector->setCustomRegion(settings.region);
     keepGapsCheckBox->setChecked(settings.keepGaps);
+
+    if (qEnvironmentVariableIsSet(AssemblyBrowser::ONLY_ASSEMBLY_BROWSER)) {
+        addToProjectCheckBox->setChecked(false);
+        addToProjectCheckBox->hide();
+    }
 
     QList<QString> algos = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmIds();
     algorithmComboBox->addItems(algos);
