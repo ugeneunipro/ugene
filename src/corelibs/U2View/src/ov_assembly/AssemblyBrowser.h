@@ -45,7 +45,7 @@ class PositionSelector;
 class AssemblyCellRendererFactoryRegistry;
 class OptionsPanelController;
 
-class AssemblyBrowser : public GObjectViewController {
+class U2VIEW_EXPORT AssemblyBrowser : public GObjectViewController {
     Q_OBJECT
 public:
     AssemblyBrowser(const QString& viewName, AssemblyObject* o);
@@ -164,6 +164,8 @@ public:
 
     bool onCloseEvent() override;
 
+    static constexpr const char* ONLY_ASSEMBLY_BROWSER = "only-assembly-browser";
+
 public slots:
     void sl_zoomIn(const QPoint& pos = QPoint());
     void sl_zoomOut(const QPoint& pos = QPoint());
@@ -219,6 +221,11 @@ private:
     QString chooseReferenceUrl() const;
     void loadReferenceFromFile();
     void showReferenceLoadingError(const QList<GObject*>& sequenceObjects, const QString& url) const;
+
+public:
+    // Set sequence from the @doc reference to the current Assembly Browser instance.
+    // @doc pointer to the Documetn. If there are several sequences in this document,
+    //  the first one will be added as a reference.
     void setReference(const Document* doc);
 
 private:

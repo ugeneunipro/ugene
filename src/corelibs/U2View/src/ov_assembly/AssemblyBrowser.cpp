@@ -610,6 +610,8 @@ void AssemblyBrowser::adjustOffsets(qint64 dx, qint64 dy) {
 }
 
 void AssemblyBrowser::setFocusToPosSelector() {
+    CHECK(posSelector != nullptr, );
+
     posSelector->getPosEdit()->setFocus();
 }
 
