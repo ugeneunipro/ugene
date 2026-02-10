@@ -423,17 +423,18 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
 
     int totalBasesPainted = 0;
     QListIterator<U2AssemblyRead> it(cachedReads.data);
+    //move to AsseblyBrowser class to calculate once for all reads
     //Gather isertionsInfo
-    //pos, length map
-    QMap<quint64, quint64> insertionsMap;
+    //pos, QPair<length, read>> map
+    InsertionHelper insertionHelper;
     while (it.hasNext()) {
         const U2AssemblyRead& read = it.next();
         quint64 pos = read->leftmostPos;
         for (const U2CigarToken& tok : qAsConst(read->cigar)) {
             CHECK_CONTINUE(tok.op != U2CigarOp_S)
             pos += tok.count;
-            if (tok.op == U2CigarOp_I && insertionsMap.contains(pos) && tok.count > insertionsMap[pos]) {
-                insertionsMap[pos] = tok.count;
+            if (tok.op == U2CigarOp_I) {
+                insertionHelper.addInsertion(pos, read->name, tok.count);
             }
         }
     }
@@ -444,29 +445,20 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
         GTIMER(c3, t3, "AssemblyReadsArea::drawReads -> cycle through all reads");
 
         const U2AssemblyRead& read = it.next();
-        // debug
-        const QString cigStr(U2AssemblyUtils::cigar2String(read->cigar));
-        for (const U2CigarToken& tok : read->cigar) {
-            if (tok.op == U2CigarOp_I) {
-                const QString readName(read->name);
-                break;
-            }
-        }
         QByteArray readSequence = read->readSequence;
-        U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLength(read));
+        U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLength(read) + insertionHelper.getCorrectionValue(read->name));
 
         U2Region readVisibleBases = readBases.intersect(cachedReads.visibleBases);
+        //readVisibleBases.startPos += insertionHelper.getCorrectionValue(read->name, readVisibleBases.startPos);
         U2Region xToDrawRegion(readVisibleBases.startPos - cachedReads.xOffsetInAssembly, readVisibleBases.length);
         if (readVisibleBases.isEmpty()) {
             continue;
         }
-
         U2Region readVisibleRows = U2Region(read->packedViewRow, 1).intersect(cachedReads.visibleRows);  // WTF?
         U2Region yToDrawRegion(readVisibleRows.startPos - cachedReads.yOffsetInAssembly, readVisibleRows.length);
         if (readVisibleRows.isEmpty()) {
             continue;
         }
-
         if (browser->areCellsVisible()) {  //->draw color rects
             int firstVisibleBase = readVisibleBases.startPos - readBases.startPos;
             int x_pix_start = browser->calcPainterOffset(xToDrawRegion.startPos);
@@ -482,14 +474,28 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                 if (cigar.isEmpty()) {
                     cigar << U2CigarToken(U2CigarOp_M, readSequence.size());
                 }
-
-                U2AssemblyReadIterator cigarIt(readSequence, cigar, firstVisibleBase);
+                if (read->name.endsWith("1f1c")) {
+                    while(false);
+                }
+                //Debug
+                const quint64 startPos = firstVisibleBase - insertionHelper.getCorrectionValue(read->name, readVisibleBases.startPos);
+                U2AssemblyReadIterator cigarIt(readSequence, cigar, startPos);
+                char currentChar = cigarIt.crudePeekNextLetter();
+                //make copy for row because it will be modified
+                InsertionHelper currentReadHelper(insertionHelper);
                 int basesPainted = 0;
                 for (int x_pix_offset = 0; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; x_pix_offset += cachedReads.letterWidth) {
                     GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
-                    char c = cigarIt.nextLetter();
-                    if (cigarIt.getoffsetInRead()) {
-                    }
+
+                    const quint64 insLengthOnPos = currentReadHelper.getLengthForPos(cigarIt.getOffsetInToken(), read->name);
+                    const quint64 maxInsLengthOnPos = currentReadHelper.getMaxLengthForPos(cigarIt.getOffsetInToken());
+                    char c = '-';
+
+                    if (maxInsLengthOnPos - insLengthOnPos != 0) {
+                        currentReadHelper.insertionConsumed(cigarIt.getOffsetInToken(), read->name);
+                    } else {
+                        c = cigarIt.nextLetter();
+                    }                    
                     QPoint cellStart(x_pix_start + x_pix_offset, y_pix_start);
                     QPixmap cellImage;
                     if (!referenceRegion.isEmpty()) {
@@ -684,6 +690,38 @@ void AssemblyReadsArea::drawReadsShadowing(QPainter& p) {
 
 int AssemblyReadsArea::calcFontPointSize() const {
     return browser->getCellWidth() / 2;
+}
+
+void AssemblyReadsArea::InsertionHelper::addInsertion(qint64 pos, const QString& readName, qint64 lengthToInsert) {
+    insertionsMap[pos][readName] = lengthToInsert;
+    for (const quint64 length : qAsConst(insertionsMap[pos])) {
+        CHECK_CONTINUE(lengthToInsert > maxReadLength[pos]);
+        maxReadLength[pos] = lengthToInsert;
+    }
+}
+
+quint64 AssemblyReadsArea::InsertionHelper::getLengthForPos(qint64 pos, const QString& readName) const {
+    return insertionsMap[pos][readName];
+}
+
+void AssemblyReadsArea::InsertionHelper::insertionConsumed(qint64 pos, const QString& readName) {
+    insertionsMap[pos][readName] += 1;
+}
+
+quint64 AssemblyReadsArea::InsertionHelper::getMaxLengthForPos(qint64 pos) const {
+    return maxReadLength[pos];
+}
+
+quint64 AssemblyReadsArea::InsertionHelper::getCorrectionValue(const QString& readName, const quint64 startPos) const {
+    quint64 result = 0;
+    for (auto it = insertionsMap.constKeyValueBegin(); it != insertionsMap.constKeyValueEnd(); ++it) {
+        CHECK_CONTINUE(it->first < startPos);
+        for (auto innerIt = it->second.constKeyValueBegin(); innerIt != it->second.constKeyValueEnd(); ++innerIt) {
+            CHECK_CONTINUE((*innerIt).first != readName);
+            result += (*innerIt).second;
+        }
+    }
+    return result;
 }
 
 void AssemblyReadsArea::paintEvent(QPaintEvent* e) {

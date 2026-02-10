@@ -93,8 +93,8 @@ char U2AssemblyReadIterator::nextLetter() {
     return c;
 }
 
-int U2AssemblyReadIterator::getOffsetInRead() const {
-    return offsetInRead;
+int U2AssemblyReadIterator::getOffsetInToken() const {
+    return offsetInToken;
 }
 
 void U2AssemblyReadIterator::advanceToNextToken() {
@@ -142,6 +142,11 @@ void U2AssemblyReadIterator::skipPaddingAndHardClip() {
     while (hasNext() && isPaddingOrHardClip()) {
         offsetInCigar++;
     }
+}
+
+char U2AssemblyReadIterator::crudePeekNextLetter() const {
+    const quint64 offset = offsetInToken + 1;
+    return read.at(offsetInRead);
 }
 
 namespace {

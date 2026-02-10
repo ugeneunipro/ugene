@@ -49,6 +49,9 @@ public:
      */
     U2AssemblyReadIterator(const QByteArray& read_, QList<U2CigarToken> cigar_, int startPos = 0);
 
+    //DEBUG
+    char U2AssemblyReadIterator::crudePeekNextLetter() const;
+
     /**
      * Returns true if the next letter is a match (mismatch) or deletion/skip.
      * If the read ends with clipping/insertion/etc hasNext() returns false.
@@ -60,7 +63,7 @@ public:
      */
     char nextLetter();
     
-    int getOffsetInRead() const;
+    int getOffsetInToken() const;
 
 private:
     void advanceToNextToken();

@@ -29,6 +29,7 @@
 #include <QWidget>
 
 #include <U2Core/U2Assembly.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "AssemblyCellRenderer.h"
 #include "AssemblyModel.h"
@@ -54,6 +55,20 @@ class AssemblyReadsArea : public QWidget {
     };
     static const QList<HotkeyDescription> HOTKEY_DESCRIPTIONS;
     static QList<HotkeyDescription> initHotkeyDescriptions();
+
+    class InsertionHelper {
+    public:
+        void addInsertion(qint64 pos, const QString& readName, qint64 lengthToInsert);
+        quint64 getLengthForPos(qint64 pos, const QString& readName) const;
+        void insertionConsumed(qint64 pos, const QString& readName);
+        quint64 getMaxLengthForPos(qint64 pos) const;
+        quint64 getCorrectionValue(const QString& readName, const quint64 startPos = UINT64_MAX) const;
+    private:
+        //<position, readName, insertoinLength>>
+        QMap<qint64, QMap<QString, quint64>> insertionsMap;
+        //<position, maxReadLingthForPos>
+        QMap<qint64, qint64> maxReadLength;
+    };
 
 public:
     AssemblyReadsArea(AssemblyBrowserUi* ui, QScrollBar* hBar, QScrollBar* vBar);
