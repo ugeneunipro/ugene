@@ -546,6 +546,11 @@
 <context>
     <name>U2::AddSequencesFromFilesToAlignmentTask</name>
     <message>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="159"/>
+        <source>No sequences to add.</source>
+        <translation>Нет последовательностей чтобы добавить.</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="176"/>
         <source>Unsupported document format: %1</source>
         <translation>Неподдерживаемый формат документа: %1</translation>

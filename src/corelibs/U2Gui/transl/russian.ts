@@ -1607,6 +1607,11 @@
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="244"/>
+        <source>Group name can't contain \"%1\"</source>
+        <translation>Имя группы не может содержать \"%1\"</translation>
+    </message>
+    <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="248"/>
         <source>Invalid location! Location must be in GenBank format.
