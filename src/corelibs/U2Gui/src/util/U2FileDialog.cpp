@@ -41,10 +41,14 @@ namespace U2 {
 class FileDialogCrashGuard {
 public:
     FileDialogCrashGuard() {
+        CHECK(!U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG, );
+
         AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, true);
     }
 
     ~FileDialogCrashGuard() {
+        CHECK(!U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG, );
+
         AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false);
     }
 };
