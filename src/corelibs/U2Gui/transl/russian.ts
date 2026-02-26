@@ -1608,8 +1608,8 @@
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="244"/>
-        <source>Group name can't contain \"%1\"</source>
-        <translation>Имя группы не может содержать \"%1\"</translation>
+        <source>Group name can&apos;t contain &quot;%1&quot;</source>
+        <translation>Имя группы не может содержать &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
