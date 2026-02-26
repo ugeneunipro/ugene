@@ -54,6 +54,13 @@ private:
     // @return true if Aspera Connect library is found and version is detected, false otherwise.
     static bool detectAsperaVersion(QString& outVersion);
 
+    // Environment variable name to skip file dialog compatibility check.
+    // Disabling file dialog compatibility check may be require for testing purposes.
+    // If this variable is set to "1", the check will be desabled and native dialogs will be used even if malicious software is detected.
+    // But, if UGENE.ini file contains the information that UGENE crashed previously with native dialog,
+    // the non-native dialog will be used anyway to avoid possible crashes in this case, even if the environment variable is set.
+    static constexpr const char* UGENE_SKIP_FILE_DIALOG_COMPATIBILITY_CHECK = "UGENE_SKIP_FILE_DIALOG_COMPATIBILITY_CHECK";
+
 };
 
 }  // namespace U2
