@@ -1,5 +1,6 @@
 <multi-test>
 
-    <load-broken-document index="doc" url="fasta/broken/headers_only.fa" io="local_file" format="fasta"/>
+    <load-broken-document index="doc" url="fasta/broken/headers_only.fa" io="local_file" format="fasta" 
+                          message="FASTA header is found in the file, but no sequence data are provided."/>
 
 </multi-test>
