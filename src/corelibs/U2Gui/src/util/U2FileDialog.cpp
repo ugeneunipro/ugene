@@ -41,14 +41,18 @@ namespace U2 {
 class FileDialogCrashGuard {
 public:
     FileDialogCrashGuard() {
+        // The guard is not needed if non-native dialogs are used, as they are implemented in Qt and should not cause crashes.
         CHECK(!U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG, );
 
+        // Set the flag to detect crashes caused by QFileDialog. The flag will be reset in the destructor.
         AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, true);
     }
 
     ~FileDialogCrashGuard() {
+        // The guard is not needed if non-native dialogs are used, as they are implemented in Qt and should not cause crashes.
         CHECK(!U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG, );
 
+        // Reset the flag after the dialog is closed.
         AppContext::getSettings()->setValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false);
     }
 };

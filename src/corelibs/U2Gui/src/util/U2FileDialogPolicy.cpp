@@ -53,10 +53,10 @@ void U2FileDialogPolicy::checkIfShouldUseNonNativeDialog() {
         // This is the highest Aspera Connect version this problem reproduces
         // Increase this value if crash report with higher Aspera Connect verion recieved
         static const QString MIN_MALICIOUS_ASPERA_VERSION = "4.2.12.780";
-        bool doNotCheckMaliciousEnv = qgetenv(UGENE_DO_NOT_CHECK_MALICIOUS) == "1";
+        bool skipFileDialogCompatibilityCheck = qgetenv(UGENE_SKIP_FILE_DIALOG_COMPATIBILITY_CHECK) == "1";
         bool isMalicious = versionLessThan(version, MIN_MALICIOUS_ASPERA_VERSION);
         bool crashedPreviously = settings->getValue(U2FileDialog::CRASH_DETECTING_SETTINGS_ROOT, false).toBool();
-        if (isMalicious && !doNotCheckMaliciousEnv) {
+        if (isMalicious && !skipFileDialogCompatibilityCheck) {
             coreLog.details(QObject::tr("Aspera Connect malicious version detected, switching to non-native dialog..."));
             U2FileDialog::FORCE_USE_NON_NATIVE_DIALOG = true;
         } else if (crashedPreviously) {
