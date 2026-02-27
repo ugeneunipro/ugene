@@ -276,9 +276,9 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
 
     CHECK_OP_EXT(os, qDeleteAll(objects); objects.clear(), );
     bool isEmptyFileAllowed = hints.value(DocumentReadingMode_AllowEmptyFile).toBool();
-    CHECK_EXT(headerFound && (!objects.isEmpty() || mergeIntoSingleSequence || isEmptyFileAllowed), 
-                               os.setError(FastaFormat::tr("FASTA header is found in the file, but no sequence data are provided.")), );
-    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence || isEmptyFileAllowed, os.setError(Document::tr("Document is empty.")), );
+    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence || isEmptyFileAllowed, headerFound ?
+                os.setError(FastaFormat::tr("FASTA header is found in the file, but no sequence data are provided.")) :
+                os.setError(Document::tr("Document is empty.")), );
     SAFE_POINT(headers.size() == mergedMapping.size(), "headers <-> regions mapping failed!", );
     ioLog.trace("All sequences are processed");
 
