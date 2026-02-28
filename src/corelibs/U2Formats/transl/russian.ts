@@ -1158,6 +1158,11 @@
         <translation>The file format is invalid.</translation>
     </message>
     <message>
+        <location filename="../src/FastaFormat.cpp" line="280"/>
+        <source>FASTA header is found in the file, but no sequence data are provided.</source>
+        <translation>FASTA заголовок найден файле, но последовательность отсутствует.</translation>
+    </message>
+    <message>
         <location filename="../src/FastaFormat.cpp" line="283"/>
         <source>Loaded sequences: %1. 
 </source>
