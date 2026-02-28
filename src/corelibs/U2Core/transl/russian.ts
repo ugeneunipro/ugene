@@ -529,6 +529,11 @@
         <source>Add sequences to alignment task</source>
         <translation>Добавить последовательности в задачу выравнивания</translation>
     </message>
+    <message>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="159"/>
+        <source>No sequences to add.</source>
+        <translation>Нет последовательностей чтобы добавить.</translation>
+    </message>
 </context>
 <context>
     <name>U2::AddSequenceObjectsToAlignmentUtils</name>
