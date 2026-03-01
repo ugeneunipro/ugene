@@ -337,11 +337,13 @@ public:
     bool hasNumericQColumns;
 };
 
+static bool ONLY_SPACES_DUMMY = true;
+
 class AVQualifierItem : public AVItem {
 public:
     AVQualifierItem(AVAnnotationItem* parent, const U2Qualifier& q);
 
-    static QString simplifyText(const QString& origValue);
+    static QString simplifyText(const QString& origValue, bool& onlySpaces = ONLY_SPACES_DUMMY);
 
     // TODO: keep values in U2Qualifier struct
     const QString qName;

@@ -558,6 +558,42 @@ GUI_TEST_CLASS_DEFINITION(test_1905) {
     
     GTUtilsNotifications::checkNotificationDialogText("No sequences to add.");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_1919) {
+    /*1. Open samples/Genbank/sars.gb.
+     *2. Try to search qualifier with name only spaces
+     *Expected: error messagebox appeared
+     *3. Try to search qualifier with value only spaces
+     *Expected: error messagebox appeared
+     **/
+    class EmptyNameAndValue : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Illegal qualifier name"));
+            GTLineEdit::setText(GTWidget::findLineEdit("nameEdit", dialog), "   ");
+            QAbstractButton* next = GTWidget::findButtonByText("Next", dialog);
+            GTWidget::click(next);
+            GTGlobals::sleep();
+            GTLineEdit::clear(GTWidget::findLineEdit("nameEdit", dialog));
+
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Illegal qualifier value"));
+            GTLineEdit::setText(GTWidget::findLineEdit("valueEdit", dialog), "   ");
+            GTWidget::click(next);
+            GTGlobals::sleep();
+            GTWidget::click(GTWidget::findButtonByText("Close", dialog));
+        }
+    };
+
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::waitForDialog(new FindQualifierFiller(new EmptyNameAndValue()));
+
+    GTUtilsDialog::waitForDialog(new PopupChooser({"find_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("CDS"));
+    GTMouseDriver::click(Qt::RightButton);
+}
 }  // namespace GUITest_regression_scenarios_github_issues
 
 }  // namespace U2
