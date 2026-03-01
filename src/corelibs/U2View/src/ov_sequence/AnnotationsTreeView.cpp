@@ -2621,12 +2621,13 @@ AVQualifierItem::AVQualifierItem(AVAnnotationItem* parent, const U2Qualifier& q)
     processLinks(qName, qValue, AnnotationsTreeView::COLUMN_VALUE);
 }
 
-QString AVQualifierItem::simplifyText(const QString& origValue) {
+QString AVQualifierItem::simplifyText(const QString& origValue, bool& onlySpaces) {
     QString res = origValue;
     res.replace("\t", "    ");
     res.replace("\r", "");
     res.replace("\n", " ");
     res = res.trimmed();
+    onlySpaces = res.isEmpty() && !origValue.isEmpty();
     return res;
 }
 
