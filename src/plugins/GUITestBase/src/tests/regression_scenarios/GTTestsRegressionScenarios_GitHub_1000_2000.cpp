@@ -587,7 +587,6 @@ GUI_TEST_CLASS_DEFINITION(test_1919) {
 
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
-    QTreeWidgetItem* featuresItem = GTUtilsAnnotationsTreeView::findItem("NC_001363 features [murine.gb]");
 
     GTUtilsDialog::waitForDialog(new FindQualifierFiller(new EmptyNameAndValue()));
 
