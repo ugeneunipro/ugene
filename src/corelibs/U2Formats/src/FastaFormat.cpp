@@ -174,11 +174,13 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
 
     int objectsCountLimit = hints.contains(DocumentReadingMode_MaxObjectsInDoc) ? hints[DocumentReadingMode_MaxObjectsInDoc].toInt() : INT_MAX;
     bool makeUniqueSequenceNames = !hints.value(DocumentReadingMode_DontMakeUniqueNames, false).toBool();
+    bool headerFound = false;
     while (!os.isCoR() && !reader.atEnd()) {
         skipLeadingWhitesAndComments(reader, os);
         CHECK_OP(os, );
 
         QString header = readHeader(reader, os).trimmed();
+        headerFound = headerFound || !header.isEmpty();
         CHECK_OP(os, );
 
         // Construct sequence name.
@@ -274,7 +276,9 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
 
     CHECK_OP_EXT(os, qDeleteAll(objects); objects.clear(), );
     bool isEmptyFileAllowed = hints.value(DocumentReadingMode_AllowEmptyFile).toBool();
-    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence || isEmptyFileAllowed, os.setError(Document::tr("Document is empty.")), );
+    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence || isEmptyFileAllowed, headerFound ?
+                os.setError(FastaFormat::tr("FASTA header is found in the file, but no sequence data are provided.")) :
+                os.setError(Document::tr("Document is empty.")), );
     SAFE_POINT(headers.size() == mergedMapping.size(), "headers <-> regions mapping failed!", );
     ioLog.trace("All sequences are processed");
 
