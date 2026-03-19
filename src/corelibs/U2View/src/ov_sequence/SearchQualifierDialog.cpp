@@ -322,12 +322,13 @@ void SearchQualifierDialog::clearPrevResults() {
 }
 
 void SearchQualifierDialog::search(bool searchAll /* = false*/) {
-    QString name = AVQualifierItem::simplifyText(ui->nameEdit->text());
-    QString val = AVQualifierItem::simplifyText(ui->valueEdit->text());
-    if (!(name.length() < 20 && TextUtils::fits(TextUtils::QUALIFIER_NAME_CHARS, name.toLatin1().data(), name.length()))) {
+    bool onlySpaces = true;
+    const QString name = AVQualifierItem::simplifyText(ui->nameEdit->text(), onlySpaces);
+    if (onlySpaces || !(name.length() < 20 && TextUtils::fits(TextUtils::QUALIFIER_NAME_CHARS, name.toLatin1().data(), name.length()))) {
         QMessageBox::critical(this, tr("Error!"), tr("Illegal qualifier name"));
         return;
     }
+    const QString val = AVQualifierItem::simplifyText(ui->valueEdit->text(), onlySpaces);
     if (!Annotation::isValidQualifierValue(val)) {
         QMessageBox::critical(this, tr("Error!"), tr("Illegal qualifier value"));
         return;
