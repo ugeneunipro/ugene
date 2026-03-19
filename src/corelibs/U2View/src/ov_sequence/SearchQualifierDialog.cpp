@@ -329,7 +329,7 @@ void SearchQualifierDialog::search(bool searchAll /* = false*/) {
         return;
     }
     const QString val = AVQualifierItem::simplifyText(ui->valueEdit->text(), onlySpaces);
-    if (onlySpaces || !Annotation::isValidQualifierValue(val)) {
+    if (!Annotation::isValidQualifierValue(val)) {
         QMessageBox::critical(this, tr("Error!"), tr("Illegal qualifier value"));
         return;
     }

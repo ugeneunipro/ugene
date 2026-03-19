@@ -575,12 +575,6 @@ GUI_TEST_CLASS_DEFINITION(test_1919) {
             QAbstractButton* next = GTWidget::findButtonByText("Next", dialog);
             GTWidget::click(next);
             GTGlobals::sleep();
-            GTLineEdit::clear(GTWidget::findLineEdit("nameEdit", dialog));
-
-            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Illegal qualifier value"));
-            GTLineEdit::setText(GTWidget::findLineEdit("valueEdit", dialog), "   ");
-            GTWidget::click(next);
-            GTGlobals::sleep();
             GTWidget::click(GTWidget::findButtonByText("Close", dialog));
         }
     };
