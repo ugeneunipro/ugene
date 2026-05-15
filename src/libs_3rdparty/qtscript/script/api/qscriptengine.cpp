@@ -1374,7 +1374,7 @@ JSC::JSValue QScriptEnginePrivate::evaluateHelper(JSC::ExecState *exec, intptr_t
                                                   bool &compile)
 {
     Q_Q(QScriptEngine);
-    QBoolBlocker inEvalBlocker(inEval, true);
+    struct InEvalBlocker { bool &v; bool old; InEvalBlocker(bool &r, bool nv) : v(r), old(r) { v = nv; } ~InEvalBlocker() { v = old; } } inEvalBlocker(inEval, true);
     q->currentContext()->activationObject(); //force the creation of a context for native function;
 
     JSC::Debugger* debugger = originalGlobalObject()->debugger();

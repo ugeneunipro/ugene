@@ -71,7 +71,7 @@ public:
 private:
     // Used for Windows only to detect system color scheme changes
     // TODO: replace with QStyleHints::colorSchemeChanged signal when Qt is upgraded to 6.5+
-    bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;
+    bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) override;
 
     // True if dark style enabled
     static bool isDarkStyleEnabled();

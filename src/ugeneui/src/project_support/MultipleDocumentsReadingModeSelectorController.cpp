@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "MultipleDocumentsReadingModeSelectorController.h"
 
@@ -76,7 +76,7 @@ bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const F
                 return false;
             }
             QString line = QString(QByteArray(buff));
-            QStringList words = line.split(QRegExp("\\s"), Qt::SkipEmptyParts);
+            QStringList words = line.split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
             if (words.size() < 3) {  // origin len not defined
                 return false;
             }

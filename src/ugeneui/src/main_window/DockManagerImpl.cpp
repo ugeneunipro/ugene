@@ -110,14 +110,14 @@ MWDockManagerImpl::~MWDockManagerImpl() {
 void MWDockManagerImpl::readLastActiveDocksState() {
     Settings* s = AppContext::getSettings();
     for (int i = 0; i < MWDockArea_MaxDocks; i++) {
-        lastActiveDocksState[i] = s->getValue(DOCK_SETTINGS + "dockTitle" + i).toString();
+        lastActiveDocksState[i] = s->getValue(DOCK_SETTINGS + "dockTitle" + QString::number(i)).toString();
     }
 }
 
 void MWDockManagerImpl::saveLastActiveDocksState() {
     Settings* s = AppContext::getSettings();
     for (int i = 0; i < MWDockArea_MaxDocks; i++) {
-        s->setValue(DOCK_SETTINGS + "dockTitle" + i, lastActiveDocksState[i]);
+        s->setValue(DOCK_SETTINGS + "dockTitle" + QString::number(i), lastActiveDocksState[i]);
     }
 }
 

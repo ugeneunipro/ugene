@@ -58,7 +58,7 @@ void MWMDIManagerImpl::prepareGUI() {
     // prepare Window menu
     closeAct = new QAction(tr("Close active view"), this);
     closeAct->setObjectName("Close active view");
-    closeAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
+    closeAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_W));
     closeAct->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     closeAct->setStatusTip(tr("Close active view"));
     connect(closeAct, SIGNAL(triggered()), mdiArea, SLOT(closeActiveSubWindow()));
@@ -96,17 +96,17 @@ void MWMDIManagerImpl::prepareGUI() {
     QKeySequence nextWindowKeySequence;
     QKeySequence prevWindowKeySequence;
     if (isOsMac()) {
-        nextWindowKeySequence = QKeySequence(Qt::CTRL + (Qt::Key)'`');
-        prevWindowKeySequence = QKeySequence(Qt::CTRL + Qt::SHIFT + (Qt::Key)'`');
+        nextWindowKeySequence = QKeySequence(Qt::CTRL | (Qt::Key)'`');
+        prevWindowKeySequence = QKeySequence(Qt::CTRL | Qt::SHIFT | (Qt::Key)'`');
 
-        auto additionalNextShortcut = new QShortcut(QKeySequence(Qt::META + Qt::Key_Tab), mdiArea);
+        auto additionalNextShortcut = new QShortcut(QKeySequence(Qt::META | Qt::Key_Tab), mdiArea);
         connect(additionalNextShortcut, &QShortcut::activated, mdiArea, &QMdiArea::activateNextSubWindow);
 
-        auto additionalPrevShortcut = new QShortcut(QKeySequence(Qt::META + Qt::SHIFT + Qt::Key_Tab), mdiArea);
+        auto additionalPrevShortcut = new QShortcut(QKeySequence(Qt::META | Qt::SHIFT | Qt::Key_Tab), mdiArea);
         connect(additionalPrevShortcut, &QShortcut::activated, mdiArea, &QMdiArea::activatePreviousSubWindow);
     } else {
-        nextWindowKeySequence = QKeySequence(Qt::CTRL + Qt::Key_Tab);
-        prevWindowKeySequence = QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab);
+        nextWindowKeySequence = QKeySequence(Qt::CTRL | Qt::Key_Tab);
+        prevWindowKeySequence = QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Tab);
     }
 
     nextAct = new QAction(QIcon(":ugene/images/window_next.png"), tr("Next window"), this);

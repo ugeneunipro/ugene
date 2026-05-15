@@ -401,7 +401,7 @@ void MainWindowImpl::prepareGUI() {
 
         static int testNotificationCounter = 0;
         auto addUniqueNotificationAction = new QAction(tr("Add unique notification"), this);
-        addUniqueNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_N);
+        addUniqueNotificationAction->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_N);
         connect(addUniqueNotificationAction, &QAction::triggered, [=]() {
             testNotificationCounter++;
             nStack->add("Notification: " + QString::number(testNotificationCounter) + QString("\n...").repeated(testNotificationCounter % 4));
@@ -409,7 +409,7 @@ void MainWindowImpl::prepareGUI() {
         helpMenu->addAction(addUniqueNotificationAction);
 
         auto addRepeatingNotificationAction = new QAction(tr("Add repeating notification"), this);
-        addRepeatingNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_M);
+        addRepeatingNotificationAction->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_M);
         connect(addRepeatingNotificationAction, &QAction::triggered, [=]() { nStack->add("Repeating notification"); });
         helpMenu->addAction(addRepeatingNotificationAction);
     }
