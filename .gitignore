@@ -68,4 +68,7 @@ moc_predefs.h*
 /local
 *.lib
 *.so
-*.dylibbuild-qt6/
+*.dylib
+
+# Qt6 port build dir
+/build-qt6/

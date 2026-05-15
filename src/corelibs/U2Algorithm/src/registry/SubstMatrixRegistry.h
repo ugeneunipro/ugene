@@ -53,7 +53,7 @@ private:
     void readMatrices();
     static SMatrix parseMatrix(const QString& name, const QByteArray& text, QString& error);
 
-    mutable QMutex mutex;
+    mutable QRecursiveMutex mutex;
     QMap<QString, SMatrix> matrixByName;
 };
 
