@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "Marker.h"
 
@@ -272,10 +272,8 @@ bool Marker::getMarkerStringResult(const QVariant& object, QVariantList& expr) {
     } else if (MarkerUtils::CONTAINS_OPERATION == operation) {
         return obj.contains(val);
     } else if (MarkerUtils::REGEXP_OPERATION == operation) {
-        QRegExp rx(val);
-        rx.setPatternSyntax(QRegExp::Wildcard);
-
-        return rx.exactMatch(obj);
+        QRegularExpression rx(QRegularExpression::wildcardToRegularExpression(val));
+        return rx.match(obj).hasMatch();
     }
 
     return false;

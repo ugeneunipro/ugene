@@ -67,7 +67,7 @@ protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 private slots:
-    void sl_setActiveSubWindow(QWidget*);
+    void sl_setActiveSubWindow(QObject*);
     void sl_updateWindowMenu();
     void sl_onSubWindowActivated(QMdiSubWindow*);
     void sl_updateWindowLayout();

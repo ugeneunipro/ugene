@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "LogView.h"
 
@@ -138,14 +138,15 @@ void SearchHighlighter::highlightBlock(const QString& text) {
     QTextCharFormat cf;
     cf.setBackground(Qt::green);
 
-    for (int pos = 0; (pos = reg_exp.indexIn(text, pos)) != -1;) {
-        int length = reg_exp.matchedLength();
-        if (length == 0) {
-            ++pos;
-            continue;
-        }
-        setFormat(pos, length, cf);
-        pos += length;
+    int pos = 0;
+    while (true) {
+        auto m = reg_exp.match(text, pos);
+        if (!m.hasMatch()) break;
+        int matchPos = m.capturedStart();
+        int length = m.capturedLength();
+        if (length == 0) { pos = matchPos + 1; continue; }
+        setFormat(matchPos, length, cf);
+        pos = matchPos + length;
     }
 }
 
@@ -159,8 +160,8 @@ void LogViewWidget::sl_showHideEdit() {
 }
 
 void LogViewWidget::sl_onTextEdited(const QString& text) {
-    QRegExp re(text);
-    if (highlighter->reg_exp.patternSyntax() == QRegExp::RegExp && !re.isValid())
+    QRegularExpression re(text);
+    if (!re.isValid())
         return;
 
     highlighter->reg_exp.setPattern(text);
@@ -168,10 +169,7 @@ void LogViewWidget::sl_onTextEdited(const QString& text) {
 }
 
 bool LogViewWidget::isShown(const QString& txt) {
-    if (highlighter->reg_exp.indexIn(txt, 0) < 0) {
-        return false;
-    }
-    return true;
+    return highlighter->reg_exp.match(txt).hasMatch();
 }
 
 void LogViewWidget::sl_openSettingsDialog() {
@@ -191,21 +189,18 @@ void LogViewWidget::searchPopupMenu(const QPoint&) {
 
 void LogViewWidget::setSearchCaseSensitive() {
     caseSensitive = !caseSensitive;
-    if (caseSensitive) {
-        highlighter->reg_exp.setCaseSensitivity(Qt::CaseSensitive);
-    } else {
-        highlighter->reg_exp.setCaseSensitivity(Qt::CaseInsensitive);
-    }
+    auto opts = highlighter->reg_exp.patternOptions();
+    opts.setFlag(QRegularExpression::CaseInsensitiveOption, !caseSensitive);
+    highlighter->reg_exp.setPatternOptions(opts);
     resetView();
 }
 
 void LogViewWidget::useRegExp() {
     useRegexp = !useRegexp;
     if (useRegexp) {
-        highlighter->reg_exp.setPatternSyntax(QRegExp::RegExp);
-    } else {
         highlighter->reg_exp.setPattern(searchEdit->text());
-        highlighter->reg_exp.setPatternSyntax(QRegExp::FixedString);
+    } else {
+        highlighter->reg_exp.setPattern(QRegularExpression::escape(searchEdit->text()));
     }
     resetView();
 }

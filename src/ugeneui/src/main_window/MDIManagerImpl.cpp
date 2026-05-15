@@ -53,7 +53,7 @@ void MWMDIManagerImpl::prepareGUI() {
     connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), SLOT(sl_onSubWindowActivated(QMdiSubWindow*)));
 
     windowMapper = new QSignalMapper(this);
-    connect(windowMapper, SIGNAL(mapped(QWidget*)), this, SLOT(sl_setActiveSubWindow(QWidget*)));
+    connect(windowMapper, SIGNAL(mappedObject(QObject*)), this, SLOT(sl_setActiveSubWindow(QObject*)));
 
     // prepare Window menu
     closeAct = new QAction(tr("Close active view"), this);
@@ -318,7 +318,7 @@ void MWMDIManagerImpl::activateWindow(MWMDIWindow* w) {
     updateState();
 }
 
-void MWMDIManagerImpl::sl_setActiveSubWindow(QWidget* w) {
+void MWMDIManagerImpl::sl_setActiveSubWindow(QObject* w) {
     if (!w) {
         return;
     }
