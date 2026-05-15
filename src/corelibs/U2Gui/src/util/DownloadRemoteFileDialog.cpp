@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "DownloadRemoteFileDialog.h"
 
@@ -185,7 +185,7 @@ void DownloadRemoteFileDialog::accept() {
     }
 
     QString dbId = getDBId();
-    QStringList resIds = resourceId.split(QRegExp("[\\s,;]+"));
+    QStringList resIds = resourceId.split(QRegularExpression("[\\s,;]+"));
     QList<Task*> tasks;
 
     QString fileFormat;

@@ -39,7 +39,7 @@ void HoverQLabel::updateStyles(const QString& newNormalStyle, const QString& new
     setStyleSheet(isHovered ? hoveredStyle : normalStyle);
 }
 
-void HoverQLabel::enterEvent(QEvent* event) {
+void HoverQLabel::enterEvent(QEnterEvent* event) {
     isHovered = true;
     setStyleSheet(hoveredStyle);
     QLabel::enterEvent(event);

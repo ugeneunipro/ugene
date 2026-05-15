@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "NewGrouperSlotDialog.h"
 
@@ -50,7 +50,7 @@ NewGrouperSlotDialog::NewGrouperSlotDialog(QWidget* parent, QList<Descriptor>& i
 void NewGrouperSlotDialog::accept() {
     QString name = slotNameEdit->text();
 
-    static const QRegExp invalidSymbols("[\\.,:;\\?@]");
+    static const QRegularExpression invalidSymbols("[\\.,:;\\?@]");
     QString error;
     if (name.isEmpty()) {
         error = tr("Empty output slot name.");

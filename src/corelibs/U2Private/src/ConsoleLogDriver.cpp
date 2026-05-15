@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ConsoleLogDriver.h"
 
@@ -129,7 +129,7 @@ void ConsoleLogDriver::setLogSettings() {
         QString logFormat = cmd->getParameterValue(CMDLineCoreOptions::LOG_FORMAT);
         settings.showLevel = logFormat.contains("L", Qt::CaseSensitive);
         settings.showCategory = logFormat.contains("C", Qt::CaseSensitive);
-        settings.showDate = logFormat.contains(QRegExp("[M{2}Y{2,4}d{2}H{2}m{2}s{2}z{3}]"));
+        settings.showDate = logFormat.contains(QRegularExpression("[M{2}Y{2,4}d{2}H{2}m{2}s{2}z{3}]"));
         settings.logPattern = logFormat;
     } else if (cmd->hasParameter(LOG_SHOW_DATE_CMD_OPTION) ||  // old options
                cmd->hasParameter(LOG_SHOW_LEVEL_CMD_OPTION) ||
@@ -171,7 +171,7 @@ void ConsoleLogDriver::setLogSettings() {
     LogServer* ls = LogServer::getInstance();
     const QStringList& categoryList = ls->getCategories();
     logLevel = logLevel.remove(" ");
-    QStringList cats = logLevel.split(QRegExp("[,=]"));
+    QStringList cats = logLevel.split(QRegularExpression("[,=]"));
 
     LogCategories::init();
     if (cats.size() == 1) {

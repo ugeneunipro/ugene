@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "SeqPasterWidgetController.h"
 
@@ -124,7 +124,7 @@ void SeqPasterWidgetController::sl_currentIndexChanged(const QString& newText) {
 }
 
 QString SeqPasterWidgetController::addSequence(const QString& name, QString data) {
-    QByteArray seq = data.remove(QRegExp("\\s")).toLatin1();
+    QByteArray seq = data.remove(QRegularExpression("\\s")).toLatin1();
 
     const DNAAlphabet* alph = nullptr;
     if (ui->groupBox->isChecked()) {

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
 
@@ -48,7 +48,7 @@ public:
     }
 
     static bool isWildcardURL(const QString& url) {
-        return url.indexOf(QRegExp("[*?\\[\\]]")) >= 0;
+        return url.indexOf(QRegularExpression("[*?\\[\\]]")) >= 0;
     }
 
     ActorDocument* createDescription(Actor*) override = 0;

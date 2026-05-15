@@ -238,7 +238,7 @@ void ProjectFileUtils::loadXMLProjectModel(const QString& url, U2OpStatus& si, Q
     QByteArray xmlData = f.readAll();
     f.close();
 
-    bool res = doc.setContent(xmlData);
+    bool res = bool(doc.setContent(xmlData));
     if (!res) {
         si.setError(L10N::notValidFileFormat("XML", url));
         return;

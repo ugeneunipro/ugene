@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "TophatSamplesWidgetController.h"
 
@@ -64,8 +64,8 @@ void TophatSamplesWidgetController::renameSample(int pos, const QString& newName
         os.setError(tr("Sample name can not be empty"));
         return;
     }
-    QRegExp regExp("\\w+");
-    if (!regExp.exactMatch(newName)) {
+    QRegularExpression regExp(QRegularExpression::anchoredPattern("\\w+"));
+    if (!regExp.match(newName).hasMatch()) {
         os.setError(tr("Sample name can consist only of Latin letters, numbers and the '_' symbol"));
         return;
     }
@@ -248,7 +248,7 @@ class SampleNameEdit : public QLineEdit {
 public:
     SampleNameEdit(TophatSamples* samples, const QString& name, QWidget* parent)
         : QLineEdit(name, parent), samples(samples), initialName(name) {
-        setValidator(new QRegExpValidator(QRegExp("\\w*"), this));
+        setValidator(new QRegularExpressionValidator(QRegularExpression("\\w*"), this));
         setObjectName(name);
     }
 

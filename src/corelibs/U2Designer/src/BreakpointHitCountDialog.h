@@ -27,7 +27,6 @@
 
 extern const int LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER;
 
-class QStringList;
 
 class Ui_BreakpointHitCountDialog;
 

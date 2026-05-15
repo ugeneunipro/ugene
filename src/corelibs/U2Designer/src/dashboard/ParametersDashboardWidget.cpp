@@ -256,7 +256,7 @@ void ParametersDashboardWidget::showWorkerParameters() {
         for (auto url : qAsConst(urlList)) {
             QFileInfo fileInfo(url);
             if (!fileInfo.isAbsolute()) {
-                fileInfo = QFileInfo(QDir(dashboardDir), url).absoluteFilePath();
+                fileInfo = QFileInfo(QFileInfo(QDir(dashboardDir), url).absoluteFilePath());
             }
             auto button = new DashboardFileButton(QStringList() << fileInfo.absoluteFilePath(), dashboardDir, monitor, parameter.isDir);
             valueWidgetLayout->addWidget(button);

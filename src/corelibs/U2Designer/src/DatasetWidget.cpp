@@ -22,9 +22,10 @@
 #include "DatasetWidget.h"
 
 #include <QContextMenuEvent>
-#include <QDesktopWidget>
+#include <QGuiApplication>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QScreen>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
@@ -233,8 +234,9 @@ void OptionsPopup::showOptions(QWidget* options, const QPoint& p) {
     show();
 
     // if the popup is not fit in the screen, then move it
-    int maxWidth = QApplication::desktop()->width();
-    int maxHeight = QApplication::desktop()->height();
+    QRect screenGeom = QGuiApplication::primaryScreen()->availableGeometry();
+    int maxWidth = screenGeom.width();
+    int maxHeight = screenGeom.height();
     QPoint rightBottom = pos() + QPoint(width(), height());
     if (rightBottom.x() > maxWidth) {
         move(x() - (rightBottom.x() - maxWidth), y());

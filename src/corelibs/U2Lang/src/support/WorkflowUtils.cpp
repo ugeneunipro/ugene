@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "WorkflowUtils.h"
 
@@ -125,7 +125,7 @@ void WorkflowUtils::setQObjectProperties(QObject& o, const QVariantMap& params) 
 QStringList WorkflowUtils::expandToUrls(const QString& s) {
     QStringList urls = s.split(";");
     QStringList result;
-    QRegExp wcard("[*?\\[\\]]");
+    QRegularExpression wcard("[*?\\[\\]]");
     for (QString url : qAsConst(urls)) {
         int idx = url.indexOf(wcard);
         if (idx >= 0) {
@@ -716,7 +716,7 @@ Actor* WorkflowUtils::actorById(const QList<Actor*>& actors, const ActorId& id) 
 }
 
 QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port* inPort) {
-    QMap<Port*, Link*> links = inPort->getLinks();
+    QMultiMap<Port*, Link*> links = inPort->getLinks();
     if (links.size() == 1) {
         Port* src = links.keys().first();
         assert(src->isOutput());

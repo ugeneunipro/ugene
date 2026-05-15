@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "HRVisualSerializer.h"
 
@@ -185,7 +185,7 @@ void HRVisualParser::parseLinkVisualBlock(const QString& from, const QString& to
 }
 
 QPointF HRVisualParser::string2Point(const QString& str, U2OpStatus& os) {
-    QStringList list = str.split(QRegExp("\\s"), Qt::SkipEmptyParts);
+    QStringList list = str.split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
     if (list.size() != 2) {
         os.setError(HRVisualParser::tr("Cannot parse coordinates from '%1'").arg(str));
         return QPointF(0.0, 0.0);
@@ -224,7 +224,7 @@ QFont HRVisualParser::string2Font(const QString& str, U2OpStatus& os) {
 }
 
 QRectF HRVisualParser::string2Rect(const QString& str, U2OpStatus& os) {
-    QStringList list = str.split(QRegExp("\\s"));
+    QStringList list = str.split(QRegularExpression("\\s"));
     if (list.size() != 4) {
         os.setError(HRVisualParser::tr("Cannot parse rectangle from '%1'").arg(str));
     }

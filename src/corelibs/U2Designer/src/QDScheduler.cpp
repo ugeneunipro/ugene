@@ -261,7 +261,7 @@ void QDResultLinker::updateCandidates(QDStep* step, int& progress) {
         if (unlinkedGroupMembersLeft == 0) {
             formGroupResults();
             processNewResults(progress);
-            QMapIterator<QDActor*, QList<QDResultGroup*>> i(currentGroupResults);
+            QMultiMapIterator<QDActor*, QList<QDResultGroup*>> i(currentGroupResults);
             while (i.hasNext()) {
                 i.next();
                 const QList<QDResultGroup*>& res = i.value();
