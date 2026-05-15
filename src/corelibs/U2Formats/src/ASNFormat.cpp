@@ -896,7 +896,7 @@ AsnNode* AsnNode::findChildByName(const QByteArray& childName) const {
 }
 
 AsnNode* AsnNode::getChild(int index) const {
-    SAFE_POINT(index >= 0 && index < children.size(), "Invalid child node index: " + QString::number(index) + ", count: " + children.size(), nullptr);
+    SAFE_POINT(index >= 0 && index < children.size(), "Invalid child node index: " + QString::number(index) + ", count: " + QString::number(children.size()), nullptr);
     return children.at(index);
 }
 

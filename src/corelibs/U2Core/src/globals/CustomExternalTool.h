@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QRegExp>
+
 #include "ExternalToolRegistry.h"
 
 namespace U2 {

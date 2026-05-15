@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegExp>
+
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>

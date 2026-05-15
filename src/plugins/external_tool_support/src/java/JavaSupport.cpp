@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegExp>
+
 #include "JavaSupport.h"
 
 #include <U2Core/AppContext.h>

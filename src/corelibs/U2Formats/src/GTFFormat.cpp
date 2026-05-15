@@ -250,9 +250,9 @@ void GTFFormat::load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& db
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
 
-    QMultiMap<QString, QList<SharedAnnotationData>> annotationsMap = parseDocument(io, os);
+    QMap<QString, QList<SharedAnnotationData>> annotationsMap = parseDocument(io, os);
 
-    QMultiMap<QString, QList<SharedAnnotationData>>::const_iterator iter = annotationsMap.constBegin();
+    QMap<QString, QList<SharedAnnotationData>>::const_iterator iter = annotationsMap.constBegin();
     const int objectsCountLimit = hints.contains(DocumentReadingMode_MaxObjectsInDoc) ? hints[DocumentReadingMode_MaxObjectsInDoc].toInt() : -1;
 
     QMap<AnnotationTableObject*, QMap<QString, QList<SharedAnnotationData>>> annTable2Annotations;

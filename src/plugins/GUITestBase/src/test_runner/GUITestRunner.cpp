@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegExp>
+
 #include "GUITestRunner.h"
 #include <harness/GUITestService.h>
 #include <harness/GUITestThread.h>

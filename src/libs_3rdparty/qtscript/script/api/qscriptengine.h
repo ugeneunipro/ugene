@@ -40,6 +40,8 @@
 #ifndef QSCRIPTENGINE_H
 #define QSCRIPTENGINE_H
 
+#include <QRegExp>
+
 #include <QtCore/qmetatype.h>
 
 #include <QtCore/qvariant.h>

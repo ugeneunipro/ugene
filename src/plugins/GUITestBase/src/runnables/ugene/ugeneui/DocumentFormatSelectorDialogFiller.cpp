@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegExp>
+
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTRadioButton.h>

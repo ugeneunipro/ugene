@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegExp>
+
 #include "IQTreeSupport.h"
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>

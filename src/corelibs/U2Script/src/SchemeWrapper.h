@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QRegExp>
+
 #include <QMap>
 #include <QString>
 

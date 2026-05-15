@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QRegExp>
+
 #include <U2Core/AppContext.h>
 
 #include <U2Gui/MainWindow.h>

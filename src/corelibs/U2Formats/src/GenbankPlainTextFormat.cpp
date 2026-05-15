@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "GenbankPlainTextFormat.h"
 
 #include <U2Core/AnnotationTableObject.h>
@@ -117,13 +119,13 @@ bool GenbankPlainTextFormat::readIdLine(ParserState* st) {
     }
 
     QString locusStr = st->value();
-    QStringList tokens = locusStr.split(QRegExp("(\t| )"), Qt::SkipEmptyParts);  // separators: tabs and spaces
+    QStringList tokens = locusStr.split(QRegularExpression("(\t| )"), Qt::SkipEmptyParts);  // separators: tabs and spaces
     if (tokens.isEmpty()) {
         st->si.setError(tr("Error parsing LOCUS line"));
         return false;
     }
     // try improving name readability
-    tokens[0] = tokens[0].replace(QRegExp("_(?![0-9])"), QChar(' '));
+    tokens[0] = tokens[0].replace(QRegularExpression("_(?![0-9])"), QChar(' '));
     st->entry->name = tokens[0];
 
     if (tokens.size() >= 3 && (tokens[2] == "bp" || tokens[2] == "aa")) {
@@ -351,14 +353,14 @@ QString GenbankPlainTextFormat::getFeatureTypeString(U2FeatureType featureType, 
 }
 
 bool GenbankPlainTextFormat::breakQualifierOnSpaceOnly(const QString& qualifierName) const {
-    QRegExp spacelessQualifierCatcher = QRegExp("^/?(" +
+    QRegularExpression spacelessQualifierCatcher = QRegularExpression("^/?(" +
                                                 GBFeatureUtils::QUALIFIER_TRANSLATION +
                                                 "|" +
                                                 GBFeatureUtils::QUALIFIER_NAME +
                                                 "|" +
                                                 GBFeatureUtils::QUALIFIER_GROUP +
                                                 ")");
-    return -1 == spacelessQualifierCatcher.indexIn(qualifierName);
+    return !spacelessQualifierCatcher.match(qualifierName).hasMatch();
 }
 
 const QMap<U2FeatureType, GBFeatureKey> GenbankPlainTextFormat::additionalFeatureTypes = GenbankPlainTextFormat::initAdditionalFeatureTypes();
@@ -756,12 +758,12 @@ QList<GenbankPlainTextFormat::StrPair> GenbankPlainTextFormat::formatKeywords(co
 
     res << processCommentKeys(tags);
 
-    QMapIterator<QString, QVariant> it(tags);
+    QMultiMapIterator<QString, QVariant> it(tags);
     while (it.hasNext()) {
         it.next();
-        if (it.value().type() == QVariant::String) {
+        if (it.value().typeId() == QMetaType::QString) {
             res << qMakePair(it.key(), it.value().toString());
-        } else if (it.value().type() == QVariant::StringList) {
+        } else if (it.value().typeId() == QMetaType::QStringList) {
             QStringList l = it.value().toStringList();
             if (l.isEmpty()) {
                 continue;

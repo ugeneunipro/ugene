@@ -51,6 +51,8 @@
 // We mean it.
 //
 
+#include <QRegExp>
+
 #include "_qobject_p.h"
 
 #include "bridge/qscriptactivationobject_p.h"

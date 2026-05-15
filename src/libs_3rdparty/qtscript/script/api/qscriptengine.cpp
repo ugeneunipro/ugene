@@ -36,6 +36,8 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+#include <QRegExp>
+
 #include "config.h"
 #include "qscriptengine.h"
 #include "qscriptsyntaxchecker_p.h"

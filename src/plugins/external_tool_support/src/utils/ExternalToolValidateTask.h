@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QRegExp>
+
 #include <QProcess>
 
 #include <U2Core/MultiTask.h>
