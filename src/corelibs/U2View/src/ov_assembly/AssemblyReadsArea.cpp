@@ -22,6 +22,8 @@
 #include <assert.h>
 #include <math.h>
 
+#include <QActionGroup>
+#include <QActionGroup>
 #include <QApplication>
 #include <QClipboard>
 #include <QCursor>

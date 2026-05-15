@@ -21,6 +21,7 @@
 
 #include "TreeViewer.h"
 
+#include <QActionGroup>
 #include <QBuffer>
 #include <QClipboard>
 #include <QMessageBox>

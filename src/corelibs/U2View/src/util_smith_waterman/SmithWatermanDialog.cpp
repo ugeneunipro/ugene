@@ -21,7 +21,7 @@
 
 #include <QCheckBox>
 #include <QMessageBox>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 
 #include <U2Algorithm/SmithWatermanReportCallback.h>
@@ -624,15 +624,15 @@ bool SmithWatermanDialog::readPattern(DNATranslation* aminoTT) {
 }
 
 void SmithWatermanDialog::stripFormatSymbolsFromPattern(QString& pattern) {
-    const qint32 fastaSequenceNameStart = pattern.indexOf(QRegExp("\\s*>"));
+    const qint32 fastaSequenceNameStart = pattern.indexOf(QRegularExpression("\\s*>"));
 
     if (0 == fastaSequenceNameStart)
-        pattern = pattern.split(QRegExp("\\s+"), Qt::SkipEmptyParts).last();
+        pattern = pattern.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts).last();
     else if (-1 != fastaSequenceNameStart)
         return;
     else {
-        pattern.replace(QRegExp("\\s+"), "");
-        pattern.replace(QRegExp("\\d+"), "");
+        pattern.replace(QRegularExpression("\\s+"), "");
+        pattern.replace(QRegularExpression("\\d+"), "");
     }
 }
 

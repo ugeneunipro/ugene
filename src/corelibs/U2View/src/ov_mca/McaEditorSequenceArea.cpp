@@ -79,7 +79,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, G
     traceActionsMenu->addAction(showAllTraces);
 
     insertAction = new QAction(tr("Insert character/gap"), this);
-    insertAction->setShortcut(Qt::SHIFT + Qt::Key_I);
+    insertAction->setShortcut(Qt::SHIFT | Qt::Key_I);
     connect(insertAction, SIGNAL(triggered()), SLOT(sl_addInsertion()));
     addAction(insertAction);
 
@@ -92,7 +92,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, G
 
     removeColumnsOfGapsAction = new QAction(tr("Remove all columns of gaps"), this);
     removeColumnsOfGapsAction->setObjectName("remove_columns_of_gaps");
-    removeColumnsOfGapsAction->setShortcut(Qt::SHIFT + Qt::Key_Delete);
+    removeColumnsOfGapsAction->setShortcut(Qt::SHIFT | Qt::Key_Delete);
     connect(removeColumnsOfGapsAction, SIGNAL(triggered()), SLOT(sl_removeColumnsOfGaps()));
     addAction(removeColumnsOfGapsAction);
 
@@ -117,11 +117,11 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, G
     scaleBar->setTickInterval(100);
     scaleBar->setObjectName("peak_height_slider");
 
-    scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
+    scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Up));
     addAction(scaleBar->getPlusAction());
     GUIUtils::updateButtonToolTip(scaleBar->getPlusButton(), scaleBar->getPlusAction()->shortcut());
 
-    scaleBar->getMinusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
+    scaleBar->getMinusAction()->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Down));
     addAction(scaleBar->getMinusAction());
     GUIUtils::updateButtonToolTip(scaleBar->getMinusButton(), scaleBar->getMinusAction()->shortcut());
 

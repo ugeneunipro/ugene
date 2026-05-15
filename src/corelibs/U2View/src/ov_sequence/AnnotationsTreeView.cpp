@@ -233,7 +233,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
 #ifndef Q_OS_DARWIN
     addQualifierAction->setShortcut(QKeySequence(Qt::Key_Insert));
 #else
-    addQualifierAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_I));
+    addQualifierAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_I));
 #endif
     addQualifierAction->setShortcutContext(Qt::WindowShortcut);
     addQualifierAction->setObjectName("add_qualifier_action");

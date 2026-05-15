@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ExportCoverageDialog.h"
 
@@ -120,7 +120,7 @@ void ExportCoverageDialog::init(QString assemblyName) {
     formats.addFormat(ExportCoverageSettings::BEDGRAPH, QStringList() << ExportCoverageSettings::BEDGRAPH_EXTENSION);
 
     LastUsedDirHelper dirHelper(DIR_HELPER_NAME, GUrlUtils::getDefaultDataPath());
-    assemblyName.replace(QRegExp("[^0-9a-zA-Z._\\-]"), "_").replace(QRegExp("_+"), "_");
+    assemblyName.replace(QRegularExpression("[^0-9a-zA-Z._\\-]"), "_").replace(QRegularExpression("_+"), "_");
     conf.defaultFileName = dirHelper.dir + "/" + assemblyName + "_coverage" +
                            cbFormat->itemData(cbFormat->currentIndex()).toString() + (chbCompress->isChecked() ? ExportCoverageSettings::COMPRESSED_EXTENSION : "");
 
