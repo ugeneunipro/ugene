@@ -96,7 +96,7 @@ static QString getWhatsNewHtml() {
         return "";
     }
     QTextStream in(&htmlFile);
-    in.setCodec("UTF-8");
+    in.setEncoding(QStringConverter::Utf8);
     return in.readAll();
 }
 

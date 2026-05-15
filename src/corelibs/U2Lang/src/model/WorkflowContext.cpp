@@ -264,7 +264,7 @@ void WorkflowContextCMDLine::saveRunInfo(const QString& dir) {
     CHECK_EXT(opened, coreLog.error(QString("run.info writing error: %1").arg(runInfo.errorString())), );
 
     QTextStream stream(&runInfo);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
     stream << QCoreApplication::arguments().join(" ") + "\n";
     stream.flush();
 

@@ -26,7 +26,6 @@
 #include <QtTest/QSpontaneKeyEvent>
 #include <QtTest>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
 
 #include "core/CustomScenario.h"
 #include "utils/GTThread.h"
@@ -53,7 +52,7 @@ void GTGlobals::sendEvent(QObject* obj, QEvent* e) {
 
 QImage GTGlobals::takeScreenShot() {
     if (GTThread::isMainThread()) {
-        return QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).toImage();
+        return QGuiApplication::primaryScreen()->grabWindow(0).toImage();
     }
     class TakeScreenshotScenario : public CustomScenario {
     public:
@@ -61,7 +60,7 @@ QImage GTGlobals::takeScreenShot() {
             : image(_image) {
         }
         void run() override {
-            image = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).toImage();
+            image = QGuiApplication::primaryScreen()->grabWindow(0).toImage();
         }
         QImage& image;
     };

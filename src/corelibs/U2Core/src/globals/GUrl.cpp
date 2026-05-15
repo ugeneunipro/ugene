@@ -228,7 +228,6 @@ QString GUrl::completeFileSuffix() const {
 
 static bool registerMetas() {
     qRegisterMetaType<GUrl>("GUrl");
-    qRegisterMetaTypeStreamOperators<GUrl>("U2::GUrl");
 
     return true;
 }

@@ -68,4 +68,4 @@ moc_predefs.h*
 /local
 *.lib
 *.so
-*.dylib
+*.dylibbuild-qt6/

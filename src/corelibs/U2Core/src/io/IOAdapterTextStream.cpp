@@ -21,7 +21,8 @@
 
 #include "IOAdapterTextStream.h"
 
-#include <QTextCodec>
+#include <QtCore5Compat/QTextCodec>
+#include <QStringConverter>
 
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatus.h>
@@ -86,12 +87,10 @@ IOAdapterReaderAndWriterBase::IOAdapterReaderAndWriterBase(IOAdapter* _ioAdapter
     ioDevice.reset(new IOAdapterDevice(ioAdapter));
     stream.setDevice(ioDevice.data());
 
-    // Set the provided codec. If no codec is provided use autodetection and UTF-8 as the default.
-    if (codec != nullptr) {
-        stream.setCodec(codec);
-    } else {
-        stream.setCodec("UTF-8");
-    }
+    // Set the provided codec. If no codec is provided use UTF-8 as the default.
+    textCodec = codec != nullptr ? codec : QTextCodec::codecForName("UTF-8");
+    auto encoding = QStringConverter::encodingForName(textCodec->name());
+    stream.setEncoding(encoding.value_or(QStringConverter::Utf8));
 }
 
 GUrl IOAdapterReaderAndWriterBase::getURL() const {
@@ -114,7 +113,7 @@ IOAdapterReader::~IOAdapterReader() {
         // Roll IOAdapter back to the size of the data left in the unreadCharsBuffer.
         // This is needed to correctly support streaming (reading multiple documents from the same file using IOAdapterReader)
         int nCharsToReturn = unreadCharsBuffer.length() - unreadCharsBufferPos;
-        int nBytesToReturn = stream.codec()->fromUnicode(unreadCharsBuffer.right(nCharsToReturn)).length();
+        int nBytesToReturn = textCodec->fromUnicode(unreadCharsBuffer.right(nCharsToReturn)).length();
         stream.seek(stream.pos() - nBytesToReturn);
     }
 }

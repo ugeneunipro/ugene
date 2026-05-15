@@ -149,7 +149,6 @@ namespace {
 
 bool registerMetaInfo() {
     qRegisterMetaType<U2DbiRef>("U2::U2DbiRef");
-    qRegisterMetaTypeStreamOperators<U2DbiRef>("U2::U2DbiRef");
     return true;
 }
 

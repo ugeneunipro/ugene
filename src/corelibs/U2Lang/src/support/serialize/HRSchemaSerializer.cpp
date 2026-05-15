@@ -142,7 +142,7 @@ void HRSchemaSerializer::saveSchema(Schema* schema, Metadata* meta, const QStrin
         return;
     }
     QTextStream out(&file);
-    out.setCodec("UTF-8");
+    out.setEncoding(QStringConverter::Utf8);
     out << schema2String(*schema, meta);
 
     file.close();
@@ -224,7 +224,7 @@ void HRSchemaSerializer::parseIncludes(Tokenizer& tokenizer, QList<QString> incl
             throw ReadFailed(tr("Can't open '%1'").arg(path));
         }
         QTextStream in(&file);
-        in.setCodec("UTF-8");
+        in.setEncoding(QStringConverter::Utf8);
         rawData = in.readAll();
         rawData = rawData.trimmed();
     }

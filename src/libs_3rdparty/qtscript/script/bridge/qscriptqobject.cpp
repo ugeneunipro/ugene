@@ -41,8 +41,10 @@
 #include "qscriptqobject_p.h"
 
 #include <QtCore/qmetaobject.h>
+#include <QtCore/private/qmetaobjectbuilder_p.h>
 #include <QtCore/qvarlengtharray.h>
 #include <QtCore/qdebug.h>
+#include <cstdlib>
 #include <qscriptable.h>
 #include "../api/qscriptengine_p.h"
 #include "../api/qscriptable_p.h"
@@ -134,10 +136,13 @@ struct QObjectConnection
 
 class QObjectConnectionManager: public QObject
 {
-    Q_OBJECT_FAKE
 public:
     QObjectConnectionManager(QScriptEnginePrivate *engine);
     ~QObjectConnectionManager();
+
+    const QMetaObject *metaObject() const override;
+    void *qt_metacast(const char *_clname) override;
+    int qt_metacall(QMetaObject::Call _c, int _id, void **_a) override;
 
     bool addSignalHandler(QObject *sender, int signalIndex,
                           JSC::JSValue receiver,
@@ -154,9 +159,13 @@ public:
     int mark(JSC::MarkStack&);
 
 private:
+    void ensureMetaObjectFor(int slotCount);
+
     QScriptEnginePrivate *engine;
     int slotCounter;
     QVector<QVector<QObjectConnection> > connections;
+    QMetaObject *dynamicMetaObject;
+    int currentSlotCount;
 };
 
 static bool hasMethodAccess(const QMetaMethod &method, int index, const QScriptEngine::QObjectWrapOptions &opt)
@@ -551,7 +560,7 @@ static JSC::JSValue delegateQtMethod(JSC::ExecState *exec, QMetaMethod::MethodTy
 
         if (rtype != QMetaType::Void) {
             // initialize the result
-            args[0] = QVariant(rtype, (void *)0);
+            args[0] = QVariant(QMetaType(rtype), (void *)0);
         }
 
         // try to convert arguments
@@ -567,7 +576,7 @@ static JSC::JSValue delegateQtMethod(JSC::ExecState *exec, QMetaMethod::MethodTy
             int tid = -1;
             QVariant v;
             if (argType.isUnresolved()) {
-                v = QVariant(QMetaType::QObjectStar, (void *)0);
+                v = QVariant(QMetaType(QMetaType::QObjectStar), (void *)0);
                 converted = QScriptEnginePrivate::convertToNativeQObject(
                     exec, actual, argType.name(), reinterpret_cast<void* *>(v.data()));
             } else if (argType.isVariant()) {
@@ -579,7 +588,7 @@ static JSC::JSValue delegateQtMethod(JSC::ExecState *exec, QMetaMethod::MethodTy
                 }
             } else {
                 tid = argType.typeId();
-                v = QVariant(tid, (void *)0);
+                v = QVariant(QMetaType(tid), (void *)0);
                 converted = QScriptEnginePrivate::convertValue(exec, actual, tid, v.data());
                 if (exec->hadException())
                     return exec->exception();
@@ -599,7 +608,7 @@ static JSC::JSValue delegateQtMethod(JSC::ExecState *exec, QMetaMethod::MethodTy
                         QByteArray vvTypeName = vv.typeName();
                         if (vvTypeName.endsWith('*')
                             && (vvTypeName.left(vvTypeName.size()-1) == argType.name())) {
-                            v = QVariant(tid, *reinterpret_cast<void* *>(vv.data()));
+                            v = QVariant(QMetaType(tid), *reinterpret_cast<void* *>(vv.data()));
                             converted = true;
                             matchDistance += 10;
                         }
@@ -701,13 +710,10 @@ static JSC::JSValue delegateQtMethod(JSC::ExecState *exec, QMetaMethod::MethodTy
                         break;
                     }
                 } else if (QScriptEnginePrivate::isRegExp(actual)) {
-                    switch (tid) {
-                    case QMetaType::QRegExp:
+                    if (tid == qMetaTypeId<QRegExp>()) {
                         // perfect
-                        break;
-                    default:
+                    } else {
                         matchDistance += 10;
-                        break;
                     }
                 } else if (QScriptEnginePrivate::isVariant(actual)) {
                     if (argType.isVariant()
@@ -939,7 +945,7 @@ struct QtMethodCaller
             } else if (retType.typeId() != QMetaType::Void) {
                 result = QScriptEnginePrivate::create(exec, retType.typeId(), params[0]);
                 if (!result)
-                    result = engine->newVariant(QVariant(retType.typeId(), params[0]));
+                    result = engine->newVariant(QVariant(QMetaType(retType.typeId()), params[0]));
             } else {
                 result = JSC::jsUndefined();
             }
@@ -2009,10 +2015,10 @@ JSC::JSValue QMetaObjectWrapperObject::execute(JSC::ExecState *exec,
     }
 }
 
-struct StaticQtMetaObject : public QObject
+struct StaticQtMetaObject
 {
     static const QMetaObject *get()
-        { return &static_cast<StaticQtMetaObject*> (0)->staticQtMetaObject; }
+        { return &Qt::staticMetaObject; }
 };
 
 static JSC::JSValue JSC_HOST_CALL qmetaobjectProtoFuncClassName(
@@ -2034,73 +2040,37 @@ QMetaObjectPrototype::QMetaObjectPrototype(
     putDirectFunction(exec, new (exec) JSC::NativeFunctionWrapper(exec, prototypeFunctionStructure, /*length=*/0, JSC::Identifier(exec, "className"), qmetaobjectProtoFuncClassName), JSC::DontEnum);
 }
 
-// Begin moc-generated code -- modify with care! Check "HAND EDIT" parts
-struct qt_meta_stringdata_QObjectConnectionManager_t {
-    QByteArrayData data[3];
-    char stringdata[44];
-};
-#define QT_MOC_LITERAL(idx, ofs, len) { \
-    Q_REFCOUNT_INITIALIZE_STATIC, len, 0, 0, \
-        offsetof(qt_meta_stringdata_QObjectConnectionManager_t, stringdata) + ofs \
-        - idx * sizeof(QByteArrayData) \
-    }
-static const qt_meta_stringdata_QObjectConnectionManager_t qt_meta_stringdata_QObjectConnectionManager = {
-    {
-QT_MOC_LITERAL(0, 0, 33),
-QT_MOC_LITERAL(1, 34, 7),
-QT_MOC_LITERAL(2, 42, 0)
-    },
-    "QScript::QObjectConnectionManager\0"
-    "execute\0\0"
-};
-#undef QT_MOC_LITERAL
+// The QObjectConnectionManager hosts a dynamic number of "execute()" slots —
+// one per JS signal connection. The meta-object is rebuilt on demand via
+// QMetaObjectBuilder so that QMetaObject::connect's index validation passes,
+// and qt_metacall routes every invocation to execute(_id, _a).
+static const char QObjectConnectionManagerClassName[] = "QScript::QObjectConnectionManager";
 
-static const uint qt_meta_data_QObjectConnectionManager[] = {
-
- // content:
-       7,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       1,   14, // methods
-       0,    0, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
-
- // slots: name, argc, parameters, tag, flags
-       1,    0,   19,    2, 0x0a,
-
- // slots: parameters
-    QMetaType::Void,
-
-       0        // eod
-};
-
-void QObjectConnectionManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void QObjectConnectionManager::ensureMetaObjectFor(int slotCount)
 {
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        Q_ASSERT(staticMetaObject.cast(_o));
-        QObjectConnectionManager *_t = static_cast<QObjectConnectionManager *>(_o);
-        // HAND EDIT: remove switch (_id), add the _id and _a parameters
-        _t->execute(_id, _a);
-    }
+    if (dynamicMetaObject && slotCount <= currentSlotCount)
+        return;
+    QMetaObjectBuilder builder;
+    builder.setClassName(QObjectConnectionManagerClassName);
+    builder.setSuperClass(&QObject::staticMetaObject);
+    for (int i = 0; i < slotCount; ++i)
+        builder.addSlot("execute()");
+    QMetaObject *mo = builder.toMetaObject();
+    if (dynamicMetaObject)
+        std::free(dynamicMetaObject);
+    dynamicMetaObject = mo;
+    currentSlotCount = slotCount;
 }
-
-const QMetaObject QObjectConnectionManager::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_QObjectConnectionManager.data,
-      qt_meta_data_QObjectConnectionManager, qt_static_metacall, 0, 0 }
-};
 
 const QMetaObject *QObjectConnectionManager::metaObject() const
 {
-    return &staticMetaObject;
+    return dynamicMetaObject ? dynamicMetaObject : &QObject::staticMetaObject;
 }
 
 void *QObjectConnectionManager::qt_metacast(const char *_clname)
 {
-    if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_QObjectConnectionManager.stringdata))
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, QObjectConnectionManagerClassName))
         return static_cast<void*>(const_cast<QObjectConnectionManager*>(this));
     return QObject::qt_metacast(_clname);
 }
@@ -2111,13 +2081,12 @@ int QObjectConnectionManager::qt_metacall(QMetaObject::Call _c, int _id, void **
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < slotCounter) // HAND EDIT
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= slotCounter; // HAND EDIT
+        if (_id < slotCounter)
+            execute(_id, _a);
+        _id -= slotCounter;
     }
     return _id;
 }
-// End moc-generated code
 
 void QObjectConnectionManager::execute(int slotIndex, void **argv)
 {
@@ -2225,12 +2194,14 @@ void QObjectConnectionManager::execute(int slotIndex, void **argv)
 }
 
 QObjectConnectionManager::QObjectConnectionManager(QScriptEnginePrivate *eng)
-    : engine(eng), slotCounter(0)
+    : engine(eng), slotCounter(0), dynamicMetaObject(nullptr), currentSlotCount(0)
 {
 }
 
 QObjectConnectionManager::~QObjectConnectionManager()
 {
+    if (dynamicMetaObject)
+        std::free(dynamicMetaObject);
 }
 
 void QObjectConnectionManager::clearMarkBits()
@@ -2278,6 +2249,7 @@ bool QObjectConnectionManager::addSignalHandler(
     if (connections.size() <= signalIndex)
         connections.resize(signalIndex+1);
     QVector<QObjectConnection> &cs = connections[signalIndex];
+    ensureMetaObjectFor(slotCounter + 1);
     int absSlotIndex = slotCounter + metaObject()->methodOffset();
     bool ok = QMetaObject::connect(sender, signalIndex, this, absSlotIndex, type);
     if (ok)

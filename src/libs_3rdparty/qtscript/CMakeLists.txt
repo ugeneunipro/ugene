@@ -1,6 +1,9 @@
 project(qtscript LANGUAGES CXX)
 
-find_package(Qt5 REQUIRED Core)
+set(CMAKE_AUTOMOC ON)
+
+find_package(Qt6 REQUIRED Core Core5Compat)
+find_package(Qt6 REQUIRED COMPONENTS CorePrivate)
 
 file(GLOB JSC_RUNTIME_SOURCES 3rdparty/javascriptcore/JavaScriptCore/runtime/*.cpp)
 file(GLOB JSC_GENERATED_SOURCES 3rdparty/javascriptcore/JavaScriptCore/generated/*.cpp)
@@ -93,7 +96,6 @@ target_include_directories(qtscript PRIVATE
         script
         script/api
         script/bridge
-        script/moc
         script/parser
 )
 
@@ -111,6 +113,7 @@ target_compile_definitions(qtscript PRIVATE
         QT_BUILDING_QT
         QT_BUILD_SCRIPT_LIB
         QT_NO_NARROWING_CONVERSIONS_IN_CONNECT
+        QT_NO_USERDATA
         USE_SYSTEM_MALLOC=1
         WTF=QTWTF
         WTF_CHANGES=1
@@ -139,7 +142,7 @@ target_compile_options(qtscript PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/w>
 )
 
-target_link_libraries(qtscript PRIVATE Qt5::Core)
+target_link_libraries(qtscript PRIVATE Qt6::Core Qt6::Core5Compat Qt6::CorePrivate)
 if (WIN32)
     target_link_libraries(qtscript PRIVATE winmm.lib)
 elseif (APPLE)

@@ -324,7 +324,7 @@ void LoadSamplesTask::scanDir(const QString& s, int depth) {
         }
 
         QTextStream in(&f);
-        in.setCodec("UTF-8");
+        in.setEncoding(QStringConverter::Utf8);
         Sample sample;
         sample.content = in.readAll();
 

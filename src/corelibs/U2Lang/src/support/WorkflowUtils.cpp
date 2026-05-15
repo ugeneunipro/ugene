@@ -840,7 +840,7 @@ void WorkflowUtils::schemaFromFile(const QString& url, Schema* schema, Metadata*
         return;
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
+    in.setEncoding(QStringConverter::Utf8);
     QString rawData = in.readAll();
     file.close();
 
