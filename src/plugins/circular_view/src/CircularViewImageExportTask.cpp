@@ -21,6 +21,7 @@
 
 #include "CircularViewImageExportTask.h"
 
+#include <QFile>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDomDocument>
@@ -54,7 +55,7 @@ void CircularViewImageExportToSVGTask::run() {
     if (!ok && !result) {
         result = false;
     }
-    ok = doc.setContent(&file);
+    ok = bool(doc.setContent(&file));
     if (!ok && !result) {
         file.close();
         result = false;

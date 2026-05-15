@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "CustomExternalTool.h"
 
@@ -62,7 +62,7 @@ void CustomExternalTool::setPredefinedVersion(const QString& version) {
     predefinedVersion = version;
 }
 
-void CustomExternalTool::setVersionRegExp(const QRegExp& _versionRegExp) {
+void CustomExternalTool::setVersionRegExp(const QRegularExpression& _versionRegExp) {
     versionRegExp = _versionRegExp;
 }
 

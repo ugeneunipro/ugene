@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ClustalOSupport.h"
 
@@ -64,7 +64,7 @@ ClustalOSupport::ClustalOSupport()
     validationArguments << "--help";
     validationMessageRegExp = "Clustal Omega";
     description = tr("<i>Clustal Omega</i> is a free sequence alignment software for proteins.");
-    versionRegExp = QRegExp("Clustal Omega - (\\d+\\.\\d+\\.\\d+).*");
+    versionRegExp = QRegularExpression("Clustal Omega - (\\d+\\.\\d+\\.\\d+).*");
     toolKitName = "ClustalO";
     if (isOsWindows()) {
         pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;

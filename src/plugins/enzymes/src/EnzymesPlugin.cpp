@@ -195,7 +195,7 @@ void EnzymesADVContext::initViewContext(GObjectViewController* view) {
 
     auto insertRestrictionSite = new GObjectViewAction(av, av, tr("Insert restriction site..."));
     insertRestrictionSite->setObjectName(INSERT_RESTRICTION_SITE_NAME);
-    insertRestrictionSite->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
+    insertRestrictionSite->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_I));
     insertRestrictionSite->setShortcutContext(Qt::WindowShortcut);
     connect(insertRestrictionSite, &QAction::triggered, this, &EnzymesADVContext::sl_insertRestrictionSite);
     addViewAction(insertRestrictionSite);

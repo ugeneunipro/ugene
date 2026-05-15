@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ExternalToolValidateTask.h"
 
@@ -219,7 +219,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 
     QString errLog = QString(externalToolProcess->readAllStandardError());
     if (!errLog.isEmpty()) {
-        if (errLog.contains(QRegExp(validation.validationMessageRegExp))) {
+        if (errLog.contains(QRegularExpression(validation.validationMessageRegExp))) {
             isValid = true;
             checkVersion(errLog);
             tool->extractAdditionalParameters(errLog);
@@ -236,7 +236,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 
     QString log = QString(externalToolProcess->readAllStandardOutput());
     if (!log.isEmpty()) {
-        if (log.contains(QRegExp(validation.validationMessageRegExp))) {
+        if (log.contains(QRegularExpression(validation.validationMessageRegExp))) {
             isValid = true;
             checkVersion(log);
             tool->extractAdditionalParameters(log);
@@ -259,17 +259,17 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 }
 
 void ExternalToolJustValidateTask::checkVersion(const QString& partOfLog) {
-    if (checkVersionRegExp.isEmpty()) {
+    if (checkVersionRegExp.pattern().isEmpty()) {
         version = tool->getVersionFromToolPath(toolPath);
         if (version.isEmpty()) {
             version = tool->getPredefinedVersion();
         }
     } else {
-        QStringList lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+        QStringList lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
         foreach (QString buf, lastPartOfLog) {
-            if (buf.contains(checkVersionRegExp)) {
-                checkVersionRegExp.indexIn(buf);
-                version = checkVersionRegExp.cap(1);
+            auto m = checkVersionRegExp.match(buf);
+            if (m.hasMatch()) {
+                version = m.captured(1);
                 return;
             }
         }

@@ -21,7 +21,7 @@
 
 #include "QDDocument.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 
 #include "QDSceneIOTasks.h"
@@ -217,9 +217,9 @@ QByteArray QDDocument::toByteArray() const {
 }
 
 bool QDDocument::setContent(const QString& content) {
-    QRegExp reg(DOC_NAME_PATTERN);
-    reg.indexIn(content);
-    docName = reg.cap(1);
+    QRegularExpression reg(DOC_NAME_PATTERN);
+    auto m = reg.match(content);
+    docName = m.captured(1);
     findImportedUrls(content);
     findComments(content);
     parseSchemaStrand(content);
@@ -233,10 +233,10 @@ bool QDDocument::setContent(const QString& content) {
 }
 
 void QDDocument::parseSchemaStrand(const QString& str) {
-    QRegExp reg(SCHEMA_STRAND_PATTERN);
-    int pos = reg.indexIn(str);
-    if (pos >= 0) {
-        QString strandStr = reg.cap(1);
+    QRegularExpression reg(SCHEMA_STRAND_PATTERN);
+    auto m = reg.match(str);
+    if (m.hasMatch()) {
+        QString strandStr = m.captured(1);
         if (QDSchemeSerializer::STRAND_MAP.values().contains(strandStr)) {
             schemaStrand = QDSchemeSerializer::STRAND_MAP.key(strandStr);
         }
@@ -244,10 +244,10 @@ void QDDocument::parseSchemaStrand(const QString& str) {
 }
 
 void QDDocument::findComments(const QString& str) {
-    QRegExp reg("((?:#[^\n]*\n{1,1})+)\\s*" + GRAPH_KEYWORD);
-    int pos = reg.indexIn(str);
-    if (pos >= 0) {
-        QString coms = reg.cap(1);
+    QRegularExpression reg("((?:#[^\n]*\n{1,1})+)\\s*" + GRAPH_KEYWORD);
+    auto m = reg.match(str);
+    if (m.hasMatch()) {
+        QString coms = m.captured(1);
         coms.remove(HEADER_LINE);
         docDesc = coms.replace("#", "");
         int lastIdx = docDesc.length() - 1;
@@ -258,7 +258,7 @@ void QDDocument::findComments(const QString& str) {
 
 void QDDocument::parseOrder(const QString& str) {
     order.clear();
-    order = str.trimmed().split(QRegExp("\\s*;\\s*"));
+    order = str.trimmed().split(QRegularExpression("\\s*;\\s*"));
 }
 
 bool QDDocument::addElement(QDElementStatement* el) {
@@ -276,95 +276,88 @@ bool QDDocument::addElement(QDElementStatement* el) {
 }
 
 void QDDocument::findImportedUrls(const QString& str) {
-    QRegExp reg(IMPORT_PATTERN);
+    QRegularExpression reg(IMPORT_PATTERN);
     int pos = 0;
     while (pos >= 0) {
-        pos = reg.indexIn(str, pos);
-        if (pos >= 0) {
-            pos += reg.matchedLength();
-            QString toImport = reg.cap(1);
-            importedUrls.append(toImport);
-        }
+        auto m = reg.match(str, pos);
+        if (!m.hasMatch()) break;
+        pos = m.capturedEnd();
+        QString toImport = m.captured(1);
+        importedUrls.append(toImport);
     }
 }
 
 bool QDDocument::findElementStatements(const QString& str) {
-    QRegExp reg;
+    QRegularExpression reg;
     reg.setPattern(ELEMENT_STATEMENT_PATTERN);
     int pos = 0;
     while (pos >= 0) {
-        pos = reg.indexIn(str, pos);
-        if (pos >= 0) {
-            /*QString ch1 = QString(str.at(pos));
-            QString ch2 = QString(str.at(pos-1));
-            QString ch3 = QString(str.at(pos+1));*/
-            pos += reg.matchedLength();
-            const QString& id = reg.cap(1);
-            const QString& attrs = reg.cap(2);
-            if (id == ORDER_KEYWORD) {
-                parseOrder(attrs);
-                continue;
-            }
-            const QMap<QString, QString>& attrsMap = string2attributesMap(attrs);
-            QDStatementType type;
-            if (id.contains('.')) {
-                type = Element;
-            } else {
-                type = Group;
-            }
-            auto element = new QDElementStatement(id, type);
-            foreach (const QString& attrName, attrsMap.keys()) {
-                const QString& val = attrsMap.value(attrName);
-                element->setAttribute(attrName, val);
-            }
-            addElement(element);
+        auto m = reg.match(str, pos);
+        if (!m.hasMatch()) break;
+        pos = m.capturedEnd();
+        const QString id = m.captured(1);
+        const QString attrs = m.captured(2);
+        if (id == ORDER_KEYWORD) {
+            parseOrder(attrs);
+            continue;
         }
+        const QMap<QString, QString>& attrsMap = string2attributesMap(attrs);
+        QDStatementType type;
+        if (id.contains('.')) {
+            type = Element;
+        } else {
+            type = Group;
+        }
+        auto element = new QDElementStatement(id, type);
+        foreach (const QString& attrName, attrsMap.keys()) {
+            const QString& val = attrsMap.value(attrName);
+            element->setAttribute(attrName, val);
+        }
+        addElement(element);
     }
     return true;
 }
 
 bool QDDocument::findLinkStatements(const QString& str) {
-    QRegExp reg(LINK_STATEMENT_PATTERN);
+    QRegularExpression reg(LINK_STATEMENT_PATTERN);
     int pos = 0;
     while (pos >= 0) {
-        pos = reg.indexIn(str, pos);
-        if (pos >= 0) {
-            pos += reg.matchedLength();
-            const QString& elemS = reg.cap(1);
-            const QList<QString>& elIds = idsFromString(elemS);
-            auto link = new QDLinkStatement(elIds);
-            int capCount = reg.captureCount();
-            const QString& attrs = reg.cap(capCount);
-            const QMap<QString, QString>& attrsMap = string2attributesMap(attrs);
-            foreach (const QString& attrName, attrsMap.keys()) {
-                const QString& val = attrsMap.value(attrName);
-                link->setAttribute(attrName, val);
-            }
-            addLink(link);
+        auto m = reg.match(str, pos);
+        if (!m.hasMatch()) break;
+        pos = m.capturedEnd();
+        const QString elemS = m.captured(1);
+        const QList<QString>& elIds = idsFromString(elemS);
+        auto link = new QDLinkStatement(elIds);
+        int capCount = reg.captureCount();
+        const QString attrs = m.captured(capCount);
+        const QMap<QString, QString>& attrsMap = string2attributesMap(attrs);
+        foreach (const QString& attrName, attrsMap.keys()) {
+            const QString& val = attrsMap.value(attrName);
+            link->setAttribute(attrName, val);
         }
+        addLink(link);
     }
     return true;
 }
 
 QMap<QString, QString> QDDocument::string2attributesMap(const QString& str) {
     QMap<QString, QString> res;
-    QRegExp reg(ID_PATTERN + "\\s*:\\s*" + VAL_PATTERN);
+    QRegularExpression reg(ID_PATTERN + "\\s*:\\s*" + VAL_PATTERN);
     int pos = 0;
     while (pos >= 0) {
-        pos = reg.indexIn(str, pos);
-        if (pos >= 0) {
-            const QString& attrName = reg.cap(1);
-            QString attrVal = reg.cap(2);
-            attrVal.remove('"');
-            res[attrName] = attrVal;
-            pos += reg.matchedLength();
-        }
+        auto m = reg.match(str, pos);
+        if (!m.hasMatch()) break;
+        const QString attrName = m.captured(1);
+        QString attrVal = m.captured(2);
+        attrVal.remove('"');
+        res[attrName] = attrVal;
+        pos = m.capturedEnd();
     }
     return res;
 }
 
 QList<QString> QDDocument::idsFromString(const QString& str) {
-    return str.split(QRegExp("\\s*--\\s*"));
+    return str.split(QRegularExpression("\\s*--\\s*"));
 }
 
 QString QDDocument::definedIn(const QString& id) {

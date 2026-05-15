@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "TextObjectTests.h"
 
@@ -64,13 +64,13 @@ Task::ReportResult GTest_CheckStringExists::report() {
         return ReportResult_Finished;
     }
 
-    QString stringToFind = QRegExp::escape(stringToCheck);
+    QString stringToFind = QRegularExpression::escape(stringToCheck);
     if (wholeLine) {
-        stringToFind = "^(.*\\n)?" + QRegExp::escape(stringToCheck) + "(\\n.*)?$";
+        stringToFind = "^(.*\\n)?" + QRegularExpression::escape(stringToCheck) + "(\\n.*)?$";
     }
 
     const QString text = obj->getText();
-    int index = text.indexOf(QRegExp(stringToFind));
+    int index = text.indexOf(QRegularExpression(stringToFind));
 
     if (mustExist) {
         if (-1 == index) {

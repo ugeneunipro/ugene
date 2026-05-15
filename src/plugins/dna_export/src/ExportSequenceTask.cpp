@@ -46,7 +46,7 @@
 
 static const qint64 MAX_CHUNK_LENGTH = 4194305;  // (4 MiB + 1) chunk. Remainder of the division by 3 is 2.
 
-static QMutex seqRefGuard(QMutex::NonRecursive);
+static QMutex seqRefGuard;
 
 namespace U2 {
 

@@ -19,7 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QElapsedTimer>
+#include <QRegularExpression>
 
 #include "TaskTests.h"
 
@@ -66,7 +67,7 @@ static TaskFlags flagsFromString(QString str, bool* ok = nullptr) {
     if (ok != nullptr)
         *ok = false;
     if (!str.isEmpty()) {
-        QRegExp rx("([^\\|]+)");
+        QRegularExpression rx("([^\\|]+)");
         int pos = 0;
         QHash<QString, TaskFlag> hash;
         hash["TaskFlag_None"] = TaskFlag_None;
@@ -75,9 +76,11 @@ static TaskFlags flagsFromString(QString str, bool* ok = nullptr) {
         hash["TaskFlag_RunBeforeSubtasksFinished"] = TaskFlag_RunBeforeSubtasksFinished;
         hash["TaskFlag_FailOnSubtaskError"] = TaskFlag_FailOnSubtaskError;
         hash["TaskFlag_FailOnSubtaskCancel"] = TaskFlag_FailOnSubtaskCancel;
-        while ((pos = rx.indexIn(str, pos)) != -1) {
-            pos += rx.matchedLength();
-            const TaskFlag flag = hash.value(rx.cap(1), static_cast<TaskFlag>(-1));
+        while (true) {
+            auto m = rx.match(str, pos);
+            if (!m.hasMatch()) break;
+            pos = m.capturedEnd();
+            const TaskFlag flag = hash.value(m.captured(1), static_cast<TaskFlag>(-1));
             if (flag == static_cast<TaskFlag>(-1)) {
                 return taskFlags;
             }
@@ -311,7 +314,7 @@ Task::ReportResult GTest_TaskCheckFlag::report() {
     assert(obj != nullptr);
     auto task = qobject_cast<Task*>(obj);
     if (task->getFlags().operator&(flag) == 0) {
-        stateInfo.setError(QString("task flags not matched %1, expected %2").arg(task->getFlags()).arg(flag));
+        stateInfo.setError(QString("task flags not matched %1, expected %2").arg((quint32)task->getFlags().toInt()).arg((quint32)flag.toInt()));
         return ReportResult_Finished;
     }
     return ReportResult_Finished;

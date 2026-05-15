@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ActorCfgModel.h"
 
@@ -102,7 +102,7 @@ void ActorCfgModel::setupAttributesScripts() {
                 if (dataTypePtr->isMap()) {
                     QMap<Descriptor, DataTypePtr> map = dataTypePtr->getDatatypesMap();
                     foreach (const Descriptor& desc, map.keys()) {
-                        QString id = desc.getId().replace(QRegExp("[^a-zA-Z0-9_]"), "_");
+                        QString id = desc.getId().replace(QRegularExpression("[^a-zA-Z0-9_]"), "_");
                         if (id.at(0).isDigit()) {
                             id.prepend("_");
                         }
@@ -111,7 +111,7 @@ void ActorCfgModel::setupAttributesScripts() {
                     }
                 } else if (dataTypePtr->isList()) {
                     foreach (const Descriptor& typeDescr, dataTypePtr->getAllDescriptors()) {
-                        QString id = typeDescr.getId().replace(QRegExp("[^a-zA-Z0-9_]"), "_");
+                        QString id = typeDescr.getId().replace(QRegularExpression("[^a-zA-Z0-9_]"), "_");
                         if (id.at(0).isDigit()) {
                             id.prepend("_");
                         }
@@ -119,7 +119,7 @@ void ActorCfgModel::setupAttributesScripts() {
                         attribute->getAttributeScript().setScriptVar(d, QVariant());
                     }
                 } else {
-                    QString id = dataTypePtr->getId().replace(QRegExp("[^a-zA-Z0-9_]"), "_");
+                    QString id = dataTypePtr->getId().replace(QRegularExpression("[^a-zA-Z0-9_]"), "_");
                     if (id.at(0).isDigit()) {
                         id.prepend("_");
                     }
@@ -131,7 +131,7 @@ void ActorCfgModel::setupAttributesScripts() {
         }
 
         QString attrVarName = attribute->getDisplayName();
-        QString id = attribute->getId().replace(QRegExp("[^a-zA-Z0-9_]"), "_");
+        QString id = attribute->getId().replace(QRegularExpression("[^a-zA-Z0-9_]"), "_");
         if (id.at(0).isDigit()) {
             id.prepend("_");
         }

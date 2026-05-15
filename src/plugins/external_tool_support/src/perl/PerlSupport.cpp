@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "PerlSupport.h"
 
@@ -46,7 +46,7 @@ PerlSupport::PerlSupport()
     validationArguments << "--version";
 
     description += tr("Perl scripts interpreter");
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
+    versionRegExp = QRegularExpression("(\\d+.\\d+.\\d+)");
     toolKitName = "perl";
 
     muted = true;

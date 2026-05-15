@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ExtractProductTask.h"
 
@@ -307,7 +307,7 @@ Task::ReportResult ExtractProductWrapperTask::report() {
 void ExtractProductWrapperTask::prepareUrl(const InSilicoPcrProduct& product, const QString& sequenceName, qint64 sequenceLength) {
     // generate file name
     QString fileName = ExtractProductTask::getProductName(sequenceName, sequenceLength, product.region) + ".gb";
-    QRegExp regExp("[^A-z0-9_\\-\\s\\.\\(\\)]");
+    QRegularExpression regExp("[^A-z0-9_\\-\\s\\.\\(\\)]");
     fileName.replace(regExp, "_");
 
     QString outputDir = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + QDir::separator() + "pcr";

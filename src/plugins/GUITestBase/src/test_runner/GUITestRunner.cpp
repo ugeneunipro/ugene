@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "GUITestRunner.h"
 #include <harness/GUITestService.h>
@@ -143,7 +143,7 @@ void GUITestRunner::sl_filterChanged(const QString& nameFilter) {
 
 namespace {
 bool filterMatched(const QString& nameFilter, const QString& name) {
-    static QRegExp spaces("\\s");
+    static QRegularExpression spaces("\\s");
     QStringList filterWords = nameFilter.split(spaces);
     foreach (const QString& word, filterWords) {
         if (!name.contains(word, Qt::CaseInsensitive)) {

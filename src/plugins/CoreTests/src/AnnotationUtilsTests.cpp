@@ -59,7 +59,7 @@ Task::ReportResult GTest_ShiftSequence::report() {
                                                                 locationBefore,
                                                                 sequenceLength);
     if (parsingResult != Genbank::LocationParser::Success) {
-        setError(QString("Failed to parse location before: ") + parsingResult);
+        setError(QString("Failed to parse location before: ") + QString::number((int)parsingResult));
         return ReportResult_Finished;
     }
     U2Location shiftedLocation = U1AnnotationUtils::shiftLocation(locationBefore, shift, sequenceLength);

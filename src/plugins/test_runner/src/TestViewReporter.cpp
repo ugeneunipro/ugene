@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "TestViewReporter.h"
 
@@ -133,10 +133,10 @@ static bool cleanupRunResultRichTextHtml(QString* runResult) {
     QString valueColor = " <font color=\"#FF3333\">\\1</font>=<font color=\"#0000CC\">\\2</font> ";
     QString deleteColor = "\\1\\2";
 
-    runResult->replace(QRegExp("(\\s[^\\s]*)=(\"[^\"]*\")"), valueColor);  // first find all values
+    runResult->replace(QRegularExpression("(\\s[^\\s]*)=(\"[^\"]*\")"), valueColor);  // first find all values
 
-    QRegExp rx("(&lt;!--.*--&gt;)");
-    rx.setMinimal(true);
+    QRegularExpression rx("(&lt;!--.*--&gt;)");
+    rx.setPatternOptions(QRegularExpression::InvertedGreedinessOption);
     runResult->replace(rx, commentColor);  // 2- find all comments
 
     rx.setPattern("(&lt;!.*&gt;)");
@@ -150,32 +150,32 @@ static bool cleanupRunResultRichTextHtml(QString* runResult) {
     runResult->replace(rx, normalTagColor);  // 3- find all tag names
 
     rx.setPattern("(commentColorPoint.*)</font>(.*commentColorPointEnd)");
-    while (rx.indexIn(*runResult) != -1) {
+    while (runResult->indexOf(rx) != -1) {
         runResult->replace(rx, deleteColor);  // 4- find information to delete
     }
 
     rx.setPattern("(commentColorPoint.*)<font color=\".*\">(.*commentColorPointEnd)");
-    while (rx.indexIn(*runResult) != -1) {
+    while (runResult->indexOf(rx) != -1) {
         runResult->replace(rx, deleteColor);  // 4- find information to delete
     }
 
     rx.setPattern("(commentColorPoint.*)</font mainColorPointEnd>(.*commentColorPointEnd)");
-    while (rx.indexIn(*runResult) != -1) {
+    while (runResult->indexOf(rx) != -1) {
         runResult->replace(rx, deleteColor);  // 4- find information to delete
     }
 
     rx.setPattern("(commentColorPoint.*)<font color=\"#339966\" mainColorPoint>(.*commentColorPointEnd)");
-    while (rx.indexIn(*runResult) != -1) {
+    while (runResult->indexOf(rx) != -1) {
         runResult->replace(rx, deleteColor);  // 4- find information to delete
     }
 
     rx.setPattern("(mainColorPoint.*)</font>(.*mainColorPointEnd)");
-    while (rx.indexIn(*runResult) != -1) {
+    while (runResult->indexOf(rx) != -1) {
         runResult->replace(rx, deleteColor);  // 4- find information to delete
     }
 
     rx.setPattern("(mainColorPoint.*)<font color=\".*\">(.*mainColorPointEnd)");
-    while (rx.indexIn(*runResult) != -1) {
+    while (runResult->indexOf(rx) != -1) {
         runResult->replace(rx, deleteColor);  // 4- find information to delete
     }
 

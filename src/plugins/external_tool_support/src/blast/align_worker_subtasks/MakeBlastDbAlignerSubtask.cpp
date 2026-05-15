@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "MakeBlastDbAlignerSubtask.h"
 
@@ -83,7 +83,7 @@ const QString& MakeBlastDbAlignerSubtask::getResultPath() const {
 
 QString MakeBlastDbAlignerSubtask::getAcceptableTempDir() const {
     auto isTempDirAcceptable = [](const QString& tempDir) {
-        CHECK(!tempDir.contains(QRegExp("\\s")), false);
+        CHECK(!tempDir.contains(QRegularExpression("\\s")), false);
         QTemporaryDir testSubDir(tempDir + "/XXXXXX");
         return testSubDir.isValid();
     };

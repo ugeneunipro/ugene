@@ -433,7 +433,7 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
         if (ptrn->length() < 8) {
             algType = SW_classic;
             settings->setCustomValue("realizationName", "SW_classic");
-            settings->realizationName = SW_classic;
+            settings->realizationName = "SW_classic";
         }
     }
     SAFE_POINT(!settings->sMatrix.isEmpty(), "Substitution matrix is empty", );

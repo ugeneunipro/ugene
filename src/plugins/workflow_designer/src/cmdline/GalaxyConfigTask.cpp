@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "GalaxyConfigTask.h"
 
@@ -296,8 +296,8 @@ bool GalaxyConfigTask::getWorkflowName() {
     const int nameLength = nameEndPosition - nameStartPosition;
 
     galaxyToolName = schemeContent.mid(nameStartPosition, nameLength);
-    galaxyToolName.replace(QRegExp("^\""), "");
-    galaxyToolName.replace(QRegExp("\"$"), "");
+    galaxyToolName.replace(QRegularExpression("^\""), "");
+    galaxyToolName.replace(QRegularExpression("\"$"), "");
     return true;
 }
 
@@ -335,7 +335,7 @@ bool GalaxyConfigTask::defineAliases() {
               setError(Constants::VISUAL_START),
               false);
 
-    int elementNameStartPosition = schemeContent.indexOf(QRegExp("[a-z]"), aliasesStartPosition);
+    int elementNameStartPosition = schemeContent.indexOf(QRegularExpression("[a-z]"), aliasesStartPosition);
     while (elementNameStartPosition < visualKeywordPosition) {
         const int elementNameEndPosition = schemeContent.indexOf(Constants::DOT, elementNameStartPosition);
         CHECK_EXT(elementNameEndPosition != SUBSTRING_NOT_FOUND,
@@ -343,7 +343,7 @@ bool GalaxyConfigTask::defineAliases() {
                   false);
         const int elementNameLength = elementNameEndPosition - elementNameStartPosition;
         QString elementName = schemeContent.mid(elementNameStartPosition, elementNameLength);
-        elementName.replace(QRegExp("[0-9]$"), "");
+        elementName.replace(QRegularExpression("[0-9]$"), "");
 
         const int elementAliasStartPosition = elementNameEndPosition + 1,
                   elementAliasEndPosition = schemeContent.indexOf(Constants::BLOCK_START, elementAliasStartPosition);
@@ -369,7 +369,7 @@ bool GalaxyConfigTask::defineAliases() {
         elementProperties[elementName] = elementAliasParameters;
         elemAliases.push_back(elementProperties);
 
-        elementNameStartPosition = schemeContent.indexOf(QRegExp("[a-z]"), aliasDescriptionEndPosition);
+        elementNameStartPosition = schemeContent.indexOf(QRegularExpression("[a-z]"), aliasDescriptionEndPosition);
     }
     return true;
 }

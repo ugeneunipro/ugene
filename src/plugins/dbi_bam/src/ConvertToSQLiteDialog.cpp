@@ -21,7 +21,6 @@
 
 #include "ConvertToSQLiteDialog.h"
 
-#include <QDesktopWidget>
 #include <QMessageBox>
 #include <QScreen>
 #include <QTextEdit>
@@ -216,7 +215,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         foreach (const Header::ReadGroup& rg, header.getReadGroups()) {
             QStringList rgList;
             rgList << QString(rg.getSequencingCenter()) << QString(rg.getDescription()) << QString(rg.getDate().toString()) << QString(rg.getLibrary())
-                   << QString(rg.getPlatform()) << QString(rg.getPredictedInsertSize()) << QString(rg.getPlatform()) << QString(rg.getPlatformUnit()) << QString(rg.getSample());
+                   << QString(rg.getPlatform()) << QString::number(rg.getPredictedInsertSize()) << QString(rg.getPlatform()) << QString(rg.getPlatformUnit()) << QString(rg.getSample());
             int j = 0;
             for (const QString& s : qAsConst(rgList)) {
                 auto item = new QTableWidgetItem(s);
@@ -239,7 +238,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         int i = 0;
         foreach (const Header::Program& pg, header.getPrograms()) {
             QStringList pgList;
-            pgList << QString(pg.getName()) << QString(pg.getVersion()) << QString(pg.getCommandLine()) << QString(pg.getPreviousId());
+            pgList << QString(pg.getName()) << QString(pg.getVersion()) << QString(pg.getCommandLine()) << QString::number(pg.getPreviousId());
             int j = 0;
             for (const QString& s : qAsConst(pgList)) {
                 auto item = new QTableWidgetItem(s);

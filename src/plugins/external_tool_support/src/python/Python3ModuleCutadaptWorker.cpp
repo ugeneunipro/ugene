@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "Python3ModuleCutadaptWorker.h"
 
@@ -297,7 +297,7 @@ QStringList Primer3ModuleCutadaptTask::getParameters(U2OpStatus& /*os*/) {
 const QStringList Primer3ModuleCutadaptParser::stringsToIgnore = Primer3ModuleCutadaptParser::initStringsToIgnore();
 
 void Primer3ModuleCutadaptParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     QString error = parseTextForErrors(lastPartOfLog);

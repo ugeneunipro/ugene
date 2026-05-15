@@ -83,12 +83,12 @@ namespace BALL
 		/**
 		*/
 		void setVertex(SASVertex* vertex, Position i)
-			throw(Exception::IndexOverflow);
+;
 
 		/**
 		*/
 		SASVertex* getVertex(Position i) const
-			throw(Exception::IndexOverflow);
+;
 
 		/**
 		*/
@@ -97,12 +97,12 @@ namespace BALL
 		/**
 		*/
 		void setEdge(SASEdge* edge, Position i)
-			throw(Exception::IndexOverflow);
+;
 
 		/**
 		*/
 		SASEdge* getEdge(Position i) const
-			throw(Exception::IndexOverflow);
+;
 
 		/**
 		*/
@@ -111,12 +111,12 @@ namespace BALL
 		/**
 		*/
 		void setFace(SASFace* face, Position i)
-			throw(Exception::IndexOverflow);
+;
 
 		/**
 		*/
 		SASFace* getFace(Position i) const
-			throw(Exception::IndexOverflow);
+;
 
 		/**
 		*/

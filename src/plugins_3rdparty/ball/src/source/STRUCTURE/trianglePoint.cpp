@@ -93,7 +93,7 @@ namespace BALL
 
 
 	void TrianglePoint::setNormal(const TVector3<double>& normal)
-		throw(Exception::DivisionByZero)
+
 	{
 		normal_ = normal;
 		normal_.normalize();

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "WorkflowSamples.h"
 
@@ -393,7 +393,7 @@ QLineEdit* NameFilterLayout::getNameEdit() const {
 }
 
 bool NameFilterLayout::filterMatched(const QString& nameFilter, const QString& name) {
-    static QRegExp spaces("\\s");
+    static QRegularExpression spaces("\\s");
     QStringList filterWords = nameFilter.split(spaces);
     foreach (const QString& word, filterWords) {
         if (!name.contains(word, Qt::CaseInsensitive)) {

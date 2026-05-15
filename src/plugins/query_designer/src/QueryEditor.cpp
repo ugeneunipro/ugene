@@ -19,11 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "QueryEditor.h"
 
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 
 #include <U2Designer/PrompterBase.h>
 
@@ -44,7 +44,7 @@ QueryEditor::QueryEditor(QWidget* parent /* =0 */)
     caption->setMinimumHeight(nameEdit->sizeHint().height());
 
     // QueryViewController* controller = qobject_cast<QueryViewController*>(parent);
-    nameEdit->setValidator(new QRegExpValidator(QRegExp(QDDocument::ID_PATTERN), nameEdit));
+    nameEdit->setValidator(new QRegularExpressionValidator(QRegularExpression(QDDocument::ID_PATTERN), nameEdit));
     directionCombo->insertItem(0, tr("Forward"));
     directionCombo->insertItem(1, tr("Backward"));
     directionCombo->insertItem(2, tr("Any"));

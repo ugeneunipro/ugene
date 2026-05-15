@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "MrBayesTask.h"
 
@@ -156,11 +156,11 @@ void MrBayesLogParser::parseOutput(const QString& partOfLog) {
     }
 }
 void MrBayesLogParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     foreach (QString buf, lastPartOfLog) {
-        if (buf.contains(QRegExp("^\\d+")) || buf.contains("WARNING") || buf.contains(QRegExp("^-\\w")) || buf.contains("No trees are sampled")) {
+        if (buf.contains(QRegularExpression("^\\d+")) || buf.contains("WARNING") || buf.contains(QRegularExpression("^-\\w")) || buf.contains("No trees are sampled")) {
             algoLog.trace(buf);
         } else if (buf.contains("lastError")) {
             //
@@ -179,11 +179,8 @@ int MrBayesLogParser::getProgress() {
                 isMCMCRunning = false;
                 curProgress = 100;
             } else if (isMCMCRunning) {
-                if (currentMsg.contains(QRegExp("\\d+ -- "))) {
-                    QRegExp rx("(\\d+) -- ");
-                    assert(rx.indexIn(currentMsg) > -1);
-                    rx.indexIn(currentMsg);
-                    curProgress = rx.cap(1).toInt() * 100 / (float)nchains;
+                if (auto m = QRegularExpression("(\\d+) -- ").match(currentMsg); m.hasMatch()) {
+                    curProgress = m.captured(1).toInt() * 100 / (float)nchains;
                 }
             }
         }

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "WorkflowPalette.h"
 
@@ -711,7 +711,7 @@ QVariant WorkflowPaletteElements::changeState(const QVariant& savedState) {
         QTreeWidgetItem* it = topLevelItem(i);
         bool expanded = m.value(it->data(0, Qt::UserRole).toString()).toBool();
 
-        QRegExp nonWhitespase("\\s");
+        QRegularExpression nonWhitespase("\\s");
         QStringList splitNew = nameFilter.split(nonWhitespase, Qt::SkipEmptyParts);
         bool hasCharsNewFilter = splitNew.size() > 0 && !splitNew.first().isEmpty();
         QStringList splitOld = oldNameFilter.split(nonWhitespase, Qt::SkipEmptyParts);

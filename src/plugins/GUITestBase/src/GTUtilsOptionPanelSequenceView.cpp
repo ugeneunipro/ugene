@@ -278,7 +278,7 @@ void GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog() {
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Statistics);
 
     auto statisticsLabel = GTWidget::findLabel("Common Statistics");
-    GTMouseDriver::moveTo(statisticsLabel->mapToGlobal({30, 30}));
+    GTMouseDriver::moveTo(statisticsLabel->mapToGlobal(QPoint(30, 30)));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Tab);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);

@@ -85,7 +85,7 @@ namespace BALL
     }
 
     void TriangulatedSES::compute()
-        throw(Exception::GeneralException,Exception::DivisionByZero)
+
     {
         SESTriangulator sest(this);
         sest.run();
@@ -132,7 +132,7 @@ namespace BALL
     }
 
     void SESTriangulator::run()
-        throw(Exception::GeneralException,Exception::DivisionByZero)
+
     {
         preProcessing();
         triangulateToricFaces();

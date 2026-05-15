@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "FindPatternMsaTaskTest.h"
 
@@ -109,7 +109,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat*, const QDomElement& el) {
     }
 
     tmp = el.attribute(SEARCH_REGION);
-    QStringList bounds = tmp.split(QRegExp("\\.."));
+    QStringList bounds = tmp.split(QRegularExpression("\\.."));
     if (bounds.size() != 2) {
         stateInfo.setError(QString("wrong value for %1").arg(SEARCH_REGION));
         return;
@@ -157,9 +157,9 @@ void GTest_FindPatternMsa::init(XMLTestFormat*, const QDomElement& el) {
 
     QString expected = el.attribute(EXPECTED_REGIONS_IN_RESULTS);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\,"));
+        QStringList expectedList = expected.split(QRegularExpression("\\,"));
         for (const QString& expectedRegionText : qAsConst(expectedList)) {
-            QStringList expectedBoundsToken = expectedRegionText.split(QRegExp("\\.."));
+            QStringList expectedBoundsToken = expectedRegionText.split(QRegularExpression("\\.."));
             if (expectedBoundsToken.size() != 2) {
                 stateInfo.setError(QString("wrong value for %1").arg(EXPECTED_REGIONS_IN_RESULTS));
                 return;

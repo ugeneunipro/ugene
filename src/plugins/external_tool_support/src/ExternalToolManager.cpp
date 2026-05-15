@@ -231,7 +231,7 @@ void ExternalToolManagerImpl::sl_onToolRemovedFromRegistry(const QString& toolId
     pendingValidationToolSet.remove(toolId);
     childToolsMultiMap.remove(toolId);
 
-    QMutableMapIterator<QString, QString> iterator(childToolsMultiMap);
+    QMutableMultiMapIterator<QString, QString> iterator(childToolsMultiMap);
     while (iterator.hasNext()) {
         auto mapEntry = iterator.next();
         if (toolId == mapEntry.value()) {

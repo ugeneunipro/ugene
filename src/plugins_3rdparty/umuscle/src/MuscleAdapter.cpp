@@ -22,6 +22,7 @@
 #include "MuscleAdapter.h"
 #include <algorithm>
 
+#include <QElapsedTimer>
 #include <QVector>
 
 #include <U2Core/DNAAlphabet.h>

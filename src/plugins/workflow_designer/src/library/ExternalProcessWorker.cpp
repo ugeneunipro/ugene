@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ExternalProcessWorker.h"
 
@@ -758,7 +758,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
     doc.replace("\n", "<br>");
 
     foreach (const DataConfig& dataCfg, cfg->inputs) {
-        QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
+        QRegularExpression param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
             auto input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attributeId));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
@@ -773,7 +773,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
     }
 
     foreach (const DataConfig& dataCfg, cfg->outputs) {
-        QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
+        QRegularExpression param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
             auto output = qobject_cast<IntegralBusPort*>(target->getPort(OUT_PORT_ID));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
@@ -800,7 +800,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
     }
 
     foreach (const AttributeConfig& attrCfg, cfg->attrs) {
-        QRegExp param(QString("\\$%1([^%2]|$)").arg(attrCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
+        QRegularExpression param(QString("\\$%1([^%2]|$)").arg(attrCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
             QString prm = getRequiredParam(attrCfg.attributeId);
             doc.replace("$" + attrCfg.attributeId, getHyperlink(attrCfg.attrName, prm));

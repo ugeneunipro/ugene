@@ -20,7 +20,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "SpadesTask.h"
 
@@ -204,7 +204,7 @@ SpadesLogParser::SpadesLogParser()
 }
 
 void SpadesLogParser::parseOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastLine + lastPartOfLog.first();
     lastLine = lastPartOfLog.takeLast();
     foreach (QString buf, lastPartOfLog) {
@@ -220,7 +220,7 @@ void SpadesLogParser::parseOutput(const QString& partOfLog) {
 }
 
 void SpadesLogParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     foreach (QString buf, lastPartOfLog) {

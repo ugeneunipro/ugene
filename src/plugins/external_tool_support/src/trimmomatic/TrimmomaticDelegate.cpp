@@ -227,7 +227,7 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);
         SAFE_POINT(item != nullptr, QString("Item with number %1 is NULL").arg(i), );
-        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
+        item->setBackground(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
         isValid = isValid && isStepValid;
     }
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isValid);
@@ -237,7 +237,7 @@ void TrimmomaticPropertyDialog::si_colorThemeSwitched() {
     for (int i = 0; i < steps.size(); i++) {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);
-        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
+        item->setBackground(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
     }
 }
 

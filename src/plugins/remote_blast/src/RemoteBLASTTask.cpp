@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "RemoteBLASTTask.h"
 
@@ -251,10 +251,11 @@ void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBla
     RemoteBlastHttpRequestTask::Query q = result.query;
     QList<SharedAnnotationData> annotations = t->getAnnotations();
     {
-        QRegExp regExp("&" + ReqParams::hits + "=([^&]*)");
-        if (cfg.params.contains(regExp)) {
+        QRegularExpression regExp("&" + ReqParams::hits + "=([^&]*)");
+        auto regMatch = regExp.match(cfg.params);
+        if (regMatch.hasMatch()) {
             bool ok = false;
-            int maxHits = regExp.cap(1).toInt(&ok);
+            int maxHits = regMatch.captured(1).toInt(&ok);
             if (ok) {
                 annotations = annotations.mid(0, maxHits);
             }

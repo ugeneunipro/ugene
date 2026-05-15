@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "PMatrixFormat.h"
 
@@ -60,7 +60,7 @@ FormatCheckResult PFMatrixFormat::checkRawTextData(const QString& dataPrefix, co
         return FormatDetection_NotMatched;
     }
     foreach (QString str, qsl) {
-        QStringList line = str.split(QRegExp("\\s+"));
+        QStringList line = str.split(QRegularExpression("\\s+"));
         for (const QString& word : qAsConst(line)) {
             if (!word.isEmpty()) {
                 bool isInt;
@@ -169,7 +169,7 @@ FormatCheckResult PWMatrixFormat::checkRawTextData(const QString& dataPrefix, co
     }
     qsl.pop_front();  // skip first line
     foreach (QString str, qsl) {
-        QStringList words = str.split(QRegExp("\\s+"));
+        QStringList words = str.split(QRegularExpression("\\s+"));
         CHECK(!words.isEmpty(), FormatDetection_NotMatched);
 
         QString firstWord = words.takeFirst();

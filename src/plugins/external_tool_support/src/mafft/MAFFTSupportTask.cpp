@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "MAFFTSupportTask.h"
 
@@ -403,7 +403,7 @@ void MAFFTLogParser::parseErrOutput(const QString& partOfLog) {
         emit si_progressUndefined();
     }
 
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
 
@@ -472,20 +472,14 @@ int MAFFTLogParser::getProgress() {
         }
         if (firstProAlign && firstUPGMATree && firstDistanceMatrix) {
             QString lastMessage = lastPartOfLog.last();
-            if (lastMessage.contains(QRegExp("STEP +\\d+ /"))) {
-                QRegExp rx("STEP +(\\d+) /");
-                rx.indexIn(lastMessage);
-                CHECK(rx.captureCount() > 0, progress);
+            if (auto m = QRegularExpression("STEP +(\\d+) /").match(lastMessage); m.hasMatch()) {
                 if (!(secondProAlign && secondUPGMATree && secondDistanceMatrix)) {
-                    progress = rx.cap(1).toInt() * 25 / countSequencesInMSA + 15;
+                    progress = m.captured(1).toInt() * 25 / countSequencesInMSA + 15;
                 } else {
-                    progress = rx.cap(1).toInt() * 25 / countSequencesInMSA + 55;
+                    progress = m.captured(1).toInt() * 25 / countSequencesInMSA + 55;
                 }
-            } else if (lastMessage.contains(QRegExp("STEP +\\d+-"))) {
-                QRegExp rx("STEP +(\\d+)-");
-                CHECK(rx.captureCount() > 0, progress);
-                rx.indexIn(lastMessage);
-                progress = rx.cap(1).toInt() * 20 / countRefinementIter + 80;
+            } else if (auto m2 = QRegularExpression("STEP +(\\d+)-").match(lastMessage); m2.hasMatch()) {
+                progress = m2.captured(1).toInt() * 20 / countRefinementIter + 80;
             }
         }
     }

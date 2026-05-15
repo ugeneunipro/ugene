@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <QProcess>
 
@@ -92,7 +92,7 @@ private:
 
     QList<ExternalToolValidation> validations;  // original tool validation is the last one
 
-    QRegExp checkVersionRegExp;
+    QRegularExpression checkVersionRegExp;
 
     QString lastErrLine;
     QString lastOutLine;

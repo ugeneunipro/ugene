@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QFile>
 #include <QRegExp>
 
 #include <base_dialogs/GTFileDialog.h>

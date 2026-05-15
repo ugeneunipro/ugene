@@ -239,7 +239,7 @@ void PrimerGrouperTask::findCompatibleGroups() {
             }
         }
         if (!isPrimerPairAddedToGroup) {
-            groups.append({primerPairIndex});
+            groups.append(QList<int>{primerPairIndex});
         }
     }
 

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "SequenceSplitWorker.h"
 
@@ -108,7 +108,7 @@ QString SequenceSplitPromter::composeRichDoc() {
                       .arg(translateText)
                       .arg(expandText)
                       .arg(seqProducerText);
-    doc.remove(QRegExp("[\\,\\s]*$"));  // remove all commas and spaces from the end;
+    doc.remove(QRegularExpression("[\\,\\s]*$"));  // remove all commas and spaces from the end;
     doc.append(".");
     return doc;
 }

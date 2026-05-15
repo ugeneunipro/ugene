@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ExternalToolSearchTask.h"
 
@@ -88,7 +88,7 @@ void ExternalToolSearchTask::run() {
 
     // If there is no external tools dir search to for tools in PATH variable.
     QStringList envList = QProcessEnvironment::systemEnvironment().toStringList();
-    int pathIndex = envList.indexOf(QRegExp("PATH=.*", Qt::CaseInsensitive));
+    int pathIndex = envList.indexOf(QRegularExpression("PATH=.*", QRegularExpression::CaseInsensitiveOption));
 
     if (pathIndex >= 0) {
         QString pathEnv = envList.at(pathIndex);

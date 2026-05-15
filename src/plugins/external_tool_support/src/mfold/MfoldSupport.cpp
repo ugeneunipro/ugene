@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "MfoldSupport.h"
 
@@ -70,7 +70,7 @@ MfoldSupport::MfoldSupport()
 
     static const QString MFOLD_VERSION_REGEXP = "(\\d+\\.\\d+)";
     validationMessageRegExp = "mfold version " + MFOLD_VERSION_REGEXP;
-    versionRegExp = QRegExp(MFOLD_VERSION_REGEXP);
+    versionRegExp = QRegularExpression(MFOLD_VERSION_REGEXP);
 }
 
 GObjectViewWindowContext* MfoldSupport::getViewContext() const {

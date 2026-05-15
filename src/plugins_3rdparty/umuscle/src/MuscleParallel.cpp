@@ -22,6 +22,7 @@
 #include "MuscleParallel.h"
 #include <limits>
 
+#include <QElapsedTimer>
 #include <QMutex>
 #include <QSemaphore>
 

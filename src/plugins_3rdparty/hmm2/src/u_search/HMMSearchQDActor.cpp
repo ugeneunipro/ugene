@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <math.h>
 
@@ -74,7 +74,7 @@ Task* HMM2QDActor::getAlgorithmTask(const QVector<U2Region>& location) {
 
     QMap<QString, Attribute*> params = cfg->getParameters();
     QString hmmFileStr = params.value(PROFILE_ATTR)->getAttributeValueWithoutScript<QString>();
-    QStringList hmmFiles = hmmFileStr.split(QRegExp("\\s*;\\s*"));
+    QStringList hmmFiles = hmmFileStr.split(QRegularExpression("\\s*;\\s*"));
 
     auto t = new Task(tr("QD HMM2 search"), TaskFlag_NoRun);
 

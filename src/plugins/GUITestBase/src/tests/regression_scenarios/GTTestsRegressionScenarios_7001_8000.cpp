@@ -56,7 +56,7 @@
 #include <QFileInfo>
 #include <QListWidget>
 #include <QRadioButton>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
@@ -1579,7 +1579,7 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
 
     CHECK_SET_ERR(sequence.length() == 1, "Invalid sequence length: " + QString::number(sequence.length()));
     char c = sequence[0].toLatin1();
-    CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + sequence[0]);
+    CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + QString(sequence[0]));
     lt.assertNoErrors();
     ;
 }
@@ -4153,7 +4153,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     int baseWidth = GTUtilsMSAEditorSequenceArea::getBaseWidth();
     int sequenceLength = GTUtilsMsaEditor::getEditor()->getAlignmentLen();
     int sequencePercentWidth = qRound(baseWidth * sequenceLength / 100.0);
-    int rightX = uiWidget->mapToGlobal({uiWidget->width(), 0}).x();
+    int rightX = uiWidget->mapToGlobal(QPoint(uiWidget->width(), 0)).x();
 
     GTUtilsProjectTreeView::toggleView();
     GTGlobals::sleep(2000);

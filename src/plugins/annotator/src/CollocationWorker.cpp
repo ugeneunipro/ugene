@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "CollocationWorker.h"
 
@@ -65,7 +65,7 @@ class CollocationValidator : public ConfigurationValidator {
 public:
     bool validate(const Configuration* cfg, NotificationsList& notificationList) const override {
         QString annotations = cfg->getParameter(ANN_ATTR)->getAttributeValueWithoutScript<QString>();
-        QSet<QString> names = toSet(annotations.split(QRegExp("\\W+"), Qt::SkipEmptyParts));
+        QSet<QString> names = toSet(annotations.split(QRegularExpression("\\W+"), Qt::SkipEmptyParts));
         if (names.size() < 2) {
             notificationList.append(WorkflowNotification(CollocationWorker::tr("At least 2 annotations are required for collocation search.")));
             return false;
@@ -163,7 +163,7 @@ QString CollocationPrompter::composeRichDoc() {
     }
 
     QString annotations;
-    QStringList names = toList(toSet(annotations.split(QRegExp("\\W+"), Qt::SkipEmptyParts)));
+    QStringList names = toList(toSet(annotations.split(QRegularExpression("\\W+"), Qt::SkipEmptyParts)));
     annotations = names.join(", ");
     if (annotations.isEmpty()) {
         annotations = getRequiredParam(ANN_ATTR);
@@ -206,7 +206,7 @@ Task* CollocationWorker::tick() {
         cfg.st = actor->getParameter(FIT_ATTR)->getAttributeValue<bool>(context) ? CollocationsAlgorithm::NormalSearch : CollocationsAlgorithm::PartialSearch;
         cfg.resultAnnotationsName = actor->getParameter(NAME_ATTR)->getAttributeValue<QString>(context);
         QString annotations = actor->getParameter(ANN_ATTR)->getAttributeValue<QString>(context);
-        QSet<QString> names = toSet(annotations.split(QRegExp("\\W+"), Qt::SkipEmptyParts));
+        QSet<QString> names = toSet(annotations.split(QRegularExpression("\\W+"), Qt::SkipEmptyParts));
         QVariantMap qm = inputMessage.getData().toMap();
         QString resultType = actor->getParameter(TYPE_ATTR)->getAttributeValue<QString>(context);
         cfg.includeBoundaries = actor->getParameter(INC_BOUNDARY_ATTR)->getAttributeValue<bool>(context);

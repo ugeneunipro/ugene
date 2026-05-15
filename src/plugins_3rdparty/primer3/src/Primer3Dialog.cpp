@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <QMessageBox>
 #include <QSettings>
@@ -276,7 +276,7 @@ QString Primer3Dialog::okRegions2String(const QList<QList<int>>& regionLins) {
 
 bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition definition) {
     QList<U2Region> result;
-    QStringList intervalStringList = inputString.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList intervalStringList = inputString.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     for (const auto& intervalString : qAsConst(intervalStringList)) {
         QStringList valueStringList = intervalString.split(delimiter);
         if (2 != valueStringList.size()) {
@@ -310,7 +310,7 @@ bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString&
 
 bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputList) {
     QList<int> result;
-    QStringList intStringList = inputString.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList intStringList = inputString.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     for (const auto& numString : qAsConst(intStringList)) {
         bool ok = false;
         int num = numString.toInt(&ok);
@@ -687,7 +687,7 @@ bool Primer3Dialog::doDataExchange() {
     if (context != nullptr) {
         QVector<int> qualityList;
         auto sequenceQual = edit_SEQUENCE_QUALITY->toPlainText();
-        QStringList stringList = sequenceQual.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+        QStringList stringList = sequenceQual.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
         bool ok = true;
         for (const QString& string : qAsConst(stringList)) {
             bool isInt = false;

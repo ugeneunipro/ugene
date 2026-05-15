@@ -45,7 +45,7 @@ namespace U2 {
 namespace GUITest_posterior_actions {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
-    uiLog.trace(QString("post_action_0000: next keyboard modifiers are pressed after the test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
+    uiLog.trace(QString("post_action_0000: next keyboard modifiers are pressed after the test: %1").arg((quint32)QGuiApplication::queryKeyboardModifiers()));
     GTMouseDriver::releasePressedButtons();
     GTKeyboardDriver::releasePressedKeys();
 }

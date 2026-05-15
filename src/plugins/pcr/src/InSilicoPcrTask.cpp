@@ -66,10 +66,10 @@ namespace {
 int getMaxError(const InSilicoPcrTaskSettings* settings, U2Strand::Direction direction) {
     int res = 0;
     if (direction == U2Strand::Direct) {
-        res = qMin(settings->forwardMismatches, settings->forwardPrimer.length() - settings->perfectMatch);
+        res = qMin((qsizetype)settings->forwardMismatches, settings->forwardPrimer.length() - settings->perfectMatch);
         res = qMin(res, settings->forwardPrimer.length() - 1);
     } else {
-        res = qMin(settings->reverseMismatches, settings->reversePrimer.length() - settings->perfectMatch);
+        res = qMin((qsizetype)settings->reverseMismatches, settings->reversePrimer.length() - settings->perfectMatch);
         res = qMin(res, settings->reversePrimer.length() - 1);
     }
     return qMax(0, res);

@@ -534,7 +534,7 @@ namespace BALL
 			static void terminate();
 
 			/// The BALL new handler
-			static void newHandler() throw(Exception::OutOfMemory);
+			static void newHandler();
 
 			static std::string file_;
 			static int				 line_;

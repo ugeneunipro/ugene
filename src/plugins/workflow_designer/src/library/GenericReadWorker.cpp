@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "GenericReadWorker.h"
 
@@ -429,9 +429,9 @@ bool DNASelector::matches(const DNASequence& dna) {
         return true;
     }
     if (dna.info.contains(DNAInfo::ACCESSION)) {
-        return dna.info.value(DNAInfo::ACCESSION).toString().contains(QRegExp(accExpr));
+        return dna.info.value(DNAInfo::ACCESSION).toString().contains(QRegularExpression(accExpr));
     }
-    return dna.getName().contains(QRegExp(accExpr));
+    return dna.getName().contains(QRegularExpression(accExpr));
 }
 
 bool DNASelector::objectMatches(const U2SequenceObject* dna) {
@@ -440,9 +440,9 @@ bool DNASelector::objectMatches(const U2SequenceObject* dna) {
     }
     QVariantMap info = dna->getSequenceInfo();
     if (info.contains(DNAInfo::ACCESSION)) {
-        return info.value(DNAInfo::ACCESSION).toString().contains(QRegExp(accExpr));
+        return info.value(DNAInfo::ACCESSION).toString().contains(QRegularExpression(accExpr));
     }
-    return dna->getSequenceName().contains(QRegExp(accExpr));
+    return dna->getSequenceName().contains(QRegularExpression(accExpr));
 }
 
 }  // namespace LocalWorkflow

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "WeightMatrixIO.h"
 
@@ -181,7 +181,7 @@ PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterReader& reader, TaskStateInfo& si
             continue;
         }
 
-        QStringList curr = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+        QStringList curr = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
 
         if (len == -1) {
             len = curr.length() - 1;

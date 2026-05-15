@@ -119,7 +119,7 @@ BioStruct3DGLWidget* BioStruct3DSplitter::addBioStruct3DGLWidget(BioStruct3DObje
 void BioStruct3DSplitter::removeBioStruct3DGLWidget(BioStruct3DGLWidget* glw) {
     // safe to remove widgets from map - it will be deleted later when
     // splitter is deleted
-    QMutableMapIterator<BioStruct3DObject*, BioStruct3DGLWidget*> i(biostrucViewMap);
+    QMutableMultiMapIterator<BioStruct3DObject*, BioStruct3DGLWidget*> i(biostrucViewMap);
     while (i.hasNext()) {
         if (i.next().value() == glw) {
             i.remove();

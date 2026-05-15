@@ -32,6 +32,8 @@ BioStruct3DSettingsDialog::BioStruct3DSettingsDialog()
     : anaglyphStatus(NOT_AVAILABLE), anaglyphSettings(AnaglyphSettings::defaultSettings()) {
     setupUi(this);
 
+    connect(shadingSlider, &QSlider::sliderMoved, this, &BioStruct3DSettingsDialog::sl_setShadingLevel);
+
     new HelpButton(this, buttonBox, "65929537");
 
     glWidget = nullptr;

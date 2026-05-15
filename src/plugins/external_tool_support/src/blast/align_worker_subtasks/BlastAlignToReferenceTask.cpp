@@ -338,7 +338,7 @@ void BlastAlignToReferenceTask::convertBlastResultToAlignmentResult(const Shared
     alignResult.blastReferenceRegion = U2Region(leftMost - 1, rightMost - leftMost);
 
     QString identitiesValue = blastResult->findFirstQualifierValue("identities");
-    alignResult.blastIdentity = identitiesValue.leftRef(identitiesValue.indexOf('/')).toInt();
+    alignResult.blastIdentity = QStringView(identitiesValue).left(identitiesValue.indexOf('/')).toInt();
 }
 
 void BlastAlignToReferenceTask::assignReferencePairwiseAlignmentRegion(AlignToReferenceResult& alignResult, int readLength, int referenceLength) {

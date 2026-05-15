@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ORFMarkerTests.h"
 
@@ -66,9 +66,9 @@ void GTest_ORFMarkerTask::init(XMLTestFormat*, const QDomElement& el) {
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\,"));  // may be QRegExp("\\,")
+        QStringList expectedList = expected.split(QRegularExpression("\\,"));  // may be QRegularExpression("\\,")
         foreach (QString region, expectedList) {
-            QStringList bounds = region.split(QRegExp("\\.."));
+            QStringList bounds = region.split(QRegularExpression("\\.."));
             if (bounds.size() != 2) {
                 stateInfo.setError(QString("wrong value for %1").arg(EXPECTED_RESULTS_ATTR));
                 return;
@@ -165,7 +165,7 @@ void GTest_ORFMarkerTask::init(XMLTestFormat*, const QDomElement& el) {
         failMissingValue(TRANSLATION_ID_ATTR);
         return;
     }
-    translationId = strTranslationId.toInt(&isOk);
+    translationId = QString::number(strTranslationId.toInt(&isOk));
     if (!isOk) {
         stateInfo.setError(QString("Unable to convert. Value wrong %1").arg(TRANSLATION_ID_ATTR));
         return;

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "MrBayesSupport.h"
 
@@ -65,7 +65,7 @@ MrBayesSupport::MrBayesSupport()
                      "The posterior probability distribution of trees is impossible to calculate analytically; "
                      "instead, MrBayes uses a simulation technique called Markov chain Monte Carlo (or MCMC) "
                      "to approximate the posterior probabilities of trees.");
-    versionRegExp = QRegExp("MrBayes v(\\d+\\.\\d+\\.\\d+)");
+    versionRegExp = QRegularExpression("MrBayes v(\\d+\\.\\d+\\.\\d+)");
     toolKitName = "MrBayes";
 
     // register the method

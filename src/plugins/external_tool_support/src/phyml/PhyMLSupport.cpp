@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "PhyMLSupport.h"
 
@@ -43,7 +43,7 @@ PhyMLSupport::PhyMLSupport()
     validationArguments << "--help";
     validationMessageRegExp = "PhyML";
     description = tr("<i>PhyML</i> is a simple, fast, and accurate algorithm to estimate large phylogenies by maximum likelihood");
-    versionRegExp = QRegExp("- PhyML (\\d+(\\.\\d+)*)");
+    versionRegExp = QRegularExpression("- PhyML (\\d+(\\.\\d+)*)");
     toolKitName = "PhyML";
 
     // register the method

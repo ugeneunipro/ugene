@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "HmmerBuildTaskTest.h"
 
@@ -349,8 +349,8 @@ static const float BUILD_COMPARE_FLOAT_EPS = (float)0.00002;
 static bool compareStr(const QString& s1, const QString& s2) {
     assert(s1.size() == s2.size());
 
-    QStringList words1 = s1.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
-    QStringList words2 = s2.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList words1 = s1.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    QStringList words2 = s2.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
 
     if (words1.size() != words2.size()) {
         return false;

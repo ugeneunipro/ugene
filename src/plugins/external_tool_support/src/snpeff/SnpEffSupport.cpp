@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "SnpEffSupport.h"
 
@@ -51,7 +51,7 @@ SnpEffSupport::SnpEffSupport()
     validationMessageRegExp = "Usage: snpEff \\[command\\] \\[options\\] \\[files\\]";
     description = tr("<i>SnpEff</i>: Genetic variant annotation and effect prediction toolbox.");
 
-    versionRegExp = QRegExp("version SnpEff (\\d+.\\d+)");
+    versionRegExp = QRegularExpression("version SnpEff (\\d+.\\d+)");
     validationArguments << "-h";
     toolKitName = "SnpEff";
 

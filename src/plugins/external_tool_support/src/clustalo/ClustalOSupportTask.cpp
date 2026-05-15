@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ClustalOSupportTask.h"
 
@@ -419,25 +419,16 @@ int ClustalOLogParser::getProgress() {
     if (!lastPartOfLog.isEmpty()) {
         QString lastMessage = lastPartOfLog.last();
         // 0..10% progress
-        if (lastMessage.contains(QRegExp("Pairwise distance calculation progress: \\d+ %"))) {
-            QRegExp rx("Pairwise distance calculation progress: (\\d+) %");
-            rx.indexIn(lastMessage);
-            CHECK(rx.captureCount() > 0, 0);
-            return rx.cap(1).toInt() / 10;
+        if (auto m = QRegularExpression("Pairwise distance calculation progress: (\\d+) %").match(lastMessage); m.hasMatch()) {
+            return m.captured(1).toInt() / 10;
         }
         // 10..20% progress
-        if (lastMessage.contains(QRegExp("Distance calculation within sub-clusters: \\d+ %"))) {
-            QRegExp rx("Distance calculation within sub-clusters: (\\d+) %");
-            rx.indexIn(lastMessage);
-            CHECK(rx.captureCount() > 0, 0);
-            return rx.cap(1).toInt() / 10 + 10;
+        if (auto m = QRegularExpression("Distance calculation within sub-clusters: (\\d+) %").match(lastMessage); m.hasMatch()) {
+            return m.captured(1).toInt() / 10 + 10;
         }
         // 20..100% progress
-        if (lastMessage.contains(QRegExp("Progressive alignment progress: (\\d+) %"))) {
-            QRegExp rx("Progressive alignment progress: (\\d+) %");
-            rx.indexIn(lastMessage);
-            CHECK(rx.captureCount() > 0, 0);
-            return (int)(rx.cap(1).toInt() * 0.8 + 20);
+        if (auto m = QRegularExpression("Progressive alignment progress: (\\d+) %").match(lastMessage); m.hasMatch()) {
+            return (int)(m.captured(1).toInt() * 0.8 + 20);
         }
     }
     return 0;

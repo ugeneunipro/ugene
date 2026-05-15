@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "EnzymesSelectorWidget.h"
 
@@ -750,7 +750,7 @@ void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
         QTextStream in(&selectionFile);
         while (!in.atEnd()) {
             QString line = in.readLine();
-            QStringList enzymes = line.split(QRegExp("[,;\\s]+"), Qt::SkipEmptyParts);
+            QStringList enzymes = line.split(QRegularExpression("[,;\\s]+"), Qt::SkipEmptyParts);
             foreach (const QString& enz, enzymes) {
                 enzymeNames.insert(enz);
             }
