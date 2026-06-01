@@ -112,7 +112,10 @@ FindAlgorithmSettings::FindAlgorithmSettings(const QByteArray& pattern, FindAlgo
 }
 
 static qint64 cycleIndex(qint64 segmentLen, qint64 index) {
-    return (index >= segmentLen ? index - segmentLen : index);
+    if (segmentLen <= 0 || index < 0) {
+        return 0;
+    }
+    return index % segmentLen;
 }
 
 static qint64 getCircularOverlap(const char* seq, const U2Region& searchRange, int defaultCircularOverlap) {
@@ -123,8 +126,8 @@ static qint64 getCircularOverlap(const char* seq, const U2Region& searchRange, i
     return searchRange.endPos() - seqLen;
 }
 
-static qint64 getSearchEndPos(const char* seq, const U2Region& searchRange, int defaultCircularOverlap, bool searchIsCircular) {
-    int seqLen = QByteArray(seq).size();
+static qint64 getSearchEndPos(const char* seq, const U2Region& searchRange, qint64 defaultCircularOverlap, bool searchIsCircular) {
+    qint64 seqLen = QByteArray(seq).size();
     if (searchIsCircular && searchRange.length == seqLen && searchRange.startPos == 0) {
         return searchRange.endPos() + defaultCircularOverlap;
     }
@@ -704,7 +707,7 @@ static void find_subst(FindAlgorithmResultsListener* rl,
 
     const char* sequence = nullptr;
     QByteArray temp;
-    int end = range.endPos();
+    qint64 end = range.endPos();
     if (searchIsCircular) {
         int beginningSize = getCircularOverlap(seq, range, patternLen - 1);
         end = getSearchEndPos(seq, range, getCircularOverlap(seq, range, patternLen - 1), searchIsCircular);
@@ -713,7 +716,7 @@ static void find_subst(FindAlgorithmResultsListener* rl,
     } else {
         sequence = seq;
     }
-    for (int i = range.startPos;
+    for (qint64 i = range.startPos;
          i < end - patternLen + 1 && !stopFlag;
          i++, leftTillPercent--) {
         for (int ci = conStart; ci < conEnd && !stopFlag; ci++) {
@@ -757,12 +760,12 @@ void FindAlgorithm::find(
     FindAlgorithmPatternSettings patternSettings,
     bool useAmbiguousBases,
     const char* seq,
-    int seqLen,
+    qint64 seqLen,
     const DNAAlphabet* sequenceAlphabet,
     bool searchIsCircular,
     const U2Region& range,
     const char* pattern,
-    int patternLen,
+    qint64 patternLen,
     int maxErr,
     int maxRegExpResult,
     int& stopFlag,
@@ -848,8 +851,8 @@ void FindAlgorithm::find(
         int conEnd = isComplement(strand) ? 2 : 1;
         SAFE_POINT(conStart < conEnd, "Internal algorithm error: incorrect strand order!", );
 
-        int end = getSearchEndPos(seq, range, patternLen - 1, searchIsCircular);
-        for (int i = range.startPos; i < end && !stopFlag; i++, leftTillPercent--) {
+        qint64 end = getSearchEndPos(seq, range, patternLen - 1, searchIsCircular);
+        for (qint64 i = range.startPos; i < end && !stopFlag; i++, leftTillPercent--) {
             for (int ci = conStart; ci < conEnd && !stopFlag; ci++) {
                 StrandContext& ctx = context[ci];
                 DynTable& dt = ctx.dynTable;
@@ -857,7 +860,8 @@ void FindAlgorithm::find(
                 FindAlgorithmResult& res = ctx.res;
 
                 for (int j = 0; j < patternLen && !stopFlag; j++) {
-                    bool matched = seq[cycleIndex(seqLen, i)] == p[j];
+                    qint64 idx = cycleIndex(seqLen, i);
+                    bool matched = seq[idx] == p[j];
                     dt.match(j, matched);
                 }
 
@@ -872,7 +876,7 @@ void FindAlgorithm::find(
                     int newLen = dt.getLastLen();
                     SAFE_POINT(newLen >= 0, "Internal algorithm error!", )
                     if (res.isEmpty() || res.err > err || (res.err == err && newLen < res.region.length)) {
-                        int newStart = i - newLen + 1;
+                        qint64 newStart = i - newLen + 1;
                         bool boundaryCheck = (range.contains(newStart) && range.contains(newStart + newLen - 1));
                         bool circularBoundaryCheck = (!range.contains(newStart + newLen - 1) && searchIsCircular);
                         if (insDel || boundaryCheck || circularBoundaryCheck) {  // boundary check for mismatch mode
