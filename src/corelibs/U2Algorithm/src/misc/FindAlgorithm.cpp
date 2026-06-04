@@ -112,9 +112,7 @@ FindAlgorithmSettings::FindAlgorithmSettings(const QByteArray& pattern, FindAlgo
 }
 
 static qint64 cycleIndex(qint64 segmentLen, qint64 index) {
-    if (segmentLen <= 0 || index < 0) {
-        return 0;
-    }
+    SAFE_POINT(segmentLen > 0 && index >= 0, "Invalid cycleIndex parameters: segmentLen must be positive and index non-negative", 0);
     return index % segmentLen;
 }
 
@@ -408,7 +406,7 @@ bool FindAlgorithm::cmpAmbiguousDna(char a, char b) {
     return c1 & c2;
 }
 
-inline bool match_pattern(const char* seq, const char* p, int start, int patternLen, int maxErr, int& curErr) {
+inline bool match_pattern(const char* seq, const char* p, qint64 start, qint64 patternLen, int maxErr, int& curErr) {
     bool match = true;
     curErr = 0;
     for (int j = 0; j < patternLen; j++) {
@@ -420,7 +418,7 @@ inline bool match_pattern(const char* seq, const char* p, int start, int pattern
     return match;
 }
 
-inline bool match_pattern_ambiguous_dna(const char* seq, const char* p, int start, int patternLen, int maxErr, int& curErr) {
+inline bool match_pattern_ambiguous_dna(const char* seq, const char* p, qint64 start, qint64 patternLen, int maxErr, int& curErr) {
     bool match = true;
     curErr = 0;
     for (int j = 0; j < patternLen; j++) {
