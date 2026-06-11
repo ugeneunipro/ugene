@@ -37,7 +37,7 @@
 class QMdiArea;
 class QToolBar;
 
-#if defined(Q_OS_DARWIN) && !defined(_DEBUG)
+#if defined(Q_OS_DARWIN)
 #    define _INSTALL_TO_PATH_ACTION
 #endif
 
@@ -129,7 +129,7 @@ private slots:
     void sl_switchColorTheme();
     void sl_colorThemeSwitched();
 #ifdef _INSTALL_TO_PATH_ACTION
-    void sl_installToPathAction();
+    Q_SLOT void sl_installToPathAction();
 #endif
 protected:
     bool eventFilter(QObject* object, QEvent* event) override;
