@@ -2,6 +2,10 @@ project(qtscript LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 
+# qtscript intentionally uses Qt Core internals (private/qobject_p.h), so silence
+# the "using private module headers" warning for this 3rd-party library only.
+set(QT_NO_PRIVATE_MODULE_WARNING ON)
+
 find_package(Qt6 REQUIRED Core Core5Compat)
 find_package(Qt6 REQUIRED COMPONENTS CorePrivate)
 
