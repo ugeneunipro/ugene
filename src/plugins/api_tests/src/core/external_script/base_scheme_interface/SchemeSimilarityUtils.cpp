@@ -48,11 +48,11 @@ void SchemeSimilarityUtils::checkSchemesSimilarity(SchemeHandle assembledScheme,
         assembledSchemeContent);
 
     foreach (QString statement, assembledSchemeStatements) {
-        CHECK_EXT(properSchemeContent.contains(statement),
+        const int properStatementPos = properSchemeStatements.indexOf(statement);
+        CHECK_EXT(properStatementPos != SUBSTRING_NOT_FOUND,
                   stateInfo.setError(QString("The proper scheme doesn't contain \"%1\""
                                              " statement from assembled scheme")
                                          .arg(statement)), );
-        const int properStatementPos = properSchemeStatements.indexOf(statement);
         properSchemeStatements.removeAt(properStatementPos);
     }
     CHECK_EXT(properSchemeStatements.isEmpty(), stateInfo.setError("Too few definitions"
