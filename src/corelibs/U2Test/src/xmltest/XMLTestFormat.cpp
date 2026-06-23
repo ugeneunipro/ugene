@@ -22,6 +22,8 @@
 #include "XMLTestFormat.h"
 
 #include <QDomDocument>
+#include <QHash>
+#include <QRegularExpression>
 
 #define TEST_FACTORIES_AUTO_CLEANUP
 
@@ -60,11 +62,112 @@ XMLTestFormat::~XMLTestFormat() {
     }
 }
 
+namespace {
+
+// Removes duplicate attributes from a single XML start tag, keeping the LAST value for each
+// repeated name. Returns the tag unchanged if it has no duplicates. The tag string includes the
+// leading '<' and trailing '>'.
+QString dedupeTagAttributes(const QString& tag) {
+    static const QRegularExpression tagHead(R"(^<\s*/?\s*[\w:.\-]+)");
+    const QRegularExpressionMatch headMatch = tagHead.match(tag);
+    if (!headMatch.hasMatch()) {
+        return tag;
+    }
+    const QString head = tag.left(headMatch.capturedEnd());
+
+    QString body = tag.mid(headMatch.capturedEnd());
+    if (body.endsWith('>')) {
+        body.chop(1);
+    }
+    body = body.trimmed();
+    bool selfClose = false;
+    if (body.endsWith('/')) {
+        body.chop(1);
+        selfClose = true;
+    }
+
+    // Test XML attribute values never contain raw '"', '<' or '>' (they are entity-encoded),
+    // so a simple name="value" / name='value' scan is sufficient here.
+    static const QRegularExpression attrRe(R"(([\w:.\-]+)\s*=\s*("[^"]*"|'[^']*'))");
+    QStringList order;
+    QHash<QString, QString> values;
+    bool hadDuplicate = false;
+    QRegularExpressionMatchIterator it = attrRe.globalMatch(body);
+    while (it.hasNext()) {
+        const QRegularExpressionMatch m = it.next();
+        const QString attrName = m.captured(1);
+        if (!values.contains(attrName)) {
+            order.append(attrName);
+        } else {
+            hadDuplicate = true;
+        }
+        values.insert(attrName, m.captured(2));  // last occurrence wins, matching pre-Qt6 QDom
+    }
+    if (!hadDuplicate) {
+        return tag;
+    }
+
+    QString out = head;
+    for (const QString& attrName : qAsConst(order)) {
+        out += ' ' + attrName + '=' + values.value(attrName);
+    }
+    out += selfClose ? "/>" : ">";
+    return out;
+}
+
+// Pre-Qt6 QDomDocument silently accepted duplicate attributes (last value won); Qt6 rejects the
+// document as not well-formed. UGENE ships hundreds of legacy test files with duplicate attributes,
+// so when the strict parse fails we retry on a sanitized copy with duplicates removed.
+QByteArray removeDuplicateXmlAttributes(const QByteArray& data) {
+    const QString xml = QString::fromUtf8(data);
+    QString result;
+    result.reserve(xml.size());
+    const int n = xml.size();
+    int i = 0;
+    while (i < n) {
+        if (xml[i] != '<') {
+            result += xml[i++];
+            continue;
+        }
+        if (xml.mid(i, 4) == "<!--") {  // comment: copy verbatim
+            int end = xml.indexOf("-->", i + 4);
+            end = (end == -1) ? n : end + 3;
+            result += xml.mid(i, end - i);
+            i = end;
+            continue;
+        }
+        if (i + 1 < n && (xml[i + 1] == '!' || xml[i + 1] == '?')) {  // doctype / PI: copy verbatim
+            int end = xml.indexOf('>', i);
+            end = (end == -1) ? n : end + 1;
+            result += xml.mid(i, end - i);
+            i = end;
+            continue;
+        }
+        int end = xml.indexOf('>', i);  // element tag
+        if (end == -1) {
+            result += xml.mid(i);
+            break;
+        }
+        result += dedupeTagAttributes(xml.mid(i, end + 1 - i));
+        i = end + 1;
+    }
+    return result.toUtf8();
+}
+
+}  // namespace
+
 GTest* XMLTestFormat::createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QByteArray& testData, QString& err) {
     QDomDocument doc;
     int line = 0;
     int col = 0;
     bool res = doc.setContent(testData, &err, &line, &col);
+    if (!res) {
+        // Retry tolerating duplicate attributes the way pre-Qt6 QDom did.
+        const QByteArray sanitized = removeDuplicateXmlAttributes(testData);
+        if (sanitized != testData && doc.setContent(sanitized, &err, &line, &col)) {
+            res = true;
+        }
+    }
     if (!res) {
         err = "Error reading test: " + err;
         err += QString(" line: %1 col: %2").arg(line).arg(col);
