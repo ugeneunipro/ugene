@@ -204,6 +204,13 @@ QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
         CHECK_EXT(!referenceObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), {});
         DNASequence referenceSequence = referenceObject->getWholeSequence(stateInfo);
         CHECK_OP(stateInfo, {});
+        // The loop below appends one element per read and caches a pointer to it
+        // (alignmentResultByRead[readKey] = &alignmentResults.last()). On Qt5 QList<T> stored
+        // large elements indirectly, so those addresses stayed valid as the list grew. On Qt6
+        // QList is contiguous, so appending reallocates and invalidates the cached pointers,
+        // leading to a use-after-free later. Reserve the final capacity up front so no
+        // reallocation happens while the pointers are in use (report() sorts only afterwards).
+        alignmentResults.reserve(alignmentResults.size() + reads.length());
         for (int readIndex = 0; readIndex < reads.length(); readIndex++) {
             const SharedDbiDataHandler& read = reads[readIndex];
             QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
