@@ -397,12 +397,11 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString>& parsedAttrVa
             }
         }
 
-        // Different attributes must be separated by one space
-        if ((' ' != attributesStr[semicolonCharIndex + 1])) {
-            // This is not the end of the line
-            if (attributesStr.size() != semicolonCharIndex + 1) {
-                return false;
-            }
+        // Different attributes must be separated by one space.
+        // If the ';' is the last character of the string this is the end of the line (valid);
+        // only treat it as malformed when a non-space character actually follows it.
+        if (semicolonCharIndex + 1 < attributesStr.size() && ' ' != attributesStr[semicolonCharIndex + 1]) {
+            return false;
         }
 
         // Add the attribute to the parsed values
