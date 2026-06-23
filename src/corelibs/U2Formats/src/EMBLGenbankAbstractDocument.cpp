@@ -393,7 +393,7 @@ static int numQuotesInLine(char* cbuff, int len) {
     int pos = 0;
     int numQuotes = 0;
     while ((pos = line.indexOf('\"', pos + 1)) != -1) {
-        if (line[pos + 1] == '\"') {  // skip ""
+        if (pos + 1 < line.length() && line[pos + 1] == '\"') {  // skip ""
             pos++;
             continue;
         }
