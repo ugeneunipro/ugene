@@ -70,7 +70,10 @@ Task::ReportResult GTest_CheckStringExists::report() {
     }
 
     const QString text = obj->getText();
-    int index = text.indexOf(QRegularExpression(stringToFind));
+    // DotMatchesEverythingOption restores the pre-Qt6 QRegExp behaviour where '.' also
+    // matched '\n'. Without it the whole_line pattern "^(.*\n)?X(\n.*)?$" only matches X
+    // on the first couple of lines, so whole_line checks on lower lines wrongly fail.
+    int index = text.indexOf(QRegularExpression(stringToFind, QRegularExpression::DotMatchesEverythingOption));
 
     if (mustExist) {
         if (-1 == index) {
