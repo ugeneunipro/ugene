@@ -81,7 +81,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
     buttonBox->button(QDialogButtonBox::Ok)->setDefault(true);
 
     auto bg = new QButtonGroup();
-    connect(bg, SIGNAL(buttonClicked(int)), SLOT(sl_enableConvertInfo(int)));
+    connect(bg, SIGNAL(idClicked(int)), SLOT(sl_enableConvertInfo(int)));
 
     int size = formatDetectionResults.size();
     for (int i = 0; i < size; i++) {

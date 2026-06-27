@@ -156,7 +156,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates
     tabButtonGroup->addButton(overviewTabButton, OVERVIEW_TAB_INDEX);
     tabButtonGroup->addButton(inputTabButton, INPUT_TAB_INDEX);
     tabButtonGroup->addButton(externalToolsTabButton, EXTERNAL_TOOLS_TAB_INDEX);
-    connect(tabButtonGroup, SIGNAL(buttonToggled(int, bool)), SLOT(sl_onTabButtonToggled(int, bool)));
+    connect(tabButtonGroup, SIGNAL(idToggled(int, bool)), SLOT(sl_onTabButtonToggled(int, bool)));
 
     tabButtonsLayout->addStretch(INT_MAX);  // Push the last button to the end.
 
