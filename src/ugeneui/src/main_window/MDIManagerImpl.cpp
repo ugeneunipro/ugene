@@ -371,8 +371,16 @@ void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow* w) {
 
     QMdiSubWindow* currentWindow = mdiArea->currentSubWindow();
     if (w == nullptr && currentWindow != nullptr) {  // simple deactivation, current window is not changed
+        if (getMDIItem(currentWindow) != mdiContentOwner) {
+            // Qt6: QMdiArea may emit subWindowActivated(nullptr) (deactivation of the previously
+            // active window) right after a freshly added sub-window has already become the current
+            // one, but before emitting that new window's activation. In that transient state the
+            // current window no longer matches mdiContentOwner. Ignore it: the activation signal for
+            // 'currentWindow' arrives next and performs the proper context switch. On Qt5 the
+            // invariant always held, so this branch is never taken there.
+            return;
+        }
         uiLog.trace(QString("Window deactivation, no MDI context switch, window: '%1'").arg(getWindowName(mdiContentOwner)));
-        assert(getMDIItem(currentWindow) == mdiContentOwner);
         emit si_windowActivated(nullptr);
         return;
     }
