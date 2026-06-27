@@ -52,7 +52,7 @@ SeqPasterWidgetController::SeqPasterWidgetController(QWidget* p, const QByteArra
     foreach (const DNAAlphabet* a, alps) {
         ui->alphabetBox->addItem(a->getName(), a->getId());
     }
-    connect(ui->alphabetBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_currentIndexChanged(const QString&)));
+    connect(ui->alphabetBox, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_currentIndexChanged(const QString&)));
 }
 QByteArray SeqPasterWidgetController::getNormSequence(const DNAAlphabet* alph, const QByteArray& seq, bool replace, QChar replaceChar) {
     assert(alph != nullptr);

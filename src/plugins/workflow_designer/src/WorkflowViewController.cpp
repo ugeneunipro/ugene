@@ -143,7 +143,7 @@ static QComboBox* scaleCombo(WorkflowView* parent) {
            << "200%";
     sceneScaleCombo->addItems(scales);
     sceneScaleCombo->setCurrentIndex(3);
-    QObject::connect(sceneScaleCombo, SIGNAL(currentIndexChanged(const QString&)), parent, SLOT(sl_rescaleScene(const QString&)));
+    QObject::connect(sceneScaleCombo, SIGNAL(currentTextChanged(const QString&)), parent, SLOT(sl_rescaleScene(const QString&)));
     // Some visual modifications for Mac:
     sceneScaleCombo->lineEdit()->setStyleSheet("QLineEdit {margin-right: 1px;}");
     sceneScaleCombo->setObjectName("wdScaleCombo");

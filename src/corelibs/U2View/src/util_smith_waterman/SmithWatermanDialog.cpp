@@ -136,7 +136,7 @@ void SmithWatermanDialog::connectGUI() {
     // connect( remoteRunPushButton, SIGNAL( clicked() ), SLOT( sl_remoteRunButtonClicked() ) );
 
     connect(teditPattern, SIGNAL(textChanged()), SLOT(sl_patternChanged()));
-    connect(resultViewVariants, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_resultViewChanged(const QString&)));
+    connect(resultViewVariants, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_resultViewChanged(const QString&)));
     connect(browseResultDirBtn, SIGNAL(clicked()), SLOT(sl_browseAlignFilesDir()));
 
     connectTemplateButtonsGui();

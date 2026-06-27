@@ -43,7 +43,7 @@ ExportCoverageDialog::ExportCoverageDialog(const QString& assemblyName, QWidget*
     setupUi(this);
     initLayout();
     init(assemblyName);
-    connect(cbFormat, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
+    connect(cbFormat, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
 }
 
 ExportCoverageSettings::Format ExportCoverageDialog::getFormat() const {

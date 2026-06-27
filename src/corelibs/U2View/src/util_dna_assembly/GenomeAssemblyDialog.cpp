@@ -99,7 +99,7 @@ GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget* p)
     connect(removeLeftButton, SIGNAL(clicked()), SLOT(sl_onRemoveShortReadsButtonClicked()));
     connect(removeRightButton, SIGNAL(clicked()), SLOT(sl_onRemoveShortReadsButtonClicked()));
     connect(setResultDirNameButton, SIGNAL(clicked()), SLOT(sl_onOutDirButtonClicked()));
-    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onAlgorithmChanged(const QString&)));
+    connect(methodNamesBox, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_onAlgorithmChanged(const QString&)));
     connect(libraryComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onLibraryTypeChanged()));
 
     QString defaultOutputDir = GUrlUtils::getDefaultDataPath() + "/" + methodNamesBox->currentText() + "_output";

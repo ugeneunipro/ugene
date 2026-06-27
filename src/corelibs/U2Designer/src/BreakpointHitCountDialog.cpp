@@ -76,7 +76,7 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList& hitCountCo
 
     connect(resetButton, SIGNAL(clicked()), this, SLOT(sl_resetHitCount()));
     connect(okButton, SIGNAL(clicked()), this, SLOT(sl_dialogAccepted()));
-    connect(ui->hitConditionCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_hitConditionChanged(const QString&)));
+    connect(ui->hitConditionCombo, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_hitConditionChanged(const QString&)));
 }
 
 BreakpointHitCountDialog::~BreakpointHitCountDialog() {

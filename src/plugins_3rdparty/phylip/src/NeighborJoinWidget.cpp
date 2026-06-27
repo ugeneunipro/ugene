@@ -226,8 +226,8 @@ void NeighborJoinWidget::init(const Msa& ma) {
 }
 
 void NeighborJoinWidget::connectSignals() {
-    connect(cbModel, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onMatrixModelChanged(const QString&)));
-    connect(cbConsensusType, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onConsensusTypeChanged(const QString&)));
+    connect(cbModel, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_onMatrixModelChanged(const QString&)));
+    connect(cbConsensusType, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_onConsensusTypeChanged(const QString&)));
 }
 
 int NeighborJoinWidget::getRandomSeed() {

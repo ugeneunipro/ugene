@@ -104,7 +104,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(const QString& id, const QStr
 
     ui->formatBox->addItem(GENBANK_FORMAT);
     ui->formatBox->addItem(FASTA_FORMAT);
-    connect(ui->formatBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
+    connect(ui->formatBox, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
     adjustSize();
 
     ui->databasesBox->clear();
