@@ -58,7 +58,10 @@ void RFSArrayWKAlgorithm::prepare() {
     }
     diagOffsets.fill(-1);
 
-    nThreads = qBound(1, getNumParallelSubtasks(), SEARCH_SIZE / (20 * 1000));
+    // Qt6 qBound asserts when max < min. SEARCH_SIZE / (20 * 1000) is 0 for small searches,
+    // which would be below the minimum of 1, so clamp the upper bound to at least 1 first.
+    int maxThreadsBySize = qMax(1, SEARCH_SIZE / (20 * 1000));
+    nThreads = qBound(1, getNumParallelSubtasks(), maxThreadsBySize);
 
     indexTask = new CreateSArrayIndexTask(arraySeq, ARRAY_SIZE, q, unknownChar);
     int arrayPercent = 10;
