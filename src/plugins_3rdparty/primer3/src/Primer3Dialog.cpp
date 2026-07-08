@@ -138,10 +138,13 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
         auto browseFileButton = new QPushButton("...", this);
         browseFileButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         browseFileButton->setFixedWidth(browseFileButton->height());
-        auto horizontalLayout = new QHBoxLayout(this);
+        // Do not pass `this`: these layouts are nested into annotationWidgetLayout below, they must not be
+        // installed as the dialog's top-level layout. The dialog already has a layout (from setupUi), so on
+        // Qt6 setting another one corrupts the hierarchy ("already has a layout") and later crashes (e.g. on Reset).
+        auto horizontalLayout = new QHBoxLayout();
         horizontalLayout->addWidget(outputFileLineEdit);
         horizontalLayout->addWidget(browseFileButton);
-        auto groupLayout = new QFormLayout(this);
+        auto groupLayout = new QFormLayout();
         groupLayout->addRow(tr("Save result to file"), horizontalLayout);
         annotationWidgetLayout->addLayout(groupLayout);
 
@@ -194,8 +197,14 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
 }
 
 Primer3Dialog::~Primer3Dialog() {
-    regionSelector->deleteLater();
-    createAnnotationWidgetController->deleteLater();
+    // In the no-target-sequence mode these widgets are never created (they stay nullptr), so guard against
+    // calling deleteLater() on a null pointer, which segfaults.
+    if (regionSelector != nullptr) {
+        regionSelector->deleteLater();
+    }
+    if (createAnnotationWidgetController != nullptr) {
+        createAnnotationWidgetController->deleteLater();
+    }
 }
 
 const QSharedPointer<Primer3TaskSettings>& Primer3Dialog::getSettings() {
