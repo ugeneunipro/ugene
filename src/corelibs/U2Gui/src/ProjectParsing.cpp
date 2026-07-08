@@ -43,6 +43,10 @@ static QString map2String(const QVariantMap& map) {
     QByteArray a;
     QVariant v(map);
     QDataStream s(&a, QIODevice::WriteOnly);
+    // Pin the stream format to Qt5: project files are shared with Qt5 UGENE and existing projects were
+    // written with the Qt5 default version. Qt6 changed the QVariant user-type format, so without pinning
+    // the version custom-typed hint values (e.g. QList<GObjectRelation>) fail to (de)serialize.
+    s.setVersion(QDataStream::Qt_5_15);
     s << v;
     QString res(a.toBase64());
     return res;
@@ -52,6 +56,7 @@ static QVariantMap string2Map(const QString& string, bool emptyMapIfError) {
     Q_UNUSED(emptyMapIfError);
 
     QDataStream s(QByteArray::fromBase64(string.toLatin1()));
+    s.setVersion(QDataStream::Qt_5_15);  // read using the same Qt5 stream format the project was written with
     QVariant res(QVariant::Map);
     s >> res;
     if (res.type() == QVariant::Map) {

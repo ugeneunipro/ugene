@@ -38,6 +38,7 @@ public:
     static QVariant String2Var(const QString& string) {
         QByteArray ba = QByteArray::fromBase64(string.toLatin1());
         QDataStream s(&ba, QIODevice::ReadOnly);
+        s.setVersion(QDataStream::Qt_5_15);  // data may have been written by Qt5; Qt6 changed the QVariant user-type format
         QVariant v;
         s >> v;
         return v;
@@ -46,6 +47,7 @@ public:
     static QVariantMap string2Map(const QString& string, bool emptyMapIfError) {
         QByteArray ba = QByteArray::fromBase64(string.toLatin1());
         QDataStream s(&ba, QIODevice::ReadOnly);
+        s.setVersion(QDataStream::Qt_5_15);  // data may have been written by Qt5; Qt6 changed the QVariant user-type format
         QVariant res;
         s >> res;
         if (res.typeId() == QMetaType::QVariantMap) {
@@ -58,6 +60,7 @@ public:
     static QString var2String(const QVariant& v) {
         QByteArray a;
         QDataStream s(&a, QIODevice::WriteOnly);
+        s.setVersion(QDataStream::Qt_5_15);  // keep the serialized format compatible with Qt5 and stable across versions
         s << v;
         QString res(a.toBase64());
         return res;
