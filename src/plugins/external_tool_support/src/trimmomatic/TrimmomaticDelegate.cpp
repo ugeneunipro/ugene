@@ -128,7 +128,12 @@ QVariant TrimmomaticPropertyWidget::value() {
             steps << step;
         }
     }
-    CHECK(!steps.isEmpty(), QVariant::Invalid);
+    // Must be a default-constructed QVariant, not QVariant::Invalid: that is a QVariant::Type
+    // enumerator equal to 0, and Qt6 dropped the QVariant(Type) constructor that used to turn it
+    // into an invalid variant. It now binds to QVariant(uint) instead, so an unset value was
+    // stored as uint 0 - which Attribute::validate() sees as "set", silently passing validation
+    // of a workflow that has no trimming steps configured.
+    CHECK(!steps.isEmpty(), QVariant());
 
     return steps;
 }
