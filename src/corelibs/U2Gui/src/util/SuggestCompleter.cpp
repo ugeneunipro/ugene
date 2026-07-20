@@ -27,6 +27,7 @@
 #include <QTreeWidget>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Log.h>
 #include <U2Core/DocumentModel.h>
 
 const int INVALID_ITEM_INDEX = -1;
@@ -79,15 +80,22 @@ bool BaseCompleter::eventFilter(QObject* obj, QEvent* ev) {
             switch (static_cast<QKeyEvent*>(ev)->key()) {
                 case Qt::Key_Enter:
                 case Qt::Key_Return:
-                    doneCompletion();
-                    popup->hide();
-                    editor->setFocus();
-                    emit si_completerClosed();
+                    // Only claim the key on ShortcutOverride; acting there would close the popup
+                    // and leave the following KeyPress unconsumed - it would then bubble up to the
+                    // dialog and press its default button.
+                    if (eventType == QEvent::KeyPress) {
+                        doneCompletion();
+                        popup->hide();
+                        editor->setFocus();
+                        emit si_completerClosed();
+                    }
                     return true;
                 case Qt::Key_Escape:
-                    popup->hide();
-                    editor->setFocus();
-                    emit si_completerClosed();
+                    if (eventType == QEvent::KeyPress) {
+                        popup->hide();
+                        editor->setFocus();
+                        emit si_completerClosed();
+                    }
                     return true;
                 case Qt::Key_Up:
                 case Qt::Key_Down:
@@ -123,6 +131,11 @@ bool BaseCompleter::eventFilter(QObject* obj, QEvent* ev) {
             case Qt::Key_Return:
             case Qt::Key_Escape:
                 isConsumed = true;
+                // ShortcutOverride only reserves the key: closing the popup here would let the
+                // KeyPress that follows reach the surrounding dialog and fire its default button.
+                if (eventType != QEvent::KeyPress) {
+                    break;
+                }
                 if (key == Qt::Key_Enter || key == Qt::Key_Return) {
                     doneCompletion();
                 }
