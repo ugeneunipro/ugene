@@ -335,14 +335,17 @@ void MainWindowImpl::setNewStyle(const QString& style, int colorThemeIndex) {
     CHECK(newStyle != nullptr, );
 
     QApplication::setStyle(newStyle);
-    if (!styleFactory->isDarkTheme()) {
-        // Unlike Qt5, Qt6's QApplication::setStyle() no longer re-derives the app palette
-        // from the new style's standardPalette(): a default-constructed QPalette() keeps
-        // whatever the platform theme provided (e.g. a GTK theme's off-white background),
-        // not the style's own colors. Restore it explicitly so light-theme rendering
-        // matches the selected style instead of the host desktop theme.
-        QApplication::setPalette(newStyle->standardPalette());
-    }
+
+    // Unlike Qt5, Qt6's QApplication::setStyle() no longer re-derives the app palette from the
+    // new style: a default-constructed QPalette() keeps whatever the platform theme provided
+    // (e.g. a GTK theme's off-white background), and the style's own polish(QPalette&) - the
+    // hook DarkStyle uses to install the dark colors - is never applied to the app-wide default.
+    // Reproduce the Qt5 behaviour explicitly so rendering follows the selected style/theme
+    // instead of the host desktop theme.
+    QPalette palette = newStyle->standardPalette();
+    newStyle->polish(palette);
+    QApplication::setPalette(palette);
+
     emit si_colorThemeSwitched();
 }
 
