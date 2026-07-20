@@ -471,12 +471,38 @@ static void removeHtml(QString& html, const QByteArray& tag) {
     }
 }
 
+static void replaceHtmlOnlyEntities(QString& html) {
+    // Dashboards written by older UGENE versions contain named HTML entities. XML declares only
+    // amp/lt/gt/quot/apos, so every other name must be turned into a numeric reference: Qt6's
+    // QDomDocument (backed by QXmlStreamReader) rejects the whole document with
+    // "Entity 'nbsp' not declared", where Qt5's parser silently tolerated it.
+    static const QMap<QString, QString> entityMap = {
+        {"&nbsp;", "&#160;"},
+        {"&copy;", "&#169;"},
+        {"&reg;", "&#174;"},
+        {"&deg;", "&#176;"},
+        {"&plusmn;", "&#177;"},
+        {"&middot;", "&#183;"},
+        {"&ndash;", "&#8211;"},
+        {"&mdash;", "&#8212;"},
+        {"&lsquo;", "&#8216;"},
+        {"&rsquo;", "&#8217;"},
+        {"&ldquo;", "&#8220;"},
+        {"&rdquo;", "&#8221;"},
+        {"&hellip;", "&#8230;"},
+    };
+    for (auto it = entityMap.constBegin(); it != entityMap.constEnd(); ++it) {
+        html.replace(it.key(), it.value());
+    }
+}
+
 /** In-place fixes old-style UGENE's HTML to be parsable by the QXml. */
 static void makeValidDomFromHtml(QString& htmlData) {
     trimToWrapper(htmlData);
     removeHtml(htmlData, "colgroup");
     fixImages(htmlData);
     removeExtraDiv(htmlData);
+    replaceHtmlOnlyEntities(htmlData);
     htmlData.replace("<br>", "<br/>");
     htmlData.replace("<wbr>", "<wbr/>");
 }
