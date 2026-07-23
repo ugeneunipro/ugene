@@ -1576,7 +1576,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    press OK
     qint64 bigSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
-    CHECK_SET_ERR(bigSize > 3 * 1000 * 1000 && bigSize < 7 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
+    // Qt6's JPEG encoder produces bigger files than Qt5's at the same quality setting for this image
+    // (measured ~7.3MB vs ~5.1MB), so the upper bound is raised to accommodate both.
+    CHECK_SET_ERR(bigSize > 3 * 1000 * 1000 && bigSize < 8 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
     CHECK_SET_ERR(smallSize > 500 * 1000 && smallSize < 2 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
 }
 
