@@ -154,8 +154,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Expected state: after the downloading task finish a new documents appears in the project
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0006");
-    GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Swiss-Prot"));
-
+    // No DocumentFormatSelectorDialogFiller here: downloaded Swiss-Prot .txt files are now
+    // unambiguously format-detected, so the selector dialog never appears - a waiter armed for it
+    // would linger unconsumed and fail the test in cleanup even though the download itself succeeds.
     GTUtilsDialog::waitForDialog(new RemoteDBDialogFillerDeprecated("Q9IGQ6;A0N8V2", 4, true, true, false, sandBoxDir + "remote_request/test_0006"));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."});
     GTUtilsTaskTreeView::waitTaskFinished();
