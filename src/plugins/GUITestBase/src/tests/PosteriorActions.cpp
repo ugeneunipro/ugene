@@ -26,6 +26,7 @@
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
@@ -50,27 +51,37 @@ POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     GTKeyboardDriver::releasePressedKeys();
 }
 
+/**
+ * Fetches the widget returned by `getActiveWidget` and closes it, all in one call run on the main
+ * thread. This runs on GUITestThread, a worker thread separate from the main/GUI thread: fetching
+ * the widget pointer here and closing it later (e.g. via a separate GTWidget::close() call) leaves
+ * a window where the main thread can destroy that widget in between, turning the pointer into a
+ * dangling one and crashing on close - so fetch-and-close must happen as a single atomic step on
+ * the main thread. Returns true if a widget was found (and closed).
+ */
+static bool closeActiveWidgetOnMainThreadIfAny(QWidget* (*getActiveWidget)()) {
+    bool found = false;
+    GTThread::runInMainThread([getActiveWidget, &found]() {
+        QWidget* widget = getActiveWidget();
+        if (widget != nullptr) {
+            widget->close();
+            found = true;
+        }
+    });
+    return found;
+}
+
 POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all popup widgets
     // Close all modal widgets
     // Clear the clipboard
 
-    QWidget* popupWidget = QApplication::activePopupWidget();
-    for (int i = 0; popupWidget != nullptr; i++) {
-        if (i > 0) {
-            GTGlobals::sleep(100);
-        }
-        GTWidget::close(popupWidget);
-        popupWidget = QApplication::activePopupWidget();
+    for (int i = 0; closeActiveWidgetOnMainThreadIfAny(&QApplication::activePopupWidget); i++) {
+        GTGlobals::sleep(100);
     }
 
-    QWidget* modalWidget = QApplication::activeModalWidget();
-    for (int i = 0; modalWidget != nullptr; i++) {
-        if (i > 0) {
-            GTGlobals::sleep(100);
-        }
-        GTWidget::close(modalWidget);
-        modalWidget = QApplication::activeModalWidget();
+    for (int i = 0; closeActiveWidgetOnMainThreadIfAny(&QApplication::activeModalWidget); i++) {
+        GTGlobals::sleep(100);
     }
 
     GTClipboard::clear();
