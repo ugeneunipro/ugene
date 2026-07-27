@@ -355,19 +355,19 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 GUI_TEST_CLASS_DEFINITION(test_0014) {
     //    1. Select {File -> Access remote database} menu item in the main menu.
     //    2. Fill the dialog:
-    //        Resource ID: D0VTW9
+    //        Resource ID: B1ALH6
     //        Database: UniProtKB/TrEMBL
     //        Save to folder: any valid path and accept it.
     //    Expected state: after the downloading task finish a new documents appears in the project
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0014");
 
-    GTUtilsDialog::waitForDialog(new RemoteDBDialogFillerDeprecated("D0VTW9", 6, true, true, false, sandBoxDir));
+    GTUtilsDialog::waitForDialog(new RemoteDBDialogFillerDeprecated("B1ALH6", 6, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::isDocumentLoaded("D0VTW9.txt");
-    GTUtilsDocument::checkDocument("D0VTW9.txt", AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::isDocumentLoaded("B1ALH6.txt");
+    GTUtilsDocument::checkDocument("B1ALH6.txt", AnnotatedDNAViewFactory::ID);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015) {
@@ -486,14 +486,14 @@ GUI_TEST_CLASS_DEFINITION(test_0016_6) {
 GUI_TEST_CLASS_DEFINITION(test_0016_7) {
     QList<DownloadRemoteFileDialogFiller::Action> actions;
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "UniProtKB/TrEMBL");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "D0VTW9");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "B1ALH6");
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
     GTUtilsDialog::waitForDialog(new DownloadRemoteFileDialogFiller(actions));
     GTMenu::clickMainMenuItem({"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsNotifications::checkNotificationReportText("https://www.uniprot.org/uniprotkb/D0VTW9/entry");
+    GTUtilsNotifications::checkNotificationReportText("https://www.uniprot.org/uniprotkb/B1ALH6/entry");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
