@@ -2,11 +2,11 @@
     <run-cmdline
             task="!common_data_dir!cmdline/read-write/read_db_write_fa.uws"
             db="UniProtKB/TrEMBL"
-            id="D0VTW9"
+            id="B1ALH6"
             save="!tmp_data_dir!"
             out="!tmp_data_dir!test_0009.fa"/>
 
-    <load-document index="doc1" url="D0VTW9.txt" io="local_file" format="swiss-prot" dir="temp"/>
+    <load-document index="doc1" url="B1ALH6.txt" io="local_file" format="swiss-prot" dir="temp"/>
     <load-document index="doc2" url="test_0009.fa" io="local_file" format="fasta" dir="temp"/>
 
     <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
