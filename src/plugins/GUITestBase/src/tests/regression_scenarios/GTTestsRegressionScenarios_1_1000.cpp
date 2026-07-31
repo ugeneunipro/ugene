@@ -1437,8 +1437,13 @@ GUI_TEST_CLASS_DEFINITION(test_0782) {
     //    3. Press right mouse button in the graph area, choose {Graph -> Graph settings...}.
     auto graphView = GTWidget::findWidget("GSequenceGraphViewRenderArea");
     GTWidget::click(graphView);
+    // Move the mouse off the graph before grabbing a reference image: while the cursor
+    // hovers over the graph, a GraphLabelTextBox tooltip with the coordinate under the
+    // cursor is drawn on top of the curve. Its position depends on exactly where the
+    // preceding click landed, which is not pixel-stable across runs/Qt versions, so
+    // leaving it in the shot makes an unrelated part of the image differ from run to run.
+    GTMouseDriver::moveTo(QPoint(0, 0));
     QImage init = GTWidget::getImage(graphView);
-    // init.save("/home/vmalin/init", "BMP");
     class custom : public CustomScenario {
     public:
         void run() {
@@ -1451,9 +1456,9 @@ GUI_TEST_CLASS_DEFINITION(test_0782) {
     GTWidget::click(graphView, Qt::RightButton);
     //    4. In "Graph Settings" dialog change graph's color, then press "Cancel".
     GTWidget::click(graphView);
+    GTMouseDriver::moveTo(QPoint(0, 0));
     //    Expected result: Graph's color didn't change.
     QImage final = GTWidget::getImage(graphView);
-    // final.save("/home/vmalin/final", "BMP");
 
     CHECK_SET_ERR(final == init, "graph view changed");
     //    5. Repeat the third step, then check "Cutoff for minimum and maximum values".
