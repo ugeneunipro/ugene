@@ -1519,10 +1519,15 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     getFontSettings(defaultFontFamily, defaultSize);
     changeFontAndSize(defaultFontFamily, 16);
 
-    QString customFontName = isOsLinux() ? "Times New Roman" : "Arial";
+    // Any font other than the default will do here: the test only checks that a per-node
+    // font override is applied/preserved/reset correctly, not which font it is. Picking it
+    // from the combo box's own item list (instead of a hardcoded name like "Times New Roman")
+    // keeps the test working regardless of which fonts happen to be installed on the machine.
+    QStringList availableFontNames = GTComboBox::getValues(GTWidget::findComboBox("fontComboBox"));
+    QString customFontName = availableFontNames.first() == defaultFontFamily ? availableFontNames.at(1) : availableFontNames.first();
 
     // Click on the parent node for node.
-    // Change its font to Arial with size 22.
+    // Change its font to customFontName with size 22.
     TvNodeItem* parentNode = GTUtilsPhyTree::getNodeByBranchText("0.006", "0.104");
     GTUtilsPhyTree::clickNode(parentNode);
     changeFontAndSize(customFontName, 22);
