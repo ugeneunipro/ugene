@@ -27,6 +27,7 @@
 
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsGeneCut.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
@@ -195,8 +196,18 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsGeneCut::checkResultInfo("gfp.fa", {GTUtilsGeneCut::Steps::OligonucleotidesAssembly});
 
     // Load the result sequence with oligonucleotides
+    QString previousWindowTitle = GTUtilsMdi::activeWindowTitle();
     GTWidget::click(GTWidget::findPushButton("pbGetResultSequence"));
     GTUtilsTaskTreeView::waitTaskFinished();
+    // The result opens in a new sequence view, but it can take a moment after the load task
+    // finishes for that view to actually become the active MDI window. Until it does,
+    // GTUtilsAnnotationsTreeView::getTreeWidget() (which looks up the tree by ACTIVE view type,
+    // not by document) silently returns the still-active previous view's tree instead, since
+    // both views are of the same "sequence view" type - so the check below would then
+    // legitimately, but wrongly, look for the annotation group in the wrong document.
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && GTUtilsMdi::activeWindowTitle() == previousWindowTitle; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+    }
 
     // Check for Long Oligonucleotides assembly
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("Oligonucleotides assembly  (0, 21)",
@@ -269,8 +280,18 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                                      GTUtilsGeneCut::Steps::OligonucleotidesAssembly});
 
     // Load the result sequence with oligonucleotides
+    QString previousWindowTitle = GTUtilsMdi::activeWindowTitle();
     GTWidget::click(GTWidget::findPushButton("pbGetResultSequence"));
     GTUtilsTaskTreeView::waitTaskFinished();
+    // The result opens in a new sequence view, but it can take a moment after the load task
+    // finishes for that view to actually become the active MDI window. Until it does,
+    // GTUtilsAnnotationsTreeView::getTreeWidget() (which looks up the tree by ACTIVE view type,
+    // not by document) silently returns the still-active previous view's tree instead, since
+    // both views are of the same "sequence view" type - so the check below would then
+    // legitimately, but wrongly, look for the annotation group in the wrong document.
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && GTUtilsMdi::activeWindowTitle() == previousWindowTitle; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+    }
 
     // Check for Long fragments assembly
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("Long fragments assembly  (0, 2)", {{1, 717}});
