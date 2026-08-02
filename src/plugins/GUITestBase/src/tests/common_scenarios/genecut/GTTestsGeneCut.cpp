@@ -48,8 +48,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     auto lbResetStatus = qobject_cast<QLabel*>(GTWidget::findWidget("lbResetStatus"));
     CHECK_SET_ERR(lbResetStatus != nullptr, L10N::nullPointerError("QLabel"));
 
-    // Expected: error, because there is no account with such email
-    CHECK_SET_ERR(lbResetStatus->text().startsWith("Error"), QString("lbResetStatus has incoorect text: %1").arg(lbResetStatus->text()));
+    // The reset-password endpoint always replies with HTTP 200, even for a
+    // request that did not result in an email being sent, so the UI can't
+    // classify this as a hard "Error" - it surfaces the server's own message
+    // instead. Expected: NOT a blind "Success", and the server-reported reason
+    // (there is no account with such email) is shown to the user.
+    CHECK_SET_ERR(!lbResetStatus->text().startsWith("Success"), QString("lbResetStatus incorrectly reports success: %1").arg(lbResetStatus->text()));
+    CHECK_SET_ERR(lbResetStatus->text().contains("not exist"), QString("lbResetStatus has incorrect text: %1").arg(lbResetStatus->text()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {

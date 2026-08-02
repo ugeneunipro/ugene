@@ -237,7 +237,23 @@ void GenecutOPWidget::sl_resetPasswordClicked() {
     connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ leResetPassword, pbReset }, true);
         if (!adapter->hasError()) {
-            successMessage(tr("check your email"), lbResetStatus);
+            // This endpoint always replies with HTTP 200, even for requests that did
+            // not actually result in an email being sent (unknown email, invalid
+            // input, etc.) - the real outcome is only conveyed via a free-text
+            // "message" field in the body, so hasError() alone can't tell success
+            // from failure here. Surface that message instead of unconditionally
+            // claiming success.
+            QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
+            int readSize = adapter->readBlock(contents.data(), DocumentFormat::READ_BUFF_SIZE);
+            SAFE_POINT(readSize != -1, "Cannot read request data", );
+            contents.resize(readSize);
+            QJsonDocument doc = QJsonDocument::fromJson(contents);
+            QString message = doc.object().value(JSON_MESSAGE).toString();
+            if (message.isEmpty()) {
+                successMessage(tr("check your email"), lbResetStatus);
+            } else {
+                warningMessage(message, lbResetStatus);
+            }
         } else {
             errorMessage(adapter, lbResetStatus);
         }
