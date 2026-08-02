@@ -47,6 +47,15 @@ public:
     virtual QPixmap cellImage(const U2AssemblyRead& read, char c) = 0;
     virtual QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) = 0;
 
+    /**
+     * @returns cached pixmap of a column that has no reference position of its own: it is only
+     * there to show an insertion of some other read. Colored differently from a gap that really
+     * belongs to the data, so the two can be told apart.
+     */
+    QPixmap insertionGapCellImage() const {
+        return insertionGap;
+    }
+
     // Call this function to update all assembly from scratch
     void makeForceRenderUpdate();
 
@@ -58,8 +67,11 @@ protected:
 
     virtual void update() = 0;
 
+    void updateInsertionGap();
+
     // images cache
     QPixmap unknownChar;
+    QPixmap insertionGap;
 
     // cached cells parameters
     QSize size;

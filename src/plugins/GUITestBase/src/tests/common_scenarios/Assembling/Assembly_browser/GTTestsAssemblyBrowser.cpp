@@ -30,13 +30,17 @@
 #include <primitives/GTWidget.h>
 #include <src/GTUtilsSequenceView.h>
 #include <system/GTClipboard.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDir>
 
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/U2AssemblyInsertionsMap.h>
 
 #include <U2Designer/PropertyWidget.h>
+
+#include <U2View/AssemblyBrowser.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsAssemblyBrowser.h"
@@ -1069,6 +1073,70 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     lt.assertNoErrors();
     auto readsCount = GTUtilsAssemblyBrowser::getReadsCount();
     CHECK_SET_ERR(readsCount > 1000000, QString("Unexpected reads count, expected: >1000000, current: %1").arg(readsCount));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0039) {
+    // Insertions of the reads (CIGAR 'I') get columns of their own, see GitHub issue #1898.
+    // 26 reads of this assembly have an insertion in front of the 0-based reference position 8008.
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    AssemblyBrowserUi* ui = GTUtilsAssemblyBrowser::getView();
+    CHECK_SET_ERR(ui != nullptr, "Assembly browser is not found");
+    AssemblyBrowser* browser = ui->getWindow();
+
+    // Zoom in just enough to see the letters: the insertion columns are only shown from there on,
+    // and this zoom level keeps the widest range of positions in the view.
+    for (int i = 0; i < 30 && !browser->areLettersVisible() && browser->canPerformZoomIn(); i++) {
+        GTUtilsAssemblyBrowser::zoomIn();
+    }
+    CHECK_SET_ERR(browser->areLettersVisible(), "Letters are not visible after zooming in");
+
+    // The insertion is kept away from the left border on purpose: an insertion of a read that is
+    // cut off there has no column of its own left to be drawn in.
+    GTUtilsAssemblyBrowser::goToPosition(7959);  // 1-based, puts the 0-based position 8008 50 columns in
+    GTThread::waitForMainThread();
+    CHECK_SET_ERR(browser->getXOffsetInAssembly() == 7958,
+                  QString("Unexpected view offset: %1").arg(browser->getXOffsetInAssembly()));
+
+    const U2AssemblyInsertionsMap& insertions = browser->getInsertionsMap();
+    CHECK_SET_ERR(!insertions.isEmpty(), "No insertion column is reserved around the position 8008");
+    int insertionWidth = insertions.getInsertionWidthBefore(8008);
+    CHECK_SET_ERR(insertionWidth > 0, "No insertion column is reserved for the position 8008");
+
+    // The insertion columns are only added to the view, they are not reference positions: two
+    // neighbour positions are exactly 'insertion width + 1' columns apart, and the numbering the
+    // ruler shows is not affected at all.
+    qint64 column = insertions.getColumnOfRefPos(8008);
+    qint64 previousColumn = insertions.getColumnOfRefPos(8007);
+    CHECK_SET_ERR(column - previousColumn == insertionWidth + 1,
+                  QString("Unexpected distance between the columns of 8007 and 8008: expected %1, got %2")
+                      .arg(insertionWidth + 1)
+                      .arg(column - previousColumn));
+    CHECK_SET_ERR(insertions.getRefPosOfColumn(column) == 8008, "The column of the position 8008 maps back to another position");
+    // Every inserted column belongs to the position it precedes, so a click there hits the right read.
+    CHECK_SET_ERR(insertions.getRefPosOfColumn(column - 1) == 8008, "An inserted column maps to another position");
+    CHECK_SET_ERR(insertions.getRefPosOfColumn(column - insertionWidth - 1) == 8007, "The column before the insertion maps to another position");
+
+    // The columns are really drawn: the consensus track, which is rendered by the same code as the
+    // reference one, gets the insertion gap there instead of a base. This assembly has no reference
+    // associated, so the consensus is the track to look at.
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTThread::waitForMainThread();
+    auto consensusArea = GTWidget::findWidget("Consensus area", ui);
+    QImage consensusImage = GTWidget::getImage(consensusArea);
+    int cellWidth = browser->getCellWidth();
+    int insertedX = (column - 1) * cellWidth + cellWidth / 2;
+    int baseX = column * cellWidth + cellWidth / 2;
+    int previousBaseX = previousColumn * cellWidth + cellWidth / 2;
+    CHECK_SET_ERR(baseX < consensusImage.width(), "The insertion column is out of the consensus area");
+
+    int y = consensusImage.height() / 2;
+    QRgb insertedColor = consensusImage.pixel(insertedX, y);
+    CHECK_SET_ERR(insertedColor != consensusImage.pixel(baseX, y),
+                  "The inserted column looks exactly like the base that follows it");
+    CHECK_SET_ERR(insertedColor != consensusImage.pixel(previousBaseX, y),
+                  "The inserted column looks exactly like the base that precedes it");
 }
 
 }  // namespace GUITest_Assembly_browser

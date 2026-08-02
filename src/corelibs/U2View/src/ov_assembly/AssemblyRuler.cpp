@@ -178,7 +178,9 @@ void AssemblyRuler::drawRuler(QPainter& p) {
 
     // iterate over notches to draw
     for (int i = start; i < end; i += interval) {
-        int x_pix = browser->calcPainterOffset(i) + halfCell;
+        // Follows the base through the columns inserted for the read insertions: those columns are
+        // not reference positions, so they shift the notches but never change the numbers.
+        int x_pix = browser->calcPainterOffsetOfPos(globalOffset + i) + halfCell;
         // draw long notches + labels for "big interval"
         int oneBasedOffset = globalOffset + i + 1;
         if (oneBasedOffset == 1 || oneBasedOffset % bigInterval == 0) {

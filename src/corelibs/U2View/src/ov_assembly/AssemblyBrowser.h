@@ -29,6 +29,7 @@
 
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/U2Assembly.h>
+#include <U2Core/U2AssemblyInsertionsMap.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -83,6 +84,20 @@ public:
     qint64 calcAsmPosX(qint64 pixPosX) const;
     qint64 calcAsmPosY(qint64 pixPosY) const;
     qint64 calcPainterOffset(qint64 xAsmCoord) const;
+
+    /**
+     * Extra columns reserved for the insertions of the reads that are visible right now. Empty
+     * unless the zoom level is high enough to show letters: with no letters to show there is
+     * nothing an insertion column could display anyway. Rebuilt on demand when the view changes,
+     * all the tracks have to use the same map to stay aligned to each other.
+     */
+    const U2AssemblyInsertionsMap& getInsertionsMap() const;
+
+    /** Column the reference position is rendered in, 0 based, relative to the visible region. */
+    qint64 calcColumnOffset(qint64 xAsmPos) const;
+
+    /** Painter offset of the column the reference position is rendered in. */
+    qint64 calcPainterOffsetOfPos(qint64 xAsmPos) const;
 
     // cells utility functions
     int getCellWidth() const;
@@ -238,6 +253,23 @@ private:
     bool coverageReady;
 
     CoverageInfo localCoverageCache;
+
+    /** State getInsertionsMap() result depends on: it is rebuilt as soon as any of these changes. */
+    struct InsertionsMapKey {
+        bool operator==(const InsertionsMapKey& other) const {
+            return isBuilt == other.isBuilt && xOffset == other.xOffset && yOffset == other.yOffset &&
+                   cellWidth == other.cellWidth && bases == other.bases && rows == other.rows;
+        }
+        /** False while the map has never been built for these offsets, e.g. the database was busy. */
+        bool isBuilt = false;
+        qint64 xOffset = -1;
+        qint64 yOffset = -1;
+        int cellWidth = 0;
+        qint64 bases = 0;
+        qint64 rows = 0;
+    };
+    mutable InsertionsMapKey insertionsMapKey;
+    mutable U2AssemblyInsertionsMap insertionsMap;
 
     AssemblyCellRendererFactoryRegistry* cellRendererRegistry;
 

@@ -146,8 +146,19 @@ void AssemblyCellRenderer::render(const QSize& _size, int _devicePixelRatio, boo
         forceRenderUpdate = false;
         // update cache
         size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
+        updateInsertionGap();
         update();
     }
+}
+
+void AssemblyCellRenderer::updateInsertionGap() {
+    // Violet is what genome browsers traditionally use to mark an insertion.
+    static const QColor insertionGapColorLight("#DCCBEE");
+    static const QColor insertionGapColorDark("#4C3D5E");
+
+    insertionGap = QPixmap(size * devicePixelRatio);
+    insertionGap.setDevicePixelRatio(devicePixelRatio);
+    insertionGap.fill(AppContext::getMainWindow()->isDarkTheme() ? insertionGapColorDark : insertionGapColorLight);
 }
 
 void AssemblyCellRenderer::makeForceRenderUpdate() {

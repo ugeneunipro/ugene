@@ -1,0 +1,16 @@
+<unittest>
+
+    AssemblyInsertionsMapUnitTests
+    + noReadsGiveNoColumns
+    + insertionInTheMiddleOfTheRead
+    + widestInsertionDefinesTheWidth
+    + insertionAtTheReadStart
+    + trailingInsertionIsIgnored
+    + softClipIsNotAnInsertion
+    + hugeInsertionIsTruncated
+    + insertionOutsideTheRegionIsIgnored
+    + columnsAndPositionsMatchEachOther
+    + readIteratorReportsInsertedLetters
+    + readIteratorSkipsInsertionsBeforeStartPos
+
+</unittest>

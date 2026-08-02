@@ -455,7 +455,8 @@ qint64 AssemblyBrowser::calcAsmPosX(qint64 pixPosX) const {
     if (cellWidth == 0) {
         return xOffsetInAssembly + calcAsmCoordX(pixPosX);
     }
-    return xOffsetInAssembly + (double)pixPosX / cellWidth;
+    qint64 column = (double)pixPosX / cellWidth;
+    return getInsertionsMap().getRefPosOfColumn(column);
 }
 
 qint64 AssemblyBrowser::calcAsmPosY(qint64 pixPosY) const {
@@ -483,6 +484,49 @@ qint64 AssemblyBrowser::calcPainterOffset(qint64 xAsmCoord) const {
     }
     qint64 result = letterWidth * xAsmCoord;
     return result;
+}
+
+const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
+    InsertionsMapKey key;
+    key.xOffset = xOffsetInAssembly;
+    key.cellWidth = getCellWidth();
+    key.bases = basesCanBeVisible();
+    // Insertion columns are only worth showing when there are letters to put into them. At a lower
+    // zoom the visible region is huge as well, so skipping the scan keeps the overview cheap.
+    if (areLettersVisible() && !model->isEmpty() && !model->isDbLocked()) {
+        key.isBuilt = true;
+        key.yOffset = yOffsetInAssembly;
+        key.rows = rowsCanBeVisible();
+    }
+    CHECK(!(key == insertionsMapKey), insertionsMap);
+
+    insertionsMapKey = key;
+    U2Region visibleBases(key.xOffset, key.bases);
+    if (!key.isBuilt) {
+        // No insertion columns, but the region is still needed: it is what the columns count from.
+        insertionsMap.build(QList<U2AssemblyRead>(), visibleBases);
+        return insertionsMap;
+    }
+
+    // The reads area shows exactly these reads, so the columns reserved here are the columns it needs.
+    U2OpStatusImpl os;
+    QList<U2AssemblyRead> reads = model->getReadsFromAssembly(visibleBases, key.yOffset, key.yOffset + key.rows, os);
+    if (os.hasError()) {
+        LOG_OP(os);
+        // Retry on the next repaint instead of caching the failure as an insertion-free view.
+        insertionsMapKey = InsertionsMapKey();
+        reads.clear();
+    }
+    insertionsMap.build(reads, visibleBases);
+    return insertionsMap;
+}
+
+qint64 AssemblyBrowser::calcColumnOffset(qint64 xAsmPos) const {
+    return getInsertionsMap().getColumnOfRefPos(xAsmPos);
+}
+
+qint64 AssemblyBrowser::calcPainterOffsetOfPos(qint64 xAsmPos) const {
+    return calcPainterOffset(calcColumnOffset(xAsmPos));
 }
 
 qint64 AssemblyBrowser::basesCanBeVisible() const {
