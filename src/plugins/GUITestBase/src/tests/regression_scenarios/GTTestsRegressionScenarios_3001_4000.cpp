@@ -47,11 +47,16 @@
 
 #include <QDialogButtonBox>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QHeaderView>
 #include <QMainWindow>
 #include <QMenu>
 #include <QPushButton>
 #include <QTextStream>
+
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -1715,16 +1720,37 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
     copiedFile.close();
     fileData.replace("\"gag polyprotein\"", "\"gag polyprotein");
 
-    if (!copiedFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        GT_FAIL("Unable to open file", );
+    // Write the corrupted content to a temp file, then atomically rename it over
+    // the original, rather than truncating and rewriting murine.gb in place.
+    // Truncate-then-write leaves a real window (bounded only by how fast this
+    // process gets scheduled) where the file is empty on disk; UGENE's file
+    // watcher can observe that transient empty state and pop an unhandled
+    // "File is empty" error dialog that stalls the whole reload chain until
+    // the test's own timeout eventually force-closes it, minutes later. An
+    // atomic rename means the watcher only ever sees the final, complete
+    // (corrupted) content in one step.
+    QString tmpPath = dstPath + ".tmp";
+    QFile tmpFile(tmpPath);
+    if (!tmpFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        GT_FAIL("Unable to open temp file", );
     }
 
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
 
     GTGlobals::sleep(1000);  // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
-    QTextStream out(&copiedFile);
+    QTextStream out(&tmpFile);
     out << fileData;
-    copiedFile.close();
+    tmpFile.close();
+
+    // Use the raw POSIX rename() instead of QFile::rename(): the latter
+    // refuses to overwrite an existing destination (requiring a separate
+    // remove() first, which races with UGENE's own file-watcher-triggered
+    // reload handling on the main thread touching the same path concurrently)
+    // and its "is the destination already the same file" pre-check can
+    // spuriously trip up in that same race. POSIX rename() atomically
+    // replaces an existing destination in one syscall - exactly what we want.
+    int renameResult = rename(tmpPath.toLocal8Bit().constData(), dstPath.toLocal8Bit().constData());
+    CHECK_SET_ERR(renameResult == 0, QString("Unable to rename temp file over the original: %1").arg(strerror(errno)));
 
     GTUtilsDialog::checkNoActiveWaiters();
     GTUtilsTaskTreeView::waitTaskFinished();
