@@ -267,14 +267,18 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
     //    2. Open sample "Align sequences with MUSCLE"
     GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    //    3. Align attached file
+    //    3. Align attached file: 3 long, mutually dissimilar sequences.
+    //    A plain full DP alignment of profiles this long can need tens of GB;
+    //    MUSCLE's diagonal-based fallback can't help either, since there is no
+    //    real local similarity between the sequences to find. Expect a clean
+    //    "not enough memory" error instead of a runtime crash/hang.
     GTUtilsWorkflowDesigner::click("Read alignment");
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/regression/4011/human_T1.aln");
     GTUtilsWorkflowDesigner::runWorkflow();
-    //    Current state:
-    //    Runtime error occurred(x86 version of UGENE)
-    //    Windows hangs(x64 version)
-    lt.hasMessage("Nothing to write");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    CHECK_SET_ERR(lt.hasMessage("Alignment requires too much memory for a single pairwise DP step"),
+                  "No expected 'not enough memory' error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4013) {
