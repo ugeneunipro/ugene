@@ -3586,20 +3586,41 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7652) {
-    // Check that views can be opened when there is an active modal dialog.
+    // Check that views can be opened when there is an active modal dialog
+    // (see commit 640bed60be, "Remove IGNORE_MODAL_WIDGET and always open
+    // views": OpenViewTask used to silently refuse to open a view while any
+    // modal widget was active; that gate was intentionally removed).
+    //
+    // Opening files via the normal File > Open menu click requires clicking a
+    // menu bar that is genuinely inaccessible while an application-modal
+    // dialog (Preferences, shown via QDialog::exec()) is active - Qt blocks
+    // input to other windows for a real ApplicationModal dialog, and that is
+    // correct, expected behavior, not a bug. The feature actually under test
+    // lives one layer down, in OpenViewTask itself, so exercise it directly
+    // through the API instead of through a menu that is legitimately blocked.
+    qputenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES", "1");
     class WaitViewIsOpenAndCloseScenario : public CustomScenario {
     public:
         void run() override {
+            // Direct-API opens (see qputenv above) only register the load
+            // task and return - they do not wait for it to finish, unlike
+            // the dialog-based path where the actual UI interaction gives it
+            // time. Wait explicitly so each view is fully up before checking
+            // it's active and before starting the next one.
             GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
             GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
             GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
             GTFileDialog::openFile(dataDir + "samples/Newick/COI.nwk");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsPhyTree::checkTreeViewerWindowIsActive();
 
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
@@ -3607,6 +3628,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     };
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new WaitViewIsOpenAndCloseScenario()));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
+    qunsetenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
