@@ -3171,10 +3171,38 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     //    characters, duplicating existing scnemes.
     //    Check error hint in dialog
 
+    // Point the custom-scheme save directory at the writable sandbox first
+    // (same as test_0060 above) - without this, a newly created scheme saves
+    // to whatever the default/leftover colors directory is, which is not
+    // guaranteed to be writable in an isolated test environment and can
+    // silently derail the rest of the dialog chain below.
+    class setColorsDirFiller : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(QFileInfo(sandBoxDir).absoluteFilePath(), "", GTFileDialogUtils::Choose));
+            GTWidget::click(GTWidget::findWidget("colorsDirButton", dialog));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new setColorsDirFiller()));
+
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
+    GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
+
     GTUtilsDialog::waitForDialog(new NewColorSchemeCreator("GUITest_common_scenarios_msa_editor_test_0061", NewColorSchemeCreator::nucl));
 
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
+
+    // Wait for the whole async dialog chain triggered above (CreateMSAScheme ->
+    // ColorSchemaDialog -> AppSettingsDialog closing) to actually finish before
+    // registering the next round of waiters below - same synchronization idiom
+    // as test_0060 right above. Without it, the code races ahead while the first
+    // scheme is still being created, leaving stale/overlapping active waiters.
+    GTFile::checkFileExists(sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0061.csmsa");
 
     class customColorSchemeCreator : public CustomScenario {
     public:
