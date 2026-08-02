@@ -61,6 +61,7 @@
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -2156,6 +2157,21 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
 GUI_TEST_CLASS_DEFINITION(test_7465) {
     // 1. Open workflow sample "Align sequences with MUSCLE"
     // Expected state: wizard has appeared.
+
+    // big_msa_as_fasta.fa has ~125k sequences. The "not enough memory" check
+    // this test is exercising is driven by an O(sequence-count^2) distance
+    // matrix estimate (see UGENE-7465's actual fix, MuscleParallel.cpp
+    // estimateMemoryUsageInMb()), which for this fixture lands right around
+    // 59GB - and the memory resource pool this gets checked against defaults
+    // to the host machine's *total physical RAM*. So whether the check fires
+    // at all ends up depending on how much RAM the machine running the test
+    // happens to have, rather than being a deterministic property of the
+    // test. Cap the pool to a small, fixed value for the duration of this
+    // test so the check reliably fires regardless of the host's RAM.
+    AppResourcePool* resourcePool = AppContext::getAppSettings()->getAppResourcePool();
+    int originalMaxMemorySizeInMB = resourcePool->getMaxMemorySizeInMB();
+    resourcePool->setMaxMemorySizeInMB(4096);
+
     class AlignSequencesWithMuscleWizardFiller : public CustomScenario {
     public:
         void run() override {
@@ -2172,6 +2188,8 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     // Expected state: there is a notification about lacking of memory.
     CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString().contains("There is not enough memory to align these sequences with MUSCLE"),
                   "No expected message about lacking of memory in notifications");
+
+    resourcePool->setMaxMemorySizeInMB(originalMaxMemorySizeInMB);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {
