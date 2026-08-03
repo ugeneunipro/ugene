@@ -469,6 +469,7 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
 
 bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, Chromatogram& chromatogram) {
     uint numPoints, numBases;
+    uint baseEntryNumber = 1;
     uint signalO;
     int no_bases = 0;
     int sections = READ_ALL;
@@ -501,8 +502,22 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, Chromatogram& 
     if (!getABIIndexEntryLW(fp, indexO, DataEntryLabel, DataCount[0], 3, &numPoints))
         return false;
 
+    /*
+     * ABIF files may contain both the original and the analyzed base calls.
+     * Prefer the analyzed PBAS2/PLOC2 data when it is present. If a valid
+     * and consistent PBAS2/PLOC2 pair is unavailable, UGENE falls back to PBAS1/PLOC1.
+     */
+    uint analyzedBasesCount = 0;
+    uint analyzedBasePositionsCount = 0;
+    if (getABIIndexEntryLW(fp, indexO, BaseEntryLabel, 2, 3, &analyzedBasesCount) &&
+        getABIIndexEntryLW(fp, indexO, BasePosEntryLabel, 2, 3, &analyzedBasePositionsCount) &&
+        analyzedBasesCount > 0 &&
+        analyzedBasesCount == analyzedBasePositionsCount) {
+        baseEntryNumber = 2;
+    }
+
     /* Get the number of bases */
-    if (!getABIIndexEntryLW(fp, indexO, BaseEntryLabel, 1, 3, &numBases)) {
+    if (!getABIIndexEntryLW(fp, indexO, BaseEntryLabel, baseEntryNumber, 3, &numBases)) {
         no_bases = 1;
         numBases = 0;
     }
@@ -598,10 +613,10 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, Chromatogram& 
     /* Read in base confidence values */
     {
         QVector<uchar> conf(numBases);
-        int res = getABIint1(fp, indexO, BaseConfLabel, 2, conf.data(), numBases);
+        int res = getABIint1(fp, indexO, BaseConfLabel, baseEntryNumber, conf.data(), numBases);
 
         /* Read in the bases */
-        if (!(getABIIndexEntryLW(fp, indexO, BaseEntryLabel, 1, 5, &baseO) && (SeekBuf(fp, baseO, 0) == 0))) {
+        if (!(getABIIndexEntryLW(fp, indexO, BaseEntryLabel, baseEntryNumber, 5, &baseO) && (SeekBuf(fp, baseO, 0) == 0))) {
             return false;
         }
 
@@ -662,7 +677,7 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, Chromatogram& 
     }
 
     /* Read in the base positions */
-    if (-1 == getABIint2(fp, indexO, BasePosEntryLabel, 1, chromatogram->baseCalls.data(), numBases)) {
+    if (-1 == getABIint2(fp, indexO, BasePosEntryLabel, baseEntryNumber, chromatogram->baseCalls.data(), numBases)) {
         return false;
     }
 
