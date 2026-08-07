@@ -62,7 +62,7 @@ static Actor* getLinkedActor(ActorId id, Port* output, QList<Actor*> visitedActo
 static QMap<QString, QStringList> getListSlotsMappings(const StrStrMap& bm, const Port* p) {
     assert(p->isInput());
     DataTypePtr dt = p->getType();
-    QMultiMap<QString, QStringList> res;
+    QMap<QString, QStringList> res;
     if (dt->isList()) {
         QString val = bm.value(p->getId());
         if (!val.isEmpty()) {
@@ -402,7 +402,7 @@ void IntegralBusPort::setupBusMap() {
             busMap.insert(key.getId(), "");
         } else {
             bool fl = false;
-            QMap<Port*, Link*> links = this->getLinks();
+            QMultiMap<Port*, Link*> links = this->getLinks();
             Port* port = links.keys().first();
             DataTypePtr ptr = port->getOutputType();
             if (ptr->isMap()) {

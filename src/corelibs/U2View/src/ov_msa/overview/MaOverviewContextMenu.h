@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QActionGroup>
 #include <QMenu>
 
 #include "MaGraphOverview.h"

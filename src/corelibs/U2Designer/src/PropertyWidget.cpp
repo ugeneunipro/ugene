@@ -215,7 +215,7 @@ ComboBoxWidget::ComboBoxWidget(const QList<ComboItem>& items, QWidget* parent, c
     for (const ComboItem& item : qAsConst(sortedItems)) {
         comboBox->addItem(item.first, item.second);
     }
-    connect(comboBox, SIGNAL(activated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
+    connect(comboBox, SIGNAL(textActivated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
 }
 
@@ -255,7 +255,7 @@ ComboBoxEditableWidget::ComboBoxEditableWidget(const QVariantMap& items, QWidget
 
     connect(comboBox, SIGNAL(editTextChanged(const QString&)), this, SLOT(sl_edit(const QString&)));
 
-    connect(comboBox, SIGNAL(activated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
+    connect(comboBox, SIGNAL(textActivated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
 }
 
@@ -325,7 +325,7 @@ ComboBoxWithUrlWidget::ComboBoxWithUrlWidget(const QVariantMap& items, bool _isP
         comboBox->setStyleSheet(style);
     }
 
-    connect(comboBox, SIGNAL(activated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
+    connect(comboBox, SIGNAL(textActivated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
 }
 
@@ -385,7 +385,7 @@ ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap& _items, QW
     initModelView();
 
     connect(cm, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(sl_itemChanged(QStandardItem*)));
-    connect(comboBox, SIGNAL(activated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
+    connect(comboBox, SIGNAL(textActivated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
 }
 

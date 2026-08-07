@@ -83,20 +83,16 @@ QDataStream& operator>>(QDataStream& in, GObjectRelation& myObj) {
 
 static bool registerMetas1() {
     qRegisterMetaType<GObjectReference>("GObjectReference");
-    qRegisterMetaTypeStreamOperators<GObjectReference>("U2::GObjectReference");
 
     qRegisterMetaType<QList<GObjectReference>>("QList<U2::GObjectReference>");
-    qRegisterMetaTypeStreamOperators<QList<GObjectReference>>("QList<U2::GObjectReference>");
 
     return true;
 }
 
 static bool registerMetas2() {
     qRegisterMetaType<GObjectRelation>("GObjectRelation");
-    qRegisterMetaTypeStreamOperators<GObjectRelation>("U2::GObjectRelation");
 
     qRegisterMetaType<QList<GObjectRelation>>("QList<U2::GObjectRelation>");
-    qRegisterMetaTypeStreamOperators<QList<GObjectRelation>>("QList<U2::GObjectRelation>");
 
     return true;
 }

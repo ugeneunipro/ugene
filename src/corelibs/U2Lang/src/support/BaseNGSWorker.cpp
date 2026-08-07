@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "BaseNGSWorker.h"
 
 #include <U2Core/CollectionUtils.h>
@@ -148,7 +150,7 @@ void BaseNGSParser::parseOutput(const QString& partOfLog) {
 }
 
 void BaseNGSParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     foreach (QString buf, lastPartOfLog) {

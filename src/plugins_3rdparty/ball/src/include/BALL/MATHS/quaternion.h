@@ -150,7 +150,7 @@ namespace BALL
 				@return TVector3 the axis
 		*/
 		TVector3<T> getAxis()
-			throw(Exception::DivisionByZero);
+;
 
 		/**	Get the rotation matrix.
 				@param m the matrix to compute from
@@ -375,7 +375,7 @@ namespace BALL
 
 	template <typename T>
 	TVector3<T> TQuaternion<T>::getAxis()
-		throw(Exception::DivisionByZero)
+
 	{
 		TVector3<T> vector(i, j, k);
 		T length = vector.getLength();

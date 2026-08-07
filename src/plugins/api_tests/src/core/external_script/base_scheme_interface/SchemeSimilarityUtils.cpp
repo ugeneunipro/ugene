@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "SchemeSimilarityUtils.h"
 
 #include <U2Core/U2SafePoints.h>
@@ -46,11 +48,11 @@ void SchemeSimilarityUtils::checkSchemesSimilarity(SchemeHandle assembledScheme,
         assembledSchemeContent);
 
     foreach (QString statement, assembledSchemeStatements) {
-        CHECK_EXT(properSchemeContent.contains(statement),
+        const int properStatementPos = properSchemeStatements.indexOf(statement);
+        CHECK_EXT(properStatementPos != SUBSTRING_NOT_FOUND,
                   stateInfo.setError(QString("The proper scheme doesn't contain \"%1\""
                                              " statement from assembled scheme")
                                          .arg(statement)), );
-        const int properStatementPos = properSchemeStatements.indexOf(statement);
         properSchemeStatements.removeAt(properStatementPos);
     }
     CHECK_EXT(properSchemeStatements.isEmpty(), stateInfo.setError("Too few definitions"
@@ -114,7 +116,7 @@ void SchemeSimilarityUtils::skipSchemeSpecificNames(QString& schemeContent) {
 }
 
 void SchemeSimilarityUtils::skipElementNames(QString& schemeContent) {
-    int nextNameAttributePosition = schemeContent.indexOf(QRegExp(Constants::NAME_ATTR + "\\s*" + Constants::COLON));
+    int nextNameAttributePosition = schemeContent.indexOf(QRegularExpression(Constants::NAME_ATTR + "\\s*" + Constants::COLON));
     while (SUBSTRING_NOT_FOUND != nextNameAttributePosition) {
         const int nameStartPos = schemeContent.indexOf(Constants::COLON,
                                                        nextNameAttributePosition) +
@@ -128,7 +130,7 @@ void SchemeSimilarityUtils::skipElementNames(QString& schemeContent) {
 }
 
 void SchemeSimilarityUtils::skipElementIds(QString& schemeContent) {
-    const QRegExp elementIdStartPattern(Constants::NEW_LINE + Constants::TAB + "\\w");
+    const QRegularExpression elementIdStartPattern(Constants::NEW_LINE + Constants::TAB + "\\w");
     int elementIdEndPos = 0;
     int elementIdStartPos = 0;
     Q_FOREVER {
@@ -160,7 +162,7 @@ void SchemeSimilarityUtils::skipElementIds(QString& schemeContent) {
 }
 
 void SchemeSimilarityUtils::skipValidatorBlocks(QString& schemeContent) {
-    const QRegExp validatorBlockStartPattern("\\s+\\" + Constants::VALIDATOR + "\\s+");
+    const QRegularExpression validatorBlockStartPattern("\\s+\\" + Constants::VALIDATOR + "\\s+");
     int validatorBlockStartPos = 0;
     int validatorBlockEndPos = 0;
     Q_FOREVER {

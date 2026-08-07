@@ -36,9 +36,6 @@ namespace U2 {
 namespace Workflow {
 
 DataTypeRegistry* WorkflowEnvImpl::initDataRegistry() {
-    qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
-    qRegisterMetaTypeStreamOperators<CfgMap>("CfgMap");
-    qRegisterMetaTypeStreamOperators<IterationCfg>("IterationCfg");
     qRegisterMetaType<Monitor::FileInfo>("Monitor::FileInfo");
     qRegisterMetaType<WorkflowNotification>("WorkflowNotification");
     qRegisterMetaType<Monitor::WorkerInfo>("Monitor::WorkerInfo");

@@ -105,7 +105,7 @@ private:
     QMap<QString, CollocationsAlgorithmItem> items;
     CollocationsAlgorithmSettings cfg;
     QVector<U2Region> results;
-    QMutex lock;
+    QRecursiveMutex lock;
 
     const bool keepSourceAnns;
     QList<SharedAnnotationData> sourceAnns;

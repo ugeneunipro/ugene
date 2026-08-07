@@ -22,7 +22,8 @@
 #include "MaEditor.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QFontDialog>
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
@@ -316,9 +317,9 @@ void MaEditor::sl_zoomToSelection() {
     int targetPixelsPerBaseX = (int)(viewWidth / (adjustedSelectionWidth * FONT_BOX_TO_CELL_BOX_MULTIPLIER));
     int targetPixelsPerBaseY = (int)(viewHeight / (selectionRect.height() * FONT_BOX_TO_CELL_BOX_MULTIPLIER));
 
-    QDesktopWidget* desktopWidget = QApplication::desktop();
-    double pixelToPointX = 72.0 / desktopWidget->logicalDpiX();  // 72 points == 1 inch (https://en.wikipedia.org/wiki/Point_(typography)).
-    double pixelToPointY = 72.0 / desktopWidget->logicalDpiY();
+    QScreen* primaryScreen = QGuiApplication::primaryScreen();
+    double pixelToPointX = 72.0 / primaryScreen->logicalDotsPerInchX();  // 72 points == 1 inch (https://en.wikipedia.org/wiki/Point_(typography)).
+    double pixelToPointY = 72.0 / primaryScreen->logicalDotsPerInchY();
     int targetFontPointSize = qMin(
         // Prefer the min value, so the font size will be smaller and selection will always fit.
         (int)qMin(targetPixelsPerBaseX * pixelToPointX, targetPixelsPerBaseY * pixelToPointY),

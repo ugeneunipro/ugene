@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "SeqPasterWidgetController.h"
 
 #include <QMessageBox>
@@ -50,7 +52,7 @@ SeqPasterWidgetController::SeqPasterWidgetController(QWidget* p, const QByteArra
     foreach (const DNAAlphabet* a, alps) {
         ui->alphabetBox->addItem(a->getName(), a->getId());
     }
-    connect(ui->alphabetBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_currentIndexChanged(const QString&)));
+    connect(ui->alphabetBox, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_currentIndexChanged(const QString&)));
 }
 QByteArray SeqPasterWidgetController::getNormSequence(const DNAAlphabet* alph, const QByteArray& seq, bool replace, QChar replaceChar) {
     assert(alph != nullptr);
@@ -122,7 +124,7 @@ void SeqPasterWidgetController::sl_currentIndexChanged(const QString& newText) {
 }
 
 QString SeqPasterWidgetController::addSequence(const QString& name, QString data) {
-    QByteArray seq = data.remove(QRegExp("\\s")).toLatin1();
+    QByteArray seq = data.remove(QRegularExpression("\\s")).toLatin1();
 
     const DNAAlphabet* alph = nullptr;
     if (ui->groupBox->isChecked()) {

@@ -86,7 +86,11 @@ void RFSArrayWAlgorithm::prepare() {
 
     int sSize = SEARCH_SIZE;
 
-    nThreads = qBound(1, getNumParallelSubtasks(), SEARCH_SIZE / (20 * 1000));
+    // Each thread should handle at least 20000 bases, but keep the upper bound >= 1:
+    // for short search sequences SEARCH_SIZE / 20000 is 0, and on Qt6 qBound() asserts
+    // when its max is below its min (min == 1 here). Qt5 silently returned 1.
+    int maxThreadsBySize = qMax(1, SEARCH_SIZE / (20 * 1000));
+    nThreads = qBound(1, getNumParallelSubtasks(), maxThreadsBySize);
 
     // create index task that must be executed before all other tasks
     int matchSize = getWGap(WINDOW_SIZE);

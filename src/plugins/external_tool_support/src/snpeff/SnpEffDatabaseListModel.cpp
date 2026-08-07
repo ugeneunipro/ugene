@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "SnpEffDatabaseListModel.h"
 
 #include <QFile>
@@ -29,7 +31,7 @@
 namespace U2 {
 
 SnpEffDatabaseInfo::SnpEffDatabaseInfo(QString line) {
-    QStringList info = line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList info = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     CHECK(info.size() > 2, );
     genome = info.at(0);
     organism = info.at(1);

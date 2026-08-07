@@ -36,7 +36,7 @@ endif ()
 # Plugin descriptor file
 set(UGENE_PLUGIN_DESC_FILE "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${UGENE_PLUGIN_ID}${UGENE_BUILD_MODE_SUFFIX}.plugin")
 
-set(QT_VERSION "${Qt5Core_VERSION}")
+set(QT_VERSION "${Qt6Core_VERSION}")
 
 # Generate descriptor file.
 file(WRITE ${UGENE_PLUGIN_DESC_FILE} "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n")

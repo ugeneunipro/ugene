@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "AbstractVariationFormat.h"
 
 #include <U2Core/GAutoDeleteList.h>
@@ -237,7 +239,7 @@ FormatCheckResult AbstractVariationFormat::checkRawTextData(const QString& dataP
     int idx = 0;
     int mismatchesNumber = 0;
     int cellsNumber = 0;
-    QRegExp wordExp("\\D+");
+    QRegularExpression wordExp(QRegularExpression::anchoredPattern("\\D+"));
     for (const QString& originalLine : qAsConst(lines)) {
         bool skipLastLine = lines.size() != 1 && idx == lines.size() - 1;
         if (skipLastLine) {
@@ -276,10 +278,10 @@ FormatCheckResult AbstractVariationFormat::checkRawTextData(const QString& dataP
                     col.toInt(&isCorrect);
                     break;
                 case ColumnRole_RefData:
-                    isCorrect = wordExp.exactMatch(col);
+                    isCorrect = wordExp.match(col).hasMatch();
                     break;
                 case ColumnRole_ObsData:
-                    isCorrect = wordExp.exactMatch(col);
+                    isCorrect = wordExp.match(col).hasMatch();
                     break;
                 default:
                     break;

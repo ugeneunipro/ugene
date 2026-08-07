@@ -18,6 +18,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "BowtieTask.h"
 
 #include <QFileInfo>
@@ -77,8 +79,8 @@ BowtieBuildTask::LogParser::LogParser()
 void BowtieBuildTask::LogParser::parseOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseOutput(partOfLog);
     foreach (const QString& buf, lastPartOfLog) {
-        QRegExp blockRegExp("Getting block (\\d+) of (\\d+)");
-        QRegExp percentRegexp("(\\d+)%");
+        QRegularExpression blockRegExp("Getting block (\\d+) of (\\d+)");
+        QRegularExpression percentRegexp("(\\d+)%");
         if (buf.contains("Binary sorting into buckets")) {
             if (substage != BUCKET_SORT) {
                 bucketSortIteration = 0;
@@ -92,13 +94,13 @@ void BowtieBuildTask::LogParser::parseOutput(const QString& partOfLog) {
                 bucketSortIteration++;
             }
             substageProgress = bucketSortIteration * 30 / 5;
-        } else if (buf.contains(blockRegExp)) {
+        } else if (auto bm = blockRegExp.match(buf); bm.hasMatch()) {
             substage = GET_BLOCKS;
-            blockIndex = blockRegExp.cap(1).toInt() - 1;
-            blockCount = blockRegExp.cap(2).toInt();
+            blockIndex = bm.captured(1).toInt() - 1;
+            blockCount = bm.captured(2).toInt();
             substageProgress = 30 + blockIndex * 70 / blockCount;
-        } else if (buf.contains(percentRegexp)) {
-            int percent = percentRegexp.cap(1).toInt();
+        } else if (auto pm = percentRegexp.match(buf); pm.hasMatch()) {
+            int percent = pm.captured(1).toInt();
             if (substage == BUCKET_SORT) {
                 substageProgress = (bucketSortIteration * 30 + percent * 30 / 100) / 5;
             } else if (substage == GET_BLOCKS) {
@@ -294,16 +296,16 @@ void BowtieAlignTask::LogParser::parseOutput(const QString& partOfLog) {
 
 void BowtieAlignTask::LogParser::parseErrOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
-    QRegExp blockRegExp("# reads with at least one alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
-    QRegExp blockRegExpOld("# reads with at least one reported alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
+    QRegularExpression blockRegExp("# reads with at least one alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
+    QRegularExpression blockRegExpOld("# reads with at least one reported alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
     for (const QString& buf : qAsConst(lastPartOfLog)) {
-        if (buf.contains(blockRegExp)) {
-            if (blockRegExp.cap(1).toInt() > 0) {
+        if (auto m = blockRegExp.match(buf); m.hasMatch()) {
+            if (m.captured(1).toInt() > 0) {
                 hasResults = true;
                 break;
             }
-        } else if (buf.contains(blockRegExpOld)) {
-            if (blockRegExpOld.cap(1).toInt() > 0) {
+        } else if (auto mo = blockRegExpOld.match(buf); mo.hasMatch()) {
+            if (mo.captured(1).toInt() > 0) {
                 hasResults = true;
                 break;
             }

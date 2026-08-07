@@ -82,7 +82,7 @@ PhyMlWidget::PhyMlWidget(const Msa& ma, QWidget* parent)
     widgetControllers.getDataFromSettings();
     sl_checkSubModelType(subModelCombo->currentText());
 
-    connect(subModelCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_checkSubModelType(const QString&)));
+    connect(subModelCombo, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_checkSubModelType(const QString&)));
     connect(treeTypesCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_checkUserTreeType(int)));
     connect(treeImprovementsCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_checkTreeImprovement(int)));
     connect(inputFilePathButton, SIGNAL(clicked()), SLOT(sl_inputPathButtonClicked()));

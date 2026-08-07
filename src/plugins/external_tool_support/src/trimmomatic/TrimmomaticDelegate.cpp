@@ -128,7 +128,12 @@ QVariant TrimmomaticPropertyWidget::value() {
             steps << step;
         }
     }
-    CHECK(!steps.isEmpty(), QVariant::Invalid);
+    // Must be a default-constructed QVariant, not QVariant::Invalid: that is a QVariant::Type
+    // enumerator equal to 0, and Qt6 dropped the QVariant(Type) constructor that used to turn it
+    // into an invalid variant. It now binds to QVariant(uint) instead, so an unset value was
+    // stored as uint 0 - which Attribute::validate() sees as "set", silently passing validation
+    // of a workflow that has no trimming steps configured.
+    CHECK(!steps.isEmpty(), QVariant());
 
     return steps;
 }
@@ -227,7 +232,7 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);
         SAFE_POINT(item != nullptr, QString("Item with number %1 is NULL").arg(i), );
-        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
+        item->setBackground(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
         isValid = isValid && isStepValid;
     }
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isValid);
@@ -237,7 +242,7 @@ void TrimmomaticPropertyDialog::si_colorThemeSwitched() {
     for (int i = 0; i < steps.size(); i++) {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);
-        item->setBackgroundColor(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
+        item->setBackground(isStepValid ? QPalette().color(QPalette::Base) : Theme::errorColorTextFieldColor());
     }
 }
 

@@ -36,6 +36,8 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+#include <QRegExp>
+
 #include "config.h"
 #include "qscriptengine.h"
 #include "qscriptsyntaxchecker_p.h"
@@ -1068,7 +1070,7 @@ QVariant QScriptEnginePrivate::jscValueToVariant(JSC::ExecState *exec, JSC::JSVa
 {
     if (targetType == QMetaType::QVariant || uint(targetType) == QVariant::LastType)
         return toVariant(exec, value);
-    QVariant v(targetType, (void *)0);
+    QVariant v(QMetaType(targetType), (void *)0);
     if (convertValue(exec, value, targetType, v.data()))
         return v;
     if (isVariant(value)) {
@@ -1080,7 +1082,7 @@ QVariant QScriptEnginePrivate::jscValueToVariant(JSC::ExecState *exec, JSC::JSVa
         QByteArray typeName = v.typeName();
         if (typeName.endsWith('*')
             && (QMetaType::type(typeName.left(typeName.size()-1)) == targetType)) {
-            return QVariant(targetType, *reinterpret_cast<void* *>(v.data()));
+            return QVariant(QMetaType(targetType), *reinterpret_cast<void* *>(v.data()));
         }
     }
     return QVariant();
@@ -1372,7 +1374,7 @@ JSC::JSValue QScriptEnginePrivate::evaluateHelper(JSC::ExecState *exec, intptr_t
                                                   bool &compile)
 {
     Q_Q(QScriptEngine);
-    QBoolBlocker inEvalBlocker(inEval, true);
+    struct InEvalBlocker { bool &v; bool old; InEvalBlocker(bool &r, bool nv) : v(r), old(r) { v = nv; } ~InEvalBlocker() { v = old; } } inEvalBlocker(inEval, true);
     q->currentContext()->activationObject(); //force the creation of a context for native function;
 
     JSC::Debugger* debugger = originalGlobalObject()->debugger();
@@ -3149,11 +3151,6 @@ JSC::JSValue QScriptEnginePrivate::create(JSC::ExecState *exec, int type, const 
             result = newDate(exec, QDateTime(date, QTime(0, 0), Qt::LocalTime));
             break;
         }
-#ifndef QT_NO_REGEXP
-        case QMetaType::QRegExp:
-            result = newRegExp(exec, *reinterpret_cast<const QRegExp *>(ptr));
-            break;
-#endif
 #ifndef QT_NO_QOBJECT
         case QMetaType::QObjectStar:
             result = eng->newQObject(*reinterpret_cast<QObject* const *>(ptr));
@@ -3163,6 +3160,10 @@ JSC::JSValue QScriptEnginePrivate::create(JSC::ExecState *exec, int type, const 
             result = eng->newVariant(*reinterpret_cast<const QVariant*>(ptr));
             break;
         default:
+            if (type == qMetaTypeId<QRegExp>()) {
+                result = newRegExp(exec, *reinterpret_cast<const QRegExp *>(ptr));
+                break;
+            }
             if (QMetaType::typeFlags(type) & QMetaType::PointerToQObject) {
                 result = eng->newQObject(*reinterpret_cast<QObject* const *>(ptr));
                 break;
@@ -3191,7 +3192,7 @@ JSC::JSValue QScriptEnginePrivate::create(JSC::ExecState *exec, int type, const 
                 if (typeName.endsWith('*') && !*reinterpret_cast<void* const *>(ptr))
                     return JSC::jsNull();
                 else
-                    result = eng->newVariant(QVariant(type, ptr));
+                    result = eng->newVariant(QVariant(QMetaType(type), ptr));
             }
         }
     }
@@ -3279,13 +3280,6 @@ bool QScriptEnginePrivate::convertValue(JSC::ExecState *exec, JSC::JSValue value
             *reinterpret_cast<QDate *>(ptr) = toDateTime(exec, value).date();
             return true;
         } break;
-#ifndef QT_NO_REGEXP
-    case QMetaType::QRegExp:
-        if (isRegExp(value)) {
-            *reinterpret_cast<QRegExp *>(ptr) = toRegExp(exec, value);
-            return true;
-        } break;
-#endif
 #ifndef QT_NO_QOBJECT
     case QMetaType::QObjectStar:
         if (isQObject(value) || value.isNull()) {
@@ -3313,6 +3307,13 @@ bool QScriptEnginePrivate::convertValue(JSC::ExecState *exec, JSC::JSValue value
         return true;
     default:
     ;
+    }
+
+    if (type == qMetaTypeId<QRegExp>()) {
+        if (isRegExp(value)) {
+            *reinterpret_cast<QRegExp *>(ptr) = toRegExp(exec, value);
+            return true;
+        }
     }
 
     QByteArray name = QMetaType::typeName(type);

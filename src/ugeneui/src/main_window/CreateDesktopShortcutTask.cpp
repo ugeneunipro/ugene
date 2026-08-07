@@ -106,7 +106,7 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
         QFile link(homeDir + "/Desktop/UGENE.desktop");
         if (link.open(QFile::WriteOnly | QFile::Truncate)) {
             QTextStream out(&link);
-            out.setCodec("UTF-8");
+            out.setEncoding(QStringConverter::Utf8);
             out << "[Desktop Entry]" << Qt::endl
                 << "Encoding=UTF-8" << Qt::endl
                 << "Version=1.0" << Qt::endl

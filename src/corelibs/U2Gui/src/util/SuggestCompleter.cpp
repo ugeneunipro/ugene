@@ -21,11 +21,13 @@
 
 #include "SuggestCompleter.h"
 
+#include <QCoreApplication>
 #include <QHeaderView>
 #include <QKeyEvent>
 #include <QTreeWidget>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Log.h>
 #include <U2Core/DocumentModel.h>
 
 const int INVALID_ITEM_INDEX = -1;
@@ -69,6 +71,45 @@ bool BaseCompleter::eventFilter(QObject* obj, QEvent* ev) {
                 return true;
             }
         }
+        // The popup is a Qt::Popup window whose focus proxy is the editor. Qt5 delivered its key
+        // events to the popup itself, so the branch below consumed them; Qt6 routes them to the
+        // focus proxy instead, i.e. straight to the editor. Without this, Enter is never consumed
+        // while the suggestion list is open and instead reaches the surrounding dialog, where it
+        // activates the default button - e.g. finishing a wizard the user was still filling in.
+        if (popup->isVisible() && (eventType == QEvent::KeyPress || eventType == QEvent::ShortcutOverride)) {
+            switch (static_cast<QKeyEvent*>(ev)->key()) {
+                case Qt::Key_Enter:
+                case Qt::Key_Return:
+                    // Only claim the key on ShortcutOverride; acting there would close the popup
+                    // and leave the following KeyPress unconsumed - it would then bubble up to the
+                    // dialog and press its default button.
+                    if (eventType == QEvent::KeyPress) {
+                        doneCompletion();
+                        popup->hide();
+                        editor->setFocus();
+                        emit si_completerClosed();
+                    }
+                    return true;
+                case Qt::Key_Escape:
+                    if (eventType == QEvent::KeyPress) {
+                        popup->hide();
+                        editor->setFocus();
+                        emit si_completerClosed();
+                    }
+                    return true;
+                case Qt::Key_Up:
+                case Qt::Key_Down:
+                case Qt::Key_Home:
+                case Qt::Key_End:
+                case Qt::Key_PageUp:
+                case Qt::Key_PageDown:
+                    // Keep navigating the suggestion list rather than moving the text cursor.
+                    QCoreApplication::sendEvent(popup, ev);
+                    return true;
+                default:
+                    break;
+            }
+        }
         return false;
     }
 
@@ -90,6 +131,11 @@ bool BaseCompleter::eventFilter(QObject* obj, QEvent* ev) {
             case Qt::Key_Return:
             case Qt::Key_Escape:
                 isConsumed = true;
+                // ShortcutOverride only reserves the key: closing the popup here would let the
+                // KeyPress that follows reach the surrounding dialog and fire its default button.
+                if (eventType != QEvent::KeyPress) {
+                    break;
+                }
                 if (key == Qt::Key_Enter || key == Qt::Key_Return) {
                     doneCompletion();
                 }

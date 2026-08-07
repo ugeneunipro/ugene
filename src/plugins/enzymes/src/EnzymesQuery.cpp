@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "EnzymesQuery.h"
 
 #include <QCoreApplication>
@@ -66,7 +68,7 @@ Task* QDEnzymesActor::getAlgorithmTask(const QVector<U2Region>& location) {
 
     QList<SEnzymeData> enzymes;
     QString s = cfg->getParameter(ENZYMES_ATTR)->getAttributePureValue().toString();
-    ids = s.split(QRegExp("\\s*,\\s*"));
+    ids = s.split(QRegularExpression("\\s*,\\s*"));
     const QList<SEnzymeData>& loadedEnzymes = EnzymesSelectorWidget::getLoadedEnzymes();
     foreach (const SEnzymeData& d, loadedEnzymes) {
         if (ids.contains(d->id)) {

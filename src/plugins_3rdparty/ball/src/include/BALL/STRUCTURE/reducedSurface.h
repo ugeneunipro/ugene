@@ -307,28 +307,28 @@ namespace BALL
                 @return TSphere3<double>, the i'th sphere
         */
     TSphere3<double> getSphere(Position i) const
-        throw(Exception::IndexOverflow);
+;
 
         /** Return the i'th rsvertex.
                 @param	i	the index of the rsvertex that should be given back
                 @return RSVertex, the i'th rsvertex
         */
         RSVertex* getVertex(Position i) const
-            throw(Exception::IndexOverflow);
+;
 
         /** Return the i'th rsedge.
                 @param	i	the index of the rsedge that should be given back
                 @return RSEdge, the i'th rsedge
         */
         RSEdge* getEdge(Position i) const
-            throw(Exception::IndexOverflow);
+;
 
         /** Return the i'th rsface.
                 @param	i	the index of the rsface that should be given back
                 @return RSFace, the i'th rsface
         */
         RSFace* getFace(Position i) const
-            throw(Exception::IndexOverflow);
+;
 
         /** Insert a new RSVertex.
                 @param	rsvertex	a pointer to the RSVertex to insert
@@ -376,9 +376,7 @@ namespace BALL
         /** Compute the reduced surface.
         */
         void compute()
-            throw(Exception::GeneralException,
-                  Exception::DivisionByZero,
-                  Exception::IndexOverflow);
+            ;
 
         //@}
 
@@ -543,9 +541,7 @@ namespace BALL
         /** Compute the reduced surface
         */
         void run()
-            throw(Exception::GeneralException,
-                        Exception::DivisionByZero,
-                        Exception::IndexOverflow);
+            ;
 
         //@}
 
@@ -563,25 +559,19 @@ namespace BALL
         /*_ Compute a RSComponent.
         */
         void getRSComponent()
-            throw(Exception::GeneralException,
-                        Exception::DivisionByZero,
-                        Exception::IndexOverflow);
+            ;
 
         /*_ Treat all edges of a face.
             @param	face	the RSFace to be treated
         */
         bool treatFace(RSFace* face)
-            throw(Exception::GeneralException,
-                        Exception::DivisionByZero,
-                        Exception::IndexOverflow);
+            ;
 
         /*_ Roll over an edge that belongs to only one face and find the other one.
                 @param	edge	the RSEdge to be treated
         */
         bool treatEdge(RSEdge* edge)
-            throw(Exception::GeneralException,
-                        Exception::DivisionByZero,
-                        Exception::IndexOverflow);
+            ;
 
         /*_ Treat an ambiguous situation.
                 All vertices on an ambiguous atom are deleted with all its edges and
@@ -593,9 +583,7 @@ namespace BALL
         /*_ Check all new created vertices for extensions
         */
         void extendComponent()
-            throw(Exception::GeneralException,
-                        Exception::DivisionByZero,
-                        Exception::IndexOverflow);
+            ;
 
         /*_ Find a third atom rolling over two vertices starting on a face.
                 From all atoms which can be touched by the probe sphere when it
@@ -613,9 +601,7 @@ namespace BALL
         */
         Index thirdAtom(RSVertex* vertex1, RSVertex* vertex2,
                         RSFace* face, TSphere3<double>& probe, TAngle<double>& phi)
-            throw(Exception::GeneralException,
-                        Exception::DivisionByZero,
-                        Exception::IndexOverflow);
+            ;
 
         //@}
         /*_ @name Finding a start position
@@ -634,7 +620,7 @@ namespace BALL
                                                 3, if a face is found
         */
         Position getStartPosition()
-            throw(Exception::DivisionByZero);
+;
 
         //@}
         /*_ @name Finding a first face
@@ -646,7 +632,7 @@ namespace BALL
                                                     NULL otherwise
         */
         RSFace* findFirstFace()
-            throw(Exception::DivisionByZero);
+;
 
         /*_ Try to find a starting face in a given direction
             @param	direction		search in x-direction, if direction is 0,
@@ -658,7 +644,7 @@ namespace BALL
                                                     NULL otherwise
         */
         RSFace* findFace(Position direction, Position extrem)
-            throw(Exception::DivisionByZero);
+;
 
         //@}
         /*_ @name Finding a first edge

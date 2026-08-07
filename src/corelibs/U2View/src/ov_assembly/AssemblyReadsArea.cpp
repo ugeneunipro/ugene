@@ -22,6 +22,8 @@
 #include <assert.h>
 #include <math.h>
 
+#include <QActionGroup>
+#include <QActionGroup>
 #include <QApplication>
 #include <QClipboard>
 #include <QCursor>
@@ -469,8 +471,11 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
 
                     QPoint cellStart(x_pix_start + x_pix_offset, y_pix_start);
                     QPixmap cellImage;
-                    if (!referenceRegion.isEmpty()) {
-                        int posInRef = readVisibleBases.startPos - cachedReads.visibleBases.startPos + basesPainted - 1;
+                    int posInRef = readVisibleBases.startPos - cachedReads.visibleBases.startPos + basesPainted - 1;
+                    if (!referenceRegion.isEmpty() && posInRef >= 0 && posInRef < referenceRegion.size()) {
+                        // Qt6 asserts on out-of-range QByteArray indexing; a read can extend past the cached
+                        // reference region, so guard posInRef and fall back to reference-less rendering (Qt5
+                        // silently read past the end here).
                         cellImage = cellRenderer->cellImage(read, c, referenceRegion[posInRef]);
                     } else {
                         cellImage = cellRenderer->cellImage(read, c);

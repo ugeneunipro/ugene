@@ -23,7 +23,6 @@
 #include "primitives/GTWidget.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>

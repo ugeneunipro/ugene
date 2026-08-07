@@ -552,7 +552,11 @@ void U2SequenceImporter::_addBlock2Buffer(const char* data, qint64 dataLength, U
             dnaBlockOffset = 3 - aminoTranslationBuffer.size();
             aminoTranslationBuffer.append(dnaBlock, dnaBlockOffset);
             aminoTT->translate(aminoTranslationBuffer.constData(), 3, aminoBlock, 1);
-            aminoBlockPointer->append(dnaBlock, 1);
+            // Do NOT append to *aminoBlockPointer here: 'aminoBlock' is a raw pointer into its
+            // data, and append() may reallocate and leave it dangling - the writes below then
+            // corrupt the heap. The buffer is already sized for the full result
+            // (newBlockLength / 3 + 1), and translate() above has written the leftover amino
+            // acid into aminoBlock[0], so there is nothing left to append.
             remainingDnaBlockLength -= dnaBlockOffset;
             aminoTranslationBuffer.clear();
         }

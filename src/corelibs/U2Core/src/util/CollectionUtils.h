@@ -45,6 +45,13 @@ void unite(QMap<Key, Value>& target, const QMap<Key, Value>& other) {
 }
 
 template<typename Key, typename Value>
+void unite(QMap<Key, Value>& target, const QMultiMap<Key, Value>& other) {
+    for (auto it = other.begin(); it != other.end(); ++it) {
+        target.insert(it.key(), it.value());
+    }
+}
+
+template<typename Key, typename Value>
 void unite(QHash<Key, Value>& target, const QHash<Key, Value>& other) {
     for (auto it = other.begin(); it != other.end(); ++it) {
         target.insert(it.key(), it.value());

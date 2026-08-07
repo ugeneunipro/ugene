@@ -298,7 +298,7 @@ namespace BALL
 														to the second RSVertex otherwise
 		*/
 		TVector3<double> getIntersectionPoint(Position i) const
-			throw(Exception::GeneralException);
+;
 
 		/** Set singular
 		*/

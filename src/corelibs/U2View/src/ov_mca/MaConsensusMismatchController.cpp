@@ -53,13 +53,13 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
     nextMismatch = new QAction(tr("Jump to next variation"), this);
     GUIUtils::setThemedIcon(nextMismatch, ":core/images/mismatch-forward.png");
     nextMismatch->setObjectName("next_mismatch");
-    nextMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_V);
+    nextMismatch->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_V);
     GUIUtils::updateActionToolTip(nextMismatch);
     connect(nextMismatch, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
     prevMismatch = new QAction(tr("Jump to previous variation"), this);
     GUIUtils::setThemedIcon(prevMismatch, ":core/images/mismatch-backward.png");
-    prevMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_V);
+    prevMismatch->setShortcut(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_V);
     prevMismatch->setObjectName("prev_mismatch");
     GUIUtils::updateActionToolTip(prevMismatch);
     connect(prevMismatch, SIGNAL(triggered(bool)), SLOT(sl_prev()));

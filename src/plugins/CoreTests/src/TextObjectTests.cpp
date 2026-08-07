@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "TextObjectTests.h"
 
 #include <QDomElement>
@@ -62,13 +64,16 @@ Task::ReportResult GTest_CheckStringExists::report() {
         return ReportResult_Finished;
     }
 
-    QString stringToFind = QRegExp::escape(stringToCheck);
+    QString stringToFind = QRegularExpression::escape(stringToCheck);
     if (wholeLine) {
-        stringToFind = "^(.*\\n)?" + QRegExp::escape(stringToCheck) + "(\\n.*)?$";
+        stringToFind = "^(.*\\n)?" + QRegularExpression::escape(stringToCheck) + "(\\n.*)?$";
     }
 
     const QString text = obj->getText();
-    int index = text.indexOf(QRegExp(stringToFind));
+    // DotMatchesEverythingOption restores the pre-Qt6 QRegExp behaviour where '.' also
+    // matched '\n'. Without it the whole_line pattern "^(.*\n)?X(\n.*)?$" only matches X
+    // on the first couple of lines, so whole_line checks on lower lines wrongly fail.
+    int index = text.indexOf(QRegularExpression(stringToFind, QRegularExpression::DotMatchesEverythingOption));
 
     if (mustExist) {
         if (-1 == index) {

@@ -313,7 +313,7 @@ CDCResultItem::CDCResultItem(const U2Region& _r)
 //////////////////////////////////////////////////////////////////////////
 // task
 CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject*>& table, const QSet<QString>& names, const CollocationsAlgorithmSettings& cfg)
-    : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), lock(QMutex::Recursive), keepSourceAnns(false) {
+    : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), keepSourceAnns(false) {
     GCOUNTER(cvar, "CollocationSearchTask");
     assert(cfg.distance >= 0);
     assert(!names.isEmpty());
@@ -342,7 +342,7 @@ CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject*>
 }
 
 CollocationSearchTask::CollocationSearchTask(const QList<SharedAnnotationData>& table, const QSet<QString>& names, const CollocationsAlgorithmSettings& cfg, bool _keepSourceAnns)
-    : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), lock(QMutex::Recursive), keepSourceAnns(_keepSourceAnns) {
+    : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), keepSourceAnns(_keepSourceAnns) {
     assert(cfg.distance >= 0);
     assert(!names.isEmpty());
     foreach (const QString& name, names) {
@@ -383,19 +383,19 @@ void CollocationSearchTask::run() {
 }
 
 void CollocationSearchTask::onResult(const U2Region& r) {
-    QMutexLocker locker(&lock);
+    QMutexLocker<QRecursiveMutex> locker(&lock);
     results.append(r);
 }
 
 QVector<U2Region> CollocationSearchTask::popResults() {
-    QMutexLocker locker(&lock);
+    QMutexLocker<QRecursiveMutex> locker(&lock);
     QVector<U2Region> tmp = results;
     results.clear();
     return tmp;
 }
 
 QList<SharedAnnotationData> CollocationSearchTask::popResultAnnotations() {
-    QMutexLocker locker(&lock);
+    QMutexLocker<QRecursiveMutex> locker(&lock);
     QVector<U2Region> res = this->popResults();
 
     QList<SharedAnnotationData> result;

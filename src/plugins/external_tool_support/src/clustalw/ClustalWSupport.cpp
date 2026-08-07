@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "ClustalWSupport.h"
 
 #include <QMainWindow>
@@ -64,7 +66,7 @@ ClustalWSupport::ClustalWSupport()
     validationArguments << "-help";
     validationMessageRegExp = "CLUSTAL";
     description = tr("<i>ClustalW</i> is a free sequence alignment software for DNA or proteins.");
-    versionRegExp = QRegExp("CLUSTAL (\\d+\\.\\d+) Multiple Sequence Alignments");
+    versionRegExp = QRegularExpression("CLUSTAL (\\d+\\.\\d+) Multiple Sequence Alignments");
     toolKitName = "ClustalW";
     if (isOsWindows()) {
         pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;

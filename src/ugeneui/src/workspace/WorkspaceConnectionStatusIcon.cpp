@@ -60,7 +60,7 @@ void WorkspaceConnectionStatusIcon::reconnectToWorkspace() {
             updateIcon();
             auto websocketService = workspaceService->getWebSocketService();
             if (websocketService != nullptr) {
-                connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, this, [this] { updateIcon(); }, Qt::UniqueConnection);
+                connect(workspaceService->getWebSocketService(), &WebSocketClientService::si_connectionStateChanged, this, &WorkspaceConnectionStatusIcon::updateIcon, Qt::UniqueConnection);
             }
         });
     }

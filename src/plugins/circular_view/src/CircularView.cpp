@@ -686,7 +686,7 @@ QPair<int, int> CircularViewRenderArea::getVisibleRange() const {
     SequenceObjectContext* ctx = view->getSequenceContext();
     int seqLen = ctx->getSequenceObject()->getSequenceLength();
     if (verticalOffset <= parentWidget()->height()) {
-        return qMakePair<int, int>(0, seqLen);
+        return qMakePair(0, seqLen);
     }
     qreal spanAngle = getVisibleAngle();
     qreal startAngle = 3 * PI / 2.0 - spanAngle;
@@ -694,7 +694,7 @@ QPair<int, int> CircularViewRenderArea::getVisibleRange() const {
     normalizeAngleRad(temp);
     int start = seqLen * temp / (2.0 * PI) + 0.5f;
     int span = seqLen * spanAngle / (double(PI)) + 0.5f;
-    return qMakePair<int, int>(start, span);
+    return qMakePair(start, span);
 }
 
 void CircularViewRenderArea::drawRuler(QPainter& p) {

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "StringtieGeneAbundanceReportTask.h"
 
 #include <QDir>
@@ -178,9 +180,9 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString, QStrin
         QString tsvFile = mapFiles[tempFile];
         GUrl url(tsvFile);
         QString head = url.baseFileName();
-        head = head.remove(QRegExp("\\.tab$", Qt::CaseInsensitive))
-                   .remove(QRegExp("_gene_abund$", Qt::CaseInsensitive))
-                   .remove(QRegExp("_abund$", Qt::CaseInsensitive));
+        head = head.remove(QRegularExpression("\\.tab$", QRegularExpression::CaseInsensitiveOption))
+                   .remove(QRegularExpression("_gene_abund$", QRegularExpression::CaseInsensitiveOption))
+                   .remove(QRegularExpression("_abund$", QRegularExpression::CaseInsensitiveOption));
         out << outputDelimiter << head;
     }
     out << "\n";

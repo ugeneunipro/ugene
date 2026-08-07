@@ -153,7 +153,7 @@ QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(const QPoint& p, int ind
     auto ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getLineWidget(index));
     int posX = ui->getBaseWidthController()->getBaseScreenCenter(p.x());
     int posY = (int)ui->getRowHeightController()->getScreenYRegionByViewRowIndex(p.y()).center();
-    return msaEditArea->mapToGlobal({posX, posY});
+    return msaEditArea->mapToGlobal(QPoint(posX, posY));
 }
 
 void GTUtilsMSAEditorSequenceArea::selectArea(

@@ -32,7 +32,6 @@
 #include <utils/GTKeyboardUtils.h>
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QFileInfo>
 #include <QGraphicsItem>

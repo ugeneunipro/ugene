@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include <assert.h>
 
 #include <QDir>
@@ -121,7 +123,7 @@ static QStringList findAllFiles(const QString& dirPath, const QString& ext, bool
     return res;
 }
 
-static QString addExcludeTests(const QString& fullTestDirPath, const QString& str, QList<QRegExp>& xList) {
+static QString addExcludeTests(const QString& fullTestDirPath, const QString& str, QList<QRegularExpression>& xList) {
     QString err;
 
     if (str.isEmpty()) {
@@ -129,7 +131,7 @@ static QString addExcludeTests(const QString& fullTestDirPath, const QString& st
     }
 
     foreach (const QString& s, str.split(",")) {
-        QRegExp r(fullTestDirPath + "/" + s.trimmed(), Qt::CaseSensitive, QRegExp::Wildcard);
+        QRegularExpression r(QRegularExpression::wildcardToRegularExpression(fullTestDirPath + "/" + s.trimmed()));
         if (!r.isValid()) {
             err = QString("Invalid exclude: %1").arg(s);
             break;
@@ -149,7 +151,7 @@ GTestSuite* GTestSuite::readTestSuite(const QString& url, QString& err) {
     f.close();
 
     QDomDocument suiteDoc;
-    bool res = suiteDoc.setContent(xmlData);
+    bool res = bool(suiteDoc.setContent(xmlData));
     if (!res) {
         err = "Not XML doc: " + url;
         return nullptr;
@@ -219,7 +221,7 @@ GTestSuite* GTestSuite::readTestSuite(const QString& url, QString& err) {
             break;
         }
 
-        QList<QRegExp> excludeRexExList;
+        QList<QRegularExpression> excludeRexExList;
         err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude"), excludeRexExList);
         if (!err.isEmpty()) {
             break;
@@ -329,7 +331,7 @@ QList<GTestSuite*> GTestSuite::readTestSuiteList(const QString& url, QStringList
         return result;
     }
     QString suiteFileContent = suitListFile.readAll();
-    QStringList suiteNamesList = suiteFileContent.split(QRegExp("\\s+"));
+    QStringList suiteNamesList = suiteFileContent.split(QRegularExpression("\\s+"));
     for (auto suiteName : qAsConst(suiteNamesList)) {
         if (suiteName.isEmpty()) {
             continue;

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "ExternalToolRegistry.h"
 
 #include <QRegularExpression>
@@ -109,7 +111,7 @@ const QString& ExternalTool::getPredefinedVersion() const {
     return predefinedVersion;
 }
 
-const QRegExp& ExternalTool::getVersionRegExp() const {
+const QRegularExpression& ExternalTool::getVersionRegExp() const {
     return versionRegExp;
 }
 

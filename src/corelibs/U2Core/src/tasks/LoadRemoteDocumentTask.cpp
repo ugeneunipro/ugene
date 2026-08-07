@@ -480,7 +480,7 @@ void LoadDataFromEntrezTask::runRequest(const QUrl& requestUrl) {
     QNetworkRequest req(requestUrl);
     req.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
     downloadReply = networkManager->get(req);
-    connect(downloadReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(sl_onError()));
+    connect(downloadReply, SIGNAL(errorOccurred(QNetworkReply::NetworkError)), this, SLOT(sl_onError()));
     connect(downloadReply, SIGNAL(uploadProgress(qint64, qint64)), this, SLOT(sl_uploadProgress(qint64, qint64)));
 
     QTimer::singleShot(100, this, &LoadDataFromEntrezTask::sl_cancelCheck);

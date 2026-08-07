@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "HmmerSupport.h"
 
 #include <QMainWindow>
@@ -59,7 +61,7 @@ HmmerSupport::HmmerSupport(const QString& id, const QString& name)
     : ExternalTool(id, "hmmer3", name) {
 
     toolKitName = "HMMER";
-    versionRegExp = QRegExp("HMMER (\\d+.\\d+.\\d+\\w?)");
+    versionRegExp = QRegularExpression("HMMER (\\d+.\\d+.\\d+\\w?)");
 
     if (id == BUILD_TOOL_ID) {
         initBuild();
@@ -378,7 +380,7 @@ Hmmer3LogParser::Hmmer3LogParser() {
 }
 
 void Hmmer3LogParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
 

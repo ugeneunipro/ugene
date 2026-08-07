@@ -172,7 +172,7 @@ void DumpHelpTask::prepare() {
     //
     printStringToConsole("%s", "\n");
 
-    assert(0 != helpProviders.at(ind)->getHelpSectionFullName());
+    assert(!helpProviders.at(ind)->getHelpSectionFullName().isEmpty());
     dumpOptionHelpSyntax(helpProviders.at(ind)->getHelpSectionFullName(),
                          helpProviders.at(ind)->getHelpSectionArgsDescription());
 

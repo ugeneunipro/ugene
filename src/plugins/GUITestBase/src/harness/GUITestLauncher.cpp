@@ -22,7 +22,6 @@
 #include "GUITestLauncher.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QMap>
 #include <QScreen>

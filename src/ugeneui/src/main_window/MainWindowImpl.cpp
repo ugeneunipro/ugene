@@ -335,6 +335,17 @@ void MainWindowImpl::setNewStyle(const QString& style, int colorThemeIndex) {
     CHECK(newStyle != nullptr, );
 
     QApplication::setStyle(newStyle);
+
+    // Unlike Qt5, Qt6's QApplication::setStyle() no longer re-derives the app palette from the
+    // new style: a default-constructed QPalette() keeps whatever the platform theme provided
+    // (e.g. a GTK theme's off-white background), and the style's own polish(QPalette&) - the
+    // hook DarkStyle uses to install the dark colors - is never applied to the app-wide default.
+    // Reproduce the Qt5 behaviour explicitly so rendering follows the selected style/theme
+    // instead of the host desktop theme.
+    QPalette palette = newStyle->standardPalette();
+    newStyle->polish(palette);
+    QApplication::setPalette(palette);
+
     emit si_colorThemeSwitched();
 }
 
@@ -401,7 +412,7 @@ void MainWindowImpl::prepareGUI() {
 
         static int testNotificationCounter = 0;
         auto addUniqueNotificationAction = new QAction(tr("Add unique notification"), this);
-        addUniqueNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_N);
+        addUniqueNotificationAction->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_N);
         connect(addUniqueNotificationAction, &QAction::triggered, [=]() {
             testNotificationCounter++;
             nStack->add("Notification: " + QString::number(testNotificationCounter) + QString("\n...").repeated(testNotificationCounter % 4));
@@ -409,7 +420,7 @@ void MainWindowImpl::prepareGUI() {
         helpMenu->addAction(addUniqueNotificationAction);
 
         auto addRepeatingNotificationAction = new QAction(tr("Add repeating notification"), this);
-        addRepeatingNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_M);
+        addRepeatingNotificationAction->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_M);
         connect(addRepeatingNotificationAction, &QAction::triggered, [=]() { nStack->add("Repeating notification"); });
         helpMenu->addAction(addRepeatingNotificationAction);
     }

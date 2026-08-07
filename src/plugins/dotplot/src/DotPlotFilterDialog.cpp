@@ -50,7 +50,7 @@ DotPlotFilterDialog::DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectConte
         filterGroup->addButton(noFiltrationRadio, All);
         filterGroup->addButton(featuresRadio, Features);
 
-        connect(filterGroup, SIGNAL(buttonClicked(int)), SLOT(sl_filterTypeChanged(int)));
+        connect(filterGroup, SIGNAL(idClicked(int)), SLOT(sl_filterTypeChanged(int)));
         sl_filterTypeChanged(filterGroup->checkedId());
     }
 

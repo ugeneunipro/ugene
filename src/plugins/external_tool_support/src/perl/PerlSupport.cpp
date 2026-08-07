@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "PerlSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -44,7 +46,7 @@ PerlSupport::PerlSupport()
     validationArguments << "--version";
 
     description += tr("Perl scripts interpreter");
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
+    versionRegExp = QRegularExpression("(\\d+.\\d+.\\d+)");
     toolKitName = "perl";
 
     muted = true;

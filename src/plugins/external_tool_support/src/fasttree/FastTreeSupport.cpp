@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "FastTreeSupport.h"
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -42,7 +44,7 @@ FastTreeSupport::FastTreeSupport()
     validationArguments << "-expert";
     validationMessageRegExp = "Detailed usage for FastTree";
     description = tr("<i>FastTree</i> builds phylogenetic trees from alignments of nucleotide or protein sequences.<br>FastTree can handle alignments with up to a million of sequences.");
-    versionRegExp = QRegExp(R"(Detailed usage for FastTree (\d+\.\d+\.\d+).*)");
+    versionRegExp = QRegularExpression(R"(Detailed usage for FastTree (\d+\.\d+\.\d+).*)");
     toolKitName = "FastTree";
 
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();

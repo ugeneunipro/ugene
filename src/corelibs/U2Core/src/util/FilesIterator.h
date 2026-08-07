@@ -22,7 +22,7 @@
 #pragma once
 
 #include <QDir>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <U2Core/global.h>
 
@@ -67,8 +67,8 @@ private:
 
     QStringList usedDirs;
     QFileInfoList unusedDirs;
-    QRegExp incRx;
-    QRegExp excRx;
+    QRegularExpression incRx;
+    QRegularExpression excRx;
 
     QStringList readyResults;
 

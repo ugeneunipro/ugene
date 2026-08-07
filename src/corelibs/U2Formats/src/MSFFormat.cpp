@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "MSFFormat.h"
 
 #include <U2Core/IOAdapter.h>
@@ -155,7 +157,7 @@ void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObj
     }
 
     // Read sequences.
-    QRegExp coordsRegexp("^\\d+(\\s+\\d+)?$");
+    QRegularExpression coordsRegexp("^\\d+(\\s+\\d+)?$");
     int maRowIndex = 0;
     bool prevLineIsEmpty = false;
     while (!os.isCoR() && !reader.atEnd()) {
@@ -166,7 +168,7 @@ void MSFFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObj
         // Skip empty lines and lines with coordinates.
         // 2 empty lines in a row or a line with coordinates make a new block: this way we support both
         // MSFs with block coordinates and without (blocks separated by 2-empty lines only).
-        bool isCoordsRegexMatched = coordsRegexp.indexIn(line) != -1;
+        bool isCoordsRegexMatched = coordsRegexp.match(line).hasMatch();
         if (line.isEmpty() || isCoordsRegexMatched) {
             if (isCoordsRegexMatched || prevLineIsEmpty) {
                 maRowIndex = 0;

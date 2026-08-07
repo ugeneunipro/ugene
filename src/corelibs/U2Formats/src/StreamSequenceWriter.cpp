@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "StreamSequenceWriter.h"
 
 #include <U2Core/AppContext.h>
@@ -33,7 +35,7 @@ namespace U2 {
 
 StreamShortReadsWriter::StreamShortReadsWriter(const GUrl& url, const QString& refName, int refLength)
     : numSeqWritten(0), refSeqLength(refLength) {
-    refSeqName = QString(refName).replace(QRegExp("\\s|\\t"), "_").toLatin1();
+    refSeqName = QString(refName).replace(QRegularExpression("\\s|\\t"), "_").toLatin1();
 
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     io = iof->createIOAdapter();

@@ -333,7 +333,7 @@ namespace BALL
 			}
 
 			void GlobalExceptionHandler::newHandler()
-				throw(Exception::OutOfMemory)
+
 			{
 				throw Exception::OutOfMemory(__FILE__, __LINE__);
 			}

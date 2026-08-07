@@ -276,7 +276,7 @@ void SaveDocumentController::initFormatComboBox() {
     }
     conf.formatCombo->setCurrentText(currentFormatName);
 
-    connect(conf.formatCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)), Qt::UniqueConnection);
+    connect(conf.formatCombo, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_formatChanged(const QString&)), Qt::UniqueConnection);
     sl_formatChanged(conf.formatCombo->currentText());
     conf.formatCombo->blockSignals(false);
 }

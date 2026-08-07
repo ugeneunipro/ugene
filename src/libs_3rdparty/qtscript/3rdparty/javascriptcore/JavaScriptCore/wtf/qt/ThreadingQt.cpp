@@ -40,6 +40,7 @@
 #include <QtCore/qmutex.h>
 #include <QtCore/qthread.h>
 #include <QtCore/qwaitcondition.h>
+#include <climits>
 
 namespace WTF {
 

@@ -99,7 +99,7 @@ QVariant InvestigationDataModel::data(const QModelIndex& index, int role) const 
             emit si_investigationRequested(investigatedLink, requestedRow);
         }
         if (cachedData[key].size() > requestedRow) {
-            result.setValue<QString>(cachedData[key][requestedRow]);
+            result = QVariant::fromValue<QString>(cachedData[key][requestedRow]);
         }
     }
     return result;
@@ -115,7 +115,7 @@ QVariant InvestigationDataModel::headerData(int section, Qt::Orientation orienta
                     const int absNumberOfVisibleColumn = getAbsoluteNumberOfVisibleColumn(section);
                     const QList<QString> headerLabelList = cachedData.keys();
                     if (headerLabelList.size() > absNumberOfVisibleColumn) {
-                        result.setValue<QString>(cachedData.keys()[absNumberOfVisibleColumn]);
+                        result = QVariant::fromValue<QString>(cachedData.keys()[absNumberOfVisibleColumn]);
                     } else {
                         emit si_investigationRequested(investigatedLink, 0);
                     }

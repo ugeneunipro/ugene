@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "JavaSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -39,7 +41,7 @@ JavaSupport::JavaSupport()
 
     description += tr("Java Platform lets you develop and deploy Java applications on desktops and servers.<br><i>(Requires Java 8 or higher)</i>.<br>"
                       "Java can be freely downloaded on the official web-site: https://www.java.com/en/download/");
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+(_\\d+)?)");
+    versionRegExp = QRegularExpression("(\\d+.\\d+.\\d+(_\\d+)?)");
     toolKitName = "Java";
 
     muted = true;

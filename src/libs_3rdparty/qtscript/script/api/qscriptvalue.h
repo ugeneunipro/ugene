@@ -40,6 +40,8 @@
 #ifndef QSCRIPTVALUE_H
 #define QSCRIPTVALUE_H
 
+#include <QRegExp>
+
 #include <QtCore/qstring.h>
 
 #include <QtCore/qlist.h>

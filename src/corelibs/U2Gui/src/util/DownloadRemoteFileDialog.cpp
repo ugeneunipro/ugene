@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "DownloadRemoteFileDialog.h"
 
 #include <QMessageBox>
@@ -102,7 +104,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(const QString& id, const QStr
 
     ui->formatBox->addItem(GENBANK_FORMAT);
     ui->formatBox->addItem(FASTA_FORMAT);
-    connect(ui->formatBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
+    connect(ui->formatBox, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
     adjustSize();
 
     ui->databasesBox->clear();
@@ -183,7 +185,7 @@ void DownloadRemoteFileDialog::accept() {
     }
 
     QString dbId = getDBId();
-    QStringList resIds = resourceId.split(QRegExp("[\\s,;]+"));
+    QStringList resIds = resourceId.split(QRegularExpression("[\\s,;]+"));
     QList<Task*> tasks;
 
     QString fileFormat;

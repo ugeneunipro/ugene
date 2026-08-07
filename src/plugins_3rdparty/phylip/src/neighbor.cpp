@@ -628,7 +628,7 @@ void neighbour_init(int num, U2::MemoryLocker& memLocker, const QString& filenam
     mulsets = false;
     datasets = 1;
     neighbor_doinit_modified(memLocker);
-    if(filename == NULL){
+    if (filename.isNull()) {
         trout = false;
     }
     if (trout) {

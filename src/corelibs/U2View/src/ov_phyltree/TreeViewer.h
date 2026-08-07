@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QActionGroup>
 #include <QGraphicsView>
 #include <QMap>
 #include <QScrollBar>

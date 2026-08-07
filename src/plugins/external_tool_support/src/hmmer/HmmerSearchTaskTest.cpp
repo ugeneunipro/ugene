@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "HmmerSearchTaskTest.h"
 
 #include <QDebug>
@@ -320,7 +322,7 @@ static void readLine(IOAdapter* io, QByteArray& to, QStringList* tokens = nullpt
     }
 
     if (tokens != nullptr) {
-        *tokens = QString(to).split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+        *tokens = QString(to).split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     }
 }
 

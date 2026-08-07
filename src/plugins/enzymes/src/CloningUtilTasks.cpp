@@ -368,7 +368,7 @@ QString DigestSequenceTask::generateReport() const {
 }
 
 void DigestSequenceTask::checkForConservedAnnotations() {
-    QMap<QString, U2Region>::const_iterator it = cfg.conservedRegions.constBegin();
+    QMultiMap<QString, U2Region>::const_iterator it = cfg.conservedRegions.constBegin();
     for (; it != cfg.conservedRegions.constEnd(); ++it) {
         bool found = false;
         U2Region annRegion = it.value();

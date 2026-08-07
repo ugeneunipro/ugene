@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "MAFFTSupport.h"
 
 #include <QMainWindow>
@@ -57,7 +59,7 @@ MAFFTSupport::MAFFTSupport()
     validationArguments << "-help";
     validationMessageRegExp = "MAFFT";
     description = tr("<i>MAFFT</i> is a multiple sequence alignment program for unix-like operating systems. ");
-    versionRegExp = QRegExp("MAFFT v(\\d+\\.\\d+\\w)");
+    versionRegExp = QRegularExpression("MAFFT v(\\d+\\.\\d+\\w)");
     toolKitName = "MAFFT";
 
     AlignmentAlgorithmsRegistry* registry = AppContext::getAlignmentAlgorithmsRegistry();

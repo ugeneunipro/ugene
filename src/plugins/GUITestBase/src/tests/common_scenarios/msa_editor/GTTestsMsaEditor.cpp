@@ -3973,7 +3973,7 @@ GUI_TEST_CLASS_DEFINITION(test_0094) {
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getVisibleNames(true);
     CHECK_SET_ERR(originalNames.size() == 17, "Wrong sequence count in collapsed mode: " + QString::number(originalNames.size()));
     QString expectedGroupName = "[2] Mecopoda_elongata__Ishigaki__J";
-    CHECK_SET_ERR(originalNames[13] == expectedGroupName, "Group is not found at index 13. Found: " + expectedGroupName[13]);
+    CHECK_SET_ERR(originalNames[13] == expectedGroupName, "Group is not found at index 13. Found: " + QString(expectedGroupName[13]));
 
     QStringList originalNamesWithNoGroup = originalNames;
     originalNamesWithNoGroup.removeAt(13);

@@ -22,6 +22,8 @@
 #pragma once
 
 #include <QDataStream>
+#include <QDataStream>
+#include <QIODevice>
 #include <QList>
 #include <QMap>
 #include <QString>
@@ -34,15 +36,21 @@ namespace U2 {
 class U2CORE_EXPORT QVariantUtils {
 public:
     static QVariant String2Var(const QString& string) {
-        QDataStream s(QByteArray::fromBase64(string.toLatin1()));
-        return QVariant(s);
+        QByteArray ba = QByteArray::fromBase64(string.toLatin1());
+        QDataStream s(&ba, QIODevice::ReadOnly);
+        s.setVersion(QDataStream::Qt_5_15);  // data may have been written by Qt5; Qt6 changed the QVariant user-type format
+        QVariant v;
+        s >> v;
+        return v;
     }
 
     static QVariantMap string2Map(const QString& string, bool emptyMapIfError) {
-        QDataStream s(QByteArray::fromBase64(string.toLatin1()));
-        QVariant res(QVariant::Map);
+        QByteArray ba = QByteArray::fromBase64(string.toLatin1());
+        QDataStream s(&ba, QIODevice::ReadOnly);
+        s.setVersion(QDataStream::Qt_5_15);  // data may have been written by Qt5; Qt6 changed the QVariant user-type format
+        QVariant res;
         s >> res;
-        if (res.type() == QVariant::Map) {
+        if (res.typeId() == QMetaType::QVariantMap) {
             return res.toMap();
         }
         SAFE_POINT(emptyMapIfError, "Empty variant map detected!", QVariantMap());
@@ -52,6 +60,7 @@ public:
     static QString var2String(const QVariant& v) {
         QByteArray a;
         QDataStream s(&a, QIODevice::WriteOnly);
+        s.setVersion(QDataStream::Qt_5_15);  // keep the serialized format compatible with Qt5 and stable across versions
         s << v;
         QString res(a.toBase64());
         return res;

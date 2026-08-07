@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "TopHatSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -55,7 +57,7 @@ TopHatSupport::TopHatSupport()
                   "<br>TopHat is not officially supported today and is not compatible with the latest Bowtie versions."
                   "<br>The old and compatible versions of Bowtie1 and Bowtie2 must be placed "
                   "into the 'bowtie1' and 'bowtie2' sub-folders of the TopHat to be used by default.";
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+\\w?)");
+    versionRegExp = QRegularExpression("(\\d+.\\d+.\\d+\\w?)");
     toolKitName = "TopHat";
 
     muted = true;

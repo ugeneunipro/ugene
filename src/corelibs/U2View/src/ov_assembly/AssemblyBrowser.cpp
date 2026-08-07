@@ -22,7 +22,6 @@
 #include "AssemblyBrowser.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDropEvent>
 #include <QEvent>
 #include <QMenu>

@@ -9,7 +9,9 @@
     + getSequenceDataInvalid
     + createSequenceObject
     + updateSequenceData
-    + updateHugeSequenceData
+    # QT6_PORT_CLEANUP: relies on Qt5 32-bit QByteArray(int) truncation of INT64_MAX;
+    #   under Qt6 qsizetype QByteArray(INT64_MAX, 'A') throws std::bad_alloc. Remove/rewrite post-migration.
+    - updateHugeSequenceData
     - updateSequencesData
 
 </unittest>

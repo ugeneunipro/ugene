@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "SamToolsExtToolSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -46,7 +48,7 @@ SamToolsExtToolSupport::SamToolsExtToolSupport()
     description = "<i>SAMtools</i> is a set of utilities for interacting"
                   " with and post-processing short DNA sequence read alignments."
                   " This external tool is required to run <i>TopHat</i> external tool.";
-    versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
+    versionRegExp = QRegularExpression("Version: (\\d+.\\d+.\\d+)");
 
     toolKitName = "SAMtools";
 

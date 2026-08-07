@@ -251,7 +251,7 @@ void CmdlineTaskRunner::prepare() {
 
     process = new QProcess(this);
     process->setProcessEnvironment(env);
-    connect(process, SIGNAL(error(QProcess::ProcessError)), SLOT(sl_onError(QProcess::ProcessError)));
+    connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(sl_onError(QProcess::ProcessError)));
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadStandardOutput()));
     connect(process, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, &CmdlineTaskRunner::sl_onFinish);
 

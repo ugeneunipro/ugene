@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "SiteconAlgorithmTests.h"
 
 #include <QDomElement>
@@ -62,7 +64,7 @@ void GTest_CalculateACGTContent::init(XMLTestFormat*, const QDomElement& el) {
     }
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
-    QStringList expectedList = expected.split(QRegExp("\\,"));  // may be QRegExp("\\,")
+    QStringList expectedList = expected.split(QRegularExpression("\\,"));  // may be QRegularExpression("\\,")
     if (expectedList.size() != 4) {
         stateInfo.setError(QString("here must be 4 items in %1").arg(EXPECTED_RESULTS_ATTR));
         return;
@@ -123,9 +125,9 @@ Task::ReportResult GTest_CalculateACGTContent::report() {
 }
 
 void GTest_CalculateDispersionAndAverage::init(XMLTestFormat*, const QDomElement& el) {
-    QStringList propsList = el.attribute(PROPERTIES_INDEXES).split(QRegExp("\\,")),
-                diPosStrList = el.attribute(DINUCLEOTIDE_POSITIONS).split(QRegExp("\\,")),
-                expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
+    QStringList propsList = el.attribute(PROPERTIES_INDEXES).split(QRegularExpression("\\,")),
+                diPosStrList = el.attribute(DINUCLEOTIDE_POSITIONS).split(QRegularExpression("\\,")),
+                expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegularExpression("\\,"));
     QStringList::Iterator expResIt;
     expResIt = expectedStrList.begin();
     foreach (QString posStr, diPosStrList) {
@@ -251,7 +253,7 @@ void GTest_CalculateFirstTypeError::init(XMLTestFormat*, const QDomElement& el) 
         return;
     }
 
-    QStringList expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
+    QStringList expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegularExpression("\\,"));
     foreach (QString str, expectedStrList) {
         int exp = qRound(str.toFloat(&isOk) * 10000);
         if (!isOk) {
@@ -330,7 +332,7 @@ void GTest_CalculateSecondTypeError::init(XMLTestFormat*, const QDomElement& el)
         return;
     }
 
-    QStringList expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
+    QStringList expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegularExpression("\\,"));
     foreach (QString str, expectedStrList) {
         int exp = str.toInt(&isOk);
         if (!isOk) {
@@ -443,9 +445,9 @@ void GTest_SiteconSearchTask::init(XMLTestFormat*, const QDomElement& el) {
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\;"));
+        QStringList expectedList = expected.split(QRegularExpression("\\;"));
         foreach (QString propsArray, expectedList) {
-            QStringList props = propsArray.split(QRegExp("\\,"));
+            QStringList props = propsArray.split(QRegularExpression("\\,"));
             QString middleStr = props[0], scoreStr = props[1], strStr = props[2];
             int middle = middleStr.toInt(&isOk);
             if (!isOk) {

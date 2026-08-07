@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QActionGroup>
 #include <QAction>
 #include <QFont>
 

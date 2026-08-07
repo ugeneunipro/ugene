@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "PluginDescriptor.h"
 
 #include <QDir>
@@ -56,7 +58,7 @@ static PlatformArch archFromText(const QString& text) {
 
 static PluginMode modeFromText(const QString& text) {
     QString trimmed = text.trimmed().toLower();
-    QStringList tokens = trimmed.split(QRegExp("[\\s,]"), Qt::SkipEmptyParts);
+    QStringList tokens = trimmed.split(QRegularExpression("[\\s,]"), Qt::SkipEmptyParts);
     PluginMode result;
     if (tokens.isEmpty()) {
         result |= PluginMode_Malformed;
@@ -91,7 +93,7 @@ PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString& descUrl, 
     f.close();
 
     QDomDocument doc;
-    bool res = doc.setContent(xmlData);
+    bool res = bool(doc.setContent(xmlData));
     if (!res) {
         error = L10N::notValidFileFormat("XML", descUrl);
         return failResult;

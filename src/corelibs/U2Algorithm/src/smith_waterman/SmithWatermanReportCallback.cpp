@@ -21,6 +21,8 @@
 
 #include "SmithWatermanReportCallback.h"
 
+#include <QRegExp>
+
 #include <U2Algorithm/SWMulAlignResultNamesTagsRegistry.h>
 
 #include <U2Core/AppContext.h>

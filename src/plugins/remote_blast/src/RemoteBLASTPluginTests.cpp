@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "RemoteBLASTPluginTests.h"
 
 #include "RemoteBLASTPrimerPairsToAnnotationsTask.h"
@@ -174,7 +176,7 @@ void GTest_RemoteBLAST::init(XMLTestFormat*, const QDomElement& el) {
 
     QString expected = el.attribute(EXPECTED_ATTR);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\,"));
+        QStringList expectedList = expected.split(QRegularExpression("\\,"));
         foreach (QString id, expectedList) {
             expectedResults.append(id);
         }

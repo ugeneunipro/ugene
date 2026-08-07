@@ -36,7 +36,6 @@
 #endif
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QIcon>
 #include <QScreen>
 #include <QStyleFactory>

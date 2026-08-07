@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include <AppContextImpl.h>
 
 #include <QDesktopServices>
@@ -1091,7 +1093,7 @@ void ProjectViewImpl::sl_filterTextChanged(const QString& str) {
         coreLog.info(warning);
         QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), warning);
     }
-    settings.tokensToShow = changedText.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    settings.tokensToShow = changedText.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     projectTreeController->updateSettings(settings);
 }
 
