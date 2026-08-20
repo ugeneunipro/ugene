@@ -24,8 +24,9 @@ DIST_DIR="${BUILD_DIR}/dist"
 
 rm -rf "${DIST_DIR}"
 
-# Needed by CMake.
-export Qt5_DIR="${QT_DIR}"
+# Needed by CMake (Qt6: find_package(Qt6 ...) resolves via CMAKE_PREFIX_PATH).
+export Qt6_DIR="${QT_DIR}"
+export CMAKE_PREFIX_PATH="${QT_DIR}"
 
 echo "##teamcity[blockOpened name='env']"
 env

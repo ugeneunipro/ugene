@@ -27,7 +27,7 @@ echo "##teamcity[blockOpened name='Copy files']"
 
 # Remove excluded files from UGENE release bundle.
 rm -rf "${APP_BUNDLE_DIR}/libQSpec.so"
-rm -rf "${APP_BUNDLE_DIR}/libQt5Test.so.5"
+rm -rf "${APP_BUNDLE_DIR}/libQt6Test.so.6"
 rm -rf "${APP_BUNDLE_DIR}/libqscore.a"
 rm -rf "${APP_BUNDLE_DIR}/libsamtools.a"
 rm -rf "${APP_BUNDLE_DIR}/libzlib.a"
