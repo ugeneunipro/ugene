@@ -61,7 +61,7 @@ void LoadWorkflowSceneTask::run() {
         return;
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
+    in.setEncoding(QStringConverter::Utf8);
     rawData = in.readAll();
     format = LoadWorkflowTask::detectFormat(rawData);
     if (format == LoadWorkflowTask::UNKNOWN) {

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "ClustalWSupportTask.h"
 
 #include <QCoreApplication>
@@ -402,25 +404,16 @@ int ClustalWLogParser::getProgress() {
     if (!lastPartOfLog.isEmpty()) {
         QString lastMessage = lastPartOfLog.last();
         // 0..10% progress.
-        if (lastMessage.contains(QRegExp("Sequence \\d+:"))) {
-            QRegExp rx("Sequence (\\d+):");
-            rx.indexIn(lastMessage);
-            CHECK(rx.captureCount() > 0, 0);
-            return rx.cap(1).toInt() * 10 / countSequencesInMSA;
+        if (auto m = QRegularExpression("Sequence (\\d+):").match(lastMessage); m.hasMatch()) {
+            return m.captured(1).toInt() * 10 / countSequencesInMSA;
         }
         // 10..90% progress.
-        if (lastMessage.contains(QRegExp("Sequences \\(\\d+:\\d+\\)"))) {
-            QRegExp rx("Sequences \\((\\d+):\\d+\\)");
-            rx.indexIn(lastMessage);
-            CHECK(rx.captureCount() > 0, 0);
-            return rx.cap(1).toInt() * 80 / countSequencesInMSA + 10;
+        if (auto m = QRegularExpression("Sequences \\((\\d+):\\d+\\)").match(lastMessage); m.hasMatch()) {
+            return m.captured(1).toInt() * 80 / countSequencesInMSA + 10;
         }
         // 90..100% progress.
-        if (lastMessage.contains(QRegExp("Group \\d+:"))) {
-            QRegExp rx("Group (\\d+):");
-            rx.indexIn(lastMessage);
-            CHECK(rx.captureCount() > 0, 0);
-            return rx.cap(1).toInt() * 10 / countSequencesInMSA + 90;
+        if (auto m = QRegularExpression("Group (\\d+):").match(lastMessage); m.hasMatch()) {
+            return m.captured(1).toInt() * 10 / countSequencesInMSA + 90;
         }
     }
     return 0;

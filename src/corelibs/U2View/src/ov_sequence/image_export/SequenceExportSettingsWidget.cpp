@@ -41,7 +41,7 @@ SequenceExportSettingsWidget::SequenceExportSettingsWidget(U2SequenceObject* seq
     regionLayout->addWidget(regionSelector);
     regionSelector->setVisible(!currentViewButton->isChecked());
 
-    connect(buttonGroup, SIGNAL(buttonClicked(int)), SLOT(sl_areaChanged()));
+    connect(buttonGroup, SIGNAL(idClicked(int)), SLOT(sl_areaChanged()));
     connect(regionSelector, SIGNAL(si_regionChanged(U2Region)), SLOT(sl_regionChanged(U2Region)));
 }
 

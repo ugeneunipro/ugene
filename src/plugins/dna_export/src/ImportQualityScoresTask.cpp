@@ -120,8 +120,9 @@ bool ReadQualityScoresTask::checkRawData() {
     IOAdapterFactory* f = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QScopedPointer<IOAdapter> io(f->createIOAdapter());
 
-    QByteArray buf;
-    buf.reserve(RAW_BUF_SIZE);
+    // The buffer must have a real size (not just reserved capacity): on Qt6 indexing
+    // a zero-sized QByteArray (buf[0] below) triggers a bounds assert and aborts.
+    QByteArray buf(RAW_BUF_SIZE, '\0');
 
     if (!io->open(fileName, IOAdapterMode_Read)) {
         setError(tr("Failed to open quality file %1").arg(fileName));

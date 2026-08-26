@@ -21,7 +21,6 @@
 
 #include <math.h>
 
-#include <QDesktopWidget>
 #include <QProxyStyle>
 #include <QStyleFactory>
 

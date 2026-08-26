@@ -270,7 +270,7 @@ QString GTUtilsDashboard::getDescendantNodeId(const QString& nodeId, const QList
     QList<ExternalToolsTreeNode*> childNodes = getChildNodes(nodeId);
     QString resultNodeId = nodeId;
     for (int i : qAsConst(childIndexes)) {
-        GT_CHECK_RESULT(i >= 0 && i < childNodes.size(), "Illegal child index: " + QString::number(i) + ", nodes: " + childNodes.size(), "");
+        GT_CHECK_RESULT(i >= 0 && i < childNodes.size(), "Illegal child index: " + QString::number(i) + ", nodes: " + QString::number(childNodes.size()), "");
         resultNodeId = childNodes[i]->objectName();
         childNodes = childNodes[i]->children;
     }

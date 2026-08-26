@@ -187,10 +187,8 @@ U2Region U2Region::fromStartAndEnd(qint64 startPos, qint64 endPos) {
 
 static bool _registerMeta() {
     qRegisterMetaType<U2Region>("U2Region");
-    qRegisterMetaTypeStreamOperators<U2Region>("U2::U2Region");
 
     qRegisterMetaType<QVector<U2Region>>("QVector<U2::U2Region>");
-    qRegisterMetaTypeStreamOperators<QVector<U2Region>>("QVector<U2::U2Region>");
     return true;
 }
 

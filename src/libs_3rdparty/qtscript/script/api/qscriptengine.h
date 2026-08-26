@@ -40,6 +40,8 @@
 #ifndef QSCRIPTENGINE_H
 #define QSCRIPTENGINE_H
 
+#include <QRegExp>
+
 #include <QtCore/qmetatype.h>
 
 #include <QtCore/qvariant.h>
@@ -315,7 +317,7 @@ template <class T> QScriptValue QScriptEngine::scriptValueFromQMetaObject()
 
 #ifdef QT_DEPRECATED
 template <class T>
-inline QT_DEPRECATED QScriptValue qScriptValueFromQMetaObject(
+QT_DEPRECATED inline QScriptValue qScriptValueFromQMetaObject(
     QScriptEngine *engine
 #ifndef qdoc
     , T * /* dummy */ = 0
@@ -375,7 +377,7 @@ inline QVariant qscriptvalue_cast<QVariant>(const QScriptValue &value)
 
 #ifdef QT_DEPRECATED
 template <typename T>
-inline QT_DEPRECATED T qScriptValueToValue(const QScriptValue &value)
+QT_DEPRECATED inline T qScriptValueToValue(const QScriptValue &value)
 {
     return qscriptvalue_cast<T>(value);
 }

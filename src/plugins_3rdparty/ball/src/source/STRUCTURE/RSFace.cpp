@@ -43,7 +43,7 @@ namespace BALL
 			const TVector3<double>& normal,
 			bool singular,
 			Index index)
-		throw(Exception::DivisionByZero)
+
 		:	GraphTriangle< RSVertex,RSEdge,RSFace >
 					(vertex1,vertex2,vertex3,edge1,edge2,edge3,index),
 			center_(center),
@@ -97,7 +97,7 @@ namespace BALL
 			const TVector3<double>& normal,
 			bool singular,
 			Index index)
-		throw(Exception::DivisionByZero)
+
 	{
 		GraphTriangle< RSVertex,RSEdge,RSFace >::set
 				(vertex1,vertex2,vertex3,edge1,edge2,edge3,index);
@@ -190,7 +190,7 @@ namespace BALL
 
 
 	void RSFace::setNormal(const TVector3<double>& normal)
-		throw(Exception::DivisionByZero)
+
 	{
 		normal_ = normal;
 		normal_.normalize();

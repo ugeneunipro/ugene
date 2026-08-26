@@ -124,7 +124,11 @@ QVariantMap BusMap::getMessageData(const Message& m) const {
             QString rkey = lit.key();
             assert(!lit.value().isEmpty());
             if (lit.value().contains(src)) {
-                QVariantList vl = result[rkey].toList();
+                // Only reuse an already accumulated list here. On Qt6 QVariant::toList() applied
+                // to a non-list value (e.g. a QString/QByteArray that the direct busMap mapping
+                // above stored under the same slot) splits it into a list of single characters,
+                // whereas Qt5 returned an empty list. That corrupted text passed through the bus.
+                QVariantList vl = result[rkey].type() == QVariant::List ? result[rkey].toList() : QVariantList();
                 if (m.getType()->getDatatypeByDescriptor(src)->isList()) {
                     vl += ival.toList();
                     //                    coreLog.trace("reducing bus key=" + src + " to list of " + rkey);

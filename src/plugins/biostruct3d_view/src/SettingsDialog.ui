@@ -518,22 +518,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>shadingSlider</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>SettingsDialog</receiver>
-   <slot>sl_setShadingLevel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>148</x>
-     <y>143</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>145</x>
-     <y>194</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>SettingsDialog</receiver>

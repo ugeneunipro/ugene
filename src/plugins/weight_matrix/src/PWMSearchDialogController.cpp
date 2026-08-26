@@ -156,7 +156,7 @@ void PWMSearchDialogController::connectGUI() {
     connect(jasparButton, SIGNAL(clicked()), SLOT(sl_onSearchJaspar()));
     connect(viewMatrixButton, SIGNAL(clicked()), SLOT(sl_onViewMatrix()));
     connect(queueButton, SIGNAL(clicked()), SLOT(sl_onAddToQueue()));
-    connect(algorithmCombo, SIGNAL(currentIndexChanged(QString)), SLOT(sl_onAlgoChanged(QString)));
+    connect(algorithmCombo, SIGNAL(currentTextChanged(QString)), SLOT(sl_onAlgoChanged(QString)));
     connect(loadListButton, SIGNAL(clicked()), SLOT(sl_onLoadList()));
     connect(saveListButton, SIGNAL(clicked()), SLOT(sl_onSaveList()));
     connect(loadFolderButton, SIGNAL(clicked()), SLOT(sl_onLoadFolder()));

@@ -22,6 +22,8 @@
 #include <assert.h>
 #include <math.h>
 
+#include <QActionGroup>
+#include <QActionGroup>
 #include <QApplication>
 #include <QClipboard>
 #include <QCursor>
@@ -392,6 +394,11 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
     cachedReads.visibleBases = U2Region(cachedReads.xOffsetInAssembly, browser->basesCanBeVisible());
     cachedReads.visibleRows = U2Region(cachedReads.yOffsetInAssembly, browser->rowsCanBeVisible());
 
+    // Built from the very same reads, so the columns reserved here are the columns drawn below.
+    // Has to be done before the reads are cached: building it reads the database, and nothing may
+    // touch the database while the cached list is being iterated.
+    const U2AssemblyInsertionsMap& insertions = browser->getInsertionsMap();
+
     // 0. Get reads from the database
     U2OpStatusImpl status;
     qint64 t = GTimer::currentTimeMicros();
@@ -446,13 +453,13 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
 
         if (browser->areCellsVisible()) {  //->draw color rects
             int firstVisibleBase = readVisibleBases.startPos - readBases.startPos;
-            int x_pix_start = browser->calcPainterOffset(xToDrawRegion.startPos);
+            int x_pix_start = insertions.getColumnOfRefPos(readVisibleBases.startPos) * cachedReads.letterWidth;
             int y_pix_start = browser->calcPainterOffset(yToDrawRegion.startPos);
 
             if ((scribbling || scrolling) && optimizeRenderOnScroll) {
-                int width = readVisibleBases.length * cachedReads.letterWidth;
+                int x_pix_end = (insertions.getColumnOfRefPos(readVisibleBases.endPos() - 1) + 1) * cachedReads.letterWidth;
                 int height = cachedReads.letterWidth;
-                p.fillRect(x_pix_start, y_pix_start, width, height, AppContext::getMainWindow()->isDarkTheme() ? QColor("#757575") : QColor("#BBBBBB"));
+                p.fillRect(x_pix_start, y_pix_start, x_pix_end - x_pix_start, height, AppContext::getMainWindow()->isDarkTheme() ? QColor("#757575") : QColor("#BBBBBB"));
             } else {
                 // iterate over letters of the read
                 QList<U2CigarToken> cigar(read->cigar);  // hack: to show reads without cigar but with mapped position
@@ -463,14 +470,30 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                 U2AssemblyReadIterator cigarIt(readSequence, cigar, firstVisibleBase);
 
                 int basesPainted = 0;
-                for (int x_pix_offset = 0; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; x_pix_offset += cachedReads.letterWidth) {
+                for (qint64 refPos = readVisibleBases.startPos; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; refPos++) {
                     GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
                     char c = cigarIt.nextLetter();
 
-                    QPoint cellStart(x_pix_start + x_pix_offset, y_pix_start);
+                    // Extra columns of this position are drawn first: an insertion precedes the
+                    // reference base it is attached to. Reads that have no insertion here, or a
+                    // shorter one, fill the rest of the columns with the insertion gap.
+                    int insertionWidth = insertions.getInsertionWidthBefore(refPos);
+                    int x_pix = (insertions.getColumnOfRefPos(refPos) - insertionWidth) * cachedReads.letterWidth;
+                    const QByteArray& insertion = cigarIt.getInsertionBeforeLastLetter();
+                    for (int i = 0; i < insertionWidth; i++, x_pix += cachedReads.letterWidth) {
+                        QPixmap insertionImage = i < insertion.size() ? cellRenderer->cellImage(read, insertion.at(i))
+                                                                     : cellRenderer->insertionGapCellImage();
+                        p.drawPixmap(QPoint(x_pix, y_pix_start), insertionImage);
+                        ++totalBasesPainted;
+                    }
+
+                    QPoint cellStart(x_pix, y_pix_start);
                     QPixmap cellImage;
-                    if (!referenceRegion.isEmpty()) {
-                        int posInRef = readVisibleBases.startPos - cachedReads.visibleBases.startPos + basesPainted - 1;
+                    int posInRef = refPos - cachedReads.visibleBases.startPos;
+                    if (!referenceRegion.isEmpty() && posInRef >= 0 && posInRef < referenceRegion.size()) {
+                        // Qt6 asserts on out-of-range QByteArray indexing; a read can extend past the cached
+                        // reference region, so guard posInRef and fall back to reference-less rendering (Qt5
+                        // silently read past the end here).
                         cellImage = cellRenderer->cellImage(read, c, referenceRegion[posInRef]);
                     } else {
                         cellImage = cellRenderer->cellImage(read, c);
@@ -494,7 +517,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
 }
 
 bool AssemblyReadsArea::findReadOnPos(const QPoint& pos, U2AssemblyRead& read) {
-    qint64 asmX = cachedReads.xOffsetInAssembly + (double)pos.x() / cachedReads.letterWidth;
+    qint64 asmX = browser->calcAsmPosX(pos.x());
     qint64 asmY = cachedReads.yOffsetInAssembly + (double)pos.y() / cachedReads.letterWidth;
     bool found = false;
     QListIterator<U2AssemblyRead> it(cachedReads.data);
@@ -576,17 +599,18 @@ QRect AssemblyReadsArea::calcReadRect(const U2AssemblyRead& read) {
     U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLength(read));
     U2Region readVisibleBases = readBases.intersect(cachedReads.visibleBases);
     assert(!readVisibleBases.isEmpty());
-    U2Region xToDrawRegion(readVisibleBases.startPos - cachedReads.xOffsetInAssembly, readVisibleBases.length);
 
     U2Region readVisibleRows = U2Region(read->packedViewRow, 1).intersect(cachedReads.visibleRows);
     U2Region yToDrawRegion(readVisibleRows.startPos - cachedReads.yOffsetInAssembly, readVisibleRows.length);
     assert(!readVisibleRows.isEmpty());
 
     assert(browser->areCellsVisible());
-    int x_pix_start = browser->calcPainterOffset(xToDrawRegion.startPos);
+    // Insertion columns of the leftmost position belong to the read as well, so the rect starts there.
+    int insertionWidth = browser->getInsertionsMap().getInsertionWidthBefore(readVisibleBases.startPos);
+    int x_pix_start = browser->calcPainterOffsetOfPos(readVisibleBases.startPos) - insertionWidth * cachedReads.letterWidth;
     int y_pix_start = browser->calcPainterOffset(yToDrawRegion.startPos);
 
-    int width = readVisibleBases.length * cachedReads.letterWidth;
+    int width = browser->calcPainterOffsetOfPos(readVisibleBases.endPos() - 1) + cachedReads.letterWidth - x_pix_start;
     int height = cachedReads.letterWidth;
 
     return QRect(x_pix_start, y_pix_start, width, height);

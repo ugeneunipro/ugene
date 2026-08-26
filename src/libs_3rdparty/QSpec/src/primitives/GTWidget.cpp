@@ -23,11 +23,11 @@
 #include "primitives/GTWidget.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
 #include <QMdiArea>
+#include <QPointer>
 #include <QProgressBar>
 #include <QScreen>
 #include <QScrollBar>
@@ -290,12 +290,17 @@ void GTWidget::close(QWidget* widget) {
         }
 
         void run() override {
-            widget->close();
-            GTGlobals::sleep(100);
+            // The widget may already be destroyed by the time this runs: runInMainThread() dispatches
+            // via a blocking queued connection, and a concurrently processed deleteLater() (e.g. from
+            // another widget's close() cascading, or the widget closing itself) can free it first.
+            if (!widget.isNull()) {
+                widget->close();
+                GTGlobals::sleep(100);
+            }
         }
 
     private:
-        QWidget* widget = nullptr;
+        QPointer<QWidget> widget;
     };
     GTThread::runInMainThread(new Scenario(widget));
 }

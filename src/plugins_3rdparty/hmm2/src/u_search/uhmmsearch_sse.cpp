@@ -459,7 +459,10 @@ QList<float> sseScoring(unsigned char* dsq, int seqlen, plan7_s* hmm, HMMSeqGran
     U2Region range(0, seqlen);
     gr->overlap = 2 * hmm->M;
     gr->exOverlap = 0;
-    gr->chunksize = qBound(gr->overlap + 1, CHUNK_SIZE, seqlen);
+    // For sequences shorter than the overlap the upper bound (seqlen) drops below the lower
+    // bound (overlap + 1); on Qt6 qBound() asserts when max < min. Qt5 silently returned the
+    // lower bound, so keep the upper bound at least equal to the lower bound to match it.
+    gr->chunksize = qBound(gr->overlap + 1, CHUNK_SIZE, qMax(seqlen, gr->overlap + 1));
     gr->regions = SequenceWalkerTask::splitRange(range, gr->chunksize, gr->overlap, gr->exOverlap, false);
     const QVector<U2Region>& regions = gr->regions;
 

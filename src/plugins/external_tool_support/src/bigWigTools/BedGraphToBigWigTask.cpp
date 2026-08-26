@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "BedGraphToBigWigTask.h"
 
 #include <QDir>
@@ -45,7 +47,7 @@ void BedGraphToBigWigParser::parseOutput(const QString& partOfLog) {
 }
 
 void BedGraphToBigWigParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     foreach (QString buf, lastPartOfLog) {

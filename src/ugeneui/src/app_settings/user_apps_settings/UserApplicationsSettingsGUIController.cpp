@@ -51,7 +51,7 @@ UserApplicationsSettingsPageController::UserApplicationsSettingsPageController(Q
         return;
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
+    in.setEncoding(QStringConverter::Utf8);
     in.setAutoDetectUnicode(true);
     while (!in.atEnd()) {
         QString line = in.readLine();

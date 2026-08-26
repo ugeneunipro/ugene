@@ -23,11 +23,11 @@
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
+#include <U2Core/AnnotationModification.h>
 #include <U2Core/GObject.h>
 
 namespace U2 {
 
-class AnnotationModification;
 
 class U2CORE_EXPORT AnnotationTableObject : public GObject {
     Q_OBJECT

@@ -49,6 +49,8 @@ public:
         alphabet = nullptr, minChar = 0;
         maxChar = 0;
         charsInRow = 0;
+        minScore = 0;
+        maxScore = 0;
     }
 
     bool isEmpty() const {

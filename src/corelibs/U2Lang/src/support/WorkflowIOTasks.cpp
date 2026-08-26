@@ -53,7 +53,7 @@ void LoadWorkflowTask::run() {
         return;
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
+    in.setEncoding(QStringConverter::Utf8);
     rawData = in.readAll();
     format = detectFormat(rawData);
     if (format == UNKNOWN) {
@@ -123,7 +123,7 @@ void SaveWorkflowTask::run() {
         return;
     }
     QTextStream out(&file);
-    out.setCodec("UTF-8");
+    out.setEncoding(QStringConverter::Utf8);
     out << rawData;
 }
 

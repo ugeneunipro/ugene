@@ -378,7 +378,7 @@ void CufflinksWorker::sl_cufflinksTaskFinished() {
 
     if (output != nullptr) {
         DataTypePtr outputMapDataType = WorkflowEnv::getDataTypeRegistry()->getById(CufflinksWorkerFactory::OUT_MAP_DESCR_ID);
-        SAFE_POINT(0 != outputMapDataType, "Internal error: can't get DataTypePtr for output map!", );
+        SAFE_POINT(outputMapDataType, "Internal error: can't get DataTypePtr for output map!", );
 
         QVariantMap messageData;
         QList<AnnotationTableObject*> isoformTables = cufflinksSupportTask->getIsoformAnnotationTables();

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "BwaSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -42,7 +44,7 @@ BwaSupport::BwaSupport()
     description = tr("<i>Burrows-Wheeler Aligner (BWA)</i> is an efficient program "
                      "that aligns relatively short nucleotide sequences "
                      "against a long reference sequence such as the human genome.");
-    versionRegExp = QRegExp("Version: (\\d+\\.\\d+\\.\\d+-r\\d+)");
+    versionRegExp = QRegularExpression("Version: (\\d+\\.\\d+\\.\\d+-r\\d+)");
     toolKitName = "BWA";
     if (isOsWindows()) {
         pathChecks << ExternalTool::PathChecks::NonLatinArguments

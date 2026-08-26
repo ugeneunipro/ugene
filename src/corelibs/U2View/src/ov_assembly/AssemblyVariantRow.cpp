@@ -127,6 +127,8 @@ void AssemblyVariantRow::draw() {
         if (browser->areCellsVisible()) {
             U2OpStatusImpl os;
             currentData.region = browser->getVisibleBasesRegion();
+            // Taken before the iterator is opened: building the map reads the database too.
+            const U2AssemblyInsertionsMap& insertions = browser->getInsertionsMap();
             QScopedPointer<U2DbiIterator<U2Variant>> varIter(trackObj->getVariants(currentData.region, os));
             SAFE_POINT_OP(os, );
 
@@ -141,7 +143,9 @@ void AssemblyVariantRow::draw() {
             while (varIter->hasNext()) {
                 U2Variant variant = varIter->next();
                 currentData.variants << variant;
-                int xStart = (variant.startPos - currentData.region.startPos) * snpWidth;
+                // A variant is bound to a reference position, so it follows that position through
+                // the columns inserted for the read insertions.
+                int xStart = insertions.getColumnOfRefPos(variant.startPos) * snpWidth;
 
                 if (isSNP(variant)) {
                     QRect upRect(xStart, yStart, snpWidth, halfHeight);
@@ -152,8 +156,8 @@ void AssemblyVariantRow::draw() {
                     QPixmap downCellImage = snpRenderer->cellImage(variant.obsData.at(0));
                     p.drawPixmap(downRect, downCellImage);
                 } else {
-                    for (int i = 0; i < variant.refData.length(); i++, xStart += snpWidth) {
-                        QRect snpRect(xStart, yStart, snpWidth, snpHeight);
+                    for (int i = 0; i < variant.refData.length(); i++) {
+                        QRect snpRect(insertions.getColumnOfRefPos(variant.startPos + i) * snpWidth, yStart, snpWidth, snpHeight);
                         char c = variant.refData.at(i);
                         QPixmap cellImage = nuclRenderer->cellImage(c);
                         p.drawPixmap(snpRect, cellImage);
@@ -174,14 +178,15 @@ void AssemblyVariantRow::draw() {
 
 bool AssemblyVariantRow::findVariantOnPos(QList<U2Variant>& variants) {
     bool found = false;
-    int startPos = currentData.region.startPos;
     foreach (const U2Variant& v, currentData.variants) {
-        int xStart = (v.startPos - startPos) * currentData.snpWidth;
+        // Same mapping the variant was drawn with, otherwise the hint misses it once some read
+        // adds an insertion column on the left.
+        int xStart = browser->calcPainterOffsetOfPos(v.startPos);
         int xEnd = 0;
         if (isSNP(v)) {  // SNP
             xEnd = xStart + currentData.snpWidth;
         } else {
-            xEnd = (v.refData.length()) * currentData.snpWidth + xStart;
+            xEnd = browser->calcPainterOffsetOfPos(v.startPos + v.refData.length() - 1) + currentData.snpWidth;
         }
 
         if (currentData.pos.x() >= xStart && currentData.pos.x() <= xEnd) {

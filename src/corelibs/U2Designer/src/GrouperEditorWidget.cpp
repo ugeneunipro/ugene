@@ -36,7 +36,7 @@ namespace U2 {
 
 using namespace Workflow;
 static QMap<Descriptor, DataTypePtr> getBusMap(Port* inPort) {
-    QMap<Port*, Link*> links = inPort->getLinks();
+    QMultiMap<Port*, Link*> links = inPort->getLinks();
     if (links.size() != 1) {
         return QMap<Descriptor, DataTypePtr>();
     }

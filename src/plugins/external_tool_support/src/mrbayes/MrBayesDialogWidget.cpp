@@ -71,7 +71,7 @@ MrBayesWidget::MrBayesWidget(const Msa& ma, QWidget* parent)
         modelTypeCombo->addItems(MrBayesModelTypes::getAAModelTypes());
     }
 
-    connect(rateVariationCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onRateChanged(const QString&)));
+    connect(rateVariationCombo, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_onRateChanged(const QString&)));
     rateVariationCombo->addItems(MrBayesVariationTypes::getVariationTypes());
 
     gammaCategoriesSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_GAMMA, 4).toInt());

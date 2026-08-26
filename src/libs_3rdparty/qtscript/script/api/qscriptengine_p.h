@@ -51,6 +51,8 @@
 // We mean it.
 //
 
+#include <QRegExp>
+
 #include "_qobject_p.h"
 
 #include "bridge/qscriptactivationobject_p.h"
@@ -65,7 +67,7 @@
 #include <QtCore/qdatetime.h>
 #include <QtCore/qhash.h>
 #include <QtCore/qnumeric.h>
-#include <QtCore/qregexp.h>
+#include <QtCore5Compat/qregexp.h>
 #include <QtCore/qset.h>
 
 #include "DateConstructor.h"
@@ -97,7 +99,7 @@ class JSGlobalObject;
 QT_BEGIN_NAMESPACE
 
 class QString;
-class QStringList;
+#include <QtCore/qstringlist.h>
 class QScriptContext;
 class QScriptValue;
 class QScriptTypeInfo;

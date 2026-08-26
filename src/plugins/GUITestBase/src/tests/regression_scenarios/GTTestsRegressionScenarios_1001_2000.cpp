@@ -7303,7 +7303,9 @@ GUI_TEST_CLASS_DEFINITION(test_1808) {
 
 GUI_TEST_CLASS_DEFINITION(test_1811_1) {
     GTUtilsDialog::add(new RemoteDBDialogFillerDeprecated("A0N8V2", 5));
-    GTUtilsDialog::add(new SelectDocumentFormatDialogFiller());
+    // No SelectDocumentFormatDialogFiller here: downloaded Swiss-Prot .txt files are now
+    // unambiguously format-detected, so the selector dialog never appears - a waiter armed for it
+    // would linger unconsumed and fail the test in cleanup even though the download itself succeeds.
     GTMenu::clickMainMenuItem({"File", "Access remote database..."}, GTGlobals::UseKey);
 
     GTUtilsTaskTreeView::waitTaskFinished();

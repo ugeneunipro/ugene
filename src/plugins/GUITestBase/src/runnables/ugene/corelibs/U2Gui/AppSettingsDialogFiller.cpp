@@ -367,7 +367,12 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
 
     GTUtilsDialog::waitForDialog(new ColorSchemeDialogFiller());
 
-    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+    // Use the dialog captured at the start of this scenario, not a fresh
+    // QApplication::activeModalWidget() query (the ambiguous clickButtonBox(button)
+    // overload) - unlike every other call site in this file. That query can
+    // observe a stale/transient active-widget state right after the keyboard-driven
+    // combobox selection above, causing this dialog's own buttonBox to go unfound.
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_CLASS_NAME
 

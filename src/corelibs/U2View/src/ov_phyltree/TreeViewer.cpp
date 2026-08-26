@@ -21,6 +21,7 @@
 
 #include "TreeViewer.h"
 
+#include <QActionGroup>
 #include <QBuffer>
 #include <QClipboard>
 #include <QMessageBox>
@@ -1520,7 +1521,10 @@ double TreeViewerUI::getScalebarDistanceRange() const {
     for (auto branch : qAsConst(allBranches)) {
         maxDistance = qMax(branch->getDist(), maxDistance);
     }
-    return qBound(minDistanceForScalebar, scalebarRangeFromSettings, maxDistance);
+    // A tree without branch lengths (cladogram) has maxDistance == 0, which is below
+    // minDistanceForScalebar. Qt6 qBound asserts when max < min, so clamp the upper bound up
+    // to the minimum. The result (the minimum) matches what Qt5 qBound returned in this case.
+    return qBound(minDistanceForScalebar, scalebarRangeFromSettings, qMax(minDistanceForScalebar, maxDistance));
 }
 
 void TreeViewerUI::updateActions() {

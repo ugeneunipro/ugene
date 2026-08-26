@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "FastqcTask.h"
 
 #include <QDir>
@@ -60,10 +62,10 @@ int FastQCParser::getProgress() {
     // parsing Approx 20% complete for filename
     if (!lastPartOfLog.isEmpty()) {
         QString lastMessage = lastPartOfLog.last();
-        QRegExp rx("Approx (\\d+)% complete");
-        if (lastMessage.contains(rx)) {
-            SAFE_POINT(rx.indexIn(lastMessage) > -1, "bad progress index", 0);
-            int step = rx.cap(1).toInt();
+        QRegularExpression rx("Approx (\\d+)% complete");
+        auto m = rx.match(lastMessage);
+        if (m.hasMatch()) {
+            int step = m.captured(1).toInt();
             if (step > progress) {
                 return progress = step;
             }
@@ -171,14 +173,14 @@ QString FastQCTask::getTmpResultFileUrl() const {
     //   .replaceAll("\\.sam$", "").replaceAll("\\.bam$", "")+"_fastqc.html";
     QFileInfo inputFileInfo(settings.inputFileUrl);
     QString resultFileName = inputFileInfo.fileName()
-                                 .replace(QRegExp(".gz$"), "")
-                                 .replace(QRegExp(".bz2$"), "")
-                                 .replace(QRegExp(".txt$"), "")
-                                 .replace(QRegExp(".fastq$"), "")
-                                 .replace(QRegExp(".fq$"), "")
-                                 .replace(QRegExp(".csfastq$"), "")
-                                 .replace(QRegExp(".sam$"), "")
-                                 .replace(QRegExp(".bam$"), "") +
+                                 .replace(QRegularExpression(".gz$"), "")
+                                 .replace(QRegularExpression(".bz2$"), "")
+                                 .replace(QRegularExpression(".txt$"), "")
+                                 .replace(QRegularExpression(".fastq$"), "")
+                                 .replace(QRegularExpression(".fq$"), "")
+                                 .replace(QRegularExpression(".csfastq$"), "")
+                                 .replace(QRegularExpression(".sam$"), "")
+                                 .replace(QRegularExpression(".bam$"), "") +
                              "_fastqc.html";
     return temporaryDir.path() + QDir::separator() + resultFileName;
 }

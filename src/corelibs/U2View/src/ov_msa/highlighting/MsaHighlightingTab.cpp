@@ -200,8 +200,8 @@ MsaHighlightingTab::MsaHighlightingTab(MsaEditor* m)
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
     connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet*)), SLOT(sl_refreshSchemes()));
 
-    connect(highlightingSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_updateHint()));
-    connect(colorSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_updateColorSchemeWidgets()));
+    connect(highlightingSchemeController->getComboBox(), SIGNAL(currentTextChanged(const QString&)), SLOT(sl_updateHint()));
+    connect(colorSchemeController->getComboBox(), SIGNAL(currentTextChanged(const QString&)), SLOT(sl_updateColorSchemeWidgets()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
 
     connect(colorThresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_colorParametersChanged()));

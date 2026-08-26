@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "SwissProtPlainTextFormat.h"
 
 #include <QBuffer>
@@ -57,7 +59,7 @@ static const QMap<QString, int> MONTH_STRING_2_INT = {{"JAN", 1},
                                                       {"DEC", 12}};
 static const QString ANNOTATION_HEADER_REGEXP = "FT   ([A-Za-z0-9\\_]+) *([0-9]+)(..([0-9]+))?";
 static const QString ANNOTATION_QUALIFIERS_REGEXP = "FT +\\/([a-z]+)=\\\"([a-zA-Z0-9\\:\\|\\-\\_\\s\\,\\;]*)\\\"";
-static const QRegExp rXSpace = QRegExp("\\s+");
+static const QRegularExpression rXSpace = QRegularExpression("\\s+");
 
 SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_SWISS_PROT, tr("Swiss-Prot"), 80, DocumentFormatFlag_SupportStreaming, p) {
@@ -165,7 +167,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& se
         }
         if (st->hasKey("AC")) {  // The AC (ACcession number) line lists the accession number(s) associated with an entry.
             QVariant v = st->entry->tags.value(DNAInfo::ACCESSION);
-            QStringList l = st->value().split(QRegExp(";\\s*"), Qt::SkipEmptyParts);
+            QStringList l = st->value().split(QRegularExpression(";\\s*"), Qt::SkipEmptyParts);
             st->entry->tags[DNAInfo::ACCESSION] = QVariantUtils::addStr2List(v, l);
             continue;
         }
@@ -418,7 +420,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
 
     processAnnotationRegion(a, startInt, endInt, offset);
 
-    QString valQStr = QString::fromLatin1(cbuff).split(QRegExp("\\n")).first().mid(34);
+    QString valQStr = QString::fromLatin1(cbuff).split(QRegularExpression("\\n")).first().mid(34);
     bool isDescription = true;
 
     const QByteArray& aminoQ = GBFeatureUtils::QUALIFIER_AMINO_STRAND;
@@ -442,7 +444,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
         // parse line
         if (cbuff[A_COL] != '/') {  // continue of description
             valQStr.append(" ");
-            valQStr.append(QString::fromLatin1(cbuff).split(QRegExp("\\n")).takeAt(0).mid(34));
+            valQStr.append(QString::fromLatin1(cbuff).split(QRegularExpression("\\n")).takeAt(0).mid(34));
         } else {
             for (; QN_COL < len && TextUtils::LINE_BREAKS[(uchar)cbuff[len - 1]]; len--) {
             };  // remove line breaks

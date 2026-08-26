@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "BigWigSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -45,7 +47,7 @@ BigWigSupport::BigWigSupport(const QString& path)
     validationMessageRegExp = "bedGraphToBigWig";
     description = tr("<i>bedGraphToBigWig</i>: convert a bedGraph file to bigWig format.");
 
-    versionRegExp = QRegExp("bedGraphToBigWig v (\\d+)");
+    versionRegExp = QRegularExpression("bedGraphToBigWig v (\\d+)");
     validationArguments << "";
     toolKitName = "bedGraphToBigWig";
 

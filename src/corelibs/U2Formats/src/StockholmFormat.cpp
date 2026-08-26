@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "StockholmFormat.h"
 
 #include <QTextStream>
@@ -479,7 +481,7 @@ static void save(IOAdapterWriter& writer, const Msa& msa, const QString& name, U
     writer.write(os, StockholmFormat::UNI_ANNOTATION_MARK + "\n\n");
     CHECK_OP(os, );
 
-    QString idValue = QString(name).replace(QRegExp("\\s"), "_");
+    QString idValue = QString(name).replace(QRegularExpression("\\s"), "_");
     writer.write(os, StockholmFormat::FILE_ANNOTATION_ID + " " + idValue + "\n\n");
     CHECK_OP(os, );
 

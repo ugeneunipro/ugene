@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "HmmerParseSearchResultsTask.h"
 
 #include <U2Core/AppContext.h>
@@ -62,7 +64,7 @@ void HmmerParseSearchResultsTask::run() {
             continue;
         }
 
-        processHit(readData.split(QRegExp("\\s+"), Qt::SkipEmptyParts), lineNumber);
+        processHit(readData.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts), lineNumber);
         CHECK_OP(stateInfo, );
         lineNumber++;
     }

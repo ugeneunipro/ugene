@@ -1541,7 +1541,7 @@ float DotPlotWidget::calculateDistance(float x, float y, DotPlotResults r, bool 
     // find nearest point on line segment to desired point https://www.cyberforum.ru/post16063107.html
     // then calculate distance
     float t = (float)(((x - r.x) * xLen + (y - r.y) * yLen)) / (pow(xLen, 2) + pow(yLen, 2));
-    t = qBound<float>(0.0, t, 1.0);
+    t = qBound<float>(0.0f, t, 1.0f);
     float nearestPointX = r.x + t * xLen;
     float nearestPointY = r.y + t * yLen;
     return pow(x - nearestPointX, 2) + pow(y - nearestPointY, 2);

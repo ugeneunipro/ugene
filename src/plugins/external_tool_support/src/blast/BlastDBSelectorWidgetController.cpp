@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "BlastDBSelectorWidgetController.h"
 #include "BlastSupport.h"
 
@@ -108,7 +110,7 @@ void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
             }
         }
         // Remove counter-like suffix from the database file name: database-name.01.
-        databaseName = databaseName.replace(QRegExp("(\\.\\d+)$"), "");
+        databaseName = databaseName.replace(QRegularExpression("(\\.\\d+)$"), "");
 
         baseNameLineEdit->setText(databaseName);
         databasePathLineEdit->setText(fileInfo.dir().path());
@@ -129,9 +131,9 @@ bool BlastDBSelectorWidgetController::validateDatabaseDir() {
     while (dirIt.hasNext()) {
         dirIt.next();
         if (QFileInfo(dirIt.filePath()).isFile()) {
-            if (QFileInfo(dirIt.filePath()) == databasePathLineEdit->text() + QDir::separator() + baseNameLineEdit->text() + "." + extList[1]) {
+            if (dirIt.filePath() == databasePathLineEdit->text() + QDir::separator() + baseNameLineEdit->text() + "." + extList[1]) {
                 return true;
-            } else if (QFileInfo(dirIt.filePath()) == databasePathLineEdit->text() + QDir::separator() + baseNameLineEdit->text() + "." + extList[0]) {
+            } else if (dirIt.filePath() == databasePathLineEdit->text() + QDir::separator() + baseNameLineEdit->text() + "." + extList[0]) {
                 return true;
             }
         }

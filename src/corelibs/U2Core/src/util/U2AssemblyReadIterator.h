@@ -37,6 +37,7 @@ namespace U2 {
  * 1. Hard clips (H) and padding (P) operations are silently skipped.
  * 2. Soft clips (S) and insertions (I) do present in read sequence. So this operations
  *    are skipped together with the corresponding letters of the sequence.
+ *    Letters skipped for an insertion are still reported by getInsertionBeforeLastLetter().
  * 3. Deletions (D) and skipped regions (N) are 'virtual letters'. Iterator returns gap
  *    symbol when iterating through them.
  * 4. Matches/mismatches (M/=/X) are treated normally.
@@ -60,6 +61,16 @@ public:
      */
     char nextLetter();
 
+    /**
+     * Read letters of the insertions (I) that were skipped right before the letter returned by
+     * the last nextLetter() call, empty if there was no insertion there. Insertions consumed while
+     * seeking to 'startPos' are not reported: they are located before the first returned letter.
+     * Soft clips (S) are never reported: they are not aligned to the reference at all.
+     */
+    const QByteArray& getInsertionBeforeLastLetter() const {
+        return insertionBeforeLastLetter;
+    }
+
 private:
     void advanceToNextToken();
 
@@ -78,6 +89,11 @@ private:
     int offsetInToken;
     int offsetInCigar;
     QList<U2CigarToken> cigar;
+
+    /** Collected by skipInsertion(), reset on every nextLetter() call. */
+    QByteArray insertionBeforeLastLetter;
+    /** While true skipInsertion() does not collect anything: used to ignore the initial seek. */
+    bool seeking;
 };
 
 extern void shortReadIteratorSmokeTest();

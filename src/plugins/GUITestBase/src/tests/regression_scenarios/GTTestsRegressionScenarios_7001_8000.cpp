@@ -56,11 +56,12 @@
 #include <QFileInfo>
 #include <QListWidget>
 #include <QRadioButton>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -1579,7 +1580,7 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
 
     CHECK_SET_ERR(sequence.length() == 1, "Invalid sequence length: " + QString::number(sequence.length()));
     char c = sequence[0].toLatin1();
-    CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + sequence[0]);
+    CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + QString(sequence[0]));
     lt.assertNoErrors();
     ;
 }
@@ -2156,6 +2157,21 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
 GUI_TEST_CLASS_DEFINITION(test_7465) {
     // 1. Open workflow sample "Align sequences with MUSCLE"
     // Expected state: wizard has appeared.
+
+    // big_msa_as_fasta.fa has ~125k sequences. The "not enough memory" check
+    // this test is exercising is driven by an O(sequence-count^2) distance
+    // matrix estimate (see UGENE-7465's actual fix, MuscleParallel.cpp
+    // estimateMemoryUsageInMb()), which for this fixture lands right around
+    // 59GB - and the memory resource pool this gets checked against defaults
+    // to the host machine's *total physical RAM*. So whether the check fires
+    // at all ends up depending on how much RAM the machine running the test
+    // happens to have, rather than being a deterministic property of the
+    // test. Cap the pool to a small, fixed value for the duration of this
+    // test so the check reliably fires regardless of the host's RAM.
+    AppResourcePool* resourcePool = AppContext::getAppSettings()->getAppResourcePool();
+    int originalMaxMemorySizeInMB = resourcePool->getMaxMemorySizeInMB();
+    resourcePool->setMaxMemorySizeInMB(4096);
+
     class AlignSequencesWithMuscleWizardFiller : public CustomScenario {
     public:
         void run() override {
@@ -2172,6 +2188,8 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     // Expected state: there is a notification about lacking of memory.
     CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString().contains("There is not enough memory to align these sequences with MUSCLE"),
                   "No expected message about lacking of memory in notifications");
+
+    resourcePool->setMaxMemorySizeInMB(originalMaxMemorySizeInMB);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {
@@ -3586,20 +3604,41 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7652) {
-    // Check that views can be opened when there is an active modal dialog.
+    // Check that views can be opened when there is an active modal dialog
+    // (see commit 640bed60be, "Remove IGNORE_MODAL_WIDGET and always open
+    // views": OpenViewTask used to silently refuse to open a view while any
+    // modal widget was active; that gate was intentionally removed).
+    //
+    // Opening files via the normal File > Open menu click requires clicking a
+    // menu bar that is genuinely inaccessible while an application-modal
+    // dialog (Preferences, shown via QDialog::exec()) is active - Qt blocks
+    // input to other windows for a real ApplicationModal dialog, and that is
+    // correct, expected behavior, not a bug. The feature actually under test
+    // lives one layer down, in OpenViewTask itself, so exercise it directly
+    // through the API instead of through a menu that is legitimately blocked.
+    qputenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES", "1");
     class WaitViewIsOpenAndCloseScenario : public CustomScenario {
     public:
         void run() override {
+            // Direct-API opens (see qputenv above) only register the load
+            // task and return - they do not wait for it to finish, unlike
+            // the dialog-based path where the actual UI interaction gives it
+            // time. Wait explicitly so each view is fully up before checking
+            // it's active and before starting the next one.
             GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
             GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
             GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
             GTFileDialog::openFile(dataDir + "samples/Newick/COI.nwk");
+            GTUtilsTaskTreeView::waitTaskFinished();
             GTUtilsPhyTree::checkTreeViewerWindowIsActive();
 
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
@@ -3607,6 +3646,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     };
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new WaitViewIsOpenAndCloseScenario()));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
+    qunsetenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
@@ -4153,7 +4193,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     int baseWidth = GTUtilsMSAEditorSequenceArea::getBaseWidth();
     int sequenceLength = GTUtilsMsaEditor::getEditor()->getAlignmentLen();
     int sequencePercentWidth = qRound(baseWidth * sequenceLength / 100.0);
-    int rightX = uiWidget->mapToGlobal({uiWidget->width(), 0}).x();
+    int rightX = uiWidget->mapToGlobal(QPoint(uiWidget->width(), 0)).x();
 
     GTUtilsProjectTreeView::toggleView();
     GTGlobals::sleep(2000);

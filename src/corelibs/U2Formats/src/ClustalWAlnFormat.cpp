@@ -141,7 +141,11 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
         while (valEndPos < len && !TextUtils::isWhiteSpace(buf, valEndPos)) {
             valEndPos++;
         }
-        if (valEndPos != len) {  // there were numbers trimmed -> trim spaces now
+        // Use '<' (not '!=') so a line shorter than the carried-over valStartPos (e.g. a blank/separator
+        // line) does not enter the trim loop with valEndPos > len and read buf[valEndPos] out of bounds.
+        // For valid lines valEndPos is always <= len, so this is identical to the old '!=' check.
+        // Qt6 asserts on out-of-range QString indexing; Qt5 silently read the trailing '\0'.
+        if (valEndPos < len) {  // there were numbers trimmed -> trim spaces now
             while (valEndPos > valStartPos && (buf[valEndPos] == ' ' || buf[valEndPos] == '\t')) {
                 valEndPos--;
             }

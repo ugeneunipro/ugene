@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "Python3ModuleCutadaptSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -45,7 +47,7 @@ Python3ModuleCutadaptSupport::Python3ModuleCutadaptSupport()
     toolKitName = "python3";
     dependencies << Python3Support::ET_PYTHON_ID;
     validationMessageRegExp = "(\\d+.\\d+)";
-    versionRegExp = QRegExp(validationMessageRegExp);
+    versionRegExp = QRegularExpression(validationMessageRegExp);
     executableFileName = "cutadapt";
     muted = true;
 

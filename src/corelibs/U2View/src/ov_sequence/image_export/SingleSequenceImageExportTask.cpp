@@ -21,6 +21,7 @@
 
 #include "SingleSequenceImageExportTask.h"
 
+#include <QFile>
 #include <QDomDocument>
 #include <QPrinter>
 #include <QSvgGenerator>
@@ -84,7 +85,7 @@ void SequenceImageExportToSvgTask::run() {
     if (!ok && !result) {
         result = false;
     }
-    ok = doc.setContent(&file);
+    ok = bool(doc.setContent(&file));
     if (!ok && !result) {
         file.close();
         result = false;

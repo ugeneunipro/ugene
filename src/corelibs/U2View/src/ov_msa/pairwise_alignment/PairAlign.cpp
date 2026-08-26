@@ -208,7 +208,7 @@ void PairAlign::connectSignals() {
     connect(showHideSequenceWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subwidgetStateChanged(QString)));
     connect(showHideSettingsWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subwidgetStateChanged(QString)));
     connect(showHideOutputWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subwidgetStateChanged(QString)));
-    connect(algorithmListComboBox, SIGNAL(currentIndexChanged(QString)), SLOT(sl_algorithmSelected(QString)));
+    connect(algorithmListComboBox, SIGNAL(currentTextChanged(QString)), SLOT(sl_algorithmSelected(QString)));
     connect(inNewWindowCheckBox, SIGNAL(clicked(bool)), SLOT(sl_inNewWindowCheckBoxChangeState(bool)));
     connect(alignButton, SIGNAL(clicked()), SLOT(sl_alignButtonPressed()));
     connect(outputFileSelectButton, SIGNAL(clicked()), SLOT(sl_checkState()));

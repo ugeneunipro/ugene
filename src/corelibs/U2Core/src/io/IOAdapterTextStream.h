@@ -30,6 +30,10 @@
 
 #include "IOAdapter.h"
 
+QT_BEGIN_NAMESPACE
+class QTextCodec;
+QT_END_NAMESPACE
+
 namespace U2 {
 class U2OpStatus;
 
@@ -83,6 +87,7 @@ protected:
     IOAdapter* ioAdapter;
     QScopedPointer<QIODevice> ioDevice;
     QTextStream stream;
+    QTextCodec* textCodec = nullptr;
 };
 
 /**

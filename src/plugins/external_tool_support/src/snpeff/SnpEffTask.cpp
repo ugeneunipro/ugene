@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "SnpEffTask.h"
 
 #include <QDir>
@@ -51,7 +53,7 @@ SnpEffParser::SnpEffParser(const QString& genome)
 }
 
 void SnpEffParser::parseOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
 
     foreach (const QString& buf, lastPartOfLog) {
         if (buf.contains("Could not reserve enough space for object heap", Qt::CaseInsensitive) ||
@@ -64,7 +66,7 @@ void SnpEffParser::parseOutput(const QString& partOfLog) {
 }
 
 void SnpEffParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog = partOfLog.split(QRegularExpression("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
 

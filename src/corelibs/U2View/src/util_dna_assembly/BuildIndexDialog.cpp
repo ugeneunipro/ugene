@@ -67,7 +67,7 @@ BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry* registry, QWidg
     sl_onAlgorithmChanged(methodNamesBox->currentText());
     connect(setIndexFileNameButton, SIGNAL(clicked()), SLOT(sl_onSetIndexFileNameButtonClicked()));
     connect(addRefButton, SIGNAL(clicked()), SLOT(sl_onAddRefButtonClicked()));
-    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onAlgorithmChanged(const QString&)));
+    connect(methodNamesBox, SIGNAL(currentTextChanged(const QString&)), SLOT(sl_onAlgorithmChanged(const QString&)));
 
     if (!genomePath.isEmpty()) {
         refSeqEdit->setText(genomePath);

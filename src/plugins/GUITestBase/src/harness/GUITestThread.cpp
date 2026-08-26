@@ -24,7 +24,6 @@
 #include <drivers/GTMouseDriver.h>
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QGuiApplication>
 #include <QScreen>

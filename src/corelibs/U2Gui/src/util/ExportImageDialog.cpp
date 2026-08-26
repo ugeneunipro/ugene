@@ -198,8 +198,8 @@ void ExportImageDialog::init() {
 
     setSizeControlsEnabled(!isVectorGraphicFormat(saveController->getFormatIdToSave()));
 
-    connect(ui->formatsBox, SIGNAL(currentIndexChanged(const QString&)), exportController, SLOT(sl_onFormatChanged(const QString&)));
-    connect(ui->formatsBox, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(sl_onFormatsBoxItemChanged(const QString&)));
+    connect(ui->formatsBox, SIGNAL(currentTextChanged(const QString&)), exportController, SLOT(sl_onFormatChanged(const QString&)));
+    connect(ui->formatsBox, SIGNAL(currentTextChanged(const QString&)), this, SLOT(sl_onFormatsBoxItemChanged(const QString&)));
 
     connect(exportController, SIGNAL(si_disableExport(bool)), SLOT(sl_disableExport(bool)));
     connect(exportController, SIGNAL(si_showMessage(QString)), SLOT(sl_showMessage(QString)));

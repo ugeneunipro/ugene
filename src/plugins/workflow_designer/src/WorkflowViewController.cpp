@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
+
 #include <functional>
 
 #include <QBoxLayout>
@@ -114,10 +117,10 @@ static const int ABSENT_WIDGET_TAB_NUMBER = -1;
 /************************************************************************/
 /* Utilities */
 /************************************************************************/
-class PercentValidator : public QRegExpValidator {
+class PercentValidator : public QRegularExpressionValidator {
 public:
     PercentValidator(QObject* parent)
-        : QRegExpValidator(QRegExp("[1-9][0-9]*" + QObject::tr("%")), parent) {
+        : QRegularExpressionValidator(QRegularExpression("[1-9][0-9]*" + QObject::tr("%")), parent) {
     }
     void fixup(QString& input) const override {
         if (!input.endsWith(QObject::tr("%"))) {
@@ -140,7 +143,7 @@ static QComboBox* scaleCombo(WorkflowView* parent) {
            << "200%";
     sceneScaleCombo->addItems(scales);
     sceneScaleCombo->setCurrentIndex(3);
-    QObject::connect(sceneScaleCombo, SIGNAL(currentIndexChanged(const QString&)), parent, SLOT(sl_rescaleScene(const QString&)));
+    QObject::connect(sceneScaleCombo, SIGNAL(currentTextChanged(const QString&)), parent, SLOT(sl_rescaleScene(const QString&)));
     // Some visual modifications for Mac:
     sceneScaleCombo->lineEdit()->setStyleSheet("QLineEdit {margin-right: 1px;}");
     sceneScaleCombo->setObjectName("wdScaleCombo");
@@ -2391,7 +2394,7 @@ static QString newActorLabel(ActorPrototype* proto, const QList<Actor*>& procs) 
 
 Actor* WorkflowView::createActor(ActorPrototype* proto, const QVariantMap& params) const {
     assert(proto != nullptr);
-    QString pId = proto->getId().replace(QRegExp("\\s"), "-");
+    QString pId = proto->getId().replace(QRegularExpression("\\s"), "-");
     ActorId id = Schema::uniqueActorId(pId, schema->getProcesses());
     Actor* actor = proto->createInstance(id, nullptr, params);
     assert(actor != nullptr);

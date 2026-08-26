@@ -257,7 +257,7 @@ void phyFillScreenColor(void);
 
 typedef void *Anyptr;
 //Does not compile with Qt4.6.x : #define Signed     signed
-#define Const     const
+//#define Const     const     // Qt6: clashes with Qt's template parameter name 'Const' in qiterable.h
 #define Volatile  volatile
 #define Phylip_Char        char      /* Characters (not bytes) */
 #define Static     static     /* Private global funcs and vars */

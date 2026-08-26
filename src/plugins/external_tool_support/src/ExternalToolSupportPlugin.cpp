@@ -134,7 +134,6 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     : Plugin(tr("External tool support"), tr("Runs other external tools")) {
     // External tools serialize additional tool info into QSettings and using StrStrMap type.
-    qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
 
     // External tool registry keeps order of items added
     // it is important because there might be dependencies

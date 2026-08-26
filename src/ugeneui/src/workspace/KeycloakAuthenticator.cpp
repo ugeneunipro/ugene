@@ -97,7 +97,7 @@ void KeycloakAuthenticator::refreshAccessToken(const QString& refreshToken) {
             oauth2.setToken(newAccessToken);
             emit si_authenticationGranted(newAccessToken, newRefreshToken);
         } else {
-            ioLog.trace("KeycloakAuthenticator: Request finished with error: " + reply->errorString() + ", code: " + reply->error());
+            ioLog.trace("KeycloakAuthenticator: Request finished with error: " + reply->errorString() + ", code: " + QString::number(reply->error()));
             static QSet<QNetworkReply::NetworkError> nonRetriableErrors = {
                 QNetworkReply::ContentAccessDenied,
                 QNetworkReply::ContentOperationNotPermittedError,

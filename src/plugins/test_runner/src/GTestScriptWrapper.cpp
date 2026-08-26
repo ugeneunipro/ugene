@@ -63,7 +63,7 @@ QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext* ctx, QScriptEn
         }
     } else {
         result.append("Mouse Click  no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError(" no overloaded function takes so arguments");
     }
@@ -106,7 +106,7 @@ QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext* ctx, QScriptE
         }
     } else {
         result.append("Mouse DClick  no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -144,7 +144,7 @@ QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext* ctx, QScriptEng
         }
     } else {
         result.append("Mouse Move  no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -186,7 +186,7 @@ QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext* ctx, QScriptEn
         }
     } else {
         result.append("Mouse Press  no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -229,7 +229,7 @@ QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext* ctx, QScript
         }
     } else {
         result.append("Mouse Release no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -267,7 +267,7 @@ QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext* ctx, QScriptEngi
         }
     } else {
         result.append("Key Click no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -305,7 +305,7 @@ QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext* ctx, QScriptEng
         }
     } else {
         result.append("Key Clicks no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -343,7 +343,7 @@ QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext* ctx, QScriptEngi
         }
     } else {
         result.append("Key Event no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -381,7 +381,7 @@ QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext* ctx, QScriptEngi
         }
     } else {
         result.append("Key Press no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -419,7 +419,7 @@ QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext* ctx, QScriptEn
         }
     } else {
         result.append("Key Release no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -441,7 +441,7 @@ QScriptValue GTestScriptWrapper::qtestSleepE(QScriptContext* ctx, QScriptEngine*
         }
     } else {
         result.append("qSleep no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }
@@ -462,7 +462,7 @@ QScriptValue GTestScriptWrapper::qtestWaitE(QScriptContext* ctx, QScriptEngine* 
         }
     } else {
         result.append("qWait no overloaded function takes ");
-        result.append(argsCount);
+        result.append(QString::number(argsCount));
         result.append(" arguments");
         ctx->throwError("no overloaded function takes so arguments");
     }

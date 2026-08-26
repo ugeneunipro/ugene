@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QRegExp>
+
 #include <U2Core/GUrl.h>
 
 #include <U2Designer/PrompterBase.h>

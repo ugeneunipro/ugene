@@ -2,7 +2,6 @@
 
 #include <QApplication>
 #include <QDate>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QScreen>
 

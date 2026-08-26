@@ -30,7 +30,7 @@
 namespace U2 {
 
 SubstMatrixRegistry::SubstMatrixRegistry(QObject* pOwn)
-    : QObject(pOwn), mutex(QMutex::Recursive) {
+    : QObject(pOwn) {
     readMatrices();
 }
 

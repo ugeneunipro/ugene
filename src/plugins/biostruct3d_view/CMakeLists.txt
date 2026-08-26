@@ -6,6 +6,9 @@ file(GLOB SRCS src/*.cpp src/*.c src/*.h src/gl2ps/*)
 
 include(${CMAKE_SOURCE_DIR}/cmake/Plugin.cmake)
 
+find_package(Qt6 REQUIRED COMPONENTS OpenGL OpenGLWidgets)
+target_link_libraries(biostruct3d_view Qt6::OpenGL Qt6::OpenGLWidgets)
+
 if (APPLE)
     # Use the OpenGL framework on macOS.
     target_link_libraries(biostruct3d_view "-framework OpenGL")

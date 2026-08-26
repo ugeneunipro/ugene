@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "IQTreeSupport.h"
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -43,7 +45,7 @@ IQTreeSupport::IQTreeSupport()
     validationArguments << "--version";
     validationMessageRegExp = "IQ-TREE";
     description = tr("<i>IQ-TREE</i>  Efficient software for phylogenomic inference");
-    versionRegExp = QRegExp("IQ-TREE .* version (\\d+\\.\\d+\\.\\d+).*");
+    versionRegExp = QRegularExpression("IQ-TREE .* version (\\d+\\.\\d+\\.\\d+).*");
     toolKitName = "IQ-TREE";
 
     // register the method

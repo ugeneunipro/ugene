@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "BowtieSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -57,7 +59,7 @@ BowtieSupport::BowtieSupport(const QString& id)
                      "Bowtie indexes the genome with a Burrows-Wheeler index to keep "
                      "its memory footprint small: typically about 2.2 GB for the human "
                      "genome (2.9 GB for paired-end).");
-    versionRegExp = QRegExp("version (\\d+\\.\\d+\\.\\d+)");
+    versionRegExp = QRegularExpression("version (\\d+\\.\\d+\\.\\d+)");
     toolKitName = "Bowtie";
 
     if (isOsWindows()) {

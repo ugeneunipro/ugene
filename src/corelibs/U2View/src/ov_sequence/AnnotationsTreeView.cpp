@@ -233,7 +233,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
 #ifndef Q_OS_DARWIN
     addQualifierAction->setShortcut(QKeySequence(Qt::Key_Insert));
 #else
-    addQualifierAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_I));
+    addQualifierAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_I));
 #endif
     addQualifierAction->setShortcutContext(Qt::WindowShortcut);
     addQualifierAction->setObjectName("add_qualifier_action");
@@ -463,7 +463,7 @@ void AnnotationsTreeView::sl_onItemSelectionChanged() {
 }
 
 void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>& added, const QList<Annotation*>& removed) {
-    tree->disconnect(this, SIGNAL(sl_onItemSelectionChanged()));
+    tree->disconnect(this, SLOT(sl_onItemSelectionChanged()));
     clearSelectedNotAnnotations();
     foreach (Annotation* a, removed) {
         AnnotationGroup* g = a->getGroup();
@@ -639,7 +639,7 @@ void AnnotationsTreeView::sl_onAnnotationsRemoved(const QList<Annotation*>& as) 
     TreeSorter ts(this);
     Q_UNUSED(ts);
 
-    tree->disconnect(this, SIGNAL(sl_onItemSelectionChanged()));
+    tree->disconnect(this, SLOT(sl_onItemSelectionChanged()));
 
     auto aObj = qobject_cast<AnnotationTableObject*>(sender());
     SAFE_POINT(aObj != nullptr, "Invalid annotation table detected!", );
@@ -717,7 +717,7 @@ void AnnotationsTreeView::sl_onGroupRemoved(AnnotationGroup* parent, AnnotationG
         return;
     }
 
-    tree->disconnect(this, SIGNAL(sl_onItemSelectionChanged()));
+    tree->disconnect(this, SLOT(sl_onItemSelectionChanged()));
 
     removeGroupAnnotationsFromCache(pg);
 

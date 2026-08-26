@@ -593,6 +593,16 @@ Task::ReportResult GTest_Primer3::report() {
         return ReportResult_Finished;
     }
 
+    if (task == nullptr) {
+        // prepare() did not create the analysis task (e.g. invalid input recorded in
+        // localErrorMessage). Nothing ran, so fail if primers were expected and finish
+        // otherwise, instead of dereferencing the null task in the checks below.
+        CHECK_EXT(expectedBestPairs.isEmpty() && expectedSinglePrimers.isEmpty(),
+                  setError(localErrorMessage.isEmpty() ? QString("Primer3 task was not created") : localErrorMessage),
+                  ReportResult_Finished);
+        return ReportResult_Finished;
+    }
+
     if (!expectedWarningMessage.isEmpty()) {
         if (!task->hasWarning()) {
             stateInfo.setError(GTest::tr("No warning, but expected: %1").arg(expectedWarningMessage));

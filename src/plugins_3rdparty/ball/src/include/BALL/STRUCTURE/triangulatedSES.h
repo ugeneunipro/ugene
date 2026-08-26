@@ -132,7 +132,7 @@ namespace BALL
 		//@{
 
 		void compute()
-			throw(Exception::GeneralException,Exception::DivisionByZero);
+;
 
 		//@}
 
@@ -193,7 +193,7 @@ namespace BALL
 		//@{
 
 		void run()
-			throw(Exception::GeneralException,Exception::DivisionByZero);
+;
 
 		private:
 

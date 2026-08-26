@@ -341,15 +341,24 @@ QRect ZoomableAssemblyOverview::calcCurrentSelection() const {
     U2OpStatusImpl status;
     int w = rect().width();
     int h = rect().height();
+    qint64 modelHeight = model->getModelHeight(status);
 
     //    qint64 x_ass_start = qMax(0, browser->getXOffsetInAssembly()-visibleRange.startPos);
 
-    int x_pix_start = (double(w) / visibleRange.length * (browser->getXOffsetInAssembly() - visibleRange.startPos)) + 0.5;
-    int y_pix_start = double(h) / model->getModelHeight(status) * browser->getYOffsetInAssembly() + 0.5;
-    int pix_width = (double(w) / visibleRange.length * browser->basesVisible()) + 0.5;
-    int pix_height = double(h) / model->getModelHeight(status) * browser->rowsVisible() + 0.5;
+    double x_pix_start = visibleRange.length > 0 ? (double(w) / visibleRange.length * (browser->getXOffsetInAssembly() - visibleRange.startPos)) + 0.5 : 0;
+    double y_pix_start = modelHeight > 0 ? double(h) / modelHeight * browser->getYOffsetInAssembly() + 0.5 : 0;
+    double pix_width = visibleRange.length > 0 ? (double(w) / visibleRange.length * browser->basesVisible()) + 0.5 : w;
+    double pix_height = modelHeight > 0 ? double(h) / modelHeight * browser->rowsVisible() + 0.5 : h;
 
-    return QRect(x_pix_start, y_pix_start, pix_width, pix_height);
+    // Clamp well inside int range: Qt6's QRect geometry ops (e.g. rect().intersected() in
+    // paintEvent) use overflow-checked int arithmetic and abort on huge/inf/nan values that
+    // the division above can produce for large assemblies; Qt5 tolerated them silently.
+    const double limit = 1e6;
+    auto toClampedInt = [limit](double v) {
+        return qIsFinite(v) ? static_cast<int>(qBound(-limit, v, limit)) : 0;
+    };
+
+    return QRect(toClampedInt(x_pix_start), toClampedInt(y_pix_start), toClampedInt(pix_width), toClampedInt(pix_height));
 }
 
 // prevents selection from crossing widget borders.

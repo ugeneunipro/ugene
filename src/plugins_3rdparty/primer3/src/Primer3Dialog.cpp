@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include <QMessageBox>
 #include <QSettings>
 
@@ -136,10 +138,13 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
         auto browseFileButton = new QPushButton("...", this);
         browseFileButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         browseFileButton->setFixedWidth(browseFileButton->height());
-        auto horizontalLayout = new QHBoxLayout(this);
+        // Do not pass `this`: these layouts are nested into annotationWidgetLayout below, they must not be
+        // installed as the dialog's top-level layout. The dialog already has a layout (from setupUi), so on
+        // Qt6 setting another one corrupts the hierarchy ("already has a layout") and later crashes (e.g. on Reset).
+        auto horizontalLayout = new QHBoxLayout();
         horizontalLayout->addWidget(outputFileLineEdit);
         horizontalLayout->addWidget(browseFileButton);
-        auto groupLayout = new QFormLayout(this);
+        auto groupLayout = new QFormLayout();
         groupLayout->addRow(tr("Save result to file"), horizontalLayout);
         annotationWidgetLayout->addLayout(groupLayout);
 
@@ -192,8 +197,14 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
 }
 
 Primer3Dialog::~Primer3Dialog() {
-    regionSelector->deleteLater();
-    createAnnotationWidgetController->deleteLater();
+    // In the no-target-sequence mode these widgets are never created (they stay nullptr), so guard against
+    // calling deleteLater() on a null pointer, which segfaults.
+    if (regionSelector != nullptr) {
+        regionSelector->deleteLater();
+    }
+    if (createAnnotationWidgetController != nullptr) {
+        createAnnotationWidgetController->deleteLater();
+    }
 }
 
 const QSharedPointer<Primer3TaskSettings>& Primer3Dialog::getSettings() {
@@ -274,7 +285,7 @@ QString Primer3Dialog::okRegions2String(const QList<QList<int>>& regionLins) {
 
 bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition definition) {
     QList<U2Region> result;
-    QStringList intervalStringList = inputString.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList intervalStringList = inputString.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     for (const auto& intervalString : qAsConst(intervalStringList)) {
         QStringList valueStringList = intervalString.split(delimiter);
         if (2 != valueStringList.size()) {
@@ -308,7 +319,7 @@ bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString&
 
 bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputList) {
     QList<int> result;
-    QStringList intStringList = inputString.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList intStringList = inputString.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     for (const auto& numString : qAsConst(intStringList)) {
         bool ok = false;
         int num = numString.toInt(&ok);
@@ -685,7 +696,7 @@ bool Primer3Dialog::doDataExchange() {
     if (context != nullptr) {
         QVector<int> qualityList;
         auto sequenceQual = edit_SEQUENCE_QUALITY->toPlainText();
-        QStringList stringList = sequenceQual.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+        QStringList stringList = sequenceQual.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
         bool ok = true;
         for (const QString& string : qAsConst(stringList)) {
             bool isInt = false;

@@ -165,7 +165,7 @@ namespace BALL
 				@return	Vertex*	the other vertex
 		*/
 		Vertex* other(const Vertex* vertex) const
-			throw(Exception::GeneralException);
+;
 
 		/** Return a pointer to the other face of the GraphEdge.
 				If the given face is not neighboured to the GraphEdge, an exception is
@@ -174,7 +174,7 @@ namespace BALL
 				@return	Face*	the other face
 		*/
 		Face* other(const Face* face) const
-			throw(Exception::GeneralException);
+;
 
 		/** Substitute a vertex by an other one.
 				@param	old_vertex	the vertex that has to be substituted
@@ -435,7 +435,7 @@ namespace BALL
 
 	template <typename Vertex, typename Edge, typename Face>
 	Vertex* GraphEdge<Vertex,Edge,Face>::other(const Vertex* vertex) const
-		throw(Exception::GeneralException)
+
 	{
 		if (vertex_[0] == vertex)
 		{
@@ -457,7 +457,7 @@ namespace BALL
 
 	template <typename Vertex, typename Edge, typename Face>
 	Face* GraphEdge<Vertex,Edge,Face>::other(const Face* face) const
-		throw(Exception::GeneralException)
+
 	{
 		if (face_[0] == face)
 		{

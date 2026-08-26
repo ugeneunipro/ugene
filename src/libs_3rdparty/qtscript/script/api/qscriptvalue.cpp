@@ -37,6 +37,8 @@
 **
 ****************************************************************************/
 
+#include <QRegExp>
+
 #include "config.h"
 #include "qscriptvalue.h"
 

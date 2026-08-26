@@ -22,6 +22,7 @@
 #include "IOAdapterUtils.h"
 
 #include <QFile>
+#include <QStringConverter>
 #include <QTextStream>
 
 #include <U2Core/AppContext.h>
@@ -123,7 +124,7 @@ QString IOAdapterUtils::readTextFile(const QString& path, const char* codecName)
         return QString();
     }
     QTextStream in(&file);
-    in.setCodec(codecName);
+    in.setEncoding(QStringConverter::encodingForName(codecName).value_or(QStringConverter::Utf8));
     return in.readAll();
 }
 
@@ -133,7 +134,7 @@ bool IOAdapterUtils::writeTextFile(const QString& path, const QString& content, 
         return false;
     }
     QTextStream out(&file);
-    out.setCodec(codecName);
+    out.setEncoding(QStringConverter::encodingForName(codecName).value_or(QStringConverter::Utf8));
     out << content;
     out.flush();
     return true;

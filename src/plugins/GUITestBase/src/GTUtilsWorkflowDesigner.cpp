@@ -1332,8 +1332,8 @@ void GTUtilsWorkflowDesigner::setWorkflowOutputDir(const QString& path) {
 }
 
 void GTUtilsWorkflowDesigner::prepareDashboardsDirState(const QString& templateDirName) {
-    QFileInfo originalWorkflowOutputDir = UGUITest::testDir + "_common_data/workflow/dashboard/workflow_outputs/" + templateDirName;
-    QFileInfo testWorkflowOutputDir = UGUITest::sandBoxDir + templateDirName;
+    QFileInfo originalWorkflowOutputDir(UGUITest::testDir + "_common_data/workflow/dashboard/workflow_outputs/" + templateDirName);
+    QFileInfo testWorkflowOutputDir(UGUITest::sandBoxDir + templateDirName);
     GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
     setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
     // Wait scan task to finish.

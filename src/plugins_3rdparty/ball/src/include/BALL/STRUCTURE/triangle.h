@@ -134,7 +134,7 @@ namespace BALL
 				@param	point	a pointer to the new point
 		*/
 		void setPoint(Position i, TrianglePoint* point)
-			throw(Exception::IndexOverflow);
+;
 
 		/** Return one of the three points of the Triangle.
 				@param	i										the relative index of the point which	
@@ -143,7 +143,7 @@ namespace BALL
 				@return	TrianglePoint*	a pointer to the asked point
 		*/
 		TrianglePoint* getPoint(Position i) const
-			throw(Exception::IndexOverflow);
+;
 
 		/**	Remove an edge from the Triangle.
 				The edge is set to NULL.

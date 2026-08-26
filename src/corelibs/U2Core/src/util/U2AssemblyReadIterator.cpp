@@ -26,7 +26,7 @@
 namespace U2 {
 
 U2AssemblyReadIterator::U2AssemblyReadIterator(const QByteArray& read_, QList<U2CigarToken> cigar_, int startPos /* = 0*/)
-    : offsetInRead(0), read(read_), offsetInToken(0), offsetInCigar(0), cigar(cigar_) {
+    : offsetInRead(0), read(read_), offsetInToken(0), offsetInCigar(0), cigar(cigar_), seeking(true) {
     for (int i = 0; i < startPos && hasNext();) {
         skip();
         U2CigarToken t = cigar.at(offsetInCigar);
@@ -48,6 +48,7 @@ U2AssemblyReadIterator::U2AssemblyReadIterator(const QByteArray& read_, QList<U2
             break;
         }
     }
+    seeking = false;
 }
 
 bool U2AssemblyReadIterator::hasNext() const {
@@ -79,6 +80,7 @@ bool U2AssemblyReadIterator::hasNext() const {
 
 char U2AssemblyReadIterator::nextLetter() {
     assert(hasNext());
+    insertionBeforeLastLetter.clear();
     skip();
     SAFE_POINT(offsetInCigar < cigar.size(), "CIGAR out of range", 0);
     if (offsetInToken != cigar.at(offsetInCigar).count) {  // staying in the current token
@@ -129,7 +131,13 @@ void U2AssemblyReadIterator::skip() {
 // skip tokens and corresponding letters
 void U2AssemblyReadIterator::skipInsertion() {
     while (hasNext() && isInsertion()) {
-        offsetInRead += cigar.at(offsetInCigar).count;
+        const U2CigarToken& token = cigar.at(offsetInCigar);
+        if (!seeking && U2CigarOp_I == token.op) {
+            // Remember the letters so the caller can render the insertion: unlike a soft clip,
+            // an insertion is a part of the alignment, it just has no reference position of its own.
+            insertionBeforeLastLetter += read.mid(offsetInRead, token.count);
+        }
+        offsetInRead += token.count;
         offsetInCigar++;
     }
 }

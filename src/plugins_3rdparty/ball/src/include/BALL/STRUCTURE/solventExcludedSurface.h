@@ -151,7 +151,7 @@ namespace BALL
 		/**	Computes the solvent excluded surface from a ReducedSurface object
 		*/
 		void compute()
-			throw(Exception::GeneralException);
+;
 
 		void splitSphericFaces()
 			;
@@ -349,7 +349,7 @@ namespace BALL
 		/**	Computes the solvent excluded surface
 		*/
 		void run()
-			throw(Exception::GeneralException);
+;
 
 		//@}
 
@@ -499,7 +499,7 @@ namespace BALL
 		/**	Solves the singularities
 		*/
 		bool run()
-			throw(Exception::GeneralException);
+;
 
 		//@}
 

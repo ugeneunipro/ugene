@@ -128,8 +128,8 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
     mainLayout->addWidget(minmaxGroup);
     setLayout(mainLayout);
 
-    connect(minBox, SIGNAL(valueChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
-    connect(maxBox, SIGNAL(valueChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
+    connect(minBox, SIGNAL(textChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
+    connect(maxBox, SIGNAL(textChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
 }
 
 double MinMaxSelectorWidget::getMin() const {

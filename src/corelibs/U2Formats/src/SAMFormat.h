@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QRegularExpression>
+
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
@@ -52,15 +54,15 @@ public:
     class Field {
     public:
         Field(QString _name, QString _pattern)
-            : name(_name), precompiled(_pattern) {
+            : name(_name), precompiled(QRegularExpression::anchoredPattern(_pattern)) {
         }
         QString name;
-        QRegExp getPattern() const {
-            return QRegExp(precompiled);
+        const QRegularExpression& getPattern() const {
+            return precompiled;
         }
 
     private:
-        const QRegExp precompiled;
+        const QRegularExpression precompiled;
     };
 
 protected:

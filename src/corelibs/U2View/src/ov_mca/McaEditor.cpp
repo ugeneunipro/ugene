@@ -212,7 +212,7 @@ void McaEditor::initActions() {
     ui->addAction(zoomOutAction);
 
     resetZoomAction->setText(tr("Reset zoom"));
-    resetZoomAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+    resetZoomAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_0));
     GUIUtils::updateActionToolTip(resetZoomAction);
     ui->addAction(resetZoomAction);
 

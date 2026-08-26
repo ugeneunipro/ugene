@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "AnnotatorTests.h"
 
 #include <QDir>
@@ -66,13 +68,13 @@ void GTest_AnnotatorSearch::init(XMLTestFormat*, const QDomElement& el) {
         failMissingValue(GROUPS_ATTR);
         return;
     }
-    groupsToSearch = toSet(groups.split(QRegExp("\\,")));  // may be QRegExp("\\,")
+    groupsToSearch = toSet(groups.split(QRegularExpression("\\,")));  // may be QRegularExpression("\\,")
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\,"));  // may be QRegExp("\\,")
+        QStringList expectedList = expected.split(QRegularExpression("\\,"));  // may be QRegularExpression("\\,")
         foreach (QString region, expectedList) {
-            QStringList bounds = region.split(QRegExp("\\.."));
+            QStringList bounds = region.split(QRegularExpression("\\.."));
             if (bounds.size() != 2) {
                 stateInfo.setError(QString("wrong value for %1").arg(EXPECTED_RESULTS_ATTR));
                 return;

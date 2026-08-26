@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegExp>
+
 #include <api/GTUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
@@ -265,14 +267,18 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
     //    2. Open sample "Align sequences with MUSCLE"
     GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    //    3. Align attached file
+    //    3. Align attached file: 3 long, mutually dissimilar sequences.
+    //    A plain full DP alignment of profiles this long can need tens of GB;
+    //    MUSCLE's diagonal-based fallback can't help either, since there is no
+    //    real local similarity between the sequences to find. Expect a clean
+    //    "not enough memory" error instead of a runtime crash/hang.
     GTUtilsWorkflowDesigner::click("Read alignment");
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/regression/4011/human_T1.aln");
     GTUtilsWorkflowDesigner::runWorkflow();
-    //    Current state:
-    //    Runtime error occurred(x86 version of UGENE)
-    //    Windows hangs(x64 version)
-    lt.hasMessage("Nothing to write");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    CHECK_SET_ERR(lt.hasMessage("Alignment requires too much memory for a single pairwise DP step"),
+                  "No expected 'not enough memory' error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4013) {
@@ -1517,10 +1523,15 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     getFontSettings(defaultFontFamily, defaultSize);
     changeFontAndSize(defaultFontFamily, 16);
 
-    QString customFontName = isOsLinux() ? "Times New Roman" : "Arial";
+    // Any font other than the default will do here: the test only checks that a per-node
+    // font override is applied/preserved/reset correctly, not which font it is. Picking it
+    // from the combo box's own item list (instead of a hardcoded name like "Times New Roman")
+    // keeps the test working regardless of which fonts happen to be installed on the machine.
+    QStringList availableFontNames = GTComboBox::getValues(GTWidget::findComboBox("fontComboBox"));
+    QString customFontName = availableFontNames.first() == defaultFontFamily ? availableFontNames.at(1) : availableFontNames.first();
 
     // Click on the parent node for node.
-    // Change its font to Arial with size 22.
+    // Change its font to customFontName with size 22.
     TvNodeItem* parentNode = GTUtilsPhyTree::getNodeByBranchText("0.006", "0.104");
     GTUtilsPhyTree::clickNode(parentNode);
     changeFontAndSize(customFontName, 22);

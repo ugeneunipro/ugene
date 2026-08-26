@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "Python3Support.h"
 
 #include <U2Core/AppContext.h>
@@ -42,7 +44,7 @@ Python3Support::Python3Support()
     validationArguments << "--version";
 
     description += tr("Python scripts interpreter");
-    versionRegExp = QRegExp(PYTHON_VERSION_REGEXP);
+    versionRegExp = QRegularExpression(PYTHON_VERSION_REGEXP);
     toolKitName = "python3";
 
     muted = true;

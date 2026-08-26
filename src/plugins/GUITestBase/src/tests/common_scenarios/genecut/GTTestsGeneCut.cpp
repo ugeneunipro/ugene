@@ -27,6 +27,7 @@
 
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsGeneCut.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
@@ -47,8 +48,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     auto lbResetStatus = qobject_cast<QLabel*>(GTWidget::findWidget("lbResetStatus"));
     CHECK_SET_ERR(lbResetStatus != nullptr, L10N::nullPointerError("QLabel"));
 
-    // Expected: error, because there is no account with such email
-    CHECK_SET_ERR(lbResetStatus->text().startsWith("Error"), QString("lbResetStatus has incoorect text: %1").arg(lbResetStatus->text()));
+    // The reset-password endpoint always replies with HTTP 200, even for a
+    // request that did not result in an email being sent, so the UI can't
+    // classify this as a hard "Error" - it surfaces the server's own message
+    // instead. Expected: NOT a blind "Success", and the server-reported reason
+    // (there is no account with such email) is shown to the user.
+    CHECK_SET_ERR(!lbResetStatus->text().startsWith("Success"), QString("lbResetStatus incorrectly reports success: %1").arg(lbResetStatus->text()));
+    CHECK_SET_ERR(lbResetStatus->text().contains("not exist"), QString("lbResetStatus has incorrect text: %1").arg(lbResetStatus->text()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -195,8 +201,18 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsGeneCut::checkResultInfo("gfp.fa", {GTUtilsGeneCut::Steps::OligonucleotidesAssembly});
 
     // Load the result sequence with oligonucleotides
+    QString previousWindowTitle = GTUtilsMdi::activeWindowTitle();
     GTWidget::click(GTWidget::findPushButton("pbGetResultSequence"));
     GTUtilsTaskTreeView::waitTaskFinished();
+    // The result opens in a new sequence view, but it can take a moment after the load task
+    // finishes for that view to actually become the active MDI window. Until it does,
+    // GTUtilsAnnotationsTreeView::getTreeWidget() (which looks up the tree by ACTIVE view type,
+    // not by document) silently returns the still-active previous view's tree instead, since
+    // both views are of the same "sequence view" type - so the check below would then
+    // legitimately, but wrongly, look for the annotation group in the wrong document.
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && GTUtilsMdi::activeWindowTitle() == previousWindowTitle; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+    }
 
     // Check for Long Oligonucleotides assembly
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("Oligonucleotides assembly  (0, 21)",
@@ -269,8 +285,18 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                                      GTUtilsGeneCut::Steps::OligonucleotidesAssembly});
 
     // Load the result sequence with oligonucleotides
+    QString previousWindowTitle = GTUtilsMdi::activeWindowTitle();
     GTWidget::click(GTWidget::findPushButton("pbGetResultSequence"));
     GTUtilsTaskTreeView::waitTaskFinished();
+    // The result opens in a new sequence view, but it can take a moment after the load task
+    // finishes for that view to actually become the active MDI window. Until it does,
+    // GTUtilsAnnotationsTreeView::getTreeWidget() (which looks up the tree by ACTIVE view type,
+    // not by document) silently returns the still-active previous view's tree instead, since
+    // both views are of the same "sequence view" type - so the check below would then
+    // legitimately, but wrongly, look for the annotation group in the wrong document.
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && GTUtilsMdi::activeWindowTitle() == previousWindowTitle; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+    }
 
     // Check for Long fragments assembly
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("Long fragments assembly  (0, 2)", {{1, 717}});

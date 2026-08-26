@@ -429,7 +429,7 @@ void KalignLogParser::parseErrOutput(const QString& err) {
     QString firstErrorLine = err.split("\n")[0];
     QString prefixToken = "ERROR : ";
     int prefixTokenIndex = firstErrorLine.indexOf(prefixToken);
-    if (prefixToken > 0) {
+    if (prefixTokenIndex > 0) {
         firstErrorLine = firstErrorLine.mid(prefixTokenIndex + prefixToken.length()).trimmed();
         int suffixToken = firstErrorLine.lastIndexOf("(");
         if (suffixToken > 0) {

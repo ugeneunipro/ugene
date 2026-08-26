@@ -121,8 +121,21 @@ void AssemblySequenceArea::drawSequence(QPainter& p) {
             referenceFragment = model->getReferenceRegionOrEmpty(getVisibleRegion());
         }
 
-        for (int i = 0; i < visibleSequence.length(); ++i, x_pix_start += letterWidth) {
+        const U2AssemblyInsertionsMap& insertions = browser->getInsertionsMap();
+        qint64 firstVisibleBase = getVisibleRegion().startPos;
+
+        for (int i = 0; i < visibleSequence.length(); ++i) {
+            // Reads insert into the reference here, so a gap of its own is put into the reference,
+            // exactly like 'samtools tview' and the Sanger Reads Editor do. It is not a reference
+            // position though: the ruler keeps numbering the real bases only.
+            int insertionWidth = insertions.getInsertionWidthBefore(firstVisibleBase + i);
+            for (int j = 0; j < insertionWidth; ++j, x_pix_start += letterWidth) {
+                QRect insertionRect(x_pix_start, y_pix_start, letterWidth, letterHeight);
+                p.drawPixmap(insertionRect, cellRenderer->insertionGapCellImage());
+            }
+
             QRect r(x_pix_start, y_pix_start, letterWidth, letterHeight);
+            x_pix_start += letterWidth;
             char c = visibleSequence.at(i);
             // TODO: not hard-coded
             if (c != skipChar) {

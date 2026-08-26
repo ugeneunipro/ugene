@@ -355,7 +355,7 @@ void GTest_ImportDocument::init(XMLTestFormat*, const QDomElement& el) {
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
     QVariant variant;
-    variant.setValue<U2DbiRef>(destDb);
+    variant = QVariant::fromValue<U2DbiRef>(destDb);
     hints.insert(ImportHint_FormatId, outFormatId);
     hints.insert(ImportHint_DestinationUrl, outUrlAttr);
     hints.insert(DocumentFormat::DBI_REF_HINT, variant);
@@ -454,7 +454,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat*, const QDomElement& el) {
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
     QVariant variant;
-    variant.setValue<U2DbiRef>(destDb);
+    variant = QVariant::fromValue<U2DbiRef>(destDb);
     hints.insert(DocumentFormat::DBI_REF_HINT, variant);
     hints.insert(ImportHint_DestinationUrl, outUrlAttr);
     importTask = bestRes->importer->createImportTask(*bestRes, false, hints);

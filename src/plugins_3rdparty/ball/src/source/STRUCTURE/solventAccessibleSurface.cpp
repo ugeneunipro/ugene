@@ -81,7 +81,7 @@ namespace BALL
 	}
 
 	void SolventAccessibleSurface::setVertex(SASVertex* vertex, Position i)
-		throw(Exception::IndexOverflow)
+
 	{
 		if (i < number_of_vertices_)
 		{
@@ -94,7 +94,7 @@ namespace BALL
 	}
 
 	SASVertex* SolventAccessibleSurface::getVertex(Position i) const
-		throw(Exception::IndexOverflow)
+
 	{
 		if (i < number_of_vertices_)
 		{
@@ -112,7 +112,7 @@ namespace BALL
 	}
 		
 	void SolventAccessibleSurface::setEdge(SASEdge* edge, Position i)
-		throw(Exception::IndexOverflow)
+
 	{
 		if (i < number_of_edges_)
 		{
@@ -125,7 +125,7 @@ namespace BALL
 	}
 
 	SASEdge* SolventAccessibleSurface::getEdge(Position i) const
-		throw(Exception::IndexOverflow)
+
 	{
 		if (i < number_of_edges_)
 		{
@@ -143,7 +143,7 @@ namespace BALL
 	}
 		
 	void SolventAccessibleSurface::setFace(SASFace* face, Position i)
-		throw(Exception::IndexOverflow)
+
 	{
 		if (i < number_of_faces_)
 		{
@@ -156,7 +156,7 @@ namespace BALL
 	}
 
 	SASFace* SolventAccessibleSurface::getFace(Position i) const
-		throw(Exception::IndexOverflow)
+
 	{
 		if (i < number_of_faces_)
 		{

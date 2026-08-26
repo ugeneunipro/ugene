@@ -57,8 +57,7 @@ void WidgetScreenshotExportToSvgTask::run() {
     bool ok = file.open(QIODevice::ReadOnly);
     CHECK_EXT(ok, setError(tr("Can not open the file: %1").arg(file.fileName())), );
 
-    ok = doc.setContent(&file);
-    CHECK_EXT(ok, setError(tr("Can not open the file: %1").arg(file.fileName())), );
+    CHECK_EXT(bool(doc.setContent(&file)), setError(tr("Can not open the file: %1").arg(file.fileName())), );
 
     file.close();
     QDomNodeList radialGradients = doc.elementsByTagName("radialGradient");

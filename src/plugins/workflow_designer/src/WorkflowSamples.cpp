@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "WorkflowSamples.h"
 
 #include <QAbstractItemModel>
@@ -324,7 +326,7 @@ void LoadSamplesTask::scanDir(const QString& s, int depth) {
         }
 
         QTextStream in(&f);
-        in.setCodec("UTF-8");
+        in.setEncoding(QStringConverter::Utf8);
         Sample sample;
         sample.content = in.readAll();
 
@@ -391,7 +393,7 @@ QLineEdit* NameFilterLayout::getNameEdit() const {
 }
 
 bool NameFilterLayout::filterMatched(const QString& nameFilter, const QString& name) {
-    static QRegExp spaces("\\s");
+    static QRegularExpression spaces("\\s");
     QStringList filterWords = nameFilter.split(spaces);
     foreach (const QString& word, filterWords) {
         if (!name.contains(word, Qt::CaseInsensitive)) {

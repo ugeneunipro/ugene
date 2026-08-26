@@ -21,6 +21,8 @@
 
 #include "DatatypeSerializeUtils.h"
 
+#include <algorithm>
+
 #include <QBitArray>
 #include <QRegularExpression>
 #include <QStack>
@@ -760,7 +762,12 @@ inline SharedMolecule unpack(const uchar* data, int length, int& offset, U2OpSta
 inline QByteArray pack(const AtomCoordSet& data, PackContext& ctx) {
     QByteArray result;
     result += packNum<int>(data.size());
-    foreach (int idx, data.keys()) {
+    // AtomCoordSet is a QHash: iterate keys in a stable, sorted order so the serialized bytes
+    // are deterministic. Under Qt6 the QHash iteration order depends on the insertion history,
+    // so a serialize->deserialize->serialize round-trip would otherwise produce different bytes.
+    QList<int> keys = data.keys();
+    std::sort(keys.begin(), keys.end());
+    foreach (int idx, keys) {
         result += packNum<int>(idx);
         result += pack(data[idx], ctx);
     }

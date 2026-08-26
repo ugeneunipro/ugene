@@ -632,7 +632,7 @@ namespace BALL
 
 
     void SolventExcludedSurface::compute()
-        throw(Exception::GeneralException)
+
     {
         SESComputer sesc(this);
         sesc.run();
@@ -1049,7 +1049,7 @@ namespace BALL
 
 
     void SESComputer::run()
-        throw(Exception::GeneralException)
+
     {
         preProcessing();
         get();
@@ -1655,7 +1655,7 @@ namespace BALL
 
 
     bool SESSingularityCleaner::run()
-        throw(Exception::GeneralException)
+
     {
         if (!treatFirstCategory())
         {

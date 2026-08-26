@@ -241,7 +241,7 @@ TVTSItem* TestViewController::getFolder(TVItem* element, const QString* firstDir
         auto item = static_cast<TVItem*>(element->child(j));
         if (item->isSuite()) {
             auto ditem = static_cast<TVTSItem*>(item);
-            if (ditem->name == firstDirName) {
+            if (ditem->name == *firstDirName) {
                 return ditem;
             }
         }
@@ -624,7 +624,7 @@ void TestViewController::saveTestSuite(const QString& url, QMap<GTestRef*, QStri
     f.close();
 
     QDomDocument suiteDoc;
-    bool res = suiteDoc.setContent(xmlData);
+    bool res = bool(suiteDoc.setContent(xmlData));
     if (!res) {
         err = ("not_an_xml_suite_file");
         return;

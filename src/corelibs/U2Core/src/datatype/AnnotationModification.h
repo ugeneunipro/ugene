@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#pragma once
+
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
 

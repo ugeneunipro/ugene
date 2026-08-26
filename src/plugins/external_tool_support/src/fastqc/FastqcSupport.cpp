@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "FastqcSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -48,7 +50,7 @@ FastQCSupport::FastQCSupport()
     validationMessageRegExp = "FastQC v";
     description = tr("<i>FastQC</i>: A quality control tool for high throughput sequence data.");
 
-    versionRegExp = QRegExp("FastQC v(\\d+.\\d+.\\d+)");
+    versionRegExp = QRegularExpression("FastQC v(\\d+.\\d+.\\d+)");
     toolKitName = "FastQC";
 
     toolRunnerProgram = PerlSupport::ET_PERL_ID;

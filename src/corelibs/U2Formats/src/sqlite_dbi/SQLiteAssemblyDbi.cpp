@@ -589,6 +589,10 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& importInfo
     }
 
     int coverageStartIndex = int(read->leftmostPos / importInfo.readBasesPerCoveragePoint);
+    // A read starting at/after the end of the coverage array leaves no coverage points to fill.
+    // Without this guard the upper bound below is <= 0 (< the minimum of 1), which makes Qt6
+    // qBound assert, and the loop would also write out of bounds. Qt5 silently clamped to 1.
+    CHECK(coverageStartIndex < importInfo.coverage.size(), );
     int coverageLengthUnderRead = qBound(1, int(read->effectiveLen / importInfo.readBasesPerCoveragePoint), importInfo.coverage.size() - coverageStartIndex);
     int* coverageData = importInfo.coverage.data();
     int readMapLength = readToReferenceMap.length();
