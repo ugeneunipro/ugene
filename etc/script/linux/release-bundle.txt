@@ -1233,6 +1233,7 @@ imageformats/libqgif.so
 imageformats/libqico.so
 imageformats/libqjpeg.so
 imageformats/libqsvg.so
+libb2.so.1
 libbreakpad.so
 libQt6Core5Compat.so.6
 libQt6Core.so.6
@@ -1248,6 +1249,8 @@ libQt6Test.so.6
 libQt6WebSockets.so.6
 libQt6Widgets.so.6
 libQt6Xml.so.6
+libQt6XcbQpa.so.6
+libQt6EglFSDeviceIntegration.so.6
 libqtscript.so
 libU2Algorithm.so
 libU2Core.so

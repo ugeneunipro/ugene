@@ -17,16 +17,39 @@ fi
 
 echo "copy_qt_files_to_ugene.sh is called with QT_DIR: '${QT_DIR}', UGENE dir: '${UGENE_DIR}'"
 
-# Qt core libraries.
-QT_LIBS=("Core" "Core5Compat" "DBus" "Gui" "Network" "NetworkAuth" "OpenGL" "OpenGLWidgets" "PrintSupport" "Svg" "Test" "WebSockets" "Widgets" "Xml")
+# Qt core libraries. XcbQpa and EglFSDeviceIntegration are private Qt QPA
+# libraries required respectively by the 'xcb' and 'eglfs' platform plugins:
+# without them those plugins cannot be initialized at runtime on a bare system.
+QT_LIBS=("Core" "Core5Compat" "DBus" "Gui" "Network" "NetworkAuth" "OpenGL" "OpenGLWidgets" "PrintSupport" "Svg" "Test" "WebSockets" "Widgets" "Xml" "XcbQpa" "EglFSDeviceIntegration")
 for LIB in ${QT_LIBS[*]}; do
   FULL_LIB_NAME="libQt6${LIB}.so.6"
   rm -rf "${UGENE_DIR:?}/${FULL_LIB_NAME}"
-  echo "Copying ${QT_DIR}/lib/${FULL_LIB_NAME} to ${UGENE_DIR}"
-  cp -L "${QT_DIR}/lib/${FULL_LIB_NAME}" "${UGENE_DIR}/"
+  if [ -f "${QT_DIR}/lib/${FULL_LIB_NAME}" ]; then
+    echo "Copying ${QT_DIR}/lib/${FULL_LIB_NAME} to ${UGENE_DIR}"
+    cp -L "${QT_DIR}/lib/${FULL_LIB_NAME}" "${UGENE_DIR}/"
+  else
+    echo "NOTE: ${QT_DIR}/lib/${FULL_LIB_NAME} is not present, skipping"
+  fi
 done
 # shellcheck disable=SC2016
 find "${UGENE_DIR}" -maxdepth 1 -name "*.so.6" -exec patchelf --force-rpath --set-rpath '$ORIGIN' {} \;
+
+# libb2.so.1 is a transitive runtime dependency of libQt6Core.so.6 (Qt6 links
+# against the libb2/blake2 implementation on the build host). It is not part of
+# the Qt distribution, so we bundle the system copy to keep the bundle
+# self-contained on hosts that do not ship libb2.
+LIBB2_SRC=$(ldconfig -p 2>/dev/null | awk '/libb2\.so\.1/ {print $NF; exit}')
+if [ -z "${LIBB2_SRC}" ]; then
+  LIBB2_SRC="/lib/x86_64-linux-gnu/libb2.so.1"
+fi
+if [ -f "${LIBB2_SRC}" ]; then
+  echo "Copying ${LIBB2_SRC} to ${UGENE_DIR}/libb2.so.1"
+  cp -L "${LIBB2_SRC}" "${UGENE_DIR}/libb2.so.1"
+  # shellcheck disable=SC2016
+  patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}/libb2.so.1" || true
+else
+  echo "WARNING: libb2.so.1 not found on the build host (${LIBB2_SRC}); some hosts may not run the bundle."
+fi
 
 # Platform drivers.
 rm -rf "${UGENE_DIR}/platforms"
