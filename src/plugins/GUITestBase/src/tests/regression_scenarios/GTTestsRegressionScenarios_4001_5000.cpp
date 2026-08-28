@@ -277,7 +277,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(lt.hasMessage("Alignment requires too much memory for a single pairwise DP step"),
+    CHECK_SET_ERR(lt.hasMessage("There is not enough memory to align these sequences with MUSCLE"),
                   "No expected 'not enough memory' error in the log");
 }
 
