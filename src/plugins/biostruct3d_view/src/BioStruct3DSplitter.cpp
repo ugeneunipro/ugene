@@ -162,13 +162,6 @@ void BioStruct3DSplitter::addObject(BioStruct3DObject* bioStructObj) {
     if (!biostrucViewMap.contains(bioStructObj)) {
         setVisible(true);
         addBioStruct3DGLWidget(bioStructObj);
-        // Qt6: QSplitter no longer sizes a freshly inserted widget by its sizeHint(),
-        // so an expanded view may open collapsed to a few dozen pixels. Give the view
-        // its normal height explicitly.
-        // [TEMPORARY DISABLED for diagnosis]
-        // if (!isViewCollapsed) {
-        //     adaptSize(1);
-        // }
     }
 }
 
