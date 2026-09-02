@@ -56,6 +56,11 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
+namespace GuiTests {
+// Shared util defined in tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.cpp.
+bool compareColorsInRange(const QColor& col1, const QColor& col2, int percentageRange);
+}  // namespace GuiTests
+
 namespace U2 {
 
 // 8 - text
@@ -198,7 +203,13 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QPoint samplePoint(GTUtilsWorkflowDesigner::getItemLeft("Read Alignment") + 10, GTUtilsWorkflowDesigner::getItemTop("Read Alignment") + 10);
     QRgb rgb = image.pixel(samplePoint);
     QColor color(rgb);
-    CHECK_SET_ERR(color.name() == "#ffbfbf", QString("Expected: #ffbfbf, found: %1").arg(color.name()));
+    // The worker background is painted with a radial gradient (from the scene's background to the
+    // configured color), so the exact RGB of a single pixel is sensitive to antialiasing/subpixel
+    // layout and may vary slightly between runs/machines. Compare within a tolerance instead of
+    // requiring one precise color: verify that the sampled pixel is close to the expected reddish
+    // worker with the configured red background applied.
+    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, QColor("#ffbfbf"), 15),
+                  QString("Expected a color close to #ffbfbf ('red background' applied), found: %1").arg(color.name()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
