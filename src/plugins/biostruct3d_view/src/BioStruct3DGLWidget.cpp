@@ -575,6 +575,12 @@ void BioStruct3DGLWidget::writeImage2DToFile(int format, int options, int nbcol,
         }
     }
 
+    // Qt6 composites QOpenGLWidgets through its own (RHI) OpenGL context, so by the time the export
+    // task runs the current context is not the one this widget renders into. gl2ps then captures the
+    // feedback buffer of a foreign context and writes a valid but visually empty document. Bind the
+    // widget's own context explicitly for the whole capture.
+    makeCurrent();
+
     glFrame->updateViewPort();
     glGetIntegerv(GL_VIEWPORT, viewport);
 
@@ -600,6 +606,8 @@ void BioStruct3DGLWidget::writeImage2DToFile(int format, int options, int nbcol,
     }
 
     fclose(fp);
+
+    doneCurrent();
 
     if (format == GL2PS_EPS) {
         // restore sizes
