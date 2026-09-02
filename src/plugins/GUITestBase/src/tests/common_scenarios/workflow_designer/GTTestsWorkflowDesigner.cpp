@@ -56,11 +56,6 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
-namespace GuiTests {
-// Shared util defined in tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.cpp.
-bool compareColorsInRange(const QColor& col1, const QColor& col2, int percentageRange);
-}  // namespace GuiTests
-
 namespace U2 {
 
 // 8 - text
@@ -188,6 +183,16 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     }
 }
 
+// Compares that each channel of 'color' is within percentageRange% of the corresponding channel
+// of 'referenceColor'. Single-channel tolerance (in percent).
+static bool isColorCloseWithinRange(const QColor& color, const QColor& referenceColor, int percentageRange) {
+    auto inRange = [percentageRange](int actual, int reference) {
+        return qAbs(actual - reference) <= (reference * percentageRange) / 100;
+    };
+    return inRange(color.red(), referenceColor.red()) && inRange(color.green(), referenceColor.green())
+        && inRange(color.blue(), referenceColor.blue());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Activate WD preferences page. Change Background color for workers.
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(255, 0, 0));
@@ -208,7 +213,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // layout and may vary slightly between runs/machines. Compare within a tolerance instead of
     // requiring one precise color: verify that the sampled pixel is close to the expected reddish
     // worker with the configured red background applied.
-    CHECK_SET_ERR(GuiTests::compareColorsInRange(color, QColor("#ffbfbf"), 15),
+    CHECK_SET_ERR(isColorCloseWithinRange(color, QColor("#ffbfbf"), 15),
                   QString("Expected a color close to #ffbfbf ('red background' applied), found: %1").arg(color.name()));
 }
 
