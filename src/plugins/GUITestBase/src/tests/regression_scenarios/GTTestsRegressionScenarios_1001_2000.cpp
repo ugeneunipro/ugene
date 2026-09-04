@@ -1583,6 +1583,7 @@ GUI_TEST_CLASS_DEFINITION(test_1152) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter, Qt::ControlModifier);
 
     // Expected state : 1 pattern is found
+    GTUtilsTaskTreeView::waitTaskFinished();
     auto resultLabel = GTWidget::findLabel("resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: 1/1328", "Unexpected find algorithm result count");
 }
@@ -4140,6 +4141,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTLineEdit::setText(GTWidget::findLineEdit("editEnd"), "1000");
 
     // Expected state : 1 pattern is found
+    GTUtilsTaskTreeView::waitTaskFinished();
     auto resultLabel = GTWidget::findLabel("resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: 1/1", "Unexpected find algorithm result count");
 }
