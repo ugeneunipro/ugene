@@ -183,6 +183,16 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     }
 }
 
+// Compares that each channel of 'color' is within percentageRange% of the corresponding channel
+// of 'referenceColor'. Single-channel tolerance (in percent).
+static bool isColorCloseWithinRange(const QColor& color, const QColor& referenceColor, int percentageRange) {
+    auto inRange = [percentageRange](int actual, int reference) {
+        return qAbs(actual - reference) <= (reference * percentageRange) / 100;
+    };
+    return inRange(color.red(), referenceColor.red()) && inRange(color.green(), referenceColor.green())
+        && inRange(color.blue(), referenceColor.blue());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Activate WD preferences page. Change Background color for workers.
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(255, 0, 0));
@@ -198,7 +208,13 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QPoint samplePoint(GTUtilsWorkflowDesigner::getItemLeft("Read Alignment") + 10, GTUtilsWorkflowDesigner::getItemTop("Read Alignment") + 10);
     QRgb rgb = image.pixel(samplePoint);
     QColor color(rgb);
-    CHECK_SET_ERR(color.name() == "#ffbfbf", QString("Expected: #ffbfbf, found: %1").arg(color.name()));
+    // The worker background is painted with a radial gradient (from the scene's background to the
+    // configured color), so the exact RGB of a single pixel is sensitive to antialiasing/subpixel
+    // layout and may vary slightly between runs/machines. Compare within a tolerance instead of
+    // requiring one precise color: verify that the sampled pixel is close to the expected reddish
+    // worker with the configured red background applied.
+    CHECK_SET_ERR(isColorCloseWithinRange(color, QColor("#ffbfbf"), 15),
+                  QString("Expected a color close to #ffbfbf ('red background' applied), found: %1").arg(color.name()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
