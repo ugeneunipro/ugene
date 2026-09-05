@@ -1139,5 +1139,72 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
                   "The inserted column looks exactly like the base that precedes it");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0040) {
+    // The insertion columns must not depend on the vertical offset. Reserving them for the visible
+    // rows only used to hide the insertions of the reads below the view and to shift every track
+    // sideways the moment those reads were scrolled to, leaving the consensus behind.
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    AssemblyBrowserUi* ui = GTUtilsAssemblyBrowser::getView();
+    CHECK_SET_ERR(ui != nullptr, "Assembly browser is not found");
+    AssemblyBrowser* browser = ui->getWindow();
+
+    for (int i = 0; i < 30 && !browser->areLettersVisible() && browser->canPerformZoomIn(); i++) {
+        GTUtilsAssemblyBrowser::zoomIn();
+    }
+    CHECK_SET_ERR(browser->areLettersVisible(), "Letters are not visible after zooming in");
+
+    // The region around the 0-based position 8008, where 26 reads of this assembly have an insertion.
+    GTUtilsAssemblyBrowser::goToPosition(7959);
+    GTUtilsAssemblyBrowser::scrollToStart(Qt::Vertical);
+    GTThread::waitForMainThread();
+
+    const QList<U2AssemblyInsertionSite> topSites = browser->getInsertionsMap().getSites();
+    const qint64 topColumn = browser->getInsertionsMap().getColumnOfRefPos(8008);
+    CHECK_SET_ERR(!topSites.isEmpty(), "No insertion column is reserved in the visible region");
+
+    // The very same positions, only the rows the view has not been scrolled to yet.
+    GTUtilsAssemblyBrowser::scrollToEnd(Qt::Vertical);
+    GTThread::waitForMainThread();
+    CHECK_SET_ERR(browser->getYOffsetInAssembly() > 0, "The reads area did not scroll down");
+    CHECK_SET_ERR(browser->getXOffsetInAssembly() == 7958,
+                  QString("Scrolling down moved the view sideways, to %1").arg(browser->getXOffsetInAssembly()));
+
+    const QList<U2AssemblyInsertionSite> bottomSites = browser->getInsertionsMap().getSites();
+    CHECK_SET_ERR(bottomSites.size() == topSites.size(),
+                  QString("Scrolling down changed the number of the insertion sites: %1 -> %2")
+                      .arg(topSites.size())
+                      .arg(bottomSites.size()));
+    for (int i = 0; i < topSites.size(); i++) {
+        CHECK_SET_ERR(bottomSites[i].refPos == topSites[i].refPos && bottomSites[i].width == topSites[i].width,
+                      QString("Scrolling down changed the insertion site of the position %1: width %2 -> %3")
+                          .arg(topSites[i].refPos)
+                          .arg(topSites[i].width)
+                          .arg(bottomSites[i].width));
+    }
+    CHECK_SET_ERR(browser->getInsertionsMap().getColumnOfRefPos(8008) == topColumn,
+                  "Scrolling down moved the position 8008 into another column");
+
+    // The consensus is drawn from the same map, so the columns it shows must still be the reserved
+    // ones: an insertion gap where the map says an insertion is, a base where it says a base is.
+    const int insertionWidth = browser->getInsertionsMap().getInsertionWidthBefore(8008);
+    CHECK_SET_ERR(insertionWidth > 0, "No insertion column is reserved for the position 8008");
+    auto consensusArea = GTWidget::findWidget("Consensus area", ui);
+    QImage consensusImage = GTWidget::getImage(consensusArea);
+    int cellWidth = browser->getCellWidth();
+    int insertedX = (topColumn - 1) * cellWidth + cellWidth / 2;
+    int baseX = topColumn * cellWidth + cellWidth / 2;
+    int previousBaseX = (topColumn - insertionWidth - 1) * cellWidth + cellWidth / 2;
+    CHECK_SET_ERR(baseX < consensusImage.width(), "The insertion column is out of the consensus area");
+
+    int y = consensusImage.height() / 2;
+    QRgb insertedColor = consensusImage.pixel(insertedX, y);
+    CHECK_SET_ERR(insertedColor != consensusImage.pixel(baseX, y),
+                  "The consensus did not follow the insertion columns: the inserted column looks exactly like the base that follows it");
+    CHECK_SET_ERR(insertedColor != consensusImage.pixel(previousBaseX, y),
+                  "The consensus did not follow the insertion columns: the inserted column looks exactly like the base that precedes it");
+}
+
 }  // namespace GUITest_Assembly_browser
 }  // namespace U2

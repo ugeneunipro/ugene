@@ -92,6 +92,9 @@ namespace U2 {
 const double AssemblyBrowser::ZOOM_MULT = 1.25;
 const double AssemblyBrowser::INITIAL_ZOOM_FACTOR = 1.;
 
+/** Deepest pile of reads getInsertionsMap() looks through, see the comment there. */
+static const qint64 MAX_ROWS_TO_SCAN_FOR_INSERTIONS = 10 * 1000;
+
 AssemblyBrowser::AssemblyBrowser(const QString& viewName, AssemblyObject* o)
     : GObjectViewController(AssemblyBrowserFactory::ID, viewName), ui(nullptr),
       gobject(o), model(nullptr), zoomFactor(INITIAL_ZOOM_FACTOR), xOffsetInAssembly(0), yOffsetInAssembly(0), coverageReady(false),
@@ -493,11 +496,7 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
     key.bases = basesCanBeVisible();
     // Insertion columns are only worth showing when there are letters to put into them. At a lower
     // zoom the visible region is huge as well, so skipping the scan keeps the overview cheap.
-    if (areLettersVisible() && !model->isEmpty() && !model->isDbLocked()) {
-        key.isBuilt = true;
-        key.yOffset = yOffsetInAssembly;
-        key.rows = rowsCanBeVisible();
-    }
+    key.isBuilt = areLettersVisible() && !model->isEmpty() && !model->isDbLocked();
     CHECK(!(key == insertionsMapKey), insertionsMap);
 
     insertionsMapKey = key;
@@ -508,9 +507,12 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
         return insertionsMap;
     }
 
-    // The reads area shows exactly these reads, so the columns reserved here are the columns it needs.
+    // Every read of the region is taken, not only the rows that happen to be on the screen: a
+    // column reserved for a read below the view is what keeps the tracks from jumping sideways
+    // once that read is scrolled to. The row limit is a safety net for abnormally deep coverage,
+    // it is far above the height of any assembly the reads area can be scrolled through by hand.
     U2OpStatusImpl os;
-    QList<U2AssemblyRead> reads = model->getReadsFromAssembly(visibleBases, key.yOffset, key.yOffset + key.rows, os);
+    QList<U2AssemblyRead> reads = model->getReadsFromAssembly(visibleBases, 0, MAX_ROWS_TO_SCAN_FOR_INSERTIONS, os);
     if (os.hasError()) {
         LOG_OP(os);
         // Retry on the next repaint instead of caching the failure as an insertion-free view.

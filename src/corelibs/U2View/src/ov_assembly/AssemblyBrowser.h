@@ -86,10 +86,13 @@ public:
     qint64 calcPainterOffset(qint64 xAsmCoord) const;
 
     /**
-     * Extra columns reserved for the insertions of the reads that are visible right now. Empty
-     * unless the zoom level is high enough to show letters: with no letters to show there is
-     * nothing an insertion column could display anyway. Rebuilt on demand when the view changes,
-     * all the tracks have to use the same map to stay aligned to each other.
+     * Extra columns reserved for the insertions of the reads of the visible positions. Every read
+     * covering those positions is taken into account, not only the rows the view is scrolled to:
+     * the columns must not depend on the vertical offset, otherwise scrolling down would silently
+     * widen them and shift all the tracks. Empty unless the zoom level is high enough to show
+     * letters: with no letters to show there is nothing an insertion column could display anyway.
+     * Rebuilt on demand when the view changes, all the tracks have to use the same map to stay
+     * aligned to each other.
      */
     const U2AssemblyInsertionsMap& getInsertionsMap() const;
 
@@ -254,19 +257,20 @@ private:
 
     CoverageInfo localCoverageCache;
 
-    /** State getInsertionsMap() result depends on: it is rebuilt as soon as any of these changes. */
+    /**
+     * State getInsertionsMap() result depends on: it is rebuilt as soon as any of these changes.
+     * The vertical offset is deliberately not a part of it: the map covers all the rows.
+     */
     struct InsertionsMapKey {
         bool operator==(const InsertionsMapKey& other) const {
-            return isBuilt == other.isBuilt && xOffset == other.xOffset && yOffset == other.yOffset &&
-                   cellWidth == other.cellWidth && bases == other.bases && rows == other.rows;
+            return isBuilt == other.isBuilt && xOffset == other.xOffset &&
+                   cellWidth == other.cellWidth && bases == other.bases;
         }
         /** False while the map has never been built for these offsets, e.g. the database was busy. */
         bool isBuilt = false;
         qint64 xOffset = -1;
-        qint64 yOffset = -1;
         int cellWidth = 0;
         qint64 bases = 0;
-        qint64 rows = 0;
     };
     mutable InsertionsMapKey insertionsMapKey;
     mutable U2AssemblyInsertionsMap insertionsMap;

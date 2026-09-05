@@ -285,6 +285,22 @@ void GTUtilsAssemblyBrowser::scrollToStart(Qt::Orientation orientation) {
     GTThread::waitForMainThread();
 }
 
+void GTUtilsAssemblyBrowser::scrollToEnd(Qt::Orientation orientation) {
+    QScrollBar* scrollBar = getScrollBar(orientation);
+    class MainThreadAction : public CustomScenario {
+    public:
+        MainThreadAction(QScrollBar* _scrollbar)
+            : scrollbar(_scrollbar) {
+        }
+        void run() override {
+            scrollbar->setValue(scrollbar->maximum());
+        }
+        QScrollBar* scrollbar = nullptr;
+    };
+    GTThread::runInMainThread(new MainThreadAction(scrollBar));
+    GTThread::waitForMainThread();
+}
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2
