@@ -68,7 +68,7 @@ void AssemblyBrowserSettings::setReadHintEnabled(bool what) {
 }
 
 bool AssemblyBrowserSettings::getOptimizeRenderOnScroll() {
-    return AppContext::getSettings()->getValue(OPTIMIZE_SCROLL, true).value<bool>();
+    return AppContext::getSettings()->getValue(OPTIMIZE_SCROLL, false).value<bool>();
 }
 
 void AssemblyBrowserSettings::setOptimizeRenderOnScroll(bool what) {
