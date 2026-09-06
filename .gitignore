@@ -58,6 +58,7 @@ ugene.pro.user
 # CMake/CLion artifacts
 /.cmake
 /cmake-build-*
+/build*
 
 # Qt generated
 **/GeneratedFiles/*
