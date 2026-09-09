@@ -7458,6 +7458,7 @@ GUI_TEST_CLASS_DEFINITION(test_1859) {
 
     // 5) Run workflow
     GTWidget::click(GTAction::button("Run workflow"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 6) Block file for writing
     GTFile::setReadOnly(outputFilePath);
