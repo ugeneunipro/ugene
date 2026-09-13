@@ -61,7 +61,7 @@ void CreateAnnotationWidgetFiller::commonScenario() {
         GTRadioButton::click(GTWidget::findRadioButton("rbCreateNewTable", dialog));
         if (!saveTo.isEmpty()) {
             QDir().mkpath(QFileInfo(saveTo).dir().absolutePath());
-            GTLineEdit::setText("leNewTablePath", saveTo, dialog);
+            GTLineEdit::setText("leNewTablePath", saveTo, dialog, false, true);
         }
     } else if (!saveTo.isEmpty()) {
         GTRadioButton::click(GTWidget::findRadioButton("rbExistingTable", dialog));
