@@ -45,6 +45,13 @@ protected:
     virtual bool canDrawSequence() = 0;
     virtual void drawSequence(QPainter& p);
 
+    /**
+     * Character to put into the extra column reserved for the read insertions in front of the
+     * reference position, 0 based offset inside the insertion. '\0' when the area has nothing of
+     * its own to show there and the plain insertion gap has to be drawn instead.
+     */
+    virtual char getInsertionChar(qint64 refPos, int offset) const;
+
     QSharedPointer<AssemblyModel> getModel() const {
         return model;
     }

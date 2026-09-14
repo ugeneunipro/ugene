@@ -64,6 +64,7 @@ public:
     static bool isWelcomeScreenVisible();
 
     static void zoomIn(Method method = Button);
+    static void zoomOut(Method method = Button);
     static void zoomToMax();
     static void zoomToMin();
     static void zoomToReads();

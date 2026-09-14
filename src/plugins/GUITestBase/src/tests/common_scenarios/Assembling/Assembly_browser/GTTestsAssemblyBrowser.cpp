@@ -35,6 +35,7 @@
 #include <QApplication>
 #include <QDir>
 
+#include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2AssemblyInsertionsMap.h>
 
@@ -52,6 +53,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/GTAction.h"
+#include "primitives/GTCheckBox.h"
 #include "primitives/GTComboBox.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
@@ -1119,8 +1121,8 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     CHECK_SET_ERR(insertions.getRefPosOfColumn(column - insertionWidth - 1) == 8007, "The column before the insertion maps to another position");
 
     // The columns are really drawn: the consensus track, which is rendered by the same code as the
-    // reference one, gets the insertion gap there instead of a base. This assembly has no reference
-    // associated, so the consensus is the track to look at.
+    // reference one, gets a column of its own there, told apart from the bases around it. This
+    // assembly has no reference associated, so the consensus is the track to look at.
     GTUtilsTaskTreeView::waitTaskFinished();
     GTThread::waitForMainThread();
     auto consensusArea = GTWidget::findWidget("Consensus area", ui);
@@ -1187,7 +1189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
                   "Scrolling down moved the position 8008 into another column");
 
     // The consensus is drawn from the same map, so the columns it shows must still be the reserved
-    // ones: an insertion gap where the map says an insertion is, a base where it says a base is.
+    // ones: the inserted column stays a column of its own, told apart from the bases around it.
     const int insertionWidth = browser->getInsertionsMap().getInsertionWidthBefore(8008);
     CHECK_SET_ERR(insertionWidth > 0, "No insertion column is reserved for the position 8008");
     auto consensusArea = GTWidget::findWidget("Consensus area", ui);
@@ -1204,6 +1206,183 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
                   "The consensus did not follow the insertion columns: the inserted column looks exactly like the base that follows it");
     CHECK_SET_ERR(insertedColor != consensusImage.pixel(previousBaseX, y),
                   "The consensus did not follow the insertion columns: the inserted column looks exactly like the base that precedes it");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0041) {
+    // An insertion column is worth showing exactly as long as any other column is. Reserving the
+    // columns only while the letters are visible made a whole stack of insertions disappear after
+    // a single zoom out, while the reference bases around it were still perfectly distinguishable.
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    AssemblyBrowserUi* ui = GTUtilsAssemblyBrowser::getView();
+    CHECK_SET_ERR(ui != nullptr, "Assembly browser is not found");
+    AssemblyBrowser* browser = ui->getWindow();
+
+    for (int i = 0; i < 30 && !browser->areLettersVisible() && browser->canPerformZoomIn(); i++) {
+        GTUtilsAssemblyBrowser::zoomIn();
+    }
+    CHECK_SET_ERR(browser->areLettersVisible(), "Letters are not visible after zooming in");
+
+    // The region around the 0-based position 8008, where 26 reads of this assembly have an insertion.
+    GTUtilsAssemblyBrowser::goToPosition(7959);
+    GTThread::waitForMainThread();
+    int widthWithLetters = browser->getInsertionsMap().getInsertionWidthBefore(8008);
+    CHECK_SET_ERR(widthWithLetters > 0, "No insertion column is reserved for the position 8008");
+
+    // One step out: the cells are still drawn, only the letters in them are gone.
+    GTUtilsAssemblyBrowser::zoomOut();
+    GTThread::waitForMainThread();
+    CHECK_SET_ERR(browser->areCellsVisible(), "Cells are not visible after a single zoom out");
+    CHECK_SET_ERR(!browser->areLettersVisible(), "Letters are still visible after a single zoom out");
+
+    GTUtilsAssemblyBrowser::goToPosition(7959);
+    GTThread::waitForMainThread();
+    CHECK_SET_ERR(browser->getInsertionsMap().getInsertionWidthBefore(8008) == widthWithLetters,
+                  QString("The insertion columns of the position 8008 are gone once the letters are: %1 -> %2")
+                      .arg(widthWithLetters)
+                      .arg(browser->getInsertionsMap().getInsertionWidthBefore(8008)));
+
+    // All the way down to the cell level the columns are still there, and below it nothing is
+    // drawn per position anymore, so there is nothing left to reserve a column for either.
+    GTUtilsAssemblyBrowser::zoomToMin();
+    GTThread::waitForMainThread();
+    CHECK_SET_ERR(!browser->areCellsVisible(), "Cells are still visible at the minimal zoom");
+    CHECK_SET_ERR(browser->getInsertionsMap().isEmpty(), "Insertion columns are reserved with no cells to draw them in");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0042) {
+    // The consensus of an insertion column and the coverage the ruler shows for it. In this
+    // assembly all 26 reads covering the 0-based position 8008 insert a 'G' in front of it, so
+    // the letter clearly outvotes the gaps, while the single inserted letter of the position 7995
+    // is outvoted by the 30 reads that have nothing there.
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    AssemblyBrowserUi* ui = GTUtilsAssemblyBrowser::getView();
+    CHECK_SET_ERR(ui != nullptr, "Assembly browser is not found");
+    AssemblyBrowser* browser = ui->getWindow();
+
+    for (int i = 0; i < 30 && !browser->areLettersVisible() && browser->canPerformZoomIn(); i++) {
+        GTUtilsAssemblyBrowser::zoomIn();
+    }
+    CHECK_SET_ERR(browser->areLettersVisible(), "Letters are not visible after zooming in");
+
+    GTUtilsAssemblyBrowser::goToPosition(7959);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTThread::waitForMainThread();
+
+    const U2AssemblyInsertionsMap& insertions = browser->getInsertionsMap();
+    CHECK_SET_ERR(QString(insertions.getInsertionConsensus(8008)) == "G",
+                  "Unexpected consensus of the insertion column of the position 8008: " + QString(insertions.getInsertionConsensus(8008)));
+    CHECK_SET_ERR(QString(insertions.getInsertionConsensus(7995)) == "-",
+                  "Unexpected consensus of the insertion column of the position 7995: " + QString(insertions.getInsertionConsensus(7995)));
+    CHECK_SET_ERR(insertions.getInsertionCoverage(8008, 0) == 26,
+                  QString("Unexpected coverage of the insertion column of the position 8008: %1").arg(insertions.getInsertionCoverage(8008, 0)));
+    CHECK_SET_ERR(insertions.getInsertionCoverage(7995, 0) == 1,
+                  QString("Unexpected coverage of the insertion column of the position 7995: %1").arg(insertions.getInsertionCoverage(7995, 0)));
+
+    // The consensus track really draws that letter: the column looks like a plain 'G' of the
+    // consensus, not like the empty insertion gap the outvoted column of the position 7995 gets.
+    // The 0-based position 7959 is the first 'G' of the consensus in the view.
+    int cellWidth = browser->getCellWidth();
+    int letterX = (insertions.getColumnOfRefPos(8008) - 1) * cellWidth + cellWidth / 2;
+    int gapX = (insertions.getColumnOfRefPos(7995) - 1) * cellWidth + cellWidth / 2;
+    int consensusGX = insertions.getColumnOfRefPos(7959) * cellWidth + cellWidth / 2;
+
+    auto consensusArea = GTWidget::findWidget("Consensus area", ui);
+    QImage consensusImage = GTWidget::getImage(consensusArea);
+    CHECK_SET_ERR(letterX < consensusImage.width(), "The insertion column is out of the consensus area");
+
+    int y = consensusImage.height() / 2;
+    CHECK_SET_ERR(consensusImage.pixel(letterX, y) == consensusImage.pixel(consensusGX, y),
+                  "The consensus of the insertion column is not drawn as the very same letter of the consensus");
+    CHECK_SET_ERR(consensusImage.pixel(letterX, y) != consensusImage.pixel(gapX, y),
+                  "The consensus of the insertion column looks exactly like an insertion column with no consensus");
+
+    // The ruler numbers an extra column after the base on its LEFT and marks it with a '+': the
+    // column is not the position it is rendered in front of. Its coverage is the number of reads
+    // that really have a letter there, not the coverage of the neighbour reference position.
+    auto ruler = GTWidget::findWidget("AssemblyRuler", ui);
+    GTMouseDriver::moveTo(ruler->mapToGlobal(QPoint(gapX, ruler->height() / 2)));
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(500);
+
+    QObject* startPositionParent = ruler->findChild<QObject*>("start position");
+    CHECK_SET_ERR(startPositionParent != nullptr, "The ruler cursor label holder is not found");
+    QObject* startPosition = startPositionParent->findChild<QObject*>();
+    CHECK_SET_ERR(startPosition != nullptr, "The ruler cursor label is not found");
+
+    QString expectedLabel = FormatUtils::formatNumberWithSeparators(7995) + "+ C 1";
+    CHECK_SET_ERR(startPosition->objectName() == expectedLabel,
+                  QString("Unexpected ruler label of an insertion column: expected '%1', got '%2'")
+                      .arg(expectedLabel)
+                      .arg(startPosition->objectName()));
+
+    // A reference column right next to it is still numbered and covered the usual way.
+    int referenceX = insertions.getColumnOfRefPos(7995) * cellWidth + cellWidth / 2;
+    GTMouseDriver::moveTo(ruler->mapToGlobal(QPoint(referenceX, ruler->height() / 2)));
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(500);
+    CHECK_SET_ERR(startPosition->objectName().startsWith(FormatUtils::formatNumberWithSeparators(7996) + " C "),
+                  "Unexpected ruler label of a reference column: " + startPosition->objectName());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0043) {
+    // 'Keep insertions' adds the consensus of the insertion columns to the exported sequence.
+    // Six insertion sites of this assembly have a letter consensus, 9 characters in total, and
+    // every one of them shifts the rest of the sequence: the flag is off by default because the
+    // exported consensus is expected to follow the reference numbering.
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public CustomScenario {
+    public:
+        Scenario(const QString& filePath, bool keepInsertions)
+            : filePath(filePath), keepInsertions(keepInsertions) {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            QCheckBox* keepInsertionsCheckBox = GTWidget::findCheckBox("keepInsertionsCheckBox", dialog);
+            CHECK_SET_ERR(!keepInsertionsCheckBox->isChecked(), "'Keep insertions' is checked by default");
+            GTCheckBox::setChecked(keepInsertionsCheckBox, keepInsertions);
+
+            // The exported sequence is only read from the file: opening a view for it would take
+            // the assembly browser out of focus, and the second export is called from there.
+            GTCheckBox::setChecked(GTWidget::findCheckBox("addToProjectCheckBox", dialog), false);
+            GTLineEdit::setText(GTWidget::findLineEdit("filepathLineEdit", dialog), filePath);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+        QString filePath;
+        bool keepInsertions;
+    };
+
+    QString plainPath = sandBoxDir + "assembly_browser_test_0043_plain.fa";
+    GTUtilsDialog::waitForDialog(new ExportConsensusDialogFiller(new Scenario(plainPath, false)));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export consensus..."}));
+    GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Consensus);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    QString withInsertionsPath = sandBoxDir + "assembly_browser_test_0043_insertions.fa";
+    GTUtilsDialog::waitForDialog(new ExportConsensusDialogFiller(new Scenario(withInsertionsPath, true)));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export consensus..."}));
+    GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Consensus);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto sequenceLength = [](const QString& path) {
+        QByteArray fasta = GTFile::readAll(path);
+        int headerEnd = fasta.indexOf('\n');
+        return QString::fromLatin1(fasta.mid(headerEnd + 1)).remove(QRegularExpression("\\s")).length();
+    };
+    int plainLength = sequenceLength(plainPath);
+    int withInsertionsLength = sequenceLength(withInsertionsPath);
+    CHECK_SET_ERR(plainLength > 0, "The exported consensus is empty");
+    CHECK_SET_ERR(withInsertionsLength - plainLength == 9,
+                  QString("Unexpected number of the exported insertions: expected 9, got %1 (%2 -> %3)")
+                      .arg(withInsertionsLength - plainLength)
+                      .arg(plainLength)
+                      .arg(withInsertionsLength));
 }
 
 }  // namespace GUITest_Assembly_browser

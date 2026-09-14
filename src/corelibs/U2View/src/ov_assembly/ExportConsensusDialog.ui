@@ -83,6 +83,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="keepInsertionsCheckBox">
+     <property name="toolTip">
+      <string>Export the consensus of the columns the read insertions take. Those columns are not reference positions, so every one of them shifts the rest of the sequence.</string>
+     </property>
+     <property name="text">
+      <string>Keep insertions</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QCheckBox" name="addToProjectCheckBox">

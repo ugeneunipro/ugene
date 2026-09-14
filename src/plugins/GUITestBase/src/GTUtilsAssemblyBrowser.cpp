@@ -163,6 +163,23 @@ void GTUtilsAssemblyBrowser::zoomIn(Method method) {
     }
 }
 
+void GTUtilsAssemblyBrowser::zoomOut(Method method) {
+    checkAssemblyBrowserWindowIsActive();
+    switch (method) {
+        case Button:
+            GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Zoom out");
+            break;
+        case Hotkey:
+            if (!GTWidget::findWidget("assembly_reads_area")->hasFocus()) {
+                GTWidget::click(GTWidget::findWidget("assembly_reads_area"));
+            }
+            GTKeyboardDriver::keyClick('-');
+            break;
+        default:
+            break;
+    }
+}
+
 void GTUtilsAssemblyBrowser::zoomToMax() {
     checkAssemblyBrowserWindowIsActive();
     QToolBar* toolbar = GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI);

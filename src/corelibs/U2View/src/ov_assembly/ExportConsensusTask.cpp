@@ -129,11 +129,29 @@ QList<Task*> ExportConsensusTask::onSubTaskFinished(Task* finished) {
 AssemblyConsensusTaskSettings ExportConsensusTask::getNextSettings() {
     AssemblyConsensusTaskSettings iterSettings = settings;
     iterSettings.region = consensusRegions.dequeue();
+    iterSettings.calculateInsertions = settings.keepInsertions;
     return iterSettings;
 }
 
+/**
+ * Weaves the consensus of the insertion columns into the consensus of the reference positions.
+ * An insertion column whose consensus is a gap contributes nothing: it is only a column because
+ * some other read has letters there, the consensus sequence has no character to put in it.
+ */
+static QByteArray addInsertions(const ConsensusInfo& result) {
+    QByteArray consensusWithInsertions;
+    consensusWithInsertions.reserve(result.consensus.size());
+    for (int i = 0; i < result.consensus.size(); i++) {
+        QByteArray insertion = result.insertions.getInsertionConsensus(result.region.startPos + i);
+        insertion.replace(U2AssemblyInsertionsMap::GAP_CHAR, "");
+        consensusWithInsertions += insertion;
+        consensusWithInsertions += result.consensus.at(i);
+    }
+    return consensusWithInsertions;
+}
+
 void ExportConsensusTask::reportResult(const ConsensusInfo& result) {
-    QByteArray consensus = result.consensus;
+    QByteArray consensus = settings.keepInsertions ? addInsertions(result) : result.consensus;
 
     if (!settings.keepGaps) {
         consensus.replace(QString(AssemblyConsensusAlgorithm::EMPTY_CHAR).toLatin1(), "");

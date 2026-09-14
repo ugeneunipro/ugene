@@ -107,15 +107,31 @@ void AssemblyRuler::drawCursor(QPainter& p) {
 
     // 2. find current position
     qint64 posXInAsm = browser->calcAsmPosX(cursorPos);
+    int cellWidth = browser->getCellWidth();
+    const U2AssemblyInsertionsMap& insertions = browser->getInsertionsMap();
+    int insertionOffset = cellWidth == 0 ? -1 : insertions.getInsertionOffsetOfColumn(cursorPos / cellWidth);
 
     // 3. format the string, add coverage if needed
-    //  pos + 1 because of 1-based coords
-    QString cursorLabel = FormatUtils::formatNumberWithSeparators(posXInAsm + 1);
-    if (showCoverage) {
-        qint32 coverage = browser->getCoverageAtPos(posXInAsm);
-        if (coverage >= 0) {  // not have info about coverage yet
-            cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
+    QString cursorLabel;
+    qint64 coverage = -1;
+    if (insertionOffset >= 0) {
+        // An extra column has no reference position of its own: it is rendered in FRONT of
+        // posXInAsm, so it is numbered after the base on its left and marked with a '+'. The
+        // coverage of the reference position says nothing about it either, only the reads that
+        // really put a letter into this very column are covering it.
+        cursorLabel = FormatUtils::formatNumberWithSeparators(posXInAsm) + "+";
+        if (showCoverage) {
+            coverage = insertions.getInsertionCoverage(posXInAsm, insertionOffset);
         }
+    } else {
+        //  pos + 1 because of 1-based coords
+        cursorLabel = FormatUtils::formatNumberWithSeparators(posXInAsm + 1);
+        if (showCoverage) {
+            coverage = browser->getCoverageAtPos(posXInAsm);
+        }
+    }
+    if (coverage >= 0) {  // not have info about coverage yet
+        cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
     }
     int textWidth = p.fontMetrics().horizontalAdvance(cursorLabel);
     int textHeight = p.fontMetrics().height();

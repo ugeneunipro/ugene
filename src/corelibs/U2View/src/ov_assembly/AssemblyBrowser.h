@@ -89,8 +89,8 @@ public:
      * Extra columns reserved for the insertions of the reads of the visible positions. Every read
      * covering those positions is taken into account, not only the rows the view is scrolled to:
      * the columns must not depend on the vertical offset, otherwise scrolling down would silently
-     * widen them and shift all the tracks. Empty unless the zoom level is high enough to show
-     * letters: with no letters to show there is nothing an insertion column could display anyway.
+     * widen them and shift all the tracks. Empty unless the cells are visible: below that zoom
+     * level nothing is drawn per position, so there is nothing an insertion column could display.
      * Rebuilt on demand when the view changes, all the tracks have to use the same map to stay
      * aligned to each other.
      */

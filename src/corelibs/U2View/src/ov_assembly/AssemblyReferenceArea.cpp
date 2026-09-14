@@ -89,6 +89,10 @@ bool AssemblySequenceArea::areCellsVisible() const {
     return browser->areCellsVisible();
 }
 
+char AssemblySequenceArea::getInsertionChar(qint64, int) const {
+    return '\0';
+}
+
 void AssemblySequenceArea::drawSequence(QPainter& p) {
     GTIMER(c1, t1, "AssemblySequenceArea::drawSequence");
 
@@ -131,7 +135,10 @@ void AssemblySequenceArea::drawSequence(QPainter& p) {
             int insertionWidth = insertions.getInsertionWidthBefore(firstVisibleBase + i);
             for (int j = 0; j < insertionWidth; ++j, x_pix_start += letterWidth) {
                 QRect insertionRect(x_pix_start, y_pix_start, letterWidth, letterHeight);
-                p.drawPixmap(insertionRect, cellRenderer->insertionGapCellImage());
+                // The reference has no base of its own here, the consensus may well have one.
+                char insertionChar = getInsertionChar(firstVisibleBase + i, j);
+                p.drawPixmap(insertionRect, insertionChar == '\0' ? cellRenderer->insertionGapCellImage()
+                                                                  : cellRenderer->cellImage(insertionChar));
             }
 
             QRect r(x_pix_start, y_pix_start, letterWidth, letterHeight);
