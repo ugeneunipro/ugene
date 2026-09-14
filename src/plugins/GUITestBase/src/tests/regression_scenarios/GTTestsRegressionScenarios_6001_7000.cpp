@@ -6866,7 +6866,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     // 6. Click "Create".
     QString annotationPath = QFileInfo(sandBoxDir + "read_only_dir/annot.gb").absoluteFilePath();
     GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(true, "<auto>", "", "1..1", annotationPath));
-    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTMenu::clickMainMenuItem({"Actions", "Add", "New annotation..."});
 
     GTLogTracer lt;
 
@@ -6909,7 +6909,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     // 10. Create another annotation with region 1..1 and path "path to/read_only_dir/annot1.gb".
     annotationPath = QFileInfo(sandBoxDir + "read_only_dir/annot1.gb").absoluteFilePath();
     GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(true, "misc_feature", "", "1..1", annotationPath));
-    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTMenu::clickMainMenuItem({"Actions", "Add", "New annotation..."});
 
     class Clicker : public CustomScenario {
     public:
