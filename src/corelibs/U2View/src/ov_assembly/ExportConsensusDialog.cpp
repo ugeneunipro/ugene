@@ -61,6 +61,7 @@ ExportConsensusDialog::ExportConsensusDialog(QWidget* p, const ExportConsensusTa
     addToProjectCheckBox->setChecked(settings.addToProject);
     regionSelector->setCustomRegion(settings.region);
     keepGapsCheckBox->setChecked(settings.keepGaps);
+    keepInsertionsCheckBox->setChecked(settings.keepInsertions);
 
     QList<QString> algos = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmIds();
     algorithmComboBox->addItems(algos);
@@ -83,6 +84,7 @@ void ExportConsensusDialog::accept() {
     settings.addToProject = addToProjectCheckBox->isChecked();
     settings.region = regionSelector->getRegion(&isRegionOk);
     settings.keepGaps = keepGapsCheckBox->isChecked();
+    settings.keepInsertions = keepInsertionsCheckBox->isChecked();
 
     QString algoId = algorithmComboBox->currentText();
     if (algoId != settings.consensusAlgorithm->getId()) {

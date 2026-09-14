@@ -10,6 +10,13 @@
     + hugeInsertionIsTruncated
     + insertionOutsideTheRegionIsIgnored
     + columnsAndPositionsMatchEachOther
+    + oneBaseOfOverlapKeepsTheInsertionOfTheFirstPosition
+    + insertionColumnsAreToldFromTheReferenceOnes
+    + insertedLettersOutvoteTheGaps
+    + gapsOutvoteTheInsertedLetters
+    + everyInsertionColumnIsCountedOnItsOwn
+    + theMostFrequentInsertedLetterWins
+    + incrementalBuildMatchesTheBatchOne
     + readIteratorReportsInsertedLetters
     + readIteratorSkipsInsertionsBeforeStartPos
 

@@ -25,6 +25,7 @@
 
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2Core/U2Assembly.h>
+#include <U2Core/U2AssemblyInsertionsMap.h>
 #include <U2Core/U2Type.h>
 
 #include "AssemblyModel.h"
@@ -35,12 +36,22 @@ struct ConsensusInfo {
     QByteArray consensus;
     U2Region region;
     QString algorithmId;
+
+    /**
+     * Consensus of the columns the read insertions take, empty unless it was asked for. The
+     * consensus above has one character per reference position and an insertion has none of its
+     * own, so the two have to be kept apart and woven together only by whoever needs them woven.
+     */
+    U2AssemblyInsertionsMap insertions;
 };
 
 struct U2VIEW_EXPORT AssemblyConsensusTaskSettings {
     QSharedPointer<AssemblyConsensusAlgorithm> consensusAlgorithm;
     QSharedPointer<AssemblyModel> model;
     U2Region region;
+
+    /** Fill ConsensusInfo::insertions in as well: it costs another pass over the reads. */
+    bool calculateInsertions = false;
 };
 
 /**

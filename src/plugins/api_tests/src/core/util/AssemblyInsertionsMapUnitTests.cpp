@@ -182,6 +182,143 @@ IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, columnsAndPositionsMatchEachOther
     CHECK_EQUAL(106, map.getRefPosOfColumn(9), "position of the next column");
 }
 
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, oneBaseOfOverlapKeepsTheInsertionOfTheFirstPosition) {
+    // The insertion belongs to the position 105 and a read that starts earlier only reports it
+    // after the position before it has been walked through. A region that begins right at 105
+    // therefore misses it, and a caller that splits an assembly into regions of its own (the
+    // consensus export does) has to scan one base of overlap to get it back.
+    QList<U2AssemblyRead> reads;
+    reads << makeRead(100, "AAAAAGGGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 3, U2CigarOp_M, 5));
+
+    U2AssemblyInsertionsMap mapWithoutOverlap;
+    mapWithoutOverlap.build(reads, U2Region(105, 5));
+    CHECK_TRUE(mapWithoutOverlap.isEmpty(), "the insertion is found with no overlap scanned");
+
+    U2AssemblyInsertionsMap mapWithOverlap;
+    mapWithOverlap.build(reads, U2Region(104, 6));
+    CHECK_EQUAL(3, mapWithOverlap.getInsertionWidthBefore(105), "insertion width");
+    CHECK_EQUAL(QString("GGG"), QString(mapWithOverlap.getInsertionConsensus(105)), "insertion consensus");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionColumnsAreToldFromTheReferenceOnes) {
+    QList<U2AssemblyRead> reads;
+    reads << makeRead(100, "AAAAAGGGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 3, U2CigarOp_M, 5));
+
+    U2AssemblyInsertionsMap map;
+    map.build(reads, U2Region(100, 10));
+
+    // The columns 5, 6 and 7 are the extra ones, everything else is a real reference position.
+    CHECK_EQUAL(-1, map.getInsertionOffsetOfColumn(4), "offset of the last plain column");
+    CHECK_EQUAL(0, map.getInsertionOffsetOfColumn(5), "offset of the first inserted column");
+    CHECK_EQUAL(1, map.getInsertionOffsetOfColumn(6), "offset of an inserted column");
+    CHECK_EQUAL(2, map.getInsertionOffsetOfColumn(7), "offset of the last inserted column");
+    CHECK_EQUAL(-1, map.getInsertionOffsetOfColumn(8), "offset of the reference column of 105");
+    CHECK_EQUAL(-1, map.getInsertionOffsetOfColumn(9), "offset of the next column");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertedLettersOutvoteTheGaps) {
+    // Three reads insert a 'G' before the position 105, one covers the position without inserting.
+    QList<U2AssemblyRead> reads;
+    for (int i = 0; i < 3; i++) {
+        reads << makeRead(100, "AAAAAGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 1, U2CigarOp_M, 5));
+    }
+    reads << makeRead(100, "AAAAACCCCC", cigarOf(U2CigarOp_M, 10));
+
+    U2AssemblyInsertionsMap map;
+    map.build(reads, U2Region(100, 10));
+
+    CHECK_EQUAL(QString("G"), QString(map.getInsertionConsensus(105)), "consensus of the inserted column");
+    CHECK_EQUAL(3, map.getInsertionCoverage(105, 0), "coverage of the inserted column");
+    CHECK_EQUAL(4, map.getSites().first().coverage, "coverage of the site position");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, gapsOutvoteTheInsertedLetters) {
+    // The column is only there because a single read has a letter in it: everything else is a gap.
+    QList<U2AssemblyRead> reads;
+    reads << makeRead(100, "AAAAAGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 1, U2CigarOp_M, 5));
+    for (int i = 0; i < 3; i++) {
+        reads << makeRead(100, "AAAAACCCCC", cigarOf(U2CigarOp_M, 10));
+    }
+
+    U2AssemblyInsertionsMap map;
+    map.build(reads, U2Region(100, 10));
+
+    CHECK_EQUAL(1, map.getInsertionWidthBefore(105), "insertion width");
+    CHECK_EQUAL(QString("-"), QString(map.getInsertionConsensus(105)), "consensus of the inserted column");
+    CHECK_EQUAL(1, map.getInsertionCoverage(105, 0), "coverage of the inserted column");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, everyInsertionColumnIsCountedOnItsOwn) {
+    // Three reads insert "GG", two more insert a single "G", one read has no insertion at all.
+    QList<U2AssemblyRead> reads;
+    for (int i = 0; i < 3; i++) {
+        reads << makeRead(100, "AAAAAGGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 2, U2CigarOp_M, 5));
+    }
+    for (int i = 0; i < 2; i++) {
+        reads << makeRead(100, "AAAAAGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 1, U2CigarOp_M, 5));
+    }
+    reads << makeRead(100, "AAAAACCCCC", cigarOf(U2CigarOp_M, 10));
+
+    U2AssemblyInsertionsMap map;
+    map.build(reads, U2Region(100, 10));
+
+    CHECK_EQUAL(2, map.getInsertionWidthBefore(105), "insertion width");
+    CHECK_EQUAL(5, map.getInsertionCoverage(105, 0), "coverage of the first inserted column");
+    CHECK_EQUAL(3, map.getInsertionCoverage(105, 1), "coverage of the second inserted column");
+    // 5 letters against 1 gap in the first column, 3 letters against 3 gaps in the second one:
+    // a tie is not a majority, the column stays a gap.
+    CHECK_EQUAL(QString("G-"), QString(map.getInsertionConsensus(105)), "consensus of the inserted columns");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, theMostFrequentInsertedLetterWins) {
+    // Every read covering the position has an insertion, so the gaps have no vote at all here.
+    QList<U2AssemblyRead> reads;
+    for (int i = 0; i < 3; i++) {
+        reads << makeRead(100, "AAAAAACCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 1, U2CigarOp_M, 5));
+    }
+    for (int i = 0; i < 2; i++) {
+        reads << makeRead(100, "AAAAACCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 1, U2CigarOp_M, 5));
+    }
+
+    U2AssemblyInsertionsMap map;
+    map.build(reads, U2Region(100, 10));
+
+    CHECK_EQUAL(QString("A"), QString(map.getInsertionConsensus(105)), "consensus of the inserted column");
+    CHECK_EQUAL(5, map.getInsertionCoverage(105, 0), "coverage of the inserted column");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, incrementalBuildMatchesTheBatchOne) {
+    QList<U2AssemblyRead> reads;
+    for (int i = 0; i < 3; i++) {
+        reads << makeRead(100, "AAAAAGGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 2, U2CigarOp_M, 5));
+    }
+    reads << makeRead(100, "AAAAAGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 1, U2CigarOp_M, 5));
+    reads << makeRead(102, "AAATTTCCC", cigarOf(U2CigarOp_M, 3, U2CigarOp_I, 3, U2CigarOp_M, 3));
+
+    U2AssemblyInsertionsMap batchMap;
+    batchMap.build(reads, U2Region(100, 10));
+
+    // The export walks the reads of a region one by one, it cannot hold them all in memory.
+    U2AssemblyInsertionsMap incrementalMap;
+    incrementalMap.startBuild(U2Region(100, 10));
+    for (const U2AssemblyRead& read : qAsConst(reads)) {
+        incrementalMap.addSitesOfRead(read);
+    }
+    incrementalMap.finishSites();
+    for (const U2AssemblyRead& read : qAsConst(reads)) {
+        incrementalMap.addStatisticsOfRead(read);
+    }
+    incrementalMap.finishStatistics();
+
+    CHECK_EQUAL(batchMap.getSites().size(), incrementalMap.getSites().size(), "site count");
+    CHECK_EQUAL(batchMap.getColumnCount(), incrementalMap.getColumnCount(), "column count");
+    for (const U2AssemblyInsertionSite& site : qAsConst(batchMap.getSites())) {
+        CHECK_EQUAL(site.width, incrementalMap.getInsertionWidthBefore(site.refPos), "insertion width");
+        CHECK_EQUAL(QString(site.consensus), QString(incrementalMap.getInsertionConsensus(site.refPos)), "insertion consensus");
+        CHECK_EQUAL(site.coverage, incrementalMap.getSiteBefore(site.refPos)->coverage, "site coverage");
+    }
+}
+
 IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, readIteratorReportsInsertedLetters) {
     QByteArray sequence = "AAAAAGGGCCCCC";
     U2AssemblyReadIterator it(sequence, cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 3, U2CigarOp_M, 5));

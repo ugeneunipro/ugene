@@ -51,6 +51,7 @@ protected:
     QByteArray getSequenceRegion(U2OpStatus& os) override;
     bool canDrawSequence() override;
     void drawSequence(QPainter& p) override;
+    char getInsertionChar(qint64 refPos, int offset) const override;
     void mousePressEvent(QMouseEvent* e) override;
 
 protected slots:

@@ -167,6 +167,15 @@ void AssemblyConsensusArea::drawSequence(QPainter& p) {
     }
 }
 
+char AssemblyConsensusArea::getInsertionChar(qint64 refPos, int offset) const {
+    // An insertion column is a column of the alignment like any other, so it has a consensus of
+    // its own: the reads with no insertion here vote for a gap, the rest vote with their letters.
+    QByteArray consensus = browser->getInsertionsMap().getInsertionConsensus(refPos);
+    CHECK(offset >= 0 && offset < consensus.size(), '\0');
+    char c = consensus.at(offset);
+    return c == U2AssemblyInsertionsMap::GAP_CHAR ? '\0' : c;
+}
+
 QMenu* AssemblyConsensusArea::getConsensusAlgorithmMenu() {
     if (consensusAlgorithmMenu == nullptr) {
         consensusAlgorithmMenu = new QMenu(tr("Consensus algorithm"));
@@ -248,6 +257,8 @@ void AssemblyConsensusArea::sl_exportConsensus() {
     settings.seqObjName = getModel()->getAssembly().visualName + "_consensus";
     settings.addToProject = true;
     settings.keepGaps = true;
+    // Off by default: including the insertions shifts the sequence out of the reference numbering.
+    settings.keepInsertions = false;
 
     GUrl url(U2DbiUtils::ref2Url(getModel()->getDbiConnection().dbi->getDbiRef()));
     settings.fileName = GUrlUtils::getNewLocalUrlByFormat(url, getModel()->getAssembly().visualName, settings.formatId, "_consensus");

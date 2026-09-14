@@ -46,6 +46,8 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget* p, con
     // hide for this dialog
     sequenceNameLabel->hide();
     sequenceNameLineEdit->hide();
+    // A variation is reported at a reference position, an insertion column has none of its own.
+    keepInsertionsCheckBox->hide();
 
     initSaveController();
 

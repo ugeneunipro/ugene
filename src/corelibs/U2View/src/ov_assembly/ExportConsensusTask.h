@@ -35,6 +35,13 @@ struct U2VIEW_EXPORT ExportConsensusTaskSettings : public AssemblyConsensusTaskS
     bool addToProject;
     bool keepGaps;
 
+    /**
+     * Write the consensus of the columns the read insertions take as well. Those columns are not
+     * reference positions, so every one of them shifts the rest of the sequence by one character:
+     * off by default, the exported consensus is expected to match the reference numbering.
+     */
+    bool keepInsertions = false;
+
     bool saveToFile;
     /* true */
     DocumentFormatId formatId;

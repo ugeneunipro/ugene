@@ -494,9 +494,11 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
     key.xOffset = xOffsetInAssembly;
     key.cellWidth = getCellWidth();
     key.bases = basesCanBeVisible();
-    // Insertion columns are only worth showing when there are letters to put into them. At a lower
-    // zoom the visible region is huge as well, so skipping the scan keeps the overview cheap.
-    key.isBuilt = areLettersVisible() && !model->isEmpty() && !model->isDbLocked();
+    // An insertion column is a column like any other: it is worth showing exactly as long as the
+    // cells are, otherwise a whole stack of insertions would silently vanish on a single zoom out
+    // while the reference bases around it are still perfectly distinguishable. Below the cell
+    // level nothing is drawn per position anymore, so there is nothing to reserve a column for.
+    key.isBuilt = areCellsVisible() && !model->isEmpty() && !model->isDbLocked();
     CHECK(!(key == insertionsMapKey), insertionsMap);
 
     insertionsMapKey = key;
