@@ -118,8 +118,8 @@ private:
     GUrlType type;
 };
 
-QDataStream& operator<<(QDataStream& out, const GUrl& myObj);
-QDataStream& operator>>(QDataStream& in, GUrl& myObj);
+U2CORE_EXPORT QDataStream& operator<<(QDataStream& out, const GUrl& myObj);
+U2CORE_EXPORT QDataStream& operator>>(QDataStream& in, GUrl& myObj);
 
 }  // namespace U2
 

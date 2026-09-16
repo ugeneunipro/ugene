@@ -94,7 +94,7 @@ public:
      * Rebuilt on demand when the view changes, all the tracks have to use the same map to stay
      * aligned to each other.
      */
-    const U2AssemblyInsertionsMap& getInsertionsMap() const;
+    U2VIEW_EXPORT const U2AssemblyInsertionsMap& getInsertionsMap() const;
 
     /** Column the reference position is rendered in, 0 based, relative to the visible region. */
     qint64 calcColumnOffset(qint64 xAsmPos) const;
@@ -103,7 +103,7 @@ public:
     qint64 calcPainterOffsetOfPos(qint64 xAsmPos) const;
 
     // cells utility functions
-    int getCellWidth() const;
+    U2VIEW_EXPORT int getCellWidth() const;
     qint64 basesCanBeVisible() const;
     qint64 rowsCanBeVisible() const;
 
@@ -111,8 +111,8 @@ public:
     qint64 rowsVisible() const;
 
     bool areReadsVisible() const;
-    bool areCellsVisible() const;
-    bool areLettersVisible() const;
+    U2VIEW_EXPORT bool areCellsVisible() const;
+    U2VIEW_EXPORT bool areLettersVisible() const;
 
     // offsets in assembly
     inline qint64 getXOffsetInAssembly() const {

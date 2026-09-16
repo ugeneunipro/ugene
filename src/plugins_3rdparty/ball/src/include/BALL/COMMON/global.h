@@ -252,10 +252,15 @@ namespace BALL
     static const Position POSITION_MIN = 0;
     static const Position POSITION_MAX = std::numeric_limits<Position>::max() - 1;
 
-#	undef SIZE_MAX
     static const Size INVALID_SIZE = std::numeric_limits<Size>::max();
     static const Size SIZE_MIN = 0;
+#ifdef _MSC_VER
+    // Keep the CRT SIZE_MAX macro available to MSVC standard-library headers.
+    static const Size BALL_SIZE_MAX = std::numeric_limits<Size>::max() - 1;
+#else
+#	undef SIZE_MAX
     static const Size SIZE_MAX = std::numeric_limits<Size>::max() - 1;
+#endif
 
 
 }

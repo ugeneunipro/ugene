@@ -21,6 +21,12 @@ qt_add_resources(RCC_SRCS U2Formats.qrc)
 
 add_library(U2Formats SHARED ${HDRS} ${SRCS} ${RCC_SRCS})
 
+# BAMUtils embeds legacy Samtools C sources that use writable char pointers
+# for string literals. Keep the compatibility behavior for this target only.
+if (MSVC)
+    target_compile_options(U2Formats PRIVATE /Zc:strictStrings-)
+endif ()
+
 target_link_libraries(U2Formats
         Qt6::Core Qt6::Core5Compat Qt6::Gui Qt6::Widgets
         samtools ugenedb

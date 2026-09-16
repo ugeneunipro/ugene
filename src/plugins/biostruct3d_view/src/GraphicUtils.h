@@ -29,6 +29,11 @@
 #if defined(Q_OS_DARWIN)
 #    include <OpenGL/glu.h>
 #else
+#    if defined(Q_OS_WIN)
+// qopengl.h intentionally removes the Windows calling-convention macros,
+// while the system GLU header expects them to be provided by windows.h.
+#        include <windows.h>
+#    endif
 #    include <GL/glu.h>
 #endif
 
