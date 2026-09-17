@@ -259,7 +259,7 @@ void GenomeAlignerDbiWriter::write(SearchQuery* seq, SAType offset) {
     read->leftmostPos = offset;
     read->effectiveLen = seq->length();
     read->readSequence = seq->constSequence();
-    read->quality = seq->hasQuality() ? seq->getQuality().qualCodes : "";
+    read->quality = seq->hasQuality() ? seq->getQuality().qualCodes : QByteArray();
     read->flags = None;
     read->cigar.append(U2CigarToken(U2CigarOp_M, seq->length()));
 

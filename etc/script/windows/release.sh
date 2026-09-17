@@ -32,16 +32,20 @@ echo "##teamcity[blockOpened name='Copy files']"
 
 # Remove excluded files from UGENE.
 rm -rf "${DIST_DIR}/"*QSpec*
-rm -rf "${DIST_DIR}/"*Qt5Test*
+rm -rf "${DIST_DIR}/"*Qt6Test*
 rm -rf "${DIST_DIR}/plugins/"*CoreTests*
 rm -rf "${DIST_DIR}/plugins/"*GUITestBase*
 rm -rf "${DIST_DIR}/plugins/"*api_tests*
 rm -rf "${DIST_DIR}/plugins/"*perf_monitor*
 rm -rf "${DIST_DIR}/plugins/"*test_runner*
 
-# Copy UGENE files & tools into 'app' dir.
-rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${DIST_DIR}" || {
+# Copy external tools into the bundle. TeamCity checks them out to 'tools';
+# EXTERNAL_TOOLS_DIR lets the same release script use a local tools checkout.
+TOOLS_DIR="${EXTERNAL_TOOLS_DIR:-${TEAMCITY_WORK_DIR}/tools}"
+mkdir -p "${DIST_DIR}/tools"
+cp -a "${TOOLS_DIR}/." "${DIST_DIR}/tools/" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
+  exit 1
 }
 
 echo "##teamcity[blockClosed name='Copy files']"
@@ -73,17 +77,15 @@ function dump_symbols() {
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }
 
-find "${DIST_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
-  ${PATH_SIGNTOOL_}dump_symbols "${BINARY_FILE}"
-done
+if [ "${UGENE_SKIP_SYMBOLS:-0}" != "1" ]; then
+  find "${DIST_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
+    ${PATH_SIGNTOOL_}dump_symbols "${BINARY_FILE}"
+  done
+fi
 
 # Remove pdb files used for symbol generation.
 echo "Removing not needed PDB files."
-rm "${DIST_DIR_NAME}/"*.pdb
-rm "${DIST_DIR_NAME}/imageformats/"*.pdb
-rm "${DIST_DIR_NAME}/platforms/"*.pdb
-rm "${DIST_DIR_NAME}/styles/"*.pdb
-rm "${DIST_DIR_NAME}/printsupport/"*.pdb
+find "${DIST_DIR_NAME}" -name '*.pdb' -delete
 
 echo "##teamcity[blockClosed name='Dump symbols']"
 
@@ -127,9 +129,13 @@ fi
 echo "Files to sign:"
 echo "${files_to_sign}" | tr ' ' '\n'  # Print each file on a new line
 
-for BINARY_FILE in ${files_to_sign}; do
-  code_sign "${BINARY_FILE}" || exit 1
-done
+if [ "${UGENE_SKIP_SIGNING:-0}" != "1" ]; then
+  for BINARY_FILE in ${files_to_sign}; do
+    code_sign "${BINARY_FILE}" || exit 1
+  done
+else
+  echo "Signing skipped because UGENE_SKIP_SIGNING=1"
+fi
 echo "##teamcity[blockClosed name='Sign']"
 
 echo "##teamcity[blockOpened name='Build archive']"
@@ -139,7 +145,11 @@ RELEASE_UNPACKED_DIR_NAME="ugene-${VERSION}"
 
 rm -rf "ugene-"*
 mv "${DIST_DIR}" "${RELEASE_UNPACKED_DIR_NAME}"
-7z a -r "${RELEASE_BASE_FILE_NAME}.zip" "${RELEASE_UNPACKED_DIR_NAME}/"*
+if command -v 7z >/dev/null 2>&1; then
+  7z a -r "${RELEASE_BASE_FILE_NAME}.zip" "${RELEASE_UNPACKED_DIR_NAME}/"*
+else
+  cmake -E tar cf "${RELEASE_BASE_FILE_NAME}.zip" --format=zip "${RELEASE_UNPACKED_DIR_NAME}"
+fi
 
 echo Compressing symbols...
 tar cfz "${SYMBOLS_DIR_NAME}-p${TEAMCITY_BUILD_COUNTER}-win-x86-64.tar.gz" "${SYMBOLS_DIR_NAME}"

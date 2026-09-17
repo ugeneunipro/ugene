@@ -9,10 +9,6 @@ extern void Quit_Qscore(const char szFormat[], ...);
 
 class MSA_QScore
 	{
-#ifdef	WIN32
-	friend void MSA_QScore::CopyReversed();
-#endif
-
 public:
 	MSA_QScore();
 	virtual ~MSA_QScore();

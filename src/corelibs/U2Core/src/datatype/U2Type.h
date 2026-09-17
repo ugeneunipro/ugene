@@ -135,8 +135,8 @@ private:
     static bool metaInfoRegistered;
 };
 
-QDataStream& operator<<(QDataStream& out, const U2DbiRef& dbiRef);
-QDataStream& operator>>(QDataStream& in, U2DbiRef& dbiRef);
+U2CORE_EXPORT QDataStream& operator<<(QDataStream& out, const U2DbiRef& dbiRef);
+U2CORE_EXPORT QDataStream& operator>>(QDataStream& in, U2DbiRef& dbiRef);
 
 /**
     Cross database data reference

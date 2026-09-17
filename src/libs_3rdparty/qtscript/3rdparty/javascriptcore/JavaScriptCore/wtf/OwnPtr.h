@@ -39,7 +39,8 @@ namespace WTF {
         typedef typename RemovePointer<T>::Type ValueType;
         typedef ValueType* PtrType;
 
-        explicit OwnPtr(PtrType ptr = 0) : m_ptr(ptr) { }
+        OwnPtr() : m_ptr(0) { }
+        explicit OwnPtr(PtrType ptr) : m_ptr(ptr) { }
         OwnPtr(std::auto_ptr<ValueType> autoPtr) : m_ptr(autoPtr.release()) { }
         // See comment in PassOwnPtr.h for why this takes a const reference.
         template <typename U> OwnPtr(const PassOwnPtr<U>& o);

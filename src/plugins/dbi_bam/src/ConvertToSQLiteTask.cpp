@@ -725,7 +725,7 @@ qint64 ConvertToSQLiteTask::importUnsortedReads(SamReader* samReader, BamReader*
 
 void ConvertToSQLiteTask::createAssemblyObjectForUnsortedReads(int referenceId, Reader* reader, QMap<int, U2::U2AssemblyReadsImportInfo>& importInfos) {
     U2Assembly assembly;
-    assembly.visualName = (referenceId == -1 ? "Unmapped" : reader->getHeader().getReferences()[referenceId].getName());
+    assembly.visualName = (referenceId == -1 ? QByteArray("Unmapped") : reader->getHeader().getReferences()[referenceId].getName());
 
     SAFE_POINT_EXT(importers.contains(referenceId), throw Exception("An unexpected assembly"), );
     importers[referenceId]->createAssembly(dstDbiRef, U2ObjectDbi::ROOT_FOLDER, assembly);

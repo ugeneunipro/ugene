@@ -306,7 +306,15 @@ QString SQLiteUdrDbi::selectAllDef(const UdrSchema* schema, U2OpStatus& os) {
 
     const bool isObjectReferenced = schema->hasObjectReference();
 
-    return "SELECT " + UdrSchema::RECORD_ID_FIELD_NAME + ", " + UdrSchema::fieldNames(schema, os, directFields).join(", ") + (isObjectReferenced ? ", o.type" : "") + " FROM " + tableName(schema->getId()) + (isObjectReferenced ? " AS udr INNER JOIN Object AS o ON o.id = udr." + UdrSchema::OBJECT_FIELD_NAME : "");
+    QString query = QStringLiteral("SELECT ") + QString::fromLatin1(UdrSchema::RECORD_ID_FIELD_NAME) + ", " + UdrSchema::fieldNames(schema, os, directFields).join(", ");
+    if (isObjectReferenced) {
+        query += QStringLiteral(", o.type");
+    }
+    query += QStringLiteral(" FROM ") + tableName(schema->getId());
+    if (isObjectReferenced) {
+        query += QStringLiteral(" AS udr INNER JOIN Object AS o ON o.id = udr.") + QString::fromLatin1(UdrSchema::OBJECT_FIELD_NAME);
+    }
+    return query;
 }
 
 QString SQLiteUdrDbi::selectDef(const UdrSchema* schema, U2OpStatus& os) {

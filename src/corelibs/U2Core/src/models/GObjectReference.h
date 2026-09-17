@@ -112,10 +112,10 @@ inline uint qHash(const GObjectRelation& key) {
     return ((h1 << 16) | (h1 >> 16)) ^ h2;
 }
 
-QDataStream& operator<<(QDataStream& out, const GObjectReference& myObj);
-QDataStream& operator>>(QDataStream& in, GObjectReference& myObj);
-QDataStream& operator<<(QDataStream& out, const GObjectRelation& myObj);
-QDataStream& operator>>(QDataStream& in, GObjectRelation& myObj);
+U2CORE_EXPORT QDataStream& operator<<(QDataStream& out, const GObjectReference& myObj);
+U2CORE_EXPORT QDataStream& operator>>(QDataStream& in, GObjectReference& myObj);
+U2CORE_EXPORT QDataStream& operator<<(QDataStream& out, const GObjectRelation& myObj);
+U2CORE_EXPORT QDataStream& operator>>(QDataStream& in, GObjectRelation& myObj);
 
 }  // namespace U2
 

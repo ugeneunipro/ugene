@@ -76,6 +76,12 @@ set(SOURCES
 # Create a library
 add_library(qtscript SHARED ${SOURCES})
 
+# QtScript's bundled JavaScriptCore still uses std::auto_ptr. Recent MSVC
+# toolsets keep the compatibility implementation behind this opt-in macro.
+if (MSVC)
+    target_compile_definitions(qtscript PRIVATE _HAS_AUTO_PTR_ETC=1)
+endif ()
+
 # Add include directories
 target_include_directories(qtscript PRIVATE
         3rdparty/javascriptcore
