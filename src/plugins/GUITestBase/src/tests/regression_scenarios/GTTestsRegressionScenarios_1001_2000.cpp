@@ -7465,6 +7465,7 @@ GUI_TEST_CLASS_DEFINITION(test_1859) {
 
     // 7) Run workflow again
     GTWidget::click(GTAction::button("Run workflow"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
