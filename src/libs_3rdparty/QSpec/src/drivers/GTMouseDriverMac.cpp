@@ -20,6 +20,7 @@
  */
 
 #include <QtGlobal>
+#include <QtGui/QCursor>
 
 #include "GTMouseDriver.h"
 

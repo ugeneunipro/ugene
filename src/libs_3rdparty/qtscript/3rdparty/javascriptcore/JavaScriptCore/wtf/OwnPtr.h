@@ -41,7 +41,7 @@ namespace WTF {
 
         OwnPtr() : m_ptr(0) { }
         explicit OwnPtr(PtrType ptr) : m_ptr(ptr) { }
-        OwnPtr(std::auto_ptr<ValueType> autoPtr) : m_ptr(autoPtr.release()) { }
+        OwnPtr(std::unique_ptr<ValueType> autoPtr) : m_ptr(autoPtr.release()) { }
         // See comment in PassOwnPtr.h for why this takes a const reference.
         template <typename U> OwnPtr(const PassOwnPtr<U>& o);
 
@@ -59,7 +59,7 @@ namespace WTF {
         // FIXME: This should be renamed to adopt. 
         void set(PtrType ptr) { ASSERT(!ptr || m_ptr != ptr); deleteOwnedPtr(m_ptr); m_ptr = ptr; }
 
-        void adopt(std::auto_ptr<ValueType> autoPtr) { ASSERT(!autoPtr.get() || m_ptr != autoPtr.get()); deleteOwnedPtr(m_ptr); m_ptr = autoPtr.release(); }
+        void adopt(std::unique_ptr<ValueType> autoPtr) { ASSERT(!autoPtr.get() || m_ptr != autoPtr.get()); deleteOwnedPtr(m_ptr); m_ptr = autoPtr.release(); }
 
         void clear() { deleteOwnedPtr(m_ptr); m_ptr = 0; }
 
