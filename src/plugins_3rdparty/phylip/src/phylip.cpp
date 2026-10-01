@@ -223,7 +223,7 @@ boolean eoff(FILE *f)
 
 boolean eoln(FILE *f)
 { /* Return true iff next getc() is EOL or EOF */
-    register int ch;
+    int ch;
     ch = getc(f);
     if (ch == EOF)
       return true;

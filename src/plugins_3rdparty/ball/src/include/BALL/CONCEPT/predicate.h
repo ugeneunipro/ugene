@@ -13,8 +13,23 @@
 
 namespace BALL 
 {
-	using std::unary_function;
-	using std::binary_function;
+	// std::unary_function / std::binary_function were removed in C++17.
+	// Provide equivalent typedefs so the predicates below stay usable with
+	// the standard library, matching the old std::unary_function interface.
+	template <typename Arg, typename Result>
+	struct unary_function
+	{
+		typedef Arg argument_type;
+		typedef Result result_type;
+	};
+
+	template <typename Arg1, typename Arg2, typename Result>
+	struct binary_function
+	{
+		typedef Arg1 first_argument_type;
+		typedef Arg2 second_argument_type;
+		typedef Result result_type;
+	};
 		
 	/**	@name	Predicates
 			

@@ -10,7 +10,8 @@ project(ugene)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13")
+# Qt 6 for macOS requires at least macOS 13.0.
+set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
 
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake host architecture   : ${CMAKE_HOST_SYSTEM_PROCESSOR}")
@@ -37,6 +38,10 @@ endif ()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
+# Also expose _DEBUG as a regular compile definition so that AUTOMOC passes it
+# to moc as well. Otherwise moc and the C++ compiler disagree on conditional
+# slots guarded by "#ifdef _DEBUG" (moc would emit slots the class does not have).
+add_compile_definitions($<$<CONFIG:Debug>:_DEBUG>)
 
 include_directories(src/libs_3rdparty/qtscript/script/api)
 
