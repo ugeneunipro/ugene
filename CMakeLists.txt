@@ -1,17 +1,26 @@
 # CMake is the default build system for UGENE.
-# Ensure you add the Qt5_DIR variable, example: Qt5_DIR=/home/yalgaer/tools/qt/5.15.6/gcc_64.
+# Ensure you add the Qt6_DIR variable pointing to the Qt 6 CMake package directory.
 #
 # For CLion developers:
-#   Add Qt5_DIR variable in File → Settings → Build, Execution, Deployment → CMake.
+#   Add Qt6_DIR variable in File → Settings → Build, Execution, Deployment → CMake.
 
 cmake_minimum_required(VERSION 3.20)
+
+if (CMAKE_HOST_APPLE)
+    cmake_host_system_information(RESULT UGENE_HOST_ARCHITECTURE QUERY OS_PLATFORM)
+    set(CMAKE_OSX_ARCHITECTURES "${UGENE_HOST_ARCHITECTURE}" CACHE STRING "Target architectures for macOS")
+
+    # Keep the Qt 6 macOS deployment baseline used by the main branch.
+    set(UGENE_OSX_DEPLOYMENT_TARGET "13.0")
+    if (NOT "$ENV{MACOSX_DEPLOYMENT_TARGET}" STREQUAL "")
+        set(UGENE_OSX_DEPLOYMENT_TARGET "$ENV{MACOSX_DEPLOYMENT_TARGET}")
+    endif ()
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "${UGENE_OSX_DEPLOYMENT_TARGET}" CACHE STRING "Minimum macOS version")
+endif ()
+
 project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
-
-set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
-# Qt 6 for macOS requires at least macOS 13.0.
-set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
 
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake host architecture   : ${CMAKE_HOST_SYSTEM_PROCESSOR}")

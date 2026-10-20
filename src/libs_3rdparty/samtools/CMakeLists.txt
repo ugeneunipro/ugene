@@ -39,6 +39,7 @@ file(GLOB SRCS
         src/samtools_core/htslib/htscodecs/htscodecs/rANS_static.c
         src/samtools_core/htslib/htscodecs/htscodecs/rANS_static4x16pr.c
         src/samtools_core/htslib/htscodecs/htscodecs/rANS_static32x16pr.c
+        src/samtools_core/htslib/htscodecs/htscodecs/rANS_static32x16pr_neon.c
         src/samtools_core/htslib/htscodecs/htscodecs/rle.c
         src/samtools_core/htslib/htscodecs/htscodecs/tokenise_name3.c
         src/samtools_core/htslib/htscodecs/htscodecs/utils.c
