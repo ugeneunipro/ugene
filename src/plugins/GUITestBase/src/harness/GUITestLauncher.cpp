@@ -430,7 +430,7 @@ static QPair<QString, QStringList> getScreenRecorderCommand(const QString& testN
         command = qgetenv("UGENE_VIDEO_RECORDER_COMMAND");
         args << videoFilePath;
     } else if (isOsWindows()) {
-        args = QString(R"(-f dshow -i video="UScreenCapture" -r 5)").split(" ") << videoFilePath;
+        args = {"-f", "dshow", "-i", "video=UScreenCapture", "-r", "5", videoFilePath};
     }
     uiLog.trace("going to record video: " + command + " " + args.join(" "));
     return {command, args};
