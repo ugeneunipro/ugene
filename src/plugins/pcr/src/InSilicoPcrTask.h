@@ -113,7 +113,6 @@ private:
     FindAlgorithmTask* reverseSearch;
     QList<InSilicoPcrProduct> results;
     QSet<QByteArray> productKeys;
-    QSharedPointer<TmCalculator> temperatureCalculator;
     int minProductSize;
 };
 

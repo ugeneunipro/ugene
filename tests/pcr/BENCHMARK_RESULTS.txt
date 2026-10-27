@@ -1,7 +1,9 @@
 PCR issue #1969: validation and benchmark results
 ================================================
 
-Base revision: 2eca5ce40d. Fixed implementation: working-tree PCR patch.
+Base revision: 2eca5ce40d. Fixed implementation: commit 693a9a8036.
+These measurements precede the shared TmCalculator cache refactor;
+see TM_CACHE_RESULTS.txt for the follow-up comparison.
 Platform: Apple M4 Pro, macOS arm64, Qt 6.12.0, Apple Clang 17.0.0.
 All three standalone runners: -O3 -DNDEBUG, identical common libraries.
 Calculator: UGENE Rough (not Primer3). No GUI rendering in timed region.

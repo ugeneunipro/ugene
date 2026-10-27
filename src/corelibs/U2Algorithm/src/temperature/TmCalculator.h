@@ -20,7 +20,9 @@
  */
 #pragma once
 
+#include <QCache>
 #include <QMap>
+#include <QMutex>
 #include <QSharedPointer>
 #include <QString>
 #include <QVariant>
@@ -37,10 +39,11 @@ public:
 
     /**
      * Calculate melting temperature
+     * Results are cached per instance with a bounded LRU cache.
      * @sequence sequence, which melting temperature should be calculated
      * @return the calculated temperature value
      */
-    virtual double getMeltingTemperature(const QByteArray& sequence) = 0;
+    virtual double getMeltingTemperature(const QByteArray& sequence);
     /**
      * Calculate annealing temperature of the product
      * Use formula from "Rychlik W, Spencer WJ, Rhoads RE (1990)
@@ -62,9 +65,16 @@ public:
     static const QString KEY_ID;
 
 protected:
-    QVariantMap settings;
+    // Implement the algorithm here; the public method handles caching.
+    virtual double calculateMeltingTemperature(const QByteArray& sequence) = 0;
+
+    const QVariantMap settings;
 
 private:
+    // Per-instance LRU cache; oversized sequences are calculated without caching.
+    QCache<QByteArray, double> meltingTemperatureCache{64 * 1024};
+    QMutex cacheMutex;
+
     static bool isNucleotideSequence(const QByteArray& sequence);
     /**
      * Calculate melting temperature of @initialPrimer (if nucleotide)

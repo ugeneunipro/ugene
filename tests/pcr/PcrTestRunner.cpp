@@ -112,7 +112,7 @@ int main(int argc, char** argv) {
         output << QJsonDocument(result).toJson(QJsonDocument::Compact) << Qt::endl;
         return 0;
     }
-    QStringList scenarios = {"mismatch_limit", "many_sites", "orientations", "circular", "ambiguous", "overhangs", "exhaustive", "duplicates_and_temperature", "cancellation"};
+    QStringList scenarios = {"mismatch_limit", "many_sites", "orientations", "circular", "ambiguous", "overhangs", "exhaustive", "duplicates_and_temperature", "cancellation", "temperature_cache", "degenerate_temperature"};
     if (args.size() > 1) {
         scenarios = {args[1]};
     }

@@ -59,51 +59,12 @@ bool InSilicoPcrProduct::isValid() const {
     return ta != Primer::INVALID_TM;
 }
 
-namespace {
-class PcrTmCalculator : public TmCalculator {
-public:
-    explicit PcrTmCalculator(const InSilicoPcrTaskSettings& settings)
-        : TmCalculator(settings.temperatureCalculator->getSettings()),
-          calculator(settings.temperatureCalculator),
-          forward(settings.forwardPrimer), reverse(settings.reversePrimer) {
-    }
-
-    double getMeltingTemperature(const QByteArray& sequence) override {
-        if (sequence == forward) {
-            if (!forwardCalculated) {
-                forwardTm = calculator->getMeltingTemperature(sequence);
-                forwardCalculated = true;
-            }
-            return forwardTm;
-        }
-        if (sequence == reverse) {
-            if (!reverseCalculated) {
-                reverseTm = calculator->getMeltingTemperature(sequence);
-                reverseCalculated = true;
-            }
-            return reverseTm;
-        }
-        return calculator->getMeltingTemperature(sequence);
-    }
-
-private:
-    QSharedPointer<TmCalculator> calculator;
-    QByteArray forward;
-    QByteArray reverse;
-    double forwardTm = INVALID_TM;
-    double reverseTm = INVALID_TM;
-    bool forwardCalculated = false;
-    bool reverseCalculated = false;
-};
-}  // namespace
-
 InSilicoPcrTask::InSilicoPcrTask(InSilicoPcrTaskSettings* _settings)
     : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError | TaskFlag_FailOnSubtaskCancel),
       settings(_settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings->forwardPrimer.length(), settings->reversePrimer.length());
     SAFE_POINT_EXT(settings->temperatureCalculator != nullptr, setError(L10N::nullPointerError("TmCalculator")), );
-    temperatureCalculator.reset(new PcrTmCalculator(*settings));
 }
 
 namespace {
@@ -361,7 +322,7 @@ void InSilicoPcrTask::createAndAddResult(const PrimerBind& leftPrimer, const U2R
     productSequence.prepend(result.forwardPrimerLedge);
     productSequence.append(DNASequenceUtils::reverseComplement(result.reversePrimerLedge));
 
-    result.ta = temperatureCalculator->getAnnealingTemperature(productSequence,
+    result.ta = settings->temperatureCalculator->getAnnealingTemperature(productSequence,
                                                             direction == U2Strand::Direct ? settings->forwardPrimer : settings->reversePrimer,
                                                             direction == U2Strand::Direct ? settings->reversePrimer : settings->forwardPrimer);
     CHECK(result.isValid(), );

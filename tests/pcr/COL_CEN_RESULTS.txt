@@ -92,7 +92,7 @@ tail  mismatches  variant    products  search_ms   total_ms  peak_RSS_MiB
    0           3  after         10316   1077.565   1109.815        271.91
 
 Implementation snapshots: base revision 2eca5ce40d; that revision with only
-candidate caps removed; current fix in the working tree. Matching task
+candidate caps removed; PCR fix in commit 693a9a8036. Matching task
 headers were used for each standalone executable (class-layout consistency).
 
 Retained local artifacts
