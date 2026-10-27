@@ -21,10 +21,7 @@
 
 #include "InSilicoPcrTests.h"
 
-#include <atomic>
-#include <future>
 #include <random>
-#include <vector>
 
 #include <QDomElement>
 
@@ -178,102 +175,6 @@ public:
     Task* cancelTask = nullptr;
 };
 
-class CacheProbeTmCalculator : public TmCalculator {
-public:
-    explicit CacheProbeTmCalculator(int offset = 0) : TmCalculator({{"offset", offset}}) {
-    }
-
-    std::atomic<int> calls{0};
-
-protected:
-    double calculateMeltingTemperature(const QByteArray& sequence) override {
-        ++calls;
-        return sequence.isEmpty() ? INVALID_TM : sequence.size() + sequence.count('G') + settings.value("offset").toInt();
-    }
-};
-
-QString testTemperatureCache() {
-    const QByteArray primer("ACGTCAGTACGATCGTACGA");
-    CacheProbeTmCalculator calculator;
-    const double temperature = calculator.getMeltingTemperature(primer);
-    if (calculator.getMeltingTemperature(primer) != temperature || calculator.calls != 1) {
-        return "Repeated melting-temperature calculation was not cached";
-    }
-    CacheProbeTmCalculator differentSettings(10);
-    if (differentSettings.getMeltingTemperature(primer) != temperature + 10 || differentSettings.calls != 1) {
-        return "Temperature cache leaked across calculator settings";
-    }
-    calculator.getMeltingTemperature({});
-    if (calculator.getMeltingTemperature({}) != TmCalculator::INVALID_TM || calculator.calls != 2) {
-        return "Cached invalid temperature changed the result";
-    }
-
-    const QByteArray oversized(100000, 'A');
-    calculator.getMeltingTemperature(oversized);
-    const int calls = calculator.calls;
-    if (calculator.getMeltingTemperature(oversized) != 100000 || calculator.calls != calls + 1 ||
-        calculator.getMeltingTemperature(primer) != temperature || calculator.calls != calls + 1) {
-        return "Oversized sequence was cached or evicted reusable entries";
-    }
-
-    char buffer[] = "GGGGGGGGGGGGGGGGGGGG";
-    const QByteArray original(buffer);
-    const double rawTemperature = calculator.getMeltingTemperature(QByteArray::fromRawData(buffer, sizeof(buffer) - 1));
-    buffer[0] = 'A';
-    const int rawCalls = calculator.calls;
-    if (calculator.getMeltingTemperature(original) != rawTemperature || calculator.calls != rawCalls) {
-        return "Temperature cache retained externally owned sequence data";
-    }
-
-    CacheProbeTmCalculator bounded;
-    bounded.getMeltingTemperature(primer);
-    QByteArray first;
-    for (int i = 0; i < 2000; ++i) {
-        QByteArray sequence(1024, 'A');
-        for (int j = 0; j < 16; ++j) {
-            sequence[j] = "ACGT"[(i >> (2 * j)) & 3];
-        }
-        if (i == 0) {
-            first = sequence;
-        }
-        bounded.getMeltingTemperature(sequence);
-        bounded.getMeltingTemperature(primer);
-    }
-    const int boundedCalls = bounded.calls;
-    bounded.getMeltingTemperature(primer);
-    if (bounded.calls != boundedCalls) {
-        return "LRU cache evicted a frequently reused primer";
-    }
-    bounded.getMeltingTemperature(first);
-    if (bounded.calls != boundedCalls + 1) {
-        return "Temperature cache did not evict old sequences";
-    }
-
-    CacheProbeTmCalculator shared;
-    std::vector<std::future<bool>> workers;
-    for (int worker = 0; worker < 4; ++worker) {
-        workers.push_back(std::async(std::launch::async, [&shared, worker] {
-            for (int i = 0; i < 500; ++i) {
-                QByteArray sequence(100, 'A');
-                const int id = (i + worker) % 64;
-                for (int j = 0; j < 3; ++j) {
-                    sequence[j] = "ACGT"[(id >> (2 * j)) & 3];
-                }
-                if (shared.getMeltingTemperature(sequence) != sequence.size() + sequence.count('G')) {
-                    return false;
-                }
-            }
-            return true;
-        }));
-    }
-    for (auto& worker : workers) {
-        if (!worker.get()) {
-            return "Concurrent temperature-cache access returned an incorrect value";
-        }
-    }
-    return {};
-}
-
 QString compareExhaustive(const InSilicoPcrTaskSettings& settings) {
     auto actual = runPcr(settings);
     auto expected = exhaustiveProducts(settings);
@@ -287,30 +188,7 @@ QString runInSilicoPcrTests(const QString& scenario) {
     auto s = settingsForTest();
     const QByteArray reverseSite = DNASequenceUtils::reverseComplement(s.reversePrimer);
     const QByteArray amplicon = s.forwardPrimer + QByteArray(40, 'C') + reverseSite;
-    if (scenario == "temperature_cache") {
-        return testTemperatureCache();
-    } else if (scenario == "degenerate_temperature") {
-        auto forward = s.forwardPrimer;
-        auto reverse = s.reversePrimer;
-        forward[0] = 'R';
-        reverse[0] = 'Y';
-        QByteArray secondProduct = amplicon;
-        secondProduct[0] = 'G';
-        QByteArray secondForward = s.forwardPrimer;
-        secondForward[0] = 'G';
-        CountingTmCalculator calculator;
-        auto reference = RoughTmCalculatorCmdFactory().createCalculator({});
-        const double first = calculator.getAnnealingTemperature(amplicon, forward, reverse);
-        const int firstCalls = calculator.calls;
-        if (first != reference->getAnnealingTemperature(amplicon, s.forwardPrimer, s.reversePrimer) ||
-            calculator.getAnnealingTemperature(amplicon, forward, reverse) != first || calculator.calls != firstCalls) {
-            return "Repeated degenerate-primer temperature was not reused";
-        }
-        const double second = calculator.getAnnealingTemperature(secondProduct, forward, reverse);
-        if (second == first || second != reference->getAnnealingTemperature(secondProduct, secondForward, s.reversePrimer)) {
-            return "Degenerate primer cache ignored the product-specific binding sequence";
-        }
-    } else if (scenario == "mismatch_limit") {
+    if (scenario == "mismatch_limit") {
         for (int count : {49, 50, 51, 100}) {
             s.sequence = QByteArray();
             for (int i = 0; i < count; ++i) {

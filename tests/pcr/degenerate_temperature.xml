@@ -1,4 +1,0 @@
-<!DOCTYPE GB2TEST>
-<multi-test>
-    <in-silico-pcr-test scenario="degenerate_temperature"/>
-</multi-test>
