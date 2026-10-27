@@ -529,6 +529,7 @@ void hclose_abruptly(hFILE *fp)
 #define HAVE_SETMODE
 #endif
 #include <fcntl.h>
+#include "utf8_path.h"
 #include "htslib/bgzf.h"
 
 #ifdef OS_WIN
@@ -652,7 +653,7 @@ static size_t blksize(int fd)
 static hFILE *hopen_fd(const char *filename, const char *mode)
 {
     hFILE_fd *fp = NULL;
-    int fd = open(filename, hfile_oflags(mode), 0666);
+    int fd = hts_open_utf8(filename, hfile_oflags(mode), 0666);
     if (fd < 0) goto error;
 
     fp = (hFILE_fd *) hfile_init(sizeof (hFILE_fd), mode, blksize(fd));

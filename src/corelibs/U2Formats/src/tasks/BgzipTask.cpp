@@ -73,7 +73,7 @@ void BgzipTask::run() {
         bgzfUrl = GUrl(fileUrl.getURLString() + ".gz");
     }
 
-    BGZF* out = bgzf_open(bgzfUrl.getURLString().toLocal8Bit(), "w");
+    BGZF* out = bgzf_open(bgzfUrl.getURLString().toUtf8(), "w");
     if (out == nullptr) {
         Task::setError(tr("Can not open output file '%2'").arg(bgzfUrl.getURLString()));
         return;
@@ -121,7 +121,7 @@ Task::ReportResult BgzipTask::report() {
 }
 
 bool BgzipTask::checkBgzf(const GUrl& fileUrl) {
-    return bgzf_is_bgzf(fileUrl.getURLString().toLocal8Bit());
+    return bgzf_is_bgzf(fileUrl.getURLString().toUtf8());
 }
 
 GzipDecompressTask::GzipDecompressTask(const GUrl& zipUrl, const GUrl& fileUrl)

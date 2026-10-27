@@ -44,6 +44,7 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
+#include <QImageReader>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -1518,9 +1519,10 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     auto ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
-    QString expectedFont = "Verdana,10,-1,5,50,0,0,0,0,0";
-
-    CHECK_SET_ERR(f.toString().startsWith(expectedFont), "Expected: " + expectedFont + ", found: " + f.toString());
+    // QFont's serialized weight and field count differ between Qt versions.
+    CHECK_SET_ERR(f.family() == "Verdana" && f.pointSize() == 10 && f.weight() == QFont::Normal &&
+                      !f.italic() && !f.underline() && !f.strikeOut(),
+                  "Expected regular Verdana, 10 pt, found: " + f.toString());
     //    Expected state: change font dialog appeared
 
     //    3. choose some font, press OK
@@ -1565,6 +1567,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTUtilsDialog::waitForDialog(new ExportImage(testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "JPG", 100));
     QAbstractButton* saveImage = GTAction::button("export_msa_as_image_action");
     GTWidget::click(saveImage);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: export dialog appeared
     GTUtilsDialog::waitForDialog(new ExportImage(testDir + "_common_data/scenarios/sandbox/smallImage.bmp", "JPG", 50));
@@ -1574,12 +1577,20 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    3. fill dialog:
     //    file name: test/_common_data/scenarios/sandbox/image.bmp
     //    press OK
-    qint64 bigSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
-    qint64 smallSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
-    // Qt6's JPEG encoder produces bigger files than Qt5's at the same quality setting for this image
-    // (measured ~7.3MB vs ~5.1MB), so the upper bound is raised to accommodate both.
-    CHECK_SET_ERR(bigSize > 3 * 1000 * 1000 && bigSize < 8 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
-    CHECK_SET_ERR(smallSize > 500 * 1000 && smallSize < 2 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
+    QString bigPath = testDir + "_common_data/scenarios/sandbox/bigImage.jpg";
+    QString smallPath = testDir + "_common_data/scenarios/sandbox/smallImage.jpg";
+    QImageReader bigReader(bigPath);
+    QImageReader smallReader(smallPath);
+    CHECK_SET_ERR(bigReader.format() == "jpeg" && smallReader.format() == "jpeg", "Expected JPEG exports");
+    QImage bigImage = bigReader.read();
+    QImage smallImage = smallReader.read();
+    CHECK_SET_ERR(!bigImage.isNull(), "Cannot read high-quality export: " + bigReader.errorString());
+    CHECK_SET_ERR(!smallImage.isNull(), "Cannot read low-quality export: " + smallReader.errorString());
+    CHECK_SET_ERR(bigImage.size() == smallImage.size(), "JPEG quality must not change image dimensions");
+    // Encoded sizes vary with Qt, fonts and display scaling; compare the quality settings directly.
+    qint64 bigSize = GTFile::getSize(bigPath);
+    qint64 smallSize = GTFile::getSize(smallPath);
+    CHECK_SET_ERR(bigSize > smallSize, QString("Expected quality 100 export (%1 bytes) to be larger than quality 50 (%2 bytes)").arg(bigSize).arg(smallSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {
