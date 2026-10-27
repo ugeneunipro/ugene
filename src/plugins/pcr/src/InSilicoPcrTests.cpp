@@ -283,8 +283,6 @@ QString compareExhaustive(const InSilicoPcrTaskSettings& settings) {
     return {};
 }
 
-}  // namespace
-
 QString runInSilicoPcrTests(const QString& scenario) {
     auto s = settingsForTest();
     const QByteArray reverseSite = DNASequenceUtils::reverseComplement(s.reversePrimer);
@@ -488,6 +486,8 @@ QString runInSilicoPcrTests(const QString& scenario) {
     }
     return {};
 }
+
+}  // namespace
 
 void GTest_InSilicoPcr::init(XMLTestFormat*, const QDomElement& el) {
     scenario = el.attribute("scenario");

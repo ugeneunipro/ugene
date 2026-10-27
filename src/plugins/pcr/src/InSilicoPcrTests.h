@@ -25,9 +25,6 @@
 
 namespace U2 {
 
-// Also used by the standalone regression/benchmark runner.
-QString runInSilicoPcrTests(const QString& scenario);
-
 class GTest_InSilicoPcr : public XmlTest {
     Q_OBJECT
 public:
