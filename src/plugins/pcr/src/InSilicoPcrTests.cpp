@@ -21,14 +21,25 @@
 
 #include "InSilicoPcrTests.h"
 
+#include <algorithm>
 #include <random>
 
 #include <QDomElement>
+#include <QScopeGuard>
 
 #include <U2Algorithm/RoughTmCalculatorCmdFactory.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/U2DbiRegistry.h>
+#include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SequenceUtils.h>
 
+#include "ExtractProductTask.h"
 #include "InSilicoPcrTask.h"
 
 namespace U2 {
@@ -52,6 +63,57 @@ QList<InSilicoPcrProduct> runPcr(const InSilicoPcrTaskSettings& settings) {
     }
     task.run();
     return task.getResults();
+}
+
+QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2Region& region, const QByteArray& expected) {
+    const auto products = runPcr(settings);
+    const auto product = std::find_if(products.cbegin(), products.cend(), [&](const InSilicoPcrProduct& p) {
+        return p.region == region;
+    });
+    if (product == products.cend()) {
+        return "Missing product for extraction";
+    }
+
+    U2OpStatusImpl os;
+    const auto dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+    CHECK_OP(os, os.getError());
+    DNASequence sequence("extraction-template", settings.sequence,
+                         AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
+    sequence.circular = settings.isCircular;
+    const auto sequenceRef = U2SequenceUtils::import(os, dbiRef, sequence);
+    CHECK_OP(os, os.getError());
+    auto cleanup = qScopeGuard([&] {
+        U2OpStatus2Log cleanupStatus;
+        DbiConnection connection(dbiRef, cleanupStatus);
+        if (!cleanupStatus.hasError()) {
+            connection.dbi->getObjectDbi()->removeObject(sequenceRef.entityId, cleanupStatus);
+        }
+    });
+
+    ExtractProductSettings extractionSettings;
+    extractionSettings.sequenceRef = sequenceRef;
+    extractionSettings.targetDbiRef = dbiRef;
+    extractionSettings.annotationsExtraction = ExtractProductSettings::None;
+    ExtractProductTask extraction(*product, extractionSettings, {{DocumentRemovalMode_Synchronous, true}});
+    extraction.run();
+    if (extraction.hasError()) {
+        return extraction.getError();
+    }
+    QScopedPointer<Document, QScopedPointerDeleteLater> document(extraction.takeResult());
+    if (document.isNull()) {
+        return "No extracted document";
+    }
+    const auto sequences = document->findGObjectByType(GObjectTypes::SEQUENCE);
+    if (sequences.size() != 1) {
+        return "Expected one exported sequence";
+    }
+    const auto exported = qobject_cast<U2SequenceObject*>(sequences.first());
+    const QByteArray actual = exported->getWholeSequenceData(os);
+    CHECK_OP(os, os.getError());
+    if (actual != expected) {
+        return QString("Incorrect extracted DNA: expected %1, got %2").arg(QString(expected), QString(actual));
+    }
+    return {};
 }
 
 bool containsAll(const QList<InSilicoPcrProduct>& actual, const QList<InSilicoPcrProduct>& expected) {
@@ -332,6 +394,32 @@ QString runInSilicoPcrTests(const QString& scenario) {
             return QString("Expected one product and two temperature calculations, got %1 / %2").arg(products.size()).arg(calculator->calls);
         }
         return compareExhaustive(s);
+    } else if (scenario == "product_extraction") {
+        const QByteArray product = s.forwardPrimer + QByteArray("CG").repeated(20) + reverseSite;
+        for (bool reverse : {false, true}) {
+            const QByteArray oriented = reverse ? DNASequenceUtils::reverseComplement(product) : product;
+            for (int leftOverhang : {0, 1, 2, 3}) {
+                for (int rightOverhang : {0, 1, 2, 3}) {
+                    const QByteArray prefix(leftOverhang == 0 ? 30 : 0, 'C');
+                    const QByteArray suffix(rightOverhang == 0 ? 30 : 0, 'C');
+                    s.sequence = prefix + oriented.mid(leftOverhang, oriented.size() - leftOverhang - rightOverhang) + suffix;
+                    const QString error = checkExtractedProduct(s, U2Region(prefix.size(), oriented.size()), oriented);
+                    if (!error.isEmpty()) {
+                        return QString("Overhangs %1 / %2, reverse=%3: %4").arg(leftOverhang).arg(rightOverhang).arg(reverse).arg(error);
+                    }
+                }
+            }
+            s.isCircular = true;
+            const QByteArray circle = oriented + QByteArray(60, 'C');
+            for (int origin : {0, 1, 10, 25, 60, 70, 79, 100, 137, 138, 139}) {
+                s.sequence = circle.mid(origin) + circle.left(origin);
+                const QString error = checkExtractedProduct(s, U2Region((circle.size() - origin) % circle.size(), oriented.size()), oriented);
+                if (!error.isEmpty()) {
+                    return QString("Circular origin %1, reverse=%2: %3").arg(origin).arg(reverse).arg(error);
+                }
+            }
+            s.isCircular = false;
+        }
     } else if (scenario == "overhangs") {
         for (bool reverse : {false, true}) {
             const QByteArray oriented = reverse ? DNASequenceUtils::reverseComplement(amplicon) : amplicon;

@@ -90,25 +90,27 @@ DNASequence ExtractProductTask::extractTargetSequence() {
 
     U2Sequence sequence = sequenceDbi->getSequenceObject(settings.sequenceRef.entityId, stateInfo);
     CHECK_OP(stateInfo, resultSequence);
-    wholeSequenceLength = sequence.length;
+    const qint64 ledgeSize = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
+    const U2Region templateRegion(product.region.startPos, product.region.length - ledgeSize);
+    SAFE_POINT_EXT(templateRegion.length > 0 && templateRegion.startPos >= 0 && templateRegion.startPos < sequence.length,
+                   setError("Invalid PCR template region"), resultSequence);
+    SAFE_POINT_EXT(sequence.circular || templateRegion.endPos() <= sequence.length,
+                   setError("PCR product exceeds the linear template"), resultSequence);
 
-    resultSequence.seq = sequenceDbi->getSequenceData(settings.sequenceRef.entityId, product.region, stateInfo);
+    const qint64 firstLength = qMin(templateRegion.length, sequence.length - templateRegion.startPos);
+    resultSequence.seq = sequenceDbi->getSequenceData(settings.sequenceRef.entityId, U2Region(templateRegion.startPos, firstLength), stateInfo);
     CHECK_OP(stateInfo, resultSequence);
-    if (product.region.endPos() > sequence.length) {
-        U2Region tail(0, product.region.endPos() % sequence.length);
-        int ledgeSize = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
-        if (ledgeSize == tail.length) {
-            resultSequence.seq = resultSequence.seq.insert(0, product.forwardPrimerLedge);
-            resultSequence.seq = resultSequence.seq.insert(resultSequence.seq.size(), DNASequenceUtils::reverseComplement(product.reversePrimerLedge));
-            sequence.length += ledgeSize;
-            wholeSequenceLength = sequence.length;
-        } else {
-            resultSequence.seq += sequenceDbi->getSequenceData(settings.sequenceRef.entityId, tail, stateInfo);
-            CHECK_OP(stateInfo, resultSequence);
-        }
+    if (firstLength < templateRegion.length) {
+        const U2Region tail(0, templateRegion.length - firstLength);
+        resultSequence.seq += sequenceDbi->getSequenceData(settings.sequenceRef.entityId, tail, stateInfo);
+        CHECK_OP(stateInfo, resultSequence);
     }
 
-    resultSequence.setName(getProductName(sequence.visualName, sequence.length, product.region));
+    resultSequence.seq.prepend(product.forwardPrimerLedge);
+    resultSequence.seq.append(DNASequenceUtils::reverseComplement(product.reversePrimerLedge));
+    // Overhangs add virtual coordinates used by product names and annotations.
+    wholeSequenceLength = sequence.length + ledgeSize;
+    resultSequence.setName(getProductName(sequence.visualName, wholeSequenceLength, product.region));
     return resultSequence;
 }
 
