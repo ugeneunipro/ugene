@@ -23,6 +23,7 @@
 
 #include <QMenu>
 
+#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -32,8 +33,12 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ToolsMenu.h>
 
+#include <U2Test/GTestFrameworkComponents.h>
+#include <U2Test/XMLTestFormat.h>
+
 #include "FindPrimerPairsWorker.h"
 #include "InSilicoPcrOPWidgetFactory.h"
+#include "InSilicoPcrTests.h"
 #include "InSilicoPcrWorker.h"
 #include "PrimerLibrary.h"
 #include "PrimerLibraryMdiWindow.h"
@@ -47,6 +52,14 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 
 PcrPlugin::PcrPlugin()
     : Plugin(tr("In silico PCR"), tr("In silico PCR")) {
+    auto testFormat = qobject_cast<XMLTestFormat*>(AppContext::getTestFramework()->getTestFormatRegistry()->findFormat("XML"));
+    SAFE_POINT_NN(testFormat, );
+    auto factories = new GAutoDeleteList<XMLTestFactory>(this);
+    factories->qlist << GTest_InSilicoPcr::createFactory();
+    for (auto factory : factories->qlist) {
+        testFormat->registerTestFactory(factory);
+    }
+
     // Init primer library
     U2OpStatus2Log os;
     PrimerLibrary* library = PrimerLibrary::getInstance(os);

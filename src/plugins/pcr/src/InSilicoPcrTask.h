@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QSet>
+
 #include <U2Algorithm/TmCalculator.h>
 #include <U2Algorithm/FindAlgorithmTask.h>
 
@@ -91,30 +93,27 @@ private:
         PrimerBind();
 
         QByteArray primer;
-        uint mismatches;
         U2Region region;
         int ledge;
     };
-    PrimerBind getPrimerBind(const FindAlgorithmResult& forward, const FindAlgorithmResult& reverse, U2Strand::Direction direction) const;
+    PrimerBind getPrimerBind(const FindAlgorithmResult& match, bool isForwardPrimer) const;
+    void collectPrimerBinds(FindAlgorithmTask* search, bool isForwardPrimer, QList<PrimerBind>& direct, QList<PrimerBind>& complementary);
+    void pairPrimerBinds(QList<PrimerBind>& left, QList<PrimerBind>& right, U2Strand::Direction direction);
 
     qint64 getProductSize(const PrimerBind& leftBind, const PrimerBind& rightBind) const;
     FindAlgorithmTaskSettings getFindPatternSettings(U2Strand::Direction direction);
     bool isCorrectProductSize(qint64 productSize, qint64 minPrimerSize) const;
-    bool isProductAcceptable(const PrimerBind& leftBind, const PrimerBind& rightBind, const U2Region& product) const;
     bool checkPerfectMatch(const PrimerBind& bind, U2Strand::Direction direction) const;
     QByteArray getSequence(const U2Region& region, U2Strand::Direction direction) const;
     void createAndAddResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction);
-    bool updateSequenceByPrimers(const PrimerBind& leftPrimer, const PrimerBind& rightPrimer, QByteArray& productSequence) const;
-    void updateSequenceByPrimer(const PrimerBind& primer, QByteArray& productSequence) const;
 
 private:
-    // it takes ~6 minutes to process matrix 50x50 results with default algorithm settings in release build
-    static constexpr int MAX_RESULTS_FOR_PRIMERS_PER_STRAND = 50;
-
     const InSilicoPcrTaskSettings* settings = nullptr;
     FindAlgorithmTask* forwardSearch;
     FindAlgorithmTask* reverseSearch;
     QList<InSilicoPcrProduct> results;
+    QSet<QByteArray> productKeys;
+    QSharedPointer<TmCalculator> temperatureCalculator;
     int minProductSize;
 };
 

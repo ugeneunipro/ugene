@@ -1,0 +1,62 @@
+PCR issue #1969: validation and benchmark results
+================================================
+
+Base revision: 2eca5ce40d. Fixed implementation: working-tree PCR patch.
+Platform: Apple M4 Pro, macOS arm64, Qt 6.12.0, Apple Clang 17.0.0.
+All three standalone runners: -O3 -DNDEBUG, identical common libraries.
+Calculator: UGENE Rough (not Primer3). No GUI rendering in timed region.
+Three separate processes per case/variant; each has one warm-up and seven
+measured iterations. Table values are medians of the per-process medians.
+RSS is the median process high-water mark, including libraries and fixtures.
+
+Case       Variant      Products    Total ms    Search ms    Pairing ms    Peak RSS MiB
+ordinary   before              1      23.449       23.447         0.002           39.09
+ordinary   unlimited           1      23.082       23.077         0.002           39.02
+ordinary   after               1      23.100       23.097         0.003           39.19
+rejected   before              0       4.153        4.152         0.001           27.02
+rejected   unlimited           1       4.117        4.044         0.073           28.23
+rejected   after               1       4.503        4.209         0.296           28.36
+dense      before           1225       3.223        0.048         3.176           23.08
+dense      unlimited        1225       3.206        0.048         3.161           23.06
+dense      after            1225       2.988        0.048         2.937           23.23
+sparse     before             50       9.446        9.397         0.047           42.69
+sparse     unlimited       10000     765.825        9.166       756.738           57.77
+sparse     after           10000      22.097        9.093        13.105           60.33
+
+Variants:
+before: original code, silently retains only 50 candidates per primer.
+unlimited: original code with only that limit removed, still all-pairs.
+after: validated sites, coordinate range queries, hashed deduplication,
+       task-local caching of the fixed primer temperatures.
+
+Interpretation:
+- Ordinary 1 Mb sequence: no material runtime or memory regression.
+- Dense case: the same 1,225 products; 3.223 -> 2.988 ms.
+- Rejected-site case: correct result costs 0.35 ms more than the limited
+  base, and 0.39 ms more than uncapped all-pairs (only one reverse site).
+  Per-site validation does more work here than early distance rejection.
+- Sparse case: all 10,000 products in 22.097 ms vs 765.825 ms uncapped
+  (34.7x faster overall; 57.7x faster pairing). RSS is 60.33 vs 57.77 MiB.
+  The limited base is faster only because it discards 9,950 products.
+- Complete output has a real cost. Runtime/memory cannot be bounded
+  independently of the number and lengths of products returned.
+
+Validation:
+- The regression test fails on the base: exact product disappears after
+  50 inexact sites. The base also returns only 50 of 80 expected products.
+- CMake builds of pcr and pcr_tests succeeded.
+- Standalone runner: all 9 scenarios passed.
+- Native UGENE XML Test Runner: 9 tests, 9 passed, 0 failed.
+- Independent exhaustive oracle: 280 seeded template/size combinations,
+  plus explicit orientation, circular, degenerate-primer and overhang cases.
+- Cancellation and deduplication/temperature-call counts are tested.
+- git diff --check passed.
+- Tested locally on macOS arm64. Windows/Linux executions and the full
+  interactive GUI suite were not performed.
+
+Reproduction commands and input descriptions are in README.txt.
+The local raw samples and native XML report are in:
+  build/debug-pcr/benchmark-results.json
+  build/debug-pcr/pcr-report.html
+  build/debug-pcr/regressions-before.log
+  build/debug-pcr/regressions-after.log
