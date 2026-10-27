@@ -49,6 +49,7 @@ DEALINGS IN THE SOFTWARE.  */
 #include "samtools.h"
 #include "bedidx.h"
 #include "bam.h"
+#include "htslib/utf8_path.h"
 
 #ifdef OS_WIN
 #include "win/getopt.h"
@@ -1664,7 +1665,7 @@ int bam_merge(int argc, char *argv[])
     hts_srand48(random_seed);
     if (!(flag & MERGE_FORCE) && strcmp(fnout, "-") != 0) {
         struct stat sbuf;
-        if (stat(fnout, &sbuf) == 0 && S_ISREG(sbuf.st_mode)) {
+        if (hts_stat_utf8(fnout, &sbuf) == 0 && S_ISREG(sbuf.st_mode)) {
             fprintf(stderr, "[%s] File '%s' exists. Please apply '-f' to overwrite. Abort.\n", __func__, fnout);
             ret = 1;
             goto end;
@@ -3500,14 +3501,14 @@ int bam_sort_core_ext(SamOrder sam_order, char* sort_tag, int minimiser_kmer,
             fn_counter++;
             if (merge_res < 0) {
                 if (errno != EEXIST)
-                    unlink(fns[n_files]);
+                    hts_unlink_utf8(fns[n_files]);
                 free(fns[n_files]);
                 goto err;
             }
 
             if (consolidate_from < n_files) {
                 for (i = consolidate_from; i < n_files; i++) {
-                    unlink(fns[i]);
+                    hts_unlink_utf8(fns[i]);
                     free(fns[i]);
                 }
                 fns[consolidate_from] = fns[n_files];
@@ -3574,7 +3575,7 @@ int bam_sort_core_ext(SamOrder sam_order, char* sort_tag, int minimiser_kmer,
     if (fns) {
         for (i = 0; i < n_files; ++i) {
             if (fns[i]) {
-                unlink(fns[i]);
+                hts_unlink_utf8(fns[i]);
                 free(fns[i]);
             }
         }
@@ -3787,7 +3788,7 @@ int bam_sort(int argc, char *argv[])
             kputc('.', &tmpprefix);
         }
     }
-    if (stat(tmpprefix.s, &st) == 0 && S_ISDIR(st.st_mode)) {
+    if (hts_stat_utf8(tmpprefix.s, &st) == 0 && S_ISDIR(st.st_mode)) {
         //unsigned t = ((unsigned) time(NULL)) ^ ((unsigned) clock());
         if (tmpprefix.s[tmpprefix.l-1] != '/') kputc('/', &tmpprefix);
         //ksprintf(&tmpprefix, "samtools.%d.%u.tmp", (int) getpid(), t % 10000);

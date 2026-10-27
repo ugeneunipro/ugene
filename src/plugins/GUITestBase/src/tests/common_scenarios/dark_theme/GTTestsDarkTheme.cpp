@@ -33,6 +33,13 @@
 #include "system/GTFile.h"
 
 #include <QApplication>
+#include <QScopedPointer>
+#include <QStyle>
+#include <QStyleFactory>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
 #include "GTUtilsDocument.h"
@@ -86,7 +93,9 @@ static void testPreferences(QWidget* dialog) {
 
     GTComboBox::checkValuesPresence(colorThemeCombo, {"Light", "Dark"});
     GTComboBox::selectItemByText(colorThemeCombo, "Dark");
-    GTComboBox::checkValuesPresence(styleCombo, {"Fusion", "Windows"}, true);
+    // Qt can provide additional styles, such as Windows11.
+    GTComboBox::checkValuesPresence(styleCombo, {"Fusion", "Windows"});
+    CHECK_SET_ERR(styleCombo->findText("WindowsVista") == -1, "WindowsVista must not be available with the Dark theme");
 }
 #endif
 
@@ -225,27 +234,23 @@ static void checkLight() {
 }
 #else
 static void checkLight() {
-    checkColor(QPalette::Active, QPalette::Window, "#f0f0f0");
-    checkColor(QPalette::Active, QPalette::WindowText, "#000000");
-    checkColor(QPalette::Disabled, QPalette::WindowText, "#787878");
-    checkColor(QPalette::Active, QPalette::Base, "#ffffff");
-    checkColor(QPalette::Active, QPalette::AlternateBase, "#f5f5f5");
-    checkColor(QPalette::Active, QPalette::ToolTipBase, "#ffffdc");
-    checkColor(QPalette::Active, QPalette::ToolTipText, "#000000");
-    checkColor(QPalette::Disabled, QPalette::Text, "#787878");
-    checkColor(QPalette::Active, QPalette::Midlight, "#e3e3e3");
-    checkColor(QPalette::Active, QPalette::Mid, "#a0a0a0");
-    checkColor(QPalette::Active, QPalette::Shadow, "#696969");
-    checkColor(QPalette::Active, QPalette::Button, "#f0f0f0");
-    checkColor(QPalette::Active, QPalette::ButtonText, "#000000");
-    checkColor(QPalette::Disabled, QPalette::ButtonText, "#787878");
-    checkColor(QPalette::Active, QPalette::BrightText, "#ffffff");
-    checkColor(QPalette::Active, QPalette::Link, "#0000ff");
-    checkColor(QPalette::Active, QPalette::LinkVisited, "#ff00ff");
-    checkColor(QPalette::Active, QPalette::Highlight, "#0078d7");
-    checkColor(QPalette::Disabled, QPalette::Highlight, "#0078d7");
-    checkColor(QPalette::Active, QPalette::HighlightedText, "#ffffff");
-    checkColor(QPalette::Disabled, QPalette::HighlightedText, "#ffffff");
+    // Native light colors depend on the installed Windows/Qt style. UGENE
+    // should use that style's palette, without retaining any dark overrides.
+    QScopedPointer<QStyle> style(QStyleFactory::create(AppContext::getAppSettings()->getUserAppsSettings()->getVisualStyle()));
+    CHECK_SET_ERR(!style.isNull(), "Could not create the configured Qt style");
+    QPalette expected = style->standardPalette();
+    style->polish(expected);
+    for (int group = 0; group < QPalette::NColorGroups; group++) {
+        for (int role = 0; role < QPalette::NColorRoles; role++) {
+            const auto colorGroup = static_cast<QPalette::ColorGroup>(group);
+            const auto colorRole = static_cast<QPalette::ColorRole>(role);
+            // QApplication fills unresolved roles (for example, native link
+            // colors) from the platform palette when applying the style.
+            if (expected.isBrushSet(colorGroup, colorRole)) {
+                checkColor(colorGroup, colorRole, expected.color(colorGroup, colorRole).name());
+            }
+        }
+    }
 }
 #endif
 #endif
