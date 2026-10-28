@@ -30,6 +30,7 @@
 #include <U2Algorithm/RoughTmCalculatorCmdFactory.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
@@ -65,7 +66,9 @@ QList<InSilicoPcrProduct> runPcr(const InSilicoPcrTaskSettings& settings) {
     return task.getResults();
 }
 
-QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2Region& region, const QByteArray& expected) {
+QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2Region& region, const QByteArray& expected,
+                              ExtractProductSettings::AnnotationsExtraction mode = ExtractProductSettings::None,
+                              const QMap<QString, U2Region>& sourceAnnotations = {}, const QMap<QString, U2Region>& expectedAnnotations = {}) {
     const auto products = runPcr(settings);
     const auto product = std::find_if(products.cbegin(), products.cend(), [&](const InSilicoPcrProduct& p) {
         return p.region == region;
@@ -82,18 +85,36 @@ QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2R
     sequence.circular = settings.isCircular;
     const auto sequenceRef = U2SequenceUtils::import(os, dbiRef, sequence);
     CHECK_OP(os, os.getError());
+    U2EntityRef annotationsRef;
     auto cleanup = qScopeGuard([&] {
         U2OpStatus2Log cleanupStatus;
         DbiConnection connection(dbiRef, cleanupStatus);
         if (!cleanupStatus.hasError()) {
             connection.dbi->getObjectDbi()->removeObject(sequenceRef.entityId, cleanupStatus);
+            if (annotationsRef.isValid()) {
+                connection.dbi->getObjectDbi()->removeObject(annotationsRef.entityId, cleanupStatus);
+            }
         }
     });
 
+    QScopedPointer<AnnotationTableObject> sourceFeatures;
+    if (!sourceAnnotations.isEmpty()) {
+        sourceFeatures.reset(new AnnotationTableObject("template-features", dbiRef));
+        annotationsRef = sourceFeatures->getEntityRef();
+        for (auto it = sourceAnnotations.cbegin(); it != sourceAnnotations.cend(); ++it) {
+            SharedAnnotationData data(new AnnotationData);
+            data->name = it.key();
+            data->location->regions << it.value();
+            sourceFeatures->addAnnotations({data});
+        }
+    }
     ExtractProductSettings extractionSettings;
     extractionSettings.sequenceRef = sequenceRef;
     extractionSettings.targetDbiRef = dbiRef;
-    extractionSettings.annotationsExtraction = ExtractProductSettings::None;
+    extractionSettings.annotationsExtraction = mode;
+    if (annotationsRef.isValid()) {
+        extractionSettings.annotationRefs << annotationsRef;
+    }
     ExtractProductTask extraction(*product, extractionSettings, {{DocumentRemovalMode_Synchronous, true}});
     extraction.run();
     if (extraction.hasError()) {
@@ -112,6 +133,30 @@ QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2R
     CHECK_OP(os, os.getError());
     if (actual != expected) {
         return QString("Incorrect extracted DNA: expected %1, got %2").arg(QString(expected), QString(actual));
+    }
+    QMap<QString, U2Region> actualAnnotations;
+    const auto annotationTables = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+    for (auto object : annotationTables) {
+        const auto table = qobject_cast<AnnotationTableObject*>(object);
+        for (auto annotation : table->getAnnotations()) {
+            if (sourceAnnotations.contains(annotation->getName())) {
+                const auto regions = annotation->getRegions();
+                if (regions.size() != 1) {
+                    return "Expected one region per exported annotation";
+                }
+                actualAnnotations[annotation->getName()] = regions.first();
+            }
+        }
+    }
+    if (actualAnnotations != expectedAnnotations) {
+        auto describe = [](const QMap<QString, U2Region>& annotations) {
+            QStringList descriptions;
+            for (auto it = annotations.cbegin(); it != annotations.cend(); ++it) {
+                descriptions << QString("%1 [%2,%3)").arg(it.key()).arg(it.value().startPos).arg(it.value().endPos());
+            }
+            return descriptions.join(", ");
+        };
+        return QString("Incorrect extracted annotations: expected %1; got %2").arg(describe(expectedAnnotations), describe(actualAnnotations));
     }
     return {};
 }
@@ -394,6 +439,41 @@ QString runInSilicoPcrTests(const QString& scenario) {
             return QString("Expected one product and two temperature calculations, got %1 / %2").arg(products.size()).arg(calculator->calls);
         }
         return compareExhaustive(s);
+    } else if (scenario == "annotation_extraction") {
+        const QByteArray product = s.forwardPrimer + QByteArray("CG").repeated(20) + reverseSite;
+        for (int overhang : {0, 1}) {
+            const QByteArray prefix(overhang == 0 ? 30 : 0, 'C');
+            s.sequence = prefix + product.mid(overhang) + QByteArray(30, 'C');
+            const int templateLength = product.size() - overhang;
+            const QMap<QString, U2Region> annotations{{"inside", U2Region(prefix.size() + 30, 5)},
+                                                     {"crossing", U2Region(prefix.size() + templateLength - 9, 10)},
+                                                     {"outside", U2Region(prefix.size() + templateLength, 1)}};
+            for (auto mode : {ExtractProductSettings::All, ExtractProductSettings::Inner}) {
+                QMap<QString, U2Region> expected{{"inside", U2Region(30 + overhang, 5)}};
+                if (mode == ExtractProductSettings::All) {
+                    expected["crossing"] = U2Region(71, 9);
+                }
+                const auto error = checkExtractedProduct(s, U2Region(prefix.size(), 80), product, mode, annotations, expected);
+                if (!error.isEmpty()) {
+                    return QString("Overhang %1, mode %2: %3").arg(overhang).arg(mode).arg(error);
+                }
+            }
+        }
+        s.isCircular = true;
+        const QByteArray circle = product + QByteArray(60, 'C');
+        s.sequence = circle.mid(40) + circle.left(40);
+        const QMap<QString, U2Region> annotations{{"head", U2Region(10, 5)}, {"tail", U2Region(120, 5)},
+                                                 {"crossing", U2Region(35, 10)}, {"outside", U2Region(60, 5)}};
+        for (auto mode : {ExtractProductSettings::All, ExtractProductSettings::Inner}) {
+            QMap<QString, U2Region> expected{{"head", U2Region(50, 5)}, {"tail", U2Region(20, 5)}};
+            if (mode == ExtractProductSettings::All) {
+                expected["crossing"] = U2Region(75, 5);
+            }
+            const auto error = checkExtractedProduct(s, U2Region(100, 80), product, mode, annotations, expected);
+            if (!error.isEmpty()) {
+                return QString("Circular annotations, mode %1: %2").arg(mode).arg(error);
+            }
+        }
     } else if (scenario == "product_extraction") {
         const QByteArray product = s.forwardPrimer + QByteArray("CG").repeated(20) + reverseSite;
         for (bool reverse : {false, true}) {

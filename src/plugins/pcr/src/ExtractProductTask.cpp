@@ -108,9 +108,9 @@ DNASequence ExtractProductTask::extractTargetSequence() {
 
     resultSequence.seq.prepend(product.forwardPrimerLedge);
     resultSequence.seq.append(DNASequenceUtils::reverseComplement(product.reversePrimerLedge));
-    // Overhangs add virtual coordinates used by product names and annotations.
-    wholeSequenceLength = sequence.length + ledgeSize;
-    resultSequence.setName(getProductName(sequence.visualName, wholeSequenceLength, product.region));
+    wholeSequenceLength = sequence.length;
+    // Product names include virtual overhang coordinates.
+    resultSequence.setName(getProductName(sequence.visualName, wholeSequenceLength + ledgeSize, product.region));
     return resultSequence;
 }
 
@@ -170,24 +170,23 @@ bool crop(const U2Region& within, QVector<U2Region>& regions) {
 void ExtractProductTask::addProductAnnotations(AnnotationTableObject* targetObject, const U2EntityRef& annsRef) const {
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject("features", annsRef));
     const bool contain = (ExtractProductSettings::Inner == settings.annotationsExtraction);
-    QSet<Annotation*> anns = toSet(annsObject->getAnnotationsByRegion(product.region, contain));
+    const qint64 ledgeSize = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
+    const U2Region templateRegion(product.region.startPos, product.region.length - ledgeSize);
+    QSet<Annotation*> anns = toSet(annsObject->getAnnotationsByRegion(templateRegion, contain));
 
-    U2Region begin = product.region;
+    U2Region begin = templateRegion;
     U2Region end(0, 0);
-    if (product.region.endPos() > wholeSequenceLength) {  // circular
-        begin.length = wholeSequenceLength - product.region.startPos;
-        end.length = product.region.endPos() % wholeSequenceLength;
+    if (templateRegion.endPos() > wholeSequenceLength) {  // circular
+        begin.length = wholeSequenceLength - templateRegion.startPos;
+        end.length = templateRegion.endPos() % wholeSequenceLength;
         anns.unite(toSet(annsObject->getAnnotationsByRegion(end, contain)));
     }
 
     foreach (Annotation* ann, anns) {
         SharedAnnotationData data = ann->getData();
-        for (int i = 0; i < data->location->regions.size(); i++) {
-            data->location->regions[i].startPos += product.forwardPrimerLedge.size();
-        }
         bool cropped = prepareCircularRegions(begin, end, wholeSequenceLength, data->location->regions);
-        cropped |= crop(product.region, data->location->regions);
-        U2Region::shift(-product.region.startPos, data->location->regions);
+        cropped |= crop(templateRegion, data->location->regions);
+        U2Region::shift(product.forwardPrimerLedge.size() - templateRegion.startPos, data->location->regions);
         if (cropped) {
             U2Qualifier note;
             note.name = "warning";
