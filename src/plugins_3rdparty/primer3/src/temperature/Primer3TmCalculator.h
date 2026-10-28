@@ -31,8 +31,6 @@ class Primer3TmCalculator : public TmCalculator {
 public:
     Primer3TmCalculator(const QVariantMap& settings);
 
-    double getMeltingTemperature(const QByteArray& sequence) override;
-
     /* DNA concentration (nanomolar). */
     static const QString KEY_DNA_CONC;
     /* Concentration of divalent cations (millimolar). */
@@ -93,6 +91,9 @@ public:
     static constexpr int NN_MAX_LEN_DEFAULT = 36;
     static constexpr int TM_METHOD_DEFAULT = 1;
     static constexpr int SALT_CORRECTIONS_DEFAULT = 1;
+
+protected:
+    double calculateMeltingTemperature(const QByteArray& sequence) override;
 };
 
 }

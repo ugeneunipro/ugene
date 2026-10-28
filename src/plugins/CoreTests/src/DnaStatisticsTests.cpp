@@ -21,10 +21,20 @@
 
 #include "DnaStatisticsTests.h"
 
+#include <atomic>
+#include <cmath>
+#include <future>
+#include <thread>
+#include <utility>
+#include <vector>
+
+#include <U2Algorithm/RoughTmCalculatorCmdFactory.h>
+
 #include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/U2Location.h>
@@ -293,8 +303,238 @@ Task::ReportResult GTest_DnaStatisticsTest::report() {
     return ReportResult_Finished;
 }
 
+namespace {
+
+class CacheProbeTmCalculator : public TmCalculator {
+public:
+    explicit CacheProbeTmCalculator(int offset = 0) : TmCalculator({{"offset", offset}}) {
+    }
+
+    std::atomic<int> calls{0};
+
+protected:
+    double calculateMeltingTemperature(const QByteArray& sequence) override {
+        ++calls;
+        return sequence.isEmpty() ? INVALID_TM : sequence.size() + sequence.count('G') + settings.value("offset").toInt();
+    }
+};
+
+QString testTemperatureCache() {
+    const QByteArray primer("ACGTCAGTACGATCGTACGA");
+    CacheProbeTmCalculator calculator;
+    const double temperature = calculator.getMeltingTemperature(primer);
+    if (calculator.getMeltingTemperature(primer) != temperature || calculator.calls != 1) {
+        return "Repeated melting-temperature calculation was not cached";
+    }
+    CacheProbeTmCalculator differentSettings(10);
+    if (differentSettings.getMeltingTemperature(primer) != temperature + 10 || differentSettings.calls != 1) {
+        return "Temperature cache leaked across calculator settings";
+    }
+    calculator.getMeltingTemperature({});
+    if (calculator.getMeltingTemperature({}) != TmCalculator::INVALID_TM || calculator.calls != 2) {
+        return "Cached invalid temperature changed the result";
+    }
+
+    const QByteArray oversized(100000, 'A');
+    calculator.getMeltingTemperature(oversized);
+    const int calls = calculator.calls;
+    if (calculator.getMeltingTemperature(oversized) != 100000 || calculator.calls != calls + 1 ||
+        calculator.getMeltingTemperature(primer) != temperature || calculator.calls != calls + 1) {
+        return "Oversized sequence was cached or evicted reusable entries";
+    }
+
+    char buffer[] = "GGGGGGGGGGGGGGGGGGGG";
+    const QByteArray original(buffer);
+    const double rawTemperature = calculator.getMeltingTemperature(QByteArray::fromRawData(buffer, sizeof(buffer) - 1));
+    buffer[0] = 'A';
+    const int rawCalls = calculator.calls;
+    if (calculator.getMeltingTemperature(original) != rawTemperature || calculator.calls != rawCalls) {
+        return "Temperature cache retained externally owned sequence data";
+    }
+
+    CacheProbeTmCalculator bounded;
+    bounded.getMeltingTemperature(primer);
+    QByteArray first;
+    for (int i = 0; i < 2000; ++i) {
+        QByteArray sequence(1024, 'A');
+        for (int j = 0; j < 16; ++j) {
+            sequence[j] = "ACGT"[(i >> (2 * j)) & 3];
+        }
+        if (i == 0) {
+            first = sequence;
+        }
+        bounded.getMeltingTemperature(sequence);
+        bounded.getMeltingTemperature(primer);
+    }
+    const int boundedCalls = bounded.calls;
+    bounded.getMeltingTemperature(primer);
+    if (bounded.calls != boundedCalls) {
+        return "LRU cache evicted a frequently reused primer";
+    }
+    bounded.getMeltingTemperature(first);
+    if (bounded.calls != boundedCalls + 1) {
+        return "Temperature cache did not evict old sequences";
+    }
+
+    CacheProbeTmCalculator shared;
+    std::vector<std::future<bool>> workers;
+    for (int worker = 0; worker < 4; ++worker) {
+        workers.push_back(std::async(std::launch::async, [&shared, worker] {
+            for (int i = 0; i < 500; ++i) {
+                QByteArray sequence(100, 'A');
+                const int id = (i + worker) % 64;
+                for (int j = 0; j < 3; ++j) {
+                    sequence[j] = "ACGT"[(id >> (2 * j)) & 3];
+                }
+                if (shared.getMeltingTemperature(sequence) != sequence.size() + sequence.count('G')) {
+                    return false;
+                }
+            }
+            return true;
+        }));
+    }
+    for (auto& worker : workers) {
+        if (!worker.get()) {
+            return "Concurrent temperature-cache access returned an incorrect value";
+        }
+    }
+    return {};
+}
+
+class CountingTmCalculator : public TmCalculator {
+public:
+    CountingTmCalculator() : TmCalculator({}), calculator(RoughTmCalculatorCmdFactory().createCalculator({})) {
+    }
+
+    int calls = 0;
+
+protected:
+    double calculateMeltingTemperature(const QByteArray& sequence) override {
+        ++calls;
+        return calculator->getMeltingTemperature(sequence);
+    }
+
+private:
+    QSharedPointer<TmCalculator> calculator;
+};
+
+QString testDegenerateTemperature() {
+    const QByteArray forwardPrimer("ACGTCAGTACGATCGTACGA");
+    const QByteArray reversePrimer("TGCACTGACTGACGTAGCTA");
+    const QByteArray amplicon = forwardPrimer + QByteArray(40, 'C') + DNASequenceUtils::reverseComplement(reversePrimer);
+    auto forward = forwardPrimer;
+    auto reverse = reversePrimer;
+    forward[0] = 'R';
+    reverse[0] = 'Y';
+    QByteArray secondProduct = amplicon;
+    secondProduct[0] = 'G';
+    QByteArray secondForward = forwardPrimer;
+    secondForward[0] = 'G';
+    CountingTmCalculator calculator;
+    auto reference = RoughTmCalculatorCmdFactory().createCalculator({});
+    const double first = calculator.getAnnealingTemperature(amplicon, forward, reverse);
+    const int firstCalls = calculator.calls;
+    if (first != reference->getAnnealingTemperature(amplicon, forwardPrimer, reversePrimer) ||
+        calculator.getAnnealingTemperature(amplicon, forward, reverse) != first || calculator.calls != firstCalls) {
+        return "Repeated degenerate-primer temperature was not reused";
+    }
+    const double second = calculator.getAnnealingTemperature(secondProduct, forward, reverse);
+    if (second == first || second != reference->getAnnealingTemperature(secondProduct, secondForward, reversePrimer)) {
+        return "Degenerate primer cache ignored the product-specific binding sequence";
+    }
+    return {};
+}
+
+QString testPrimer3Concurrency() {
+    const auto factory = AppContext::getTmCalculatorRegistry()->getById("primer3-tm-algorithm");
+    if (factory == nullptr) {
+        return "Primer3 temperature calculator is not registered";
+    }
+    QList<QByteArray> sequences;
+    for (int i = 0; i < 64; ++i) {
+        QByteArray sequence("ACGTCAGTACGATCGTACGA");
+        for (int j = 0; j < 3; ++j) {
+            sequence[j] = "ACGT"[(i >> (2 * j)) & 3];
+        }
+        sequences << sequence;
+    }
+    QList<QVariantMap> configurations;
+    QList<QList<double>> expected;
+    for (int salt : {0, 5, 10, 20, 50, 75, 100, 200}) {
+        auto settings = factory->createDefaultSettings();
+        settings["salt_correction"] = 2;
+        settings["salt_conc"] = salt;
+        configurations << settings;
+        const auto calculator = factory->createCalculator(settings);
+        QList<double> temperatures;
+        for (const auto& sequence : std::as_const(sequences)) {
+            const double temperature = calculator->getMeltingTemperature(sequence);
+            if (!std::isfinite(temperature) || temperature == TmCalculator::INVALID_TM) {
+                return "Invalid serial Primer3 reference temperature";
+            }
+            temperatures << temperature;
+        }
+        expected << temperatures;
+    }
+
+    std::atomic<bool> start{false};
+    std::vector<std::future<QString>> workers;
+    for (int worker = 0; worker < configurations.size(); ++worker) {
+        workers.push_back(std::async(std::launch::async, [&, worker] {
+            while (!start.load(std::memory_order_acquire)) {
+                std::this_thread::yield();
+            }
+            for (int round = 0; round < 256; ++round) {
+                // A fresh instance keeps every sequence cold in the cache.
+                const auto calculator = factory->createCalculator(configurations.at(worker));
+                for (int i = 0; i < sequences.size(); ++i) {
+                    const double actual = calculator->getMeltingTemperature(sequences.at(i));
+                    const double reference = expected.at(worker).at(i);
+                    if (!std::isfinite(actual) || std::abs(actual - reference) > 1e-9) {
+                        return QString("Concurrent Primer3 mismatch: salt=%1, round=%2, sequence=%3, expected=%4, actual=%5")
+                            .arg(configurations.at(worker).value("salt_conc").toInt()).arg(round).arg(i)
+                            .arg(reference, 0, 'g', 17).arg(actual, 0, 'g', 17);
+                    }
+                }
+            }
+            return QString();
+        }));
+    }
+    start.store(true, std::memory_order_release);
+    QString error;
+    for (auto& worker : workers) {
+        const auto result = worker.get();
+        if (error.isEmpty()) {
+            error = result;
+        }
+    }
+    return error;
+}
+
+}  // namespace
+
+void GTest_TmCalculator::init(XMLTestFormat*, const QDomElement& element) {
+    scenario = element.attribute("scenario");
+}
+
+void GTest_TmCalculator::run() {
+    QString error;
+    if (scenario == "temperature_cache") {
+        error = testTemperatureCache();
+    } else if (scenario == "degenerate_temperature") {
+        error = testDegenerateTemperature();
+    } else if (scenario == "primer3_concurrency") {
+        error = testPrimer3Concurrency();
+    } else {
+        error = "Unknown temperature test scenario: " + scenario;
+    }
+    if (!error.isEmpty()) {
+        setError(error);
+    }
+}
+
 QList<XMLTestFactory*> DnaStatisticsTests::createTestFactories() {
-    return {GTest_DnaStatisticsTest::createFactory()};
+    return {GTest_DnaStatisticsTest::createFactory(), GTest_TmCalculator::createFactory()};
 }
 
 }  // namespace U2

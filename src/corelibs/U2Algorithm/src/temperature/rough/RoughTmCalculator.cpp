@@ -29,7 +29,7 @@ RoughTmCalculator::RoughTmCalculator(const QVariantMap& settings)
     : TmCalculator(settings) {
 }
 
-double RoughTmCalculator::getMeltingTemperature(const QByteArray& sequence) {
+double RoughTmCalculator::calculateMeltingTemperature(const QByteArray& sequence) {
     CHECK(!sequence.isEmpty(), INVALID_TM)
 
     int nA = 0;

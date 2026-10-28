@@ -31,7 +31,8 @@ class RoughTmCalculator : public TmCalculator {
 public:
     RoughTmCalculator(const QVariantMap& settings);
 
-    double getMeltingTemperature(const QByteArray& sequence) override;
+protected:
+    double calculateMeltingTemperature(const QByteArray& sequence) override;
 };
 
 }  // namespace U2
