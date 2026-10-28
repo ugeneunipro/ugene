@@ -22,7 +22,10 @@
 #include "DnaStatisticsTests.h"
 
 #include <atomic>
+#include <cmath>
 #include <future>
+#include <thread>
+#include <utility>
 #include <vector>
 
 #include <U2Algorithm/RoughTmCalculatorCmdFactory.h>
@@ -442,6 +445,72 @@ QString testDegenerateTemperature() {
     return {};
 }
 
+QString testPrimer3Concurrency() {
+    const auto factory = AppContext::getTmCalculatorRegistry()->getById("primer3-tm-algorithm");
+    if (factory == nullptr) {
+        return "Primer3 temperature calculator is not registered";
+    }
+    QList<QByteArray> sequences;
+    for (int i = 0; i < 64; ++i) {
+        QByteArray sequence("ACGTCAGTACGATCGTACGA");
+        for (int j = 0; j < 3; ++j) {
+            sequence[j] = "ACGT"[(i >> (2 * j)) & 3];
+        }
+        sequences << sequence;
+    }
+    QList<QVariantMap> configurations;
+    QList<QList<double>> expected;
+    for (int salt : {0, 5, 10, 20, 50, 75, 100, 200}) {
+        auto settings = factory->createDefaultSettings();
+        settings["salt_correction"] = 2;
+        settings["salt_conc"] = salt;
+        configurations << settings;
+        const auto calculator = factory->createCalculator(settings);
+        QList<double> temperatures;
+        for (const auto& sequence : std::as_const(sequences)) {
+            const double temperature = calculator->getMeltingTemperature(sequence);
+            if (!std::isfinite(temperature) || temperature == TmCalculator::INVALID_TM) {
+                return "Invalid serial Primer3 reference temperature";
+            }
+            temperatures << temperature;
+        }
+        expected << temperatures;
+    }
+
+    std::atomic<bool> start{false};
+    std::vector<std::future<QString>> workers;
+    for (int worker = 0; worker < configurations.size(); ++worker) {
+        workers.push_back(std::async(std::launch::async, [&, worker] {
+            while (!start.load(std::memory_order_acquire)) {
+                std::this_thread::yield();
+            }
+            for (int round = 0; round < 256; ++round) {
+                // A fresh instance keeps every sequence cold in the cache.
+                const auto calculator = factory->createCalculator(configurations.at(worker));
+                for (int i = 0; i < sequences.size(); ++i) {
+                    const double actual = calculator->getMeltingTemperature(sequences.at(i));
+                    const double reference = expected.at(worker).at(i);
+                    if (!std::isfinite(actual) || std::abs(actual - reference) > 1e-9) {
+                        return QString("Concurrent Primer3 mismatch: salt=%1, round=%2, sequence=%3, expected=%4, actual=%5")
+                            .arg(configurations.at(worker).value("salt_conc").toInt()).arg(round).arg(i)
+                            .arg(reference, 0, 'g', 17).arg(actual, 0, 'g', 17);
+                    }
+                }
+            }
+            return QString();
+        }));
+    }
+    start.store(true, std::memory_order_release);
+    QString error;
+    for (auto& worker : workers) {
+        const auto result = worker.get();
+        if (error.isEmpty()) {
+            error = result;
+        }
+    }
+    return error;
+}
+
 }  // namespace
 
 void GTest_TmCalculator::init(XMLTestFormat*, const QDomElement& element) {
@@ -454,6 +523,8 @@ void GTest_TmCalculator::run() {
         error = testTemperatureCache();
     } else if (scenario == "degenerate_temperature") {
         error = testDegenerateTemperature();
+    } else if (scenario == "primer3_concurrency") {
+        error = testPrimer3Concurrency();
     } else {
         error = "Unknown temperature test scenario: " + scenario;
     }
