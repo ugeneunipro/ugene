@@ -88,8 +88,17 @@ fi
   "${BUNDLE_DIR}/ugeneui.exe" \
   "${BUNDLE_DIR}/ugenecl.exe" \
   "${BUNDLE_DIR}/ugenem.exe" \
-  "${BUNDLE_DIR}/plugins_checker.exe" || {
+  "${BUNDLE_DIR}/plugins_checker.exe" \
+  "${BUNDLE_DIR}/plugins/"*.dll || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. windeployqt failed']"
+  exit 1
+}
+
+# Native OpenGL/GLU calls in the 3D viewer must use the same implementation as Qt.
+# Ship Mesa under the native DLL name too, so the bundle works on VMs without
+# accelerated OpenGL. This intentionally selects software rendering for the bundle.
+cp "${BUNDLE_DIR}/opengl32sw.dll" "${BUNDLE_DIR}/opengl32.dll" || {
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to deploy software OpenGL']"
   exit 1
 }
 

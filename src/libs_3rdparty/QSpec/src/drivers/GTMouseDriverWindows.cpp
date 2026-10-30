@@ -119,6 +119,25 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
 }
 #    undef GT_METHOD_NAME
 
+#    define GT_METHOD_NAME "doubleClick"
+bool GTMouseDriver::doubleClick() {
+    // Queue both clicks together. Sleeping between separate SendInput calls can
+    // exceed the system double-click interval when the test thread is delayed.
+    INPUT events[4] = {};
+    for (int i = 0; i < 4; i++) {
+        events[i].type = INPUT_MOUSE;
+        events[i].mi.dwFlags = i % 2 == 0 ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
+    }
+    const UINT sent = SendInput(4, events, sizeof(INPUT));
+    if (sent != 4) {
+        release(Qt::LeftButton);
+    }
+    DRIVER_CHECK(sent == 4, "Could not send the complete double-click sequence");
+    GTThread::waitForMainThread();
+    return true;
+}
+#    undef GT_METHOD_NAME
+
 #    define GT_METHOD_NAME "press"
 bool GTMouseDriver::press(Qt::MouseButton button) {
     unsigned int btn = button == Qt::LeftButton ? MOUSEEVENTF_LEFTDOWN : button == Qt::RightButton ? MOUSEEVENTF_RIGHTDOWN
