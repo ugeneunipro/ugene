@@ -20,7 +20,6 @@
  */
 
 #include "GTUtilsTaskTreeView.h"
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -95,7 +94,10 @@ bool GTUtilsTaskTreeView::isViewOpened() {
 }
 
 void GTUtilsTaskTreeView::toggleView() {
-    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
+    // Click the Task View dock button instead of sending the 'Alt+2' shortcut.
+    // The key press depends on which widget has focus and may be lost (especially
+    // on a loaded CI machine), while the dock button always toggles the dock.
+    GTWidget::click(GTWidget::findWidget(QString("doc_label__") + DOCK_TASK_VIEW));
 }
 
 QTreeWidgetItem* GTUtilsTaskTreeView::getTreeWidgetItem(const QString& itemName, bool failOnNull) {
