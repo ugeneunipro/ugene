@@ -1546,6 +1546,8 @@ GUI_TEST_CLASS_DEFINITION(test_8159) {
     if (!destGraph->isChecked()) {
         GTWidget::click(GTAction::button(destGraph));
     }
+    // The density graph for a 600M bases sequence may still be computed in background.
+    GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsSequenceView::getLengthOfSequence();
 
     class Scenario2 : public CustomScenario {
@@ -1555,7 +1557,7 @@ GUI_TEST_CLASS_DEFINITION(test_8159) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new Scenario2));
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new Scenario2), 120000);
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 }
 
@@ -1643,14 +1645,14 @@ GUI_TEST_CLASS_DEFINITION(test_8161) {
     Load COI.aln
     Select Wrap mode on
     Select Highlighting tab
-    Check up "Use dots" checkboõ
+    Check up "Use dots" checkboï¿½
     Select "Statistics" tab
-    Check up "Show distance column" checkboõ
+    Check up "Show distance column" checkboï¿½
     Select Distance algorithm=Similarity
-    Uncheck Show distance column" checkboõ
+    Uncheck Show distance column" checkboï¿½
     Select Wrap mode off
     Select  Highlighting tab
-    Unexpectedly "Use dots" checkboõ is unchecked, check it again
+    Unexpectedly "Use dots" checkboï¿½ is unchecked, check it again
     Select  "Statistics" tab
     */
 
