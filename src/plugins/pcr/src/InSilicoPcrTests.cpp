@@ -24,7 +24,9 @@
 #include <algorithm>
 #include <random>
 
+#include <QApplication>
 #include <QDomElement>
+#include <QSignalSpy>
 #include <QScopeGuard>
 
 #include <U2Algorithm/RoughTmCalculatorCmdFactory.h>
@@ -33,14 +35,24 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/ProjectModel.h>
+#include <U2Core/ProjectService.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 
+#include <U2Gui/U2WidgetStateStorage.h>
+
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "ExtractProductTask.h"
+#include "InSilicoPcrOptionPanelWidget.h"
+#include "InSilicoPcrProductsTable.h"
 #include "InSilicoPcrTask.h"
 
 namespace U2 {
@@ -533,6 +545,168 @@ QString runInSilicoPcrTests(const QString& scenario) {
     return {};
 }
 
+QString runProductsTableTest(const QString& scenario) {
+    U2OpStatusImpl os;
+    const auto dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+    CHECK_OP(os, os.getError());
+    DNASequence sequence("table-template", QByteArray(scenario == "large" ? 100100 : 100, 'A'),
+                         AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
+    const auto sequenceRef = U2SequenceUtils::import(os, dbiRef, sequence);
+    CHECK_OP(os, os.getError());
+    auto cleanup = qScopeGuard([&] {
+        U2OpStatus2Log cleanupStatus;
+        DbiConnection connection(dbiRef, cleanupStatus);
+        if (!cleanupStatus.hasError()) {
+            connection.dbi->getObjectDbi()->removeObject(sequenceRef.entityId, cleanupStatus);
+        }
+    });
+    U2SequenceObject sequenceObject("table-template", sequenceRef);
+    ADVSequenceObjectContext context(nullptr, &sequenceObject);
+    ADVSequenceObjectContext otherContext(nullptr, &sequenceObject);
+    InSilicoPcrProductsTable table(nullptr);
+    InSilicoPcrProduct product;
+    product.region = U2Region(10, 30);
+    product.ta = 46.5;
+    product.forwardPrimer = QByteArray(20, 'A');
+    product.reversePrimer = QByteArray(20, 'T');
+    product.forwardPrimerMatchLength = product.reversePrimerMatchLength = 20;
+    auto wrapped = product;
+    wrapped.region = U2Region(90, 20);
+    wrapped.ta = TmCalculator::INVALID_TM;
+    auto overhang = product;
+    overhang.region = U2Region(0, 105);
+    overhang.forwardPrimerLedge = "AAA";
+    overhang.reversePrimerLedge = "TT";
+    const QList<InSilicoPcrProduct> products{product, wrapped, overhang};
+    QSignalSpy changes(&table, &InSilicoPcrProductsTable::si_productsChanged);
+    table.showProducts(products, &context);
+    auto model = table.model();
+    if (scenario == "lifecycle") {
+        if (table.onSequenceChanged(&otherContext) || model->rowCount() != 3) {
+            return "An unrelated sequence change cleared PCR products";
+        }
+        if (!table.onSequenceChanged(&context) || model->rowCount() != 0 ||
+            !table.getAllProducts().isEmpty() || table.productsContext() != nullptr ||
+            table.selectedProductsCount() != 0 || changes.size() != 2) {
+            return "Clearing the PCR table retained product data or sequence context";
+        }
+        {
+            auto temporary = products;
+            table.showProducts(temporary, &otherContext);
+            temporary.clear();
+        }
+        if (model->rowCount() != 3 || table.getAllProducts() != products ||
+            table.getSelectedProducts() != QList<InSilicoPcrProduct>{product} || table.productsContext() != &otherContext) {
+            return "Replacing PCR results lost data or the initial selection";
+        }
+        table.showProducts({}, &otherContext);
+        if (model->rowCount() != 0 || !table.getAllProducts().isEmpty() || table.selectedProductsCount() != 0 || changes.size() != 4) {
+            return "Empty PCR results retained old rows or selection";
+        }
+    } else if (scenario == "display") {
+        const QList<QStringList> expected{{"11 - 40", "30", "46.5"},
+                                          {"91 - 10", "20", InSilicoPcrProductsTable::tr("N/A")},
+                                          {"1 - 105", "105", "46.5"}};
+        if (model->rowCount() != 3 || model->columnCount() != 3 || table.getAllProducts() != products) {
+            return "Incorrect PCR table dimensions or products";
+        }
+        for (int row = 0; row < 3; ++row) {
+            for (int column = 0; column < 3; ++column) {
+                const auto index = model->index(row, column);
+                if (model->data(index).toString() != expected[row][column] || model->flags(index).testFlag(Qt::ItemIsEditable)) {
+                    return QString("Incorrect PCR cell %1 / %2: %3").arg(row).arg(column).arg(model->data(index).toString());
+                }
+            }
+            if (model->headerData(row, Qt::Horizontal).toString().isEmpty()) {
+                return "Missing PCR column header";
+            }
+        }
+        if (model->data({}).isValid() || model->data(model->index(0, 0), Qt::EditRole).isValid() ||
+            model->rowCount(model->index(0, 0)) != 0) {
+            return "PCR table exposed invalid cells or child rows";
+        }
+    } else if (scenario == "selection") {
+        if (table.selectedProductsCount() != 1 || table.getSelectedProducts() != QList<InSilicoPcrProduct>{product} ||
+            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(10, 30)}) {
+            return "Incorrect initial PCR selection";
+        }
+        auto selection = table.selectionModel();
+        selection->select(model->index(1, 0), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+        if (table.getSelectedProducts() != QList<InSilicoPcrProduct>{wrapped} ||
+            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(90, 10), U2Region(0, 10)}) {
+            return "Circular PCR selection did not wrap at the template boundary";
+        }
+        selection->select(model->index(2, 0), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+        if (context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(0, 100)}) {
+            return "PCR overhangs were included in the template selection";
+        }
+        selection->select(model->index(0, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        const auto selected = table.getSelectedProducts();
+        if (table.selectedProductsCount() != 2 || selected.size() != 2 || !selected.contains(product) || !selected.contains(overhang)) {
+            return "PCR export selection lost or duplicated products";
+        }
+        table.clearSelection();
+        if (table.selectedProductsCount() != 0 || !table.getSelectedProducts().isEmpty()) {
+            return "Clearing the selection retained selected PCR products";
+        }
+    } else if (scenario == "state") {
+        auto clearState = qScopeGuard([] { U2WidgetStateStorage::onWindowClose(nullptr); });
+        AnnotatedDNAView view("PCR table state test", {});
+        InSilicoPcrOptionPanelWidget panel(&view);
+        PcrOptionsPanelSavableTab saved(&panel, nullptr);
+        panel.productsTable->showProducts(products, &context);
+        if (!saved.getChildIds().contains("productsTable")) {
+            return "PCR table is excluded from saved panel state";
+        }
+        const auto snapshot = saved.getChildValue("productsTable");
+        panel.productsTable->clearSelection();
+        if (panel.extractProductButton->isEnabled()) {
+            return "PCR export button remained enabled without a selection";
+        }
+        panel.productsTable->showProducts({}, &context);
+        saved.setChildValue("productsTable", snapshot);
+        if (panel.productsTable->getAllProducts() != products || panel.productsTable->productsContext() != &context ||
+            panel.productsTable->selectedProductsCount() != 1 || !panel.extractProductButton->isEnabled()) {
+            return "Restoring PCR panel state lost products, context or selection";
+        }
+        panel.productsTable->selectAll();
+        if (!panel.extractProductButton->isEnabled()) {
+            return "PCR export button is disabled for multiple selected products";
+        }
+        panel.productsTable->showProducts({}, &context);
+        if (panel.extractProductButton->isEnabled()) {
+            return "Empty PCR results left the export button enabled";
+        }
+    } else if (scenario == "large") {
+        QList<InSilicoPcrProduct> manyProducts;
+        manyProducts.reserve(100000);
+        for (int row = 0; row < 100000; ++row) {
+            auto next = product;
+            next.region = U2Region(row, 30);
+            manyProducts.append(next);
+        }
+        table.showProducts(manyProducts, &context);
+        manyProducts.clear();
+        if (model->rowCount() != 100000 || table.getAllProducts().size() != 100000 ||
+            model->data(model->index(99999, 0)).toString() != "100000 - 100029") {
+            return "Large PCR results were truncated or lost their last row";
+        }
+        table.selectAll();
+        if (table.selectedProductsCount() != 100000) {
+            return "Select all did not include all PCR products";
+        }
+        table.selectionModel()->select(model->index(99999, 0), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+        const auto selected = table.getSelectedProducts();
+        if (selected.size() != 1 || selected.first().region != U2Region(99999, 30) ||
+            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(99999, 30)}) {
+            return "Selecting the last PCR row returned another product";
+        }
+    } else {
+        return "Unknown PCR table test scenario: " + scenario;
+    }
+    return {};
+}
+
 }  // namespace
 
 void GTest_InSilicoPcr::init(XMLTestFormat*, const QDomElement& el) {
@@ -541,6 +715,41 @@ void GTest_InSilicoPcr::init(XMLTestFormat*, const QDomElement& el) {
 
 void GTest_InSilicoPcr::run() {
     QString error = runInSilicoPcrTests(scenario);
+    if (!error.isEmpty()) {
+        setError(error);
+    }
+}
+
+void GTest_InSilicoPcrProductsTable::init(XMLTestFormat*, const QDomElement& el) {
+    scenario = el.attribute("scenario");
+}
+
+void GTest_InSilicoPcrProductsTable::prepare() {
+    if (qobject_cast<QApplication*>(QCoreApplication::instance()) == nullptr) {
+        setError("PCR table tests require a GUI application");
+        return;
+    }
+    if (scenario == "state" && AppContext::getProject() == nullptr) {
+        createdProject = true;
+        addSubTask(AppContext::getProjectLoader()->createNewProjectTask());
+    }
+}
+
+QList<Task*> GTest_InSilicoPcrProductsTable::onSubTaskFinished(Task* subTask) {
+    if (subTask->hasError() || subTask->isCanceled()) {
+        setError(subTask->hasError() ? subTask->getError() : "PCR table test setup was canceled");
+        return {};
+    }
+    if (createdProject && !checkedState) {
+        checkedState = true;
+        tableError = runProductsTableTest(scenario);
+        return {AppContext::getProjectService()->closeProjectTask()};
+    }
+    return {};
+}
+
+void GTest_InSilicoPcrProductsTable::run() {
+    const auto error = checkedState ? tableError : runProductsTableTest(scenario);
     if (!error.isEmpty()) {
         setError(error);
     }

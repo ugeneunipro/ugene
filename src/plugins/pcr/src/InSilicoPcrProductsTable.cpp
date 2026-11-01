@@ -21,6 +21,10 @@
 
 #include "InSilicoPcrProductsTable.h"
 
+#include <QAbstractTableModel>
+#include <QCoreApplication>
+#include <QHeaderView>
+
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Primer.h>
@@ -33,8 +37,73 @@
 
 namespace U2 {
 
+class InSilicoPcrProductsModel : public QAbstractTableModel {
+public:
+    explicit InSilicoPcrProductsModel(QObject* parent)
+        : QAbstractTableModel(parent) {
+    }
+
+    int rowCount(const QModelIndex& parent = {}) const override {
+        return parent.isValid() ? 0 : products.size();
+    }
+
+    int columnCount(const QModelIndex& parent = {}) const override {
+        return parent.isValid() ? 0 : 3;
+    }
+
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override {
+        if (role != Qt::DisplayRole || !index.isValid() || index.row() >= products.size()) {
+            return {};
+        }
+        const auto& product = products.at(index.row());
+        switch (index.column()) {
+            case 0: {
+                qint64 end = product.region.endPos();
+                const int ledge = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
+                if (end > sequenceLength && end != sequenceLength + ledge) {
+                    end %= sequenceLength;
+                }
+                return QString("%1 - %2").arg(product.region.startPos + 1).arg(end);
+            }
+            case 1:
+                return QString::number(product.region.length);
+            case 2:
+                return product.ta != TmCalculator::INVALID_TM ? PrimerStatistics::getDoubleStringValue(product.ta) : InSilicoPcrProductsTable::tr("N/A");
+            default:
+                return {};
+        }
+    }
+
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const override {
+        if (orientation != Qt::Horizontal || role != Qt::DisplayRole || section < 0 || section >= 3) {
+            return {};
+        }
+        const char* headers[] = {QT_TRANSLATE_NOOP("InSilicoPcrOptionPanelWidget", "Region"),
+                                 QT_TRANSLATE_NOOP("InSilicoPcrOptionPanelWidget", "Length"),
+                                 QT_TRANSLATE_NOOP("InSilicoPcrOptionPanelWidget", "Ta")};
+        return QCoreApplication::translate("InSilicoPcrOptionPanelWidget", headers[section]);
+    }
+
+    void setProducts(const QList<InSilicoPcrProduct>& newProducts, qint64 newSequenceLength) {
+        beginResetModel();
+        products = newProducts;
+        sequenceLength = newSequenceLength;
+        endResetModel();
+    }
+
+    const QList<InSilicoPcrProduct>& getProducts() const {
+        return products;
+    }
+
+private:
+    QList<InSilicoPcrProduct> products;
+    qint64 sequenceLength = 0;
+};
+
 InSilicoPcrProductsTable::InSilicoPcrProductsTable(QWidget* parent)
-    : QTableWidget(parent), sequenceContext(nullptr) {
+    : QTableView(parent), sequenceContext(nullptr), productsModel(new InSilicoPcrProductsModel(this)) {
+    setModel(productsModel);
+    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_selectionChanged()));
     connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(sl_selectionChanged()));
 }
@@ -56,29 +125,13 @@ ADVSequenceObjectContext* InSilicoPcrProductsTable::getCurrentSequenceContext() 
 }
 
 void InSilicoPcrProductsTable::setCurrentProducts(const QList<InSilicoPcrProduct>& products) {
-    currentProducts = products;
-    setRowCount(currentProducts.size());
-
-    const qint64 seqLength = sequenceContext->getSequenceLength();
-    SAFE_POINT(seqLength > 0, "Invalid sequence length", );
-    int row = 0;
-    foreach (const InSilicoPcrProduct& product, currentProducts) {
-        qint64 startPos = product.region.startPos + 1;
-        qint64 endPos = product.region.endPos();
-        const int ledge = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
-        if (endPos > seqLength && endPos != seqLength + ledge) {
-            endPos = endPos % seqLength;
-        }
-
-        auto regionItem = new QTableWidgetItem(QString("%1 - %2").arg(startPos).arg(endPos));
-        setItem(row, 0, regionItem);
-        setItem(row, 1, new QTableWidgetItem(QString::number(product.region.length)));
-        setItem(row, 2, new QTableWidgetItem(product.ta != TmCalculator::INVALID_TM ? PrimerStatistics::getDoubleStringValue(product.ta) : tr("N/A")));
-        row++;
+    const qint64 seqLength = sequenceContext == nullptr ? 0 : sequenceContext->getSequenceLength();
+    SAFE_POINT(products.isEmpty() || seqLength > 0, "Invalid sequence length", );
+    productsModel->setProducts(products, seqLength);
+    if (!products.isEmpty()) {
+        selectRow(0);
     }
-    if (row > 0) {
-        setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, columnCount() - 1), true);
-    }
+    emit si_productsChanged();
 }
 
 ADVSequenceObjectContext* InSilicoPcrProductsTable::productsContext() const {
@@ -87,6 +140,7 @@ ADVSequenceObjectContext* InSilicoPcrProductsTable::productsContext() const {
 
 QList<InSilicoPcrProduct> InSilicoPcrProductsTable::getSelectedProducts() const {
     QList<InSilicoPcrProduct> result;
+    const auto& currentProducts = getAllProducts();
     foreach (const QModelIndex& index, selectedIndexes()) {
         if (index.column() != 0) {
             continue;
@@ -98,18 +152,29 @@ QList<InSilicoPcrProduct> InSilicoPcrProductsTable::getSelectedProducts() const 
     return result;
 }
 
+int InSilicoPcrProductsTable::selectedProductsCount() const {
+    int count = 0;
+    const auto selection = selectionModel()->selection();
+    for (const auto& range : selection) {
+        if (range.left() == 0) {
+            count += range.height();
+        }
+    }
+    return count;
+}
+
 const QList<InSilicoPcrProduct>& InSilicoPcrProductsTable::getAllProducts() const {
-    return currentProducts;
+    return productsModel->getProducts();
 }
 
 QVector<U2Region> InSilicoPcrProductsTable::getSelection() const {
     QVector<U2Region> result;
     CHECK(sequenceContext != nullptr, result);
 
-    QList<InSilicoPcrProduct> products = getSelectedProducts();
-    CHECK(1 == products.size(), result);
-
-    const InSilicoPcrProduct& product = products.first();
+    CHECK(selectedProductsCount() == 1, result);
+    const auto rows = selectionModel()->selectedRows();
+    CHECK(rows.size() == 1, result);
+    const auto& product = getAllProducts().at(rows.first().row());
     U2Region region = product.region;
     region.length -= (product.forwardPrimerLedge.size() + product.reversePrimerLedge.size());
 
@@ -128,7 +193,7 @@ void InSilicoPcrProductsTable::sl_selectionChanged() {
     QVector<U2Region> selection = getSelection();
     CHECK(!selection.isEmpty(), );
 
-    sequenceContext->getSequenceSelection()->setSelectedRegions(getSelection());
+    sequenceContext->getSequenceSelection()->setSelectedRegions(selection);
     foreach (ADVSequenceWidget* sequenceWidget, sequenceContext->getSequenceWidgets()) {
         sequenceWidget->centerPosition(selection.first().startPos);
     }
@@ -137,7 +202,7 @@ void InSilicoPcrProductsTable::sl_selectionChanged() {
 bool InSilicoPcrProductsTable::onSequenceChanged(ADVSequenceObjectContext* changedContext) {
     if (sequenceContext == changedContext) {
         replaceContext(nullptr);
-        setRowCount(0);
+        setCurrentProducts({});
         return true;
     }
     return false;

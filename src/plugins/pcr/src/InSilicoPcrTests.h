@@ -35,4 +35,19 @@ private:
     QString scenario;
 };
 
+class GTest_InSilicoPcrProductsTable : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_InSilicoPcrProductsTable, "pcr-products-table-test", TaskFlag_RunInMainThread);
+    void prepare() override;
+    void run() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+
+private:
+    QString scenario;
+    bool createdProject = false;
+    bool checkedState = false;
+    QString tableError;
+};
+
 }  // namespace U2

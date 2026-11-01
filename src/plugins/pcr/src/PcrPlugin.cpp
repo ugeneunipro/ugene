@@ -56,6 +56,7 @@ PcrPlugin::PcrPlugin()
     SAFE_POINT_NN(testFormat, );
     auto factories = new GAutoDeleteList<XMLTestFactory>(this);
     factories->qlist << GTest_InSilicoPcr::createFactory();
+    factories->qlist << GTest_InSilicoPcrProductsTable::createFactory();
     for (auto factory : factories->qlist) {
         testFormat->registerTestFactory(factory);
     }
