@@ -20,7 +20,6 @@
  */
 
 #include "InSilicoPcrTask.h"
-
 #include <algorithm>
 
 #include <QDataStream>
@@ -323,8 +322,8 @@ void InSilicoPcrTask::createAndAddResult(const PrimerBind& leftPrimer, const U2R
     productSequence.append(DNASequenceUtils::reverseComplement(result.reversePrimerLedge));
 
     result.ta = settings->temperatureCalculator->getAnnealingTemperature(productSequence,
-                                                            direction == U2Strand::Direct ? settings->forwardPrimer : settings->reversePrimer,
-                                                            direction == U2Strand::Direct ? settings->reversePrimer : settings->forwardPrimer);
+                                                                         direction == U2Strand::Direct ? settings->forwardPrimer : settings->reversePrimer,
+                                                                         direction == U2Strand::Direct ? settings->reversePrimer : settings->forwardPrimer);
     CHECK(result.isValid(), );
     productKeys.insert(key);
     results.append(result);

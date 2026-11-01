@@ -20,19 +20,18 @@
  */
 
 #include "InSilicoPcrTests.h"
-
 #include <algorithm>
 #include <random>
 
 #include <QApplication>
 #include <QDomElement>
-#include <QSignalSpy>
 #include <QScopeGuard>
+#include <QSignalSpy>
 
 #include <U2Algorithm/RoughTmCalculatorCmdFactory.h>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -78,9 +77,7 @@ QList<InSilicoPcrProduct> runPcr(const InSilicoPcrTaskSettings& settings) {
     return task.getResults();
 }
 
-QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2Region& region, const QByteArray& expected,
-                              ExtractProductSettings::AnnotationsExtraction mode = ExtractProductSettings::None,
-                              const QMap<QString, U2Region>& sourceAnnotations = {}, const QMap<QString, U2Region>& expectedAnnotations = {}) {
+QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2Region& region, const QByteArray& expected, ExtractProductSettings::AnnotationsExtraction mode = ExtractProductSettings::None, const QMap<QString, U2Region>& sourceAnnotations = {}, const QMap<QString, U2Region>& expectedAnnotations = {}) {
     const auto products = runPcr(settings);
     const auto product = std::find_if(products.cbegin(), products.cend(), [&](const InSilicoPcrProduct& p) {
         return p.region == region;
@@ -92,8 +89,7 @@ QString checkExtractedProduct(const InSilicoPcrTaskSettings& settings, const U2R
     U2OpStatusImpl os;
     const auto dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     CHECK_OP(os, os.getError());
-    DNASequence sequence("extraction-template", settings.sequence,
-                         AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
+    DNASequence sequence("extraction-template", settings.sequence, AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
     sequence.circular = settings.isCircular;
     const auto sequenceRef = U2SequenceUtils::import(os, dbiRef, sequence);
     CHECK_OP(os, os.getError());
@@ -280,7 +276,8 @@ QList<InSilicoPcrProduct> exhaustiveProducts(const InSilicoPcrTaskSettings& s) {
 
 class CountingTmCalculator : public TmCalculator {
 public:
-    CountingTmCalculator() : TmCalculator({}), calculator(RoughTmCalculatorCmdFactory().createCalculator({})) {
+    CountingTmCalculator()
+        : TmCalculator({}), calculator(RoughTmCalculatorCmdFactory().createCalculator({})) {
     }
     double calculateMeltingTemperature(const QByteArray& sequence) override {
         ++calls;
@@ -457,11 +454,11 @@ QString runInSilicoPcrTests(const QString& scenario) {
             const QByteArray prefix(overhang == 0 ? 30 : 0, 'C');
             s.sequence = prefix + product.mid(overhang) + QByteArray(30, 'C');
             const int templateLength = product.size() - overhang;
-            const QMap<QString, U2Region> annotations{{"inside", U2Region(prefix.size() + 30, 5)},
-                                                     {"crossing", U2Region(prefix.size() + templateLength - 9, 10)},
-                                                     {"outside", U2Region(prefix.size() + templateLength, 1)}};
+            const QMap<QString, U2Region> annotations {{"inside", U2Region(prefix.size() + 30, 5)},
+                                                       {"crossing", U2Region(prefix.size() + templateLength - 9, 10)},
+                                                       {"outside", U2Region(prefix.size() + templateLength, 1)}};
             for (auto mode : {ExtractProductSettings::All, ExtractProductSettings::Inner}) {
-                QMap<QString, U2Region> expected{{"inside", U2Region(30 + overhang, 5)}};
+                QMap<QString, U2Region> expected {{"inside", U2Region(30 + overhang, 5)}};
                 if (mode == ExtractProductSettings::All) {
                     expected["crossing"] = U2Region(71, 9);
                 }
@@ -474,10 +471,9 @@ QString runInSilicoPcrTests(const QString& scenario) {
         s.isCircular = true;
         const QByteArray circle = product + QByteArray(60, 'C');
         s.sequence = circle.mid(40) + circle.left(40);
-        const QMap<QString, U2Region> annotations{{"head", U2Region(10, 5)}, {"tail", U2Region(120, 5)},
-                                                 {"crossing", U2Region(35, 10)}, {"outside", U2Region(60, 5)}};
+        const QMap<QString, U2Region> annotations {{"head", U2Region(10, 5)}, {"tail", U2Region(120, 5)}, {"crossing", U2Region(35, 10)}, {"outside", U2Region(60, 5)}};
         for (auto mode : {ExtractProductSettings::All, ExtractProductSettings::Inner}) {
-            QMap<QString, U2Region> expected{{"head", U2Region(50, 5)}, {"tail", U2Region(20, 5)}};
+            QMap<QString, U2Region> expected {{"head", U2Region(50, 5)}, {"tail", U2Region(20, 5)}};
             if (mode == ExtractProductSettings::All) {
                 expected["crossing"] = U2Region(75, 5);
             }
@@ -549,8 +545,7 @@ QString runProductsTableTest(const QString& scenario) {
     U2OpStatusImpl os;
     const auto dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     CHECK_OP(os, os.getError());
-    DNASequence sequence("table-template", QByteArray(scenario == "large" ? 100100 : 100, 'A'),
-                         AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
+    DNASequence sequence("table-template", QByteArray(scenario == "large" ? 100100 : 100, 'A'), AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
     const auto sequenceRef = U2SequenceUtils::import(os, dbiRef, sequence);
     CHECK_OP(os, os.getError());
     auto cleanup = qScopeGuard([&] {
@@ -577,7 +572,7 @@ QString runProductsTableTest(const QString& scenario) {
     overhang.region = U2Region(0, 105);
     overhang.forwardPrimerLedge = "AAA";
     overhang.reversePrimerLedge = "TT";
-    const QList<InSilicoPcrProduct> products{product, wrapped, overhang};
+    const QList<InSilicoPcrProduct> products {product, wrapped, overhang};
     QSignalSpy changes(&table, &InSilicoPcrProductsTable::si_productsChanged);
     table.showProducts(products, &context);
     auto model = table.model();
@@ -596,7 +591,7 @@ QString runProductsTableTest(const QString& scenario) {
             temporary.clear();
         }
         if (model->rowCount() != 3 || table.getAllProducts() != products ||
-            table.getSelectedProducts() != QList<InSilicoPcrProduct>{product} || table.productsContext() != &otherContext) {
+            table.getSelectedProducts() != QList<InSilicoPcrProduct> {product} || table.productsContext() != &otherContext) {
             return "Replacing PCR results lost data or the initial selection";
         }
         table.showProducts({}, &otherContext);
@@ -604,9 +599,9 @@ QString runProductsTableTest(const QString& scenario) {
             return "Empty PCR results retained old rows or selection";
         }
     } else if (scenario == "display") {
-        const QList<QStringList> expected{{"11 - 40", "30", "46.5"},
-                                          {"91 - 10", "20", InSilicoPcrProductsTable::tr("N/A")},
-                                          {"1 - 105", "105", "46.5"}};
+        const QList<QStringList> expected {{"11 - 40", "30", "46.5"},
+                                           {"91 - 10", "20", InSilicoPcrProductsTable::tr("N/A")},
+                                           {"1 - 105", "105", "46.5"}};
         if (model->rowCount() != 3 || model->columnCount() != 3 || table.getAllProducts() != products) {
             return "Incorrect PCR table dimensions or products";
         }
@@ -626,18 +621,18 @@ QString runProductsTableTest(const QString& scenario) {
             return "PCR table exposed invalid cells or child rows";
         }
     } else if (scenario == "selection") {
-        if (table.selectedProductsCount() != 1 || table.getSelectedProducts() != QList<InSilicoPcrProduct>{product} ||
-            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(10, 30)}) {
+        if (table.selectedProductsCount() != 1 || table.getSelectedProducts() != QList<InSilicoPcrProduct> {product} ||
+            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region> {U2Region(10, 30)}) {
             return "Incorrect initial PCR selection";
         }
         auto selection = table.selectionModel();
         selection->select(model->index(1, 0), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-        if (table.getSelectedProducts() != QList<InSilicoPcrProduct>{wrapped} ||
-            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(90, 10), U2Region(0, 10)}) {
+        if (table.getSelectedProducts() != QList<InSilicoPcrProduct> {wrapped} ||
+            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region> {U2Region(90, 10), U2Region(0, 10)}) {
             return "Circular PCR selection did not wrap at the template boundary";
         }
         selection->select(model->index(2, 0), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-        if (context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(0, 100)}) {
+        if (context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region> {U2Region(0, 100)}) {
             return "PCR overhangs were included in the template selection";
         }
         selection->select(model->index(0, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
@@ -698,7 +693,7 @@ QString runProductsTableTest(const QString& scenario) {
         table.selectionModel()->select(model->index(99999, 0), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
         const auto selected = table.getSelectedProducts();
         if (selected.size() != 1 || selected.first().region != U2Region(99999, 30) ||
-            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region>{U2Region(99999, 30)}) {
+            context.getSequenceSelection()->getSelectedRegions() != QVector<U2Region> {U2Region(99999, 30)}) {
             return "Selecting the last PCR row returned another product";
         }
     } else {

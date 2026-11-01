@@ -20,7 +20,6 @@
  */
 
 #include "DnaStatisticsTests.h"
-
 #include <atomic>
 #include <cmath>
 #include <future>
@@ -29,7 +28,6 @@
 #include <vector>
 
 #include <U2Algorithm/RoughTmCalculatorCmdFactory.h>
-
 #include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/DNAAlphabet.h>
@@ -307,10 +305,11 @@ namespace {
 
 class CacheProbeTmCalculator : public TmCalculator {
 public:
-    explicit CacheProbeTmCalculator(int offset = 0) : TmCalculator({{"offset", offset}}) {
+    explicit CacheProbeTmCalculator(int offset = 0)
+        : TmCalculator({{"offset", offset}}) {
     }
 
-    std::atomic<int> calls{0};
+    std::atomic<int> calls {0};
 
 protected:
     double calculateMeltingTemperature(const QByteArray& sequence) override {
@@ -403,7 +402,8 @@ QString testTemperatureCache() {
 
 class CountingTmCalculator : public TmCalculator {
 public:
-    CountingTmCalculator() : TmCalculator({}), calculator(RoughTmCalculatorCmdFactory().createCalculator({})) {
+    CountingTmCalculator()
+        : TmCalculator({}), calculator(RoughTmCalculatorCmdFactory().createCalculator({})) {
     }
 
     int calls = 0;
@@ -477,7 +477,7 @@ QString testPrimer3Concurrency() {
         expected << temperatures;
     }
 
-    std::atomic<bool> start{false};
+    std::atomic<bool> start {false};
     std::vector<std::future<QString>> workers;
     for (int worker = 0; worker < configurations.size(); ++worker) {
         workers.push_back(std::async(std::launch::async, [&, worker] {
@@ -492,8 +492,11 @@ QString testPrimer3Concurrency() {
                     const double reference = expected.at(worker).at(i);
                     if (!std::isfinite(actual) || std::abs(actual - reference) > 1e-9) {
                         return QString("Concurrent Primer3 mismatch: salt=%1, round=%2, sequence=%3, expected=%4, actual=%5")
-                            .arg(configurations.at(worker).value("salt_conc").toInt()).arg(round).arg(i)
-                            .arg(reference, 0, 'g', 17).arg(actual, 0, 'g', 17);
+                            .arg(configurations.at(worker).value("salt_conc").toInt())
+                            .arg(round)
+                            .arg(i)
+                            .arg(reference, 0, 'g', 17)
+                            .arg(actual, 0, 'g', 17);
                     }
                 }
             }

@@ -72,7 +72,7 @@ protected:
 
 private:
     // Per-instance LRU cache; oversized sequences are calculated without caching.
-    QCache<QByteArray, double> meltingTemperatureCache{64 * 1024};
+    QCache<QByteArray, double> meltingTemperatureCache {64 * 1024};
     QMutex cacheMutex;
 
     static bool isNucleotideSequence(const QByteArray& sequence);

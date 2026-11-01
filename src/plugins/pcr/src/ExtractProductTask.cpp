@@ -93,9 +93,11 @@ DNASequence ExtractProductTask::extractTargetSequence() {
     const qint64 ledgeSize = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
     const U2Region templateRegion(product.region.startPos, product.region.length - ledgeSize);
     SAFE_POINT_EXT(templateRegion.length > 0 && templateRegion.startPos >= 0 && templateRegion.startPos < sequence.length,
-                   setError("Invalid PCR template region"), resultSequence);
+                   setError("Invalid PCR template region"),
+                   resultSequence);
     SAFE_POINT_EXT(sequence.circular || templateRegion.endPos() <= sequence.length,
-                   setError("PCR product exceeds the linear template"), resultSequence);
+                   setError("PCR product exceeds the linear template"),
+                   resultSequence);
 
     const qint64 firstLength = qMin(templateRegion.length, sequence.length - templateRegion.startPos);
     resultSequence.seq = sequenceDbi->getSequenceData(settings.sequenceRef.entityId, U2Region(templateRegion.startPos, firstLength), stateInfo);
