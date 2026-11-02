@@ -92,6 +92,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _an
     connect(annotatedDnaView, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext*)), SLOT(sl_onSequenceChanged(ADVSequenceObjectContext*)));
     connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
     connect(productsTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_onProductsSelectionChanged()));
+    connect(productsTable, &InSilicoPcrProductsTable::si_productsChanged, this, &InSilicoPcrOptionPanelWidget::sl_onProductsSelectionChanged);
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(sl_onProductDoubleClicked()));
     connect(detailsLinkLabel, SIGNAL(linkActivated(const QString&)), SLOT(sl_showDetails(const QString&)));
     connect(temperatureWidget, &TmCalculatorSelectorWidget::si_settingsChanged, this, &InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged);
@@ -263,13 +264,11 @@ void InSilicoPcrOptionPanelWidget::sl_activeSequenceChanged() {
 }
 
 void InSilicoPcrOptionPanelWidget::sl_onProductsSelectionChanged() {
-    QList<InSilicoPcrProduct> products = productsTable->getSelectedProducts();
-    extractProductButton->setEnabled(!products.isEmpty());
+    extractProductButton->setEnabled(productsTable->selectedProductsCount() > 0);
 }
 
 void InSilicoPcrOptionPanelWidget::sl_onProductDoubleClicked() {
-    QList<InSilicoPcrProduct> products = productsTable->getSelectedProducts();
-    if (1 == products.size()) {
+    if (productsTable->selectedProductsCount() == 1) {
         sl_extractProduct();
     }
 }

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <QTableWidget>
+#include <QTableView>
 
 #include <U2Core/U2Region.h>
 
@@ -30,8 +30,9 @@
 namespace U2 {
 
 class ADVSequenceObjectContext;
+class InSilicoPcrProductsModel;
 
-class InSilicoPcrProductsTable : public QTableWidget {
+class InSilicoPcrProductsTable : public QTableView {
     Q_OBJECT
 public:
     InSilicoPcrProductsTable(QWidget* parent);
@@ -43,9 +44,13 @@ public:
     ADVSequenceObjectContext* productsContext() const;
 
     QList<InSilicoPcrProduct> getSelectedProducts() const;
+    int selectedProductsCount() const;
     const QList<InSilicoPcrProduct>& getAllProducts() const;
 
     ADVSequenceObjectContext* getCurrentSequenceContext() const;
+
+signals:
+    void si_productsChanged();
 
 private slots:
     void sl_selectionChanged();
@@ -57,7 +62,7 @@ private:
 
 private:
     ADVSequenceObjectContext* sequenceContext;
-    QList<InSilicoPcrProduct> currentProducts;
+    InSilicoPcrProductsModel* productsModel;
 };
 
 }  // namespace U2

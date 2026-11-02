@@ -22,6 +22,7 @@ hmm3_suite.xml
 ma_consensus_suite.xml
 neighbor_join_suite.xml
 orf_marker_suite.xml
+pcr_suite.xml
 primer3_suite.xml
 pwm_suite.xml
 qd_suite.xml
