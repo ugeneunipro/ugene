@@ -1245,7 +1245,6 @@ libQt6OpenGL.so.6
 libQt6OpenGLWidgets.so.6
 libQt6PrintSupport.so.6
 libQt6Svg.so.6
-libQt6Test.so.6
 libQt6WebSockets.so.6
 libQt6Widgets.so.6
 libQt6Xml.so.6
