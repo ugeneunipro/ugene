@@ -152,7 +152,13 @@ QByteArray HttpRequestBLAST::getOutputFile() {
 void HttpRequestBLAST::parseResult(const QByteArray& buf) {
     QDomDocument xmlDoc;
     QString xmlError;
-    xmlDoc.setContent(buf, false, &xmlError);
+    // NCBI may declare the response as 'US-ASCII', which Qt's XML parser does not support
+    // (it fails with 'Encoding US-ASCII is unsupported'). The payload is plain ASCII,
+    // so it is safe to parse it as UTF-8.
+    QByteArray xml = buf;
+    xml.replace("encoding=\"US-ASCII\"", "encoding=\"UTF-8\"");
+    xml.replace("encoding='US-ASCII'", "encoding='UTF-8'");
+    xmlDoc.setContent(xml, false, &xmlError);
     if (!xmlError.isEmpty()) {
         error = tr("Cannot read the response");
         return;
