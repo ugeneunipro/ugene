@@ -100,12 +100,11 @@ bool validateHeader(QStringList words) {
     bool isOk = false;
     if (words.size() < 2) {
         ioLog.error(GFFFormat::tr("Parsing error: invalid header"));
-        return true;
     }
     words[0] = words[0].remove("#");
     if (!words[0].startsWith("gff-version")) {
         ioLog.error(GFFFormat::tr("Parsing error: file does not contain version header"));
-    } else {
+    } else if (words.size() >= 2) {
         int ver = words[1].toInt(&isOk);
         if (!isOk) {
             ioLog.error(GFFFormat::tr("Parsing error: format version is not an integer"));

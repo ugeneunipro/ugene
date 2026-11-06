@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- A one-word comment must still report the missing version header. -->
+    <create-temp-file url="gff_comment_header.gff" data="#comment\nchr1&#9;.&#9;rRNA&#9;1&#9;10&#9;.&#9;+&#9;.&#9;ID=rRNA1\n"/>
+    <load-document index="doc" url="gff_comment_header.gff" dir="temp" io="local_file" format="gff" message="Parsing error: invalid header" message2="Parsing error: file does not contain version header"/>
+    <find-object-by-name index="annotations" doc="doc" name="chr1 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-location index="rRNA" obj="annotations" location="1..10" complement="false"/>
+</multi-test>
