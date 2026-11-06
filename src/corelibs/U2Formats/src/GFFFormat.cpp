@@ -94,7 +94,7 @@ int readLongLine(QString& buffer, IOAdapter* io, QScopedArrayPointer<char>& char
 }
 
 bool validateHeader(QStringList words) {
-    if (!words[0].startsWith('#')) {
+    if (words.isEmpty() || !words[0].startsWith('#')) {
         return false;
     }
     bool isOk = false;
