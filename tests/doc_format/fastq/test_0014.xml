@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- If every record is rejected, report the parse error without finalizing an unstarted importer. -->
+    <create-temp-file url="fastq_merge_all_bad.fastq" data="@bad\nACGT\n+\nIII\n"/>
+    <load-broken-document url="fastq_merge_all_bad.fastq" dir="temp" io="local_file" format="fastq" sequence-mode="merge" message="Bad quality scores: inconsistent size."/>
+</multi-test>

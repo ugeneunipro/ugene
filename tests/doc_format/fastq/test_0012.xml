@@ -1,0 +1,14 @@
+<multi-test>
+    <!-- Separate-sequence loading must still skip the malformed record. -->
+    <create-temp-file url="fastq_split_bad_quality.fastq" data="@good1\nACGT\n+\nIIII\n@bad\nTTTT\n+\nIIIII\n@good2\nTGCA\n+\nIIII\n"/>
+    <load-document index="doc" url="fastq_split_bad_quality.fastq" dir="temp" io="local_file" format="fastq" sequence-mode="split" message="Bad quality scores: inconsistent size."/>
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="first" doc="doc" name="good1" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="first" value="4"/>
+    <check-sequence-part obj="first" value="ACGT" seqstart="0"/>
+    <check-sequence-quality-scores obj="first" quality="IIII"/>
+    <find-object-by-name index="second" doc="doc" name="good2" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="second" value="4"/>
+    <check-sequence-part obj="second" value="TGCA" seqstart="0"/>
+    <check-sequence-quality-scores obj="second" quality="IIII"/>
+</multi-test>

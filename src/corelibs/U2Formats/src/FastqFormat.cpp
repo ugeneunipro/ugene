@@ -289,69 +289,30 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
             sequenceName = "Sequence";
         }
 
-        if ((merge == false) || (seqNumber == 0)) {
-            QString objName = sequenceName;
-            if (settingsMakeUniqueName) {
-                objName = (merge) ? "Sequence" : TextUtils::variate(sequenceName, "_", uniqueNames);
-                objName.squeeze();
-                uniqueNames.insert(objName);
-            }
-            seqImporter.startSequence(warningOs, dbiRef, folder, objName, false);
-            if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
-                U2OpStatusImpl seqOs;
-                seqImporter.finalizeSequenceAndValidate(seqOs);
-                continue;
-            }
-        }
-
         // read sequence
-        if (merge && sequence.length() > 0) {
-            seqImporter.addDefaultSymbolsBlock(gapSize, warningOs);
-            sequenceStart += sequence.length();
-            sequenceStart += gapSize;
-            if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
-                U2OpStatusImpl seqOs;
-                seqImporter.finalizeSequenceAndValidate(seqOs);
-                continue;
-            }
-        }
-
         sequence.clear();
         readSequence(warningOs, io, sequence);
         if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
-            U2OpStatusImpl seqOs;
-            seqImporter.finalizeSequenceAndValidate(seqOs);
             continue;
         }
         MemoryLocker lSequence(os, qCeil(sequence.size() / (1000 * 1000)));
         CHECK_OP_BREAK(os);
         Q_UNUSED(lSequence);
 
-        seqImporter.addBlock(sequence.data(), sequence.length(), warningOs);
-        if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
-            U2OpStatusImpl seqOs;
-            seqImporter.finalizeSequenceAndValidate(seqOs);
-            continue;
-        }
-
         QString qualSequenceName = readSequenceName(warningOs, io, '+');
         if (!qualSequenceName.isEmpty()) {
             if (sequenceName != qualSequenceName) {
                 warningOs.setError(U2::FastqFormat::tr("Sequence name differs from quality scores name: %1 and %2").arg(sequenceName).arg(qualSequenceName));
             }
-            if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
-                U2OpStatusImpl seqOs;
-                seqImporter.finalizeSequenceAndValidate(seqOs);
-                continue;
-            }
+        }
+        if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
+            continue;
         }
 
         // read qualities
         qualityScores.clear();
         readQuality(warningOs, io, qualityScores, sequence.size());
         if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
-            U2OpStatusImpl seqOs;
-            seqImporter.finalizeSequenceAndValidate(seqOs);
             continue;
         }
 
@@ -359,10 +320,27 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
             warningOs.setError(U2::FastqFormat::tr("Bad quality scores: inconsistent size."));
         }
         if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
-            U2OpStatusImpl seqOs;
-            seqImporter.finalizeSequenceAndValidate(seqOs);
             continue;
         }
+
+        // Validate the whole record before modifying the shared merge importer.
+        if (!merge || seqNumber == 0) {
+            QString objName = sequenceName;
+            if (settingsMakeUniqueName) {
+                objName = merge ? "Sequence" : TextUtils::variate(sequenceName, "_", uniqueNames);
+                objName.squeeze();
+                uniqueNames.insert(objName);
+            }
+            seqImporter.startSequence(os, dbiRef, folder, objName, false);
+            CHECK_OP_BREAK(os);
+        }
+        if (merge && seqNumber > 0) {
+            seqImporter.addDefaultSymbolsBlock(gapSize, os);
+            CHECK_OP_BREAK(os);
+            sequenceStart = seqImporter.getCurrentLength();
+        }
+        seqImporter.addBlock(sequence.data(), sequence.length(), os);
+        CHECK_OP_BREAK(os);
 
         seqNumber++;
         progressUpNum++;
@@ -398,8 +376,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
     }
 
     CHECK_OP_EXT(os, qDeleteAll(objects); objects.clear(), );
-    bool emptyObjects = objects.isEmpty();
-    CHECK_EXT(!emptyObjects || merge, os.setError(Document::tr("Document is empty.")), );
+    CHECK_EXT(!objects.isEmpty() || !headers.isEmpty(), os.setError(Document::tr("Document is empty.")), );
     SAFE_POINT(headers.size() == mergedMapping.size(), "headers <-> regions mapping failed!", );
 
     if (!merge) {

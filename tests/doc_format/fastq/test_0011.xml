@@ -1,0 +1,15 @@
+<multi-test>
+    <!-- A rejected middle record must not close the shared merge importer or contribute bases/gaps. -->
+    <create-temp-file url="fastq_merge_bad_quality.fastq" data="@good1\nACGT\n+\nIIII\n@bad\nTTTT\n+\nIIIII\n@good2\nTGCA\n+\nIIII\n"/>
+    <load-document index="doc" url="fastq_merge_bad_quality.fastq" dir="temp" io="local_file" format="fastq" sequence-mode="merge" message="Bad quality scores: inconsistent size."/>
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="seq" doc="doc" name="Sequence" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="seq" value="18"/>
+    <check-sequence-part obj="seq" value="ACGTNNNNNNNNNNTGCA" seqstart="0"/>
+    <find-object-by-name index="annotations" doc="doc" name="Contigs" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="annotations" value="2"/>
+    <find-annotation-by-location index="first" obj="annotations" location="1..4" complement="false"/>
+    <check-annotation-qualifier annotation="first" qualifier="name" value="good1"/>
+    <find-annotation-by-location index="second" obj="annotations" location="15..18" complement="false"/>
+    <check-annotation-qualifier annotation="second" qualifier="name" value="good2"/>
+</multi-test>
