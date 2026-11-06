@@ -690,7 +690,8 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
 
 void LaunchExternalToolTask::run() {
     GCOUNTER(cvar, "A task for an element with external tool is launched");
-    auto externalProcess = new QProcess();
+    QScopedPointer<QProcess> externalProcess(CmdlineTaskRunner::createProcess(stateInfo));
+    CHECK_OP(stateInfo, );
     externalProcess->setWorkingDirectory(workingDir);
     if (execString.contains(">")) {
         QString output = execString.split(">").last();
@@ -702,7 +703,7 @@ void LaunchExternalToolTask::run() {
         externalProcess->setStandardOutputFile(output);
     }
     QScopedPointer<CustomExternalToolLogParser> logParser(new CustomExternalToolLogParser());
-    QScopedPointer<ExternalToolRunTaskHelper> helper(new CustomExternalToolRunTaskHelper(externalProcess, logParser.data(), stateInfo));
+    QScopedPointer<ExternalToolRunTaskHelper> helper(new CustomExternalToolRunTaskHelper(externalProcess.data(), logParser.data(), stateInfo));
     CHECK(listeners.size() > 0, );
     helper->addOutputListener(listeners[0]);
     QStringList execStringArgs = ExternalToolSupportUtils::splitCmdLineArguments(execString);
@@ -711,7 +712,7 @@ void LaunchExternalToolTask::run() {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     externalProcess->setProcessEnvironment(env);
     taskLog.details(tr("Running external process: %1").arg(execString));
-    bool startOk = WorkflowUtils::startExternalProcess(externalProcess, execStringProg, execStringArgs);
+    bool startOk = WorkflowUtils::startExternalProcess(externalProcess.data(), execStringProg, execStringArgs);
 
     if (!startOk) {
         stateInfo.setError(tr("Can't launch %1").arg(execString));
@@ -720,7 +721,7 @@ void LaunchExternalToolTask::run() {
     listeners[0]->addNewLogMessage(execString, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     while (!externalProcess->waitForFinished(1000)) {
         if (isCanceled()) {
-            CmdlineTaskRunner::killProcessTree(externalProcess);
+            CmdlineTaskRunner::killProcessTree(externalProcess.data());
         }
     }
 

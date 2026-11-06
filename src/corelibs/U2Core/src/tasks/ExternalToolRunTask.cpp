@@ -433,7 +433,8 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     }
     processEnvironment.insert("PATH", path);
 
-    result.process = new QProcess();
+    result.process = CmdlineTaskRunner::createProcess(os);
+    CHECK_OP(os, result);
     result.process->setProcessEnvironment(processEnvironment);
     if (!workingDirectory.isEmpty()) {
         result.process->setWorkingDirectory(workingDirectory);
