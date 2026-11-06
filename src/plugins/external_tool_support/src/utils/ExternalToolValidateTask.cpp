@@ -132,7 +132,8 @@ void ExternalToolJustValidateTask::run() {
         checkArchitecture(validation.executableFile);
         CHECK_OP(stateInfo, );
 
-        externalToolProcess = new QProcess();
+        externalToolProcess = CmdlineTaskRunner::createProcess(stateInfo);
+        CHECK_OP(stateInfo, );
         setEnvironment(tool);
 
         externalToolProcess->start(validation.executableFile, validation.arguments);
