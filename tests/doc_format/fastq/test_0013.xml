@@ -1,0 +1,15 @@
+<multi-test>
+    <!-- Rejected first and last records must not add bases, gaps or contig annotations. -->
+    <create-temp-file url="fastq_merge_bad_ends.fastq" data="@bad1\nTTTT\n+other\nIIII\n@good1\nACGT\n+\nIIII\n@good2\nTGCA\n+\nIIII\n@bad2\nTTTT\n+\nIII\n"/>
+    <load-document index="doc" url="fastq_merge_bad_ends.fastq" dir="temp" io="local_file" format="fastq" sequence-mode="merge" message="Sequence name differs from quality scores name" message2="Bad quality scores: inconsistent size."/>
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="seq" doc="doc" name="Sequence" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="seq" value="18"/>
+    <check-sequence-part obj="seq" value="ACGTNNNNNNNNNNTGCA" seqstart="0"/>
+    <find-object-by-name index="annotations" doc="doc" name="Contigs" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="annotations" value="2"/>
+    <find-annotation-by-location index="first" obj="annotations" location="1..4" complement="false"/>
+    <check-annotation-qualifier annotation="first" qualifier="name" value="good1"/>
+    <find-annotation-by-location index="second" obj="annotations" location="15..18" complement="false"/>
+    <check-annotation-qualifier annotation="second" qualifier="name" value="good2"/>
+</multi-test>
