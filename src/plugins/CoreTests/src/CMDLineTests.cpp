@@ -222,9 +222,9 @@ Task::ReportResult GTest_RunCMDLine::report() {
             proc->kill();
             proc->waitForFinished(5000);  // Wait up to 5 seconds for process to die
             stateInfo.setError(QString("Subprocess timeout: process did not finish in %1 seconds").arg(SUBPROCESS_TIMEOUT_SECONDS));
-            return ReportResult_Finished;
+        } else {
+            return ReportResult_CallMeAgain;
         }
-        return ReportResult_CallMeAgain;
     }
 
     // Read output from separate log file instead of stdout to avoid TEST_LOG_LISTENER deadlock
@@ -244,6 +244,12 @@ Task::ReportResult GTest_RunCMDLine::report() {
             output += "\n=== STDOUT ===\n";
         }
         output += stdOutput;
+    }
+
+    if (hasError()) {
+        cmdLog.error(QString("Subprocess output at timeout (log: %1):\n%2\n=== STDERR ===\n%3")
+                         .arg(separateLogFile, output, QString::fromLocal8Bit(proc->readAllStandardError())));
+        return ReportResult_Finished;
     }
 
     cmdLog.trace(output);
