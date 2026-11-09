@@ -318,6 +318,8 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
 
         if (sequence.length() != qualityScores.length()) {
             warningOs.setError(U2::FastqFormat::tr("Bad quality scores: inconsistent size."));
+        } else if (sequence.isEmpty()) {
+            warningOs.setError(U2SequenceImporter::EMPTY_SEQUENCE_ERROR);
         }
         if (errorLoggingBreak(warningOs, skippedLines, sequenceName)) {
             continue;

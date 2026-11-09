@@ -1,0 +1,13 @@
+<multi-test>
+    <!-- An empty first record must not start the merge importer or add a leading gap. -->
+    <create-temp-file url="fastq_merge_empty_first.fastq" data="@empty\n\n+\n\n@good\nACGT\n+\nIIII\n"/>
+    <load-document index="doc" url="fastq_merge_empty_first.fastq" dir="temp" io="local_file" format="fastq" sequence-mode="merge" message="Sequence was not imported. Probably, this is because the sequence is empty."/>
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="seq" doc="doc" name="Sequence" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="seq" value="4"/>
+    <check-sequence-part obj="seq" value="ACGT" seqstart="0"/>
+    <find-object-by-name index="annotations" doc="doc" name="Contigs" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="annotations" value="1"/>
+    <find-annotation-by-location index="good" obj="annotations" location="1..4" complement="false"/>
+    <check-annotation-qualifier annotation="good" qualifier="name" value="good"/>
+</multi-test>
