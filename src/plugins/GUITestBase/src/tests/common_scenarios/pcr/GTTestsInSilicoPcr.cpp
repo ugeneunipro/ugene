@@ -439,6 +439,10 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // Expected: one product is found.
     CHECK_SET_ERR(GTUtilsPcr::productsCount() == 1, "Wrong results count");
 
+    // On Windows the task report window may become active automatically after
+    // the PCR task. Return to the sequence view before using the PCR panel.
+    GTUtilsMdi::activateWindow("begin-end");
+
     // 6. Choose "Inner" annotation extraction.
     auto annsComboBox = GTWidget::findComboBox("annsComboBox");
     GTComboBox::selectItemByIndex(annsComboBox, 1);

@@ -7357,10 +7357,12 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Align with MUSCLE"));
+    GTUtilsWorkflowDesigner::click("Align with MUSCLE");
     GTMouseDriver::doubleClick();
 
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Write alignment"));
+    // 'click' ensures that the element is scrolled into the visible canvas area
+    // before the double click (on Windows the element may be outside the view).
+    GTUtilsWorkflowDesigner::click("Write alignment");
     GTMouseDriver::doubleClick();
 
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isWorkerExtended("Align with MUSCLE"), "\"Align with MUSCLE\" unexpectedly has extended style");
