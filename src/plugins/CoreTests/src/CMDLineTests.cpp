@@ -210,6 +210,98 @@ static QString getErrorMsg(const QString& str) {
     return QString();
 }
 
+#ifdef Q_OS_WIN
+static void saveTimeoutDiagnostics(qint64 processId, const QString& logPath) {
+    const QString scriptPath = logPath + ".timeout.ps1";
+    const QString diagnosticsPath = logPath + ".timeout.txt";
+    const QString dumpPath = logPath + ".timeout.dmp";
+    QFile script(scriptPath);
+    if (!script.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        cmdLog.error(QString("Cannot write timeout diagnostics script: %1: %2").arg(scriptPath, script.errorString()));
+        return;
+    }
+    // Keep dump collection out of the runner: even diagnostics can hang on an overloaded agent.
+    const QByteArray scriptText = R"PS(param([int]$TargetProcessId, [string]$DumpPath)
+$ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+Write-Output "Timeout diagnostics: $(Get-Date -Format o), ugenecl PID=$TargetProcessId"
+try {
+    Get-CimInstance Win32_OperatingSystem |
+        Select-Object TotalVisibleMemorySize, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory |
+        Format-List | Out-String | Write-Output
+    Write-Output 'Process snapshot: PID/PPID describe the process tree; memory values are bytes.'
+    Get-CimInstance Win32_Process |
+        Sort-Object ProcessId |
+        Select-Object ProcessId, ParentProcessId, Name, CreationDate, WorkingSetSize, PrivatePageCount |
+        ConvertTo-Csv -NoTypeInformation | Write-Output
+} catch {
+    Write-Output "Process snapshot failed: $_"
+}
+try {
+    Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.InteropServices;
+public static class TimeoutDump {
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern IntPtr OpenProcess(uint access, bool inherit, int pid);
+    [DllImport("kernel32.dll")]
+    static extern bool CloseHandle(IntPtr handle);
+    [DllImport("dbghelp.dll", SetLastError = true)]
+    static extern bool MiniDumpWriteDump(IntPtr process, int pid, IntPtr file, uint flags,
+                                        IntPtr exception, IntPtr streams, IntPtr callback);
+    public static void Write(int pid, string path) {
+        IntPtr process = OpenProcess(0x0400 | 0x0010, false, pid);
+        if (process == IntPtr.Zero) throw new Win32Exception();
+        try {
+            using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None)) {
+                // Thread info, memory layout, unloaded modules and memory referenced by stacks.
+                if (!MiniDumpWriteDump(process, pid, file.SafeFileHandle.DangerousGetHandle(),
+                                       0x1000 | 0x0800 | 0x0020 | 0x0040,
+                                       IntPtr.Zero, IntPtr.Zero, IntPtr.Zero)) throw new Win32Exception();
+            }
+        } finally { CloseHandle(process); }
+    }
+}
+'@
+    [TimeoutDump]::Write($TargetProcessId, "$DumpPath.partial")
+    Move-Item -LiteralPath "$DumpPath.partial" -Destination $DumpPath -Force
+    Write-Output "Minidump saved: $DumpPath"
+} catch {
+    Write-Output "Minidump failed: $_"
+    exit 1
+}
+)PS";
+    if (script.write(scriptText) != scriptText.size() || !script.flush()) {
+        cmdLog.error(QString("Cannot write timeout diagnostics script: %1: %2").arg(scriptPath, script.errorString()));
+        return;
+    }
+    script.close();
+
+    QProcess collector;
+    collector.setProcessChannelMode(QProcess::MergedChannels);
+    collector.setStandardOutputFile(diagnosticsPath);
+    const QString powershell = qEnvironmentVariable("SystemRoot") + "/System32/WindowsPowerShell/v1.0/powershell.exe";
+    collector.start(powershell, {"-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", scriptPath, "-TargetProcessId", QString::number(processId), "-DumpPath", dumpPath});
+    if (!collector.waitForStarted(5000)) {
+        cmdLog.error(QString("Cannot start timeout diagnostics: %1").arg(collector.errorString()));
+    } else if (!collector.waitForFinished(60000)) {
+        collector.kill();
+        collector.waitForFinished(5000);
+        cmdLog.error("Timeout diagnostics exceeded 60 seconds; the snapshot or dump may be incomplete");
+    } else if (collector.exitStatus() != QProcess::NormalExit || collector.exitCode() != 0) {
+        cmdLog.error(QString("Timeout diagnostics failed, exit code: %1").arg(collector.exitCode()));
+    }
+    QFile diagnostics(diagnosticsPath);
+    if (diagnostics.open(QIODevice::ReadOnly)) {
+        cmdLog.error(QString("Timeout diagnostics (%1):\n%2").arg(diagnosticsPath, QString::fromUtf8(diagnostics.readAll())));
+    } else {
+        cmdLog.error(QString("Cannot read timeout diagnostics: %1: %2").arg(diagnosticsPath, diagnostics.errorString()));
+    }
+}
+#endif
+
 Task::ReportResult GTest_RunCMDLine::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
@@ -219,6 +311,9 @@ Task::ReportResult GTest_RunCMDLine::report() {
     if (proc->state() != QProcess::NotRunning) {
         qint64 elapsedSeconds = GTimer::secsBetween(processStartTime, GTimer::currentTimeMicros());
         if (elapsedSeconds > SUBPROCESS_TIMEOUT_SECONDS) {
+#ifdef Q_OS_WIN
+            saveTimeoutDiagnostics(proc->processId(), separateLogFile);
+#endif
             proc->kill();
             proc->waitForFinished(5000);  // Wait up to 5 seconds for process to die
             stateInfo.setError(QString("Subprocess timeout: process did not finish in %1 seconds").arg(SUBPROCESS_TIMEOUT_SECONDS));
