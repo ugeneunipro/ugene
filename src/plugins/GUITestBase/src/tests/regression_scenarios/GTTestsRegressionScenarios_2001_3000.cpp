@@ -979,13 +979,13 @@ GUI_TEST_CLASS_DEFINITION(test_2150) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Set "data/samples/CLUSTALW/ty3.aln.gz" as the input file.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
-    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::click("Read alignment");
     GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/ty3.aln.gz");
 
     // 4. Set some name to the result file.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Write alignment"));
-    GTMouseDriver::click();
+    // Use the helper: it scrolls the element into view, which is required on
+    // Windows where the 'Write alignment' element may be outside the canvas.
+    GTUtilsWorkflowDesigner::click("Write alignment");
 
     QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox/").absoluteFilePath();
     GTKeyboardDriver::keySequence(s + "/2150_0001.sto");

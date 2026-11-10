@@ -2234,13 +2234,12 @@ GUI_TEST_CLASS_DEFINITION(test_3452) {
     QTreeWidgetItem* item1 = GTUtilsAnnotationsTreeView::findItem("CDS");
     QTreeWidgetItem* item2 = GTUtilsAnnotationsTreeView::findItem("comment");
     QPoint p1 = GTTreeWidget::getItemCenter(item1);
-    QPoint pQual(p1.x(), p1.y() + 80);
     QPoint p2 = GTTreeWidget::getItemCenter(item2);
 
     // 3. Select the annotaions and its several qualifiers.
     GTMouseDriver::moveTo(p1);
     GTMouseDriver::click();
-    GTMouseDriver::moveTo(pQual);
+    GTMouseDriver::moveTo(p2);
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
