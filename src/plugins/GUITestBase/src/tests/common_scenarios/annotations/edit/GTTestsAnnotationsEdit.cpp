@@ -352,10 +352,19 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
+    // Wait until the sequence view and its annotations tree are initialized:
+    // otherwise the annotation item is not found yet, the click below opens the
+    // 'create annotation' dialog and the subsequent F2 check times out.
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    // The annotations tree is populated asynchronously after the sequence view
+    // becomes active; without this stabilization the item lookup can catch a
+    // stale/empty tree and the click below opens the wrong dialog.
+    GTGlobals::sleep(1000);
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem("C");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem("C", nullptr, GTGlobals::FindOptions(true));
     Runnable* filler = new EditAnnotationFiller("C", "20 ..40", true);
     GTUtilsDialog::waitForDialog(filler);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
