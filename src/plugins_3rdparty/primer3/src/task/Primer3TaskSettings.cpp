@@ -66,10 +66,7 @@ Primer3TaskSettings::Primer3TaskSettings() {
 }
 
 Primer3TaskSettings::~Primer3TaskSettings() {
-    destroy_secundary_structures(primerSettings, p3Retval);
-    if (p3Retval != nullptr) {
-        destroy_p3retval(p3Retval);
-    }
+    releaseResult();
     destroy_seq_args(seqArgs);
     p3_destroy_global_settings(primerSettings);
 }
@@ -441,6 +438,14 @@ p3_global_settings* Primer3TaskSettings::getPrimerSettings() const {
 
 seq_args* Primer3TaskSettings::getSeqArgs() const {
     return seqArgs;
+}
+
+void Primer3TaskSettings::releaseResult() {
+    destroy_secundary_structures(primerSettings, p3Retval);
+    if (p3Retval != nullptr) {
+        destroy_p3retval(p3Retval);
+        p3Retval = nullptr;
+    }
 }
 
 void Primer3TaskSettings::setP3RetVal(p3retval* ret) {
