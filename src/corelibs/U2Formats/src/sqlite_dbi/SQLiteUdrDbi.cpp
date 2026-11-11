@@ -112,6 +112,7 @@ UdrRecord SQLiteUdrDbi::getRecord(const UdrRecordId& recordId, U2OpStatus& os) {
     q.bindDataId(1, recordId.getRecordId());
 
     bool ok = q.step();
+    CHECK_OP(os, result);
     CHECK_EXT(ok, os.setError("Unknown record id"), result);
 
     QList<UdrValue> data;
