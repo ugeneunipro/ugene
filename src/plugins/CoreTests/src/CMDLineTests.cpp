@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDomElement>
 #include <QFile>
 
@@ -35,6 +36,12 @@
 
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
+
+#ifdef Q_OS_WIN
+#    include <qt_windows.h>
+#    include <psapi.h>
+#    include <tlhelp32.h>
+#endif
 
 namespace U2 {
 
@@ -182,6 +189,10 @@ void GTest_RunCMDLine::setUgeneclPath() {
     ugeneclPath += "/" + ugeneclName;
 }
 
+#ifdef Q_OS_WIN
+static void saveProcessSnapshot(qint64 processId, const QString& logPath);
+#endif
+
 void GTest_RunCMDLine::prepare() {
     if (!workingDir.isEmpty()) {
         QDir().mkpath(workingDir);
@@ -196,7 +207,12 @@ void GTest_RunCMDLine::prepare() {
     tmpFiles << separateLogFile;  // Will be auto-removed in cleanup
     args.prepend("--log-file=" + separateLogFile);
 
+#ifdef Q_OS_WIN
+    tmpFiles << separateLogFile + ".memory.txt";
+    saveProcessSnapshot(0, separateLogFile);
+#endif
     processStartTime = GTimer::currentTimeMicros();
+    lastMemorySampleTime = processStartTime;
     proc->start(ugeneclPath, args);
     proc->waitForStarted(5000);
 }
@@ -210,6 +226,105 @@ static QString getErrorMsg(const QString& str) {
     return QString();
 }
 
+#ifdef Q_OS_WIN
+static void saveProcessSnapshot(qint64 processId, const QString& logPath) {
+    QString summary = QString("Process memory snapshot %1: runner PID=%2, child PID=%3, log=%4\n")
+                          .arg(QDateTime::currentDateTimeUtc().toString(Qt::ISODateWithMs))
+                          .arg(GetCurrentProcessId())
+                          .arg(processId)
+                          .arg(logPath);
+    PERFORMANCE_INFORMATION system = {};
+    system.cb = sizeof(system);
+    if (GetPerformanceInfo(&system, sizeof(system))) {
+        summary += QString("System bytes: physical_total=%1 physical_available=%2 commit_total=%3 commit_limit=%4\n")
+                       .arg(quint64(system.PhysicalTotal) * system.PageSize)
+                       .arg(quint64(system.PhysicalAvailable) * system.PageSize)
+                       .arg(quint64(system.CommitTotal) * system.PageSize)
+                       .arg(quint64(system.CommitLimit) * system.PageSize);
+    } else {
+        summary += QString("GetPerformanceInfo failed: %1\n").arg(GetLastError());
+    }
+    summary += "PID\tPPID\tName\tWorkingSetBytes\tPrivateBytes\tPeakWorkingSetBytes\tPageFaultCount\tKernelTime100ns\tUserTime100ns\tCreationTime100ns\n";
+    QString snapshot = summary;
+    HANDLE processes = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (processes != INVALID_HANDLE_VALUE) {
+        PROCESSENTRY32W entry = {};
+        entry.dwSize = sizeof(entry);
+        BOOL found = Process32FirstW(processes, &entry);
+        while (found) {
+            QString name = QString::fromWCharArray(entry.szExeFile);
+            QString row = QString("%1\t%2\t%3\t").arg(entry.th32ProcessID).arg(entry.th32ParentProcessID).arg(name);
+            HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, entry.th32ProcessID);
+            PROCESS_MEMORY_COUNTERS_EX memory = {};
+            if (process != nullptr && GetProcessMemoryInfo(process, reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&memory), sizeof(memory))) {
+                row += QString("%1\t%2\t%3\t%4\t").arg(memory.WorkingSetSize).arg(memory.PrivateUsage).arg(memory.PeakWorkingSetSize).arg(memory.PageFaultCount);
+                FILETIME created, exited, kernel, user;
+                if (GetProcessTimes(process, &created, &exited, &kernel, &user)) {
+                    auto ticks = [](const FILETIME& time) { return (quint64(time.dwHighDateTime) << 32) | time.dwLowDateTime; };
+                    row += QString("%1\t%2\t%3").arg(ticks(kernel)).arg(ticks(user)).arg(ticks(created));
+                } else {
+                    row += QString("GetProcessTimes error=%1").arg(GetLastError());
+                }
+            } else {
+                row += QString("Memory unavailable, Win32 error=%1").arg(GetLastError());
+            }
+            if (process != nullptr) {
+                CloseHandle(process);
+            }
+            snapshot += row + '\n';
+            // Keep successful-run logs small, but retain Java measurements for SnpEff comparisons.
+            if (entry.th32ProcessID == GetCurrentProcessId() || (processId != 0 && (entry.th32ProcessID == processId || entry.th32ParentProcessID == processId)) || name.compare("java.exe", Qt::CaseInsensitive) == 0) {
+                summary += row + '\n';
+            }
+            found = Process32NextW(processes, &entry);
+        }
+        if (GetLastError() != ERROR_NO_MORE_FILES) {
+            QString error = QString("Process enumeration failed: %1\n").arg(GetLastError());
+            summary += error;
+            snapshot += error;
+        }
+        CloseHandle(processes);
+    } else {
+        QString error = QString("CreateToolhelp32Snapshot failed: %1\n").arg(GetLastError());
+        summary += error;
+        snapshot += error;
+    }
+    QFile file(logPath + ".memory.txt");
+    QByteArray bytes = snapshot.toUtf8();
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Append) || file.write(bytes) != bytes.size() || !file.flush()) {
+        cmdLog.error(QString("Cannot save process snapshot: %1: %2").arg(file.fileName(), file.errorString()));
+    }
+    cmdLog.details(summary);
+}
+
+static void saveTimeoutDiagnostics(qint64 processId, const QString& logPath) {
+    const QString diagnosticsPath = logPath + ".timeout.txt";
+    const QString dumpPath = logPath + ".timeout.dmp";
+    cmdLog.error(QString("Collecting minidump for PID %1: %2").arg(processId).arg(dumpPath));
+    QProcess collector;
+    collector.setProcessChannelMode(QProcess::MergedChannels);
+    collector.setStandardOutputFile(diagnosticsPath);
+    collector.start(QCoreApplication::applicationDirPath() + "/plugins/CoreTestsDump.exe", {QString::number(processId), dumpPath});
+    if (!collector.waitForStarted(5000)) {
+        cmdLog.error(QString("Cannot start timeout diagnostics: %1").arg(collector.errorString()));
+    } else if (!collector.waitForFinished(60000)) {
+        collector.kill();
+        if (!collector.waitForFinished(5000)) {
+            cmdLog.error("Timeout dump collector did not stop within 5 seconds after kill");
+        }
+        cmdLog.error("Timeout diagnostics exceeded 60 seconds; the dump may be incomplete");
+    } else if (collector.exitStatus() != QProcess::NormalExit || collector.exitCode() != 0) {
+        cmdLog.error(QString("Timeout diagnostics failed, exit code: %1").arg(collector.exitCode()));
+    }
+    QFile diagnostics(diagnosticsPath);
+    if (diagnostics.open(QIODevice::ReadOnly)) {
+        cmdLog.error(QString("Timeout diagnostics (%1):\n%2").arg(diagnosticsPath, QString::fromUtf8(diagnostics.readAll())));
+    } else {
+        cmdLog.error(QString("Cannot read timeout diagnostics: %1: %2").arg(diagnosticsPath, diagnostics.errorString()));
+    }
+}
+#endif
+
 Task::ReportResult GTest_RunCMDLine::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
@@ -218,13 +333,22 @@ Task::ReportResult GTest_RunCMDLine::report() {
     // Check subprocess timeout
     if (proc->state() != QProcess::NotRunning) {
         qint64 elapsedSeconds = GTimer::secsBetween(processStartTime, GTimer::currentTimeMicros());
+#ifdef Q_OS_WIN
+        if (GTimer::secsBetween(lastMemorySampleTime, GTimer::currentTimeMicros()) >= 60 || elapsedSeconds > SUBPROCESS_TIMEOUT_SECONDS) {
+            saveProcessSnapshot(proc->processId(), separateLogFile);
+            lastMemorySampleTime = GTimer::currentTimeMicros();
+        }
+#endif
         if (elapsedSeconds > SUBPROCESS_TIMEOUT_SECONDS) {
+#ifdef Q_OS_WIN
+            saveTimeoutDiagnostics(proc->processId(), separateLogFile);
+#endif
             proc->kill();
             proc->waitForFinished(5000);  // Wait up to 5 seconds for process to die
             stateInfo.setError(QString("Subprocess timeout: process did not finish in %1 seconds").arg(SUBPROCESS_TIMEOUT_SECONDS));
-            return ReportResult_Finished;
+        } else {
+            return ReportResult_CallMeAgain;
         }
-        return ReportResult_CallMeAgain;
     }
 
     // Read output from separate log file instead of stdout to avoid TEST_LOG_LISTENER deadlock
@@ -244,6 +368,12 @@ Task::ReportResult GTest_RunCMDLine::report() {
             output += "\n=== STDOUT ===\n";
         }
         output += stdOutput;
+    }
+
+    if (hasError()) {
+        cmdLog.error(QString("Subprocess output at timeout (log: %1):\n%2\n=== STDERR ===\n%3")
+                         .arg(separateLogFile, output, QString::fromLocal8Bit(proc->readAllStandardError())));
+        return ReportResult_Finished;
     }
 
     cmdLog.trace(output);
