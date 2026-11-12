@@ -439,9 +439,23 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // Expected: one product is found.
     CHECK_SET_ERR(GTUtilsPcr::productsCount() == 1, "Wrong results count");
 
-    // On Windows the task report window may become active automatically after
-    // the PCR task. Return to the sequence view before using the PCR panel.
-    GTUtilsMdi::activateWindow("begin-end");
+    // On Windows the 'Task report' window may become active after the PCR task.
+    // Wait until it appears, then switch back to the sequence view by clicking
+    // its MDI tab: the Window menu is flaky on a loaded Windows agent.
+    for (int time = 0; time < 3000; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        if (GTUtilsMdi::findWindow("Task report [In Silico PCR]", GTGlobals::FindOptions(false)) != nullptr) {
+            break;
+        }
+    }
+    QTabBar* tabBar = GTUtilsMdi::getTabBar();
+    for (int i = 0; i < tabBar->count(); i++) {
+        if (tabBar->tabText(i).contains("begin-end")) {
+            GTUtilsMdi::clickTab(i);
+            break;
+        }
+    }
+    GTUtilsMdi::checkWindowIsActive("begin-end");
 
     // 6. Choose "Inner" annotation extraction.
     auto annsComboBox = GTWidget::findComboBox("annsComboBox");
