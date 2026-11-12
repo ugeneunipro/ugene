@@ -2,4 +2,11 @@
 
     <env-var name="IMPL" value="SSE2"/>
     <test-dir path="smith_waterman_big" test-format="XML" test-ext="*.xml"/>
+
+    <excluded test="1Mb_1000b.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="1Mb_100b.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="1Mb_2000b.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="1Mb_20b.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="1Mb_500b.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="7935.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
 </suite>

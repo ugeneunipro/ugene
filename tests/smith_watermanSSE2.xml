@@ -2,4 +2,40 @@
 
     <env-var name="IMPL" value="SSE2"/>
     <test-dir path="smith_waterman2" test-format="XML" test-ext="*.xml"/>
+
+    <excluded test="Multi/01.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/02.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/03.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/04.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/05.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/06.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/07.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/08.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/09.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Multi/10.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/01.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/02.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/03.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/04.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/05.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/06.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/07.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/08.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/09.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="SequenceWallker/10.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/01.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/02.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/03.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/04.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/05.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/06.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/07.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/08.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/09.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="Simple/10.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="small/01.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="small/02.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="small/03.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="small/04.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
+    <excluded test="small/05.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
 </suite>
