@@ -59,6 +59,7 @@ private:
     QString workingDir;
     bool autoRemoveWorkingDir = false;
     qint64 processStartTime = 0;  // Time when subprocess was started (microseconds)
+    qint64 lastMemorySampleTime = 0;
     QString separateLogFile;  // Separate log file for subprocess to avoid TEST_LOG_LISTENER deadlock
 
     static const int SUBPROCESS_TIMEOUT_SECONDS = 300;  // 5 minutes timeout for subprocess

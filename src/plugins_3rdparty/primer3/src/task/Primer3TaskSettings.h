@@ -184,6 +184,7 @@ public:
     const QByteArray& getThermodynamicParametersPath() const;
     p3_global_settings* getPrimerSettings() const;
     seq_args* getSeqArgs() const;
+    void releaseResult();
     void setP3RetVal(p3retval* ret);
     p3retval* getP3RetVal() const;
 

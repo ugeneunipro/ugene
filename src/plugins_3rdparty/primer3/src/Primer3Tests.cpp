@@ -44,6 +44,14 @@ GTest_Primer3::~GTest_Primer3() {
     }
 }
 
+void GTest_Primer3::cleanup() {
+    XmlTest::cleanup();
+    // The runner retains finished tasks; release the raw result after report checks.
+    if (!settings.isNull()) {
+        settings->releaseResult();
+    }
+}
+
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     seqObjCtx = el.attribute("sequence");
     annotationTableId = el.attribute("annotation");

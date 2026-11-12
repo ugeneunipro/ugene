@@ -70,6 +70,7 @@ DEALINGS IN THE SOFTWARE.  */
 #include "sam_internal.h"
 #include "htslib/hts_expr.h"
 #include "htslib/hts_os.h" // drand48
+#include "utf8_path.h"
 
 #include "htslib/khash.h"
 #include "htslib/kseq.h"
@@ -4582,7 +4583,7 @@ static int idx_test_and_fetch(const char *fn, const char **local_fn, int *local_
     save_errno = errno;
     if (remote_hfp) hclose_abruptly(remote_hfp);
     if (local_fp) hclose_abruptly(local_fp);
-    if (tmps.l > 0) unlink(tmps.s);
+    if (tmps.l > 0) hts_unlink_utf8(tmps.s);
     free(tmps.s);
     free(s.s);
     errno = save_errno;
@@ -4637,14 +4638,14 @@ int hts_idx_check_local(const char *fn, int fmt, char **fnidx) {
 
     // Try alignment.bam.csi first
     strcpy(fnidx_tmp, fn_tmp); strcpy(fnidx_tmp + l_fn, csi_ext);
-    if(stat(fnidx_tmp, &sbuf) == 0) {
+    if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
         *fnidx = fnidx_tmp;
         return 1;
     } else { // Then try alignment.csi
         for (i = l_fn - 1; i > 0; --i)
             if (fnidx_tmp[i] == '.') {
                 strcpy(fnidx_tmp + i, csi_ext);
-                if(stat(fnidx_tmp, &sbuf) == 0) {
+                if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
                     *fnidx = fnidx_tmp;
                     return 1;
                 }
@@ -4654,14 +4655,14 @@ int hts_idx_check_local(const char *fn, int fmt, char **fnidx) {
     if (fmt == HTS_FMT_BAI) {
         // Next, try alignment.bam.bai
         strcpy(fnidx_tmp, fn_tmp); strcpy(fnidx_tmp + l_fn, bai_ext);
-        if(stat(fnidx_tmp, &sbuf) == 0) {
+        if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
             *fnidx = fnidx_tmp;
             return 1;
         } else { // And finally, try alignment.bai
             for (i = l_fn - 1; i > 0; --i)
                 if (fnidx_tmp[i] == '.') {
                     strcpy(fnidx_tmp + i, bai_ext);
-                    if(stat(fnidx_tmp, &sbuf) == 0) {
+                    if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
                         *fnidx = fnidx_tmp;
                         return 1;
                     }
@@ -4670,14 +4671,14 @@ int hts_idx_check_local(const char *fn, int fmt, char **fnidx) {
         }
     } else if (fmt == HTS_FMT_TBI) { // Or .tbi
         strcpy(fnidx_tmp, fn_tmp); strcpy(fnidx_tmp + l_fn, tbi_ext);
-        if(stat(fnidx_tmp, &sbuf) == 0) {
+        if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
             *fnidx = fnidx_tmp;
             return 1;
         } else {
             for (i = l_fn - 1; i > 0; --i)
                 if (fnidx_tmp[i] == '.') {
                     strcpy(fnidx_tmp + i, tbi_ext);
-                    if(stat(fnidx_tmp, &sbuf) == 0) {
+                    if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
                         *fnidx = fnidx_tmp;
                         return 1;
                     }
@@ -4686,14 +4687,14 @@ int hts_idx_check_local(const char *fn, int fmt, char **fnidx) {
         }
     } else if (fmt == HTS_FMT_CRAI) { // Or .crai
         strcpy(fnidx_tmp, fn_tmp); strcpy(fnidx_tmp + l_fn, crai_ext);
-        if(stat(fnidx_tmp, &sbuf) == 0) {
+        if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
             *fnidx = fnidx_tmp;
             return 1;
         } else {
             for (i = l_fn - 1; i > 0; --i)
                 if (fnidx_tmp[i] == '.') {
                     strcpy(fnidx_tmp + i, crai_ext);
-                    if(stat(fnidx_tmp, &sbuf) == 0) {
+                    if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0) {
                         *fnidx = fnidx_tmp;
                         return 1;
                     }
@@ -4703,7 +4704,7 @@ int hts_idx_check_local(const char *fn, int fmt, char **fnidx) {
     } else if (fmt == HTS_FMT_FAI) { // Or .fai
         strcpy(fnidx_tmp, fn_tmp); strcpy(fnidx_tmp + l_fn, fai_ext);
         *fnidx = fnidx_tmp;
-        if(stat(fnidx_tmp, &sbuf) == 0)
+        if(hts_stat_utf8(fnidx_tmp, &sbuf) == 0)
             return 1;
         else
             return 0;
@@ -4827,7 +4828,7 @@ hts_idx_t *hts_idx_load3(const char *fn, const char *fnidx, int fmt, int flags)
     struct stat stat_idx,stat_main;
     int remote_fn = hisremote(fn), remote_fnidx = hisremote(fnidx);
     if ( !remote_fn && !remote_fnidx
-         && !stat(fn, &stat_main) && !stat(fnidx, &stat_idx) )
+         && !hts_stat_utf8(fn, &stat_main) && !hts_stat_utf8(fnidx, &stat_idx) )
     {
         if ( stat_idx.st_mtime < stat_main.st_mtime )
             hts_log_warning("The index file is older than the data file: %s", fnidx);

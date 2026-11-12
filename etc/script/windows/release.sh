@@ -30,6 +30,13 @@ mkdir "${SYMBOLS_DIR}"
 
 echo "##teamcity[blockOpened name='Copy files']"
 
+# Also support bundles produced before build.sh deployed the native OpenGL alias.
+# Do this before symbol collection, validation and signing.
+cp "${DIST_DIR}/opengl32sw.dll" "${DIST_DIR}/opengl32.dll" || {
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to deploy software OpenGL']"
+  exit 1
+}
+
 # Remove excluded files from UGENE.
 rm -rf "${DIST_DIR}/"*QSpec*
 rm -rf "${DIST_DIR}/"*Qt6Test*

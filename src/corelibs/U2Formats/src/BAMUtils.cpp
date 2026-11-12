@@ -222,12 +222,12 @@ QByteArray getFileFormatName(const QString& filePath) {
 
 samFile* openForRead(const QString& path, U2OpStatus& os, const QString& referencePath = "") {
     auto format = getFileFormatName(path);
-    samFile* res = sam_open(path.toLocal8Bit(), format  == BaseDocumentFormats::BAM ? "rb" : "r");
+    samFile* res = sam_open(path.toUtf8(), format  == BaseDocumentFormats::BAM ? "rb" : "r");
     SAMTOOL_READ_CHECK(res != nullptr, openFileError(path));
 
     QString faiPath = BAMUtils::hasValidFastaIndex(referencePath) ? referencePath + ".fai" : "";
     if (!faiPath.isEmpty()) {
-        hts_set_fai_filename(res, faiPath.toLocal8Bit());
+        hts_set_fai_filename(res, faiPath.toUtf8());
     }
 
     if (res->bam_header == nullptr) {
@@ -249,7 +249,7 @@ samFile* openForRead(const QString& path, U2OpStatus& os, const QString& referen
         createReferenceDataFile(referenceDataFileUrl, referenceMap, os);
         SAMTOOL_READ_CHECK(!os.isCoR(), os.getError());
 
-        samFile* tmp = sam_open(referenceDataFileUrl.toLocal8Bit(), "r");
+        samFile* tmp = sam_open(referenceDataFileUrl.toUtf8(), "r");
         SAMTOOL_READ_CHECK(tmp != nullptr, openFileError(referenceDataFileUrl));
 
         hts_parse_format(&tmp->format, BaseDocumentFormats::SAM.toLocal8Bit());
@@ -269,7 +269,7 @@ void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QSt
     in = openForRead(bamPath, os);
     CHECK_OP(os, );
 
-    out = sam_open(samPath.toLocal8Bit(), "w");
+    out = sam_open(samPath.toUtf8(), "w");
     SAMTOOL_CHECK(out != nullptr, openFileError(samPath), );
 
     int r = 0;
@@ -293,7 +293,7 @@ void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QSt
     in = openForRead(samPath, os, referencePath);
     CHECK_OP(os, );
 
-    out = sam_open(bamPath.toLocal8Bit(), "wb");
+    out = sam_open(bamPath.toUtf8(), "wb");
     SAMTOOL_CHECK(out != nullptr, openFileError(bamPath), );
 
     int r = 0;
@@ -344,7 +344,7 @@ bool BAMUtils::isSortedBam(const QString& bamUrl, U2OpStatus& os) {
     QString error;
     bool result = false;
 
-    BGZF* bamHandler = bgzf_open(bamUrl.toLocal8Bit(), "r");
+    BGZF* bamHandler = bgzf_open(bamUrl.toUtf8(), "r");
     if (bamHandler != nullptr) {
         header = bam_hdr_read(bamHandler);
         if (header != nullptr) {
@@ -378,7 +378,7 @@ GUrl BAMUtils::sortBam(const QString& bamUrl, const QString& sortedBamFilePath, 
     coreLog.trace(BAMUtils::tr("Sorting \"%1\" and saving the result to \"%2\"").arg(bamUrl).arg(sortedBamFilePath));
 
     static constexpr size_t max_mem = 100 * 1000 * 1000;
-    int ret = bam_sort_core(0, bamUrl.toLocal8Bit(), sortedBamFilePathPrefix.toLocal8Bit(), max_mem);
+    int ret = bam_sort_core(0, bamUrl.toUtf8(), sortedBamFilePathPrefix.toUtf8(), max_mem);
     CHECK_EXT(ret == 0, os.setError(BAMUtils::tr("Cannot sort \"%1\", abort").arg(bamUrl)), {})
 
     return sortedBamFilePathPrefix + ".bam";
@@ -396,7 +396,7 @@ GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergedBamTarg
     }
     files[buSize] = nullptr;
 
-    int rc = bam_merge_core(0, mergedBamTargetUrl.toLocal8Bit(), nullptr, buSize, files, 0, nullptr);
+    int rc = bam_merge_core(0, mergedBamTargetUrl.toUtf8(), nullptr, buSize, files, 0, nullptr);
     delete[] files;
     CHECK_EXT(rc >= 0, os.setError(tr("Failed to merge BAM files: %1 into %2").arg(bamUrls.join(",")).arg(mergedBamTargetUrl)), {});
 
@@ -404,7 +404,7 @@ GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergedBamTarg
 }
 
 void* BAMUtils::loadIndex(const QString& filePath) {
-    return hts_idx_load(filePath.toLocal8Bit(), HTS_FMT_BAI);
+    return hts_idx_load(filePath.toUtf8(), HTS_FMT_BAI);
 }
 
 bool BAMUtils::hasValidBamIndex(const QString& bamUrl) {
@@ -435,7 +435,7 @@ bool BAMUtils::hasValidFastaIndex(const QString& fastaUrl) {
 
 void BAMUtils::createBamIndex(const QString& bamUrl, U2OpStatus& os) {
     coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(bamUrl));
-    int res = bam_index_build(bamUrl.toLocal8Bit(), 0);
+    int res = bam_index_build(bamUrl.toUtf8(), 0);
     CHECK_EXT(res == 0, os.setError(tr("Can't build the index: %1").arg(bamUrl)), );
 }
 
@@ -611,7 +611,7 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const QString& url, 
         os.setError("Only BAM or SAM files could be written");
         return;
     }    
-    samFile* out = sam_open(url.toLocal8Bit(), openMode.constData());
+    samFile* out = sam_open(url.toUtf8(), openMode.constData());
     CHECK_EXT(out != nullptr, os.setError(QString("Can not open file for writing: %1").arg(url)), );
     writeObjectsWithSamtools(out, objects, os, desiredRegion, openMode.contains('b'));
     sam_close(out);

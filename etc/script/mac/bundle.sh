@@ -3,10 +3,13 @@
 # The script takes a pre-built version of UGENE from 'ugene/src/_release' dir and packs it into Mac OS applications.
 # The script does not add external tools into the app and does not sign the result application.
 
-if [ ! -d "${QT_DIR}" ]; then
-  echo "QT_DIR: ${QT_DIR} is not found."
+# All Mac builds are expected to run on mac-m1. Qt6 is installed here.
+QT_DIR="/Users/teamcity21/Qt/6.11.1/macos"
+if [ ! -f "${QT_DIR}/lib/cmake/Qt6/Qt6Config.cmake" ]; then
+  echo "Qt6 is not found at ${QT_DIR}" >&2
   exit 1
 fi
+export QT_DIR
 
 TEAMCITY_WORK_DIR=$(pwd)
 APP_NAME="Unipro UGENE.app"
@@ -176,7 +179,7 @@ for PLUGIN in ${PLUGIN_LIST}; do
 done
 
 echo Running macdeployqt
-"${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip -verbose=2 \
+"${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip -no-codesign -verbose=2 \
   -executable="${TARGET_EXE_DIR}/ugeneui" \
   -executable="${TARGET_EXE_DIR}/ugenecl" \
   -executable="${TARGET_EXE_DIR}/ugenem" \
@@ -203,5 +206,5 @@ ln -s "./${APP_NAME}/Contents/MacOS/data/samples" ./Samples
 cd "${TEAMCITY_WORK_DIR}" || exit 1
 
 echo "Compressing app into a tar.gz"
-rm "${TEAMCITY_WORK_DIR}/"*.gz
+rm -f "${TEAMCITY_WORK_DIR}/"*.gz
 tar cfz "bundle-mac-b${TEAMCITY_BUILD_COUNTER}.tar.gz" -C "${BUNDLE_DIR}" .

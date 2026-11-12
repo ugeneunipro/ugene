@@ -24,7 +24,8 @@
 #include "BlastDBSelectorWidgetController.h"
 #include "BlastSupport.h"
 
-#include <QDirIterator>
+#include <QDir>
+#include <QFileInfo>
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
@@ -127,15 +128,10 @@ bool BlastDBSelectorWidgetController::validateDatabaseDir() {
         extList << "pal"
                 << "pin";
     }
-    QDirIterator dirIt(databasePathLineEdit->text(), QDirIterator::Subdirectories);
-    while (dirIt.hasNext()) {
-        dirIt.next();
-        if (QFileInfo(dirIt.filePath()).isFile()) {
-            if (dirIt.filePath() == databasePathLineEdit->text() + QDir::separator() + baseNameLineEdit->text() + "." + extList[1]) {
-                return true;
-            } else if (dirIt.filePath() == databasePathLineEdit->text() + QDir::separator() + baseNameLineEdit->text() + "." + extList[0]) {
-                return true;
-            }
+    const QDir databaseDir(databasePathLineEdit->text());
+    for (const QString& extension : qAsConst(extList)) {
+        if (QFileInfo(databaseDir.filePath(baseNameLineEdit->text() + "." + extension)).isFile()) {
+            return true;
         }
     }
 
