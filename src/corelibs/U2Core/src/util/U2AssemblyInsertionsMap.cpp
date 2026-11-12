@@ -256,6 +256,48 @@ void U2AssemblyInsertionsMap::finishStatistics() {
     letterFrequencies.clear();
 }
 
+QVector<U2Region> U2AssemblyInsertionsMap::getRegionsToAdd(const U2Region& newRegion) const {
+    QVector<U2Region> result;
+    CHECK(!newRegion.isEmpty(), result);
+    U2Region kept = region.intersect(newRegion);
+    if (kept.isEmpty()) {
+        result << newRegion;
+        return result;
+    }
+    if (newRegion.startPos < kept.startPos) {
+        result << U2Region(newRegion.startPos, kept.startPos - newRegion.startPos);
+    }
+    if (kept.endPos() < newRegion.endPos()) {
+        result << U2Region(kept.endPos(), newRegion.endPos() - kept.endPos());
+    }
+    return result;
+}
+
+void U2AssemblyInsertionsMap::moveTo(const U2Region& newRegion, const QList<U2AssemblyInsertionsMap>& addedParts) {
+    const QVector<U2Region> regionsToAdd = getRegionsToAdd(newRegion);
+    SAFE_POINT(addedParts.size() == regionsToAdd.size(), "Insertions map parts do not match the region", );
+    for (int i = 0; i < addedParts.size(); i++) {
+        SAFE_POINT(addedParts.at(i).getRegion() == regionsToAdd.at(i) && addedParts.at(i).getFilter() == filter,
+                   "Insertions map part is built for another region or filter", );
+    }
+
+    QList<U2AssemblyInsertionSite> movedSites;
+    for (const U2AssemblyInsertionSite& site : qAsConst(sites)) {
+        if (newRegion.contains(site.refPos)) {
+            movedSites << site;
+        }
+    }
+    for (const U2AssemblyInsertionsMap& part : qAsConst(addedParts)) {
+        movedSites << part.getSites();
+    }
+    std::sort(movedSites.begin(), movedSites.end(), [](const U2AssemblyInsertionSite& a, const U2AssemblyInsertionSite& b) {
+        return a.refPos < b.refPos;
+    });
+    region = newRegion;
+    sites = movedSites;
+    indexSites();
+}
+
 const U2AssemblyInsertionSite* U2AssemblyInsertionsMap::getSiteBefore(qint64 refPos) const {
     int siteIndex = siteIndexByRefPos.value(refPos, -1);
     return siteIndex < 0 ? nullptr : &sites.at(siteIndex);

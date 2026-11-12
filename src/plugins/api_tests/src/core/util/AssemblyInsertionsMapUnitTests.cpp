@@ -570,6 +570,84 @@ IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionOfTheFirstPositionNextTo
     }
 }
 
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, regionsToAddOfTheMovedMap) {
+    U2AssemblyInsertionsMap map;
+    map.build(QList<U2AssemblyRead>(), U2Region(100, 50));
+    CHECK_TRUE(map.getRegionsToAdd(U2Region(110, 50)) == QVector<U2Region>({U2Region(150, 10)}), "scrolled right");
+    CHECK_TRUE(map.getRegionsToAdd(U2Region(90, 50)) == QVector<U2Region>({U2Region(90, 10)}), "scrolled left");
+    CHECK_TRUE(map.getRegionsToAdd(U2Region(90, 70)) == QVector<U2Region>({U2Region(90, 10), U2Region(150, 10)}), "zoomed out");
+    CHECK_TRUE(map.getRegionsToAdd(U2Region(110, 10)).isEmpty(), "zoomed in");
+    CHECK_TRUE(map.getRegionsToAdd(U2Region(150, 10)) == QVector<U2Region>({U2Region(150, 10)}), "jumped away");
+    CHECK_TRUE(map.getRegionsToAdd(U2Region()).isEmpty(), "empty region");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, movedMapMatchesTheBuiltOne) {
+    // Reads of random starts with random insertions, a few positions with frequent ones.
+    QList<U2AssemblyRead> reads;
+    quint32 seed = 229;
+    auto next = [&seed](int bound) {
+        seed = seed * 1103515245 + 12345;
+        return int((seed >> 16) % bound);
+    };
+    for (int i = 0; i < 2000; i++) {
+        const qint64 start = next(300);
+        QList<U2CigarToken> cigar;
+        QByteArray sequence;
+        int matches = 0;
+        for (qint64 pos = start; pos < start + 40; pos++) {
+            const bool frequent = pos % 37 == 0 && next(3) == 0;
+            if (matches > 0 && (frequent || next(50) == 0)) {
+                const int size = frequent ? 2 : 1 + next(3);
+                cigar << U2CigarToken(U2CigarOp_M, matches) << U2CigarToken(U2CigarOp_I, size);
+                for (int j = 0; j < size; j++) {
+                    sequence += frequent ? 'G' : "ACGT"[next(4)];
+                }
+                matches = 0;
+            }
+            sequence += 'A';
+            matches++;
+        }
+        cigar << U2CigarToken(U2CigarOp_M, matches);
+        reads << makeRead(start, sequence, cigar);
+    }
+
+    // Scrolled both ways, zoomed in and out, jumped away: always the same as built from scratch.
+    const QList<U2AssemblyInsertionsFilter> filters = {U2AssemblyInsertionsFilter(), U2AssemblyInsertionsFilter::getDefault(), U2AssemblyInsertionsFilter(20, 5)};
+    const QList<U2Region> path = {U2Region(101, 80), U2Region(120, 80), U2Region(90, 80), U2Region(110, 30), U2Region(60, 150), U2Region(250, 60), U2Region(0, 340)};
+    for (const U2AssemblyInsertionsFilter& filter : qAsConst(filters)) {
+        U2AssemblyInsertionsMap moved;
+        moved.build(reads, U2Region(100, 80), filter);
+        for (const U2Region& region : qAsConst(path)) {
+            QList<U2AssemblyInsertionsMap> parts;
+            for (const U2Region& regionToAdd : moved.getRegionsToAdd(region)) {
+                parts << U2AssemblyInsertionsMap();
+                parts.last().build(reads, regionToAdd, filter);
+            }
+            moved.moveTo(region, parts);
+
+            U2AssemblyInsertionsMap built;
+            built.build(reads, region, filter);
+            const QString where = QString("min %1%, %2 reads, region %3").arg(filter.minPercent).arg(filter.minReads).arg(region.toString());
+            CHECK_FALSE(built.isEmpty(), where + ": no insertions to compare");
+            CHECK_TRUE(moved.getRegion() == region, where + ": region");
+            CHECK_EQUAL(built.getColumnCount(), moved.getColumnCount(), where + ": column count");
+            CHECK_EQUAL(built.getSites().size(), moved.getSites().size(), where + ": site count");
+            for (int i = 0; i < built.getSites().size(); i++) {
+                const U2AssemblyInsertionSite& expected = built.getSites().at(i);
+                const U2AssemblyInsertionSite& actual = moved.getSites().at(i);
+                CHECK_EQUAL(expected.refPos, actual.refPos, where + ": site position");
+                CHECK_EQUAL(expected.width, actual.width, where + ": site width");
+                CHECK_EQUAL(expected.coverage, actual.coverage, where + ": site coverage");
+                CHECK_TRUE(expected.letterCounts == actual.letterCounts, where + ": letter counts");
+                CHECK_EQUAL(QString(expected.consensus), QString(actual.consensus), where + ": consensus");
+            }
+            for (qint64 pos = region.startPos; pos < region.endPos(); pos++) {
+                CHECK_EQUAL(built.getColumnOfRefPos(pos), moved.getColumnOfRefPos(pos), where + ": column of a position");
+            }
+        }
+    }
+}
+
 IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionsFilterSettings) {
     static const QString PERCENT_KEY = "assembly_browser/insertions_min_percent";
     static const QString READS_KEY = "assembly_browser/insertions_min_reads";

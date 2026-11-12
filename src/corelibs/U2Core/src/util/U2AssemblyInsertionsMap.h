@@ -118,8 +118,8 @@ struct U2CORE_EXPORT U2AssemblyInsertionSite {
  * more letters in front of a position than there are columns there: getInsertionWidthBefore() is
  * what tells the caller so.
  *
- * The map describes a single region and is meant to be rebuilt whenever the region changes, so
- * nothing has to be stored in the database.
+ * The map describes a single region and is rebuilt, or moved with moveTo(), whenever the region
+ * changes, so nothing has to be stored in the database.
  */
 class U2CORE_EXPORT U2AssemblyInsertionsMap {
 public:
@@ -147,6 +147,21 @@ public:
     void finishSites();
     void addStatisticsOfRead(const U2AssemblyRead& read);
     void finishStatistics();
+
+    /**
+     * Parts of 'newRegion' the map has nothing for: 'newRegion' without getRegion(), left to
+     * right. That is 0, 1 or 2 regions, or the whole 'newRegion' when the two do not overlap.
+     */
+    QVector<U2Region> getRegionsToAdd(const U2Region& newRegion) const;
+
+    /**
+     * Moves the finished map to 'newRegion' without walking again the reads of the positions it
+     * keeps: whatever the map has for a position is counted from the reads covering that very
+     * position, so it does not depend on the rest of the region. The new positions come from
+     * 'addedParts': finished maps built with the same filter for getRegionsToAdd(newRegion), in
+     * the same order. A scroll by a few bases thus only costs the reads of those few bases.
+     */
+    void moveTo(const U2Region& newRegion, const QList<U2AssemblyInsertionsMap>& addedParts);
 
     void clear();
 

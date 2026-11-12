@@ -27,6 +27,8 @@
     + coordinatesAfterFiltering
     + filteredIncrementalBuildMatchesTheBatchOne
     + insertionOfTheFirstPositionNextToOtherTokens
+    + regionsToAddOfTheMovedMap
+    + movedMapMatchesTheBuiltOne
     + insertionsFilterSettings
 
 </unittest>

@@ -51,6 +51,8 @@ DECLARE_TEST(AssemblyInsertionsMapUnitTests, columnsOfPassedInsertionsHoldEveryR
 DECLARE_TEST(AssemblyInsertionsMapUnitTests, coordinatesAfterFiltering);
 DECLARE_TEST(AssemblyInsertionsMapUnitTests, filteredIncrementalBuildMatchesTheBatchOne);
 DECLARE_TEST(AssemblyInsertionsMapUnitTests, insertionOfTheFirstPositionNextToOtherTokens);
+DECLARE_TEST(AssemblyInsertionsMapUnitTests, regionsToAddOfTheMovedMap);
+DECLARE_TEST(AssemblyInsertionsMapUnitTests, movedMapMatchesTheBuiltOne);
 DECLARE_TEST(AssemblyInsertionsMapUnitTests, insertionsFilterSettings);
 
 }  // namespace U2
@@ -81,4 +83,6 @@ DECLARE_METATYPE(AssemblyInsertionsMapUnitTests, columnsOfPassedInsertionsHoldEv
 DECLARE_METATYPE(AssemblyInsertionsMapUnitTests, coordinatesAfterFiltering)
 DECLARE_METATYPE(AssemblyInsertionsMapUnitTests, filteredIncrementalBuildMatchesTheBatchOne)
 DECLARE_METATYPE(AssemblyInsertionsMapUnitTests, insertionOfTheFirstPositionNextToOtherTokens)
+DECLARE_METATYPE(AssemblyInsertionsMapUnitTests, regionsToAddOfTheMovedMap)
+DECLARE_METATYPE(AssemblyInsertionsMapUnitTests, movedMapMatchesTheBuiltOne)
 DECLARE_METATYPE(AssemblyInsertionsMapUnitTests, insertionsFilterSettings)
