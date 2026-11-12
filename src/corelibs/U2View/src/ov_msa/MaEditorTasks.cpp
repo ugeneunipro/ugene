@@ -106,10 +106,11 @@ void OpenMaEditorTask::loadCache() {
         }
     }
 
-    maObject->getAlignment(); // to load and cache the alignment
+    maObject->getAlignment(stateInfo);
 }
 
 void OpenMaEditorTask::open() {
+    CHECK_OP(stateInfo, );
     if (maObject.isNull()) {
         stateInfo.setError(tr("Multiple alignment object not found"));
         return;
@@ -218,6 +219,9 @@ void OpenSavedMaEditorTask::open() {
     }
     auto maObject = qobject_cast<MsaObject*>(obj);
     assert(maObject != nullptr);
+
+    maObject->getAlignment(stateInfo);
+    CHECK_OP(stateInfo, );
 
     MaEditor* maEditor = factory->getEditor(viewName, maObject, stateInfo);
     CHECK_OP(stateInfo, );

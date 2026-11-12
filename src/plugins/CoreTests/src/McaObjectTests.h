@@ -21,9 +21,35 @@
 
 #pragma once
 
+#include <QTemporaryDir>
+
 #include <U2Test/XMLTestUtils.h>
 
 namespace U2 {
+
+class Document;
+class MsaObject;
+
+class GTest_OpenMcaDatabase : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_OpenMcaDatabase, "open-mca-database", TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskCancel)
+
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
+    void cleanup() override;
+
+private:
+    QTemporaryDir tempDir;
+    QString url;
+    bool corrupt = false;
+    bool savedState = false;
+    Task* loadTask = nullptr;
+    Task* openTask = nullptr;
+    QPointer<Document> document;
+    QPointer<MsaObject> alignment;
+};
 
 class GTest_CompareTwoMca : public XmlTest {
     Q_OBJECT
