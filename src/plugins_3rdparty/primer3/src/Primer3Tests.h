@@ -50,6 +50,7 @@ public:
 
     ~GTest_Primer3();
 
+    void cleanup() override;
     void prepare();
     Task::ReportResult report();
 
