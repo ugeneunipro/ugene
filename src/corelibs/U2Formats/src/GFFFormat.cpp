@@ -94,7 +94,7 @@ int readLongLine(QString& buffer, IOAdapter* io, QScopedArrayPointer<char>& char
 }
 
 bool validateHeader(QStringList words) {
-    if (!words[0].startsWith('#')) {
+    if (words.isEmpty() || !words[0].startsWith('#')) {
         return false;
     }
     bool isOk = false;
@@ -104,7 +104,7 @@ bool validateHeader(QStringList words) {
     words[0] = words[0].remove("#");
     if (!words[0].startsWith("gff-version")) {
         ioLog.error(GFFFormat::tr("Parsing error: file does not contain version header"));
-    } else {
+    } else if (words.size() >= 2) {
         int ver = words[1].toInt(&isOk);
         if (!isOk) {
             ioLog.error(GFFFormat::tr("Parsing error: format version is not an integer"));
