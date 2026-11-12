@@ -316,6 +316,7 @@ void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject* newTrackObj) {
 
     connect(browser, SIGNAL(si_zoomOperationPerformed()), row, SLOT(sl_zoomPerformed()));
     connect(browser, SIGNAL(si_offsetsChanged()), row, SLOT(sl_offsetsChanged()));
+    connect(browser, SIGNAL(si_insertionsLayoutChanged()), row, SLOT(sl_redraw()));
     connect(row, SIGNAL(si_mouseMovedToPos(const QPoint&)), annsArea, SIGNAL(si_mouseMovedToPos(const QPoint&)));
     connect(row, SIGNAL(si_removeRow()), SLOT(sl_removeRow()));
 }

@@ -21,8 +21,12 @@
 
 #include "AssemblyInsertionsMapUnitTests.h"
 
+#include <U2Core/AppContext.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2AssemblyInsertionsMap.h>
 #include <U2Core/U2AssemblyReadIterator.h>
+
+#include <U2View/AssemblyBrowserSettings.h>
 
 namespace U2 {
 
@@ -36,6 +40,30 @@ U2AssemblyRead makeRead(qint64 leftmostPos, const QByteArray& sequence, const QL
     read->cigar = cigar;
     return read;
 }
+
+/** Every read of the filter tests covers [0, 20), its insertion (if any) precedes 'basesBefore'. */
+U2AssemblyRead makeInsertionRead(const QByteArray& insertion, qint64 leftmostPos = 0, int basesBefore = 10) {
+    const int basesAfter = 20 - basesBefore;
+    QList<U2CigarToken> cigar;
+    if (basesBefore > 0) {
+        cigar << U2CigarToken(U2CigarOp_M, basesBefore);
+    }
+    if (!insertion.isEmpty()) {
+        cigar << U2CigarToken(U2CigarOp_I, insertion.size());
+    }
+    cigar << U2CigarToken(U2CigarOp_M, basesAfter);
+    return makeRead(leftmostPos, QByteArray(basesBefore, 'A') + insertion + QByteArray(basesAfter, 'A'), cigar);
+}
+
+QList<U2AssemblyRead> makeInsertionReads(int count, const QByteArray& insertion) {
+    QList<U2AssemblyRead> reads;
+    for (int i = 0; i < count; i++) {
+        reads << makeInsertionRead(insertion);
+    }
+    return reads;
+}
+
+const U2Region FILTER_TEST_REGION(0, 20);
 
 QList<U2CigarToken> cigarOf(U2CigarOp op1, int count1, U2CigarOp op2 = U2CigarOp_Invalid, int count2 = 0, U2CigarOp op3 = U2CigarOp_Invalid, int count3 = 0) {
     QList<U2CigarToken> cigar;
@@ -155,9 +183,9 @@ IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionOutsideTheRegionIsIgnore
     mapBefore.build(reads, U2Region(100, 5));
     CHECK_TRUE(mapBefore.isEmpty(), "region before the insertion is not empty");
 
-    // The region starts right at the insertion, which is cut off by the region border.
+    // The region starts right after the position the insertion is attached to.
     U2AssemblyInsertionsMap mapAfter;
-    mapAfter.build(reads, U2Region(105, 5));
+    mapAfter.build(reads, U2Region(106, 5));
     CHECK_TRUE(mapAfter.isEmpty(), "region after the insertion is not empty");
 }
 
@@ -182,22 +210,25 @@ IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, columnsAndPositionsMatchEachOther
     CHECK_EQUAL(106, map.getRefPosOfColumn(9), "position of the next column");
 }
 
-IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, oneBaseOfOverlapKeepsTheInsertionOfTheFirstPosition) {
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionOfTheFirstPositionIsKept) {
     // The insertion belongs to the position 105 and a read that starts earlier only reports it
-    // after the position before it has been walked through. A region that begins right at 105
-    // therefore misses it, and a caller that splits an assembly into regions of its own (the
-    // consensus export does) has to scan one base of overlap to get it back.
+    // after the position before it has been walked through. The map walks that position itself,
+    // so a region that begins right at 105 still has the insertion: the columns of a position must
+    // not depend on where the view is scrolled to or where the consensus export splits the assembly.
     QList<U2AssemblyRead> reads;
     reads << makeRead(100, "AAAAAGGGCCCCC", cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 3, U2CigarOp_M, 5));
 
-    U2AssemblyInsertionsMap mapWithoutOverlap;
-    mapWithoutOverlap.build(reads, U2Region(105, 5));
-    CHECK_TRUE(mapWithoutOverlap.isEmpty(), "the insertion is found with no overlap scanned");
+    U2AssemblyInsertionsMap map;
+    map.build(reads, U2Region(105, 5));
+    CHECK_EQUAL(3, map.getInsertionWidthBefore(105), "insertion width");
+    CHECK_EQUAL(QString("GGG"), QString(map.getInsertionConsensus(105)), "insertion consensus");
+    CHECK_EQUAL(3, map.getColumnOfRefPos(105), "column of the first position");
+    CHECK_EQUAL(1, map.getSites().first().coverage, "coverage of the site");
 
-    U2AssemblyInsertionsMap mapWithOverlap;
-    mapWithOverlap.build(reads, U2Region(104, 6));
-    CHECK_EQUAL(3, mapWithOverlap.getInsertionWidthBefore(105), "insertion width");
-    CHECK_EQUAL(QString("GGG"), QString(mapWithOverlap.getInsertionConsensus(105)), "insertion consensus");
+    // The base walked through before the region is not a part of it: nothing in front of it counts.
+    U2AssemblyInsertionsMap mapOfTheNextPosition;
+    mapOfTheNextPosition.build(reads, U2Region(106, 4));
+    CHECK_TRUE(mapOfTheNextPosition.isEmpty(), "the insertion of the previous position is reported");
 }
 
 IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionColumnsAreToldFromTheReferenceOnes) {
@@ -350,6 +381,240 @@ IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, readIteratorSkipsInsertionsBefore
     CHECK_TRUE(it2.getInsertionBeforeLastLetter().isEmpty(), "unexpected insertion");
     CHECK_EQUAL('C', it2.nextLetter(), "second letter");
     CHECK_EQUAL(QString("GGG"), QString(it2.getInsertionBeforeLastLetter()), "inserted letters");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, filterThresholds) {
+    U2AssemblyInsertionsFilter none;
+    CHECK_TRUE(none.isValid(), "the default filter is not valid");
+    CHECK_FALSE(none.isEnabled(), "the default filter is enabled");
+    CHECK_TRUE(none.passes(1, 1000000), "the default filter drops an insertion");
+
+    // A single read is no requirement: every insertion is found in at least one.
+    CHECK_FALSE(U2AssemblyInsertionsFilter(0, 1).isEnabled(), "1 read is a requirement");
+    CHECK_TRUE(U2AssemblyInsertionsFilter(0, 2).isEnabled(), "2 reads are no requirement");
+    CHECK_TRUE(U2AssemblyInsertionsFilter(0.1, 0).isEnabled(), "0.1% is no requirement");
+
+    U2AssemblyInsertionsFilter defaults = U2AssemblyInsertionsFilter::getDefault();
+    CHECK_EQUAL(2.0, defaults.minPercent, "default percent");
+    CHECK_EQUAL(10, defaults.minReads, "default reads");
+
+    // Both thresholds have to be met, each of them inclusively.
+    CHECK_TRUE(defaults.passes(10, 500), "exactly 2% and exactly 10 reads do not pass");
+    CHECK_FALSE(defaults.passes(9, 100), "9 reads pass");
+    CHECK_FALSE(defaults.passes(10, 501), "less than 2% passes");
+    CHECK_TRUE(defaults.passes(11, 501), "11 reads of 501 do not pass");
+
+    // A rounded percent still lets the exact share pass.
+    CHECK_TRUE(U2AssemblyInsertionsFilter(100.0 / 3, 0).passes(1, 3), "1 read of 3 does not pass 33.(3)%");
+    CHECK_FALSE(U2AssemblyInsertionsFilter(33.4, 0).passes(1, 3), "1 read of 3 passes 33.4%");
+
+    CHECK_FALSE(U2AssemblyInsertionsFilter(-1, 0).isValid(), "a negative percent is valid");
+    CHECK_FALSE(U2AssemblyInsertionsFilter(100.5, 0).isValid(), "a percent above 100 is valid");
+    CHECK_FALSE(U2AssemblyInsertionsFilter(0, -1).isValid(), "a negative number of reads is valid");
+    CHECK_FALSE(U2AssemblyInsertionsFilter(qQNaN(), 0).isValid(), "NaN percent is valid");
+    CHECK_TRUE(U2AssemblyInsertionsFilter(100, 0).isValid(), "100% is not valid");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, filterNeedsEnoughReads) {
+    QList<U2AssemblyRead> reads = makeInsertionReads(9, "C") + makeInsertionReads(11, "");
+    U2AssemblyInsertionsMap map;
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(0, 10));
+    CHECK_TRUE(map.isEmpty(), "an insertion of 9 reads is shown");
+    CHECK_EQUAL(20, map.getColumnCount(), "column count");
+
+    reads << makeInsertionRead("C");
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(0, 10));
+    CHECK_EQUAL(1, map.getInsertionWidthBefore(10), "insertion width");
+    CHECK_EQUAL(QString("-"), QString(map.getInsertionConsensus(10)), "consensus of 10 letters against 11 gaps");
+
+    // With no filter a single read is enough, as before the filter was there.
+    reads = makeInsertionReads(99, "") << makeInsertionRead("GT");
+    map.build(reads, FILTER_TEST_REGION);
+    CHECK_EQUAL(2, map.getInsertionWidthBefore(10), "insertion width with no filter");
+    CHECK_EQUAL(100, map.getSites().first().coverage, "coverage");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, filterNeedsEnoughShareOfTheCoverage) {
+    // The share is taken of the reads covering the position, the ones with no insertion included.
+    QList<U2AssemblyRead> reads = makeInsertionReads(98, "") + makeInsertionReads(2, "C");
+    U2AssemblyInsertionsMap map;
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(2, 0));
+    CHECK_EQUAL(1, map.getInsertionWidthBefore(10), "insertion of 2% is not shown");
+
+    // A read that does not reach the position is not a vote for a gap.
+    reads << makeInsertionRead("", 11);
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(2, 0));
+    CHECK_EQUAL(1, map.getInsertionWidthBefore(10), "a read not covering the position is counted");
+
+    reads << makeInsertionRead("");
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(2, 0));
+    CHECK_EQUAL(0, map.getInsertionWidthBefore(10), "insertion of less than 2% is shown");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, distinctInsertionsAreCountedSeparately) {
+    // 'C' and 'CC' are different insertions: neither of them supports the other.
+    QList<U2AssemblyRead> reads = makeInsertionReads(6, "C") + makeInsertionReads(6, "CC");
+    U2AssemblyInsertionsMap map;
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(0, 10));
+    CHECK_TRUE(map.isEmpty(), "'C' and 'CC' support each other");
+
+    // The same letters of another case are the same insertion and the same consensus vote.
+    reads = makeInsertionReads(5, "ct") + makeInsertionReads(5, "CT") + makeInsertionReads(6, "");
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(0, 10));
+    CHECK_EQUAL(2, map.getInsertionWidthBefore(10), "insertion width");
+    CHECK_EQUAL(QString("CT"), QString(map.getInsertionConsensus(10)), "consensus of 'ct' and 'CT'");
+
+    // Insertions only sharing the beginning are different, even if both are cut to the same width.
+    QByteArray common(U2AssemblyInsertionsMap::MAX_SITE_WIDTH, 'G');
+    reads = makeInsertionReads(6, common + "A") + makeInsertionReads(6, common + "T");
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(0, 10));
+    CHECK_TRUE(map.isEmpty(), "insertions with a common beginning support each other");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, columnsOfPassedInsertionsHoldEveryRead) {
+    // The columns are as wide as the longest insertion that passes. Inside them every read shows
+    // its letters and votes with them, whether its own insertion passed or not.
+    QList<U2AssemblyRead> reads = makeInsertionReads(10, "CC") + makeInsertionReads(3, "C") + makeInsertionReads(2, "CCCCC") + makeInsertionReads(5, "");
+    U2AssemblyInsertionsMap map;
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(0, 10));
+    CHECK_EQUAL(2, map.getInsertionWidthBefore(10), "insertion width");
+    CHECK_EQUAL(15, map.getInsertionCoverage(10, 0), "letters in the first column");
+    CHECK_EQUAL(12, map.getInsertionCoverage(10, 1), "letters in the second column");
+    CHECK_EQUAL(QString("CC"), QString(map.getInsertionConsensus(10)), "insertion consensus");
+    CHECK_EQUAL(2, map.getSites().first().letterCounts.size(), "size of the letter counts");
+    CHECK_EQUAL(22, map.getColumnCount(), "column count");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, coordinatesAfterFiltering) {
+    // The columns of the sites left are where they would be with no filtered site at all.
+    QList<U2AssemblyRead> reads;
+    for (int i = 0; i < 10; i++) {
+        reads << makeInsertionRead("TT", 0, 5) << makeInsertionRead("G", 0, 15);
+    }
+    reads << makeInsertionRead("A", 0, 10);
+
+    U2AssemblyInsertionsMap map;
+    map.build(reads, FILTER_TEST_REGION, U2AssemblyInsertionsFilter(0, 10));
+    CHECK_EQUAL(2, map.getSites().size(), "site count");
+    CHECK_TRUE(map.getSiteBefore(10) == nullptr, "the filtered site is there");
+    CHECK_EQUAL(23, map.getColumnCount(), "column count");
+
+    CHECK_EQUAL(4, map.getColumnOfRefPos(4), "column of 4");
+    CHECK_EQUAL(7, map.getColumnOfRefPos(5), "column of 5");
+    CHECK_EQUAL(12, map.getColumnOfRefPos(10), "column of 10");
+    CHECK_EQUAL(18, map.getColumnOfRefPos(15), "column of 15");
+    CHECK_EQUAL(22, map.getColumnOfRefPos(19), "column of 19");
+
+    CHECK_EQUAL(5, map.getRefPosOfColumn(5), "position of the column 5");
+    CHECK_EQUAL(1, map.getInsertionOffsetOfColumn(6), "offset of the column 6");
+    CHECK_EQUAL(10, map.getRefPosOfColumn(12), "position of the column 12");
+    CHECK_EQUAL(-1, map.getInsertionOffsetOfColumn(12), "offset of the column 12");
+    CHECK_EQUAL(15, map.getRefPosOfColumn(17), "position of the column 17");
+    CHECK_EQUAL(0, map.getInsertionOffsetOfColumn(17), "offset of the column 17");
+    CHECK_EQUAL(19, map.getRefPosOfColumn(22), "position of the column 22");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, filteredIncrementalBuildMatchesTheBatchOne) {
+    QList<U2AssemblyRead> reads = makeInsertionReads(10, "CC") + makeInsertionReads(3, "A") + makeInsertionReads(5, "");
+    U2AssemblyInsertionsFilter filter(10, 10);
+
+    U2AssemblyInsertionsMap listed;
+    listed.build(reads, FILTER_TEST_REGION, filter);
+
+    U2AssemblyInsertionsMap streamed;
+    streamed.startBuild(FILTER_TEST_REGION, filter);
+    for (const U2AssemblyRead& read : qAsConst(reads)) {
+        streamed.addSitesOfRead(read);
+    }
+    streamed.finishSites();
+    for (const U2AssemblyRead& read : qAsConst(reads)) {
+        streamed.addStatisticsOfRead(read);
+    }
+    streamed.finishStatistics();
+
+    CHECK_EQUAL(listed.getSites().size(), streamed.getSites().size(), "site count");
+    CHECK_EQUAL(2, streamed.getInsertionWidthBefore(10), "insertion width");
+    CHECK_EQUAL(QString(listed.getInsertionConsensus(10)), QString(streamed.getInsertionConsensus(10)), "insertion consensus");
+    CHECK_EQUAL(13, streamed.getInsertionCoverage(10, 0), "letters in the first column");
+    CHECK_TRUE(streamed.getFilter() == filter, "the filter of the map");
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionOfTheFirstPositionNextToOtherTokens) {
+    // The base walked through before the region can be anything that takes a reference position:
+    // a match, a deletion, a skipped region. Clipped letters are never a part of the insertion.
+    struct Case {
+        QString name;
+        qint64 regionStart;
+        QList<U2CigarToken> cigar;
+        QByteArray sequence;
+        qint64 sitePos;
+    };
+    const QList<Case> cases = {
+        {"5M2I3D5M", 5, cigarOf(U2CigarOp_M, 5, U2CigarOp_I, 2, U2CigarOp_D, 3) << U2CigarToken(U2CigarOp_M, 5), "AAAAAGTCCCCC", 5},
+        {"5M3D2I5M", 8, cigarOf(U2CigarOp_M, 5, U2CigarOp_D, 3, U2CigarOp_I, 2) << U2CigarToken(U2CigarOp_M, 5), "AAAAAGTCCCCC", 8},
+        {"5M3N2I5M", 8, cigarOf(U2CigarOp_M, 5, U2CigarOp_N, 3, U2CigarOp_I, 2) << U2CigarToken(U2CigarOp_M, 5), "AAAAAGTCCCCC", 8},
+        {"2S2I5M", 0, cigarOf(U2CigarOp_S, 2, U2CigarOp_I, 2, U2CigarOp_M, 5), "TTGTCCCCC", 0},
+    };
+    for (const Case& c : qAsConst(cases)) {
+        QList<U2AssemblyRead> reads;
+        for (int i = 0; i < 10; i++) {
+            reads << makeRead(0, c.sequence, c.cigar);
+        }
+        U2AssemblyInsertionsMap map;
+        map.build(reads, U2Region(c.regionStart, 3), U2AssemblyInsertionsFilter(2, 10));
+        CHECK_EQUAL(1, map.getSites().size(), c.name + ": site count");
+        CHECK_EQUAL(c.sitePos, map.getSites().first().refPos, c.name + ": site position");
+        CHECK_EQUAL(10, map.getSites().first().coverage, c.name + ": coverage");
+        CHECK_EQUAL(QString("GT"), QString(map.getInsertionConsensus(c.sitePos)), c.name + ": insertion consensus");
+        CHECK_EQUAL(10, map.getInsertionCoverage(c.sitePos, 1), c.name + ": letters in the second column");
+    }
+}
+
+IMPLEMENT_TEST(AssemblyInsertionsMapUnitTests, insertionsFilterSettings) {
+    static const QString PERCENT_KEY = "assembly_browser/insertions_min_percent";
+    static const QString READS_KEY = "assembly_browser/insertions_min_reads";
+    Settings* settings = AppContext::getSettings();
+
+    // The test changes the settings of the running UGENE: put them back whatever the result is.
+    struct SettingsRestorer {
+        SettingsRestorer(Settings* settings)
+            : settings(settings) {
+            for (const QString& key : {PERCENT_KEY, READS_KEY}) {
+                if (settings->contains(key)) {
+                    values[key] = settings->getValue(key);
+                }
+            }
+        }
+        ~SettingsRestorer() {
+            for (const QString& key : {PERCENT_KEY, READS_KEY}) {
+                if (values.contains(key)) {
+                    settings->setValue(key, values[key]);
+                } else {
+                    settings->remove(key);
+                }
+            }
+        }
+        Settings* settings;
+        QMap<QString, QVariant> values;
+    } restorer(settings);
+
+    settings->remove(PERCENT_KEY);
+    settings->remove(READS_KEY);
+    CHECK_TRUE(AssemblyBrowserSettings::getInsertionsFilter() == U2AssemblyInsertionsFilter::getDefault(), "nothing saved: not the default filter");
+
+    AssemblyBrowserSettings::setInsertionsFilter(U2AssemblyInsertionsFilter(7.5, 3));
+    U2AssemblyInsertionsFilter saved = AssemblyBrowserSettings::getInsertionsFilter();
+    CHECK_EQUAL(7.5, saved.minPercent, "saved percent");
+    CHECK_EQUAL(3, saved.minReads, "saved reads");
+
+    // A broken or hand-edited value must not break the view: the defaults are used instead.
+    settings->setValue(PERCENT_KEY, "not a number");
+    CHECK_TRUE(AssemblyBrowserSettings::getInsertionsFilter() == U2AssemblyInsertionsFilter::getDefault(), "a broken percent is used");
+    settings->setValue(PERCENT_KEY, 150);
+    CHECK_TRUE(AssemblyBrowserSettings::getInsertionsFilter() == U2AssemblyInsertionsFilter::getDefault(), "a percent above 100 is used");
+    settings->setValue(PERCENT_KEY, 5);
+    settings->setValue(READS_KEY, -1);
+    CHECK_TRUE(AssemblyBrowserSettings::getInsertionsFilter() == U2AssemblyInsertionsFilter::getDefault(), "a negative number of reads is used");
 }
 
 }  // namespace U2

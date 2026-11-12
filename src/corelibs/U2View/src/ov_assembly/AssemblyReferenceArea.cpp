@@ -46,6 +46,7 @@ AssemblySequenceArea::AssemblySequenceArea(AssemblyBrowserUi* ui_, char skipChar
 void AssemblySequenceArea::connectSlots() {
     connect(browser, SIGNAL(si_zoomOperationPerformed()), SLOT(sl_zoomPerformed()));
     connect(browser, SIGNAL(si_offsetsChanged()), SLOT(sl_offsetsChanged()));
+    connect(browser, SIGNAL(si_insertionsLayoutChanged()), SLOT(sl_redraw()));
     connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AssemblySequenceArea::sl_colorThemeSwitched);
 }
 

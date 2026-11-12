@@ -91,10 +91,22 @@ public:
      * the columns must not depend on the vertical offset, otherwise scrolling down would silently
      * widen them and shift all the tracks. Empty unless the cells are visible: below that zoom
      * level nothing is drawn per position, so there is nothing an insertion column could display.
+     * Only the insertions that pass getInsertionsFilter() get columns.
      * Rebuilt on demand when the view changes, all the tracks have to use the same map to stay
      * aligned to each other.
      */
     U2VIEW_EXPORT const U2AssemblyInsertionsMap& getInsertionsMap() const;
+
+    /** Decides which read insertions get columns, see AssemblyBrowserSettings::getInsertionsFilter(). */
+    const U2AssemblyInsertionsFilter& getInsertionsFilter() const {
+        return insertionsFilter;
+    }
+
+    /**
+     * Replaces the filter and redraws the tracks, emitting si_insertionsLayoutChanged() if the
+     * filter has changed. An invalid filter is ignored.
+     */
+    U2VIEW_EXPORT void setInsertionsFilter(const U2AssemblyInsertionsFilter& filter);
 
     /** Column the reference position is rendered in, 0 based, relative to the visible region. */
     qint64 calcColumnOffset(qint64 xAsmPos) const;
@@ -194,6 +206,12 @@ signals:
     void si_zoomOperationPerformed();
     void si_coverageReady();
 
+    /**
+     * The insertion columns may have changed with the offsets and the zoom staying the same, e.g.
+     * the insertions filter was changed: every track drawn by the columns has to be redrawn.
+     */
+    void si_insertionsLayoutChanged();
+
 protected:
     QWidget* createViewWidget(QWidget* parent) override;
     bool eventFilter(QObject*, QEvent*) override;
@@ -264,16 +282,20 @@ private:
     struct InsertionsMapKey {
         bool operator==(const InsertionsMapKey& other) const {
             return isBuilt == other.isBuilt && xOffset == other.xOffset &&
-                   cellWidth == other.cellWidth && bases == other.bases;
+                   cellWidth == other.cellWidth && bases == other.bases && filter == other.filter;
         }
         /** False while the map has never been built for these offsets, e.g. the database was busy. */
         bool isBuilt = false;
         qint64 xOffset = -1;
         int cellWidth = 0;
         qint64 bases = 0;
+        U2AssemblyInsertionsFilter filter;
     };
     mutable InsertionsMapKey insertionsMapKey;
     mutable U2AssemblyInsertionsMap insertionsMap;
+
+    /** Initialized from AssemblyBrowserSettings::getInsertionsFilter(). */
+    U2AssemblyInsertionsFilter insertionsFilter;
 
     AssemblyCellRendererFactoryRegistry* cellRendererRegistry;
 

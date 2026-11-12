@@ -10,7 +10,7 @@
     + hugeInsertionIsTruncated
     + insertionOutsideTheRegionIsIgnored
     + columnsAndPositionsMatchEachOther
-    + oneBaseOfOverlapKeepsTheInsertionOfTheFirstPosition
+    + insertionOfTheFirstPositionIsKept
     + insertionColumnsAreToldFromTheReferenceOnes
     + insertedLettersOutvoteTheGaps
     + gapsOutvoteTheInsertedLetters
@@ -19,5 +19,14 @@
     + incrementalBuildMatchesTheBatchOne
     + readIteratorReportsInsertedLetters
     + readIteratorSkipsInsertionsBeforeStartPos
+    + filterThresholds
+    + filterNeedsEnoughReads
+    + filterNeedsEnoughShareOfTheCoverage
+    + distinctInsertionsAreCountedSeparately
+    + columnsOfPassedInsertionsHoldEveryRead
+    + coordinatesAfterFiltering
+    + filteredIncrementalBuildMatchesTheBatchOne
+    + insertionOfTheFirstPositionNextToOtherTokens
+    + insertionsFilterSettings
 
 </unittest>

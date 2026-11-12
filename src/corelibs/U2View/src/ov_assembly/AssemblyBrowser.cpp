@@ -102,6 +102,7 @@ AssemblyBrowser::AssemblyBrowser(const QString& viewName, AssemblyObject* o)
       zoomInAction(nullptr), zoomOutAction(nullptr), posSelectorAction(nullptr), posSelector(nullptr), showCoordsOnRulerAction(nullptr), saveScreenShotAction(nullptr),
       exportToSamAction(nullptr), setReferenceAction(nullptr), extractAssemblyRegionAction(nullptr), loadReferenceTask(nullptr) {
     GCOUNTER(cvar, "AssemblyBrowser");
+    insertionsFilter = AssemblyBrowserSettings::getInsertionsFilter();
     optionsPanelController = new OptionsPanelController(this);
     initFont();
     setupActions();
@@ -494,6 +495,7 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
     key.xOffset = xOffsetInAssembly;
     key.cellWidth = getCellWidth();
     key.bases = basesCanBeVisible();
+    key.filter = insertionsFilter;
     // An insertion column is a column like any other: it is worth showing exactly as long as the
     // cells are, otherwise a whole stack of insertions would silently vanish on a single zoom out
     // while the reference bases around it are still perfectly distinguishable. Below the cell
@@ -521,8 +523,16 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
         insertionsMapKey = InsertionsMapKey();
         reads.clear();
     }
-    insertionsMap.build(reads, visibleBases);
+    insertionsMap.build(reads, visibleBases, insertionsFilter);
     return insertionsMap;
+}
+
+void AssemblyBrowser::setInsertionsFilter(const U2AssemblyInsertionsFilter& filter) {
+    SAFE_POINT(filter.isValid(), "Invalid insertions filter", );
+    CHECK(filter != insertionsFilter, );
+    insertionsFilter = filter;
+    // The map is rebuilt by the first track that asks for it: the filter is a part of its key.
+    emit si_insertionsLayoutChanged();
 }
 
 qint64 AssemblyBrowser::calcColumnOffset(qint64 xAsmPos) const {

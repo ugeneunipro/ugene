@@ -27,6 +27,9 @@
 #include <U2Gui/U2SavableWidget.h>
 
 class QComboBox;
+class QDoubleSpinBox;
+class QSpinBox;
+class QVBoxLayout;
 class QLabel;
 
 namespace U2 {
@@ -47,8 +50,12 @@ private slots:
 
     void sl_colorThemeSwitched();
 
+    void sl_insertionsFilterChanged();
+
 private:
     QWidget* createReadsSettings();
+    /** The thresholds of U2AssemblyInsertionsFilter, a part of the reads settings. */
+    void createInsertionsSettings(QWidget* group, QVBoxLayout* layout);
     QWidget* createRulerSettings();
     QWidget* createConsensusSettings();
 
@@ -56,6 +63,8 @@ private:
 
     // Reads
     QComboBox* readsHighlightCombo;
+    QDoubleSpinBox* insertionsMinPercentSpinBox = nullptr;
+    QSpinBox* insertionsMinReadsSpinBox = nullptr;
     // Consensus
     QComboBox* algorithmCombo;
     QLabel* hint;
