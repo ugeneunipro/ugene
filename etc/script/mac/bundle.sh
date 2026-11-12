@@ -180,7 +180,20 @@ echo Running macdeployqt
   -executable="${TARGET_EXE_DIR}/ugeneui" \
   -executable="${TARGET_EXE_DIR}/ugenecl" \
   -executable="${TARGET_EXE_DIR}/ugenem" \
-  -executable="${TARGET_EXE_DIR}/plugins_checker"
+  -executable="${TARGET_EXE_DIR}/plugins_checker" || exit 1
+
+echo "Signing and verifying Qt plugins"
+if ! (
+  set -o pipefail
+  find "${TARGET_APP_DIR}/Contents/PlugIns" -type f -name "*.dylib" -print0 |
+    while IFS= read -r -d '' QT_PLUGIN; do
+      codesign --force --sign - "${QT_PLUGIN}" || exit 1
+      codesign --verify --strict --verbose=2 "${QT_PLUGIN}" || exit 1
+    done
+); then
+  echo "Error: Qt plugin signing or verification failed"
+  exit 1
+fi
 
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"
