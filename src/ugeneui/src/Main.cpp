@@ -473,6 +473,10 @@ int main(int argc, char** argv) {
     }
 
 #ifdef Q_OS_DARWIN
+    if (qEnvironmentVariableIntValue(ENV_GUI_TEST) == 1) {
+        QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
+    }
+
     fixMacFonts();
 
     // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
