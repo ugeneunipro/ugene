@@ -2,4 +2,6 @@
 
     <env-var name="IMPL" value="Classic"/>
     <test-dir path="smith_waterman_big" test-format="XML" test-ext="*.xml"/>
+
+    <excluded test="7935.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
 </suite>

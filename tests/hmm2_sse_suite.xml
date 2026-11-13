@@ -2,4 +2,46 @@
 
     <env-var local="true" name="HMMSEARCH_ALGORITHM" value="sse"/>
     <test-dir test-ext="*.xml" path="hmm2/hmmsearch" test-format="XML"/>
+
+    <excluded test="amino/amino_def_al/Fragmentation/parallel_execution/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="amino/amino_def_al/Fragmentation/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="amino/amino_def_al/Fragmentation/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="amino/amino_def_al/negative/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="amino/amino_def_al/negative/test_0003.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="amino/amino_def_al/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="amino/amino_def_al/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/complex_tests/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/domE_cutoff/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/domE_cutoff/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/eval_cutoff/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/min_score_cutoff/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/min_score_cutoff/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/num_of_seq_in_db/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="expert_options/num_of_seq_in_db/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0003.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0004.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0005.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0006.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0007.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/Fragmentation/test_0008.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmmfs/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmmfs/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmmls/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmmls/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmmls/test_0003.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmms/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmms/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmms/test_0003.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmmsw/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_def_al/hmmsw/test_0002.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_ext_al/hmmfs/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_ext_al/hmmls/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_ext_al/hmms/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_dna_ext_al/hmmsw/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_rna_ext_al/hmmfs/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_rna_ext_al/hmmls/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_rna_ext_al/hmms/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
+    <excluded test="nucleic/nucl_rna_ext_al/hmmsw/test_0001.xml" platform="mac" reason="SSE HMM2 search is unavailable on macOS ARM64"/>
 </suite>
