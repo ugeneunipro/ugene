@@ -65,6 +65,7 @@ AssemblyRuler::AssemblyRuler(AssemblyBrowserUi* ui_)
 void AssemblyRuler::connectSlots() {
     connect(browser, SIGNAL(si_zoomOperationPerformed()), SLOT(sl_redraw()));
     connect(browser, SIGNAL(si_offsetsChanged()), SLOT(sl_redraw()));
+    connect(browser, SIGNAL(si_insertionsLayoutChanged()), SLOT(sl_redraw()));
 }
 
 void AssemblyRuler::drawAll() {

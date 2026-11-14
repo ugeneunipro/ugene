@@ -24,6 +24,10 @@
 #include <QAction>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QSpinBox>
 #include <QVBoxLayout>
 
 #include <U2Core/U2SafePoints.h>
@@ -33,6 +37,7 @@
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include "AssemblyBrowser.h"
+#include "AssemblyBrowserSettings.h"
 #include "AssemblyConsensusArea.h"
 #include "AssemblyReadsArea.h"
 
@@ -128,7 +133,66 @@ QWidget* AssemblySettingsWidget::createReadsSettings() {
     createTwoWayBinding(showHint, hintAct);
     layout->addWidget(showHint);
 
+    layout->addSpacing(ITEMS_SPACING);
+    createInsertionsSettings(group, layout);
+
     return group;
+}
+
+void AssemblySettingsWidget::createInsertionsSettings(QWidget* group, QVBoxLayout* layout) {
+    const QString toolTip = tr("A read insertion gets columns of its own only if it is found in at least that many reads "
+                               "and in at least that share of the reads covering its position. "
+                               "Different insertions at the same position, like 'C' and 'CC', are counted separately. "
+                               "A read with an insertion that is not shown is marked with a purple bar in front of the base. "
+                               "Set both values to 0 to show every insertion.");
+
+    auto aboutInsertions = new QLabel(tr("Show an insertion as columns of its own only if it is found in at least:"), group);
+    aboutInsertions->setWordWrap(true);
+    aboutInsertions->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    aboutInsertions->setToolTip(toolTip);
+    layout->addWidget(aboutInsertions);
+
+    const U2AssemblyInsertionsFilter& filter = ui->getWindow()->getInsertionsFilter();
+
+    insertionsMinPercentSpinBox = new QDoubleSpinBox(group);
+    insertionsMinPercentSpinBox->setObjectName("insertionsMinPercentSpinBox");
+    insertionsMinPercentSpinBox->setRange(0, 100);
+    insertionsMinPercentSpinBox->setDecimals(1);
+    insertionsMinPercentSpinBox->setSingleStep(0.5);
+    insertionsMinPercentSpinBox->setSuffix(" %");
+    insertionsMinPercentSpinBox->setValue(filter.minPercent);
+    insertionsMinPercentSpinBox->setToolTip(toolTip);
+
+    insertionsMinReadsSpinBox = new QSpinBox(group);
+    insertionsMinReadsSpinBox->setObjectName("insertionsMinReadsSpinBox");
+    insertionsMinReadsSpinBox->setRange(0, 1000000);
+    insertionsMinReadsSpinBox->setValue(filter.minReads);
+    insertionsMinReadsSpinBox->setToolTip(toolTip);
+
+    // Every change rebuilds the columns: apply the typed value once it is complete, not digit by digit.
+    insertionsMinPercentSpinBox->setKeyboardTracking(false);
+    insertionsMinReadsSpinBox->setKeyboardTracking(false);
+
+    auto percentLayout = new QHBoxLayout;
+    percentLayout->addWidget(insertionsMinPercentSpinBox);
+    percentLayout->addWidget(new QLabel(tr("of the reads covering the position"), group), 1);
+    layout->addLayout(percentLayout);
+
+    auto readsLayout = new QHBoxLayout;
+    readsLayout->addWidget(insertionsMinReadsSpinBox);
+    readsLayout->addWidget(new QLabel(tr("reads"), group), 1);
+    layout->addLayout(readsLayout);
+
+    connect(insertionsMinPercentSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &AssemblySettingsWidget::sl_insertionsFilterChanged);
+    connect(insertionsMinReadsSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &AssemblySettingsWidget::sl_insertionsFilterChanged);
+}
+
+void AssemblySettingsWidget::sl_insertionsFilterChanged() {
+    U2AssemblyInsertionsFilter filter(insertionsMinPercentSpinBox->value(), insertionsMinReadsSpinBox->value());
+    SAFE_POINT(filter.isValid(), "The spin boxes allow an invalid insertions filter", );
+    ui->getWindow()->setInsertionsFilter(filter);
+    // The views opened later start with the values set last, as with the other settings of the panel.
+    AssemblyBrowserSettings::setInsertionsFilter(filter);
 }
 
 void AssemblySettingsWidget::sl_cellRendererChanged() {

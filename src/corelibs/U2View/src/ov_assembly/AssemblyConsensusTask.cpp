@@ -39,20 +39,13 @@ AssemblyConsensusTask::AssemblyConsensusTask(const AssemblyConsensusTaskSettings
  * once it is known which columns are there, and they are streamed rather than listed: a region of
  * the export can easily hold more reads than fit into memory at a time.
  *
- * One base of overlap is added on the left. An insertion belongs to the reference position it
- * precedes, and U2AssemblyReadIterator only reports it after the position before it has been
- * walked through: without the overlap a read that starts earlier would keep the insertion of the
- * very first position of the region to itself. The export splits a long assembly into regions of
- * its own, so the insertions in front of those splits would be lost with no reason the caller
- * could see. The extra position is only scanned, never reported: the sites of the region itself
- * are what the caller asks the map about.
+ * No insertion is filtered out here: the export is the data, not a view of it. The filter of the
+ * browser only keeps the screen readable, the consensus of a column has to be won by its letters.
  */
 static void calculateInsertions(const AssemblyConsensusTaskSettings& settings, U2OpStatus& os, ConsensusInfo& result) {
-    qint64 scanStart = qMax<qint64>(0, settings.region.startPos - 1);
-    U2Region regionToScan(scanStart, settings.region.endPos() - scanStart);
-    result.insertions.startBuild(regionToScan);
+    result.insertions.startBuild(settings.region);
 
-    QScopedPointer<U2DbiIterator<U2AssemblyRead>> siteReads(settings.model->getReads(regionToScan, os));
+    QScopedPointer<U2DbiIterator<U2AssemblyRead>> siteReads(settings.model->getReads(settings.region, os));
     CHECK_OP(os, );
     while (siteReads->hasNext() && !os.isCoR()) {
         result.insertions.addSitesOfRead(siteReads->next());
@@ -61,7 +54,7 @@ static void calculateInsertions(const AssemblyConsensusTaskSettings& settings, U
     CHECK_OP(os, );
     CHECK(!result.insertions.isEmpty(), );
 
-    QScopedPointer<U2DbiIterator<U2AssemblyRead>> statisticsReads(settings.model->getReads(regionToScan, os));
+    QScopedPointer<U2DbiIterator<U2AssemblyRead>> statisticsReads(settings.model->getReads(settings.region, os));
     CHECK_OP(os, );
     while (statisticsReads->hasNext() && !os.isCoR()) {
         result.insertions.addStatisticsOfRead(statisticsReads->next());

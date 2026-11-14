@@ -25,6 +25,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
@@ -35,8 +36,10 @@
 #include <QApplication>
 #include <QDir>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2AssemblyInsertionsMap.h>
 
 #include <U2Designer/PropertyWidget.h>
@@ -1263,6 +1266,9 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
     CHECK_SET_ERR(ui != nullptr, "Assembly browser is not found");
     AssemblyBrowser* browser = ui->getWindow();
 
+    // A single read is far below the default insertions filter: show every insertion, see test_0044.
+    GTThread::runInMainThread([browser]() { browser->setInsertionsFilter(U2AssemblyInsertionsFilter()); });
+
     for (int i = 0; i < 30 && !browser->areLettersVisible() && browser->canPerformZoomIn(); i++) {
         GTUtilsAssemblyBrowser::zoomIn();
     }
@@ -1385,5 +1391,78 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
                       .arg(withInsertionsLength));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0044) {
+    // Issue #228: a read insertion gets columns of its own only if it is found in enough reads, the
+    // thresholds are set in the 'Reads Area' group of the 'Assembly Browser Settings' tab. In this
+    // assembly all 26 reads covering the 0-based position 8008 insert a 'G' in front of it, while
+    // the position 7995 has the insertion of a single read only.
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    AssemblyBrowserUi* ui = GTUtilsAssemblyBrowser::getView();
+    CHECK_SET_ERR(ui != nullptr, "Assembly browser is not found");
+    AssemblyBrowser* browser = ui->getWindow();
+
+    for (int i = 0; i < 30 && !browser->areLettersVisible() && browser->canPerformZoomIn(); i++) {
+        GTUtilsAssemblyBrowser::zoomIn();
+    }
+    CHECK_SET_ERR(browser->areLettersVisible(), "Letters are not visible after zooming in");
+    GTUtilsAssemblyBrowser::goToPosition(7959);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // The map is built on demand by the GUI thread: ask it there, not in the middle of a repaint.
+    auto widthBefore = [browser](qint64 refPos) {
+        int width = -1;
+        GTThread::runInMainThread([browser, refPos, &width]() { width = browser->getInsertionsMap().getInsertionWidthBefore(refPos); });
+        return width;
+    };
+
+    // A read with an insertion that has no columns is marked with a purple bar in front of the base.
+    auto readsArea = GTWidget::findWidget("assembly_reads_area", ui);
+    auto countMarkerPixels = [readsArea]() {
+        GTThread::waitForMainThread();
+        QImage image = GTWidget::getImage(readsArea);
+        int count = 0;
+        for (int y = 0; y < image.height(); y++) {
+            for (int x = 0; x < image.width(); x++) {
+                count += image.pixelColor(x, y) == QColor(138, 43, 226) ? 1 : 0;
+            }
+        }
+        return count;
+    };
+
+    // The defaults: at least 2% of the reads covering the position and at least 10 reads.
+    CHECK_SET_ERR(widthBefore(8008) == 1, QString("Unexpected width of the insertion of 26 reads: %1").arg(widthBefore(8008)));
+    CHECK_SET_ERR(widthBefore(7995) == 0, QString("The insertion of a single read is shown by default: %1").arg(widthBefore(7995)));
+    CHECK_SET_ERR(countMarkerPixels() > 0, "The read with the hidden insertion is not marked");
+
+    GTWidget::click(GTWidget::findWidget("OP_ASS_SETTINGS"));
+    auto minPercentSpinBox = GTWidget::findDoubleSpinBox("insertionsMinPercentSpinBox");
+    auto minReadsSpinBox = GTWidget::findSpinBox("insertionsMinReadsSpinBox");
+    CHECK_SET_ERR(minPercentSpinBox->value() == 2.0, QString("Unexpected default percent: %1").arg(minPercentSpinBox->value()));
+    CHECK_SET_ERR(minReadsSpinBox->value() == 10, QString("Unexpected default number of reads: %1").arg(minReadsSpinBox->value()));
+
+    // Zero and zero show every insertion.
+    GTDoubleSpinbox::setValue(minPercentSpinBox, 0, GTGlobals::UseKey);
+    GTSpinBox::setValue(minReadsSpinBox, 0, GTGlobals::UseKey);
+    GTThread::waitForMainThread();
+    CHECK_SET_ERR(widthBefore(7995) == 1, QString("The insertion of a single read is not shown with no filter: %1").arg(widthBefore(7995)));
+    CHECK_SET_ERR(widthBefore(8008) == 1, QString("Unexpected width of the insertion of 26 reads with no filter: %1").arg(widthBefore(8008)));
+    CHECK_SET_ERR(countMarkerPixels() == 0, "A read is marked while every insertion of the view is shown");
+
+    // More reads than any insertion of the region has hide them all.
+    GTSpinBox::setValue(minReadsSpinBox, 27, GTGlobals::UseKey);
+    GTThread::waitForMainThread();
+    CHECK_SET_ERR(widthBefore(8008) == 0, QString("The insertion of 26 reads is shown with 27 reads required: %1").arg(widthBefore(8008)));
+
+    // The values are kept for the views opened later.
+    Settings* settings = AppContext::getSettings();
+    CHECK_SET_ERR(settings->getValue("assembly_browser/insertions_min_percent").toDouble() == 0,
+                  "The percent is not saved: " + settings->getValue("assembly_browser/insertions_min_percent").toString());
+    CHECK_SET_ERR(settings->getValue("assembly_browser/insertions_min_reads").toInt() == 27,
+                  "The number of reads is not saved: " + settings->getValue("assembly_browser/insertions_min_reads").toString());
+}
+
 }  // namespace GUITest_Assembly_browser
+
 }  // namespace U2

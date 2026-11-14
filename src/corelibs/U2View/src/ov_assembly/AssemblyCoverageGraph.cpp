@@ -41,6 +41,8 @@ AssemblyCoverageGraph::AssemblyCoverageGraph(AssemblyBrowserUi* ui_)
 void AssemblyCoverageGraph::connectSlots() {
     connect(browser, SIGNAL(si_zoomOperationPerformed()), SLOT(sl_launchCoverageCalculation()));
     connect(browser, SIGNAL(si_offsetsChanged()), SLOT(sl_onOffsetsChanged()));
+    // The coverage itself stays the same, only the columns the bars are drawn in move.
+    connect(browser, &AssemblyBrowser::si_insertionsLayoutChanged, this, [this]() { doRedraw(); });
     connect(&coverageTaskRunner, SIGNAL(si_finished()), SLOT(sl_coverageReady()));
 }
 

@@ -21,9 +21,12 @@
 
 #pragma once
 
+#include <U2Core/U2AssemblyInsertionsMap.h>
+#include <U2Core/global.h>
+
 namespace U2 {
 
-class AssemblyBrowserSettings {
+class U2VIEW_EXPORT AssemblyBrowserSettings {
 public:
     enum OverviewScaleType {
         Scale_Linear,
@@ -43,6 +46,13 @@ public:
 
     static bool getOptimizeRenderOnScroll();
     static void setOptimizeRenderOnScroll(bool what);
+
+    /**
+     * The insertions filter a newly opened Assembly Browser starts with: the one set last,
+     * U2AssemblyInsertionsFilter::getDefault() if none was set or the stored one is not valid.
+     */
+    static U2AssemblyInsertionsFilter getInsertionsFilter();
+    static void setInsertionsFilter(const U2AssemblyInsertionsFilter& filter);
 
 };  // AssemblyBrowserSettings
 

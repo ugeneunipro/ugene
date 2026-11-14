@@ -102,6 +102,7 @@ AssemblyBrowser::AssemblyBrowser(const QString& viewName, AssemblyObject* o)
       zoomInAction(nullptr), zoomOutAction(nullptr), posSelectorAction(nullptr), posSelector(nullptr), showCoordsOnRulerAction(nullptr), saveScreenShotAction(nullptr),
       exportToSamAction(nullptr), setReferenceAction(nullptr), extractAssemblyRegionAction(nullptr), loadReferenceTask(nullptr) {
     GCOUNTER(cvar, "AssemblyBrowser");
+    insertionsFilter = AssemblyBrowserSettings::getInsertionsFilter();
     optionsPanelController = new OptionsPanelController(this);
     initFont();
     setupActions();
@@ -494,6 +495,7 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
     key.xOffset = xOffsetInAssembly;
     key.cellWidth = getCellWidth();
     key.bases = basesCanBeVisible();
+    key.filter = insertionsFilter;
     // An insertion column is a column like any other: it is worth showing exactly as long as the
     // cells are, otherwise a whole stack of insertions would silently vanish on a single zoom out
     // while the reference bases around it are still perfectly distinguishable. Below the cell
@@ -501,6 +503,10 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
     key.isBuilt = areCellsVisible() && !model->isEmpty() && !model->isDbLocked();
     CHECK(!(key == insertionsMapKey), insertionsMap);
 
+    // Scrolling or zooming keeps most of the positions: their columns are taken over as they are
+    // and only the reads of the new positions are walked. Deep coverage makes the full rebuild
+    // far too slow for every step of a scroll, see U2AssemblyInsertionsMap::moveTo().
+    bool canMove = insertionsMapKey.isBuilt && key.isBuilt && insertionsMapKey.filter == key.filter;
     insertionsMapKey = key;
     U2Region visibleBases(key.xOffset, key.bases);
     if (!key.isBuilt) {
@@ -509,20 +515,44 @@ const U2AssemblyInsertionsMap& AssemblyBrowser::getInsertionsMap() const {
         return insertionsMap;
     }
 
-    // Every read of the region is taken, not only the rows that happen to be on the screen: a
-    // column reserved for a read below the view is what keeps the tracks from jumping sideways
-    // once that read is scrolled to. The row limit is a safety net for abnormally deep coverage,
-    // it is far above the height of any assembly the reads area can be scrolled through by hand.
-    U2OpStatusImpl os;
-    QList<U2AssemblyRead> reads = model->getReadsFromAssembly(visibleBases, 0, MAX_ROWS_TO_SCAN_FOR_INSERTIONS, os);
-    if (os.hasError()) {
-        LOG_OP(os);
-        // Retry on the next repaint instead of caching the failure as an insertion-free view.
-        insertionsMapKey = InsertionsMapKey();
-        reads.clear();
+    QVector<U2Region> regionsToAdd;
+    if (canMove) {
+        regionsToAdd = insertionsMap.getRegionsToAdd(visibleBases);
+    } else {
+        regionsToAdd << visibleBases;
     }
-    insertionsMap.build(reads, visibleBases);
+    QList<U2AssemblyInsertionsMap> addedParts;
+    for (const U2Region& regionToAdd : qAsConst(regionsToAdd)) {
+        // Every read of the region is taken, not only the rows that happen to be on the screen: a
+        // column reserved for a read below the view is what keeps the tracks from jumping sideways
+        // once that read is scrolled to. The row limit is a safety net for abnormally deep coverage,
+        // it is far above the height of any assembly the reads area can be scrolled through by hand.
+        U2OpStatusImpl os;
+        QList<U2AssemblyRead> reads = model->getReadsFromAssembly(regionToAdd, 0, MAX_ROWS_TO_SCAN_FOR_INSERTIONS, os);
+        if (os.hasError()) {
+            LOG_OP(os);
+            // Retry on the next repaint instead of caching the failure as an insertion-free view.
+            insertionsMapKey = InsertionsMapKey();
+            insertionsMap.build(QList<U2AssemblyRead>(), visibleBases);
+            return insertionsMap;
+        }
+        addedParts << U2AssemblyInsertionsMap();
+        addedParts.last().build(reads, regionToAdd, insertionsFilter);
+    }
+    if (canMove) {
+        insertionsMap.moveTo(visibleBases, addedParts);
+    } else {
+        insertionsMap = addedParts.first();
+    }
     return insertionsMap;
+}
+
+void AssemblyBrowser::setInsertionsFilter(const U2AssemblyInsertionsFilter& filter) {
+    SAFE_POINT(filter.isValid(), "Invalid insertions filter", );
+    CHECK(filter != insertionsFilter, );
+    insertionsFilter = filter;
+    // The map is rebuilt by the first track that asks for it: the filter is a part of its key.
+    emit si_insertionsLayoutChanged();
 }
 
 qint64 AssemblyBrowser::calcColumnOffset(qint64 xAsmPos) const {

@@ -210,6 +210,8 @@ void AssemblyReadsArea::initRedraw() {
 void AssemblyReadsArea::connectSlots() {
     connect(browser, SIGNAL(si_zoomOperationPerformed()), SLOT(sl_zoomOperationPerformed()));
     connect(browser, SIGNAL(si_offsetsChanged()), SLOT(sl_redraw()));
+    connect(browser, SIGNAL(si_insertionsLayoutChanged()), SLOT(sl_redraw()));
+    connect(browser, SIGNAL(si_insertionsLayoutChanged()), SLOT(sl_hideHint()));
     connect(AppContext::getMainWindow(), &MainWindow::si_colorThemeSwitched, this, &AssemblyReadsArea::sl_colorThemeSwitched);
 }
 
@@ -467,7 +469,14 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                     cigar << U2CigarToken(U2CigarOp_M, readSequence.size());
                 }
 
-                U2AssemblyReadIterator cigarIt(readSequence, cigar, firstVisibleBase);
+                // Start one base before the visible ones when the read has it: the iterator only
+                // reports an insertion once the base before it is walked through, so otherwise the
+                // insertion in front of the first visible base would be drawn as a gap.
+                bool walkPreviousBase = firstVisibleBase > 0;
+                U2AssemblyReadIterator cigarIt(readSequence, cigar, firstVisibleBase - (walkPreviousBase ? 1 : 0));
+                if (walkPreviousBase && cigarIt.hasNext()) {
+                    cigarIt.nextLetter();
+                }
 
                 int basesPainted = 0;
                 for (qint64 refPos = readVisibleBases.startPos; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; refPos++) {
@@ -501,6 +510,14 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
 
                     p.drawPixmap(cellStart, cellImage);
                     ++totalBasesPainted;
+
+                    // The read has letters in front of the base the columns do not show: the
+                    // insertion is filtered out or longer than the columns. Mark the spot, the way
+                    // IGV marks every insertion, so the reads still tell that there is one.
+                    // Drawn after the cell, otherwise the cell image would paint over it.
+                    if (insertion.size() > insertionWidth) {
+                        drawHiddenInsertionMarker(p, cellStart);
+                    }
                 }
             }
         } else {
@@ -514,6 +531,14 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
     }
     t0 = GTimer::currentTimeMicros() - t0;
     perfLog.trace(QString("Assembly: drawing reads (%1 bases)   : %2 seconds").arg(totalBasesPainted).arg(double(t0) / 1000 / 1000));
+}
+
+void AssemblyReadsArea::drawHiddenInsertionMarker(QPainter& p, const QPoint& cellStart) const {
+    static const QColor MARKER_COLOR(138, 43, 226);
+    int letterWidth = cachedReads.letterWidth;
+    int markerWidth = qMax(2, letterWidth / 5);
+    // Centered on the left border of the cell: that is the spot between the bases the letters are at.
+    p.fillRect(cellStart.x() - markerWidth / 2, cellStart.y(), markerWidth, letterWidth, MARKER_COLOR);
 }
 
 bool AssemblyReadsArea::findReadOnPos(const QPoint& pos, U2AssemblyRead& read) {

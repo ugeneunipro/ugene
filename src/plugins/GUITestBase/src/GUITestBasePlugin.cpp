@@ -3295,6 +3295,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_Assembly_browser::test_0041);
     REGISTER_TEST(GUITest_Assembly_browser::test_0042);
     REGISTER_TEST(GUITest_Assembly_browser::test_0043);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0044);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Assembling/bowtie2

@@ -99,6 +99,8 @@ private:
 
     void drawAll();
     void drawReads(QPainter& p);
+    /** Marks a read that has insertion letters in front of the cell the columns do not show. */
+    void drawHiddenInsertionMarker(QPainter& p, const QPoint& cellStart) const;
 
     void drawCurrentReadHighlight(QPainter& p);
     void drawReadsShadowing(QPainter& p);
