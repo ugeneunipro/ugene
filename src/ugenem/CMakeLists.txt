@@ -23,5 +23,5 @@ endif ()
 
 target_link_libraries(ugenem
         Qt6::Core Qt6::Core5Compat Qt6::Gui Qt6::Network Qt6::Widgets
-        U2Core U2Gui)
+        U2Core U2Gui U2View)
 

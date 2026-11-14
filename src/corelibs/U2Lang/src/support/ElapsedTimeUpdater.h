@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QPointer>
+
 #include <U2Lang/LocalDomain.h>
 
 namespace U2 {
@@ -35,8 +37,8 @@ public:
 
 private:
     ActorId runningActorId;
-    WorkflowMonitor* monitor;
-    Task* executedTask;
+    QPointer<WorkflowMonitor> monitor;
+    QPointer<Task> executedTask;
     qint64 elapsedTime;
 private slots:
     void sl_updateTime();

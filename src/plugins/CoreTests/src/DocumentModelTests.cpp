@@ -765,6 +765,8 @@ void GTest_CompareFiles::init(XMLTestFormat*, const QDomElement& el) {
         forceBufferSize = 0;
     }
 
+    byLines = !el.attribute(BY_LINES_ATTR_ID).isEmpty();
+
     // Get the full documents paths
     if (!tmpAttr.isEmpty()) {
         // Attribute "tmp" is used to determine paths prefixes,
@@ -772,7 +774,6 @@ void GTest_CompareFiles::init(XMLTestFormat*, const QDomElement& el) {
         QStringList tmpDocNums = tmpAttr.split(TMP_ATTR_SPLITTER, Qt::SkipEmptyParts);
         doc1Path = (tmpDocNums.contains("1") ? env->getVar("TEMP_DATA_DIR") : env->getVar("COMMON_DATA_DIR")) + "/" + doc1Path;
         doc2Path = (tmpDocNums.contains("2") ? env->getVar("TEMP_DATA_DIR") : env->getVar("COMMON_DATA_DIR")) + "/" + doc2Path;
-        byLines = !el.attribute(BY_LINES_ATTR_ID).isEmpty();
         if (el.attribute(COMMENTS_START_WITH).isEmpty()) {
             commentsStartWith = QStringList();
         } else {

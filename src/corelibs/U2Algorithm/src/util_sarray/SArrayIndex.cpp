@@ -238,7 +238,7 @@ SArrayIndex::~SArrayIndex() {
     if (bitMask != l1bitMask) {
         delete[] l1bitMask;
     }
-    delete bitMask;
+    delete[] bitMask;
 }
 
 quint32 SArrayIndex::getBitValue(const char* seq) const {

@@ -284,7 +284,7 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size) {
     }
     size = z->uncompress(data + cached, size - cached);
     if (formatMode == TextMode) {
-        cutByteOrderMarks(data, errorMessage, size);
+        cutByteOrderMarks(data + cached, errorMessage, size);
     }
     if (size == -1 || !errorMessage.isEmpty()) {
         return -1;

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <cstdlib>
+
 #include <QFileInfo>
 #include <QTemporaryFile>
 #include <QUuid>
@@ -479,8 +481,10 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, cons
     CHECK_EXT(header != nullptr, os.setError("NULL header"), );
 
     header->n_targets = objects.size();
-    header->target_name = new char*[header->n_targets];
-    header->target_len = new uint32_t[header->n_targets];
+    header->target_name = static_cast<char**>(std::calloc(header->n_targets, sizeof(char*)));
+    CHECK_EXT(header->target_name != nullptr, os.setError("Failed to allocate BAM target names"), );
+    header->target_len = static_cast<uint32_t*>(std::malloc(header->n_targets * sizeof(uint32_t)));
+    CHECK_EXT(header->target_len != nullptr, os.setError("Failed to allocate BAM target lengths"), );
 
     QByteArray headerText;
     headerText += "@HD\tVN:1.4\tSO:coordinate\n";
@@ -489,7 +493,8 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, cons
     for (GObject* obj : qAsConst(objects)) {
         const qint64 seqLength = objectLengths.at(objIdx);
         QByteArray seqName = obj->getGObjectName().toLatin1();
-        header->target_name[objIdx] = new char[seqName.length() + 1];
+        header->target_name[objIdx] = static_cast<char*>(std::malloc(seqName.length() + 1));
+        CHECK_EXT(header->target_name[objIdx] != nullptr, os.setError("Failed to allocate BAM target name"), );
         {
             char* name = header->target_name[objIdx];
             qstrncpy(name, seqName.constData(), seqName.length() + 1);
@@ -501,7 +506,8 @@ static void createHeader(bam_hdr_t* header, const QList<GObject*>& objects, cons
     }
 
     if (headerText.length() > 0) {
-        header->text = new char[headerText.length() + 1];
+        header->text = static_cast<char*>(std::malloc(headerText.length() + 1));
+        CHECK_EXT(header->text != nullptr, os.setError("Failed to allocate BAM header text"), );
         qstrncpy(header->text, headerText.constData(), headerText.length() + 1);
         header->text[headerText.length()] = 0;
         header->l_text = headerText.length();

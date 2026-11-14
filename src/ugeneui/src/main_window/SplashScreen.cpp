@@ -67,9 +67,8 @@ SplashScreen::SplashScreen(QWidget* parent /* = NULL*/)
 
     auto sWidget = new SplashScreenWidget();
 
-    QVBoxLayout* aWLayout = (QVBoxLayout*)frame->layout();
-    aWLayout->insertWidget(0, sWidget);
-    aWLayout->setStretchFactor(sWidget, 100);
+    frameLayout->insertWidget(0, sWidget);
+    frameLayout->setStretchFactor(sWidget, 100);
     installEventFilter(this);
 }
 

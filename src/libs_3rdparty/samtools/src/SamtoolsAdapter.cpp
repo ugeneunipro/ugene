@@ -20,6 +20,7 @@
  */
 
 #include "SamtoolsAdapter.h"
+#include <cstdlib>
 
 #include <QScopedPointer>
 #include <qendian.h>
@@ -375,7 +376,7 @@ inline static void copyChar(data_ptr& dest, quint8 c) {
 void SamtoolsAdapter::reads2samtools(U2DbiIterator<U2AssemblyRead>* reads, U2OpStatus& os, ReadsContainer& result) {
     while (reads->hasNext()) {
         U2AssemblyRead r = reads->next();
-        bam1_t resRead;
+        bam1_t resRead{};
         read2samtools(r, os, resRead);
         CHECK_OP(os, );
         result.append(resRead);
@@ -395,14 +396,17 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead& read, const ReadsConte
 void SamtoolsAdapter::read2samtools(const U2AssemblyRead& r, U2OpStatus& os, bam1_t& resRead) {
     bam1_core_t& core = resRead.core;
 
-    memset(&resRead, 0, sizeof(resRead));
+    core = {};
 
     core.tid = 0;
     core.pos = r->leftmostPos;
 
     core.bin = bam_reg2bin(r->leftmostPos, r->leftmostPos + r->effectiveLen);
     core.qual = r->mappingQuality;
-    core.l_qname = r->name.length() + 1;
+    const auto nameLength = r->name.size() + 1;
+    CHECK_EXT(nameLength <= 255, os.setError(tr("BAM read name exceeds 254 bytes")), );
+    core.l_extranul = (4 - nameLength % 4) % 4;
+    core.l_qname = nameLength + core.l_extranul;
 
     core.flag = r->flags;
     core.n_cigar = r->cigar.length();
@@ -420,20 +424,25 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead& r, U2OpStatus& os, bam
     QByteArray cigar = cigar2samtools(r->cigar, os);
     QByteArray seq = sequence2samtools(r->readSequence, os);
     QByteArray aux = aux2string(r->aux);
-    int dataLen = r->name.length() + 1 + cigar.length() + seq.length() + quality.length() + aux.length();
-    quint8* data = new quint8[dataLen];
-    quint8* dest = data;
+    int dataLen = core.l_qname + cigar.length() + seq.length() + quality.length() + aux.length();
+    CHECK_OP(os, );
+    if (resRead.m_data < static_cast<quint32>(dataLen)) {
+        auto data = static_cast<quint8*>(std::realloc(resRead.data, dataLen));
+        CHECK_EXT(data != nullptr, os.setError(tr("Failed to allocate BAM read data")), );
+        resRead.data = data;
+        resRead.m_data = dataLen;
+    }
+    quint8* dest = resRead.data;
     copyArray(dest, r->name);
-    copyChar(dest, '\0');
+    for (int i = 0; i <= core.l_extranul; ++i) {
+        copyChar(dest, '\0');
+    }
     copyArray(dest, cigar);
     copyArray(dest, seq);
     copyQuality(dest, quality);
     copyArray(dest, aux);
 
-    resRead.l_data = resRead.m_data = dataLen;
-    resRead.data = data;
-
-    CHECK_OP(os, );
+    resRead.l_data = dataLen;
 }
 
 static bool startPosLessThan(const bam1_t& a, const bam1_t& b) {
@@ -446,7 +455,7 @@ void ReadsContainer::sortByStartPos() {
 
 ReadsContainer::~ReadsContainer() {
     foreach (const bam1_t& b, vector) {
-        delete b.data;
+        std::free(b.data);
     }
 }
 

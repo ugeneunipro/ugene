@@ -633,8 +633,8 @@ JSValue Interpreter::execute(ProgramExecutable* program, CallFrame* callFrame, S
     globalObject->copyGlobalsTo(m_registerFile);
 
     CallFrame* newCallFrame = CallFrame::create(oldEnd + codeBlock->m_numParameters + RegisterFile::CallFrameHeaderSize);
-    newCallFrame->r(codeBlock->thisRegister()) = JSValue(thisObj);
     newCallFrame->init(codeBlock, 0, scopeChain, CallFrame::noCaller(), 0, 0, 0);
+    newCallFrame->r(codeBlock->thisRegister()) = JSValue(thisObj);
 
     if (codeBlock->needsFullScopeChain())
         scopeChain->ref();
@@ -869,8 +869,8 @@ JSValue Interpreter::execute(EvalExecutable* eval, CallFrame* callFrame, JSObjec
 #endif
 
     // a 0 codeBlock indicates a built-in caller
-    newCallFrame->r(codeBlock->thisRegister()) = JSValue(thisObj);
     newCallFrame->init(codeBlock, 0, scopeChain, callFrame->addHostCallFrameFlag(), 0, 0, 0);
+    newCallFrame->r(codeBlock->thisRegister()) = JSValue(thisObj);
 
     if (codeBlock->needsFullScopeChain())
         scopeChain->ref();

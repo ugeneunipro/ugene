@@ -21,5 +21,5 @@ endif ()
 
 target_link_libraries(plugins_checker
         Qt6::Core Qt6::Core5Compat Qt6::Gui Qt6::Widgets
-        U2Core U2Lang U2Private
+        U2Core U2Lang U2Private U2View
 )

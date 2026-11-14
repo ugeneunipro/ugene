@@ -253,7 +253,7 @@ qint64 MultiTableAssemblyAdapter::countReads(const U2Region& r, U2OpStatus& os) 
     qint64 sum = 0;
     // use more sensitive algorithm for smaller regions with low amount of reads
     // and not-very sensitive for huge regions with a lot of reads
-    int nReadsToUseNotPreciseAlgorithms = 1000 / (r.length + 1);
+    int nReadsToUseNotPreciseAlgorithms = r.length >= 1000 ? 0 : 1000 / (r.length + 1);
     foreach (MTASingleTableAdapter* a, adapters) {
         int n = a->singleTableAdapter->countReads(r, os);
         if (n != 0 && !all && n < nReadsToUseNotPreciseAlgorithms) {

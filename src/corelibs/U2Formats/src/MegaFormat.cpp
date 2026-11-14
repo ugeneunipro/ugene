@@ -102,14 +102,14 @@ bool MegaFormat::getNextLine(IOAdapter* io, QByteArray& line, U2OpStatus& ti) {
 
     qint64 len;
     bool eolFound = false, eof = false;
-    while (!eolFound) {
+    do {
         len = io->readLine(buff, READ_BUFF_SIZE, &eolFound);
         CHECK_EXT(!io->hasError(), ti.setError(io->errorString()), false);
 
         if (len < READ_BUFF_SIZE && !eolFound)
             eolFound = eof = true;
         line += readBuffer;
-    }
+    } while (!eolFound);
 
     if (len != READ_BUFF_SIZE)
         line.resize(line.size() + len - READ_BUFF_SIZE);

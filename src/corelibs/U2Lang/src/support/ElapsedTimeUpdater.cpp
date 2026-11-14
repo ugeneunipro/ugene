@@ -38,13 +38,14 @@ ElapsedTimeUpdater::ElapsedTimeUpdater(const ActorId& runningActorId, WorkflowMo
 
 void ElapsedTimeUpdater::sl_taskFinished(Task*) {
     stop();
+    CHECK(executedTask != nullptr && monitor != nullptr, );
     qint64 newElapsedTime = GTimer::currentTimeMicros() - executedTask->getTimeInfo().startTime;
     monitor->addTick(newElapsedTime - elapsedTime, runningActorId);
     executedTask = nullptr;
 }
 
 ElapsedTimeUpdater::~ElapsedTimeUpdater() {
-    CHECK(executedTask != nullptr, );
+    CHECK(executedTask != nullptr && monitor != nullptr, );
     qint64 newElapsedTime = executedTask->getTimeInfo().finishTime - executedTask->getTimeInfo().startTime;
     if (newElapsedTime > elapsedTime) {
         monitor->addTick(newElapsedTime - elapsedTime, runningActorId);
@@ -52,6 +53,7 @@ ElapsedTimeUpdater::~ElapsedTimeUpdater() {
 }
 
 void ElapsedTimeUpdater::sl_updateTime() {
+    CHECK(executedTask != nullptr && monitor != nullptr, stop());
     qint64 newElapsedTime = GTimer::currentTimeMicros() - executedTask->getTimeInfo().startTime;
     monitor->addTick(newElapsedTime - elapsedTime, runningActorId);
     elapsedTime = newElapsedTime;

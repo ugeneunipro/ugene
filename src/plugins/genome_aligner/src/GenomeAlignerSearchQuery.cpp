@@ -72,8 +72,8 @@ SearchQuery::SearchQuery(const U2AssemblyRead&, SearchQuery* revCompl) {
 }
 
 SearchQuery::~SearchQuery() {
-    delete seq;
-    delete name;
+    delete[] seq;
+    delete[] name;
     delete quality;
     revCompl = nullptr;
 }
