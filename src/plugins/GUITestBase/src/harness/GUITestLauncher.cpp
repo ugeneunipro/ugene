@@ -454,6 +454,13 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
     }
     qint64 processId = process.processId();
 
+    bool isStarted = process.waitForStarted();
+    if (!isStarted) {
+        QString error = QString("An error occurred while starting UGENE: %1").arg(process.errorString());
+        os.setError(error);
+        return error;
+    }
+
     QProcess screenRecorderProcess;
     if (isVideoRecordingOn) {
         QPair<QString, QStringList> screenRecorderCommand = getScreenRecorderCommand(testName);
@@ -471,12 +478,6 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
         });
     }
 
-    bool isStarted = process.waitForStarted();
-    if (!isStarted) {
-        QString error = QString("An error occurred while starting UGENE: %1").arg(process.errorString());
-        os.setError(error);
-        return error;
-    }
     bool isFinished = process.waitForFinished(timeout);
     QProcess::ExitStatus exitStatus = process.exitStatus();
 
@@ -491,8 +492,13 @@ QString GUITestLauncher::runTestOnce(U2OpStatus& os, const QString& testName, in
     QString testResult = readTestResult(process.readAllStandardOutput());
 
     if (isVideoRecordingOn) {
-        screenRecorderProcess.close();
-        bool isScreenRecorderFinished = screenRecorderProcess.waitForFinished(2000);
+        if (isOsMac()) {
+            screenRecorderProcess.write("q\n");
+            screenRecorderProcess.closeWriteChannel();
+        } else {
+            screenRecorderProcess.close();
+        }
+        bool isScreenRecorderFinished = screenRecorderProcess.waitForFinished(isOsMac() ? 10000 : 2000);
         if (!isScreenRecorderFinished) {
             screenRecorderProcess.kill();
             screenRecorderProcess.waitForFinished(2000);
