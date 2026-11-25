@@ -98,6 +98,18 @@ char U2AssemblyReadIterator::nextLetter() {
     return c;
 }
 
+int U2AssemblyReadIterator::nextReferenceRun() {
+    nextLetter();
+    CHECK(offsetInCigar < cigar.size(), 1);
+    int remaining = cigar.at(offsetInCigar).count - offsetInToken;
+    CHECK(remaining > 0, 1);
+    if (isMatch()) {
+        offsetInRead += remaining;
+    }
+    offsetInToken += remaining;
+    return 1 + remaining;
+}
+
 void U2AssemblyReadIterator::advanceToNextToken() {
     offsetInToken = 0;
     offsetInCigar++;

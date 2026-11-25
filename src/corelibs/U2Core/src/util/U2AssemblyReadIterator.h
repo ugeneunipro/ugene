@@ -61,6 +61,12 @@ public:
      */
     char nextLetter();
 
+    /** Consumes the rest of the next reference-consuming CIGAR operation, including its first
+     * available letter. Returns the number of reference positions consumed. The insertion before
+     * the first of these positions is available through getInsertionBeforeLastLetter().
+     */
+    int nextReferenceRun();
+
     /**
      * Read letters of the insertions (I) that were skipped right before the letter returned by
      * the last nextLetter() call, empty if there was no insertion there. Insertions consumed while

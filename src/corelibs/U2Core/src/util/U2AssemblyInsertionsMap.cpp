@@ -90,12 +90,13 @@ template <class Callback>
 void forEachInsertion(const U2AssemblyRead& read, const U2Region& visibleBases, Callback callback) {
     qint64 firstWalkedPos = qMax(read->leftmostPos, visibleBases.startPos - 1);
     U2AssemblyReadIterator it(read->readSequence, read->cigar, firstWalkedPos - read->leftmostPos);
-    for (qint64 refPos = firstWalkedPos; refPos < visibleBases.endPos() && it.hasNext(); refPos++) {
-        it.nextLetter();
+    for (qint64 refPos = firstWalkedPos; refPos < visibleBases.endPos() && it.hasNext();) {
+        int runLength = it.nextReferenceRun();
         const QByteArray& insertion = it.getInsertionBeforeLastLetter();
         if (refPos >= visibleBases.startPos && !insertion.isEmpty()) {
             callback(refPos, insertion);
         }
+        refPos += runLength;
     }
 }
 
