@@ -479,8 +479,8 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                 }
 
                 int basesPainted = 0;
+                GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
                 for (qint64 refPos = readVisibleBases.startPos; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; refPos++) {
-                    GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
                     char c = cigarIt.nextLetter();
 
                     // Extra columns of this position are drawn first: an insertion precedes the
