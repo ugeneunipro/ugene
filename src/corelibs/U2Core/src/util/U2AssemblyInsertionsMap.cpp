@@ -120,8 +120,22 @@ int findFirstSiteAt(const QList<U2AssemblyInsertionSite>& sites, qint64 refPos) 
 
 void U2AssemblyInsertionsMap::build(const QList<U2AssemblyRead>& reads, const U2Region& regionToBuild, const U2AssemblyInsertionsFilter& filterToApply) {
     startBuild(regionToBuild, filterToApply);
-    for (const U2AssemblyRead& read : qAsConst(reads)) {
-        addSitesOfRead(read);
+    for (qsizetype i = 0; i < reads.size();) {
+        const U2AssemblyRead& read = reads.at(i);
+        qsizetype end = i + 1;
+        // The loader shares parsed CIGARs between consecutive reads. Identical sequences
+        // aligned at the same position then contribute the same insertions to every site.
+        while (end < reads.size()) {
+            const U2AssemblyRead& next = reads.at(end);
+            if (!read || !next || read->leftmostPos != next->leftmostPos ||
+                read->cigar.constData() != next->cigar.constData() || read->cigar.size() != next->cigar.size() ||
+                read->readSequence != next->readSequence) {
+                break;
+            }
+            ++end;
+        }
+        addSitesOfRead(read, end - i);
+        i = end;
     }
     finishSites();
     for (const U2AssemblyRead& read : qAsConst(reads)) {
@@ -138,6 +152,10 @@ void U2AssemblyInsertionsMap::startBuild(const U2Region& regionToBuild, const U2
 }
 
 void U2AssemblyInsertionsMap::addSitesOfRead(const U2AssemblyRead& read) {
+    addSitesOfRead(read, 1);
+}
+
+void U2AssemblyInsertionsMap::addSitesOfRead(const U2AssemblyRead& read, qsizetype copies) {
     CHECK(!region.isEmpty(), );
 
     U2Region visibleBases = getVisibleBases(read, region);
@@ -147,13 +165,13 @@ void U2AssemblyInsertionsMap::addSitesOfRead(const U2AssemblyRead& read) {
     CHECK(!read->cigar.isEmpty(), );
 
     bool countInsertions = filter.isEnabled();
-    forEachInsertion(read, visibleBases, [this, countInsertions](qint64 refPos, const QByteArray& insertion) {
+    forEachInsertion(read, visibleBases, [this, countInsertions, copies](qint64 refPos, const QByteArray& insertion) {
         // The sites are only provisional here, as wide as the longest insertion: whether an
         // insertion passes the filter depends on the coverage, which is counted in the second pass.
         int width = qMin(insertion.size(), MAX_SITE_WIDTH);
         widthByRefPos[refPos] = qMax(widthByRefPos.value(refPos), width);
         if (countInsertions) {
-            readsByInsertion[refPos][insertion.toUpper()]++;
+            readsByInsertion[refPos][insertion.toUpper()] += copies;
         }
     });
 }
