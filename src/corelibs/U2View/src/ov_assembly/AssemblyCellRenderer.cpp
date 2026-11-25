@@ -21,6 +21,8 @@
 
 #include "AssemblyCellRenderer.h"
 
+#include <array>
+
 #include <QFont>
 #include <QPainter>
 
@@ -118,6 +120,14 @@ inline static bool isGap(char c) {
 static const QMap<char, QColor> nucleotideColorSchemeLight = initDefaultLightColorSheme();
 static const QMap<char, QColor> nucleotideColorSchemeDark = initDefaultDarkColorSheme();
 static const QList<char> assemblyAlphabet = nucleotideColorSchemeLight.keys();
+static const std::array<char, 256> displayBase = [] {
+    std::array<char, 256> result;
+    result.fill('N');
+    for (char c : assemblyAlphabet) {
+        result[static_cast<unsigned char>(c)] = c;
+    }
+    return result;
+}();
 static const QMap<char, TwoChars> extendedPairs = initExtendedPairs();
 
 static void drawBackground(QPixmap& img, const QSize& size, const QColor& topColor, const QColor& bottomColor) {
@@ -238,7 +248,7 @@ void NucleotideColorsRenderer::update() {
 }
 
 const QPixmap& NucleotideColorsRenderer::cellImage(char c) {
-    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
+    c = displayBase[static_cast<unsigned char>(c)];
     return cachedImage(images, c);
 }
 
@@ -319,12 +329,12 @@ void ComplementColorsRenderer::update() {
 }
 
 const QPixmap& ComplementColorsRenderer::cellImage(char c) {
-    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
+    c = displayBase[static_cast<unsigned char>(c)];
     return cachedImage(directImages, c);
 }
 
 const QPixmap& ComplementColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
-    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
+    c = displayBase[static_cast<unsigned char>(c)];
 
     if (ReadFlagsUtils::isComplementaryRead(read->flags)) {
         return cachedImage(complementImages, c);
@@ -429,12 +439,12 @@ void PairedColorsRenderer::update() {
 }
 
 const QPixmap& PairedColorsRenderer::cellImage(char c) {
-    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
+    c = displayBase[static_cast<unsigned char>(c)];
     return cachedImage(unpairedImages, c);
 }
 
 const QPixmap& PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
-    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
+    c = displayBase[static_cast<unsigned char>(c)];
 
     if (ReadFlagsUtils::isPairedRead(read->flags)) {
         return cachedImage(pairedImages, c);
@@ -495,7 +505,7 @@ void DiffNucleotideColorsRenderer::update() {
 }
 
 const QPixmap& DiffNucleotideColorsRenderer::cellImage(char c) {
-    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
+    c = displayBase[static_cast<unsigned char>(c)];
     return cachedImage(highlightedImages, c);
 }
 
@@ -504,7 +514,7 @@ const QPixmap& DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, ch
 }
 
 const QPixmap& DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char ref) {
-    c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
+    c = displayBase[static_cast<unsigned char>(c)];
 
     if (c == ref) {
         return cachedImage(normalImages, c);
