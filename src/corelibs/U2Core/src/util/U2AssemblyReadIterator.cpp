@@ -81,7 +81,10 @@ bool U2AssemblyReadIterator::hasNext() const {
 char U2AssemblyReadIterator::nextLetter() {
     assert(hasNext());
     insertionBeforeLastLetter.clear();
-    skip();
+    // Handle leading clips and insertions. Later tokens are normalized by advanceToNextToken().
+    if (offsetInCigar == 0 && offsetInToken == 0) {
+        skip();
+    }
     SAFE_POINT(offsetInCigar < cigar.size(), "CIGAR out of range", 0);
     if (offsetInToken != cigar.at(offsetInCigar).count) {  // staying in the current token
         offsetInToken++;
