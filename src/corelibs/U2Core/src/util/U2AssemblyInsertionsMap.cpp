@@ -99,6 +99,14 @@ void forEachInsertion(const U2AssemblyRead& read, const U2Region& visibleBases, 
     }
 }
 
+void countInsertionLetters(U2AssemblyInsertionSite& site, QVector<QMap<char, qint64>>& frequencies, const QByteArray& insertion, qint64 count) {
+    int countedLength = qMin<int>(insertion.size(), site.width);
+    for (int offset = 0; offset < countedLength; offset++) {
+        site.letterCounts[offset] += count;
+        frequencies[offset][char(std::toupper((unsigned char)insertion.at(offset)))] += count;
+    }
+}
+
 /** Index of the first site at or after the reference position, sites.size() when there is none. */
 int findFirstSiteAt(const QList<U2AssemblyInsertionSite>& sites, qint64 refPos) {
     auto it = std::lower_bound(sites.constBegin(), sites.constEnd(), refPos, [](const U2AssemblyInsertionSite& site, qint64 pos) {
@@ -155,7 +163,16 @@ void U2AssemblyInsertionsMap::finishSites() {
     for (auto it = widthByRefPos.constBegin(); it != widthByRefPos.constEnd(); ++it) {
         U2AssemblyInsertionSite site(it.key(), it.value());
         site.letterCounts.fill(0, site.width);
-        letterFrequencies[sites.size()].resize(site.width);
+        auto& frequencies = letterFrequencies[sites.size()];
+        frequencies.resize(site.width);
+        // The filter already counted every distinct insertion, including ones it will reject.
+        // Reuse those counts for consensus so the coverage pass need not walk the CIGAR again.
+        if (filter.isEnabled()) {
+            const auto& insertions = readsByInsertion.constFind(site.refPos).value();
+            for (auto insertion = insertions.constBegin(); insertion != insertions.constEnd(); ++insertion) {
+                countInsertionLetters(site, frequencies, insertion.key(), insertion.value());
+            }
+        }
         sites << site;
     }
     widthByRefPos.clear();
@@ -217,20 +234,13 @@ void U2AssemblyInsertionsMap::addStatisticsOfRead(const U2AssemblyRead& read) {
         sites[i].coverage++;
     }
 
-    CHECK(!read->cigar.isEmpty(), );
+    CHECK(!filter.isEnabled() && !read->cigar.isEmpty(), );
 
     forEachInsertion(read, visibleBases, [this](qint64 refPos, const QByteArray& insertion) {
         int siteIndex = siteIndexByRefPos.value(refPos, -1);
         CHECK(siteIndex >= 0, );
 
-        U2AssemblyInsertionSite& site = sites[siteIndex];
-        // The letters a truncated site has no column for are not shown, so they do not vote either.
-        int countedLength = qMin<int>(insertion.size(), site.width);
-        for (int offset = 0; offset < countedLength; offset++) {
-            site.letterCounts[offset]++;
-            // The same letter of another case is the same vote, as it is the same insertion for the filter.
-            letterFrequencies[siteIndex][offset][char(std::toupper((unsigned char)insertion.at(offset)))]++;
-        }
+        countInsertionLetters(sites[siteIndex], letterFrequencies[siteIndex], insertion, 1);
     });
 }
 
