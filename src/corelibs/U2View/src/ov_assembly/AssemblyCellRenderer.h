@@ -42,17 +42,17 @@ public:
     /** Render pixmaps into cache */
     virtual void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font);
 
-    /** @returns cached cell pixmap */
-    virtual QPixmap cellImage(char c) = 0;
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c) = 0;
-    virtual QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) = 0;
+    /** The returned pixmap belongs to the renderer and is valid until its cache is rebuilt. */
+    virtual const QPixmap& cellImage(char c) = 0;
+    virtual const QPixmap& cellImage(const U2AssemblyRead& read, char c) = 0;
+    virtual const QPixmap& cellImage(const U2AssemblyRead& read, char c, char ref) = 0;
 
     /**
      * @returns cached pixmap of a column that has no reference position of its own: it is only
      * there to show an insertion of some other read. Colored differently from a gap that really
      * belongs to the data, so the two can be told apart.
      */
-    QPixmap insertionGapCellImage() const {
+    const QPixmap& insertionGapCellImage() const {
         return insertionGap;
     }
 
@@ -68,6 +68,7 @@ protected:
     virtual void update() = 0;
 
     void updateInsertionGap();
+    const QPixmap& cachedImage(const QHash<char, QPixmap>& images, char c) const;
 
     // images cache
     QPixmap unknownChar;

@@ -161,6 +161,11 @@ void AssemblyCellRenderer::updateInsertionGap() {
     insertionGap.fill(AppContext::getMainWindow()->isDarkTheme() ? insertionGapColorDark : insertionGapColorLight);
 }
 
+const QPixmap& AssemblyCellRenderer::cachedImage(const QHash<char, QPixmap>& images, char c) const {
+    const auto it = images.constFind(c);
+    return it == images.constEnd() ? unknownChar : it.value();
+}
+
 void AssemblyCellRenderer::makeForceRenderUpdate() {
     forceRenderUpdate = true;
 }
@@ -184,9 +189,9 @@ public:
 
     void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    QPixmap cellImage(char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
+    const QPixmap& cellImage(char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update() override;
@@ -232,16 +237,16 @@ void NucleotideColorsRenderer::update() {
     drawCell(unknownChar, size, gapBackgroundColor, text, '?', font, Qt::red);
 }
 
-QPixmap NucleotideColorsRenderer::cellImage(char c) {
+const QPixmap& NucleotideColorsRenderer::cellImage(char c) {
     c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
-    return images.value(c, unknownChar);
+    return cachedImage(images, c);
 }
 
-QPixmap NucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c) {
+const QPixmap& NucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c) {
     return cellImage(c);
 }
 
-QPixmap NucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char) {
+const QPixmap& NucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char) {
     return cellImage(c);
 }
 
@@ -256,9 +261,9 @@ public:
 
     void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    QPixmap cellImage(char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
+    const QPixmap& cellImage(char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update() override;
@@ -313,22 +318,22 @@ void ComplementColorsRenderer::update() {
     drawCell(unknownChar, size, gappedColor, text, '?', font, Qt::red);
 }
 
-QPixmap ComplementColorsRenderer::cellImage(char c) {
+const QPixmap& ComplementColorsRenderer::cellImage(char c) {
     c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
-    return directImages.value(c, unknownChar);
+    return cachedImage(directImages, c);
 }
 
-QPixmap ComplementColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
+const QPixmap& ComplementColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
     c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
 
     if (ReadFlagsUtils::isComplementaryRead(read->flags)) {
-        return complementImages.value(c, unknownChar);
+        return cachedImage(complementImages, c);
     } else {
-        return directImages.value(c, unknownChar);
+        return cachedImage(directImages, c);
     }
 }
 
-QPixmap ComplementColorsRenderer::cellImage(const U2AssemblyRead& read, char c, char) {
+const QPixmap& ComplementColorsRenderer::cellImage(const U2AssemblyRead& read, char c, char) {
     return cellImage(read, c);
 }
 
@@ -340,9 +345,9 @@ public:
 
     void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    QPixmap cellImage(char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
+    const QPixmap& cellImage(char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update() override;
@@ -366,9 +371,9 @@ public:
 
     void render(const QSize& size, int devicePixelRatio, bool text, const QFont& font) override;
 
-    QPixmap cellImage(char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c) override;
-    QPixmap cellImage(const U2AssemblyRead& read, char c, char ref) override;
+    const QPixmap& cellImage(char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c) override;
+    const QPixmap& cellImage(const U2AssemblyRead& read, char c, char ref) override;
 
 private:
     void update() override;
@@ -423,22 +428,22 @@ void PairedColorsRenderer::update() {
     drawCell(unknownChar, size, gappedColor, text, '?', font, Qt::red);
 }
 
-QPixmap PairedColorsRenderer::cellImage(char c) {
+const QPixmap& PairedColorsRenderer::cellImage(char c) {
     c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
-    return unpairedImages.value(c, unknownChar);
+    return cachedImage(unpairedImages, c);
 }
 
-QPixmap PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
+const QPixmap& PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
     c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
 
     if (ReadFlagsUtils::isPairedRead(read->flags)) {
-        return pairedImages.value(c, unknownChar);
+        return cachedImage(pairedImages, c);
     } else {
-        return unpairedImages.value(c, unknownChar);
+        return cachedImage(unpairedImages, c);
     }
 }
 
-QPixmap PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c, char) {
+const QPixmap& PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c, char) {
     return cellImage(read, c);
 }
 
@@ -489,22 +494,22 @@ void DiffNucleotideColorsRenderer::update() {
     drawCell(unknownChar, size, gappedColor, text, '?', font, Qt::red);
 }
 
-QPixmap DiffNucleotideColorsRenderer::cellImage(char c) {
+const QPixmap& DiffNucleotideColorsRenderer::cellImage(char c) {
     c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
-    return highlightedImages.value(c, unknownChar);
+    return cachedImage(highlightedImages, c);
 }
 
-QPixmap DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c) {
+const QPixmap& DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c) {
     return cellImage(c);
 }
 
-QPixmap DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char ref) {
+const QPixmap& DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char ref) {
     c = (!assemblyAlphabet.contains(c)) ? 'N' : c;
 
     if (c == ref) {
-        return normalImages.value(c, unknownChar);
+        return cachedImage(normalImages, c);
     } else {
-        return highlightedImages.value(c, unknownChar);
+        return cachedImage(highlightedImages, c);
     }
     return cellImage(c);
 }

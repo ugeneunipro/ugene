@@ -494,24 +494,19 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                     int insertionWidth = insertions.getInsertionWidthBefore(refPos);
                     const QByteArray& insertion = cigarIt.getInsertionBeforeLastLetter();
                     for (int i = 0; i < insertionWidth; i++, x_pix += cachedReads.letterWidth) {
-                        QPixmap insertionImage = i < insertion.size() ? cellRenderer->cellImage(read, insertion.at(i))
-                                                                     : cellRenderer->insertionGapCellImage();
+                        const QPixmap& insertionImage = i < insertion.size()
+                                                            ? cellRenderer->cellImage(read, insertion.at(i))
+                                                            : cellRenderer->insertionGapCellImage();
                         p.drawPixmap(QPoint(x_pix, y_pix_start), insertionImage);
                         ++totalBasesPainted;
                     }
 
                     QPoint cellStart(x_pix, y_pix_start);
-                    QPixmap cellImage;
                     int posInRef = refPos - cachedReads.visibleBases.startPos;
-                    if (!referenceRegion.isEmpty() && posInRef >= 0 && posInRef < referenceRegion.size()) {
-                        // Qt6 asserts on out-of-range QByteArray indexing; a read can extend past the cached
-                        // reference region, so guard posInRef and fall back to reference-less rendering (Qt5
-                        // silently read past the end here).
-                        cellImage = cellRenderer->cellImage(read, c, referenceRegion[posInRef]);
-                    } else {
-                        cellImage = cellRenderer->cellImage(read, c);
-                    }
-
+                    // A read can extend past the cached reference fragment.
+                    const QPixmap& cellImage = posInRef >= 0 && posInRef < referenceRegion.size()
+                                                   ? cellRenderer->cellImage(read, c, referenceRegion.at(posInRef))
+                                                   : cellRenderer->cellImage(read, c);
                     p.drawPixmap(cellStart, cellImage);
                     x_pix += cachedReads.letterWidth;
                     ++totalBasesPainted;
