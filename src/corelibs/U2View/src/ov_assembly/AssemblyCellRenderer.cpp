@@ -120,14 +120,19 @@ inline static bool isGap(char c) {
 static const QMap<char, QColor> nucleotideColorSchemeLight = initDefaultLightColorSheme();
 static const QMap<char, QColor> nucleotideColorSchemeDark = initDefaultDarkColorSheme();
 static const QList<char> assemblyAlphabet = nucleotideColorSchemeLight.keys();
-static const std::array<char, 256> displayBase = [] {
-    std::array<char, 256> result;
-    result.fill('N');
-    for (char c : assemblyAlphabet) {
-        result[static_cast<unsigned char>(c)] = c;
+static const std::array<unsigned char, 256> cellIndexByBase = [] {
+    std::array<unsigned char, 256> result;
+    result.fill(assemblyAlphabet.indexOf('N'));
+    for (int i = 0; i < assemblyAlphabet.size(); ++i) {
+        result[static_cast<unsigned char>(assemblyAlphabet.at(i))] = i;
     }
     return result;
 }();
+
+static int cellIndex(char c) {
+    return cellIndexByBase[static_cast<unsigned char>(c)];
+}
+
 static const QMap<char, TwoChars> extendedPairs = initExtendedPairs();
 
 static void drawBackground(QPixmap& img, const QSize& size, const QColor& topColor, const QColor& bottomColor) {
@@ -171,9 +176,8 @@ void AssemblyCellRenderer::updateInsertionGap() {
     insertionGap.fill(AppContext::getMainWindow()->isDarkTheme() ? insertionGapColorDark : insertionGapColorLight);
 }
 
-const QPixmap& AssemblyCellRenderer::cachedImage(const QHash<char, QPixmap>& images, char c) const {
-    const auto it = images.constFind(c);
-    return it == images.constEnd() ? unknownChar : it.value();
+const QPixmap& AssemblyCellRenderer::cachedImage(const QList<QPixmap>& images, int index) const {
+    return images.isEmpty() ? unknownChar : images.at(index);
 }
 
 void AssemblyCellRenderer::makeForceRenderUpdate() {
@@ -210,7 +214,7 @@ private:
     QMap<char, QColor> colorScheme;
 
     // images cache
-    QHash<char, QPixmap> images;
+    QList<QPixmap> images;
 };
 
 void NucleotideColorsRenderer::render(const QSize& _size, int _devicePixelRatio, bool _text, const QFont& _font) {
@@ -220,7 +224,7 @@ void NucleotideColorsRenderer::render(const QSize& _size, int _devicePixelRatio,
 }
 
 void NucleotideColorsRenderer::update() {
-    images.clear();
+    images.resize(assemblyAlphabet.size());
 
     bool isDark = AppContext::getMainWindow()->isDarkTheme();
     colorScheme = isDark ? nucleotideColorSchemeDark : nucleotideColorSchemeLight;
@@ -238,7 +242,7 @@ void NucleotideColorsRenderer::update() {
             // normal char
             drawCell(img, size, colorScheme.value(c), text, c, font, textColor);
         }
-        images.insert(c, img);
+        images[cellIndex(c)] = img;
     }
 
     unknownChar = QPixmap(size * devicePixelRatio);
@@ -248,8 +252,7 @@ void NucleotideColorsRenderer::update() {
 }
 
 const QPixmap& NucleotideColorsRenderer::cellImage(char c) {
-    c = displayBase[static_cast<unsigned char>(c)];
-    return cachedImage(images, c);
+    return cachedImage(images, cellIndex(c));
 }
 
 const QPixmap& NucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c) {
@@ -280,7 +283,7 @@ private:
 
 private:
     // images cache
-    QHash<char, QPixmap> directImages, complementImages;
+    QList<QPixmap> directImages, complementImages;
 
     static const QColor directColorLight, complementColorLight, directColorDark, complementColorDark;
 };
@@ -297,8 +300,8 @@ void ComplementColorsRenderer::render(const QSize& _size, int _devicePixelRatio,
 }
 
 void ComplementColorsRenderer::update() {
-    directImages.clear();
-    complementImages.clear();
+    directImages.resize(assemblyAlphabet.size());
+    complementImages.resize(assemblyAlphabet.size());
 
     bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor gappedColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
@@ -319,8 +322,8 @@ void ComplementColorsRenderer::update() {
         drawCell(dimg, size, dcolor, text, c, font, textColor);
         drawCell(cimg, size, ccolor, text, c, font, textColor);
 
-        directImages.insert(c, dimg);
-        complementImages.insert(c, cimg);
+        directImages[cellIndex(c)] = dimg;
+        complementImages[cellIndex(c)] = cimg;
     }
 
     unknownChar = QPixmap(size * devicePixelRatio);
@@ -329,17 +332,14 @@ void ComplementColorsRenderer::update() {
 }
 
 const QPixmap& ComplementColorsRenderer::cellImage(char c) {
-    c = displayBase[static_cast<unsigned char>(c)];
-    return cachedImage(directImages, c);
+    return cachedImage(directImages, cellIndex(c));
 }
 
 const QPixmap& ComplementColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
-    c = displayBase[static_cast<unsigned char>(c)];
-
     if (ReadFlagsUtils::isComplementaryRead(read->flags)) {
-        return cachedImage(complementImages, c);
+        return cachedImage(complementImages, cellIndex(c));
     } else {
-        return cachedImage(directImages, c);
+        return cachedImage(directImages, cellIndex(c));
     }
 }
 
@@ -366,8 +366,8 @@ private:
     QMap<char, QColor> colorScheme;
 
     // images cache
-    QHash<char, QPixmap> highlightedImages;
-    QHash<char, QPixmap> normalImages;
+    QList<QPixmap> highlightedImages;
+    QList<QPixmap> normalImages;
 };
 
 class PairedColorsRenderer : public AssemblyCellRenderer {
@@ -390,7 +390,7 @@ private:
 
 private:
     // images cache
-    QHash<char, QPixmap> pairedImages, unpairedImages;
+    QList<QPixmap> pairedImages, unpairedImages;
 
     static const QColor pairedColorLight, unpairedColorLight, pairedColorDark, unpairedColorDark;
 };
@@ -407,8 +407,8 @@ void PairedColorsRenderer::render(const QSize& _size, int _devicePixelRatio, boo
 }
 
 void PairedColorsRenderer::update() {
-    pairedImages.clear();
-    unpairedImages.clear();
+    pairedImages.resize(assemblyAlphabet.size());
+    unpairedImages.resize(assemblyAlphabet.size());
 
     bool isDark = AppContext::getMainWindow()->isDarkTheme();
     QColor gappedColor = isDark ? QColor("#353535") : QColor("#FBFBFB");
@@ -429,8 +429,8 @@ void PairedColorsRenderer::update() {
         drawCell(pimg, size, pcolor, text, c, font, textColor);
         drawCell(npimg, size, ucolor, text, c, font, textColor);
 
-        pairedImages.insert(c, pimg);
-        unpairedImages.insert(c, npimg);
+        pairedImages[cellIndex(c)] = pimg;
+        unpairedImages[cellIndex(c)] = npimg;
     }
 
     unknownChar = QPixmap(size * devicePixelRatio);
@@ -439,17 +439,14 @@ void PairedColorsRenderer::update() {
 }
 
 const QPixmap& PairedColorsRenderer::cellImage(char c) {
-    c = displayBase[static_cast<unsigned char>(c)];
-    return cachedImage(unpairedImages, c);
+    return cachedImage(unpairedImages, cellIndex(c));
 }
 
 const QPixmap& PairedColorsRenderer::cellImage(const U2AssemblyRead& read, char c) {
-    c = displayBase[static_cast<unsigned char>(c)];
-
     if (ReadFlagsUtils::isPairedRead(read->flags)) {
-        return cachedImage(pairedImages, c);
+        return cachedImage(pairedImages, cellIndex(c));
     } else {
-        return cachedImage(unpairedImages, c);
+        return cachedImage(unpairedImages, cellIndex(c));
     }
 }
 
@@ -468,8 +465,8 @@ void DiffNucleotideColorsRenderer::render(const QSize& _size, int _devicePixelRa
 }
 
 void DiffNucleotideColorsRenderer::update() {
-    highlightedImages.clear();
-    normalImages.clear();
+    highlightedImages.resize(assemblyAlphabet.size());
+    normalImages.resize(assemblyAlphabet.size());
 
     bool isDark = AppContext::getMainWindow()->isDarkTheme();
     colorScheme = isDark ? nucleotideColorSchemeDark : nucleotideColorSchemeLight;
@@ -494,8 +491,8 @@ void DiffNucleotideColorsRenderer::update() {
         }
         drawCell(nimg, size, normalColor, text, c, font, textColor);
 
-        highlightedImages.insert(c, himg);
-        normalImages.insert(c, nimg);
+        highlightedImages[cellIndex(c)] = himg;
+        normalImages[cellIndex(c)] = nimg;
     }
 
     unknownChar = QPixmap(size * devicePixelRatio);
@@ -505,8 +502,7 @@ void DiffNucleotideColorsRenderer::update() {
 }
 
 const QPixmap& DiffNucleotideColorsRenderer::cellImage(char c) {
-    c = displayBase[static_cast<unsigned char>(c)];
-    return cachedImage(highlightedImages, c);
+    return cachedImage(highlightedImages, cellIndex(c));
 }
 
 const QPixmap& DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c) {
@@ -514,14 +510,8 @@ const QPixmap& DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, ch
 }
 
 const QPixmap& DiffNucleotideColorsRenderer::cellImage(const U2AssemblyRead&, char c, char ref) {
-    c = displayBase[static_cast<unsigned char>(c)];
-
-    if (c == ref) {
-        return cachedImage(normalImages, c);
-    } else {
-        return cachedImage(highlightedImages, c);
-    }
-    return cellImage(c);
+    int index = cellIndex(c);
+    return cachedImage(assemblyAlphabet.at(index) == ref ? normalImages : highlightedImages, index);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -23,7 +23,7 @@
 
 #include <QColor>
 #include <QFont>
-#include <QHash>
+#include <QList>
 #include <QMap>
 #include <QPixmap>
 
@@ -68,7 +68,7 @@ protected:
     virtual void update() = 0;
 
     void updateInsertionGap();
-    const QPixmap& cachedImage(const QHash<char, QPixmap>& images, char c) const;
+    const QPixmap& cachedImage(const QList<QPixmap>& images, int index) const;
 
     // images cache
     QPixmap unknownChar;
