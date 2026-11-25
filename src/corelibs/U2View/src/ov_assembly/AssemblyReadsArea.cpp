@@ -434,6 +434,18 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
         cellRenderer->render(QSize(cachedReads.letterWidth, cachedReads.letterWidth), devicePixelRatio(), text, f);
     }
 
+    const bool drawReadBlocks = (scribbling || scrolling) && optimizeRenderOnScroll;
+    QVector<int> insertionWidths;
+    if (browser->areCellsVisible() && !drawReadBlocks) {
+        // Every row uses the same insertion columns for this frame.
+        insertionWidths.fill(0, basesToPaint.length);
+        for (const auto& site : insertions.getSites()) {
+            if (basesToPaint.contains(site.refPos)) {
+                insertionWidths[site.refPos - basesToPaint.startPos] = site.width;
+            }
+        }
+    }
+
     int totalBasesPainted = 0;
 
     // 2. Iterate over all visible reads and draw them
@@ -462,7 +474,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
             int x_pix_start = insertions.getColumnOfRefPos(readVisibleBases.startPos) * cachedReads.letterWidth;
             int y_pix_start = browser->calcPainterOffset(yToDrawRegion.startPos);
 
-            if ((scribbling || scrolling) && optimizeRenderOnScroll) {
+            if (drawReadBlocks) {
                 int x_pix_end = (insertions.getColumnOfRefPos(readVisibleBases.endPos() - 1) + 1) * cachedReads.letterWidth;
                 int height = cachedReads.letterWidth;
                 p.fillRect(x_pix_start, y_pix_start, x_pix_end - x_pix_start, height, AppContext::getMainWindow()->isDarkTheme() ? QColor("#757575") : QColor("#BBBBBB"));
@@ -483,7 +495,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                 }
 
                 int basesPainted = 0;
-                int x_pix = x_pix_start - insertions.getInsertionWidthBefore(readVisibleBases.startPos) * cachedReads.letterWidth;
+                int x_pix = x_pix_start - insertionWidths.at(readVisibleBases.startPos - basesToPaint.startPos) * cachedReads.letterWidth;
                 GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
                 for (qint64 refPos = readVisibleBases.startPos; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; refPos++) {
                     char c = cigarIt.nextLetter();
@@ -491,7 +503,8 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                     // Extra columns of this position are drawn first: an insertion precedes the
                     // reference base it is attached to. Reads that have no insertion here, or a
                     // shorter one, fill the rest of the columns with the insertion gap.
-                    int insertionWidth = insertions.getInsertionWidthBefore(refPos);
+                    int posInRef = refPos - basesToPaint.startPos;
+                    int insertionWidth = insertionWidths.at(posInRef);
                     const QByteArray& insertion = cigarIt.getInsertionBeforeLastLetter();
                     for (int i = 0; i < insertionWidth; i++, x_pix += cachedReads.letterWidth) {
                         const QPixmap& insertionImage = i < insertion.size()
@@ -502,7 +515,6 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                     }
 
                     QPoint cellStart(x_pix, y_pix_start);
-                    int posInRef = refPos - cachedReads.visibleBases.startPos;
                     // A read can extend past the cached reference fragment.
                     const QPixmap& cellImage = posInRef >= 0 && posInRef < referenceRegion.size()
                                                    ? cellRenderer->cellImage(read, c, referenceRegion.at(posInRef))
