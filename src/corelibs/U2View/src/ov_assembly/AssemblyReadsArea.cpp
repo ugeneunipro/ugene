@@ -483,6 +483,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                 }
 
                 int basesPainted = 0;
+                int x_pix = x_pix_start - insertions.getInsertionWidthBefore(readVisibleBases.startPos) * cachedReads.letterWidth;
                 GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
                 for (qint64 refPos = readVisibleBases.startPos; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; refPos++) {
                     char c = cigarIt.nextLetter();
@@ -491,7 +492,6 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                     // reference base it is attached to. Reads that have no insertion here, or a
                     // shorter one, fill the rest of the columns with the insertion gap.
                     int insertionWidth = insertions.getInsertionWidthBefore(refPos);
-                    int x_pix = (insertions.getColumnOfRefPos(refPos) - insertionWidth) * cachedReads.letterWidth;
                     const QByteArray& insertion = cigarIt.getInsertionBeforeLastLetter();
                     for (int i = 0; i < insertionWidth; i++, x_pix += cachedReads.letterWidth) {
                         QPixmap insertionImage = i < insertion.size() ? cellRenderer->cellImage(read, insertion.at(i))
@@ -513,6 +513,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
                     }
 
                     p.drawPixmap(cellStart, cellImage);
+                    x_pix += cachedReads.letterWidth;
                     ++totalBasesPainted;
 
                     // The read has letters in front of the base the columns do not show: the
