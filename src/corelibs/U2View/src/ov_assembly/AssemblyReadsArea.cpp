@@ -421,7 +421,11 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
     cachedReads.letterWidth = browser->getCellWidth();
 
     bool text = browser->areLettersVisible();
+    U2Region basesToPaint = cachedReads.visibleBases;
     if (browser->areCellsVisible()) {
+        // Keep the edge insertion and one extra column for markers extending left from the next cell.
+        qint64 lastRefPos = insertions.getRefPosOfColumn(width() / cachedReads.letterWidth + 1);
+        basesToPaint.length = qMin(basesToPaint.length, lastRefPos - basesToPaint.startPos + 1);
         GTIMER(c3, t3, "AssemblyReadsArea::drawReads -> cells rendering");
         QFont f = browser->getFont();
         if (text) {
@@ -441,7 +445,7 @@ void AssemblyReadsArea::drawReads(QPainter& p) {
         QByteArray readSequence = read->readSequence;
         U2Region readBases(read->leftmostPos, U2AssemblyUtils::getEffectiveReadLength(read));
 
-        U2Region readVisibleBases = readBases.intersect(cachedReads.visibleBases);
+        U2Region readVisibleBases = readBases.intersect(basesToPaint);
         U2Region xToDrawRegion(readVisibleBases.startPos - cachedReads.xOffsetInAssembly, readVisibleBases.length);
         if (readVisibleBases.isEmpty()) {
             continue;
