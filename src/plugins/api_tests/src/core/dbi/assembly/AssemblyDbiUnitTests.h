@@ -164,6 +164,11 @@ public:
     void Test() override;
 };
 
+class AssemblyDbiUnitTests_coverageWithClippedAndInconsistentReads : public UnitTest {
+public:
+    void Test() override;
+};
+
 class AssemblyDbiUnitTests_calculateCoverageInvalid : public UnitTest {
 public:
     void Test() override;
@@ -175,6 +180,7 @@ Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_addReads);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_addReadsInvalid);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_calculateCoverage);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_calculateCoverageInvalid);
+Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_coverageWithClippedAndInconsistentReads);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_countReads);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_countReadsInvalid);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_createAssemblyObject);

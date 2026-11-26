@@ -2392,6 +2392,14 @@
 <context>
     <name>U2::U2DbiL10n</name>
     <message>
+        <source>CIGAR spans %1 reference bases for read '%2', but its stored length is %3.</source>
+        <translation>CIGAR рида «%2» охватывает %1 оснований референса, а сохранённая длина равна %3.</translation>
+    </message>
+    <message>
+        <source>Coverage position is outside the CIGAR span for read '%1'.</source>
+        <translation>Позиция для расчёта покрытия выходит за границы CIGAR рида «%1».</translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="125"/>
         <source>Failed to detect assembly storage format: %1</source>
         <translation>Не удалось определить формат хранения сборки: %1</translation>

@@ -2663,6 +2663,14 @@
 <context>
     <name>U2::U2DbiL10n</name>
     <message>
+        <source>CIGAR spans %1 reference bases for read '%2', but its stored length is %3.</source>
+        <translation>«%2» okumasının CIGAR dizisi referansta %1 baz kapsıyor, ancak kayıtlı uzunluğu %3.</translation>
+    </message>
+    <message>
+        <source>Coverage position is outside the CIGAR span for read '%1'.</source>
+        <translation>Kapsama konumu «%1» okumasının CIGAR aralığının dışında.</translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="80"/>
         <source>There is no assembly object with the specified id.</source>
         <translation>Belirtilen kimliğe sahip bir derleme nesnesi yok.</translation>

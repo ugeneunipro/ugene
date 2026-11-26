@@ -141,9 +141,10 @@ const U2AssemblyCoverageStat& AssemblyModel::getCoverageStat(U2OpStatus& os) {
                     if (!os.isCoR()) {
                         static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000 * 1000;
                         int coverageCacheSize = (int)qMin(MAX_COVERAGE_CACHE_SIZE, length);
-                        cachedCoverageStat.resize(coverageCacheSize);
-                        calculateCoverageStat(U2Region(0, length), cachedCoverageStat, os);
+                        U2AssemblyCoverageStat coverage(coverageCacheSize);
+                        calculateCoverageStat(U2Region(0, length), coverage, os);
                         if (!os.isCoR()) {
+                            cachedCoverageStat.swap(coverage);
                             U2ByteArrayAttribute attribute;
                             attribute.objectId = assembly.id;
                             attribute.name = COVERAGE_STAT_ATTRIBUTE_NAME;

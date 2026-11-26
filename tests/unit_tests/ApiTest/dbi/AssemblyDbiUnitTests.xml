@@ -25,6 +25,7 @@
     + pack
     + packInvalid
     + calculateCoverage
+    + coverageWithClippedAndInconsistentReads
     + calculateCoverageInvalid
 
 </unittest>
