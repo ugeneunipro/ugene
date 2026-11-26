@@ -434,7 +434,7 @@ QByteArray SQLiteAssemblyUtils::packData(SQLiteAssemblyDataMethod method, const 
     return res;
 }
 
-void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead& read, U2OpStatus& os) {
+void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead& read, U2OpStatus& os, SQLiteAssemblyCigarCache* cache) {
     QByteArray& name = read->name;
     QByteArray& sequence = read->readSequence;
     QByteArray& qualityString = read->quality;
@@ -476,7 +476,7 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRea
         os.setError(U2DbiL10n::tr("Data are corrupted, no CIGAR end marker found: %1").arg(data));
         return;
     }
-    QByteArray cigarText(data + cigarStart, cigarEnd - cigarStart);
+    QByteArrayView cigarText(data + cigarStart, cigarEnd - cigarStart);
 
     // quality
     int qualityStart = cigarEnd + 1;
@@ -519,11 +519,19 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRea
         }
     }
 
-    // parse cigar
+    // Consecutive reads often share the same alignment operations.
+    if (cache != nullptr && cigarText == QByteArrayView(cache->text)) {
+        read->cigar = cache->tokens;
+        return;
+    }
+    QByteArray text = cigarText.toByteArray();
     QString err;
-    read->cigar = U2AssemblyUtils::parseCigar(cigarText, err);
+    read->cigar = U2AssemblyUtils::parseCigar(text, err);
     if (!err.isEmpty()) {
         os.setError(err);
+    } else if (cache != nullptr) {
+        cache->text = text;
+        cache->tokens = read->cigar;
     }
 }
 
@@ -627,7 +635,7 @@ U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery* q) {
     if (q->hasError()) {
         return U2AssemblyRead();
     }
-    SQLiteAssemblyUtils::unpackData(data, read, q->getOpStatus());
+    SQLiteAssemblyUtils::unpackData(data, read, q->getOpStatus(), &cigarCache);
     if (q->hasError()) {
         return U2AssemblyRead();
     }

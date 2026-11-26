@@ -220,6 +220,8 @@ public:
     int getInsertionOffsetOfColumn(qint64 column) const;
 
 private:
+    void addSitesOfRead(const U2AssemblyRead& read, qsizetype copies);
+
     /**
      * Drops the sites none of the insertions of which passes the filter and narrows the rest to
      * the longest insertion that does, then rebuilds the lookup structures from what is left.

@@ -90,12 +90,21 @@ template <class Callback>
 void forEachInsertion(const U2AssemblyRead& read, const U2Region& visibleBases, Callback callback) {
     qint64 firstWalkedPos = qMax(read->leftmostPos, visibleBases.startPos - 1);
     U2AssemblyReadIterator it(read->readSequence, read->cigar, firstWalkedPos - read->leftmostPos);
-    for (qint64 refPos = firstWalkedPos; refPos < visibleBases.endPos() && it.hasNext(); refPos++) {
-        it.nextLetter();
+    for (qint64 refPos = firstWalkedPos; refPos < visibleBases.endPos() && it.hasNext();) {
+        int runLength = it.nextReferenceRun();
         const QByteArray& insertion = it.getInsertionBeforeLastLetter();
         if (refPos >= visibleBases.startPos && !insertion.isEmpty()) {
             callback(refPos, insertion);
         }
+        refPos += runLength;
+    }
+}
+
+void countInsertionLetters(U2AssemblyInsertionSite& site, QVector<QMap<char, qint64>>& frequencies, const QByteArray& insertion, qint64 count) {
+    int countedLength = qMin<int>(insertion.size(), site.width);
+    for (int offset = 0; offset < countedLength; offset++) {
+        site.letterCounts[offset] += count;
+        frequencies[offset][char(std::toupper((unsigned char)insertion.at(offset)))] += count;
     }
 }
 
@@ -111,8 +120,22 @@ int findFirstSiteAt(const QList<U2AssemblyInsertionSite>& sites, qint64 refPos) 
 
 void U2AssemblyInsertionsMap::build(const QList<U2AssemblyRead>& reads, const U2Region& regionToBuild, const U2AssemblyInsertionsFilter& filterToApply) {
     startBuild(regionToBuild, filterToApply);
-    for (const U2AssemblyRead& read : qAsConst(reads)) {
-        addSitesOfRead(read);
+    for (qsizetype i = 0; i < reads.size();) {
+        const U2AssemblyRead& read = reads.at(i);
+        qsizetype end = i + 1;
+        // The loader shares parsed CIGARs between consecutive reads. Identical sequences
+        // aligned at the same position then contribute the same insertions to every site.
+        while (end < reads.size()) {
+            const U2AssemblyRead& next = reads.at(end);
+            if (!read || !next || read->leftmostPos != next->leftmostPos ||
+                read->cigar.constData() != next->cigar.constData() || read->cigar.size() != next->cigar.size() ||
+                read->readSequence != next->readSequence) {
+                break;
+            }
+            ++end;
+        }
+        addSitesOfRead(read, end - i);
+        i = end;
     }
     finishSites();
     for (const U2AssemblyRead& read : qAsConst(reads)) {
@@ -129,6 +152,10 @@ void U2AssemblyInsertionsMap::startBuild(const U2Region& regionToBuild, const U2
 }
 
 void U2AssemblyInsertionsMap::addSitesOfRead(const U2AssemblyRead& read) {
+    addSitesOfRead(read, 1);
+}
+
+void U2AssemblyInsertionsMap::addSitesOfRead(const U2AssemblyRead& read, qsizetype copies) {
     CHECK(!region.isEmpty(), );
 
     U2Region visibleBases = getVisibleBases(read, region);
@@ -138,13 +165,13 @@ void U2AssemblyInsertionsMap::addSitesOfRead(const U2AssemblyRead& read) {
     CHECK(!read->cigar.isEmpty(), );
 
     bool countInsertions = filter.isEnabled();
-    forEachInsertion(read, visibleBases, [this, countInsertions](qint64 refPos, const QByteArray& insertion) {
+    forEachInsertion(read, visibleBases, [this, countInsertions, copies](qint64 refPos, const QByteArray& insertion) {
         // The sites are only provisional here, as wide as the longest insertion: whether an
         // insertion passes the filter depends on the coverage, which is counted in the second pass.
         int width = qMin(insertion.size(), MAX_SITE_WIDTH);
         widthByRefPos[refPos] = qMax(widthByRefPos.value(refPos), width);
         if (countInsertions) {
-            readsByInsertion[refPos][insertion.toUpper()]++;
+            readsByInsertion[refPos][insertion.toUpper()] += copies;
         }
     });
 }
@@ -155,7 +182,16 @@ void U2AssemblyInsertionsMap::finishSites() {
     for (auto it = widthByRefPos.constBegin(); it != widthByRefPos.constEnd(); ++it) {
         U2AssemblyInsertionSite site(it.key(), it.value());
         site.letterCounts.fill(0, site.width);
-        letterFrequencies[sites.size()].resize(site.width);
+        auto& frequencies = letterFrequencies[sites.size()];
+        frequencies.resize(site.width);
+        // The filter already counted every distinct insertion, including ones it will reject.
+        // Reuse those counts for consensus so the coverage pass need not walk the CIGAR again.
+        if (filter.isEnabled()) {
+            const auto& insertions = readsByInsertion.constFind(site.refPos).value();
+            for (auto insertion = insertions.constBegin(); insertion != insertions.constEnd(); ++insertion) {
+                countInsertionLetters(site, frequencies, insertion.key(), insertion.value());
+            }
+        }
         sites << site;
     }
     widthByRefPos.clear();
@@ -217,20 +253,13 @@ void U2AssemblyInsertionsMap::addStatisticsOfRead(const U2AssemblyRead& read) {
         sites[i].coverage++;
     }
 
-    CHECK(!read->cigar.isEmpty(), );
+    CHECK(!filter.isEnabled() && !read->cigar.isEmpty(), );
 
     forEachInsertion(read, visibleBases, [this](qint64 refPos, const QByteArray& insertion) {
         int siteIndex = siteIndexByRefPos.value(refPos, -1);
         CHECK(siteIndex >= 0, );
 
-        U2AssemblyInsertionSite& site = sites[siteIndex];
-        // The letters a truncated site has no column for are not shown, so they do not vote either.
-        int countedLength = qMin<int>(insertion.size(), site.width);
-        for (int offset = 0; offset < countedLength; offset++) {
-            site.letterCounts[offset]++;
-            // The same letter of another case is the same vote, as it is the same insertion for the filter.
-            letterFrequencies[siteIndex][offset][char(std::toupper((unsigned char)insertion.at(offset)))]++;
-        }
+        countInsertionLetters(sites[siteIndex], letterFrequencies[siteIndex], insertion, 1);
     });
 }
 

@@ -155,11 +155,16 @@ enum SQLiteAssemblyDataMethod {
     SQLiteAssemblyDataMethod_NSCQ = 1
 };
 
+struct SQLiteAssemblyCigarCache {
+    QByteArray text;
+    QList<U2CigarToken> tokens;
+};
+
 class SQLiteAssemblyUtils {
 public:
     static QByteArray packData(SQLiteAssemblyDataMethod method, const U2AssemblyRead& read, U2OpStatus& os);
 
-    static void unpackData(const QByteArray& packed, U2AssemblyRead& read, U2OpStatus& os);
+    static void unpackData(const QByteArray& packed, U2AssemblyRead& read, U2OpStatus& os, SQLiteAssemblyCigarCache* cache = nullptr);
 
     static void calculateCoverage(SQLiteReadQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
@@ -182,6 +187,9 @@ protected:
 class SimpleAssemblyReadLoader : public SQLiteResultSetLoader<U2AssemblyRead> {
 public:
     U2AssemblyRead load(SQLiteQuery* q) override;
+
+private:
+    SQLiteAssemblyCigarCache cigarCache;
 };
 
 class SimpleAssemblyReadPackedDataLoader : public SQLiteResultSetLoader<PackAlgorithmData> {
