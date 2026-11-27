@@ -141,7 +141,12 @@ void MsaObject::replaceCharacters(const U2Region& columnRange, int rowIndex, cha
 }
 
 const Msa& MsaObject::getAlignment() const {
-    ensureDataLoaded();
+    U2OpStatus2Log os;
+    return getAlignment(os);
+}
+
+const Msa& MsaObject::getAlignment(U2OpStatus& os) const {
+    ensureDataLoaded(os);
     return cachedMa;
 }
 

@@ -65,6 +65,7 @@ public:
 
     /** Returns cached in-memory msa object model. */
     const Msa& getAlignment() const;
+    const Msa& getAlignment(U2OpStatus& os) const;
     void setMultipleAlignment(const Msa& ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap& hints = QVariantMap());
 
     /** GObject methods */
