@@ -93,6 +93,10 @@ bool PcrOptionsPanelSavableTab::childValueIsAcceptable(const QString& childId, c
     }
 }
 
+bool PcrOptionsPanelSavableTab::childCanBeSaved(QWidget* child) const {
+    return qobject_cast<InSilicoPcrProductsTable*>(child) != nullptr || U2SavableWidget::childCanBeSaved(child);
+}
+
 QString PcrOptionsPanelSavableTab::getChildId(QWidget* child) const {
     if (qobject_cast<PrimerGroupBox*>(child->parent()) != nullptr) {
         auto parentGroupBox = qobject_cast<QWidget*>(child->parent());

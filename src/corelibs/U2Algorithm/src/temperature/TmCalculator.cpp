@@ -20,6 +20,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QMutexLocker>
+
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 
@@ -31,6 +33,25 @@ const QString TmCalculator::KEY_ID = "id";
 
 TmCalculator::TmCalculator(const QVariantMap& _settings)
     : settings(_settings) {
+}
+
+double TmCalculator::getMeltingTemperature(const QByteArray& sequence) {
+    const qsizetype cost = sequence.size() + sizeof(QByteArray) + sizeof(double);
+    if (cost > meltingTemperatureCache.maxCost()) {
+        return calculateMeltingTemperature(sequence);
+    }
+    {
+        QMutexLocker lock(&cacheMutex);
+        if (const auto cached = meltingTemperatureCache.object(sequence)) {
+            return *cached;
+        }
+    }
+    const double temperature = calculateMeltingTemperature(sequence);
+    {
+        QMutexLocker lock(&cacheMutex);
+        meltingTemperatureCache.insert(QByteArray(sequence.constData(), sequence.size()), new double(temperature), cost);
+    }
+    return temperature;
 }
 
 double TmCalculator::getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer) {

@@ -350,21 +350,6 @@ font-weight: 600;</string>
         <attribute name="verticalHeaderDefaultSectionSize">
          <number>30</number>
         </attribute>
-        <column>
-         <property name="text">
-          <string>Region</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Length</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Ta</string>
-         </property>
-        </column>
        </widget>
       </item>
       <item alignment="Qt::AlignHCenter">
@@ -442,7 +427,7 @@ font-weight: 600;</string>
   </customwidget>
   <customwidget>
    <class>U2::InSilicoPcrProductsTable</class>
-   <extends>QTableWidget</extends>
+   <extends>QTableView</extends>
    <header>InSilicoPcrProductsTable.h</header>
   </customwidget>
   <customwidget>

@@ -1,0 +1,4 @@
+<!DOCTYPE GB2TEST>
+<multi-test>
+    <in-silico-pcr-test scenario="product_extraction"/>
+</multi-test>

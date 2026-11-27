@@ -1,0 +1,3 @@
+<suite name="In silico PCR regression tests" test-timeout="180">
+    <test-dir path="pcr" test-format="XML" test-ext="*.xml"/>
+</suite>

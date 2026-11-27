@@ -99,7 +99,7 @@ QWidget* GTUtilsPcr::primerBox(U2Strand::Direction direction) {
 }
 
 QTableView* GTUtilsPcr::getTable() {
-    return GTWidget::findTableWidget("productsTable");
+    return GTWidget::findTableView("productsTable");
 }
 
 void GTUtilsPcr::clearPcrDir() {

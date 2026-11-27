@@ -1,0 +1,4 @@
+<!DOCTYPE GB2TEST>
+<multi-test>
+    <tm-calculator-test scenario="primer3_concurrency"/>
+</multi-test>

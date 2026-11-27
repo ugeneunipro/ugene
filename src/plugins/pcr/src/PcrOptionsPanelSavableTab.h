@@ -37,6 +37,7 @@ public:
     bool childValueIsAcceptable(const QString& childId, const QVariant& value) const;
 
 protected:
+    bool childCanBeSaved(QWidget* child) const override;
     QString getChildId(QWidget* child) const;
     QWidget* getChildWidgetById(const QString& childId) const;
     bool childExists(const QString& childId) const;

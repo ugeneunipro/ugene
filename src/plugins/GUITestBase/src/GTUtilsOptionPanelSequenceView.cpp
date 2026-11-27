@@ -202,9 +202,9 @@ void GTUtilsOptionPanelSequenceView::setReversePrimerMismatches(const int mismat
 
 int GTUtilsOptionPanelSequenceView::productsCount() {
     openTab(InSilicoPcr);
-    auto tableWidget = GTWidget::findTableWidget("productsTable");
+    auto tableView = GTWidget::findTableView("productsTable");
 
-    return tableWidget->rowCount();
+    return tableView->model()->rowCount();
 }
 
 void GTUtilsOptionPanelSequenceView::showPrimersDetails() {

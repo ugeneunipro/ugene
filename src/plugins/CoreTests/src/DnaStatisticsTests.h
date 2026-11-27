@@ -92,6 +92,16 @@ private:
     static const QString EXPECTED_ISOELECTRIC_POINT;
 };
 
+class GTest_TmCalculator : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_TmCalculator, "tm-calculator-test", TaskFlag_None);
+    void run() override;
+
+private:
+    QString scenario;
+};
+
 class DnaStatisticsTests {
 public:
     static QList<XMLTestFactory*> createTestFactories();

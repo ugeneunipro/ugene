@@ -44,7 +44,7 @@ Primer3TmCalculator::Primer3TmCalculator(const QVariantMap& settings)
     : TmCalculator(settings) {
 }
 
-double Primer3TmCalculator::getMeltingTemperature(const QByteArray& sequence) {
+double Primer3TmCalculator::calculateMeltingTemperature(const QByteArray& sequence) {
     if (sequence.length() < DNAStatisticsTask::TM_MIN_LENGTH_LIMIT || sequence.length() > DNAStatisticsTask::TM_MAX_LENGTH_LIMIT) {
         return INVALID_TM;
     }
