@@ -21,12 +21,18 @@
 
 #include "AssemblyDbiUnitTests.h"
 
+#include <QTemporaryDir>
+
+#include <U2Core/DbiConnection.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Test/TestRunnerSettings.h>
+
+#include <U2View/AssemblyModel.h>
 
 #include "AssemblyDbiTestUtil.h"
 
@@ -68,6 +74,7 @@ static bool registerTests() {
     qRegisterMetaType<U2::AssemblyDbiUnitTests_addReadsInvalid>("AssemblyDbiUnitTests_addReadsInvalid");
     qRegisterMetaType<U2::AssemblyDbiUnitTests_calculateCoverage>("AssemblyDbiUnitTests_calculateCoverage");
     qRegisterMetaType<U2::AssemblyDbiUnitTests_calculateCoverageInvalid>("AssemblyDbiUnitTests_calculateCoverageInvalid");
+    qRegisterMetaType<U2::AssemblyDbiUnitTests_coverageWithClippedAndInconsistentReads>("AssemblyDbiUnitTests_coverageWithClippedAndInconsistentReads");
     qRegisterMetaType<U2::AssemblyDbiUnitTests_countReads>("AssemblyDbiUnitTests_countReads");
     qRegisterMetaType<U2::AssemblyDbiUnitTests_countReadsInvalid>("AssemblyDbiUnitTests_countReadsInvalid");
     qRegisterMetaType<U2::AssemblyDbiUnitTests_createAssemblyObject>("AssemblyDbiUnitTests_createAssemblyObject");
@@ -593,6 +600,56 @@ void AssemblyDbiUnitTests_calculateCoverageInvalid::Test() {
     U2OpStatusImpl os;
     assemblyDbi->calculateCoverage(id, region, c, os);
     CHECK_TRUE(os.hasError(), "error should be thrown");
+}
+
+void AssemblyDbiUnitTests_coverageWithClippedAndInconsistentReads::Test() {
+    QTemporaryDir data;
+    CHECK_TRUE(data.isValid(), "Cannot create temporary database directory");
+    U2OpStatusImpl status;
+    DbiConnection connection(U2DbiRef(SQLITE_DBI_ID, data.filePath("coverage.ugenedb")), true, status);
+    CHECK_NO_ERROR(status);
+    auto* dbi = connection.dbi->getAssemblyDbi();
+
+    U2AssemblyRead clipped(new U2AssemblyReadData());
+    clipped->name = "clipped";
+    clipped->readSequence = "ACT";
+    clipped->cigar = {{U2CigarOp_H, 2}, {U2CigarOp_M, 1}, {U2CigarOp_D, 1},
+                      {U2CigarOp_EQ, 1}, {U2CigarOp_N, 1}, {U2CigarOp_X, 1}};
+    U2AssemblyRead inconsistent(new U2AssemblyReadData());
+    inconsistent->name = "inconsistent";
+    inconsistent->leftmostPos = 10;
+    inconsistent->readSequence = "ACT";  // Stored effective length is 3, CIGAR spans 2.
+    inconsistent->cigar = {{U2CigarOp_M, 2}};
+    BufferedDbiIterator<U2AssemblyRead> reads({clipped, inconsistent});
+    U2Assembly assembly;
+    assembly.visualName = "coverage";
+    U2AssemblyReadsImportInfo importInfo;
+    dbi->createAssemblyObject(assembly, "/", &reads, importInfo, status);
+    CHECK_NO_ERROR(status);
+    dbi->finalizeAssemblyObject(assembly, status);
+    CHECK_NO_ERROR(status);
+
+    AssemblyModel model(connection);
+    model.setAssembly(dbi, assembly);
+    U2AssemblyCoverageStat coverage(5, 0);
+    model.calculateCoverageStat(U2Region(0, 5), coverage, status);
+    CHECK_NO_ERROR(status);
+    CHECK_TRUE(coverage == U2AssemblyCoverageStat({1, 0, 1, 0, 1}), "Incorrect coverage for clipped read");
+
+    // Detect the mismatch both inside the CIGAR span and at its missing last base.
+    for (int pos : {10, 12}) {
+        U2OpStatusImpl pointStatus;
+        U2AssemblyCoverageStat point(1, 0);
+        model.calculateCoverageStat(U2Region(pos, 1), point, pointStatus);
+        CHECK_TRUE(pointStatus.hasError(), "Expected a CIGAR length error");
+    }
+    U2OpStatusImpl cacheStatus;
+    model.getCoverageStat(cacheStatus);
+    CHECK_TRUE(cacheStatus.hasError(), "Expected cache calculation to fail");
+    CHECK_TRUE(!model.hasCachedCoverageStat(), "Partial coverage was cached");
+    U2OpStatusImpl retryStatus;
+    CHECK_TRUE(model.getCoverageStat(retryStatus).isEmpty(), "Retry returned partial coverage");
+    CHECK_TRUE(retryStatus.hasError(), "Retry failed to report inconsistent data");
 }
 
 }  // namespace U2

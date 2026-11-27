@@ -547,6 +547,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& 
         QByteArray data = q.getBlob(2);
         U2AssemblyRead read(new U2AssemblyReadData());
         unpackData(data, read, os);
+        CHECK_OP(os, );
 
         U2Region readRegion(startPos, len);
         U2Region readCroppedRegion = readRegion.intersect(r);
@@ -555,15 +556,18 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& 
             continue;
         }
 
-        // we have used effective length of the read, so insertions/deletions are already taken into account
-        // cigarString can be longer than needed
         QVector<U2CigarOp> cigarVector;
-        foreach (const U2CigarToken& cigar, read->cigar) {
+        for (const U2CigarToken& cigar : std::as_const(read->cigar)) {
+            if (cigar.op == U2CigarOp_I || cigar.op == U2CigarOp_S || cigar.op == U2CigarOp_P || cigar.op == U2CigarOp_H) {
+                continue;
+            }
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
-        cigarVector.removeAll(U2CigarOp_I);
-        cigarVector.removeAll(U2CigarOp_S);
-        cigarVector.removeAll(U2CigarOp_P);
+        if (cigarVector.size() != len) {
+            os.setError(U2DbiL10n::tr("CIGAR spans %1 reference bases for read '%2', but its stored length is %3.")
+                            .arg(cigarVector.size()).arg(QString::fromUtf8(read->name)).arg(len));
+            return;
+        }
 
         if (r.startPos > startPos) {
             cigarVector = cigarVector.mid(r.startPos - startPos);  // cut unneeded cigar string
@@ -572,13 +576,14 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& 
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos) / basesPerRange);
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
-            switch (cigarVector[(i - firstCoverageIdx) * basesPerRange]) {
-                case U2CigarOp_D:  // skip the deletion
-                case U2CigarOp_N:  // skip the skiped
-                    continue;
-                default:
-                    coverage[i]++;
+            const qsizetype index = qsizetype((i - firstCoverageIdx) * basesPerRange);
+            if (index < 0 || index >= cigarVector.size()) {
+                os.setError(U2DbiL10n::tr("Coverage position is outside the CIGAR span for read '%1'.").arg(QString::fromUtf8(read->name)));
+                return;
             }
+            const U2CigarOp op = cigarVector.at(index);
+            CHECK_CONTINUE(op == U2CigarOp_M || op == U2CigarOp_EQ || op == U2CigarOp_X);
+            coverage[i]++;
         }
     }
 }
