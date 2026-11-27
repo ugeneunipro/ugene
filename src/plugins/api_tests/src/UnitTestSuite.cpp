@@ -73,6 +73,7 @@ void UnitTestSuite::init(XMLTestFormat*, const QDomElement& el) {
     passed = 0;
     ignored = 0;
     failed = 0;
+    failureDetails.clear();
 
     QString testList = el.text();
     QTextStream stream(&testList);
@@ -107,7 +108,9 @@ void UnitTestSuite::runTest(const QString& testName) {
         t->SetUp();
         t->Test();
         if (!t->GetError().isEmpty()) {
-            taskLog.error(testName + ": " + t->GetError());
+            const QString failure = testName + ": " + t->GetError();
+            taskLog.error(failure);
+            failureDetails.append(failure);
             failed++;
         } else {
             taskLog.info(testName + ": OK");
@@ -151,7 +154,7 @@ void UnitTestSuite::cleanup() {
     }
     if (failed) {
         taskLog.info("Test failed: " + QString::number(failed));
-        setError("Test failed");
+        setError(failureDetails.join('\n'));
     }
 
     XmlTest::cleanup();

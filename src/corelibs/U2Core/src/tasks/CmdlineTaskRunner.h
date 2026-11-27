@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include <QProcess>
 
 #include <U2Core/Task.h>
@@ -40,6 +42,8 @@ public:
 class U2CORE_EXPORT CmdlineTaskRunner : public Task {
     Q_OBJECT
 public:
+    /** Creates a process that owns its descendants through a Windows Job Object. Returns nullptr on error. */
+    static QProcess* createProcess(U2OpStatus& os, QObject* parent = nullptr);
     static QList<long> getChildrenProcesses(qint64 processId, bool fullTree = true);
     static int killChildrenProcesses(qint64 processId, bool fullTree = true);
     static int killProcessTree(QProcess* process);
@@ -52,8 +56,8 @@ public:
     ReportResult report() override;
 
     /*
-    * Returns QString with [ERROR] level log messages separated by new line.
-    */
+     * Returns QString with [ERROR] level log messages separated by new line.
+     */
     QString getProcessErrorsLog() const;
 
     static const QString REPORT_FILE_ARG;
@@ -63,6 +67,15 @@ protected:
     virtual bool parseCommandLogWord(const QString& logWord);
 
 private:
+    friend class CmdlineTaskRunnerUnitTests_processTree;
+    friend class WindowsProcessTree;
+
+#ifndef Q_OS_WIN
+    static QList<long> getDirectChildrenProcesses(qint64 processId);
+#endif
+    static QList<long> getChildrenProcesses(qint64 processId, bool fullTree, const std::function<QList<long>(qint64)>& getDirectChildren);
+    static bool isProcessSnapshotChild(quint64 parentCreated, quint64 childCreated, quint64 snapshotTime);
+
     void writeLog(QStringList& messages);
     QString readStdout();
 

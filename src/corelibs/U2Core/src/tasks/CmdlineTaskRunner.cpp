@@ -19,7 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include <QCoreApplication>
+#include <QMap>
 #include <QRegularExpression>
+#include <QSet>
 #include <QTextCodec>
 #include <QTimer>
 
@@ -100,18 +103,186 @@ bool containsPrefix(const QStringList& args, const QString& prefix) {
 }
 }  // namespace
 
+#ifdef Q_OS_WIN
+class WindowsJobProcess : public QProcess {
+public:
+    WindowsJobProcess(U2OpStatus& os, QObject* parent)
+        : QProcess(parent) {
+        const auto error = [] {
+            const DWORD code = GetLastError();
+            return CmdlineTaskRunner::tr("Cannot configure a Windows process job (error %1).").arg(code);
+        };
+        job = CreateJobObject(nullptr, nullptr);
+        CHECK_EXT(job != nullptr, os.setError(error()), );
+        JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits = {};
+        limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+        CHECK_EXT(SetInformationJobObject(job, JobObjectExtendedLimitInformation, &limits, sizeof(limits)), os.setError(error()), );
+
+        SIZE_T size = 0;
+        InitializeProcThreadAttributeList(nullptr, 1, 0, &size);
+        CHECK_EXT(size > 0, os.setError(error()), );
+        attributeStorage.resize(size);
+        auto attributes = reinterpret_cast<LPPROC_THREAD_ATTRIBUTE_LIST>(attributeStorage.data());
+        CHECK_EXT(InitializeProcThreadAttributeList(attributes, 1, 0, &size), os.setError(error()), );
+        startupInfo.lpAttributeList = attributes;
+        CHECK_EXT(UpdateProcThreadAttribute(attributes, 0, PROC_THREAD_ATTRIBUTE_JOB_LIST, &job, sizeof(job), nullptr, nullptr), os.setError(error()), );
+        setCreateProcessArgumentsModifier([this](CreateProcessArguments* args) {
+            // Assign the job before the initial thread runs, preserving QProcess's standard handles.
+            startupInfo.StartupInfo = *args->startupInfo;
+            startupInfo.StartupInfo.cb = sizeof(startupInfo);
+            args->startupInfo = &startupInfo.StartupInfo;
+            args->flags |= EXTENDED_STARTUPINFO_PRESENT;
+        });
+    }
+
+    ~WindowsJobProcess() override {
+        if (job != nullptr) {
+            CloseHandle(job);
+            if (state() != NotRunning) {
+                waitForFinished(5000);
+            }
+        }
+        if (startupInfo.lpAttributeList != nullptr) {
+            DeleteProcThreadAttributeList(startupInfo.lpAttributeList);
+        }
+    }
+
+    int killProcessTree() {
+        int result = TerminateJobObject(job, 1);
+        if (result == 0) {
+            const DWORD code = GetLastError();
+            coreLog.error(CmdlineTaskRunner::tr("Cannot terminate a Windows process job (error %1).").arg(code));
+        }
+        return result;
+    }
+
+private:
+    HANDLE job = nullptr;
+    QByteArray attributeStorage;
+    STARTUPINFOEXW startupInfo = {};
+};
+
+class WindowsProcessTree {
+public:
+    explicit WindowsProcessTree(qint64 rootPid) {
+        CHECK(openProcess(rootPid).handle != nullptr, );
+        FILETIME now;
+        GetSystemTimeAsFileTime(&now);
+        // This fallback is only for processes launched without a Job Object.
+        snapshotTime = toUInt64(now);
+        HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+        CHECK(snapshot != INVALID_HANDLE_VALUE, );
+        PROCESSENTRY32 entry = {};
+        entry.dwSize = sizeof(entry);
+        if (Process32First(snapshot, &entry)) {
+            do {
+                children[entry.th32ParentProcessID].append(entry.th32ProcessID);
+            } while (Process32Next(snapshot, &entry));
+        }
+        CloseHandle(snapshot);
+    }
+
+    ~WindowsProcessTree() {
+        for (const ProcessInfo& process : qAsConst(processes)) {
+            CloseHandle(process.handle);
+        }
+    }
+
+    QList<long> getDirectChildren(qint64 parentPid) {
+        QList<long> result;
+        const ProcessInfo parent = processes.value(parentPid);
+        CHECK(parent.handle != nullptr, result);
+        for (long childPid : children.value(parentPid)) {
+            if (childPid <= 0 || childPid == QCoreApplication::applicationPid()) {
+                continue;
+            }
+            const ProcessInfo child = openProcess(childPid);
+            // A reused PID must not turn an older process or a post-snapshot process into a child.
+            if (child.handle != nullptr && CmdlineTaskRunner::isProcessSnapshotChild(parent.created, child.created, snapshotTime)) {
+                result.append(childPid);
+            }
+        }
+        return result;
+    }
+
+    int killProcess(qint64 processId) const {
+        CHECK(processId > 0 && processId != QCoreApplication::applicationPid(), 0);
+        HANDLE handle = processes.value(processId).handle;
+        return handle == nullptr ? 0 : TerminateProcess(handle, 1);
+    }
+
+private:
+    Q_DISABLE_COPY(WindowsProcessTree)
+
+    struct ProcessInfo {
+        HANDLE handle = nullptr;
+        quint64 created = 0;
+    };
+
+    static quint64 toUInt64(const FILETIME& time) {
+        return (quint64(time.dwHighDateTime) << 32) | time.dwLowDateTime;
+    }
+
+    ProcessInfo openProcess(qint64 processId) {
+        if (processes.contains(processId)) {
+            return processes.value(processId);
+        }
+        HANDLE handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_TERMINATE, FALSE, processId);
+        CHECK(handle != nullptr, {});
+        FILETIME created, exited, kernel, user;
+        if (!GetProcessTimes(handle, &created, &exited, &kernel, &user)) {
+            CloseHandle(handle);
+            return {};
+        }
+        ProcessInfo process {handle, toUInt64(created)};
+        // Retain the handle until termination so a later PID reuse cannot select a different process.
+        processes.insert(processId, process);
+        return process;
+    }
+
+    QMap<qint64, ProcessInfo> processes;
+    QMap<qint64, QList<long>> children;
+    quint64 snapshotTime = 0;
+};
+#endif
+
 const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-file";
 
+QProcess* CmdlineTaskRunner::createProcess(U2OpStatus& os, QObject* parent) {
+    CHECK_OP(os, nullptr);
+#ifdef Q_OS_WIN
+    auto process = new WindowsJobProcess(os, parent);
+    if (os.hasError()) {
+        delete process;
+        return nullptr;
+    }
+    return process;
+#else
+    return new QProcess(parent);
+#endif
+}
+
 QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullTree) {
+#ifdef Q_OS_WIN
+    WindowsProcessTree tree(processId);
+    return getChildrenProcesses(processId, fullTree, [&](qint64 pid) { return tree.getDirectChildren(pid); });
+#else
+    return getChildrenProcesses(processId, fullTree, getDirectChildrenProcesses);
+#endif
+}
+
+#ifndef Q_OS_WIN
+QList<long> CmdlineTaskRunner::getDirectChildrenProcesses(qint64 processId) {
     QList<long> children;
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
+#    if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
     char* buff = nullptr;
     size_t len = 255;
     char command[256] = {0};
 
     sprintf(command, "ps -ef|awk '$3==%u {print $2}'", (unsigned)processId);
     FILE* fp = (FILE*)popen(command, "r");
+    CHECK(fp != nullptr, children);
     while (getline(&buff, &len, fp) >= 0) {
         int child_process_id = QString(buff).toInt();
         if (child_process_id != 0) {
@@ -120,51 +291,45 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
     }
     free(buff);
     pclose(fp);
-#elif defined(Q_OS_WIN)
-    HANDLE hProcessSnap;
-    HANDLE hProcess;
-    PROCESSENTRY32 pe32;
-
-    // Take a snapshot of all processes in the system.
-    hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    CHECK(hProcessSnap != INVALID_HANDLE_VALUE, children);
-
-    // Set the size of the structure before using it.
-    pe32.dwSize = sizeof(PROCESSENTRY32);
-
-    // Retrieve information about the first process,
-    // and exit if unsuccessful
-    CHECK_EXT(Process32First(hProcessSnap, &pe32), CloseHandle(hProcessSnap), children);
-
-    // Now walk the snapshot of processes, and
-    // display information about each process in turn
-    do {
-        if (pe32.th32ParentProcessID == processId) {
-            hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-            if (hProcess != nullptr) {
-                CloseHandle(hProcess);
-                children << pe32.th32ProcessID;
-            }
-        }
-    } while (Process32Next(hProcessSnap, &pe32));
-
-    CloseHandle(hProcessSnap);
-#endif
-
-    if (fullTree && children.length() > 0) {
-        foreach (long child, children) {
-            QList<long> children2 = getChildrenProcesses(child, fullTree);
-            children << children2;
-        }
-    }
+#    endif
 
     return children;
+}
+#endif
+
+QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullTree, const std::function<QList<long>(qint64)>& getDirectChildren) {
+    QList<long> children;
+    CHECK(processId > 0, children);
+    QSet<qint64> visited {processId, QCoreApplication::applicationPid()};
+    QList<qint64> pending {processId};
+    for (int i = 0; i < pending.size(); i++) {
+        for (long child : getDirectChildren(pending.at(i))) {
+            if (child <= 0 || visited.contains(child)) {
+                continue;
+            }
+            visited.insert(child);
+            children.append(child);
+            if (fullTree) {
+                pending.append(child);
+            }
+        }
+    }
+    return children;
+}
+
+bool CmdlineTaskRunner::isProcessSnapshotChild(quint64 parentCreated, quint64 childCreated, quint64 snapshotTime) {
+    return parentCreated <= childCreated && childCreated <= snapshotTime;
 }
 
 int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
     int result = 0;
 
+#ifdef Q_OS_WIN
+    WindowsProcessTree tree(processId);
+    QList<long> children = getChildrenProcesses(processId, fullTree, [&](qint64 pid) { return tree.getDirectChildren(pid); });
+#else
     QList<long> children = getChildrenProcesses(processId, fullTree);
+#endif
 
     if (!children.isEmpty()) {
         uiLog.trace("kill all children of process: " + QString::number(processId));
@@ -173,7 +338,11 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
         long child = children.takeLast();
 
         uiLog.trace("    kill process: " + QString::number(child));
+#ifdef Q_OS_WIN
+        result += tree.killProcess(child);
+#else
         result += killProcess(child);
+#endif
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
         usleep(1000000);
@@ -186,20 +355,38 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
 }
 
 int CmdlineTaskRunner::killProcessTree(QProcess* process) {
+    CHECK(process != nullptr, 0);
+#ifdef Q_OS_WIN
+    // The root may have exited already while its descendants still belong to the job.
+    if (auto jobProcess = dynamic_cast<WindowsJobProcess*>(process)) {
+        return jobProcess->killProcessTree();
+    }
+#endif
     qint64 processId = process->processId();
     return killProcessTree(processId);
 }
 
 int CmdlineTaskRunner::killProcessTree(qint64 processId) {
+    CHECK(processId > 0 && processId != QCoreApplication::applicationPid(), 0);
+#ifdef Q_OS_WIN
+    HANDLE parent = OpenProcess(PROCESS_TERMINATE, FALSE, processId);
+    CHECK(parent != nullptr, 0);
+#endif
     uiLog.trace("Killing full processes tree: " + QString::number(processId));
     uiLog.trace("Killing children processes: " + QString::number(processId));
     int result = killChildrenProcesses(processId);
     uiLog.trace("Killing parent process: " + QString::number(processId));
+#ifdef Q_OS_WIN
+    result += TerminateProcess(parent, 1);
+    CloseHandle(parent);
+#else
     result += killProcess(processId);
+#endif
     return result;
 }
 
 int CmdlineTaskRunner::killProcess(qint64 processId) {
+    CHECK(processId > 0 && processId != QCoreApplication::applicationPid(), 0);
     int result = 0;
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
     int exists = QProcess::execute("kill", {"-0", QString::number(processId)});
@@ -249,7 +436,8 @@ void CmdlineTaskRunner::prepare() {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert(ENV_SEND_CRASH_REPORTS, "0");
 
-    process = new QProcess(this);
+    process = createProcess(stateInfo, this);
+    CHECK_OP(stateInfo, );
     process->setProcessEnvironment(env);
     connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(sl_onError(QProcess::ProcessError)));
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadStandardOutput()));

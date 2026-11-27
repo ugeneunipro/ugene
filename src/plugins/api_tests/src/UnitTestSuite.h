@@ -43,6 +43,7 @@ private:
     int passed = 0;
     int ignored = 0;
     int failed = 0;
+    QStringList failureDetails;
 };
 
 }  // namespace U2

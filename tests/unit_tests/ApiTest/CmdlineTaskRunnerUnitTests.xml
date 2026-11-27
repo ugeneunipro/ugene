@@ -1,0 +1,6 @@
+<unittest>
+    CmdlineTaskRunnerUnitTests
+    + processTree
+    + protectOwnProcess
+    + jobProcessTree
+</unittest>
