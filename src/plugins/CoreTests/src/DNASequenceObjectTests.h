@@ -133,6 +133,7 @@ class GTest_DNAcompareSequencesInTwoObjects : public XmlTest {
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DNAcompareSequencesInTwoObjects, "compare-sequences-in-two-objects");
 
     ReportResult report() override;
+    bool sequencesOnly = false;
     QString docContextName;
     QString secondDocContextName;
 };

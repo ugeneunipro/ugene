@@ -23,6 +23,9 @@
 
 #include <QDir>
 #include <QEventLoop>
+#include <QElapsedTimer>
+#include <QMutex>
+#include <QThread>
 #include <QTimer>
 
 #include <U2Core/AppContext.h>
@@ -479,7 +482,20 @@ void LoadDataFromEntrezTask::run() {
 void LoadDataFromEntrezTask::runRequest(const QUrl& requestUrl) {
     QNetworkRequest req(requestUrl);
     req.setHeader(QNetworkRequest::UserAgentHeader, U2HttpHeaders::userAgent);
-    downloadReply = networkManager->get(req);
+    // EFetch permits three requests per second without an API key, across tasks.
+    static QMutex requestMutex;
+    static QElapsedTimer lastRequest;
+    {
+        QMutexLocker lock(&requestMutex);
+        if (lastRequest.isValid()) {
+            const auto waitMs = 350 - lastRequest.elapsed();
+            if (waitMs > 0) {
+                QThread::msleep(waitMs);
+            }
+        }
+        downloadReply = networkManager->get(req);
+        lastRequest.start();
+    }
     connect(downloadReply, SIGNAL(errorOccurred(QNetworkReply::NetworkError)), this, SLOT(sl_onError()));
     connect(downloadReply, SIGNAL(uploadProgress(qint64, qint64)), this, SLOT(sl_uploadProgress(qint64, qint64)));
 

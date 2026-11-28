@@ -316,6 +316,7 @@ Task::ReportResult GTest_DNAcompareSequencesNamesInTwoObjects::report() {
 
 //----------------------------------------------------------
 void GTest_DNAcompareSequencesInTwoObjects::init(XMLTestFormat*, const QDomElement& el) {
+    sequencesOnly = el.attribute("sequences-only") == "true";
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -341,8 +342,9 @@ Task::ReportResult GTest_DNAcompareSequencesInTwoObjects::report() {
         return ReportResult_Finished;
     }
 
-    const QList<GObject*>& objs = doc->getObjects();
-    const QList<GObject*>& objs2 = doc2->getObjects();
+    const auto objs = sequencesOnly ? doc->findGObjectByType(GObjectTypes::SEQUENCE) : doc->getObjects();
+    const auto objs2 = sequencesOnly ? doc2->findGObjectByType(GObjectTypes::SEQUENCE) : doc2->getObjects();
+    CHECK_EXT(!sequencesOnly || !objs.isEmpty(), setError("Expected at least one sequence"), ReportResult_Finished);
     GObject* obj = nullptr;
     U2SequenceObject* mySequence = nullptr;
     U2SequenceObject* mySequence2 = nullptr;

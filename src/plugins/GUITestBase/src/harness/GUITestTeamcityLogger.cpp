@@ -22,6 +22,7 @@
 #include "GUITestTeamcityLogger.h"
 
 #include <U2Core/Log.h>
+#include <U2Core/TeamCityUtils.h>
 
 #define ULOG_CAT_TEAMCITY "Teamcity Integration"
 
@@ -47,13 +48,7 @@ void GUITestTeamcityLogger::teamCityLogResult(const QString& testName, const QSt
 }
 
 QString GUITestTeamcityLogger::escaped(const QString& s) {
-    QString esc = s;
-    esc = esc.replace("|", "||");
-    esc = esc.replace("]", "|]");
-    esc = esc.replace("\r", "|r");
-    esc = esc.replace("\n", "|n");
-    esc = esc.replace("'", "|'");
-    return esc;
+    return escapeTeamCityValue(s);
 }
 
 bool GUITestTeamcityLogger::isTestFailed(const QString& testOutput) {

@@ -6,7 +6,7 @@
     <excluded test="find-sw/test_0014.xml" platform="mac" reason="SSE2 Smith-Waterman is unavailable on macOS ARM64"/>
 
     <excluded test="external-tool-support/cutadapt/test_0002.xml" platform="windows" reason="Cutadapt (Python module) is flaky on Windows"/>
-    <excluded test="remote-request/test_0003.xml" platform="windows" reason="Remote BLAST request to NCBI is flaky on Windows"/>
+    <excluded test="remote-request/test_0003.xml" reason="The external NCBI BLAST request can time out"/>
 
     <excluded test="external-tool-support/spades/input_type/test_0001.xml" platform="windows" reason="Spades is not available on Windows"/>
     <excluded test="external-tool-support/spades/input_type/test_0002.xml" platform="windows" reason="Spades is not available on Windows"/>

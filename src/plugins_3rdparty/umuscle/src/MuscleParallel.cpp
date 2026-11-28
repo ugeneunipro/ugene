@@ -61,10 +61,15 @@ int MuscleParallelTask::estimateMemoryUsageInMb(const Msa& ma) {
     std::sort(rowsLengths.begin(), rowsLengths.end(), std::greater<int>());
 
     qint64 usedBytes = 0;
-    int availableThreads = workpool->nThreads;
-    for (int i = 0; i < rowsLengths.size() && availableThreads > 0; i++) {
-        for (int j = 0; j < rowsLengths.size() && availableThreads > 0; j++, availableThreads--) {
-            usedBytes += qint64((rowsLengths[i] + 1025)) * (rowsLengths[j] + 1025);
+    // A two-row alignment has just one distinct pair, even with multiple workers.
+    if (rowsLengths.size() == 2) {
+        usedBytes = (qint64(rowsLengths[0]) + 1025) * (qint64(rowsLengths[1]) + 1025);
+    } else {
+        int availableThreads = workpool->nThreads;
+        for (int i = 0; i < rowsLengths.size() && availableThreads > 0; i++) {
+            for (int j = 0; j < rowsLengths.size() && availableThreads > 0; j++, availableThreads--) {
+                usedBytes += qint64((rowsLengths[i] + 1025)) * (rowsLengths[j] + 1025);
+            }
         }
     }
     // Check memory consumption for m_Dists in distfunc.cpp

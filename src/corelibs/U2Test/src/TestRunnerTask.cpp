@@ -28,6 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
+#include <U2Core/TeamCityUtils.h>
 #include <U2Core/Timer.h>
 
 #include <U2Test/GTest.h>
@@ -36,6 +37,18 @@
 namespace U2 {
 
 static Logger teamcityLog(ULOG_CAT_TEAMCITY);
+
+static QString teamCityTestName(const GTestRef* ref) {
+    return escapeTeamCityValue(ref->getSuite()->getName() + " : " + ref->getShortName());
+}
+
+static void logTestFailure(const GTestState* state) {
+    const QString name = teamCityTestName(state->getTestRef());
+    const QString error = escapeTeamCityValue(state->getErrorMessage());
+    teamcityLog.info(QString("##teamcity[testStarted name='%1']").arg(name));
+    teamcityLog.info(QString("##teamcity[testFailed name='%1' message='%2' details='%2']").arg(name, error));
+    teamcityLog.info(QString("##teamcity[testFinished name='%1']").arg(name));
+}
 
 TestRunnerTask::TestRunnerTask(const QList<GTestState*>& tests, const GTestEnvironment* _env, int testSizeToRun)
     : Task(tr("Test runner"), TaskFlag_NoRun), env(_env) {
@@ -78,16 +91,13 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
         assert(testState != nullptr);
         assert(testState->isNew());
         GTestRef* testRef = testState->getTestRef();
-        GTestSuite* testSuite = testRef->getSuite();
         if (test->hasError()) {
             testState->setFailed(test->getStateInfo().getError());
-            teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(testSuite->getName(), testRef->getShortName()));
-            teamcityLog.info(QString("##teamcity[testFailed name='%1 : %2' message='%3' details='%3']").arg(testSuite->getName(), testRef->getShortName(), QString(testState->getErrorMessage()).replace("'", "|'").replace('\n', ' ')));
-            teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2']").arg(testSuite->getName(), testRef->getShortName()));
+            logTestFailure(testState);
         } else {
             testState->setPassed();
-            teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(testSuite->getName(), testRef->getShortName()));
-            teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2' duration='%3']").arg(testSuite->getName(), testRef->getShortName(), QString::number(GTimer::millisBetween(test->getTimeInfo().startTime, test->getTimeInfo().finishTime))));
+            teamcityLog.info(QString("##teamcity[testStarted name='%1']").arg(teamCityTestName(testRef)));
+            teamcityLog.info(QString("##teamcity[testFinished name='%1' duration='%2']").arg(teamCityTestName(testRef), QString::number(GTimer::millisBetween(test->getTimeInfo().startTime, test->getTimeInfo().finishTime))));
         }
         if (!awaitingTests.isEmpty()) {
             GTestState* t = awaitingTests.takeFirst();
@@ -100,17 +110,13 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
         GTestSuite* suite = testRef->getSuite();
         if (loadTestTask->hasError()) {
             testState->setFailed(loadTestTask->getStateInfo().getError());
-            teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
-            teamcityLog.info(QString("##teamcity[testFailed name='%1 : %2' message='%3' details='%3']").arg(suite->getName(), testRef->getShortName(), QString(testState->getErrorMessage()).replace("'", "|'").replace('\n', ' ')));
-            teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
+            logTestFailure(testState);
         } else {
             GTestFormatId testFormatId = testRef->getFormatId();
             GTestFormat* testFormat = AppContext::getTestFramework()->getTestFormatRegistry()->findFormat(testFormatId);
             if (testFormat == nullptr) {
                 testState->setFailed(tr("Test format not supported: %1").arg(testFormatId));
-                teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
-                teamcityLog.info(QString("##teamcity[testFailed name='%1 : %2' message='%3' details='%3']").arg(suite->getName(), testRef->getShortName(), QString(testState->getErrorMessage()).replace("'", "|'").replace('\n', ' ').replace('\n', ' ')));
-                teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
+                logTestFailure(testState);
             } else {
                 auto testEnv = new GTestEnvironment();
                 allTestEnvironments << testEnv;
@@ -165,9 +171,7 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
                 GTest* test = testFormat->createTest(testRef->getShortName(), nullptr, testEnv, loadTestTask->testData, err);
                 if (test == nullptr) {
                     testState->setFailed(err);
-                    teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
-                    teamcityLog.info(QString("##teamcity[testFailed name='%1 : %2' message='%3' details='%3']").arg(suite->getName(), testRef->getShortName(), QString(testState->getErrorMessage()).replace("'", "|'").replace('\n', ' ')));
-                    teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
+                    logTestFailure(testState);
                 } else {
                     int suiteTimeoutSeconds = suite->getTestTimeout();
                     test->setTimeOut(suiteTimeoutSeconds);
